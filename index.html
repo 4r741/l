@@ -1,0 +1,1753 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Protocolo operativo de la Primera Visita en Clínica de Excelencia Médica Giraldo: 12 fases, responsables, registros obligatorios en Hermes, trazabilidad documental e indicadores.">
+<title>Protocolo de Primera Visita Giraldo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   TOKENS — paleta clara por defecto; la oscura solo redefine
+   ============================================================ */
+:root{
+  --paper:#ECEEEA;
+  --surface:#F7F8F5;
+  --surface-2:#E3E6E1;
+  --ink:#0B1A20;
+  --ink-2:#263D45;
+  --muted:#5D7178;
+  --line:rgba(11,26,32,.16);
+  --line-soft:rgba(11,26,32,.08);
+  --accent:#0E7C74;
+  --accent-ink:#0A5C56;
+  --accent-soft:rgba(14,124,116,.10);
+  --signal:#A8631B;
+  --signal-soft:rgba(168,99,27,.12);
+  --shadow:0 1px 0 rgba(11,26,32,.05), 0 18px 40px -32px rgba(11,26,32,.55);
+  --rule:rgba(11,26,32,.28);
+
+  --f-display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --wrap:1180px;
+  --step--1:clamp(.78rem,.76rem + .1vw,.84rem);
+  --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
+  --step-1:clamp(1.18rem,1.1rem + .35vw,1.35rem);
+  --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
+  --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
+  --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#07141A;
+    --surface:#0D2027;
+    --surface-2:#132B33;
+    --ink:#E7EEEC;
+    --ink-2:#C3D3D2;
+    --muted:#8BA4A8;
+    --line:rgba(231,238,236,.18);
+    --line-soft:rgba(231,238,236,.09);
+    --accent:#4FD6C6;
+    --accent-ink:#8BEDE1;
+    --accent-soft:rgba(79,214,198,.12);
+    --signal:#E3AC5E;
+    --signal-soft:rgba(227,172,94,.14);
+    --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
+    --rule:rgba(231,238,236,.34);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#07141A;
+  --surface:#0D2027;
+  --surface-2:#132B33;
+  --ink:#E7EEEC;
+  --ink-2:#C3D3D2;
+  --muted:#8BA4A8;
+  --line:rgba(231,238,236,.18);
+  --line-soft:rgba(231,238,236,.09);
+  --accent:#4FD6C6;
+  --accent-ink:#8BEDE1;
+  --accent-soft:rgba(79,214,198,.12);
+  --signal:#E3AC5E;
+  --signal-soft:rgba(227,172,94,.14);
+  --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
+  --rule:rgba(231,238,236,.34);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:118px}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:var(--step-0);
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:500;text-wrap:balance;margin:0;line-height:1.12}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{width:min(100% - 2.4rem,var(--wrap));margin-inline:auto}
+.mono{font-family:var(--f-mono)}
+.eyebrow{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);
+}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+/* regla milimétrica: motivo del CBCT */
+.ticks{
+  height:11px;
+  background-image:repeating-linear-gradient(90deg,var(--rule) 0 1px,transparent 1px 9px);
+  opacity:.5;
+}
+.ticks--tall{
+  height:18px;
+  background-image:
+    repeating-linear-gradient(90deg,var(--rule) 0 1px,transparent 1px 45px),
+    repeating-linear-gradient(90deg,var(--rule) 0 1px,transparent 1px 9px);
+  background-size:100% 18px,100% 9px;
+  background-repeat:no-repeat,no-repeat;
+  background-position:0 0,0 0;
+}
+
+/* ============================================================
+   BARRA SUPERIOR
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1px solid var(--line);
+}
+.topbar__in{display:flex;align-items:center;gap:1.2rem;padding:.7rem 0;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:.55rem;margin-right:auto;text-decoration:none}
+.brand__mark{
+  font-family:var(--f-display);font-size:1.06rem;letter-spacing:-.01em;
+}
+.brand__mark b{font-weight:600}
+.brand__tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.themebtn{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--line);color:var(--muted);
+  padding:.42rem .7rem;border-radius:999px;cursor:pointer;
+}
+.themebtn:hover{color:var(--ink);border-color:var(--ink)}
+
+/* tira de fases */
+.strip{display:flex;gap:2px;overflow-x:auto;padding:0 0 .65rem;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip a{
+  flex:0 0 auto;text-decoration:none;
+  font-family:var(--f-mono);font-size:.7rem;
+  color:var(--muted);border-top:2px solid var(--line);
+  padding:.42rem .62rem 0;white-space:nowrap;
+  transition:color .18s ease,border-color .18s ease;
+}
+.strip a:hover{color:var(--ink);border-color:var(--ink-2)}
+.strip a[aria-current="true"]{color:var(--accent-ink);border-color:var(--accent);font-weight:500}
+.strip a.is-off{opacity:.3}
+
+/* ============================================================
+   PORTADA
+   ============================================================ */
+.hero{padding:clamp(3rem,8vw,6.5rem) 0 2.6rem;position:relative;overflow:hidden}
+.hero__grid{display:grid;gap:2.4rem}
+.hero__grid>*{min-width:0}
+@media(min-width:900px){.hero__grid{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:3.4rem}}
+.hero h1{
+  font-size:var(--step-4);font-weight:400;letter-spacing:-.025em;
+  font-variation-settings:"opsz" 144;
+}
+.hero h1 em{font-style:italic;color:var(--accent-ink)}
+.hero__lede{margin-top:1.5rem;font-size:var(--step-1);color:var(--ink-2);max-width:34ch;line-height:1.45}
+.hero__note{margin-top:1.3rem;color:var(--muted);max-width:58ch;font-size:var(--step--1)}
+.specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);align-self:start}
+.spec{background:var(--paper);padding:1rem 1.05rem}
+.spec dt{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:.35rem 0 0;font-family:var(--f-display);font-size:1.5rem;font-weight:500;line-height:1.1}
+.spec dd small{display:block;font-family:var(--f-body);font-size:.76rem;color:var(--muted);font-weight:400;margin-top:.25rem;line-height:1.4}
+
+/* ============================================================
+   SECCIONES GENÉRICAS
+   ============================================================ */
+.section{padding:clamp(3rem,6vw,5rem) 0;border-top:1px solid var(--line)}
+.section__head{display:grid;gap:.9rem;margin-bottom:2.4rem;max-width:70ch}
+.section__head h2{font-size:var(--step-3);letter-spacing:-.02em}
+.section__head p{color:var(--ink-2);max-width:62ch}
+
+.cards{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.cards>*{min-width:0}
+@media(min-width:760px){.cards--3{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:760px){.cards--2{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--paper);padding:1.5rem}
+.card h3{font-size:var(--step-1);margin-bottom:.55rem}
+.card p{color:var(--ink-2);font-size:.95rem}
+.card .eyebrow{display:block;margin-bottom:.9rem}
+
+/* ============================================================
+   MAPA DE TIEMPOS
+   ============================================================ */
+.timemap{border:1px solid var(--line);background:var(--surface);padding:1.4rem;max-width:100%;overflow:hidden}
+.timemap__bar{display:flex;gap:2px;height:66px;margin:.4rem 0 1rem}
+.timemap__seg{
+  position:relative;background:var(--surface-2);border:0;padding:0;cursor:pointer;
+  display:flex;align-items:flex-end;justify-content:center;
+  border-bottom:3px solid var(--accent);
+  transition:background .18s ease,transform .18s ease;
+  min-width:14px;
+}
+.timemap__seg:hover{background:var(--accent-soft);transform:translateY(-2px)}
+.timemap__seg span{
+  font-family:var(--f-mono);font-size:.62rem;color:var(--muted);padding-bottom:.3rem;
+}
+.timemap__seg[data-role="recepcion"]{border-bottom-color:#2E6F9E}
+.timemap__seg[data-role="director"]{border-bottom-color:var(--accent)}
+.timemap__seg[data-role="doctor"]{border-bottom-color:#8B5CB8}
+.timemap__seg[data-role="auxiliar"]{border-bottom-color:var(--signal)}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;
+  border:1px solid var(--line);background:transparent;color:var(--ink-2);
+  padding:.34rem .7rem;border-radius:999px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:.45rem;
+}
+.chip::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--dot,var(--muted))}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip--static{cursor:default}
+.chip[data-role="recepcion"]{--dot:#2E6F9E}
+.chip[data-role="director"]{--dot:var(--accent)}
+.chip[data-role="doctor"]{--dot:#8B5CB8}
+.chip[data-role="auxiliar"]{--dot:var(--signal)}
+
+/* ============================================================
+   FASES
+   ============================================================ */
+.phase{
+  border-top:1px solid var(--line);
+  padding:clamp(2.4rem,5vw,3.6rem) 0;
+  transition:opacity .25s ease;
+}
+.phase.is-dimmed{opacity:.24}
+.phase__grid{display:grid;gap:1.8rem}
+.phase__grid>*{min-width:0}
+.phase__body{min-width:0;max-width:76ch}
+@media(min-width:960px){
+  .phase__grid{grid-template-columns:230px minmax(0,1fr);gap:3rem}
+  .phase__meta{position:sticky;top:132px;align-self:start}
+}
+.phase__num{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.18em;color:var(--accent-ink);
+  display:block;margin-bottom:.5rem;
+}
+.phase__big{
+  font-family:var(--f-display);font-size:clamp(3.2rem,9vw,4.6rem);line-height:.86;
+  font-weight:400;letter-spacing:-.04em;color:var(--ink);
+  font-variation-settings:"opsz" 144;
+}
+.phase__facts{margin:1.3rem 0 0;display:grid;gap:.85rem}
+.phase__fact dt{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.phase__fact dd{margin:.15rem 0 0;font-size:.9rem;color:var(--ink-2)}
+.phase h2{font-size:var(--step-2);letter-spacing:-.02em;max-width:24ch}
+.phase__intro{margin-top:1rem;color:var(--ink-2);max-width:66ch}
+.block{margin-top:2rem}
+.block__title{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem;
+}
+.block__title::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.block h4{font-size:1.02rem;font-family:var(--f-body);font-weight:600;margin:1.2rem 0 .3rem}
+.block h4:first-of-type{margin-top:0}
+.block p{color:var(--ink-2);max-width:66ch}
+ul.list{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.4rem;max-width:66ch}
+ul.list li{position:relative;padding-left:1.15rem;color:var(--ink-2);font-size:.95rem}
+ul.list li::before{content:"";position:absolute;left:0;top:.66em;width:6px;height:1px;background:var(--accent)}
+ol.steps{list-style:none;counter-reset:s;margin:.5rem 0 0;padding:0;display:grid;gap:1.1rem;max-width:68ch}
+ol.steps>li{counter-increment:s;position:relative;padding-left:2.4rem}
+ol.steps>li::before{
+  content:counter(s,decimal-leading-zero);position:absolute;left:0;top:.1em;
+  font-family:var(--f-mono);font-size:.72rem;color:var(--accent-ink);
+  border:1px solid var(--line);padding:.1rem .32rem;border-radius:3px;
+}
+.callout{
+  border-left:3px solid var(--signal);background:var(--signal-soft);
+  padding:1rem 1.15rem;margin-top:1.2rem;max-width:68ch;
+}
+.callout .eyebrow{color:var(--signal)}
+.callout p,.callout li{color:var(--ink-2)}
+.callout ul.list li::before{background:var(--signal)}
+.script{
+  border:1px solid var(--line);background:var(--surface);
+  padding:1.15rem 1.3rem;margin-top:1rem;max-width:68ch;
+}
+.script q{
+  font-family:var(--f-display);font-style:italic;font-size:1.08rem;
+  color:var(--ink);quotes:"«" "»" "\201C" "\201D";display:block;line-height:1.5;
+}
+.script .eyebrow{display:block;margin-bottom:.6rem}
+.gate{
+  margin-top:1.4rem;border:1px dashed var(--line);padding:1rem 1.15rem;max-width:68ch;
+  background:var(--accent-soft);
+}
+.gate .eyebrow{color:var(--accent-ink)}
+.gate p{color:var(--ink-2);margin-top:.35rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);margin-top:1.2rem;max-width:100%;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+th,td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+thead th{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);background:var(--surface);border-bottom:1px solid var(--line);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+.checks{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.55rem;max-width:70ch}
+.checks li{
+  display:grid;grid-template-columns:auto 1fr;gap:.7rem;align-items:start;
+  border-bottom:1px solid var(--line-soft);padding-bottom:.55rem;font-size:.94rem;color:var(--ink-2);
+}
+.checks li::before{
+  content:"";width:14px;height:14px;margin-top:.32em;border:1px solid var(--accent);border-radius:2px;
+}
+.checks li b{color:var(--ink);font-weight:600}
+.reveal{opacity:0;transform:translateY(14px)}
+.reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal,.reveal.in{opacity:1;transform:none;transition:none}
+  .timemap__seg:hover{transform:none}
+}
+@media(max-width:640px){
+  html{scroll-padding-top:98px}
+  .brand__tag{display:none}
+  .brand__mark{font-size:.98rem}
+  .topbar__in{padding:.55rem 0}
+  .strip a{font-size:.68rem;padding:.38rem .5rem 0}
+}
+footer.foot{border-top:1px solid var(--line);padding:3rem 0 4rem;color:var(--muted);font-size:.85rem}
+footer.foot strong{color:var(--ink)}
+.foot__grid{display:grid;gap:1.6rem}
+@media(min-width:760px){.foot__grid{grid-template-columns:2fr 1fr 1fr}}
+
+@media print{
+  .topbar,.themebtn,.legend,.timemap__bar{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  .phase,.section{break-inside:avoid;page-break-inside:avoid;border-color:#bbb}
+  .phase.is-dimmed{opacity:1}
+  .reveal{opacity:1!important;transform:none!important}
+  a{text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="topbar__in">
+      <a class="brand" href="#portada">
+        <span class="brand__mark">Excelencia Médica <b>Giraldo</b></span>
+        <span class="brand__tag">Protocolo PV · v1.0</span>
+      </a>
+      <button class="themebtn" id="themebtn" type="button" aria-live="polite">Tema</button>
+    </div>
+    <nav class="strip" id="strip" aria-label="Índice de fases">
+      <a href="#fundamentos">Fundamentos</a>
+      <a href="#mapa">Mapa 90′</a>
+      <a href="#f01">01 Preparación</a>
+      <a href="#f02">02 Acogida</a>
+      <a href="#f03">03 Alta y RGPD</a>
+      <a href="#f04">04 Historia clínica</a>
+      <a href="#f05">05 Diagnóstico</a>
+      <a href="#f06">06 Briefing</a>
+      <a href="#f07">07 Expectativas</a>
+      <a href="#f08">08 IAC</a>
+      <a href="#f09">09 Presentación 3D</a>
+      <a href="#f10">10 Propuesta</a>
+      <a href="#f11">11 Cierre admin.</a>
+      <a href="#f12">12 Seguimiento</a>
+      <a href="#trazabilidad">Trazabilidad</a>
+      <a href="#indicadores">Indicadores</a>
+      <a href="#anexos">Anexos</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== PORTADA ===================== -->
+<section class="hero" id="portada">
+  <div class="wrap">
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow">Documento operativo interno · Edición 2026</p>
+        <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
+        <p class="hero__lede">Doce fases coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
+        <p class="hero__note">Este protocolo es el estándar de ejecución de la Primera Visita (PV) en Clínica de Excelencia Médica Giraldo. Define <strong>quién</strong> hace cada cosa, <strong>cuándo</strong>, <strong>con qué palabras</strong> y <strong>qué queda registrado</strong> en Hermes. No es una guía orientativa: es el mínimo exigible. Cualquier desviación debe justificarse en la ficha del paciente.</p>
+      </div>
+      <dl class="specs">
+        <div class="spec"><dt>Duración objetivo</dt><dd>90′<small>117′ nominales sumando fases; ver nota de calibración</small></dd></div>
+        <div class="spec"><dt>Fases</dt><dd>12<small>Once presenciales + seguimiento post-visita</small></dd></div>
+        <div class="spec"><dt>Roles implicados</dt><dd>4<small>Recepción · Director · Doctor · Auxiliar</small></dd></div>
+        <div class="spec"><dt>Documentos firmados</dt><dd>7<small>Digitalizados en Hermes el mismo día</small></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+<div class="wrap"><div class="ticks ticks--tall" aria-hidden="true"></div></div>
+
+<!-- ===================== FUNDAMENTOS ===================== -->
+<section class="section" id="fundamentos">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">01 · Fundamentos</p>
+      <h2>Cinco principios que sostienen las doce fases</h2>
+      <p>Si alguna vez el protocolo entra en conflicto con la realidad de una visita concreta, estos principios deciden. Son el criterio al que apelar cuando el guion no cubre la situación.</p>
+    </div>
+    <div class="cards cards--3">
+      <article class="card">
+        <span class="eyebrow">Principio 01</span>
+        <h3>El diagnóstico manda</h3>
+        <p>Ninguna propuesta económica existe antes que un diagnóstico completo, validado y firmado. La secuencia —pruebas, exploración, informe, presentación, presupuesto— no se altera ni se comprime.</p>
+      </article>
+      <article class="card">
+        <span class="eyebrow">Principio 02</span>
+        <h3>Lo que no está en Hermes, no ha ocurrido</h3>
+        <p>Cada fase termina con un registro. La trazabilidad clínica y legal se construye durante la visita, no al final del día ni la semana siguiente.</p>
+      </article>
+      <article class="card">
+        <span class="eyebrow">Principio 03</span>
+        <h3>El paciente entiende lo que ve</h3>
+        <p>La imagen intraoral, el CBCT y la fotografía sustituyen a la explicación abstracta. Mostrar siempre antes que argumentar; la evidencia visual es el lenguaje común.</p>
+      </article>
+      <article class="card">
+        <span class="eyebrow">Principio 04</span>
+        <h3>Una sola voz</h3>
+        <p>Doctor y Director acuerdan diagnóstico, plan y enfoque <em>antes</em> de sentarse con el paciente. El paciente nunca percibe duda, contradicción ni improvisación entre profesionales.</p>
+      </article>
+      <article class="card">
+        <span class="eyebrow">Principio 05</span>
+        <h3>Cierre honesto</h3>
+        <p>Se guía la decisión, no se presiona. Riesgos, alternativas y limitaciones se dicen en voz alta. Un «no» bien atendido hoy es una conversión posible mañana; un «sí» forzado es una reclamación futura.</p>
+      </article>
+      <article class="card">
+        <span class="eyebrow">Cómo leer este documento</span>
+        <h3>Tres capas por fase</h3>
+        <p><strong>Acciones</strong>: qué se hace, en orden. <strong>Registro obligatorio</strong>: qué queda escrito y quién responde. <strong>Criterio de salida</strong>: la condición sin la cual no se avanza a la fase siguiente.</p>
+      </article>
+    </div>
+
+    <div class="callout" style="max-width:none;margin-top:2rem">
+      <p class="eyebrow">Nota de calibración temporal</p>
+      <p>La suma nominal de los tiempos por fase asciende a <strong>117 minutos</strong>, mientras que el compromiso comunicado al paciente es de <strong>90 minutos</strong>. La diferencia se absorbe de tres maneras: la Fase 6 (briefing) transcurre mientras el paciente descansa tras las pruebas; las Fases 3 y 4 se solapan parcialmente cuando la documentación llega precumplimentada; y los tiempos indicados son máximos, no objetivos. <strong>Recomendación de dirección:</strong> comunicar al paciente «entre 90 y 120 minutos» para no incumplir la expectativa, y revisar los tiempos reales por fase en el comité mensual.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MAPA ===================== -->
+<section class="section" id="mapa">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">02 · Mapa de la visita</p>
+      <h2>Los 117 minutos, a escala</h2>
+      <p>Cada bloque es una fase, proporcional a su duración nominal, coloreada por el rol que la lidera. Filtra por rol para leer el protocolo desde tu puesto: verás únicamente las fases en las que tienes responsabilidad directa.</p>
+    </div>
+    <div class="timemap">
+      <p class="eyebrow">Distribución del tiempo por fase</p>
+      <div class="timemap__bar" id="timebar"></div>
+      <p class="mono" style="font-size:.72rem;color:var(--muted);margin:-.5rem 0 1rem">La Fase 01 ocurre antes de la visita y se representa fuera de escala. Los 117′ corresponden a las once fases presenciales.</p>
+      <div class="legend" id="legend">
+        <button class="chip" data-role="recepcion" aria-pressed="false" type="button">Recepción</button>
+        <button class="chip" data-role="director" aria-pressed="false" type="button">Director / Asesor</button>
+        <button class="chip" data-role="doctor" aria-pressed="false" type="button">Doctor</button>
+        <button class="chip" data-role="auxiliar" aria-pressed="false" type="button">Auxiliar</button>
+        <button class="chip" id="clearfilter" type="button" style="--dot:transparent">Ver todas las fases</button>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin-top:2.6rem">Matriz de responsabilidad</h3>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Fase</th><th>Título</th><th>Lidera</th><th>Apoya</th><th>Tiempo</th><th>Registro que cierra la fase</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">01</td><td>Preparación previa</td><td>Recepción</td><td>—</td><td class="num">Pre-visita</td><td>Agenda de PV cumplimentada + verificación de duplicados</td></tr>
+          <tr><td class="num">02</td><td>Acogida, Sala VIP y tour</td><td>Recepción</td><td>Director</td><td class="num">5′</td><td>Hora de llegada real en Hermes</td></tr>
+          <tr><td class="num">03</td><td>Datos personales, RGPD y alta</td><td>Director</td><td>Recepción</td><td class="num">15′</td><td>Ficha completa + RGPD firmado + email verificado</td></tr>
+          <tr><td class="num">04</td><td>Historia clínica y consentimiento radiológico</td><td>Doctor</td><td>—</td><td class="num">10′</td><td>Anamnesis en historia + consentimiento firmado</td></tr>
+          <tr><td class="num">05</td><td>Pruebas diagnósticas y fotografía</td><td>Auxiliar</td><td>Doctor</td><td class="num">15′</td><td>Imágenes cargadas, etiquetadas y verificadas</td></tr>
+          <tr><td class="num">06</td><td>Briefing Doctor–Director</td><td>Doctor</td><td>Director</td><td class="num">5′</td><td>Plan de tratamiento óptimo acordado</td></tr>
+          <tr><td class="num">07</td><td>Expectativas y exploración clínica</td><td>Doctor</td><td>Auxiliar</td><td class="num">15′</td><td>Expectativas y hallazgos en historia + capturas intraorales</td></tr>
+          <tr><td class="num">08</td><td>Informe de Análisis Clínico (IAC)</td><td>Director</td><td>Doctor (dicta y firma)</td><td class="num">10′</td><td>IAC firmado y entregado a Recepción</td></tr>
+          <tr><td class="num">09</td><td>Presentación del diagnóstico 3D</td><td>Doctor</td><td>Director</td><td class="num">15′</td><td>Checklist de material verificado antes de proyectar</td></tr>
+          <tr><td class="num">10</td><td>Propuesta económica y cierre</td><td>Director</td><td>—</td><td class="num">20′</td><td>Estado de la PV, importes y motivo de no conversión</td></tr>
+          <tr><td class="num">11</td><td>Cierre administrativo y digitalización</td><td>Recepción</td><td>Director</td><td class="num">5′</td><td>Los 7 documentos escaneados el mismo día</td></tr>
+          <tr><td class="num">12</td><td>Despedida y seguimiento</td><td>Director</td><td>Recepción · Marketing</td><td class="num">2′ + post</td><td>Tarea de re-contacto con fecha y responsable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FASES ===================== -->
+<section class="section" style="padding-bottom:0" id="fases">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">03 · Recorrido</p>
+      <h2>Las doce fases, una por una</h2>
+      <p>Cada fase incluye su propósito, la secuencia de acciones, los guiones sugeridos, el registro obligatorio en Hermes y el criterio de salida. Los guiones son una base sobre la que construir con naturalidad, nunca un texto para recitar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 1 -->
+<article class="phase reveal" id="f01" data-roles="recepcion" data-min="6" data-label="Preparación" data-time="Pre-visita">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 01 / 12</span>
+      <div class="phase__big">01</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Momento</dt><dd>Pre-visita · llamada o mensaje entrante</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Recepción / Atención al Paciente</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Recepción</dd></div>
+        <div class="phase__fact"><dt>Herramienta</dt><dd>Hermes · Agenda de PV</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Preparación previa: la visita empieza en la primera llamada</h2>
+      <p class="phase__intro">El paciente decide si viene —y con qué expectativa viene— en los primeros tres minutos de conversación. Esta fase persigue dos cosas simultáneas: capturar información limpia para que el equipo trabaje sobre datos reales, y transmitir el valor diferencial de la Primera Visita antes de que el paciente cuelgue.</p>
+
+      <div class="block">
+        <p class="block__title">Acciones</p>
+        <ol class="steps">
+          <li>
+            <h4>Recogida de datos esenciales y preguntas de filtrado</h4>
+            <p>Se obtiene la información mínima que permite preparar la visita y priorizar la agenda:</p>
+            <ul class="list">
+              <li>Nombre y apellidos completos</li>
+              <li>Teléfono móvil y correo electrónico</li>
+              <li>Urgencia percibida del caso (dolor, inflamación, plazo personal)</li>
+              <li>Motivo principal de consulta, con detalle y en las palabras del paciente</li>
+              <li><strong>«Cómo nos conoció»</strong>: redes sociales, recomendación, búsqueda en Google, publicidad, campaña concreta</li>
+            </ul>
+            <p style="margin-top:.7rem">El dato de origen no es un trámite: es la única métrica que permite saber qué inversión de marketing produce pacientes reales. Se registra con precisión, sin categorías genéricas del tipo «internet».</p>
+          </li>
+          <li>
+            <h4>Registro en la Agenda de PV y control de duplicados</h4>
+            <p>Toda la información inicial y el motivo de consulta se vuelcan en la Agenda de Primera Visita en el momento, no después. Antes de crear nada, se comprueba en Hermes que el paciente no exista ya en el sistema (búsqueda por teléfono, email y apellidos) para evitar fichas duplicadas que fragmentan el historial.</p>
+          </li>
+          <li>
+            <h4>Comunicación del diferencial (speech de valor)</h4>
+            <p>Es el momento de explicar, con seguridad y sin prisa, qué incluye la Primera Visita y por qué no es comparable con la de otro centro.</p>
+          </li>
+        </ol>
+
+        <div class="script">
+          <span class="eyebrow">Guion sugerido · Recepción</span>
+          <q>En Excelencia Médica Giraldo su primera visita es completamente gratuita e incluye todas las pruebas diagnósticas avanzadas que habitualmente tienen un coste significativo: tomografía 3D de última generación (CBCT), radiografía panorámica digital, estudio fotográfico profesional completo y escaneado intraoral 3D de alta precisión. Le garantizamos el diagnóstico más preciso y completo posible, sin coste para usted, porque es la única forma honesta de proponerle un tratamiento.</q>
+        </div>
+
+        <div class="callout">
+          <p class="eyebrow">Crítico · Recepción</p>
+          <ul class="list">
+            <li>Ningún dato inicial se queda «en la cabeza» ni en una nota suelta: todo va a la Agenda de PV.</li>
+            <li>Verificar duplicados <em>antes</em> de crear cualquier registro nuevo.</li>
+            <li>El campo «Cómo nos conoció» es obligatorio y debe ser específico.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>La cita está en la agenda con motivo de consulta redactado, origen de marketing identificado y verificación de que no existe ficha previa. Si falta el origen, se pregunta antes de cerrar la llamada.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 2 -->
+<article class="phase reveal" id="f02" data-roles="recepcion director" data-min="5" data-label="Acogida">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 02 / 12</span>
+      <div class="phase__big">02</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>5 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Recepción · Director</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Recepción → Sala VIP → Instalaciones</dd></div>
+        <div class="phase__fact"><dt>Objetivo</dt><dd>Primera impresión de entorno premium</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Acogida, Sala VIP y recorrido por la tecnología</h2>
+      <p class="phase__intro">Cinco minutos que fijan el marco de todo lo que viene después. El paciente debe percibir, sin que nadie se lo diga, tres cosas: que le esperaban, que el sitio es distinto y que la tecnología que va a ver justifica lo que luego escuchará.</p>
+
+      <div class="block">
+        <p class="block__title">Acciones</p>
+        <ol class="steps">
+          <li>
+            <h4>Acogida impecable y reconocimiento</h4>
+            <p>Recepción consulta Hermes con antelación y saluda al paciente por su nombre. Sin esperas, sin formularios en el mostrador, sin «¿venía usted a qué?». El reconocimiento inmediato es la señal más barata y más eficaz de profesionalidad.</p>
+          </li>
+          <li>
+            <h4>Acompañamiento personal a la Sala VIP</h4>
+            <p>No se indica el camino: se acompaña. El paciente se sienta en un espacio cómodo, silencioso y reservado, y se le ofrece bebida. Nunca queda solo más de un par de minutos sin que alguien le informe del siguiente paso.</p>
+          </li>
+          <li>
+            <h4>Tour explicativo centrado en la tecnología</h4>
+            <p>El Director guía un recorrido breve y deliberado por dos puntos:</p>
+            <h4>a) Sala de esterilización</h4>
+            <ul class="list">
+              <li>Explicar el circuito de instrumental y los protocolos de higiene</li>
+              <li>Mostrar el equipamiento de esterilización y su trazabilidad por ciclos</li>
+              <li>Transmitir tranquilidad: la seguridad sanitaria se enseña, no se promete</li>
+            </ul>
+            <h4>b) Sala de imagen 3D</h4>
+            <ul class="list">
+              <li>Presentar el CBCT (tomografía computarizada de haz cónico)</li>
+              <li>Mostrar el escáner intraoral y explicar que sustituye a las pastas de impresión</li>
+              <li>Vincular la inversión tecnológica con la precisión del diagnóstico y la predictibilidad del resultado</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="script">
+          <span class="eyebrow">Mensaje clave · Director</span>
+          <q>Esta tecnología nos permite ver lo que de otro modo no se ve, planificar con exactitud milimétrica y garantizar resultados predecibles a largo plazo. Todo lo que le propongamos hoy saldrá de aquí.</q>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>El paciente ha visto esterilización e imagen 3D, ha sido tratado por su nombre y pasa al despacho del Director acompañado. Se registra la hora real de llegada en Hermes para poder medir la puntualidad del circuito.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 3 -->
+<article class="phase reveal" id="f03" data-roles="director recepcion" data-min="15" data-label="Alta y RGPD">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 03 / 12</span>
+      <div class="phase__big">03</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>15 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Director / Asesor</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Despacho del Director</dd></div>
+        <div class="phase__fact"><dt>Marco legal</dt><dd>RGPD · LOPDGDD</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Datos personales, protección de datos y alta en Hermes</h2>
+      <p class="phase__intro">La parte administrativa se hace en un despacho y no en un mostrador por una razón deliberada: convierte un trámite en una conversación. Mientras se completan los datos, el Director conoce al paciente como persona —a qué se dedica, con quién vive, qué le preocupa— y esa información será decisiva en las fases 7 y 10.</p>
+
+      <div class="block">
+        <p class="block__title">Acciones</p>
+        <ol class="steps">
+          <li>
+            <h4>Crear ambiente de confianza</h4>
+            <ul class="list">
+              <li>Gestionar la documentación en un entorno íntimo y poco clínico</li>
+              <li>Romper el hielo con conversación genuina, sin interrogatorio</li>
+              <li>Escuchar más que hablar: trabajo, familia, intereses, expectativas vitales</li>
+              <li>Anotar en Hermes lo relevante que el paciente cuente de sí mismo</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Documentación administrativa</h4>
+            <h4>a) Hoja de datos personales</h4>
+            <ul class="list">
+              <li>Información completa de contacto y facturación</li>
+              <li>Firma del paciente</li>
+            </ul>
+            <h4>b) Política de protección de datos (RGPD)</h4>
+            <ul class="list">
+              <li>Informar sobre qué datos se tratan, con qué finalidad y durante cuánto tiempo</li>
+              <li>Explicar los derechos de acceso, rectificación, supresión, limitación, portabilidad y oposición</li>
+              <li>Recabar consentimiento diferenciado para comunicaciones comerciales y para uso de imágenes clínicas</li>
+              <li>Obtener firma y fecha</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Alta completa en Hermes</h4>
+            <p>Responsabilidad indelegable del Director. Se completan todos los campos: nombre y apellidos, DNI/NIE, fecha de nacimiento, dirección completa, móvil, email, teléfono alternativo y fuente de contacto («cómo nos conoció»), coherente con lo registrado en la Fase 1.</p>
+          </li>
+          <li>
+            <h4>Verificación del correo electrónico</h4>
+            <p>La verificación del email es obligatoria: se comprueba en voz alta, carácter a carácter si hace falta. De ese dato dependen el envío de informes, recetas, documentación, recordatorios y toda la comunicación clínica posterior.</p>
+          </li>
+          <li>
+            <h4>Entrega a Recepción</h4>
+            <p>La hoja de datos personales firmada se deja en Recepción para su escaneo y subida a la ficha (Fase 11).</p>
+          </li>
+        </ol>
+
+        <div class="callout">
+          <p class="eyebrow">Crítico · Director</p>
+          <ul class="list">
+            <li>Una ficha incompleta bloquea la facturación, la financiación y el envío del IAC. No se avanza con campos vacíos.</li>
+            <li>El consentimiento para uso de imágenes con fines docentes o promocionales es <strong>independiente</strong> del consentimiento asistencial y debe marcarse por separado.</li>
+            <li>Menores de edad o personas con representante legal: firma del tutor y registro de su identificación.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>Ficha de Hermes completa, RGPD firmado y fechado, email verificado y hoja de datos entregada a Recepción. Solo entonces el paciente pasa al Doctor.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 4 -->
+<article class="phase reveal" id="f04" data-roles="doctor" data-min="10" data-label="Historia clínica">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 04 / 12</span>
+      <div class="phase__big">04</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>10 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Doctor / Odontólogo</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Despacho del Doctor</dd></div>
+        <div class="phase__fact"><dt>Salida documental</dt><dd>Consentimiento radiológico firmado</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Historia médica y consentimiento radiológico</h2>
+      <p class="phase__intro">Aquí cambia la autoridad de la conversación. El Director presenta al Doctor y se retira del primer plano: a partir de este momento, quien decide qué es clínicamente correcto es el Doctor, y el paciente debe percibirlo con nitidez.</p>
+
+      <div class="block">
+        <p class="block__title">Acciones</p>
+        <ol class="steps">
+          <li>
+            <h4>Transición de autoridad clínica</h4>
+            <p>El Director acompaña al paciente al despacho del Doctor y hace la presentación explícita, transmitiendo equipo, continuidad y jerarquía clínica. La transición es fluida: el paciente no vuelve a explicar desde cero lo que ya ha contado.</p>
+          </li>
+          <li>
+            <h4>Anamnesis médica general</h4>
+            <ul class="list">
+              <li>Enfermedades sistémicas actuales y pasadas</li>
+              <li>Alergias: medicamentos, materiales, látex, anestésicos</li>
+              <li>Medicación actual, con especial atención a anticoagulantes y bifosfonatos</li>
+              <li>Intervenciones quirúrgicas previas y complicaciones</li>
+              <li>Patología cardiovascular, diabetes, hipertensión</li>
+              <li>Trastornos de la coagulación</li>
+              <li>Embarazo o lactancia</li>
+              <li>Hábitos relevantes: tabaco, alcohol, bruxismo</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Anamnesis dental</h4>
+            <ul class="list">
+              <li>Tratamientos dentales previos y su antigüedad</li>
+              <li>Experiencias anteriores, positivas y negativas</li>
+              <li>Hábitos de higiene oral y frecuencia de revisiones</li>
+              <li>Problemas recurrentes, sensibilidad, bruxismo</li>
+              <li>Miedos, fobias o antecedentes de mala tolerancia al tratamiento</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Consentimiento informado para pruebas radiológicas</h4>
+            <h4>a) Explicación de la dosis</h4>
+            <ul class="list">
+              <li>Tecnología digital de baja dosis y campo de visión ajustado al área de interés</li>
+              <li>Exposición comparable a la radiación natural de un vuelo transcontinental</li>
+              <li>Principio ALARA: la dosis mínima razonablemente alcanzable</li>
+            </ul>
+            <h4>b) Justificación diagnóstica</h4>
+            <ul class="list">
+              <li>Permite visualizar estructuras óseas y patologías invisibles en la exploración clínica</li>
+              <li>Detección temprana de lesiones periapicales, quistes y reabsorciones</li>
+              <li>Planificación implantológica con medición real de hueso disponible</li>
+            </ul>
+            <h4>c) Firma y custodia</h4>
+            <ul class="list">
+              <li>Firma del paciente en el consentimiento para pruebas radiológicas</li>
+              <li>Entrega inmediata a Recepción para escaneo</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="callout">
+          <p class="eyebrow">Crítico · Doctor</p>
+          <ul class="list">
+            <li>Registrar en la historia de Hermes la anamnesis completa, no un resumen de dos líneas.</li>
+            <li>Confirmar en el sistema que el consentimiento radiológico está firmado <strong>antes</strong> de que el paciente entre en la sala de imagen.</li>
+            <li>Ante sospecha o confirmación de embarazo, valorar diferir las pruebas y dejarlo documentado.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>Historia médica y dental registradas, contraindicaciones identificadas y consentimiento radiológico firmado. Sin firma no hay radiología: la fase 5 no comienza.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 5 -->
+<article class="phase reveal" id="f05" data-roles="auxiliar doctor" data-min="15" data-label="Diagnóstico">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 05 / 12</span>
+      <div class="phase__big">05</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>15 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Auxiliar</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Sala de imagen 3D · Gabinete</dd></div>
+        <div class="phase__fact"><dt>Salida</dt><dd>Imágenes en Hermes, etiquetadas</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Pruebas diagnósticas avanzadas y documentación fotográfica</h2>
+      <p class="phase__intro">La batería completa de pruebas es, a la vez, la base del diagnóstico y el argumento más sólido de la clínica. Se ejecuta con precisión técnica y con cuidado del confort: el paciente debe saber en todo momento qué se le va a hacer, cuánto dura y qué va a notar.</p>
+
+      <div class="block">
+        <p class="block__title">Protocolo de imagen</p>
+        <ol class="steps">
+          <li>
+            <h4>CBCT 3D · Tomografía computarizada de haz cónico</h4>
+            <ul class="list">
+              <li>Posicionamiento correcto y estabilización de la cabeza</li>
+              <li>Explicación previa: duración, ruido del equipo, inmovilidad requerida</li>
+              <li>Volumen tridimensional completo de estructura ósea y dental</li>
+            </ul>
+          </li>
+          <li>
+            <h4>OPG · Ortopantomografía</h4>
+            <ul class="list">
+              <li>Visión general de ambos maxilares</li>
+              <li>Detección de patología general y piezas incluidas</li>
+              <li>Evaluación de senos maxilares, cóndilos y nervio dentario</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Escaneado intraoral 3D</h4>
+            <ul class="list">
+              <li>Captura digital de alta precisión de ambas arcadas y de la oclusión</li>
+              <li>Modelo virtual sobre el que se planifican tratamientos estéticos y restauradores</li>
+              <li>Base para simulaciones y para el seguimiento comparativo en el tiempo</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Serie fotográfica estética y funcional</h4>
+            <h4>Extraorales</h4>
+            <ul class="list">
+              <li>Frontal en reposo y en sonrisa</li>
+              <li>Perfil derecho e izquierdo</li>
+              <li>Tres cuartos</li>
+            </ul>
+            <h4>Intraorales</h4>
+            <ul class="list">
+              <li>Frontal en oclusión</li>
+              <li>Laterales derecho e izquierdo</li>
+              <li>Oclusales superior e inferior</li>
+              <li>Detalles de zonas específicas señaladas por el Doctor</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="callout">
+          <p class="eyebrow">Crítico · Auxiliar</p>
+          <ul class="list">
+            <li>Todas las imágenes se cargan en Hermes <strong>en el momento</strong>, no al final de la jornada.</li>
+            <li>Etiquetado correcto: tipo de prueba, fecha y observaciones.</li>
+            <li>Verificación de calidad antes de dar la prueba por buena: encuadre, enfoque, ausencia de artefactos y de movimiento.</li>
+            <li>Comprobar que el Doctor puede abrir el material desde el equipo de presentación.</li>
+          </ul>
+        </div>
+
+        <div class="gate">
+          <p class="eyebrow">Criterio de salida — bloqueante</p>
+          <p>No se avanza a la fase siguiente sin confirmar que todas las pruebas están cargadas, etiquetadas, asociadas a la ficha y visibles desde el portátil de presentación. Una prueba que hay que repetir después destruye la percepción de precisión construida hasta aquí.</p>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 6 -->
+<article class="phase reveal" id="f06" data-roles="doctor director" data-min="5" data-label="Briefing">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 06 / 12</span>
+      <div class="phase__big">06</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>5 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Doctor + Director</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Gabinete o sala de presentación</dd></div>
+        <div class="phase__fact"><dt>Sin el paciente</dt><dd>Reunión interna</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Briefing entre Doctor y Director</h2>
+      <p class="phase__intro">Cinco minutos que determinan la coherencia de los sesenta siguientes. Doctor y Director revisan juntos lo que ya saben y salen de la sala con una única versión del diagnóstico, del plan y del enfoque. Esta reunión ocurre mientras el paciente descansa tras las pruebas.</p>
+
+      <div class="block">
+        <p class="block__title">Acciones</p>
+        <ol class="steps">
+          <li>
+            <h4>Análisis interdisciplinar</h4>
+            <ul class="list">
+              <li>Lectura conjunta del CBCT: estructura ósea, patología, anatomía relevante</li>
+              <li>Perfil del paciente: expectativas manifestadas, urgencia, contexto personal y económico</li>
+              <li>Información acumulada: historia médica, motivaciones, miedos</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Consenso clínico</h4>
+            <p>El Doctor debe salir del briefing con el Plan de Tratamiento Óptimo definido de forma inequívoca:</p>
+            <ul class="list">
+              <li>Diagnóstico principal y diagnósticos secundarios</li>
+              <li>Plan recomendado, paso a paso y por fases</li>
+              <li>Alternativas terapéuticas reales, si existen, con sus pros y contras</li>
+              <li>Tiempos estimados y número aproximado de citas</li>
+              <li>Resultados esperables y limitaciones honestas</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Alineación del discurso</h4>
+            <h4>a) Argumentos clínicos — Doctor</h4>
+            <ul class="list">
+              <li>Durabilidad de los materiales seleccionados</li>
+              <li>Garantías aplicables al caso</li>
+              <li>Tecnología empleada en la planificación y la ejecución</li>
+              <li>Experiencia del equipo en casos equivalentes</li>
+            </ul>
+            <h4>b) Enfoque económico — Director</h4>
+            <ul class="list">
+              <li>Modalidades de financiación aplicables</li>
+              <li>Bonificación por pago anticipado, si procede</li>
+              <li>Posible secuenciación del plan por fases</li>
+            </ul>
+            <h4>c) Objeciones previsibles — Director</h4>
+            <ul class="list">
+              <li>Percepción de precio elevado</li>
+              <li>Necesidad de pensarlo o de consultarlo con la familia</li>
+              <li>Comparación con otros centros</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="callout">
+          <p class="eyebrow">Crítico</p>
+          <p>Si Doctor y Director no coinciden en el plan, se resuelve <strong>aquí</strong>. Ninguna discrepancia clínica se ventila delante del paciente: la duda percibida es la primera causa de no conversión y la peor señal de calidad asistencial.</p>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>Existe un plan óptimo único, con fases, tiempos y alternativas, y un reparto claro de quién explica cada parte en las fases 9 y 10.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 7 -->
+<article class="phase reveal" id="f07" data-roles="doctor" data-min="15" data-label="Expectativas">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 07 / 12</span>
+      <div class="phase__big">07</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>15 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Doctor</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Gabinete de diagnóstico</dd></div>
+        <div class="phase__fact"><dt>Herramienta</dt><dd>Cámara intraoral</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Anamnesis de expectativas y exploración clínica detallada</h2>
+      <p class="phase__intro">Un plan técnicamente impecable que no responde a lo que el paciente quiere resolver es un plan que no se acepta. Esta fase tiene dos mitades inseparables: entender qué espera la persona y explorar exhaustivamente qué ocurre en su boca.</p>
+
+      <div class="block">
+        <p class="block__title">Diálogo de expectativas</p>
+        <h4>Funcionales</h4>
+        <ul class="list">
+          <li>«¿Qué le impide comer con normalidad?»</li>
+          <li>«¿Tiene dolor o molestias habituales?»</li>
+          <li>«¿Qué le gustaría poder hacer que ahora no puede?»</li>
+        </ul>
+        <h4>Estéticas</h4>
+        <ul class="list">
+          <li>«¿Cómo se siente con su sonrisa actual?»</li>
+          <li>«¿Qué cambiaría de su aspecto dental si pudiera?»</li>
+          <li>«¿Hay situaciones en las que evita sonreír?»</li>
+        </ul>
+        <h4>Emocionales</h4>
+        <ul class="list">
+          <li>«¿Cómo afecta esto a su vida diaria?»</li>
+          <li>«¿Qué significaría para usted resolverlo?»</li>
+          <li>«¿Qué le preocupa del tratamiento?»</li>
+        </ul>
+        <h4>Experiencias previas</h4>
+        <ul class="list">
+          <li>«¿Ha tenido malas experiencias dentales?»</li>
+          <li>«¿Qué le gustó y qué no de tratamientos anteriores?»</li>
+        </ul>
+        <p style="margin-top:1rem">Las respuestas se registran con las palabras del paciente. Serán el vocabulario exacto con el que se le presente la solución en la Fase 9.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Exploración física</p>
+        <h4>Extraoral</h4>
+        <ul class="list">
+          <li>Simetría facial y perfil estético</li>
+          <li>Evaluación de la articulación temporomandibular: apertura, ruidos, desviación</li>
+          <li>Palpación de musculatura, ganglios y estructuras cervicofaciales</li>
+        </ul>
+        <h4>Intraoral</h4>
+        <ul class="list">
+          <li>Estado gingival: color, inflamación, sangrado al sondaje</li>
+          <li>Placa y cálculo; índice de higiene</li>
+          <li>Estado diente a diente, con odontograma</li>
+          <li>Caries visibles y sospechas radiológicas</li>
+          <li>Estado de restauraciones y prótesis previas</li>
+          <li>Oclusión, mordida y guías funcionales</li>
+          <li>Desgastes, fracturas y fisuras</li>
+          <li>Tejidos blandos: lengua, mucosas, paladar, suelo de boca</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Cámara intraoral · captura de evidencia</p>
+        <p>La imagen más potente es la que el paciente entiende. La cámara intraoral se usa <em>en este momento</em> para documentar las zonas problemáticas y generar conciencia real de la situación, no para impresionar.</p>
+        <div class="script">
+          <span class="eyebrow">Técnica de explicación · Doctor</span>
+          <q>¿Ve esto? Esta sombra oscura es una caries que está empezando aquí. Esta línea es una fisura en el esmalte. Y fíjese en la encía: debería verse rosa y firme, y aquí está inflamada y sangra al tocarla.</q>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>Expectativas registradas en la historia con literalidad, exploración completa documentada y capturas intraorales de todas las zonas que se mostrarán en la presentación.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 8 -->
+<article class="phase reveal" id="f08" data-roles="director doctor" data-min="10" data-label="IAC">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 08 / 12</span>
+      <div class="phase__big">08</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>10 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Director redacta · Doctor dicta, valida y firma</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Gabinete de diagnóstico</dd></div>
+        <div class="phase__fact"><dt>Valor</dt><dd>Documento clínico y legal</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Informe de Análisis Clínico: elaboración, firma y entrega</h2>
+      <p class="phase__intro">El IAC es la pieza que convierte una exploración en un documento. Sostiene la propuesta económica, acompaña al paciente a casa y tiene valor probatorio. Se redacta a cuatro manos: el Doctor dicta, el Director escribe, el Doctor revisa y firma.</p>
+
+      <div class="block">
+        <p class="block__title">Estructura del dictado</p>
+        <h4>a) Hallazgos clínicos <span class="mono" style="font-size:.72rem;color:var(--muted)">— recuadro propio en el IAC</span></h4>
+        <ul class="list">
+          <li>Estado general de la salud oral</li>
+          <li>Descripción pieza por pieza de los hallazgos relevantes</li>
+          <li>Patologías presentes: caries, enfermedad periodontal, lesiones de tejidos blandos</li>
+          <li>Estado de restauraciones y prótesis previas</li>
+          <li>Alteraciones oclusales o de la ATM</li>
+        </ul>
+        <h4>b) Hallazgos radiológicos <span class="mono" style="font-size:.72rem;color:var(--muted)">— recuadro propio en el IAC</span></h4>
+        <ul class="list">
+          <li>Lectura del CBCT y de la OPG</li>
+          <li>Nivel óseo y patrón de reabsorción</li>
+          <li>Infecciones, lesiones periapicales, quistes</li>
+          <li>Anatomía relevante: seno maxilar, nervio dentario, cortical</li>
+          <li>Calidad y cantidad de hueso disponible</li>
+        </ul>
+        <h4>c) Diagnóstico definitivo</h4>
+        <ul class="list">
+          <li>Diagnóstico principal</li>
+          <li>Diagnósticos secundarios</li>
+          <li>Pronóstico por pieza y global</li>
+        </ul>
+        <h4>d) Plan de tratamiento propuesto</h4>
+        <ul class="list">
+          <li>Fase 1 — urgencias, control de infección y preparación</li>
+          <li>Fase 2 — tratamiento principal</li>
+          <li>Fase 3 — rehabilitación estética y funcional, mantenimiento</li>
+          <li>Alternativas, cuando existan, con sus implicaciones</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Redacción, validación y entrega</p>
+        <ol class="steps">
+          <li>
+            <h4>El Director redacta el IAC en tiempo real</h4>
+            <p>Datos del paciente, fecha de exploración, motivo de consulta, hallazgos clínicos, hallazgos radiológicos, diagnóstico y plan de tratamiento recomendado. Lenguaje preciso, sin adjetivos comerciales.</p>
+          </li>
+          <li>
+            <h4>El Doctor revisa y firma</h4>
+            <ul class="list">
+              <li>Verifica la exactitud clínica de cada afirmación</li>
+              <li>Corrige errores, imprecisiones o excesos</li>
+              <li>Firma, validando oficialmente diagnóstico y plan</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Entrega inmediata a Recepción</h4>
+            <p>El IAC firmado se entrega en el momento para su escaneo y subida a Hermes. No espera al final de la visita.</p>
+          </li>
+        </ol>
+
+        <div class="callout">
+          <p class="eyebrow">Crítico · Doctor</p>
+          <p>La firma del Doctor no es un trámite administrativo: convierte el documento en un acto clínico con responsabilidad profesional. Nada se firma sin haberlo leído íntegramente, y el contenido del IAC debe ser <strong>idéntico</strong> a lo que después se registre en la historia de Hermes.</p>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>IAC completo, revisado, firmado y en manos de Recepción. La propuesta económica de la Fase 10 se construirá exclusivamente sobre este documento.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 9 -->
+<article class="phase reveal" id="f09" data-roles="doctor director" data-min="15" data-label="Presentación 3D">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 09 / 12</span>
+      <div class="phase__big">09</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>15 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Doctor · Director</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Gabinete de explicación</dd></div>
+        <div class="phase__fact"><dt>Requisito previo</dt><dd>Checklist de material verificado</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Presentación del diagnóstico 3D y del plan de tratamiento</h2>
+      <p class="phase__intro">Es el momento en que todo lo anterior se vuelve comprensible para el paciente. El objetivo no es impresionar con imágenes: es que la persona vea su propio caso, entienda qué le pasa, qué ocurrirá si no actúa y cómo se resuelve.</p>
+
+      <div class="block">
+        <p class="block__title">Verificación previa · responsabilidad del Director</p>
+        <p>Antes de que el paciente entre, el Director comprueba en el equipo de presentación:</p>
+        <ul class="checks">
+          <li><span><b>CBCT</b> cargado, abierto y navegable</span></li>
+          <li><span><b>OPG</b> visible y con calidad suficiente para proyectar</span></li>
+          <li><span><b>Fotografías extraorales</b>, serie completa</span></li>
+          <li><span><b>Fotografías intraorales</b>, serie completa</span></li>
+          <li><span><b>Capturas de cámara intraoral</b> de las zonas señaladas en la Fase 7</span></li>
+          <li><span><b>IAC</b> firmado, disponible en pantalla y en papel</span></li>
+        </ul>
+        <div class="callout">
+          <p class="eyebrow">Por qué esto es innegociable</p>
+          <p>Una presentación incompleta produce pérdida de credibilidad, sensación de improvisación, menor impacto de la evidencia y, en consecuencia, menor conversión. Si falta algo, se carga <em>antes</em> de empezar; nunca se improvisa delante del paciente.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Presentación visual · Doctor</p>
+        <h4>Empezar por el problema</h4>
+        <ul class="list">
+          <li>«Como puede ver en esta imagen 3D…», señalando la zona concreta</li>
+          <li>Uso de zoom, cortes y herramientas de marcado</li>
+          <li>Comparación con una referencia de anatomía sana</li>
+        </ul>
+        <h4>Demostrar con evidencia</h4>
+        <ul class="list">
+          <li>Apoyarse en las capturas intraorales: el paciente reconoce su propia boca</li>
+          <li>Explicar en lenguaje llano, sin jerga innecesaria y sin infantilizar</li>
+          <li>Nombrar lo que está bien, no solo lo que está mal: la credibilidad se construye siendo completo</li>
+        </ul>
+        <h4>Mostrar la evolución sin tratamiento</h4>
+        <ul class="list">
+          <li>«Si no intervenimos, lo previsible es que esto evolucione a…»</li>
+          <li>Consecuencias en salud, función, estética y coste futuro</li>
+          <li>Escenarios realistas, nunca alarmismo: la exageración se detecta y arruina la confianza</li>
+        </ul>
+        <h4>Relato clínico</h4>
+        <ul class="list">
+          <li>Situación, desarrollo y solución, en ese orden</li>
+          <li>El paciente es el protagonista; el equipo, el medio</li>
+          <li>Conectar explícitamente con las expectativas expresadas en la Fase 7, usando sus propias palabras</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Estructura de la propuesta · Director</p>
+        <h4>Plan paso a paso</h4>
+        <ul class="list">
+          <li>Fase 1: urgencias y preparación</li>
+          <li>Fase 2: tratamiento principal</li>
+          <li>Fase 3: finalización estética y mantenimiento</li>
+          <li>Tiempo total estimado y número aproximado de citas</li>
+        </ul>
+        <h4>Diferenciadores, con evidencia</h4>
+        <ul class="list">
+          <li><strong>Precisión tecnológica:</strong> planificación digital 3D previa, márgenes de trabajo de décimas de milímetro, diseño del caso en ordenador antes de la primera intervención</li>
+          <li><strong>Materiales:</strong> proveedores y referencias concretas, con su documentación técnica disponible</li>
+          <li><strong>Garantías:</strong> años de garantía aplicables, condiciones de mantenimiento y seguimiento incluido</li>
+        </ul>
+        <div class="callout">
+          <p class="eyebrow">Regla de veracidad</p>
+          <p>Marcas, tasas de éxito, años de garantía y porcentajes se comunican <strong>solo si están respaldados por documentación del fabricante o por las condiciones contractuales vigentes de la clínica</strong>. Dirección mantiene actualizada la ficha de datos verificables; ningún profesional improvisa cifras. Un dato inexacto compromete legalmente a la clínica.</p>
+        </div>
+        <h4>Preguntas y dudas</h4>
+        <ul class="list">
+          <li>Responder con claridad y sin evasivas, también a las preguntas incómodas</li>
+          <li>Ser explícito sobre riesgos, limitaciones y lo que el tratamiento no puede conseguir</li>
+          <li>Si algo requiere consulta o segunda valoración, decirlo y comprometerse a una fecha</li>
+        </ul>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>El paciente puede explicar con sus palabras qué le ocurre y qué se propone hacer. Si no puede, la presentación no ha terminado.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 10 -->
+<article class="phase reveal" id="f10" data-roles="director" data-min="20" data-label="Propuesta">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 10 / 12</span>
+      <div class="phase__big">10</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>20 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Director / Asesor</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Despacho</dd></div>
+        <div class="phase__fact"><dt>Salida</dt><dd>Estado de la PV registrado en Hermes</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Propuesta económica de valor y cierre</h2>
+      <p class="phase__intro">El presupuesto no se presenta como un precio, sino como la consecuencia lógica de un diagnóstico que el paciente ya ha entendido y aceptado. Todo lo dicho aquí debe poder rastrearse hasta el IAC firmado en la Fase 8.</p>
+
+      <div class="block">
+        <p class="block__title">Justificación de la inversión</p>
+        <h4>a) Anclaje en el diagnóstico</h4>
+        <ul class="list">
+          <li>«Como ha visto en el análisis del Doctor…»</li>
+          <li>«Partiendo de las pruebas 3D que le hemos realizado hoy…»</li>
+          <li>«El diagnóstico preciso permite proponerle exactamente lo que necesita, ni más ni menos»</li>
+        </ul>
+        <h4>b) Tecnología y medios</h4>
+        <ul class="list">
+          <li>Equipamiento diagnóstico: CBCT, escáner intraoral, fotografía clínica</li>
+          <li>Materiales seleccionados por caso, con su trazabilidad</li>
+          <li>Software de planificación digital</li>
+          <li>Laboratorio de confianza y comunicación directa con el técnico</li>
+        </ul>
+        <h4>c) Horizonte largo</h4>
+        <ul class="list">
+          <li>«No resolvemos el problema de hoy: aseguramos su salud dental durante décadas»</li>
+          <li>«Las garantías respaldan por escrito la durabilidad del tratamiento»</li>
+          <li>Coste de no tratar, en salud y en dinero futuro</li>
+        </ul>
+        <h4>d) Desglose</h4>
+        <ul class="list">
+          <li>Presupuesto línea a línea, tratamiento por tratamiento</li>
+          <li>Explicación del porqué de cada partida</li>
+          <li>Documento timbrado, con validez temporal indicada</li>
+          <li>Calculadora a mano para simular escenarios en vivo</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Financiación</p>
+        <ul class="list">
+          <li><strong>Pago anticipado</strong> — con bonificación aplicable</li>
+          <li><strong>Financiación a interés 0 %</strong> — plazos disponibles según entidad</li>
+          <li><strong>Financiación con interés</strong> — plazos más largos, cuota menor</li>
+          <li><strong>Tratamiento por fases</strong> — último recurso, cuando el plan lo permite clínicamente</li>
+          <li>Entidades colaboradoras y condiciones vigentes</li>
+        </ul>
+        <div class="script">
+          <span class="eyebrow">Cálculo personalizado · Director</span>
+          <q>Si lo financiamos a X meses, su cuota sería de Y euros al mes. Vamos a verlo con números concretos sobre su caso, no en abstracto.</q>
+        </div>
+        <p style="margin-top:1rem">Toda simulación se hace delante del paciente y por escrito. La TAE, el importe total y el número de cuotas se dicen siempre en voz alta: la transparencia financiera evita bajas y reclamaciones posteriores.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Cierre profesional</p>
+        <ul class="list">
+          <li><strong>Cierre por alternativa:</strong> «¿Prefiere comenzar con el plan completo o por fases?»</li>
+          <li><strong>Cierre por disponibilidad:</strong> «Tenemos hueco esta misma semana; cuanto antes empecemos, antes lo resolvemos»</li>
+          <li><strong>Cierre por asunción:</strong> «¿Qué día de la semana le viene mejor para la primera cita?»</li>
+        </ul>
+        <h4>Manejo de objeciones</h4>
+        <ul class="list">
+          <li><strong>«Es muy caro»</strong> — separar precio de valor, desglosar, ofrecer financiación real</li>
+          <li><strong>«Necesito pensarlo»</strong> — preguntar qué exactamente necesita pensar y resolver esa duda concreta</li>
+          <li><strong>«Quiero consultarlo»</strong> — proponer incluir a esa persona en una llamada o en una segunda cita</li>
+          <li><strong>«Voy a comparar»</strong> — invitar a comparar con criterio: qué pruebas incluye, qué materiales, qué garantía por escrito</li>
+        </ul>
+        <div class="callout">
+          <p class="eyebrow">Límite ético del cierre</p>
+          <p>Se guía la decisión; no se presiona. Nunca se usan urgencias clínicas inexistentes, ofertas que caducan artificialmente ni insistencia tras una negativa clara. El paciente tiene derecho a irse con su IAC, su OPG y sus fotografías, aunque no acepte. Un cierre forzado genera abandono de tratamiento, reclamación y reseña negativa: cuesta más de lo que aporta.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Registro de conversión · Hermes</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Campo</th><th>Obligatorio</th><th>Detalle</th></tr></thead>
+            <tbody>
+              <tr><td>Estado de la PV</td><td class="num">Sí</td><td>Convertida / No convertida / Pendiente de decisión</td></tr>
+              <tr><td>Presupuesto presentado</td><td class="num">Sí</td><td>Importe total propuesto</td></tr>
+              <tr><td>Presupuesto aceptado</td><td class="num">Sí</td><td>Importe efectivamente aceptado</td></tr>
+              <tr><td>Método de pago</td><td class="num">Sí</td><td>Contado / Financiación / Por fases</td></tr>
+              <tr><td>Fecha de inicio</td><td class="num">Si aplica</td><td>Fecha de la primera cita de tratamiento</td></tr>
+              <tr><td>Motivo de no conversión</td><td class="num">Si aplica</td><td>Precio · Necesita pensarlo · Consulta familiar · Segunda opinión · Miedo · Timing</td></tr>
+              <tr><td>Observaciones</td><td class="num">Recomendado</td><td>Contexto útil para el seguimiento posterior</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>El estado de la PV está cerrado en Hermes con importes y motivo. Un «no convertido» sin motivo registrado es un caso perdido: sin él, la Fase 12 no puede diseñar seguimiento alguno.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 11 -->
+<article class="phase reveal" id="f11" data-roles="recepcion director" data-min="5" data-label="Cierre admin.">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 11 / 12</span>
+      <div class="phase__big">11</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>5 minutos</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Recepción</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Recepción</dd></div>
+        <div class="phase__fact"><dt>Plazo</dt><dd>Mismo día, sin excepción</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Cierre administrativo, planificación y digitalización documental</h2>
+      <p class="phase__intro">La visita termina en Recepción, acepte o no acepte el paciente. Aquí se formaliza el compromiso, se programa lo siguiente y se completa la trazabilidad legal de todo lo firmado durante la visita.</p>
+
+      <div class="block">
+        <p class="block__title">Entrega y agenda</p>
+        <p>Con independencia de que se acepte el presupuesto, <strong>todo paciente sale con la carpeta Giraldo</strong>: libro de la clínica, presupuesto, OPG y fotografías. Nadie se va con las manos vacías; llevarse su diagnóstico es parte del servicio prometido.</p>
+        <h4>Si el paciente acepta</h4>
+        <ul class="list">
+          <li>Firma de aceptación del presupuesto ante el Director y entrega a Recepción</li>
+          <li>Aceptación del presupuesto en Hermes por parte del Director</li>
+          <li>Programación de la siguiente cita, con confirmación de fecha y hora</li>
+          <li>Instrucciones previas si proceden: ayuno, medicación, acompañante</li>
+          <li>Entrega de la documentación del plan de tratamiento</li>
+        </ul>
+        <h4>Si el paciente no acepta</h4>
+        <ul class="list">
+          <li>Agradecer el tiempo y la confianza, sin cambio de trato</li>
+          <li>Dejar la puerta abierta de forma explícita</li>
+          <li>Programar en el sistema la fecha de seguimiento acordada en la Fase 12</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Digitalización · paso crítico final</p>
+        <p>Recepción escanea y sube a la ficha de Hermes toda la documentación firmada, garantizando la trazabilidad clínica y legal:</p>
+        <ul class="checks">
+          <li><span><b>Hoja de datos personales</b> — firmada por el paciente</span></li>
+          <li><span><b>Consentimiento RGPD</b> — firmado y fechado</span></li>
+          <li><span><b>Anamnesis médica</b> — completa, con todas las páginas</span></li>
+          <li><span><b>Consentimiento de pruebas radiológicas</b> — firmado</span></li>
+          <li><span><b>IAC</b> — firmado por el Doctor</span></li>
+          <li><span><b>Presupuesto aceptado</b> — si aplica, con firma de aceptación</span></li>
+          <li><span><b>Documentación de financiación o transferencia</b> — si se ha contratado, según disponibilidad de la entidad</span></li>
+        </ul>
+        <div class="callout">
+          <p class="eyebrow">Crítico · Recepción</p>
+          <p>Este paso no puede quedar pendiente: la subida se completa <strong>el mismo día</strong>. Un documento firmado que no está digitalizado equivale, ante una reclamación, a un documento que no existe.</p>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>Los siete documentos están en la ficha, la siguiente cita está en agenda (o la tarea de seguimiento creada) y la carpeta Giraldo está en manos del paciente.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- FASE 12 -->
+<article class="phase reveal" id="f12" data-roles="director recepcion" data-min="2" data-label="Seguimiento">
+  <div class="wrap"><div class="phase__grid">
+    <aside class="phase__meta">
+      <span class="phase__num">FASE 12 / 12</span>
+      <div class="phase__big">12</div>
+      <dl class="phase__facts">
+        <div class="phase__fact"><dt>Tiempo</dt><dd>2 minutos + post-visita</dd></div>
+        <div class="phase__fact"><dt>Responsable</dt><dd>Director · Recepción · Marketing</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Salida de clínica · Hermes</dd></div>
+        <div class="phase__fact"><dt>Horizonte</dt><dd>180 días</dd></div>
+      </dl>
+    </aside>
+    <div class="phase__body">
+      <h2>Despedida y seguimiento estratégico</h2>
+      <p class="phase__intro">La visita acaba en la puerta; la relación, no. Más de la mitad de las conversiones de un centro maduro proceden de pacientes que no aceptaron el primer día y fueron atendidos bien después.</p>
+
+      <div class="block">
+        <p class="block__title">Despedida</p>
+        <ul class="list">
+          <li>Acompañamiento personal hasta la salida</li>
+          <li>Entrega de detalle de la clínica: kit de higiene, tarjeta de agradecimiento personalizada, material informativo</li>
+          <li>Agradecimiento por la confianza</li>
+          <li>Recordatorio de la próxima cita, si la hay</li>
+          <li>Canal directo disponible para dudas: teléfono y WhatsApp</li>
+        </ul>
+        <div class="script">
+          <span class="eyebrow">Mensaje de despedida</span>
+          <q>Ha sido un placer atenderle. Nos alegra mucho poder ayudarle a conseguir la sonrisa que merece. Cualquier duda que le surja, escríbanos o llámenos: estaremos encantados de resolverla.</q>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Llamada de cortesía · 24–48 h</p>
+        <h4>Pacientes convertidos</h4>
+        <ul class="list">
+          <li>Agradecer de nuevo la confianza</li>
+          <li>Confirmar la cita programada</li>
+          <li>Resolver dudas surgidas al llegar a casa</li>
+          <li>Recordar instrucciones previas</li>
+          <li>Reforzar positivamente la decisión</li>
+        </ul>
+        <h4>Pacientes no convertidos</h4>
+        <ul class="list">
+          <li>Llamada amable, sin presión ni segunda venta</li>
+          <li>Preguntar si quedó alguna duda</li>
+          <li>Ofrecer disponibilidad para volver cuando lo necesite</li>
+          <li>Detectar la objeción real, que rara vez es la primera que se dijo</li>
+          <li>Registrar en Hermes lo que se descubra</li>
+        </ul>
+        <div class="script">
+          <span class="eyebrow">Guion sugerido</span>
+          <q>Buenos días, [Nombre]. Le llamamos de Excelencia Médica Giraldo para agradecerle su visita y asegurarnos de que todo quedó claro. ¿Le ha surgido alguna duda sobre el plan de tratamiento que le presentamos?</q>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Nurturing de no convertidos</p>
+        <p>Director de Centros y Director de clínica diseñan la estrategia caso a caso, partiendo del motivo real de no conversión.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Objeción</th><th>Qué se envía</th><th>Acción del Director</th></tr></thead>
+            <tbody>
+              <tr><td>Económica</td><td>Condiciones de financiación ampliada, 0 % a plazos, opción por fases, promoción vigente</td><td>Llamada con propuesta concreta y cuota calculada</td></tr>
+              <tr><td>Necesita pensarlo</td><td>Casos antes/después equivalentes, testimonios, vídeo explicativo del tratamiento, literatura sobre la técnica</td><td>Envío + llamada al día siguiente</td></tr>
+              <tr><td>Miedo</td><td>Información sobre sedación consciente, vídeo del proceso en clínica, testimonios de pacientes con odontofobia</td><td>Ofrecer visita acompañado, sin compromiso</td></tr>
+              <tr><td>Segunda opinión</td><td>Documentación diagnóstica completa para que la lleve consigo</td><td>Respetar la decisión, seguimiento suave y disponibilidad</td></tr>
+              <tr><td>Timing personal</td><td>Recordatorio en la fecha que el propio paciente indique</td><td>Tarea programada a fecha acordada</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Cadencia de re-contacto</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Momento</th><th>Acción</th><th>Canal</th><th>Responsable</th></tr></thead>
+            <tbody>
+              <tr><td class="num">Día 1–2</td><td>Llamada de cortesía</td><td>Teléfono</td><td>Recepción / Director</td></tr>
+              <tr><td class="num">Día 7</td><td>Primer seguimiento según la objeción registrada</td><td>Llamada o WhatsApp</td><td>Director</td></tr>
+              <tr><td class="num">Día 15</td><td>Segundo seguimiento con propuesta ajustada</td><td>Llamada</td><td>Director</td></tr>
+              <tr><td class="num">Día 30</td><td>Contenido de valor personalizado</td><td>Email</td><td>Marketing</td></tr>
+              <tr><td class="num">Día 60</td><td>Condición especial o nueva propuesta</td><td>Llamada</td><td>Director</td></tr>
+              <tr><td class="num">Día 90</td><td>Check-in de cortesía</td><td>WhatsApp</td><td>Recepción</td></tr>
+              <tr><td class="num">Día 180</td><td>Campaña de reactivación</td><td>Email + llamada</td><td>Marketing + Director</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:1rem">La cadencia se detiene de inmediato si el paciente pide no ser contactado. Esa petición se registra en Hermes y se respeta en todos los canales, sin excepción.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Programación en Hermes · responsabilidad del Director</p>
+        <h4>Cada tarea de re-contacto incluye</h4>
+        <ul class="list">
+          <li>Responsable asignado</li>
+          <li>Fecha concreta</li>
+          <li>Canal previsto</li>
+          <li>Objetivo del contacto y contenido a enviar</li>
+        </ul>
+        <h4>Ejemplos</h4>
+        <ul class="list">
+          <li><strong>Objeción económica</strong> — «Llamada para propuesta de financiación 0 % a 12 meses» · día 7 · Director</li>
+          <li><strong>Necesita pensarlo</strong> — «Envío de caso equivalente + llamada de seguimiento» · día 3 · Director</li>
+          <li><strong>Revisión de objeciones</strong> — «Nueva propuesta ajustada al feedback» · día 15 · Director</li>
+          <li><strong>Estacional</strong> — «Reactivación de campaña con condiciones mejoradas» · día 60 · Marketing</li>
+        </ul>
+        <p style="margin-top:1rem">Cada interacción se registra: respuesta del paciente, estado actualizado y ajuste de la estrategia. Un seguimiento no registrado se repite o se olvida; ambas cosas restan.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Fidelización de pacientes convertidos</p>
+        <ul class="list">
+          <li><strong>Día 1 — email de bienvenida:</strong> agradecimiento, resumen del plan, confirmación de cita y contactos del equipo</li>
+          <li><strong>48 h antes de cada cita — WhatsApp:</strong> fecha, hora, instrucciones previas y documentación necesaria</li>
+          <li><strong>Primera cita de tratamiento — kit de bienvenida:</strong> guía del tratamiento paso a paso, kit de higiene personalizado, contacto directo del equipo y cuidados posteriores</li>
+          <li><strong>Durante el tratamiento:</strong> llamadas tras citas relevantes, encuestas de satisfacción, fotografías de progreso y resolución inmediata de dudas</li>
+          <li><strong>Programa de referidos:</strong> invitación a «Recomienda Giraldo», con incentivo y materiales para compartir</li>
+          <li><strong>Al alta:</strong> caja de alta, llamada de satisfacción, solicitud de testimonio o reseña, revisiones incluidas y recordatorios anuales de mantenimiento</li>
+        </ul>
+      </div>
+
+      <div class="gate">
+        <p class="eyebrow">Criterio de salida</p>
+        <p>Todo paciente sale del circuito con una tarea futura asignada en Hermes: cita de tratamiento si aceptó, o re-contacto con fecha y responsable si no. Ninguna PV queda sin siguiente paso.</p>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<!-- ===================== TRAZABILIDAD ===================== -->
+<section class="section" id="trazabilidad">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">04 · Trazabilidad</p>
+      <h2>Qué queda registrado, quién responde y cuándo</h2>
+      <p>Resumen operativo de la evidencia que genera una Primera Visita. Sirve como lista de verificación de cierre de jornada: si una PV del día no cumple todas las filas, no está cerrada.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Registro</th><th>Fase</th><th>Responsable</th><th>Plazo</th><th>Consecuencia si falta</th></tr></thead>
+        <tbody>
+          <tr><td>Agenda de PV con motivo y origen</td><td class="num">01</td><td>Recepción</td><td>En la llamada</td><td>Marketing sin datos de retorno</td></tr>
+          <tr><td>Ficha completa en Hermes</td><td class="num">03</td><td>Director</td><td>Durante la visita</td><td>Bloqueo de facturación y financiación</td></tr>
+          <tr><td>Consentimiento RGPD firmado</td><td class="num">03</td><td>Director</td><td>Durante la visita</td><td>Incumplimiento normativo</td></tr>
+          <tr><td>Anamnesis médica en historia</td><td class="num">04</td><td>Doctor</td><td>Durante la visita</td><td>Riesgo clínico y responsabilidad profesional</td></tr>
+          <tr><td>Consentimiento radiológico firmado</td><td class="num">04</td><td>Doctor</td><td>Antes de las pruebas</td><td>Pruebas realizadas sin cobertura legal</td></tr>
+          <tr><td>Imágenes cargadas y etiquetadas</td><td class="num">05</td><td>Auxiliar</td><td>Inmediato</td><td>Presentación incompleta, pérdida de credibilidad</td></tr>
+          <tr><td>Expectativas y exploración en historia</td><td class="num">07</td><td>Doctor</td><td>Durante la visita</td><td>Propuesta desconectada del paciente</td></tr>
+          <tr><td>IAC firmado y digitalizado</td><td class="num">08 · 11</td><td>Doctor · Recepción</td><td>Mismo día</td><td>Presupuesto sin sustento clínico documentado</td></tr>
+          <tr><td>Estado de la PV e importes</td><td class="num">10</td><td>Director</td><td>Al cierre</td><td>Imposible medir conversión</td></tr>
+          <tr><td>Motivo de no conversión</td><td class="num">10</td><td>Director</td><td>Al cierre</td><td>Seguimiento imposible de diseñar</td></tr>
+          <tr><td>Documentación escaneada (7 documentos)</td><td class="num">11</td><td>Recepción</td><td>Mismo día</td><td>Sin defensa ante reclamación</td></tr>
+          <tr><td>Tarea de re-contacto o cita programada</td><td class="num">12</td><td>Director</td><td>Mismo día</td><td>Paciente perdido por inacción</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INDICADORES ===================== -->
+<section class="section" id="indicadores">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">05 · Cuadro de mando</p>
+      <h2>Cómo se mide si el protocolo funciona</h2>
+      <p>Seis indicadores revisados en el comité mensual de dirección. Miden ejecución (¿se cumple el protocolo?) y resultado (¿produce lo que debe?). Los objetivos son propuestas de partida; dirección los ajusta con el histórico real del centro.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Indicador</th><th>Definición</th><th>Objetivo de partida</th><th>Fuente</th></tr></thead>
+        <tbody>
+          <tr><td>Tasa de conversión de PV</td><td>PV convertidas / PV realizadas</td><td class="num">≥ 60 %</td><td>Hermes · estado de PV</td></tr>
+          <tr><td>Importe medio aceptado</td><td>Suma aceptada / PV convertidas</td><td class="num">Tendencia al alza</td><td>Hermes · presupuestos</td></tr>
+          <tr><td>Ratio de aceptación</td><td>Importe aceptado / importe presentado</td><td class="num">≥ 75 %</td><td>Hermes · presupuestos</td></tr>
+          <tr><td>Documentación completa en 24 h</td><td>PV con los 7 documentos subidos el mismo día</td><td class="num">100 %</td><td>Auditoría de fichas</td></tr>
+          <tr><td>Cumplimiento de la llamada 24–48 h</td><td>PV con llamada de cortesía registrada</td><td class="num">≥ 95 %</td><td>Hermes · tareas</td></tr>
+          <tr><td>Conversión diferida</td><td>No convertidos que aceptan en 180 días</td><td class="num">≥ 20 %</td><td>Hermes · nurturing</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Lectura correcta de los indicadores</p>
+      <p>Una conversión alta con documentación incompleta no es un buen mes: es riesgo acumulado. Los indicadores de ejecución se revisan <strong>antes</strong> que los de resultado, porque los primeros explican a los segundos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ANEXOS ===================== -->
+<section class="section" id="anexos">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">06 · Anexos</p>
+      <h2>Material de apoyo</h2>
+      <p>Errores frecuentes detectados en auditoría, vocabulario común del equipo y gobernanza del documento.</p>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Anexo A · Errores frecuentes y cómo se corrigen</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Error observado</th><th>Efecto</th><th>Corrección</th></tr></thead>
+        <tbody>
+          <tr><td>Origen de marketing registrado como «internet»</td><td>Imposible atribuir la inversión publicitaria</td><td>Preguntar por el canal concreto y la campaña</td></tr>
+          <tr><td>Ficha duplicada del mismo paciente</td><td>Historial fragmentado, comunicaciones cruzadas</td><td>Búsqueda por teléfono y email antes de crear</td></tr>
+          <tr><td>Imágenes subidas al final del día</td><td>Presentación incompleta o repetición de pruebas</td><td>Carga y verificación inmediatas en Fase 5</td></tr>
+          <tr><td>Presupuesto presentado antes del IAC</td><td>El precio precede al diagnóstico; cae la conversión</td><td>Respetar el orden de fases sin excepción</td></tr>
+          <tr><td>Discrepancia clínica delante del paciente</td><td>Pérdida inmediata de confianza</td><td>Resolver en el briefing de la Fase 6</td></tr>
+          <tr><td>No conversión sin motivo registrado</td><td>Nurturing imposible; paciente perdido</td><td>Campo obligatorio al cerrar la PV</td></tr>
+          <tr><td>Cifras de garantía o éxito improvisadas</td><td>Riesgo legal y reputacional</td><td>Usar solo la ficha de datos verificables de dirección</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo B · Glosario</h3>
+    <div class="cards cards--3" style="margin-top:1rem">
+      <article class="card"><span class="eyebrow">PV</span><h3>Primera Visita</h3><p>Circuito completo de acogida, diagnóstico y propuesta descrito en este protocolo.</p></article>
+      <article class="card"><span class="eyebrow">IAC</span><h3>Informe de Análisis Clínico</h3><p>Documento firmado por el Doctor con hallazgos, diagnóstico y plan de tratamiento.</p></article>
+      <article class="card"><span class="eyebrow">CBCT</span><h3>Tomografía de haz cónico</h3><p>Estudio tridimensional del complejo maxilofacial con dosis reducida.</p></article>
+      <article class="card"><span class="eyebrow">OPG</span><h3>Ortopantomografía</h3><p>Radiografía panorámica digital de ambos maxilares.</p></article>
+      <article class="card"><span class="eyebrow">Hermes</span><h3>Sistema de gestión</h3><p>Historia clínica, agenda, presupuestos, tareas y trazabilidad documental del centro.</p></article>
+      <article class="card"><span class="eyebrow">Carpeta Giraldo</span><h3>Dossier del paciente</h3><p>Libro de la clínica, presupuesto, OPG y fotografías que todo paciente se lleva.</p></article>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo C · Gobernanza del documento</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Aspecto</th><th>Definición</th></tr></thead>
+        <tbody>
+          <tr><td>Propietario</td><td>Dirección de Centros de Excelencia Médica Giraldo</td></tr>
+          <tr><td>Ámbito</td><td>Todas las Primeras Visitas, en todos los centros de la red</td></tr>
+          <tr><td>Revisión</td><td>Semestral, o antes si cambia la normativa, el sistema o la cartera de servicios</td></tr>
+          <tr><td>Formación</td><td>Obligatoria para toda incorporación antes de participar en una PV</td></tr>
+          <tr><td>Auditoría</td><td>Muestreo mensual de fichas frente a la tabla de trazabilidad</td></tr>
+          <tr><td>Excepciones</td><td>Toda desviación se documenta en la ficha del paciente con su justificación</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="ticks" aria-hidden="true" style="margin-bottom:2rem"></div>
+    <div class="foot__grid">
+      <div>
+        <p><strong>Clínica de Excelencia Médica Giraldo</strong><br>Protocolo de Experiencia Clínica · Primera Visita</p>
+        <p style="margin-top:.8rem">Documento interno de uso obligatorio. Contiene datos de proceso y criterios de actuación clínica; no sustituye el juicio profesional del Doctor ante un caso concreto.</p>
+      </div>
+      <div>
+        <p class="eyebrow">Versión</p>
+        <p>v1.0 · Edición 2026<br>Revisión semestral</p>
+      </div>
+      <div>
+        <p class="eyebrow">Contenido</p>
+        <p>12 fases · 4 roles<br>7 documentos · 6 indicadores</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
+  var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
+
+  /* ---- mapa de tiempos, construido desde los datos de las fases ---- */
+  var bar = document.getElementById("timebar");
+  var roleOrder = ["recepcion","director","doctor","auxiliar"];
+  phases.forEach(function(ph){
+    var min = parseInt(ph.dataset.min,10) || 5;
+    var lead = (ph.dataset.roles || "").split(" ").filter(function(r){return roleOrder.indexOf(r)>-1;})[0] || "director";
+    var seg = document.createElement("button");
+    seg.type = "button";
+    seg.className = "timemap__seg";
+    seg.dataset.role = lead;
+    seg.style.flex = min + " 1 0";
+    seg.dataset.target = ph.id;
+    var t = ph.dataset.time || (min + " min");
+    seg.title = ph.dataset.label + " · " + t;
+    seg.setAttribute("aria-label", "Ir a fase " + ph.id.slice(1) + ": " + ph.dataset.label + ", " + t);
+    seg.innerHTML = '<span>' + ph.id.slice(1) + '</span>';
+    seg.addEventListener("click", function(){
+      document.getElementById(ph.id).scrollIntoView({behavior:"smooth", block:"start"});
+    });
+    bar.appendChild(seg);
+  });
+
+  /* ---- filtro por rol ---- */
+  var activeRole = null;
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-role]"));
+  var segs = Array.prototype.slice.call(bar.children);
+  function phaseMatches(ph){
+    if(!activeRole) return true;
+    return (" " + ph.dataset.roles + " ").indexOf(" " + activeRole + " ") > -1;
+  }
+  function applyFilter(){
+    phases.forEach(function(ph){ ph.classList.toggle("is-dimmed", !phaseMatches(ph)); });
+    stripLinks.forEach(function(a){
+      var ph = document.getElementById(a.getAttribute("href").slice(1));
+      var isPhase = ph && ph.classList.contains("phase");
+      a.classList.toggle("is-off", isPhase ? !phaseMatches(ph) : false);
+    });
+    segs.forEach(function(seg){
+      var ph = document.getElementById(seg.dataset.target);
+      seg.style.opacity = phaseMatches(ph) ? "1" : "0.25";
+    });
+    chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.role === activeRole)); });
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){
+      activeRole = (activeRole === c.dataset.role) ? null : c.dataset.role;
+      applyFilter();
+    });
+  });
+  document.getElementById("clearfilter").addEventListener("click", function(){
+    activeRole = null; applyFilter();
+  });
+
+  /* ---- sección activa en la tira superior ---- */
+  var targets = Array.prototype.slice.call(document.querySelectorAll("main section[id], main article[id]"));
+  if("IntersectionObserver" in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        stripLinks.forEach(function(a){
+          a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + e.target.id));
+        });
+      });
+    }, {rootMargin:"-130px 0px -70% 0px", threshold:0});
+    targets.forEach(function(t){ spy.observe(t); });
+
+    var reveal = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); reveal.unobserve(e.target); }
+      });
+    }, {rootMargin:"0px 0px -8% 0px", threshold:0.02});
+    document.querySelectorAll(".reveal").forEach(function(el){ reveal.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---- tema ---- */
+  var btn = document.getElementById("themebtn");
+  function currentTheme(){
+    var stamped = document.documentElement.getAttribute("data-theme");
+    if(stamped) return stamped;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function label(){ btn.textContent = currentTheme() === "dark" ? "Modo claro" : "Modo oscuro"; }
+  label();
+  btn.addEventListener("click", function(){
+    document.documentElement.setAttribute("data-theme", currentTheme() === "dark" ? "light" : "dark");
+    label();
+  });
+})();
+</script>
+</body>
+</html>
