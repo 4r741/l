@@ -141,6 +141,12 @@ a{color:inherit}
   padding:.42rem .7rem;border-radius:999px;cursor:pointer;
 }
 .themebtn:hover{color:var(--ink);border-color:var(--ink)}
+.crosslink{
+  display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;
+  border:1px solid var(--line);padding:.5rem .9rem;border-radius:999px;
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+}
+.crosslink:hover{border-color:var(--accent);color:var(--accent-ink)}
 
 /* tira de fases */
 .strip{
@@ -444,6 +450,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
         <span class="brand__mark">Excelencia Médica <b>Giraldo</b></span>
         <span class="brand__tag">Protocolo PV · v1.0</span>
       </a>
+      <a class="crosslink" href="manual.html">Manual Maestro</a>
       <button class="themebtn" id="themebtn" type="button" aria-live="polite">Tema</button>
     </div>
     <nav class="strip" id="strip" aria-label="Índice de fases">
@@ -482,6 +489,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
         <p class="eyebrow">Documento operativo interno · Edición 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce fases coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
+        <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="manual.html" style="color:var(--accent-ink)">Manual Maestro de Operaciones</a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
         <p class="hero__note">Este protocolo es el estándar de ejecución de la Primera Visita (PV) en Clínica de Excelencia Médica Giraldo. Define <strong>quién</strong> hace cada cosa, <strong>cuándo</strong>, <strong>con qué palabras</strong> y <strong>qué queda registrado</strong> en Hermes. No es una guía orientativa: es el mínimo exigible. Cualquier desviación debe justificarse en la ficha del paciente.</p>
       </div>
       <dl class="specs">

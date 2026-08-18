@@ -1,67 +1,84 @@
-# Protocolo de Experiencia Clínica — Excelencia Médica Giraldo
+# Documentación operativa — Giraldo
 
-Sitio de una sola página con el protocolo operativo de la **Primera Visita (PV)** de
-Clínica de Excelencia Médica Giraldo.
+Dos documentos web autocontenidos, sin dependencias salvo las tipografías de Google Fonts.
+Se abren directamente en el navegador o se publican como estáticos en cualquier hosting.
 
-- **`index.html`** — documento completo, autocontenido (sin dependencias salvo las
-  tipografías de Google Fonts). Se abre directamente en el navegador o se publica
-  como estático en cualquier hosting.
+| Archivo | Documento | Alcance |
+| --- | --- | --- |
+| **`manual.html`** | Manual Maestro de Operaciones (v4.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
+| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 
-## Contenido
+Ambos comparten sistema de diseño y están enlazados entre sí.
+
+## Manual Maestro (`manual.html`)
+
+| Parte | Contenido |
+| --- | --- |
+| Marco de vanguardia | Antelación sistematizada, los tres horizontes y los cinco pilares |
+| I · Fundamentos | Ficha de control, nueve principios rectores, glosario, sistemas y puntos abiertos |
+| II · Recorrido | Las 14 fases, con acciones, guiones, indicaciones de ejecución, KPI, errores y checklist de salida |
+| III · Matriz RACI | Responsable, accountable, consultado e informado por fase |
+| IV · Manuales por puesto | Recepción, Doctor, Higienista, Auxiliar, RAC, Dirección y la función transversal de compras |
+| V · Funciones de vanguardia | Circuitos, reglas innegociables, límites e indicadores de cada función |
+| VI · Interdependencias | Compras y proveedores, matriz de interdependencias y cuadro maestro de indicadores |
+| VII · Plan de incentivos | Arquitectura, escala, pesos, fórmula de liquidación y gobernanza |
+| VIII · Puesta en marcha | Las 72 horas previas y la mañana del día 1 |
+| Anexos | Plantillas de reporte, checklists imprimibles y calendario de implantación |
+| Notas de edición | Incoherencias detectadas entre documentos, para que Dirección las resuelva |
+
+Seis diagramas en SVG (sin librerías) sustituyen a los esquemas de texto del documento
+original: circuito de producción, programa de mantenimiento, gestión de huecos,
+planificación digital, circuito de esterilización y circuito de compras.
+
+## Protocolo de Primera Visita (`index.html`)
 
 | Bloque | Qué incluye |
 | --- | --- |
 | 01 Fundamentos | Cinco principios rectores y nota de calibración temporal |
 | 02 Mapa de la visita | Distribución del tiempo por fase, filtro por rol y matriz de responsabilidad |
-| 03 Flujo por roles | Diagrama de carriles con las siete entregas del paciente y los documentos que genera cada tramo |
-| 04 Las 12 fases | Acciones, cronología minuto a minuto, percepción del paciente, guiones, casos especiales, registro en Hermes, errores frecuentes y criterio de salida |
-| 05 Estándares transversales | Comunicación, entorno físico, seguridad clínica, protección de datos y gestión de agenda |
-| 06 Casos especiales | Doce situaciones que obligan a adaptar el circuito sin perder sus garantías |
-| 07 Trazabilidad | Qué se registra, quién responde, en qué plazo y qué pasa si falta |
-| 08 Cuadro de mando | Seis indicadores y rúbrica de auditoría de PV sobre 100 puntos |
-| 09 Formación | Incorporación de 30 días, certificación por rol y entrenamiento continuo |
-| 10 Anexos | Biblioteca de guiones, preguntas frecuentes del paciente, errores frecuentes, checklist imprimible, glosario, gobernanza y control de cambios |
+| 03 Flujo por roles | Diagrama de carriles con las entregas del paciente y los documentos que genera |
+| 04 Las 12 fases | Acciones, cronología, percepción del paciente, guiones, casos especiales, registro, errores y criterio de salida |
+| 05 Estándares transversales | Comunicación, entorno, seguridad clínica, protección de datos y agenda |
+| 06 Casos especiales | Situaciones que obligan a adaptar el circuito |
+| 07 Trazabilidad | Qué se registra, quién responde y en qué plazo |
+| 08 Cuadro de mando | Indicadores y rúbrica de auditoría |
+| 09 Formación | Incorporación, certificación por rol y entrenamiento continuo |
+| 10 Anexos | Guiones, preguntas frecuentes, errores, checklist imprimible, glosario y gobernanza |
 
-## Características
+## Características comunes
 
-- Filtro por rol (Recepción · Director · Doctor · Auxiliar): atenúa las fases sin
-  responsabilidad directa para leer el protocolo desde cada puesto.
+- Filtro por puesto: atenúa las fases sin responsabilidad directa.
 - Barra de navegación que centra automáticamente la sección activa.
-- Diagrama de carriles en SVG, sin librerías, legible en tema claro y oscuro.
-- Tema claro y oscuro: sigue la preferencia del sistema y se puede alternar manualmente.
-- Responsive y con hoja de estilos de impresión (los desplegables se imprimen abiertos).
-- Sin frameworks ni build: HTML, CSS y ~110 líneas de JavaScript.
+- Tema claro y oscuro, siguiendo la preferencia del sistema o manual.
+- Responsive y con hoja de estilos de impresión.
+- Sin frameworks ni build: HTML, CSS y ~110 líneas de JavaScript por página.
 
 ## Edición
 
-Todo el contenido está en `index.html` como HTML plano. Cada fase es un
-`<article class="phase">` con estos atributos:
+Cada fase es un `<article class="phase">` con atributos que alimentan la interfaz:
 
 ```html
-<article class="phase reveal" id="f05" data-roles="auxiliar doctor"
-         data-min="15" data-label="Diagnóstico">
+<article class="phase reveal" id="m05" data-roles="aux" data-label="Pruebas diagnósticas">
 ```
 
-- `data-roles` — roles implicados, separados por espacios (alimenta el filtro).
-- `data-min` — duración nominal en minutos (alimenta la barra de tiempos).
+- `data-roles` — puestos implicados, separados por espacios (alimenta el filtro).
+- `data-min` / `data-time` — duración, usada por la barra de tiempos de `index.html`.
 - `data-label` — nombre corto de la fase.
-- `data-time` — texto alternativo para el tooltip cuando la fase no se mide en minutos
-  (por ejemplo, `Pre-visita` en la Fase 1).
-
-La barra de tiempos y el filtro se construyen en tiempo de carga a partir de esos
-atributos: añadir o reordenar fases no requiere tocar el JavaScript.
 
 ### Componentes disponibles
 
 | Clase | Uso |
 | --- | --- |
 | `.block` + `.block__title` | Bloque temático dentro de una fase |
-| `.mini` | Cronología interna (definición `dt`/`dd` por tramo) |
-| `.saydont` | Dos columnas: lenguaje preferido frente a lenguaje a evitar |
+| `.pr` | Ficha de procedimiento (PR-XX) con código, título y criticidad |
+| `.rulebox` | Regla nuclear o principio innegociable |
+| `.kpis` | Lista de indicador → objetivo |
+| `.mini` | Cronología interna por tramos |
+| `.saydont` | Lenguaje preferido frente a lenguaje a evitar |
 | `.special` | Rejilla de casos especiales |
 | `.checks` | Lista con casillas de verificación |
 | `.sheet` | Plantilla o guion en monoespaciada |
-| `.callout` | Aviso crítico |
-| `.gate` | Criterio de salida de la fase |
-| `details.faq` | Pregunta frecuente desplegable |
-| `figure.fig` | Diagrama SVG con pie de figura |
+| `.sem--rojo/naranja/amarillo/verde` | Semáforo de riesgo |
+| `table.raci` | Matriz RACI con letras destacadas |
+| `figure.flow` | Diagrama SVG con pie de figura |
+| `.parthead` | Divisor de parte del manual |
