@@ -143,7 +143,11 @@ a{color:inherit}
 .themebtn:hover{color:var(--ink);border-color:var(--ink)}
 
 /* tira de fases */
-.strip{display:flex;gap:2px;overflow-x:auto;padding:0 0 .65rem;scrollbar-width:none}
+.strip{
+  display:flex;gap:2px;overflow-x:auto;padding:0 0 .65rem;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);
+  mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);
+}
 .strip::-webkit-scrollbar{display:none}
 .strip a{
   flex:0 0 auto;text-decoration:none;
@@ -336,12 +340,97 @@ footer.foot strong{color:var(--ink)}
 .foot__grid{display:grid;gap:1.6rem}
 @media(min-width:760px){.foot__grid{grid-template-columns:2fr 1fr 1fr}}
 
+
+/* ============================================================
+   COMPONENTES AMPLIADOS
+   ============================================================ */
+.grid2{display:grid;gap:1.4rem}
+@media(min-width:820px){.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.grid2>*{min-width:0}
+
+/* micro-cronología por fase */
+.mini{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem}
+.mini div{background:var(--paper);padding:.6rem .8rem;flex:1 1 120px;min-width:0}
+.mini dt{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.mini dd{margin:.2rem 0 0;font-size:.82rem;color:var(--ink-2);line-height:1.4}
+
+/* qué decir / qué evitar */
+.saydont{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem;max-width:68ch}
+@media(min-width:720px){.saydont{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.saydont>div{background:var(--paper);padding:1rem 1.1rem}
+.saydont>div:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.saydont>div:last-child{box-shadow:inset 3px 0 0 var(--signal)}
+.saydont h5{margin:0 0 .6rem;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.saydont ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.saydont li{font-size:.9rem;color:var(--ink-2);line-height:1.5}
+.saydont li::before{content:"";display:inline-block;width:5px;height:5px;margin-right:.55rem;vertical-align:.22em;border-radius:50%}
+.saydont>div:first-child li::before{background:var(--accent)}
+.saydont>div:last-child li::before{background:var(--signal)}
+
+/* casos especiales */
+.special{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem}
+@media(min-width:700px){.special{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1080px){.special--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.special>div{background:var(--paper);padding:1.1rem 1.2rem;min-width:0}
+.special h5{margin:0 0 .4rem;font-size:.95rem;font-weight:600}
+.special p{font-size:.88rem;color:var(--ink-2);margin:0}
+
+/* plantillas y documentos modelo */
+.sheet{
+  border:1px solid var(--line);background:var(--surface);margin-top:1rem;
+  font-family:var(--f-mono);font-size:.78rem;line-height:1.75;color:var(--ink-2);
+  padding:1.2rem 1.3rem;overflow-x:auto;white-space:pre-wrap;
+}
+.sheet b{color:var(--ink);font-weight:500}
+
+/* preguntas frecuentes */
+details.faq{border-bottom:1px solid var(--line-soft);padding:.2rem 0}
+details.faq summary{
+  cursor:pointer;padding:.85rem 0;font-weight:500;font-size:.98rem;
+  display:flex;gap:.8rem;align-items:baseline;list-style:none;
+}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::before{content:"+";font-family:var(--f-mono);color:var(--accent);font-size:.9rem}
+details.faq[open] summary::before{content:"–"}
+details.faq .a{padding:0 0 1rem 1.7rem;color:var(--ink-2);font-size:.94rem;max-width:70ch}
+details.faq .a p+p{margin-top:.6rem}
+
+/* rúbrica de auditoría */
+.score{display:inline-block;font-family:var(--f-mono);font-size:.7rem;padding:.12rem .45rem;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+.bar{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;min-width:90px}
+.bar i{display:block;height:100%;background:var(--accent)}
+
+/* figura / diagrama */
+figure.fig{margin:1.6rem 0 0;border:1px solid var(--line);background:var(--surface);padding:1.4rem}
+figure.fig svg{width:100%;height:auto;display:block;color:var(--ink)}
+figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-width:70ch}
+.figscroll{overflow-x:auto}
+.figscroll>svg{min-width:900px}
+
+/* etiquetas en línea */
+.tag{
+  display:inline-block;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid var(--line);padding:.1rem .4rem;border-radius:3px;
+  color:var(--muted);vertical-align:.15em;margin-left:.5rem;
+}
+.tag--rec{color:#2E6F9E;border-color:#2E6F9E}
+.tag--dir{color:var(--accent-ink);border-color:var(--accent)}
+.tag--doc{color:#8B5CB8;border-color:#8B5CB8}
+.tag--aux{color:var(--signal);border-color:var(--signal)}
+
+/* nota al pie de bloque */
+.footnote{margin-top:.9rem;font-size:.82rem;color:var(--muted);max-width:66ch}
+
 @media print{
   .topbar,.themebtn,.legend,.timemap__bar{display:none!important}
   body{background:#fff;color:#000;font-size:10.5pt}
   .phase,.section{break-inside:avoid;page-break-inside:avoid;border-color:#bbb}
   .phase.is-dimmed{opacity:1}
   .reveal{opacity:1!important;transform:none!important}
+  details.faq{border-color:#bbb}
+  details.faq>summary{list-style:none}
+  details.faq:not([open])>*:not(summary){display:block!important}
+  .sheet{background:#fff;border-color:#bbb}
   a{text-decoration:none}
 }
 </style>
@@ -360,6 +449,7 @@ footer.foot strong{color:var(--ink)}
     <nav class="strip" id="strip" aria-label="Índice de fases">
       <a href="#fundamentos">Fundamentos</a>
       <a href="#mapa">Mapa 90′</a>
+      <a href="#flujo">Flujo</a>
       <a href="#f01">01 Preparación</a>
       <a href="#f02">02 Acogida</a>
       <a href="#f03">03 Alta y RGPD</a>
@@ -372,8 +462,11 @@ footer.foot strong{color:var(--ink)}
       <a href="#f10">10 Propuesta</a>
       <a href="#f11">11 Cierre admin.</a>
       <a href="#f12">12 Seguimiento</a>
+      <a href="#estandares">Estándares</a>
+      <a href="#casos">Casos especiales</a>
       <a href="#trazabilidad">Trazabilidad</a>
       <a href="#indicadores">Indicadores</a>
+      <a href="#formacion">Formación</a>
       <a href="#anexos">Anexos</a>
     </nav>
   </div>
@@ -396,6 +489,8 @@ footer.foot strong{color:var(--ink)}
         <div class="spec"><dt>Fases</dt><dd>12<small>Once presenciales + seguimiento post-visita</small></dd></div>
         <div class="spec"><dt>Roles implicados</dt><dd>4<small>Recepción · Director · Doctor · Auxiliar</small></dd></div>
         <div class="spec"><dt>Documentos firmados</dt><dd>7<small>Digitalizados en Hermes el mismo día</small></dd></div>
+        <div class="spec"><dt>Estándares transversales</dt><dd>5<small>Comunicación, entorno, seguridad, datos y agenda</small></dd></div>
+        <div class="spec"><dt>Anexos</dt><dd>7<small>Guiones, preguntas frecuentes, checklist y gobernanza</small></dd></div>
       </dl>
     </div>
   </div>
@@ -438,8 +533,8 @@ footer.foot strong{color:var(--ink)}
       </article>
       <article class="card">
         <span class="eyebrow">Cómo leer este documento</span>
-        <h3>Tres capas por fase</h3>
-        <p><strong>Acciones</strong>: qué se hace, en orden. <strong>Registro obligatorio</strong>: qué queda escrito y quién responde. <strong>Criterio de salida</strong>: la condición sin la cual no se avanza a la fase siguiente.</p>
+        <h3>Siete capas por fase</h3>
+        <p><strong>Acciones</strong> en orden · <strong>cronología</strong> minuto a minuto · <strong>qué percibe el paciente</strong> · <strong>qué decir y qué evitar</strong> · <strong>casos especiales</strong> · <strong>registro obligatorio</strong> en Hermes · <strong>criterio de salida</strong>, la condición sin la cual no se avanza.</p>
       </article>
     </div>
 
@@ -496,13 +591,159 @@ footer.foot strong{color:var(--ink)}
   </div>
 </section>
 
+<!-- ===================== FLUJO ===================== -->
+<section class="section" id="flujo">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">03 · Flujo por roles</p>
+      <h2>Quién tiene al paciente en cada momento</h2>
+      <p>El paciente atraviesa cuatro carriles y cambia de manos siete veces. Cada cambio es un punto de fricción posible: si nadie le presenta, si hay que repetir lo ya contado o si el siguiente profesional no viene informado, la experiencia se rompe justo ahí.</p>
+    </div>
+    <figure class="fig">
+      <div class="figscroll">
+<svg viewBox="0 0 1390 470" role="img" aria-label="Diagrama de carriles: las doce fases de la Primera Visita distribuidas entre Recepción, Director, Doctor y Auxiliar, con los cinco documentos firmados que genera el circuito." xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="currentColor"/></marker></defs>
+  <g font-family="ui-monospace, monospace" font-size="11" fill="currentColor" opacity=".55" text-anchor="middle">
+    <text x="180" y="44">01</text>
+    <text x="284" y="44">02</text>
+    <text x="388" y="44">03</text>
+    <text x="492" y="44">04</text>
+    <text x="596" y="44">05</text>
+    <text x="700" y="44">06</text>
+    <text x="804" y="44">07</text>
+    <text x="908" y="44">08</text>
+    <text x="1012" y="44">09</text>
+    <text x="1116" y="44">10</text>
+    <text x="1220" y="44">11</text>
+    <text x="1324" y="44">12</text>
+  </g>
+  <g stroke="currentColor" opacity=".16">
+    <line x1="122" y1="105" x2="1370" y2="105"/>
+    <line x1="122" y1="185" x2="1370" y2="185"/>
+    <line x1="122" y1="265" x2="1370" y2="265"/>
+    <line x1="122" y1="345" x2="1370" y2="345"/>
+  </g>
+  <g font-family="ui-monospace, monospace" font-size="11" fill="currentColor" opacity=".7">
+    <text x="12" y="109">RECEPCIÓN</text>
+    <text x="12" y="189">DIRECTOR</text>
+    <text x="12" y="269">DOCTOR</text>
+    <text x="12" y="349">AUXILIAR</text>
+  </g>
+  <g stroke="currentColor" fill="none" opacity=".7" marker-end="url(#ar)">
+    <line x1="224" y1="105" x2="237" y2="105"/>
+    <path d="M328,105 H336 V185 H341"/>
+    <path d="M432,185 H440 V265 H445"/>
+    <path d="M536,265 H544 V345 H549"/>
+    <path d="M640,345 H648 V265 H653"/>
+    <line x1="744" y1="265" x2="757" y2="265"/>
+    <path d="M848,265 H856 V185 H861"/>
+    <path d="M952,185 H960 V265 H965"/>
+    <path d="M1056,265 H1064 V185 H1069"/>
+    <path d="M1160,185 H1168 V105 H1173"/>
+    <path d="M1264,105 H1272 V185 H1277"/>
+  </g>
+  <g stroke="currentColor" fill="none" opacity=".5" stroke-dasharray="3 3">
+    <line x1="700" y1="212" x2="700" y2="238"/>
+    <line x1="908" y1="212" x2="908" y2="238"/>
+  </g>
+  <g>
+    <rect x="136" y="78" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="180" y="102" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="180">Preparación</tspan><tspan x="180" dy="14">previa</tspan></text>
+  </g>
+  <g>
+    <rect x="240" y="78" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="284" y="102" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="284">Acogida</tspan><tspan x="284" dy="14">y tour</tspan></text>
+  </g>
+  <g>
+    <rect x="344" y="158" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="388" y="182" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="388">Alta</tspan><tspan x="388" dy="14">y RGPD</tspan></text>
+  </g>
+  <g>
+    <rect x="448" y="238" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="492" y="262" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="492">Historia</tspan><tspan x="492" dy="14">clínica</tspan></text>
+  </g>
+  <g>
+    <rect x="552" y="318" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="596" y="342" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="596">Pruebas</tspan><tspan x="596" dy="14">diagnósticas</tspan></text>
+  </g>
+  <g>
+    <rect x="656" y="238" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="700" y="262" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="700">Briefing</tspan><tspan x="700" dy="14">interno</tspan></text>
+  </g>
+  <g>
+    <rect x="760" y="238" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="804" y="262" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="804">Expectativas</tspan><tspan x="804" dy="14">y exploración</tspan></text>
+  </g>
+  <g>
+    <rect x="864" y="158" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="908" y="182" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="908">IAC</tspan><tspan x="908" dy="14">firmado</tspan></text>
+  </g>
+  <g>
+    <rect x="968" y="238" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="1012" y="262" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="1012">Presentación</tspan><tspan x="1012" dy="14">3D</tspan></text>
+  </g>
+  <g>
+    <rect x="1072" y="158" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="1116" y="182" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="1116">Propuesta</tspan><tspan x="1116" dy="14">y cierre</tspan></text>
+  </g>
+  <g>
+    <rect x="1176" y="78" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="1220" y="102" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="1220">Cierre</tspan><tspan x="1220" dy="14">administrativo</tspan></text>
+  </g>
+  <g>
+    <rect x="1280" y="158" width="88" height="54" rx="2" style="fill:var(--surface)" stroke="currentColor" opacity=".9"/>
+    <text x="1324" y="182" font-size="11.5" fill="currentColor" text-anchor="middle"><tspan x="1324">Despedida</tspan><tspan x="1324" dy="14">y seguimiento</tspan></text>
+  </g>
+  <line x1="122" y1="380" x2="1370" y2="380" stroke="currentColor" opacity=".16"/>
+  <text x="12" y="406" font-family="ui-monospace, monospace" font-size="11" fill="currentColor" opacity=".7">EVIDENCIA</text>
+  <line x1="388" y1="212" x2="388" y2="388" stroke="currentColor" opacity=".22" stroke-dasharray="2 4"/>
+  <rect x="384" y="389" width="9" height="9" style="fill:var(--accent)"/>
+  <text x="388" y="414" font-size="11" text-anchor="middle" style="fill:var(--accent-ink)">RGPD</text>
+  <line x1="492" y1="292" x2="492" y2="388" stroke="currentColor" opacity=".22" stroke-dasharray="2 4"/>
+  <rect x="488" y="389" width="9" height="9" style="fill:var(--accent)"/>
+  <text x="492" y="414" font-size="11" text-anchor="middle" style="fill:var(--accent-ink)">Consent. rad.</text>
+  <line x1="908" y1="212" x2="908" y2="388" stroke="currentColor" opacity=".22" stroke-dasharray="2 4"/>
+  <rect x="904" y="389" width="9" height="9" style="fill:var(--accent)"/>
+  <text x="908" y="414" font-size="11" text-anchor="middle" style="fill:var(--accent-ink)">IAC</text>
+  <line x1="1116" y1="212" x2="1116" y2="388" stroke="currentColor" opacity=".22" stroke-dasharray="2 4"/>
+  <rect x="1112" y="389" width="9" height="9" style="fill:var(--accent)"/>
+  <text x="1116" y="414" font-size="11" text-anchor="middle" style="fill:var(--accent-ink)">Presupuesto</text>
+  <line x1="1220" y1="132" x2="1220" y2="388" stroke="currentColor" opacity=".22" stroke-dasharray="2 4"/>
+  <rect x="1216" y="389" width="9" height="9" style="fill:var(--accent)"/>
+  <text x="1220" y="414" font-size="11" text-anchor="middle" style="fill:var(--accent-ink)">Digitalización</text>
+  <text x="1370" y="436" font-size="11" text-anchor="end" fill="currentColor" opacity=".55">Los cinco documentos se digitalizan el mismo día</text>
+</svg>
+      </div>
+      <figcaption>Recorrido de la Primera Visita por carriles de responsabilidad. Las flechas marcan las entregas del paciente entre roles; la línea discontinua indica las dos fases en las que dos profesionales intervienen a la vez (briefing e IAC). La pista inferior señala en qué fase se genera cada documento firmado.</figcaption>
+    </figure>
+
+    <div class="cards cards--3" style="margin-top:2rem">
+      <article class="card">
+        <span class="eyebrow">Regla de entrega</span>
+        <h3>Nadie se entrega solo</h3>
+        <p>Ningún paciente recorre un pasillo sin acompañante ni entra en una sala sin que le presenten. Quien entrega dice el nombre del paciente, el motivo de consulta y qué se ha hecho ya.</p>
+      </article>
+      <article class="card">
+        <span class="eyebrow">Regla de continuidad</span>
+        <h3>No se repite ninguna pregunta</h3>
+        <p>Cada rol lee en Hermes lo que registró el anterior. Preguntar dos veces lo mismo comunica desorganización con más fuerza que cualquier folleto.</p>
+      </article>
+      <article class="card">
+        <span class="eyebrow">Regla de evidencia</span>
+        <h3>Cada tramo deja rastro</h3>
+        <p>Los siete documentos y las pruebas se generan dentro del circuito, no después. Al salir el paciente, la ficha debe poder leerse como el relato completo de la visita.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== FASES ===================== -->
 <section class="section" style="padding-bottom:0" id="fases">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">03 · Recorrido</p>
+      <p class="eyebrow">04 · Recorrido</p>
       <h2>Las doce fases, una por una</h2>
-      <p>Cada fase incluye su propósito, la secuencia de acciones, los guiones sugeridos, el registro obligatorio en Hermes y el criterio de salida. Los guiones son una base sobre la que construir con naturalidad, nunca un texto para recitar.</p>
+      <p>Cada fase incluye su propósito, la secuencia de acciones, la cronología interna, lo que percibe el paciente, los guiones sugeridos con su contrapartida de lo que conviene evitar, los casos especiales que obligan a adaptarla, el registro obligatorio en Hermes, los errores detectados en auditoría y el criterio de salida. Los guiones son una base sobre la que construir con naturalidad, nunca un texto para recitar.</p>
     </div>
   </div>
 </section>
@@ -564,6 +805,110 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología de la llamada</p>
+        <dl class="mini">
+          <div><dt>0:00 – 0:20</dt><dd>Descolgar antes del tercer tono. Saludo con nombre de la clínica y del recepcionista.</dd></div>
+          <div><dt>0:20 – 2:00</dt><dd>Escucha del motivo sin interrumpir. Anotar literalmente.</dd></div>
+          <div><dt>2:00 – 3:30</dt><dd>Preguntas de filtrado y urgencia.</dd></div>
+          <div><dt>3:30 – 5:00</dt><dd>Speech de valor de la Primera Visita.</dd></div>
+          <div><dt>5:00 – 6:30</dt><dd>Propuesta de dos huecos concretos y cierre de la cita.</dd></div>
+          <div><dt>6:30 – 7:00</dt><dd>Confirmación de datos, dirección, parking y envío del recordatorio.</dd></div>
+        </dl>
+        <p class="footnote">Una llamada de PV bien llevada dura entre cinco y ocho minutos. Por debajo de tres, casi siempre falta información; por encima de doce, suele haberse intentado diagnosticar por teléfono.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Canales de entrada y tiempo de respuesta</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Canal</th><th>Compromiso de respuesta</th><th>Acción</th></tr></thead>
+            <tbody>
+              <tr><td>Llamada entrante</td><td class="num">3 tonos</td><td>Atención directa; si se está ocupado, pedir permiso para llamar en 10 minutos y cumplirlo</td></tr>
+              <tr><td>Llamada perdida</td><td class="num">15 min</td><td>Devolución de llamada; si no contesta, WhatsApp identificándose</td></tr>
+              <tr><td>WhatsApp</td><td class="num">30 min en horario</td><td>Responder por escrito y proponer llamada breve para cerrar la cita</td></tr>
+              <tr><td>Formulario web</td><td class="num">2 h en horario</td><td>Llamada; si no contesta, email + WhatsApp</td></tr>
+              <tr><td>Redes sociales</td><td class="num">2 h en horario</td><td>Llevar la conversación a teléfono cuanto antes</td></tr>
+              <tr><td>Fuera de horario</td><td class="num">Primera hora del día siguiente</td><td>Priorizar sobre el resto de la agenda de llamadas</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote">La velocidad de respuesta es el factor que más pesa en la conversión de un contacto en visita. Un contacto atendido en menos de una hora convierte muy por encima de uno atendido al día siguiente.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué percibe el paciente</p>
+        <ul class="list">
+          <li>Que le atienden rápido y sin música de espera interminable</li>
+          <li>Que quien contesta escucha y anota, en lugar de recitar</li>
+          <li>Que la primera visita incluye mucho más de lo que esperaba</li>
+          <li>Que no le presionan ni le piden datos de pago</li>
+          <li>Que sale de la llamada con día, hora y qué llevar</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué decir y qué evitar</p>
+        <div class="saydont">
+          <div>
+            <h5>Diga</h5>
+            <ul>
+              <li>«Cuénteme qué le ocurre, con sus palabras.»</li>
+              <li>«La primera visita incluye tomografía 3D, panorámica, escaneado y estudio fotográfico, sin coste.»</li>
+              <li>«El Doctor le dará un diagnóstico completo por escrito el mismo día.»</li>
+              <li>«Tengo dos huecos: martes a las 10:00 o jueves a las 17:30. ¿Cuál le viene mejor?»</li>
+              <li>«¿Cómo nos ha conocido? Nos ayuda mucho saberlo.»</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Evite</h5>
+            <ul>
+              <li>«Es gratis», sin explicar qué incluye: abarata la percepción de valor.</li>
+              <li>Dar precios de tratamientos por teléfono sin diagnóstico.</li>
+              <li>Opinar sobre lo que le pasa: «eso suena a una infección…».</li>
+              <li>«¿Cuándo le vendría bien?», que alarga la llamada sin cerrar nada.</li>
+              <li>Prometer plazos, doctores concretos o resultados.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Dolor agudo</h5><p>Prioridad absoluta en agenda: hueco el mismo día o el siguiente. Se registra como urgencia y se avisa al Doctor de guardia.</p></div>
+          <div><h5>Solo pregunta precio</h5><p>No se dan tarifas sueltas. Se explica que el precio depende del diagnóstico y que la visita que lo determina no cuesta nada.</p></div>
+          <div><h5>Segunda opinión</h5><p>Se acepta sin criticar al centro anterior. Se pide que traiga informes y radiografías previas si las tiene.</p></div>
+          <div><h5>Recomendado por un paciente</h5><p>Registrar quién le recomienda: activa el programa de referidos y se agradece a ambos.</p></div>
+          <div><h5>Menor de edad</h5><p>La cita se confirma con el padre, madre o tutor, que debe acudir a la visita con su documentación.</p></div>
+          <div><h5>Paciente internacional</h5><p>Verificar idioma de atención, documentación de identidad y fechas de estancia antes de planificar cualquier tratamiento.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Registro en Hermes · campos de esta fase</p>
+        <ul class="checks">
+          <li><span><b>Nombre y apellidos</b> completos y correctamente escritos</span></li>
+          <li><span><b>Teléfono móvil</b> verificado repitiéndolo en voz alta</span></li>
+          <li><span><b>Email</b>, deletreado si es necesario</span></li>
+          <li><span><b>Motivo de consulta</b>, en las palabras del paciente</span></li>
+          <li><span><b>Urgencia</b>: con dolor / sin dolor / estética / revisión</span></li>
+          <li><span><b>Cómo nos conoció</b>, con canal y campaña concretos</span></li>
+          <li><span><b>Quién recomienda</b>, si procede</span></li>
+          <li><span><b>Fecha y hora de la PV</b> + recordatorio programado</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Anotar el motivo como «revisión» cuando el paciente ha descrito algo concreto</li>
+          <li>Cerrar la llamada sin haber comunicado el valor de la PV: el paciente compara solo por precio</li>
+          <li>Registrar el origen como «internet» o dejarlo vacío</li>
+          <li>No enviar recordatorio, con el consiguiente aumento de ausencias</li>
+          <li>Crear ficha nueva a un paciente que ya existía, partiendo su historial</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>La cita está en la agenda con motivo de consulta redactado, origen de marketing identificado y verificación de que no existe ficha previa. Si falta el origen, se pregunta antes de cerrar la llamada.</p>
@@ -624,6 +969,106 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología de la acogida</p>
+        <dl class="mini">
+          <div><dt>−15 min</dt><dd>Recepción revisa en Hermes quién viene, por qué y quién le atenderá.</dd></div>
+          <div><dt>0:00</dt><dd>Llegada. Saludo por su nombre, de pie, sin mostrador de por medio.</dd></div>
+          <div><dt>0:30 – 1:30</dt><dd>Acompañamiento a la Sala VIP y ofrecimiento de bebida.</dd></div>
+          <div><dt>1:30 – 2:00</dt><dd>Aviso al Director de que el paciente ha llegado.</dd></div>
+          <div><dt>2:00 – 5:00</dt><dd>Tour por esterilización y sala de imagen 3D.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Preparación del entorno · antes de que llegue</p>
+        <ul class="checks">
+          <li><span><b>Sala VIP</b> ordenada, sin objetos personales del equipo ni documentación de otros pacientes</span></li>
+          <li><span><b>Temperatura</b> agradable y ventilación reciente</span></li>
+          <li><span><b>Agua, café e infusiones</b> disponibles y repuestos</span></li>
+          <li><span><b>Sonido ambiente</b> a volumen bajo; ningún ruido de gabinete audible</span></li>
+          <li><span><b>Material de marca</b> visible: libro Giraldo, casos, certificados</span></li>
+          <li><span><b>Equipo uniformado</b> e identificado con su nombre y función</span></li>
+          <li><span><b>Sala de imagen</b> encendida y lista para enseñar, sin restos del paciente anterior</span></li>
+          <li><span><b>Agenda al día</b>: si hay retraso previsible, se decide ya cómo se comunicará</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Gestión de la espera y de los retrasos</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Situación</th><th>Acción inmediata</th><th>Responsable</th></tr></thead>
+            <tbody>
+              <tr><td>Retraso de hasta 10 minutos</td><td>Informar al llegar, sin excusas largas, y ofrecer bebida</td><td>Recepción</td></tr>
+              <tr><td>Retraso de 10 a 25 minutos</td><td>Informar, disculparse una sola vez y adelantar la Fase 3 en el despacho</td><td>Director</td></tr>
+              <tr><td>Retraso de más de 25 minutos</td><td>Ofrecer reprogramar sin coste y con hueco preferente; si se queda, el Director acompaña la espera</td><td>Director</td></tr>
+              <tr><td>El paciente llega tarde</td><td>Valorar si cabe el circuito completo; si no, reprogramar sin reproche</td><td>Recepción</td></tr>
+              <tr><td>El paciente no se presenta</td><td>Llamada el mismo día, sin tono de reclamación, y nuevo hueco</td><td>Recepción</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote">Una PV que empieza con más de 25 minutos de retraso rara vez recupera la percepción de excelencia: es preferible reprogramar bien que ejecutar mal.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué percibe el paciente</p>
+        <ul class="list">
+          <li>Que le esperaban: alguien sabe su nombre y por qué viene</li>
+          <li>Que no hay cola, ni papeles que rellenar de pie</li>
+          <li>Que el sitio está impecable y huele a limpio, no a clínica</li>
+          <li>Que la tecnología existe de verdad, porque la ha visto funcionar</li>
+          <li>Que el equipo está orgulloso de enseñar cómo trabaja</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué decir y qué evitar</p>
+        <div class="saydont">
+          <div>
+            <h5>Diga</h5>
+            <ul>
+              <li>«Buenos días, [Nombre]. Le estábamos esperando.»</li>
+              <li>«Acompáñeme, le llevo a nuestra sala; ¿le apetece un café o un agua?»</li>
+              <li>«Antes de empezar quiero enseñarle dónde va a estar y con qué trabajamos.»</li>
+              <li>«Esta es la sala de esterilización: aquí es donde se controla todo lo que entra en su boca.»</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Evite</h5>
+            <ul>
+              <li>«¿Su nombre?» cuando la cita está en agenda.</li>
+              <li>Dejar al paciente de pie mientras se busca su ficha.</li>
+              <li>Un tour largo y técnico: cinco minutos, dos paradas.</li>
+              <li>Comentarios entre compañeros delante del paciente.</li>
+              <li>Justificar retrasos culpando a otro paciente o a otro profesional.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Viene acompañado</h5><p>El acompañante entra en todo el circuito salvo que el paciente diga lo contrario. Suele influir en la decisión final: se le trata como a un segundo paciente.</p></div>
+          <div><h5>Movilidad reducida</h5><p>Acceso adaptado, ruta sin escalones, tour abreviado o sustituido por vídeo en la Sala VIP.</p></div>
+          <div><h5>Con niños</h5><p>Ofrecer espacio y entretenimiento; si es necesario, un miembro del equipo acompaña al menor durante la presentación.</p></div>
+          <div><h5>Paciente con prisa</h5><p>Se explica el circuito y se propone completar las fases clínicas hoy y la presentación en una segunda cita cercana.</p></div>
+          <div><h5>Odontofobia declarada</h5><p>Tour más pausado, sin entrar en gabinete, y aviso al Doctor antes de la Fase 4.</p></div>
+          <div><h5>Paciente conocido del equipo</h5><p>El protocolo no se relaja: la confianza previa no sustituye a la documentación ni al circuito.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Saltarse el tour «porque vamos justos de tiempo»: se pierde el mayor diferenciador de la clínica</li>
+          <li>Enseñar la tecnología sin explicar qué aporta al paciente</li>
+          <li>Dejar al paciente solo en la Sala VIP más de cinco minutos sin información</li>
+          <li>Hacer el tour con el gabinete o la sala de imagen sin recoger</li>
+          <li>No registrar la hora real de llegada, con lo que la puntualidad deja de poder medirse</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>El paciente ha visto esterilización e imagen 3D, ha sido tratado por su nombre y pasa al despacho del Director acompañado. Se registra la hora real de llegada en Hermes para poder medir la puntualidad del circuito.</p>
@@ -700,6 +1145,114 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología del despacho</p>
+        <dl class="mini">
+          <div><dt>0:00 – 3:00</dt><dd>Conversación de apertura: quién es, a qué se dedica, qué le trae hoy.</dd></div>
+          <div><dt>3:00 – 8:00</dt><dd>Hoja de datos personales y alta completa en Hermes.</dd></div>
+          <div><dt>8:00 – 11:00</dt><dd>Explicación y firma del RGPD, con consentimientos diferenciados.</dd></div>
+          <div><dt>11:00 – 13:00</dt><dd>Verificación de email y teléfono; explicación del circuito de la visita.</dd></div>
+          <div><dt>13:00 – 15:00</dt><dd>Transición: presentación del Doctor y entrega de la hoja a Recepción.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Conversación de apertura · preguntas que abren</p>
+        <ul class="list">
+          <li>«¿De qué zona viene? ¿Le ha costado aparcar?» — rompe el hielo sin invadir</li>
+          <li>«¿A qué se dedica?» — informa sobre disponibilidad horaria y capacidad de pago sin preguntarla</li>
+          <li>«¿Quién le ha hablado de nosotros?» — confirma el origen registrado en la Fase 1</li>
+          <li>«¿Ha estado antes en otra clínica por este tema?» — anticipa comparaciones y experiencias previas</li>
+          <li>«¿Hay algo que le preocupe especialmente de la visita de hoy?» — detecta miedos antes de que aparezcan</li>
+        </ul>
+        <p class="footnote">Todo lo relevante que se aprenda aquí se anota en Hermes. En la Fase 10, recordar que su hija se casa en septiembre vale más que cualquier técnica de cierre.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué se explica del RGPD, literalmente</p>
+        <div class="sheet"><b>Responsable del tratamiento:</b> Clínica de Excelencia Médica Giraldo.
+<b>Finalidad:</b> prestación de asistencia sanitaria, gestión administrativa, facturación
+y —solo si lo autoriza— comunicaciones informativas y comerciales.
+<b>Base legal:</b> ejecución del contrato asistencial y obligación legal sanitaria;
+el consentimiento para las comunicaciones comerciales y para el uso de imágenes.
+<b>Conservación:</b> la historia clínica se conserva durante el plazo legalmente exigible;
+los datos comerciales, hasta que usted retire su consentimiento.
+<b>Destinatarios:</b> laboratorio y profesionales colaboradores cuando el tratamiento lo requiera;
+entidades financieras si contrata financiación; administraciones cuando la ley lo obligue.
+<b>Derechos:</b> acceso, rectificación, supresión, limitación, portabilidad y oposición,
+escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de control.</div>
+        <ul class="checks">
+          <li><span><b>Consentimiento asistencial</b> — firmado</span></li>
+          <li><span><b>Consentimiento de comunicaciones comerciales</b> — casilla marcada de forma expresa, nunca premarcada</span></li>
+          <li><span><b>Consentimiento de uso de imágenes</b> con fines docentes o promocionales — independiente y revocable</span></li>
+          <li><span><b>Autorización de terceros</b>: quién puede recibir información del paciente (pareja, hijos, tutor)</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Campos obligatorios del alta en Hermes</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Bloque</th><th>Campos</th><th>Verificación</th></tr></thead>
+            <tbody>
+              <tr><td>Identificación</td><td>Nombre, apellidos, DNI/NIE/pasaporte, fecha de nacimiento, sexo</td><td>Contra documento original</td></tr>
+              <tr><td>Contacto</td><td>Móvil, email, teléfono alternativo</td><td>Repetición en voz alta</td></tr>
+              <tr><td>Domicilio</td><td>Dirección completa, código postal, localidad, provincia</td><td>Necesario para facturación</td></tr>
+              <tr><td>Facturación</td><td>Titular, NIF, datos de empresa o aseguradora si aplica</td><td>Antes del primer cobro</td></tr>
+              <tr><td>Marketing</td><td>Cómo nos conoció, campaña, paciente que recomienda</td><td>Coherente con la Fase 1</td></tr>
+              <tr><td>Consentimientos</td><td>RGPD, comercial, imágenes, terceros autorizados</td><td>Fecha y firma</td></tr>
+              <tr><td>Contexto</td><td>Profesión, disponibilidad horaria, notas personales relevantes</td><td>Útil en Fases 7 y 10</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué decir y qué evitar</p>
+        <div class="saydont">
+          <div>
+            <h5>Diga</h5>
+            <ul>
+              <li>«Vamos a dedicar diez minutos al papeleo aquí, cómodos, y después ya no volvemos a hablar de formularios.»</li>
+              <li>«Le leo por encima qué hacemos con sus datos; si algo no le encaja, no lo firme.»</li>
+              <li>«¿Me confirma su email letra por letra? Le enviaremos ahí su informe.»</li>
+              <li>«El siguiente paso es el Doctor; le acompaño yo.»</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Evite</h5>
+            <ul>
+              <li>«Firme aquí y aquí», sin explicar qué se firma.</li>
+              <li>Rellenar el formulario mientras el paciente espera en silencio.</li>
+              <li>Preguntar directamente por ingresos o capacidad de pago.</li>
+              <li>Dejar campos vacíos «para completarlos luego».</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Menor de edad</h5><p>Firma el padre, madre o tutor, cuya identificación se registra. En caso de custodia compartida, se documenta quién autoriza.</p></div>
+          <div><h5>Persona con representante legal</h5><p>Se archiva copia de la resolución o poder que acredita la representación.</p></div>
+          <div><h5>Sin documento español</h5><p>Se admite pasaporte; se registra el número y la nacionalidad para facturación y garantías.</p></div>
+          <div><h5>Se niega a dar email</h5><p>Se explica que el informe y la documentación viajan por ahí. Si mantiene la negativa, se registra el motivo y se acuerda entrega en papel.</p></div>
+          <div><h5>Factura a empresa o aseguradora</h5><p>Datos fiscales del pagador, autorización expresa y condiciones de cobertura antes del presupuesto.</p></div>
+          <div><h5>Revoca un consentimiento</h5><p>Se atiende de inmediato, se registra la fecha y se excluye al paciente de los envíos correspondientes.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Tratar el RGPD como un trámite mudo: sin explicación, el consentimiento es débil</li>
+          <li>Marcar por defecto la casilla de comunicaciones comerciales</li>
+          <li>Escribir el email de oído, sin deletrearlo: es la causa número uno de informes que no llegan</li>
+          <li>No anotar nada de la conversación personal, desaprovechando la única información que el sistema no captura solo</li>
+          <li>Delegar el alta en Recepción cuando el protocolo la asigna al Director</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>Ficha de Hermes completa, RGPD firmado y fechado, email verificado y hoja de datos entregada a Recepción. Solo entonces el paciente pasa al Doctor.</p>
@@ -787,6 +1340,100 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología de la historia clínica</p>
+        <dl class="mini">
+          <div><dt>0:00 – 1:00</dt><dd>Presentación por parte del Director y recapitulación del motivo de consulta.</dd></div>
+          <div><dt>1:00 – 5:00</dt><dd>Anamnesis médica general, con revisión sistemática por aparatos.</dd></div>
+          <div><dt>5:00 – 8:00</dt><dd>Anamnesis dental e historia de experiencias previas.</dd></div>
+          <div><dt>8:00 – 10:00</dt><dd>Explicación y firma del consentimiento radiológico.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Alertas médicas · qué obliga a modificar el plan</p>
+        <p>Detectar estas situaciones es el objetivo real de la anamnesis. Cada una condiciona el diagnóstico, la técnica o el calendario, y ninguna puede aparecer por sorpresa el día de la cirugía.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Hallazgo en la anamnesis</th><th>Implicación</th><th>Acción del Doctor</th></tr></thead>
+            <tbody>
+              <tr><td>Anticoagulantes o antiagregantes</td><td>Riesgo de sangrado en procedimientos invasivos</td><td>Registrar fármaco y pauta; coordinar con el médico prescriptor antes de cirugía</td></tr>
+              <tr><td>Bifosfonatos o antirresortivos</td><td>Riesgo de osteonecrosis maxilar</td><td>Vía, duración y fecha de inicio; valorar alternativas no quirúrgicas y consentimiento específico</td></tr>
+              <tr><td>Diabetes</td><td>Cicatrización comprometida y mayor riesgo periodontal</td><td>Preguntar por control glucémico reciente; condicionar el calendario quirúrgico</td></tr>
+              <tr><td>Cardiopatía o prótesis valvular</td><td>Posible indicación de profilaxis antibiótica</td><td>Verificar informe del cardiólogo antes de procedimientos con sangrado</td></tr>
+              <tr><td>Inmunosupresión o quimioterapia</td><td>Riesgo infeccioso y de retraso de cicatrización</td><td>Coordinación con el especialista responsable; posponer si procede</td></tr>
+              <tr><td>Alergias, en especial a látex o anestésicos</td><td>Riesgo de reacción durante el tratamiento</td><td>Marcar la alerta en Hermes de forma visible y preparar material alternativo</td></tr>
+              <tr><td>Embarazo o lactancia</td><td>Prudencia radiológica y farmacológica</td><td>Diferir pruebas no urgentes; documentar la decisión</td></tr>
+              <tr><td>Tabaquismo activo</td><td>Menor supervivencia implantaria y peor pronóstico periodontal</td><td>Informar del impacto en el pronóstico y reflejarlo en el IAC</td></tr>
+              <tr><td>Bruxismo</td><td>Sobrecarga de restauraciones e implantes</td><td>Incluir férula de descarga en el plan y advertir sobre garantías</td></tr>
+              <tr><td>Ansiedad u odontofobia</td><td>Abandono del tratamiento y mala experiencia</td><td>Valorar sedación consciente y citas más cortas; avisar a todo el equipo</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote">Esta tabla ordena el criterio de actuación del centro; no sustituye al juicio clínico del Doctor ni a la valoración del médico responsable de cada paciente.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Contenido mínimo del consentimiento radiológico</p>
+        <ul class="checks">
+          <li><span><b>Identificación</b> del paciente y del centro</span></li>
+          <li><span><b>Pruebas concretas</b> que se van a realizar: CBCT, OPG y, si procede, periapicales</span></li>
+          <li><span><b>Justificación diagnóstica</b> de cada una</span></li>
+          <li><span><b>Información sobre la dosis</b> y su comparación con la exposición natural</span></li>
+          <li><span><b>Riesgos y alternativas</b>, incluida la de no realizar la prueba</span></li>
+          <li><span><b>Declaración sobre embarazo</b> en pacientes en edad fértil</span></li>
+          <li><span><b>Firma del paciente</b> o representante, con fecha</span></li>
+          <li><span><b>Firma del profesional</b> que informa</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué decir y qué evitar</p>
+        <div class="saydont">
+          <div>
+            <h5>Diga</h5>
+            <ul>
+              <li>«Antes de mirarle la boca necesito conocer su salud general: muchas decisiones dependen de ello.»</li>
+              <li>«¿Toma alguna medicación, aunque le parezca que no tiene relación con los dientes?»</li>
+              <li>«La dosis de esta tomografía es muy baja, comparable a la radiación natural de un vuelo largo.»</li>
+              <li>«Le pido la firma porque toda prueba con radiación exige que usted esté informado.»</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Evite</h5>
+            <ul>
+              <li>Pasar la anamnesis como un cuestionario de sí o no, sin repreguntar.</li>
+              <li>«Esto no es nada, firme aquí.»</li>
+              <li>Minimizar la radiación con datos inventados.</li>
+              <li>Comentar en voz alta lo que hizo mal el centro anterior.</li>
+              <li>Empezar a diagnosticar antes de tener las pruebas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Embarazo</h5><p>Se difieren las pruebas no urgentes. Si existe urgencia, se documenta la justificación y se extreman las medidas de protección.</p></div>
+          <div><h5>Paciente pediátrico</h5><p>Anamnesis con el tutor presente, lenguaje adaptado y criterio radiológico más restrictivo.</p></div>
+          <div><h5>Claustrofobia</h5><p>Explicación previa del equipo, acompañamiento en sala y prueba en dos tiempos si es necesario.</p></div>
+          <div><h5>Barrera idiomática</h5><p>Consentimiento en un idioma que el paciente comprenda; si no es posible, intérprete identificado en la historia.</p></div>
+          <div><h5>Deterioro cognitivo</h5><p>Información y firma del representante legal, con el paciente presente y participando en lo posible.</p></div>
+          <div><h5>Trae pruebas recientes</h5><p>Se valoran; si son válidas y suficientes, se evita repetir la exposición y se deja constancia del motivo.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Registrar «sin antecedentes de interés» sin haber preguntado por medicación concreta</li>
+          <li>No marcar las alergias como alerta visible en Hermes</li>
+          <li>Firmar el consentimiento después de haber hecho las pruebas</li>
+          <li>Preguntar por miedos y no trasladárselos al resto del equipo</li>
+          <li>Repetir al paciente preguntas que ya respondió por teléfono o en el despacho</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>Historia médica y dental registradas, contraindicaciones identificadas y consentimiento radiológico firmado. Sin firma no hay radiología: la fase 5 no comienza.</p>
@@ -867,6 +1514,87 @@ footer.foot strong{color:var(--ink)}
           </ul>
         </div>
 
+      <div class="block">
+        <p class="block__title">Cronología de las pruebas</p>
+        <dl class="mini">
+          <div><dt>0:00 – 1:30</dt><dd>Explicación del recorrido de pruebas y retirada de objetos metálicos.</dd></div>
+          <div><dt>1:30 – 4:00</dt><dd>CBCT: posicionamiento, indicaciones y adquisición.</dd></div>
+          <div><dt>4:00 – 5:30</dt><dd>OPG.</dd></div>
+          <div><dt>5:30 – 9:30</dt><dd>Escaneado intraoral de ambas arcadas y registro de oclusión.</dd></div>
+          <div><dt>9:30 – 13:00</dt><dd>Serie fotográfica extraoral e intraoral.</dd></div>
+          <div><dt>13:00 – 15:00</dt><dd>Carga, etiquetado y verificación en Hermes.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Control de calidad por prueba</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Prueba</th><th>Preparación</th><th>Criterios de aceptación</th><th>Motivo habitual de repetición</th></tr></thead>
+            <tbody>
+              <tr><td>CBCT</td><td>Retirada de pendientes, piercings, prótesis removibles y horquillas; plano oclusal orientado</td><td>Volumen completo del área de interés, sin movimiento, cortes nítidos</td><td>Movimiento del paciente durante la adquisición</td></tr>
+              <tr><td>OPG</td><td>Mordida en posición, lengua en el paladar, hombros relajados</td><td>Simetría de ramas, cóndilos visibles, sin sombra de lengua</td><td>Lengua separada del paladar o posición adelantada</td></tr>
+              <tr><td>Escaneado intraoral</td><td>Campo seco, retractores, aspiración; escaneo por secuencia oclusal-lingual-vestibular</td><td>Arcadas completas sin huecos, oclusión registrada y coincidente</td><td>Saliva, sangrado gingival o secuencia interrumpida</td></tr>
+              <tr><td>Fotografía extraoral</td><td>Fondo neutro, cabeza en plano de Frankfort, iluminación homogénea</td><td>Encuadre reproducible, enfoque en el tercio medio facial</td><td>Inclinación de cabeza distinta entre tomas</td></tr>
+              <tr><td>Fotografía intraoral</td><td>Retractores, espejos calentados, secado y aspiración</td><td>Sin vaho, sin dedos ni retractores en cuadro, plano paralelo</td><td>Espejo empañado o saliva en la superficie dental</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Confort del paciente durante las pruebas</p>
+        <ul class="list">
+          <li>Anunciar cada prueba antes de empezarla: qué es, cuánto dura y qué va a notar</li>
+          <li>Avisar de los ruidos del equipo antes de que suenen</li>
+          <li>Pausas a demanda: el paciente sabe que puede levantar la mano y parar</li>
+          <li>Cuidado con la sensibilidad al frío del aire de secado y con los retractores en labios secos</li>
+          <li>Ofrecer enjuague y espejo al terminar; nadie vuelve al despacho despeinado o con restos</li>
+          <li>Explicar que verá sus imágenes en pantalla en unos minutos: convierte la prueba en expectativa</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Etiquetado y nomenclatura en Hermes</p>
+        <div class="sheet"><b>Formato:</b> AAAAMMDD_Apellido-Nombre_TIPO_detalle
+
+20260318_Perez-Ana_CBCT_maxilar-completo
+20260318_Perez-Ana_OPG
+20260318_Perez-Ana_IOS_arcada-superior
+20260318_Perez-Ana_FOTO-EO_frontal-sonrisa
+20260318_Perez-Ana_FOTO-IO_lateral-derecho
+20260318_Perez-Ana_CAM-IO_16-fisura</div>
+        <ul class="checks">
+          <li><span><b>Tipo de prueba</b> seleccionado en el desplegable, no escrito a mano</span></li>
+          <li><span><b>Fecha real</b> de adquisición</span></li>
+          <li><span><b>Observaciones</b> del auxiliar: incidencias, repeticiones, limitaciones</span></li>
+          <li><span><b>Asociación</b> a la ficha correcta, comprobada con dos datos identificativos</span></li>
+          <li><span><b>Apertura de prueba</b> desde el portátil de presentación</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Reflejo nauseoso intenso</h5><p>Escaneado por sectores con pausas, respiración por la nariz, sal en la punta de la lengua y, si es necesario, posponer la arcada superior.</p></div>
+          <div><h5>Movilidad reducida</h5><p>Equipos con posicionamiento sentado; si no es posible, se documenta la limitación y se busca alternativa diagnóstica.</p></div>
+          <div><h5>Restauraciones metálicas extensas</h5><p>Advertir de los artefactos en el CBCT y complementar con periapicales dirigidas.</p></div>
+          <div><h5>Paciente pediátrico</h5><p>Criterio radiológico restrictivo, protección adicional y acompañamiento del tutor.</p></div>
+          <div><h5>Prótesis removible</h5><p>Se escanea con y sin prótesis cuando el plan lo requiera, y se registra así en las observaciones.</p></div>
+          <div><h5>Prueba fallida</h5><p>Se repite solo si es imprescindible, se justifica en la historia y se informa al paciente sin dramatizar.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Dejar la carga de imágenes «para luego», con el consiguiente riesgo de presentación incompleta</li>
+          <li>Etiquetar como «foto1, foto2», imposibilitando la comparación en revisiones futuras</li>
+          <li>No avisar de los ruidos ni de la duración: el paciente se mueve y hay que repetir</li>
+          <li>Fotografías intraorales con vaho o con dedos en cuadro, que restan profesionalidad en la presentación</li>
+          <li>Subir imágenes a la ficha equivocada por no verificar identidad</li>
+        </ul>
+      </div>
         <div class="gate">
           <p class="eyebrow">Criterio de salida — bloqueante</p>
           <p>No se avanza a la fase siguiente sin confirmar que todas las pruebas están cargadas, etiquetadas, asociadas a la ficha y visibles desde el portátil de presentación. Una prueba que hay que repetir después destruye la percepción de precisión construida hasta aquí.</p>
@@ -945,6 +1673,66 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Agenda del briefing · cinco minutos cronometrados</p>
+        <dl class="mini">
+          <div><dt>0:00 – 1:30</dt><dd>Lectura del CBCT y de la OPG por parte del Doctor.</dd></div>
+          <div><dt>1:30 – 2:30</dt><dd>Perfil del paciente: expectativas, contexto, miedos, urgencia.</dd></div>
+          <div><dt>2:30 – 4:00</dt><dd>Definición del plan óptimo y de las alternativas.</dd></div>
+          <div><dt>4:00 – 5:00</dt><dd>Reparto: quién dice qué en las Fases 9 y 10.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Ficha de acuerdo del briefing</p>
+        <p>Se cumplimenta en Hermes durante el propio briefing. Es la garantía de que ambos profesionales salen con la misma versión.</p>
+        <div class="sheet"><b>Diagnóstico principal:</b> ......................................................
+<b>Diagnósticos secundarios:</b> ................................................
+<b>Plan óptimo</b>
+  Fase 1 (urgencias/preparación): ..........................................
+  Fase 2 (tratamiento principal): ..........................................
+  Fase 3 (estética/mantenimiento): .........................................
+<b>Alternativa razonable:</b> ....................................................
+<b>Duración estimada:</b> ......  <b>N.º de citas:</b> ......
+<b>Rango económico previsto:</b> ......  <b>Vía de pago probable:</b> ......
+<b>Riesgo principal del caso:</b> ...............................................
+<b>Objeción esperada:</b> .......................................................
+<b>Reparto:</b> explica el diagnóstico ......  presenta el plan ......  presupuesto ......</div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Reglas del briefing</p>
+        <ul class="list">
+          <li>Se hace siempre, aunque el caso parezca sencillo: los casos simples también se pierden por descoordinación</li>
+          <li>Se hace fuera del alcance auditivo del paciente y de la sala de espera</li>
+          <li>La decisión clínica es del Doctor; la estrategia de comunicación se acuerda entre ambos</li>
+          <li>Si el caso excede la cartera de servicios del centro, se decide aquí la derivación y quién la explica</li>
+          <li>Si el Doctor necesita más tiempo de estudio, se propone al paciente una segunda cita de presentación en 24–48 h, sin improvisar</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Discrepancia clínica</h5><p>Prevalece el criterio del Doctor. Si persiste la duda, se consulta a Dirección Médica antes de presentar nada.</p></div>
+          <div><h5>Caso fuera de cartera</h5><p>Se define la derivación, el profesional receptor y el mensaje al paciente. Derivar bien también fideliza.</p></div>
+          <div><h5>Hallazgo grave incidental</h5><p>Se decide cómo comunicarlo, con qué grado de urgencia y a qué especialista se remite el mismo día.</p></div>
+          <div><h5>Presupuesto muy elevado</h5><p>Se prepara desde ya la secuenciación por fases y la simulación de financiación, no en mitad de la Fase 10.</p></div>
+          <div><h5>Paciente con expectativas irreales</h5><p>Se acuerda qué se puede prometer y qué no, y quién marca ese límite delante del paciente.</p></div>
+          <div><h5>Caso interdisciplinar</h5><p>Se identifica qué especialistas intervienen y en qué orden, para que el plan tenga secuencia y calendario creíbles.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Saltarse el briefing por falta de tiempo, y contradecirse después delante del paciente</li>
+          <li>Cerrar un plan sin haber mirado el CBCT con detenimiento</li>
+          <li>Definir el precio antes que el plan clínico</li>
+          <li>No registrar el acuerdo, con lo que nadie puede auditar qué se decidió y por qué</li>
+          <li>Comentar el caso en pasillos o en zonas comunes</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>Existe un plan óptimo único, con fases, tiempos y alternativas, y un reparto claro de quién explica cada parte en las fases 9 y 10.</p>
@@ -1028,6 +1816,119 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología de la exploración</p>
+        <dl class="mini">
+          <div><dt>0:00 – 5:00</dt><dd>Diálogo de expectativas funcionales, estéticas y emocionales.</dd></div>
+          <div><dt>5:00 – 8:00</dt><dd>Exploración extraoral y de la ATM.</dd></div>
+          <div><dt>8:00 – 12:00</dt><dd>Exploración intraoral sistemática por cuadrantes y sondaje.</dd></div>
+          <div><dt>12:00 – 15:00</dt><dd>Cámara intraoral sobre las zonas clave, con explicación en pantalla.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Técnica de entrevista</p>
+        <ul class="list">
+          <li><strong>Pregunta abierta primero:</strong> «Cuénteme» produce más información que quince preguntas cerradas</li>
+          <li><strong>Silencio activo:</strong> tras la respuesta, esperar tres segundos; ahí aparece lo que de verdad preocupa</li>
+          <li><strong>Reformulación:</strong> «Si le he entendido bien, lo que más le molesta es…», y dejar que corrija</li>
+          <li><strong>Escala de importancia:</strong> «Del 0 al 10, ¿cuánto le afecta esto en su día a día?» ordena prioridades del plan</li>
+          <li><strong>Pregunta del deseo:</strong> «Si mañana esto estuviera resuelto, ¿qué haría distinto?» define el criterio de éxito del paciente</li>
+          <li><strong>Sin juicio:</strong> nunca reprochar la higiene, el abandono ni tratamientos anteriores</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Registro estructurado de expectativas</p>
+        <div class="sheet"><b>Motivo declarado:</b> «......................................................»
+<b>Prioridad funcional:</b> ..................................  <b>Intensidad 0–10:</b> ....
+<b>Prioridad estética:</b> ...................................  <b>Intensidad 0–10:</b> ....
+<b>Impacto emocional / social:</b> ..............................................
+<b>Criterio de éxito del paciente:</b> ..........................................
+<b>Experiencias previas relevantes:</b> .........................................
+<b>Miedos declarados:</b> .......................................................
+<b>Limitaciones:</b> tiempo ....  desplazamientos ....  agenda ....</div>
+        <p class="footnote">Este registro se cita literalmente en la Fase 9. Cuando el paciente escucha su propia frase en boca del profesional, la propuesta deja de ser un catálogo y pasa a ser su solución.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Protocolo sistemático de exploración</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Orden</th><th>Exploración</th><th>Se registra</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Extraoral: simetría, perfil, tercios faciales, línea de sonrisa</td><td>Descripción y fotografía</td></tr>
+              <tr><td class="num">2</td><td>ATM: apertura máxima, desviación, chasquidos, dolor a la palpación</td><td>Milímetros de apertura y hallazgos</td></tr>
+              <tr><td class="num">3</td><td>Musculatura y ganglios cervicofaciales</td><td>Normalidad o hallazgo</td></tr>
+              <tr><td class="num">4</td><td>Tejidos blandos: labios, mucosas, lengua, suelo de boca, paladar, orofaringe</td><td>Cribado de lesiones</td></tr>
+              <tr><td class="num">5</td><td>Periodontal: sondaje, sangrado, recesiones, movilidad, furcas</td><td>Periodontograma o índice registrado</td></tr>
+              <tr><td class="num">6</td><td>Dental por cuadrantes, diente a diente</td><td>Odontograma actualizado</td></tr>
+              <tr><td class="num">7</td><td>Restauraciones y prótesis existentes</td><td>Estado y pronóstico</td></tr>
+              <tr><td class="num">8</td><td>Oclusión: clase, guías, interferencias, facetas de desgaste</td><td>Hallazgos funcionales</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué capturar con la cámara intraoral</p>
+        <ul class="checks">
+          <li><span><b>Cada zona</b> que aparecerá en la presentación, sin excepción</span></li>
+          <li><span><b>Una imagen de contraste</b>: una zona sana del propio paciente junto a la afectada</span></li>
+          <li><span><b>Márgenes de restauraciones</b> antiguas con filtración o fractura</span></li>
+          <li><span><b>Encía inflamada o con recesión</b>, comparada con una zona estable</span></li>
+          <li><span><b>Desgastes y fisuras</b> visibles a alto aumento</span></li>
+          <li><span><b>Detalle estético</b> que el paciente ha mencionado como preocupación</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué decir y qué evitar</p>
+        <div class="saydont">
+          <div>
+            <h5>Diga</h5>
+            <ul>
+              <li>«¿Qué le gustaría poder hacer que ahora no puede?»</li>
+              <li>«Voy a enseñárselo en pantalla para que lo vea usted mismo.»</li>
+              <li>«Esto de aquí está perfectamente; lo que hay que atender es esta zona.»</li>
+              <li>«¿Hay algo que no le haya preguntado y que quiera contarme?»</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Evite</h5>
+            <ul>
+              <li>«¿Cómo ha llegado usted a esta situación?»</li>
+              <li>Dictar hallazgos en jerga delante del paciente sin traducirlos después.</li>
+              <li>Enseñar solo lo malo: sin referencia sana, la imagen no se entiende.</li>
+              <li>Adelantar precios o plazos en pleno gabinete.</li>
+              <li>Prometer resultados antes de haber terminado el análisis.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Dolor agudo</h5><p>Primero se alivia. La exploración completa puede esperar; el dolor, no. Se documenta la actuación de urgencia.</p></div>
+          <div><h5>Expectativa irreal</h5><p>Se dice con claridad y sin rodeos qué no es alcanzable, y se ofrece el mejor resultado realista con evidencia visual.</p></div>
+          <div><h5>Solo quiere estética</h5><p>Se explica que la salud precede a la estética y se secuencia el plan sin renunciar al objetivo del paciente.</p></div>
+          <div><h5>Lesión sospechosa</h5><p>Prioridad diagnóstica sobre cualquier plan estético; derivación y seguimiento documentados el mismo día.</p></div>
+          <div><h5>Paciente que se emociona</h5><p>Pausa, agua, tiempo. No se continúa la exploración hasta que el paciente lo indique.</p></div>
+          <div><h5>Acompañante que interviene</h5><p>Se le integra con respeto, pero las preguntas se dirigen siempre al paciente.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Explorar sin haber preguntado antes: se acierta el diagnóstico y se falla la propuesta</li>
+          <li>No registrar las palabras del paciente y perder el mejor argumento de la Fase 9</li>
+          <li>Capturar imágenes intraorales sin explicarlas: la evidencia sin relato no genera conciencia</li>
+          <li>Omitir el cribado de tejidos blandos por centrarse en el motivo de consulta</li>
+          <li>Dejar el odontograma incompleto y tener que reconstruirlo de memoria en la Fase 8</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>Expectativas registradas en la historia con literalidad, exploración completa documentada y capturas intraorales de todas las zonas que se mostrarán en la presentación.</p>
@@ -1113,6 +2014,94 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Estructura del IAC · plantilla</p>
+        <div class="sheet"><b>INFORME DE ANÁLISIS CLÍNICO</b>
+Clínica de Excelencia Médica Giraldo
+
+Paciente: ....................................  N.º de historia: ..........
+Fecha de exploración: ........................  Doctor: ..................
+
+<b>1. MOTIVO DE CONSULTA</b>
+En palabras del paciente: «..................................................»
+
+<b>2. ANTECEDENTES RELEVANTES</b>
+Médicos: ..............................  Dentales: .........................
+
+<b>3. HALLAZGOS CLÍNICOS</b>            [recuadro]
+Estado general de salud oral: ..............................................
+Hallazgos por sector / pieza: ..............................................
+Periodontal: ...............................................................
+Oclusión y ATM: ............................................................
+
+<b>4. HALLAZGOS RADIOLÓGICOS</b>        [recuadro]
+CBCT: ......................................................................
+OPG: .......................................................................
+Nivel óseo / estructuras: ..................................................
+
+<b>5. DIAGNÓSTICO</b>
+Principal: .................................................................
+Secundarios: ...............................................................
+Pronóstico: general ..........  por pieza ..............................
+
+<b>6. PLAN DE TRATAMIENTO PROPUESTO</b>  [recuadro]
+Fase 1 — urgencias y preparación: ..........................................
+Fase 2 — tratamiento principal: ............................................
+Fase 3 — estética y mantenimiento: .........................................
+Alternativas: ..............................................................
+Duración estimada: ..........  N.º de citas: ..........
+
+<b>7. OBSERVACIONES Y ADVERTENCIAS</b>
+Factores que condicionan el pronóstico: ....................................
+
+Firma del Doctor: ..............  N.º de colegiado: ..............  Fecha: ......</div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Reglas de redacción</p>
+        <ul class="list">
+          <li><strong>Objetivo, no comercial:</strong> se describe lo que se observa; los adjetivos de venta no entran en un documento clínico</li>
+          <li><strong>Sin promesas:</strong> «pronóstico favorable» sí; «resultado garantizado» no</li>
+          <li><strong>Trazable:</strong> cada afirmación debe poder señalarse en una imagen o en la exploración</li>
+          <li><strong>Comprensible:</strong> término técnico seguido de su equivalente en lenguaje llano</li>
+          <li><strong>Completo:</strong> también se recoge lo que está sano, porque delimita el alcance del tratamiento</li>
+          <li><strong>Coherente:</strong> el IAC, la historia de Hermes y el presupuesto deben decir lo mismo</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Validez, custodia y entrega</p>
+        <ul class="checks">
+          <li><span><b>Original firmado</b> para el paciente</span></li>
+          <li><span><b>Copia digitalizada</b> en la ficha de Hermes el mismo día</span></li>
+          <li><span><b>Trazabilidad de versiones:</b> si el plan cambia, se emite un IAC nuevo fechado, sin destruir el anterior</span></li>
+          <li><span><b>Correcciones</b> antes de la firma; nunca tachaduras sobre un documento firmado</span></li>
+          <li><span><b>Conservación</b> conforme a la normativa de historia clínica aplicable</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Hallazgo incidental grave</h5><p>Se refleja en el IAC con su prioridad, se comunica el mismo día y se documenta la derivación y el receptor.</p></div>
+          <div><h5>El paciente pide el informe para otra clínica</h5><p>Se entrega sin reticencias: es su derecho y refuerza la credibilidad del centro.</p></div>
+          <div><h5>Caso que requiere estudio adicional</h5><p>El IAC recoge el diagnóstico provisional y la prueba pendiente; se cita para completarlo.</p></div>
+          <div><h5>Plan modificado tras el presupuesto</h5><p>Nuevo IAC fechado y firmado; el presupuesto siempre cuelga de un informe vigente.</p></div>
+          <div><h5>Paciente que no acepta</h5><p>Recibe igualmente su IAC. Es el documento que le acompañará si vuelve dentro de un año.</p></div>
+          <div><h5>Menor de edad</h5><p>El informe se entrega y se explica al tutor, con el menor presente cuando sea adecuado.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Firmar un IAC redactado por otra persona sin haberlo leído entero</li>
+          <li>Copiar hallazgos de un caso anterior y dejar datos que no corresponden</li>
+          <li>Incluir importes en el IAC: el informe es clínico, el presupuesto es otro documento</li>
+          <li>Redactar en jerga cerrada, ilegible para el paciente y para cualquier revisor externo</li>
+          <li>Entregarlo a Recepción al final del día, cuando el paciente ya se ha marchado</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>IAC completo, revisado, firmado y en manos de Recepción. La propuesta económica de la Fase 10 se construirá exclusivamente sobre este documento.</p>
@@ -1210,6 +2199,108 @@ footer.foot strong{color:var(--ink)}
         </ul>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología de la presentación</p>
+        <dl class="mini">
+          <div><dt>−5 min</dt><dd>Verificación del material y de la sala por parte del Director.</dd></div>
+          <div><dt>0:00 – 2:00</dt><dd>Recapitulación: lo que el paciente contó, con sus propias palabras.</dd></div>
+          <div><dt>2:00 – 7:00</dt><dd>Evidencia: CBCT, OPG e imágenes intraorales, de lo general a lo concreto.</dd></div>
+          <div><dt>7:00 – 11:00</dt><dd>Plan de tratamiento por fases, tiempos y número de citas.</dd></div>
+          <div><dt>11:00 – 15:00</dt><dd>Preguntas, dudas y comprobación de que se ha entendido.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Guion de la presentación</p>
+        <div class="sheet"><b>1. RECAPITULAR</b>
+«Usted vino porque [motivo con sus palabras] y me dijo que lo que más le
+afecta es [prioridad]. Vamos a ver qué hemos encontrado.»
+
+<b>2. EMPEZAR POR LO SANO</b>
+«Antes de nada: esto de aquí está bien, y esto también. No hay que tocarlo.»
+
+<b>3. MOSTRAR EL PROBLEMA</b>
+«Mire esta imagen. Aquí debería verse [referencia normal] y en su caso
+vemos [hallazgo]. Se lo enseño también en la foto de su boca.»
+
+<b>4. EXPLICAR LA CAUSA</b>
+«Esto ocurre porque [mecanismo], y por eso usted nota [síntoma].»
+
+<b>5. PROYECTAR SIN TRATAMIENTO</b>
+«Si no hacemos nada, lo previsible es [evolución realista], y entonces la
+solución sería [más compleja y más cara].»
+
+<b>6. PRESENTAR LA SOLUCIÓN</b>
+«El plan tiene tres fases: [1], [2] y [3]. En total, [tiempo] y [n.º] citas.»
+
+<b>7. CERRAR EL CÍRCULO</b>
+«Volviendo a lo que usted me dijo al principio: esto le devuelve [criterio
+de éxito del paciente].»
+
+<b>8. COMPROBAR</b>
+«¿Me lo puede resumir usted con sus palabras, para asegurarme de que lo he
+explicado bien?»</div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Puesta en escena</p>
+        <ul class="list">
+          <li>Paciente y acompañante sentados frente a la pantalla, nunca de lado</li>
+          <li>El profesional se sienta junto al paciente, no enfrente: se mira juntos la imagen, no se le interroga</li>
+          <li>Puntero o marcado en pantalla; señalar con el dedo sobre el monitor distrae y ensucia</li>
+          <li>Una imagen por idea: navegar sin rumbo entre cortes agota la atención</li>
+          <li>Ritmo lento y pausas: el silencio después de una evidencia hace más que un argumento</li>
+          <li>Móviles en silencio, puerta cerrada, sin interrupciones del equipo salvo urgencia real</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Qué decir y qué evitar</p>
+        <div class="saydont">
+          <div>
+            <h5>Diga</h5>
+            <ul>
+              <li>«Se lo enseño y me dice si lo ve tan claro como yo.»</li>
+              <li>«Esto es lo que hay que tratar sí o sí; esto otro es opcional y puede esperar.»</li>
+              <li>«Hay una alternativa más sencilla; le explico qué gana y qué pierde con ella.»</li>
+              <li>«¿Qué duda le queda? Prefiero resolverla ahora que dentro de un mes.»</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Evite</h5>
+            <ul>
+              <li>«Si no se trata ya, va a perder todos los dientes.»</li>
+              <li>Acumular hallazgos sin jerarquía hasta abrumar al paciente.</li>
+              <li>Hablar diez minutos seguidos sin preguntar nada.</li>
+              <li>Desacreditar el trabajo de otros profesionales.</li>
+              <li>Mezclar el precio con el diagnóstico: cada cosa en su fase.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>El paciente se bloquea</h5><p>Se para, se resume en tres frases y se le ofrece continuar otro día con la documentación en la mano.</p></div>
+          <div><h5>Discute el diagnóstico</h5><p>Se agradece la pregunta y se vuelve a la imagen. La evidencia no se defiende: se enseña otra vez.</p></div>
+          <div><h5>Plan muy extenso</h5><p>Se presenta por fases y se acuerda empezar por lo urgente, sin exigir una decisión sobre el conjunto.</p></div>
+          <div><h5>Acompañante escéptico</h5><p>Se le implica de forma explícita y se le muestran las mismas imágenes: será quien opine en el coche de vuelta.</p></div>
+          <div><h5>Trae un presupuesto de otro centro</h5><p>Se compara alcance y contenido, nunca cifras sueltas: qué incluye cada plan, con qué materiales y qué garantía.</p></div>
+          <div><h5>Barrera idiomática</h5><p>Presentación más visual, frases cortas y comprobación frecuente de comprensión.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Empezar por el problema sin recapitular lo que el paciente contó</li>
+          <li>Presentar el plan sin haber comprobado que se entendió el diagnóstico</li>
+          <li>Usar el CBCT como espectáculo técnico en lugar de como prueba comprensible</li>
+          <li>Recurrir al miedo: sube la conversión inmediata y hunde la confianza a medio plazo</li>
+          <li>Terminar sin preguntar qué duda queda, y descubrirla en la llamada de seguimiento</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>El paciente puede explicar con sus palabras qué le ocurre y qué se propone hacer. Si no puede, la presentación no ha terminado.</p>
@@ -1319,6 +2410,134 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología del cierre</p>
+        <dl class="mini">
+          <div><dt>0:00 – 3:00</dt><dd>Recapitulación del plan aprobado clínicamente y del criterio de éxito del paciente.</dd></div>
+          <div><dt>3:00 – 8:00</dt><dd>Presupuesto línea a línea, con justificación de cada partida.</dd></div>
+          <div><dt>8:00 – 13:00</dt><dd>Opciones de pago y simulación de cuotas en vivo.</dd></div>
+          <div><dt>13:00 – 18:00</dt><dd>Preguntas, objeciones y ajuste de la propuesta.</dd></div>
+          <div><dt>18:00 – 20:00</dt><dd>Decisión, firma o acuerdo de seguimiento, y registro en Hermes.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Estructura del presupuesto</p>
+        <div class="sheet"><b>PRESUPUESTO DE TRATAMIENTO</b>          N.º ..........  Fecha: ..........
+Paciente: ....................................  Historia: ..........
+Basado en el IAC de fecha ..........  firmado por Dr./Dra. ..............
+
+<b>FASE 1 — Urgencias y preparación</b>
+  Concepto ....................... Piezas ....... Uds ..... Importe .......
+<b>FASE 2 — Tratamiento principal</b>
+  Concepto ....................... Piezas ....... Uds ..... Importe .......
+<b>FASE 3 — Estética y mantenimiento</b>
+  Concepto ....................... Piezas ....... Uds ..... Importe .......
+
+  Subtotal .......  Bonificación por pago anticipado .......  <b>TOTAL .......</b>
+
+<b>INCLUYE:</b> planificación digital, materiales, laboratorio, revisiones del plan
+y seguimiento durante el tratamiento.
+<b>NO INCLUYE:</b> tratamientos no descritos, complicaciones ajenas al plan,
+mantenimientos posteriores al alta.
+<b>GARANTÍA:</b> según condiciones vigentes entregadas por escrito.
+<b>VALIDEZ DEL PRESUPUESTO:</b> .......... días.
+
+Firma de aceptación del paciente ..............  Fecha ..........</div>
+        <p class="footnote">Un presupuesto sin apartado de exclusiones genera conflictos más adelante. Lo que no está escrito, el paciente lo da por incluido, y con razón.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Financiación · operativa</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Paso</th><th>Qué se hace</th><th>Documentación</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Simulación de cuota delante del paciente, con importe total y número de plazos</td><td>Impresión o pantalla de la simulación</td></tr>
+              <tr><td class="num">2</td><td>Información precontractual: importe financiado, plazos, intereses y coste total</td><td>Documento de la entidad</td></tr>
+              <tr><td class="num">3</td><td>Solicitud con los datos del titular</td><td>DNI, justificante de ingresos según entidad</td></tr>
+              <tr><td class="num">4</td><td>Respuesta de la entidad</td><td>Aprobación o denegación registrada en Hermes</td></tr>
+              <tr><td class="num">5</td><td>Firma del contrato y calendario de pagos</td><td>Copia al paciente y copia digitalizada</td></tr>
+              <tr><td class="num">6</td><td>Vinculación del calendario de pagos al calendario clínico</td><td>Agenda de tratamiento</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="list">
+          <li>El coste total y el número de cuotas se dicen siempre en voz alta, aunque el paciente solo pregunte por la mensualidad</li>
+          <li>Ninguna condición financiera se promete antes de la respuesta de la entidad</li>
+          <li>Si se deniega, se ofrece alternativa el mismo día: plan por fases, otra entidad o aplazamiento acordado</li>
+          <li>La firma de financiación nunca se plantea como requisito para recibir el diagnóstico</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Objeciones · qué significan realmente</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Lo que dice</th><th>Lo que suele significar</th><th>Respuesta</th><th>Error a evitar</th></tr></thead>
+            <tbody>
+              <tr><td>«Es muy caro»</td><td>No ve la relación entre lo que cuesta y lo que recibe</td><td>Volver al desglose y al alcance; ofrecer fases o financiación</td><td>Bajar el precio de inmediato: invalida el valor presentado</td></tr>
+              <tr><td>«Necesito pensarlo»</td><td>Queda una duda concreta sin resolver</td><td>«¿Qué parte concretamente quiere pensar?» y resolver esa</td><td>Aceptar la frase sin explorarla</td></tr>
+              <tr><td>«Tengo que consultarlo»</td><td>La decisión es compartida</td><td>Ofrecer llamada conjunta o segunda cita con esa persona</td><td>Presionar para decidir sin quien decide</td></tr>
+              <tr><td>«Voy a comparar»</td><td>No sabe en qué se diferencian los presupuestos</td><td>Dar criterios de comparación por escrito: alcance, materiales, garantía, pruebas incluidas</td><td>Criticar a la competencia</td></tr>
+              <tr><td>«Me lo pensaré para más adelante»</td><td>No percibe urgencia o teme el tratamiento</td><td>Explicar qué se agrava con el tiempo y qué no; acordar revisión</td><td>Inventar una urgencia que no existe</td></tr>
+              <tr><td>«¿No hay algo más sencillo?»</td><td>Busca una entrada más asumible</td><td>Presentar la alternativa real con sus límites, por escrito</td><td>Improvisar un plan B no validado por el Doctor</td></tr>
+              <tr><td>«Me da miedo»</td><td>Experiencia previa o anticipación del dolor</td><td>Sedación consciente, citas cortas, acompañamiento, testimonios</td><td>Restar importancia al miedo</td></tr>
+              <tr><td>Silencio</td><td>Está calculando o abrumado</td><td>Callar y esperar; luego preguntar qué le ronda</td><td>Llenar el silencio con más argumentos</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Señales de decisión</p>
+        <div class="grid2">
+          <div>
+            <h4>Señales de que quiere avanzar</h4>
+            <ul class="list">
+              <li>Pregunta por fechas, duración o bajas laborales</li>
+              <li>Pregunta por cuidados posteriores o por comer</li>
+              <li>Se dirige al acompañante buscando confirmación</li>
+              <li>Repite en voz alta la cuota mensual</li>
+              <li>Pregunta quién realizará el tratamiento</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Señales de que aún no</h4>
+            <ul class="list">
+              <li>Vuelve una y otra vez al importe total sin escuchar la respuesta</li>
+              <li>Consulta el móvil de forma reiterada</li>
+              <li>Responde con monosílabos tras haber conversado con soltura</li>
+              <li>Pide documentación «para llevársela» sin más preguntas</li>
+              <li>Menciona a alguien ausente por primera vez</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footnote">Ante señales de que aún no, el objetivo deja de ser cerrar hoy y pasa a ser cerrar bien: acordar el siguiente paso con fecha y dejarlo registrado.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Financiación denegada</h5><p>Se comunica con discreción y sin juicio, y se ofrece alternativa el mismo día.</p></div>
+          <div><h5>Seguro dental</h5><p>Se comprueba cobertura real y se presenta el presupuesto completo, indicando qué parte cubre la póliza.</p></div>
+          <div><h5>Paga un tercero</h5><p>El titular del pago firma; el paciente sigue siendo el titular de la información clínica.</p></div>
+          <div><h5>Quiere empezar por lo urgente</h5><p>Se acepta y se documenta el plan completo, con revisión de las fases pendientes en fecha acordada.</p></div>
+          <div><h5>Regatea el precio</h5><p>No se negocian tarifas; se negocia alcance, secuencia y forma de pago.</p></div>
+          <div><h5>Acepta y luego se arrepiente</h5><p>Se respeta el desistimiento, se documenta y se mantiene la relación abierta sin reproches.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Presentar el importe total sin haber recapitulado el plan clínico</li>
+          <li>Entregar el presupuesto en papel y callarse mientras el paciente lo lee solo</li>
+          <li>Ofrecer descuento antes de que exista objeción de precio</li>
+          <li>Prometer condiciones de financiación sin aprobación de la entidad</li>
+          <li>Cerrar la visita sin registrar el motivo real de no conversión</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>El estado de la PV está cerrado en Hermes con importes y motivo. Un «no convertido» sin motivo registrado es un caso perdido: sin él, la Fase 12 no puede diseñar seguimiento alguno.</p>
@@ -1381,6 +2600,89 @@ footer.foot strong{color:var(--ink)}
         </div>
       </div>
 
+      <div class="block">
+        <p class="block__title">Cronología del cierre administrativo</p>
+        <dl class="mini">
+          <div><dt>0:00 – 1:30</dt><dd>Entrega de la carpeta Giraldo y repaso de su contenido.</dd></div>
+          <div><dt>1:30 – 3:00</dt><dd>Programación de la siguiente cita o de la tarea de seguimiento.</dd></div>
+          <div><dt>3:00 – 4:00</dt><dd>Instrucciones previas y confirmación de canal de contacto.</dd></div>
+          <div><dt>4:00 – 5:00</dt><dd>Escaneo y subida de la documentación firmada.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Contenido exacto de la carpeta Giraldo</p>
+        <ul class="checks">
+          <li><span><b>Libro Giraldo</b> — presentación del centro, equipo y tecnología</span></li>
+          <li><span><b>Copia del IAC</b> firmado por el Doctor</span></li>
+          <li><span><b>Presupuesto</b> detallado, con validez y exclusiones</span></li>
+          <li><span><b>Impresión de la OPG</b></span></li>
+          <li><span><b>Selección de fotografías</b> clínicas relevantes</span></li>
+          <li><span><b>Condiciones de garantía</b> por escrito</span></li>
+          <li><span><b>Tarjeta de contacto directo</b> con teléfono y WhatsApp</span></li>
+          <li><span><b>Instrucciones previas</b> si ya hay cita de tratamiento</span></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Instrucciones previas según el tratamiento</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Tipo de cita</th><th>Qué se indica al paciente</th><th>Aviso adicional</th></tr></thead>
+            <tbody>
+              <tr><td>Cirugía o implantes</td><td>Comer antes salvo indicación contraria, medicación pautada, acudir acompañado, ropa cómoda</td><td>Prever reposo el resto del día</td></tr>
+              <tr><td>Sedación consciente</td><td>Ayuno según pauta, acompañante obligatorio, no conducir</td><td>Confirmación telefónica 24 h antes</td></tr>
+              <tr><td>Endodoncia</td><td>Prever una a dos horas de sillón, analgesia previa si hay dolor</td><td>Posible sensibilidad posterior</td></tr>
+              <tr><td>Periodoncia</td><td>Higiene reforzada los días previos</td><td>Sensibilidad transitoria tras el raspado</td></tr>
+              <tr><td>Prótesis y estética</td><td>Traer fotografías de referencia si las tiene</td><td>Prever pruebas intermedias</td></tr>
+              <tr><td>Ortodoncia</td><td>Higiene y registros previos</td><td>Calendario de revisiones</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Digitalización · nomenclatura y control</p>
+        <div class="sheet"><b>Formato:</b> AAAAMMDD_Apellido-Nombre_DOCUMENTO
+
+20260318_Perez-Ana_DATOS-PERSONALES
+20260318_Perez-Ana_RGPD
+20260318_Perez-Ana_ANAMNESIS
+20260318_Perez-Ana_CONS-RADIOLOGICO
+20260318_Perez-Ana_IAC
+20260318_Perez-Ana_PRESUPUESTO-ACEPTADO
+20260318_Perez-Ana_FINANCIACION</div>
+        <ul class="list">
+          <li>Escaneo en color, legible, sin páginas giradas ni recortadas</li>
+          <li>Todas las páginas del documento, incluidas las que solo llevan firma</li>
+          <li>Comprobación de que el archivo abre correctamente antes de archivar el papel</li>
+          <li>Original en papel al archivo físico según el circuito del centro</li>
+          <li>Cierre de jornada: repaso de las PV del día contra la tabla de trazabilidad</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>Se marcha sin firmar</h5><p>Se entrega igualmente la carpeta y se registra el estado como pendiente de decisión, con fecha de seguimiento.</p></div>
+          <div><h5>Financiación en trámite</h5><p>Se programa la cita de forma provisional y se documenta la condición; la subida del contrato se completa al recibirlo.</p></div>
+          <div><h5>Documento olvidado por el paciente</h5><p>Se digitaliza lo firmado, se anota lo pendiente y se acuerda cómo se completará.</p></div>
+          <div><h5>Cita urgente el mismo día</h5><p>Prioridad clínica; la digitalización se completa igualmente antes del cierre de la jornada.</p></div>
+          <div><h5>Escáner averiado</h5><p>Captura con dispositivo autorizado del centro y subida inmediata; nunca desde un móvil personal.</p></div>
+          <div><h5>Paciente que pide todo en digital</h5><p>Se envía por el canal verificado en la Fase 3 y se registra el envío.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Dejar la digitalización para el día siguiente</li>
+          <li>Escanear el IAC sin la firma del Doctor</li>
+          <li>Entregar la carpeta incompleta cuando el paciente no ha aceptado</li>
+          <li>Programar la cita sin dar instrucciones previas</li>
+          <li>No comprobar que el archivo subido corresponde a la ficha correcta</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>Los siete documentos están en la ficha, la siguiente cita está en agenda (o la tarea de seguimiento creada) y la carpeta Giraldo está en manos del paciente.</p>
@@ -1512,6 +2814,104 @@ footer.foot strong{color:var(--ink)}
         </ul>
       </div>
 
+      <div class="block">
+        <p class="block__title">Reglas de contacto</p>
+        <ul class="list">
+          <li>Horario de llamadas: laborables, entre las 9:00 y las 20:00; nunca en fin de semana salvo urgencia clínica</li>
+          <li>Máximo dos intentos por acción programada, separados por al menos un día</li>
+          <li>Tras un intento fallido, mensaje breve identificándose y ofreciendo devolver la llamada</li>
+          <li>Si el paciente pide no ser contactado, se registra y se detiene toda la cadencia, en todos los canales</li>
+          <li>Cada contacto se registra con fecha, canal, resultado y siguiente paso</li>
+          <li>El seguimiento es del Director; delegarlo en quien no conoce el caso destruye su valor</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Plantillas de comunicación</p>
+        <div class="sheet"><b>EMAIL DE BIENVENIDA — día 1, paciente convertido</b>
+Asunto: Su plan de tratamiento en Excelencia Médica Giraldo
+
+Estimado/a [Nombre]:
+Gracias por su confianza. Le resumimos lo acordado:
+· Plan: [fases principales]
+· Primera cita: [fecha y hora]
+· Instrucciones previas: [detalle]
+Adjuntamos su informe de análisis clínico y el presupuesto aceptado.
+Para cualquier duda: [teléfono] · [WhatsApp].
+Un cordial saludo. Equipo de Excelencia Médica Giraldo.
+
+<b>WHATSAPP — 48 h antes de la cita</b>
+Hola [Nombre], le recordamos su cita el [día] a las [hora] en Excelencia
+Médica Giraldo. [Instrucción previa]. Si necesita cambiarla, respóndanos a
+este mensaje. ¡Le esperamos!
+
+<b>EMAIL — no convertido, objeción económica, día 7</b>
+Asunto: Opciones para su tratamiento
+
+Estimado/a [Nombre]:
+Tras su visita hemos revisado su caso y podemos ofrecerle [opción concreta:
+financiación a X meses / plan por fases]. Le adjuntamos la simulación.
+Si le parece bien, le llamamos [día] a las [hora] para comentarlo.
+Quedamos a su disposición.
+
+<b>SMS/WHATSAPP — reactivación, día 180</b>
+Hola [Nombre], soy [Nombre] de Excelencia Médica Giraldo. Hace unos meses
+estudiamos su caso. ¿Le gustaría que revisáramos cómo está la situación?
+La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Encuesta de satisfacción y reseñas</p>
+        <ul class="list">
+          <li><strong>Pregunta principal:</strong> «Del 0 al 10, ¿qué probabilidad hay de que nos recomiende a un amigo o familiar?»</li>
+          <li><strong>Pregunta abierta:</strong> «¿Qué es lo que más y lo que menos le ha gustado de su visita?»</li>
+          <li><strong>Momento:</strong> tras la PV para el circuito, y al alta para el tratamiento</li>
+          <li><strong>Puntuaciones de 0 a 6:</strong> llamada del Director en 48 h para entender qué falló</li>
+          <li><strong>Puntuaciones de 9 a 10:</strong> invitación a dejar reseña pública y al programa de referidos</li>
+          <li><strong>Regla ética:</strong> se invita a todos los pacientes por igual y nunca se ofrece contraprestación por una reseña positiva</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Programa «Recomienda Giraldo»</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Paso</th><th>Acción</th><th>Responsable</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Invitación al programa en el momento de mayor satisfacción: alta o resultado visible</td><td>Director</td></tr>
+              <tr><td class="num">2</td><td>Entrega de material para compartir con el código del paciente</td><td>Recepción</td></tr>
+              <tr><td class="num">3</td><td>Registro del referido en la ficha de quien recomienda</td><td>Recepción</td></tr>
+              <tr><td class="num">4</td><td>Agradecimiento a quien recomienda en cuanto el referido acude</td><td>Director</td></tr>
+              <tr><td class="num">5</td><td>Aplicación del incentivo según las condiciones vigentes</td><td>Dirección</td></tr>
+              <tr><td class="num">6</td><td>Medición: referidos por paciente y conversión de referidos</td><td>Dirección</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote">El referido es el paciente con mayor tasa de conversión y menor coste de captación de todo el sistema. Merece un circuito tan cuidado como una campaña.</p>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Casos especiales</p>
+        <div class="special special--3">
+          <div><h5>No coge el teléfono</h5><p>Dos intentos, mensaje identificándose y cambio de canal antes de dar por perdido el contacto.</p></div>
+          <div><h5>Responde con enfado</h5><p>Escucha sin defenderse, se registra el motivo y lo asume el Director; nunca se responde por escrito en caliente.</p></div>
+          <div><h5>Pide no ser contactado</h5><p>Baja inmediata de la cadencia en todos los canales, registrada con fecha.</p></div>
+          <div><h5>Se fue a otro centro</h5><p>Se agradece la sinceridad, se pregunta qué pesó en la decisión y se cierra el caso con esa información.</p></div>
+          <div><h5>Vuelve meses después</h5><p>Se revisa la vigencia del diagnóstico; si han pasado más de seis meses, se repiten las pruebas que corresponda.</p></div>
+          <div><h5>Reseña negativa pública</h5><p>Respuesta institucional, breve y sin datos clínicos, ofreciendo resolverlo por teléfono. La responde Dirección.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Errores frecuentes en esta fase</p>
+        <ul class="list">
+          <li>Llamar solo a los convertidos: el mayor recorrido de conversión está en los demás</li>
+          <li>Repetir el mismo mensaje cada quince días hasta agotar al paciente</li>
+          <li>Enviar contenido genérico que no responde a la objeción registrada</li>
+          <li>No registrar el resultado de cada contacto, con lo que el siguiente empieza de cero</li>
+          <li>Dejar la cadencia en manos de quien no participó en la visita</li>
+        </ul>
+      </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
         <p>Todo paciente sale del circuito con una tarea futura asignada en Hermes: cita de tratamiento si aceptó, o re-contacto con fecha y responsable si no. Ninguna PV queda sin siguiente paso.</p>
@@ -1520,11 +2920,157 @@ footer.foot strong{color:var(--ink)}
   </div></div>
 </article>
 
+<!-- ===================== ESTÁNDARES ===================== -->
+<section class="section" id="estandares">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">05 · Estándares transversales</p>
+      <h2>Lo que se cumple en las doce fases</h2>
+      <p>Reglas que no pertenecen a ninguna fase concreta porque rigen en todas. Un fallo aquí no arruina un paso: arruina la percepción completa del centro.</p>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Comunicación</h3>
+    <div class="saydont" style="max-width:none">
+      <div>
+        <h5>Lenguaje preferido</h5>
+        <ul>
+          <li>«Su tratamiento», «su plan», «su informe»</li>
+          <li>«Vamos a…», que incluye al paciente en la decisión</li>
+          <li>«Lo que le proponemos» en lugar de «lo que hay que hacer»</li>
+          <li>«¿Me he explicado bien?» en lugar de «¿lo ha entendido?»</li>
+          <li>Nombre propio del paciente, y de usted salvo que él proponga otra cosa</li>
+          <li>Cifras exactas: «doce semanas», «cuatro citas», «tres años de garantía»</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Lenguaje que se evita</h5>
+        <ul>
+          <li>«El caso», «la boca de las dos y media», «el implante de la 3»</li>
+          <li>«Esto es carísimo, ya lo sé»: nadie desactiva su propio presupuesto</li>
+          <li>«No se preocupe» sin explicar por qué no debe preocuparse</li>
+          <li>«Le voy a ser sincero», que sugiere que antes no lo era</li>
+          <li>Diminutivos clínicos: «una limpiecita», «un empastito»</li>
+          <li>Jerga sin traducir: «vamos a ferulizar la 46 por distal»</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="list" style="margin-top:1.2rem;max-width:none">
+      <li><strong>Comunicación no verbal:</strong> sentarse a la altura del paciente, mirarle al hablar y no a la pantalla, mascarilla retirada en las conversaciones de despacho</li>
+      <li><strong>Confidencialidad:</strong> ningún nombre, diagnóstico ni importe se pronuncia en recepción, pasillos ni sala de espera</li>
+      <li><strong>Coherencia del equipo:</strong> nadie contradice en público a un compañero; las discrepancias se resuelven fuera de la vista del paciente</li>
+      <li><strong>Puntualidad informada:</strong> todo retraso se comunica antes de que el paciente lo pregunte</li>
+      <li><strong>Idioma:</strong> se atiende en la lengua que el paciente elija entre las disponibles, y se registra cuál es</li>
+    </ul>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Entorno físico</h3>
+    <div class="grid2">
+      <div>
+        <p class="block__title">Apertura de la clínica</p>
+        <ul class="checks">
+          <li><span><b>Recepción</b> despejada, sin documentación visible del día anterior</span></li>
+          <li><span><b>Sala VIP</b> ordenada y repuesta</span></li>
+          <li><span><b>Gabinetes</b> montados y con material estéril disponible</span></li>
+          <li><span><b>Equipos de imagen</b> encendidos y comprobados</span></li>
+          <li><span><b>Portátil de presentación</b> cargado y con las sesiones del día abiertas</span></li>
+          <li><span><b>Agenda del día</b> revisada en equipo: quién viene, por qué y quién le atiende</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="block__title">Cierre de la clínica</p>
+        <ul class="checks">
+          <li><span><b>Todas las PV del día</b> cerradas en Hermes con su estado</span></li>
+          <li><span><b>Documentación firmada</b> escaneada y subida</span></li>
+          <li><span><b>Tareas de seguimiento</b> creadas con fecha y responsable</span></li>
+          <li><span><b>Papel con datos personales</b> archivado o destruido</span></li>
+          <li><span><b>Pantallas cerradas</b> y equipos bloqueados</span></li>
+          <li><span><b>Incidencias del día</b> anotadas para el comité semanal</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Seguridad clínica</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Ámbito</th><th>Estándar del centro</th><th>Responsable</th></tr></thead>
+        <tbody>
+          <tr><td>Esterilización</td><td>Circuito sucio-limpio diferenciado, control de ciclos con registro y trazabilidad por paciente</td><td>Auxiliar</td></tr>
+          <tr><td>Protección radiológica</td><td>Justificación de cada prueba, dosis mínima razonablemente alcanzable y consentimiento previo firmado</td><td>Doctor</td></tr>
+          <tr><td>Identificación del paciente</td><td>Verificación con dos datos antes de cualquier prueba o registro</td><td>Quien ejecuta</td></tr>
+          <tr><td>Alergias y alertas</td><td>Marcadas de forma visible en Hermes y revisadas al inicio de cada cita</td><td>Doctor</td></tr>
+          <tr><td>Emergencias médicas</td><td>Botiquín revisado, oxígeno accesible, equipo formado y protocolo de aviso a emergencias visible</td><td>Dirección</td></tr>
+          <tr><td>Residuos</td><td>Segregación conforme a normativa y retirada por gestor autorizado</td><td>Auxiliar</td></tr>
+          <tr><td>Mantenimiento de equipos</td><td>Calendario de revisiones y registro de incidencias por equipo</td><td>Dirección</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Protección de datos en el día a día</h3>
+    <ul class="list" style="max-width:none">
+      <li>Pantallas bloqueadas al levantarse; ninguna ficha abierta a la vista de otro paciente</li>
+      <li>Monitores de recepción orientados de forma que no sean legibles desde el mostrador</li>
+      <li>El papel con datos personales no se queda en superficies comunes ni en el escáner</li>
+      <li>Comunicaciones por WhatsApp solo desde el número corporativo y sin contenido clínico sensible</li>
+      <li>Las imágenes clínicas no salen del sistema del centro ni se envían desde dispositivos personales</li>
+      <li>Cualquier pérdida, envío erróneo o acceso indebido se comunica a Dirección el mismo día para valorar si constituye una brecha notificable</li>
+      <li>Las bajas de personal implican revocación inmediata de accesos</li>
+    </ul>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Agenda y tiempos</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Regla</th><th>Detalle</th></tr></thead>
+        <tbody>
+          <tr><td>Reserva de circuito completo</td><td>Una PV bloquea gabinete, sala de imagen y despacho; no se solapa con otra PV</td></tr>
+          <tr><td>Colchón entre visitas</td><td>Quince minutos entre PV para reponer sala, cargar imágenes y hacer el briefing</td></tr>
+          <tr><td>Máximo de PV por franja</td><td>Definido por Dirección según equipo disponible; superarlo degrada el protocolo</td></tr>
+          <tr><td>Confirmación previa</td><td>Recordatorio 48 h antes y confirmación activa del paciente</td></tr>
+          <tr><td>Huecos de urgencia</td><td>Reserva diaria protegida para pacientes con dolor</td></tr>
+          <tr><td>Ausencias</td><td>Llamada el mismo día, registro del motivo y reprogramación inmediata</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CASOS ===================== -->
+<section class="section" id="casos">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">06 · Casos especiales</p>
+      <h2>Cuando el circuito estándar no encaja</h2>
+      <p>El protocolo cubre la visita típica. Estas situaciones aparecen cada semana y exigen adaptar el recorrido sin renunciar a ninguna de sus garantías: diagnóstico completo, documentación firmada y registro trazable.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Situación</th><th>Qué cambia en el circuito</th><th>Qué no cambia nunca</th></tr></thead>
+        <tbody>
+          <tr><td>Urgencia con dolor</td><td>Se antepone la exploración dirigida y el alivio del dolor; el circuito completo se realiza en la misma visita o en una segunda cita cercana</td><td>Consentimiento radiológico, registro clínico e informe</td></tr>
+          <tr><td>Paciente pediátrico</td><td>Tutor presente, lenguaje adaptado, tiempos más cortos y criterio radiológico restrictivo</td><td>Historia médica completa y firma del representante legal</td></tr>
+          <tr><td>Odontofobia severa</td><td>Visita en dos tiempos, sin entrar en gabinete el primer día si es necesario; valoración de sedación</td><td>Diagnóstico completo antes de cualquier propuesta</td></tr>
+          <tr><td>Movilidad reducida o discapacidad</td><td>Ruta accesible, tour sustituible, apoyos de posicionamiento en las pruebas</td><td>Calidad diagnóstica; si una prueba no es viable, se documenta y se busca alternativa</td></tr>
+          <tr><td>Paciente internacional</td><td>Planificación adaptada a fechas de estancia, información en idioma comprensible, previsión de seguimiento a distancia</td><td>Documentación firmada y comprendida</td></tr>
+          <tr><td>Segunda opinión</td><td>Se revisan informes previos y se explica el propio diagnóstico sin descalificar al centro anterior</td><td>Informe propio, firmado y entregado</td></tr>
+          <tr><td>Tratamiento en curso en otro centro</td><td>Se delimita con precisión qué se asume y qué no, y desde qué momento</td><td>Registro escrito del alcance asumido</td></tr>
+          <tr><td>Paciente oncológico o inmunodeprimido</td><td>Coordinación con el especialista responsable antes de planificar; calendario condicionado</td><td>Consentimiento informado específico</td></tr>
+          <tr><td>Embarazo</td><td>Se difieren pruebas y tratamientos no urgentes; se prioriza el control de la salud gingival</td><td>Justificación documentada de cada decisión</td></tr>
+          <tr><td>Acude por promoción o campaña</td><td>Se cumple exactamente lo prometido en la campaña y se registra cuál era</td><td>El diagnóstico manda sobre la oferta: nunca se ajusta el plan a la promoción</td></tr>
+          <tr><td>Paciente con seguro dental</td><td>Se comprueba cobertura antes del presupuesto y se explica qué parte cubre la póliza</td><td>Presupuesto completo y transparente</td></tr>
+          <tr><td>Paciente derivado por un profesional</td><td>Se informa al derivante del diagnóstico, con autorización del paciente</td><td>Confidencialidad y consentimiento para compartir</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Criterio general</p>
+      <p>Ante una situación no prevista, se aplica el orden de prioridades del centro: <strong>seguridad del paciente</strong>, después <strong>calidad del diagnóstico</strong>, después <strong>experiencia</strong> y solo al final <strong>conversión</strong>. Cualquier decisión que altere ese orden debe consultarse con Dirección antes de tomarla.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== TRAZABILIDAD ===================== -->
 <section class="section" id="trazabilidad">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">04 · Trazabilidad</p>
+      <p class="eyebrow">07 · Trazabilidad</p>
       <h2>Qué queda registrado, quién responde y cuándo</h2>
       <p>Resumen operativo de la evidencia que genera una Primera Visita. Sirve como lista de verificación de cierre de jornada: si una PV del día no cumple todas las filas, no está cerrada.</p>
     </div>
@@ -1554,7 +3100,7 @@ footer.foot strong{color:var(--ink)}
 <section class="section" id="indicadores">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">05 · Cuadro de mando</p>
+      <p class="eyebrow">08 · Cuadro de mando</p>
       <h2>Cómo se mide si el protocolo funciona</h2>
       <p>Seis indicadores revisados en el comité mensual de dirección. Miden ejecución (¿se cumple el protocolo?) y resultado (¿produce lo que debe?). Los objetivos son propuestas de partida; dirección los ajusta con el histórico real del centro.</p>
     </div>
@@ -1571,9 +3117,111 @@ footer.foot strong{color:var(--ink)}
         </tbody>
       </table>
     </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Rúbrica de auditoría de una Primera Visita</h3>
+    <p style="color:var(--ink-2);max-width:66ch">Dirección audita cada mes una muestra de PV contra esta rúbrica, revisando la ficha en Hermes y, cuando procede, acompañando la visita. Cien puntos posibles; por debajo de 80 se activa plan de refuerzo con el equipo del centro.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Criterio</th><th>Qué se comprueba</th><th>Peso</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Datos de captación</td><td>Motivo de consulta redactado y origen de marketing específico</td><td class="num">10</td><td><span class="bar"><i style="width:10%"></i></span></td></tr>
+          <tr><td>Documentación firmada</td><td>Los siete documentos, completos y digitalizados el mismo día</td><td class="num">20</td><td><span class="bar"><i style="width:20%"></i></span></td></tr>
+          <tr><td>Historia clínica</td><td>Anamnesis completa, alergias y alertas marcadas</td><td class="num">15</td><td><span class="bar"><i style="width:15%"></i></span></td></tr>
+          <tr><td>Pruebas diagnósticas</td><td>Serie completa, etiquetada y de calidad aceptable</td><td class="num">15</td><td><span class="bar"><i style="width:15%"></i></span></td></tr>
+          <tr><td>IAC</td><td>Firmado, coherente con la historia y entregado al paciente</td><td class="num">15</td><td><span class="bar"><i style="width:15%"></i></span></td></tr>
+          <tr><td>Registro de conversión</td><td>Estado, importes y motivo de no conversión cumplimentados</td><td class="num">10</td><td><span class="bar"><i style="width:10%"></i></span></td></tr>
+          <tr><td>Seguimiento</td><td>Cita o tarea de re-contacto creada con fecha y responsable</td><td class="num">10</td><td><span class="bar"><i style="width:10%"></i></span></td></tr>
+          <tr><td>Experiencia</td><td>Tour realizado, tiempos cumplidos y llamada de cortesía registrada</td><td class="num">5</td><td><span class="bar"><i style="width:5%"></i></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid2" style="margin-top:1.2rem">
+      <div>
+        <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin-bottom:.4rem">Interpretación</h4>
+        <ul class="list">
+          <li><span class="score">90 – 100</span> Ejecución de referencia; el caso sirve como material de formación</li>
+          <li><span class="score">80 – 89</span> Correcta, con observaciones puntuales</li>
+          <li><span class="score">60 – 79</span> Plan de refuerzo y nueva auditoría en treinta días</li>
+          <li><span class="score">&lt; 60</span> Revisión del circuito con Dirección de Centros</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin-bottom:.4rem">Cómo se audita</h4>
+        <ul class="list">
+          <li>Muestra mínima mensual: cinco PV por centro, elegidas al azar</li>
+          <li>Se audita la ficha, no la memoria de quien atendió</li>
+          <li>Los hallazgos se comparten con el equipo completo, sin señalar a personas</li>
+          <li>Cada hallazgo repetido dos meses seguidos genera acción formativa</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="callout" style="max-width:none">
       <p class="eyebrow">Lectura correcta de los indicadores</p>
       <p>Una conversión alta con documentación incompleta no es un buen mes: es riesgo acumulado. Los indicadores de ejecución se revisan <strong>antes</strong> que los de resultado, porque los primeros explican a los segundos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FORMACIÓN ===================== -->
+<section class="section" id="formacion">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">09 · Formación</p>
+      <h2>Cómo se aprende y se certifica este protocolo</h2>
+      <p>Un protocolo que no se entrena se convierte en un documento decorativo. Nadie participa en una Primera Visita sin haber recorrido este itinerario y sin estar certificado en su rol.</p>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Incorporación · primeros 30 días</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Periodo</th><th>Contenido</th><th>Evidencia de aprendizaje</th></tr></thead>
+        <tbody>
+          <tr><td class="num">Días 1–3</td><td>Lectura del protocolo completo, recorrido físico de la clínica y presentación del equipo</td><td>Cuestionario de comprensión</td></tr>
+          <tr><td class="num">Días 4–7</td><td>Formación en Hermes: alta, historia, imágenes, presupuestos y tareas</td><td>Alta de un caso de prueba sin errores</td></tr>
+          <tr><td class="num">Días 8–12</td><td>Observación de cuatro PV completas, sin intervenir</td><td>Ficha de observación por fase</td></tr>
+          <tr><td class="num">Días 13–18</td><td>Role-play de su rol con un compañero veterano, incluidas objeciones</td><td>Dos simulaciones grabadas y comentadas</td></tr>
+          <tr><td class="num">Días 19–25</td><td>Ejecución acompañada: hace su parte con supervisión presente</td><td>Rúbrica de auditoría sobre sus visitas</td></tr>
+          <tr><td class="num">Días 26–30</td><td>Evaluación de certificación y plan de mejora individual</td><td>Certificación interna del rol</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Certificación por rol</h3>
+    <div class="special special--3">
+      <div><h5>Recepción <span class="tag tag--rec">Fases 1, 2, 11</span></h5><p>Domina la llamada de PV, el speech de valor, la agenda, la acogida y la digitalización completa el mismo día.</p></div>
+      <div><h5>Director <span class="tag tag--dir">Fases 2, 3, 6, 8, 9, 10, 12</span></h5><p>Domina el alta, el RGPD, la redacción del IAC, la presentación económica, el manejo de objeciones y la cadencia de seguimiento.</p></div>
+      <div><h5>Doctor <span class="tag tag--doc">Fases 4, 6, 7, 8, 9</span></h5><p>Domina la anamnesis, el consentimiento radiológico, la exploración sistemática, la lectura del CBCT y la presentación del diagnóstico.</p></div>
+      <div><h5>Auxiliar <span class="tag tag--aux">Fase 5</span></h5><p>Domina el protocolo de imagen completo, los criterios de calidad, el confort del paciente y el etiquetado en Hermes.</p></div>
+      <div><h5>Recertificación</h5><p>Anual para todos los roles, y siempre que cambie el protocolo, el sistema o el equipamiento.</p></div>
+      <div><h5>Suplencias</h5><p>Solo cubre una fase quien esté certificado en ella. Si no hay nadie certificado, se reprograma la visita.</p></div>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Entrenamiento continuo</h3>
+    <div class="grid2">
+      <div>
+        <p class="block__title">Rutina semanal · 30 minutos</p>
+        <ul class="list">
+          <li>Revisión de las PV no convertidas de la semana y de su motivo real</li>
+          <li>Un role-play de objeción, rotando quién hace de paciente</li>
+          <li>Revisión de una presentación grabada, con permiso del paciente</li>
+          <li>Incidencias del circuito y ajustes acordados</li>
+        </ul>
+      </div>
+      <div>
+        <p class="block__title">Comité mensual de dirección</p>
+        <ul class="list">
+          <li>Indicadores de ejecución antes que los de resultado</li>
+          <li>Resultados de la auditoría de fichas</li>
+          <li>Origen de marketing de las PV y coste por paciente convertido</li>
+          <li>Decisiones sobre el protocolo, que se versionan en este documento</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Regla de calibración</p>
+      <p>Dos profesionales del mismo rol deben producir la misma visita. Cuando la auditoría detecta que un paciente recibe una experiencia distinta según quién le atienda, el problema no es de la persona: es de calibración del equipo, y se corrige con entrenamiento conjunto.</p>
     </div>
   </div>
 </section>
@@ -1582,12 +3230,118 @@ footer.foot strong{color:var(--ink)}
 <section class="section" id="anexos">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">06 · Anexos</p>
+      <p class="eyebrow">10 · Anexos</p>
       <h2>Material de apoyo</h2>
-      <p>Errores frecuentes detectados en auditoría, vocabulario común del equipo y gobernanza del documento.</p>
+      <p>Siete anexos de consulta: la biblioteca completa de guiones, las respuestas modelo a lo que el paciente siempre pregunta, los errores detectados en auditoría, el checklist imprimible de la visita, el vocabulario común del equipo, la gobernanza del documento y su control de cambios.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Anexo A · Errores frecuentes y cómo se corrigen</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Anexo A · Biblioteca de guiones</h3>
+    <p style="color:var(--ink-2);max-width:66ch">Todos los guiones del protocolo, reunidos para consulta rápida y para los role-play semanales. Son estructura, no texto para recitar: cada profesional los dice con sus palabras.</p>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Llamada entrante <span class="tag tag--rec">Fase 1</span></h4>
+    <div class="sheet"><b>Apertura:</b> «Excelencia Médica Giraldo, le atiende [nombre]. ¿En qué puedo ayudarle?»
+<b>Escucha:</b> «Cuénteme qué le ocurre.» (anotar literal, sin interrumpir)
+<b>Filtrado:</b> «¿Tiene dolor ahora mismo?» · «¿Desde cuándo le pasa?»
+           «¿Ha estado en tratamiento por esto en otro sitio?»
+<b>Valor:</b> «Su primera visita es completamente gratuita e incluye tomografía 3D,
+        panorámica digital, escaneado intraoral y estudio fotográfico completo.
+        Saldrá con un diagnóstico por escrito, firmado por el Doctor.»
+<b>Cita:</b> «Tengo martes a las 10:00 o jueves a las 17:30. ¿Cuál le viene mejor?»
+<b>Origen:</b> «¿Cómo nos ha conocido? Nos ayuda mucho saberlo.»
+<b>Cierre:</b> «Le confirmo: [día], [hora], en [dirección]. Le envío ahora un
+         recordatorio por WhatsApp. Traiga informes o radiografías previas si tiene.»</div>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Acogida y tour <span class="tag tag--rec">Fase 2</span></h4>
+    <div class="sheet"><b>Acogida:</b> «Buenos días, [Nombre]. Le estábamos esperando.»
+<b>Sala VIP:</b> «Acompáñeme, le llevo a nuestra sala. ¿Le apetece un café o un agua?»
+<b>Tour:</b> «Antes de empezar quiero enseñarle cómo trabajamos.»
+<b>Esterilización:</b> «Aquí se controla todo lo que entra en su boca: cada instrumento
+                 tiene su ciclo registrado y trazable.»
+<b>Imagen 3D:</b> «Este es el escáner de tomografía. Nos permite ver lo que de otro modo
+            no se ve, planificar con exactitud milimétrica y garantizar resultados
+            predecibles a largo plazo.»</div>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Documentación y RGPD <span class="tag tag--dir">Fase 3</span></h4>
+    <div class="sheet"><b>Encuadre:</b> «Vamos a dedicar diez minutos al papeleo aquí, cómodos, y después ya
+           no volvemos a hablar de formularios.»
+<b>RGPD:</b> «Le explico qué hacemos con sus datos; si algo no le encaja, no lo firme.»
+<b>Verificación:</b> «¿Me confirma su email letra por letra? Ahí le enviaremos su informe.»
+<b>Transición:</b> «El siguiente paso es el Doctor. Le acompaño yo y le presento.»</div>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Historia clínica y radiología <span class="tag tag--doc">Fase 4</span></h4>
+    <div class="sheet"><b>Encuadre:</b> «Antes de mirarle la boca necesito conocer su salud general: muchas
+           decisiones dependen de ello.»
+<b>Medicación:</b> «¿Toma alguna medicación, aunque le parezca que no tiene relación con
+             los dientes?»
+<b>Radiología:</b> «La dosis de esta tomografía es muy baja, comparable a la radiación
+             natural de un vuelo largo. Le pido la firma porque toda prueba con
+             radiación exige que usted esté informado.»</div>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Expectativas y exploración <span class="tag tag--doc">Fase 7</span></h4>
+    <div class="sheet"><b>Funcional:</b> «¿Qué le impide comer con normalidad?» · «¿Qué le gustaría poder
+            hacer que ahora no puede?»
+<b>Estético:</b> «¿Cómo se siente con su sonrisa actual?» · «¿Hay situaciones en las
+           que evita sonreír?»
+<b>Emocional:</b> «¿Cómo afecta esto a su vida diaria?» · «¿Qué significaría para usted
+            resolverlo?»
+<b>Escala:</b> «Del 0 al 10, ¿cuánto le afecta esto en su día a día?»
+<b>Deseo:</b> «Si mañana esto estuviera resuelto, ¿qué haría distinto?»
+<b>Cámara:</b> «¿Ve esto? Esta sombra es una caries que empieza aquí. Y fíjese en la
+          encía: debería verse rosa y firme, y aquí está inflamada.»</div>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Presentación del diagnóstico <span class="tag tag--doc">Fase 9</span></h4>
+    <div class="sheet"><b>Recapitular:</b> «Usted vino porque [motivo] y me dijo que lo que más le afecta
+             es [prioridad].»
+<b>Lo sano:</b> «Antes de nada: esto de aquí está bien y no hay que tocarlo.»
+<b>Evidencia:</b> «Mire esta imagen. Aquí debería verse [normal] y en su caso vemos
+            [hallazgo]. Se lo enseño también en la foto de su boca.»
+<b>Evolución:</b> «Si no hacemos nada, lo previsible es [evolución realista].»
+<b>Solución:</b> «El plan tiene tres fases: [1], [2] y [3]. En total, [tiempo] y [n.º] citas.»
+<b>Comprobar:</b> «¿Me lo puede resumir usted, para asegurarme de que lo he explicado bien?»</div>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Propuesta económica y cierre <span class="tag tag--dir">Fase 10</span></h4>
+    <div class="sheet"><b>Anclaje:</b> «Como ha visto en el análisis del Doctor, y partiendo de las pruebas 3D
+          que le hemos hecho hoy…»
+<b>Desglose:</b> «Se lo detallo línea a línea y le explico por qué cuesta cada parte.»
+<b>Financiación:</b> «Si lo financiamos a X meses, su cuota sería de Y euros. El coste total
+              sería Z. Se lo pongo por escrito.»
+<b>Cierre por alternativa:</b> «¿Prefiere comenzar con el plan completo o por fases?»
+<b>Cierre por asunción:</b> «¿Qué día de la semana le viene mejor para la primera cita?»
+<b>Objeción de precio:</b> «Entiendo. ¿Le parece que repasemos qué incluye y veamos la
+                    forma de pago que mejor le encaje?»
+<b>Necesita pensarlo:</b> «Por supuesto. ¿Qué parte concretamente quiere pensar? Prefiero
+                   resolverlo ahora que dejarle con la duda.»</div>
+
+    <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Despedida y seguimiento <span class="tag tag--dir">Fase 12</span></h4>
+    <div class="sheet"><b>Despedida:</b> «Ha sido un placer atenderle. Nos alegra poder ayudarle a conseguir
+            la sonrisa que merece. Cualquier duda, escríbanos o llámenos.»
+<b>Cortesía 24–48 h:</b> «Buenos días, [Nombre]. Le llamamos de Excelencia Médica Giraldo
+                  para agradecerle su visita y asegurarnos de que todo quedó claro.
+                  ¿Le ha surgido alguna duda sobre el plan que le presentamos?»
+<b>No convertido, día 7:</b> «Hemos revisado su caso y podemos ofrecerle [opción concreta].
+                      ¿Le viene bien que se lo explique en dos minutos?»
+<b>Reactivación, día 180:</b> «Hace unos meses estudiamos su caso. ¿Le gustaría que
+                       revisáramos cómo está la situación? Su diagnóstico sigue
+                       en su ficha y la revisión no tiene coste.»</div>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo B · Preguntas frecuentes del paciente</h3>
+    <p style="color:var(--ink-2);max-width:66ch">Respuestas modelo para las preguntas que aparecen en casi todas las visitas. Se responden igual, las haga quien las haga.</p>
+    <div style="margin-top:1rem;max-width:74ch">
+      <details class="faq"><summary>¿Por qué la primera visita no cuesta nada?</summary><div class="a"><p>Porque es la única forma honesta de proponerle un tratamiento. Sin tomografía 3D, panorámica y escaneado no hay diagnóstico serio, y sin diagnóstico no hay presupuesto fiable. Asumimos ese coste porque confiamos en que, cuando vea el nivel de análisis, entienda con quién está tratando.</p></div></details>
+      <details class="faq"><summary>¿Me va a doler?</summary><div class="a"><p>Hoy no vamos a tocarle nada: la primera visita es diagnóstica. Para el tratamiento trabajamos con anestesia y, si lo necesita, con sedación consciente. Dígame si ha tenido malas experiencias y adaptamos el ritmo y las citas a usted.</p></div></details>
+      <details class="faq"><summary>¿Cuánta radiación tienen estas pruebas?</summary><div class="a"><p>Muy poca. Trabajamos con equipos digitales de baja dosis y ajustamos el campo a la zona necesaria. La exposición es comparable a la radiación natural que se recibe en un vuelo transcontinental, y solo hacemos las pruebas que aportan información para su diagnóstico.</p></div></details>
+      <details class="faq"><summary>¿Puedo llevarme el informe si quiero otra opinión?</summary><div class="a"><p>Por supuesto, y se lo entregamos firmado el mismo día junto con sus imágenes. Es su documentación. Si compara, le recomendamos fijarse en qué pruebas incluye cada diagnóstico, qué materiales se proponen y qué garantía se ofrece por escrito.</p></div></details>
+      <details class="faq"><summary>¿Por qué es más caro que en otro sitio?</summary><div class="a"><p>Puede que lo sea, y conviene saber por qué. Compare el alcance: pruebas incluidas, planificación digital, materiales concretos, laboratorio, revisiones y años de garantía por escrito. Dos presupuestos con el mismo título pueden ser tratamientos distintos.</p></div></details>
+      <details class="faq"><summary>¿Cuánto tiempo dura el tratamiento?</summary><div class="a"><p>Se lo indicamos en el plan, por fases y con número aproximado de citas. Los plazos dependen de la cicatrización y de su respuesta biológica, así que damos rangos realistas y le avisamos si algo cambia.</p></div></details>
+      <details class="faq"><summary>¿Puedo pagarlo a plazos?</summary><div class="a"><p>Sí. Trabajamos con financiación, incluida la modalidad sin intereses según condiciones vigentes, y también podemos secuenciar el tratamiento por fases. Le calculamos la cuota delante de usted, con el coste total a la vista.</p></div></details>
+      <details class="faq"><summary>¿Qué pasa si no me hago nada?</summary><div class="a"><p>Se lo explicamos con sus propias imágenes: qué es estable y puede esperar, y qué tiende a empeorar. No dramatizamos ni le metemos prisa; le damos la información para que decida usted.</p></div></details>
+      <details class="faq"><summary>¿Quién me va a tratar?</summary><div class="a"><p>El Doctor responsable de su plan, con el equipo que corresponda a cada fase. Si intervienen varios profesionales, se lo decimos desde el principio y le presentamos a cada uno.</p></div></details>
+      <details class="faq"><summary>¿Qué garantía tengo?</summary><div class="a"><p>Le entregamos las condiciones de garantía por escrito, con su alcance, su duración y los cuidados y revisiones necesarios para mantenerla. Preferimos que la lea antes de decidir.</p></div></details>
+      <details class="faq"><summary>¿Y si empiezo y no puedo continuar?</summary><div class="a"><p>Diseñamos el plan por fases precisamente para eso. Cada fase deja una situación clínica estable, y si necesita parar lo hablamos y se lo documentamos, sin penalizaciones sorpresa.</p></div></details>
+      <details class="faq"><summary>Me lo tengo que pensar. ¿Hay algún problema?</summary><div class="a"><p>Ninguno. Se lleva su informe, sus imágenes y su presupuesto. Si le parece bien, le llamamos en unos días por si le ha surgido alguna duda; y si prefiere que no le llamemos, nos lo dice y lo respetamos.</p></div></details>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo C · Errores frecuentes y cómo se corrigen</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Error observado</th><th>Efecto</th><th>Corrección</th></tr></thead>
@@ -1603,7 +3357,50 @@ footer.foot strong{color:var(--ink)}
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo B · Glosario</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo D · Checklist imprimible de la Primera Visita</h3>
+    <p style="color:var(--ink-2);max-width:66ch">Una hoja para tener en el despacho. Se repasa al cerrar cada PV; si queda una casilla sin marcar, la visita no está cerrada.</p>
+    <div class="grid2" style="margin-top:1.2rem">
+      <div>
+        <p class="block__title">Antes y durante</p>
+        <ul class="checks">
+          <li><span><b>F1</b> · Motivo de consulta y origen de marketing registrados</span></li>
+          <li><span><b>F1</b> · Verificado que no existe ficha duplicada</span></li>
+          <li><span><b>F1</b> · Recordatorio enviado al paciente</span></li>
+          <li><span><b>F2</b> · Saludo por su nombre y hora de llegada registrada</span></li>
+          <li><span><b>F2</b> · Tour de esterilización e imagen 3D realizado</span></li>
+          <li><span><b>F3</b> · Ficha completa en Hermes, sin campos vacíos</span></li>
+          <li><span><b>F3</b> · RGPD explicado, firmado y fechado</span></li>
+          <li><span><b>F3</b> · Email verificado en voz alta</span></li>
+          <li><span><b>F4</b> · Anamnesis médica y dental registradas</span></li>
+          <li><span><b>F4</b> · Alergias y alertas marcadas de forma visible</span></li>
+          <li><span><b>F4</b> · Consentimiento radiológico firmado antes de las pruebas</span></li>
+          <li><span><b>F5</b> · CBCT, OPG, escaneado y serie fotográfica completos</span></li>
+          <li><span><b>F5</b> · Imágenes cargadas, etiquetadas y verificadas</span></li>
+          <li><span><b>F6</b> · Briefing realizado y plan óptimo acordado</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="block__title">Cierre y salida</p>
+        <ul class="checks">
+          <li><span><b>F7</b> · Expectativas registradas con las palabras del paciente</span></li>
+          <li><span><b>F7</b> · Exploración sistemática completa y odontograma actualizado</span></li>
+          <li><span><b>F7</b> · Capturas intraorales de las zonas a presentar</span></li>
+          <li><span><b>F8</b> · IAC redactado, revisado y firmado por el Doctor</span></li>
+          <li><span><b>F8</b> · IAC entregado a Recepción</span></li>
+          <li><span><b>F9</b> · Checklist de material verificado antes de proyectar</span></li>
+          <li><span><b>F9</b> · Paciente capaz de resumir su diagnóstico</span></li>
+          <li><span><b>F10</b> · Presupuesto desglosado y explicado línea a línea</span></li>
+          <li><span><b>F10</b> · Estado de la PV, importes y método de pago registrados</span></li>
+          <li><span><b>F10</b> · Motivo de no conversión registrado, si procede</span></li>
+          <li><span><b>F11</b> · Carpeta Giraldo entregada</span></li>
+          <li><span><b>F11</b> · Siete documentos escaneados y subidos el mismo día</span></li>
+          <li><span><b>F11</b> · Cita programada o tarea de seguimiento creada</span></li>
+          <li><span><b>F12</b> · Llamada de cortesía programada a 24–48 h</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo E · Glosario</h3>
     <div class="cards cards--3" style="margin-top:1rem">
       <article class="card"><span class="eyebrow">PV</span><h3>Primera Visita</h3><p>Circuito completo de acogida, diagnóstico y propuesta descrito en este protocolo.</p></article>
       <article class="card"><span class="eyebrow">IAC</span><h3>Informe de Análisis Clínico</h3><p>Documento firmado por el Doctor con hallazgos, diagnóstico y plan de tratamiento.</p></article>
@@ -1613,7 +3410,7 @@ footer.foot strong{color:var(--ink)}
       <article class="card"><span class="eyebrow">Carpeta Giraldo</span><h3>Dossier del paciente</h3><p>Libro de la clínica, presupuesto, OPG y fotografías que todo paciente se lleva.</p></article>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo C · Gobernanza del documento</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo F · Gobernanza del documento</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Aspecto</th><th>Definición</th></tr></thead>
@@ -1627,6 +3424,38 @@ footer.foot strong{color:var(--ink)}
         </tbody>
       </table>
     </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo G · Control de cambios</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Versión</th><th>Fecha</th><th>Alcance del cambio</th><th>Aprobación</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1.0</td><td class="num">2026</td><td>Edición inicial del protocolo de Primera Visita para Excelencia Médica Giraldo: doce fases, estándares transversales, casos especiales, trazabilidad, indicadores, formación y anexos</td><td>Dirección de Centros</td></tr>
+          <tr><td class="num">—</td><td class="num">—</td><td>Pendiente: incorporar datos verificables de garantías, materiales y entidades de financiación vigentes</td><td>Dirección</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid2" style="margin-top:1.2rem">
+      <div>
+        <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin-bottom:.4rem">Cómo se propone un cambio</h4>
+        <ul class="list">
+          <li>Cualquier miembro del equipo puede proponerlo, por escrito y con el motivo</li>
+          <li>Se debate en el comité mensual y se decide con Dirección de Centros</li>
+          <li>Si se aprueba, se versiona el documento y se comunica a todos los centros</li>
+          <li>Los cambios que afecten a consentimientos o a documentación se revisan además con asesoría legal</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin-bottom:.4rem">Qué obliga a revisar el protocolo</h4>
+        <ul class="list">
+          <li>Cambios normativos en protección de datos, radiología o consentimiento informado</li>
+          <li>Cambios en el sistema de gestión, en el equipamiento o en la cartera de servicios</li>
+          <li>Indicadores por debajo del objetivo durante dos meses consecutivos</li>
+          <li>Reclamaciones o incidencias que revelen un vacío en el circuito</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1646,7 +3475,7 @@ footer.foot strong{color:var(--ink)}
       </div>
       <div>
         <p class="eyebrow">Contenido</p>
-        <p>12 fases · 4 roles<br>7 documentos · 6 indicadores</p>
+        <p>12 fases · 4 roles<br>7 documentos · 6 indicadores<br>7 anexos · 1 rúbrica de auditoría</p>
       </div>
     </div>
   </div>
@@ -1712,14 +3541,26 @@ footer.foot strong{color:var(--ink)}
   });
 
   /* ---- sección activa en la tira superior ---- */
+  var strip = document.getElementById("strip");
+  var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function centrarEnTira(a){
+    var destino = a.offsetLeft - strip.clientWidth / 2 + a.offsetWidth / 2;
+    destino = Math.max(0, Math.min(destino, strip.scrollWidth - strip.clientWidth));
+    if(Math.abs(destino - strip.scrollLeft) < 24) return;
+    strip.scrollTo({left: destino, behavior: quieto ? "auto" : "smooth"});
+  }
   var targets = Array.prototype.slice.call(document.querySelectorAll("main section[id], main article[id]"));
   if("IntersectionObserver" in window){
     var spy = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if(!e.isIntersecting) return;
+        var activo = null;
         stripLinks.forEach(function(a){
-          a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + e.target.id));
+          var on = a.getAttribute("href") === "#" + e.target.id;
+          a.setAttribute("aria-current", String(on));
+          if(on) activo = a;
         });
+        if(activo) centrarEnTira(activo);
       });
     }, {rootMargin:"-130px 0px -70% 0px", threshold:0});
     targets.forEach(function(t){ spy.observe(t); });
