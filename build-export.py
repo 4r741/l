@@ -18,10 +18,18 @@ import urllib.request
 RAIZ = pathlib.Path(__file__).parent
 DESTINO = RAIZ / "export"
 
-# Los archivos a exportar y el nombre con el que se guardan
+# Los archivos a exportar: nombre de salida, identificador dentro del archivo
+# único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
     "manual.html": "Manual-Maestro-Giraldo-v5.html",
     "index.html": "Protocolo-Primera-Visita-Giraldo.html",
+    "otros.html": "Otros-Documentos-Giraldo.html",
+}
+
+DOCUMENTOS = {
+    "manual.html": ("doc-manual", ""),
+    "index.html": ("doc-protocolo", "pv-"),
+    "otros.html": ("doc-otros", "ot-"),
 }
 
 # Solo se incrustan estos subconjuntos: el resto (cirílico, vietnamita) no se usa
@@ -70,12 +78,12 @@ def fuentes_incrustadas(url_css):
 
 
 # ---------------------------------------------------------------------------
-# Archivo único: los dos documentos dentro de un solo HTML
+# Archivo único: los tres documentos dentro de un solo HTML
 # ---------------------------------------------------------------------------
 
 UNIFICADO = "Giraldo-Documentacion-Completa.html"
 
-# Un único script para los dos documentos: el original de cada página busca sus
+# Un único script para los tres documentos: el original de cada página busca sus
 # elementos por id, y al unirlos habría colisiones. Aquí todo se busca dentro
 # del contenedor de cada documento.
 SCRIPT = """<script>
@@ -248,57 +256,56 @@ def prefijar(html, prefijo):
     return html
 
 
-def conmutadores(html, destino, etiqueta):
+def conmutadores(html, propio):
     """Convierte los enlaces entre archivos en conmutadores internos.
 
     Contempla tanto el enlace al documento completo (`manual.html`) como el
     enlace a una sección concreta (`manual.html#m13`), que de otro modo
     quedaría muerto en el archivo unificado.
     """
-    prefijo = "pv-" if destino == "doc-protocolo" else ""
+    for nombre, (destino, prefijo) in DOCUMENTOS.items():
+        if nombre == propio:
+            continue
 
-    def sustituir(coincidencia):
-        ancla = coincidencia.group(2)
-        if not ancla:
-            return 'href="#%s" data-ir-a="%s"' % (destino, destino)
-        ancla = prefijo + ancla
-        return 'href="#%s" data-ir-a="%s" data-ancla="%s"' % (ancla, destino, ancla)
+        def sustituir(coincidencia, destino=destino, prefijo=prefijo):
+            ancla = coincidencia.group(2)
+            if not ancla:
+                return 'href="#%s" data-ir-a="%s"' % (destino, destino)
+            ancla = prefijo + ancla
+            return 'href="#%s" data-ir-a="%s" data-ancla="%s"' % (ancla, destino, ancla)
 
-    for nombre in PAGINAS:
-        html = re.sub(
-            r'href="%s(#([^"]+))?"' % re.escape(nombre), sustituir, html
-        )
+        html = re.sub(r'href="%s(#([^"]+))?"' % re.escape(nombre), sustituir, html)
     return html
 
 
 def unificado(estilo_fuentes):
-    manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
-    protocolo = (RAIZ / "index.html").read_text(encoding="utf-8")
+    fuentes = {nombre: (RAIZ / nombre).read_text(encoding="utf-8") for nombre in DOCUMENTOS}
 
-    # la hoja de estilos del manual es un superconjunto de la del protocolo
-    estilos = "\n".join(re.findall(r"<style>.*?</style>", manual, re.S))
+    # la hoja de estilos del manual es un superconjunto de la de las otras páginas
+    estilos = "\n".join(re.findall(r"<style>.*?</style>", fuentes["manual.html"], re.S))
 
-    cuerpo_manual = conmutadores(cuerpo(manual), "doc-protocolo", "protocolo")
-    cuerpo_protocolo = conmutadores(prefijar(cuerpo(protocolo), "pv-"), "doc-manual", "manual")
+    bloques = []
+    for nombre, (ident, prefijo) in DOCUMENTOS.items():
+        cuerpo_doc = cuerpo(fuentes[nombre])
+        if prefijo:
+            cuerpo_doc = prefijar(cuerpo_doc, prefijo)
+        cuerpo_doc = conmutadores(cuerpo_doc, nombre)
+        oculto = "" if ident == "doc-manual" else " hidden"
+        bloques.append('<div class="doc" id="%s"%s>\n%s\n</div>' % (ident, oculto, cuerpo_doc))
 
     documento = """<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Documentación operativa del Centro de Excelencia Implantológica Giraldo: Manual Maestro de Operaciones v4.0 y Protocolo de Experiencia Clínica de la Primera Visita, en un solo archivo.">
+<meta name="description" content="Documentación operativa del Centro de Excelencia Implantológica Giraldo: Manual Maestro de Operaciones, Protocolo de Experiencia Clínica de la Primera Visita y Otros documentos del sistema, en un solo archivo.">
 <title>Documentación Giraldo</title>
 {fuentes}
 {estilos}
 {estilo_doc}
 </head>
 <body>
-<div class="doc" id="doc-manual">
-{manual}
-</div>
-<div class="doc" id="doc-protocolo" hidden>
-{protocolo}
-</div>
+{documentos}
 {script}
 </body>
 </html>
@@ -307,8 +314,7 @@ def unificado(estilo_fuentes):
         fuentes=estilo_fuentes,
         estilos=estilos,
         estilo_doc=ESTILO_DOC,
-        manual=cuerpo_manual,
-        protocolo=cuerpo_protocolo,
+        documentos="\n".join(bloques),
         script=SCRIPT,
     )
 
@@ -322,11 +328,15 @@ def main():
         coincidencia = ENLACES_FUENTES.search(html)
         if not coincidencia:
             raise SystemExit(f"No se encontró el enlace a Google Fonts en {origen}")
-        if estilo is None:                      # las dos páginas usan las mismas fuentes
+        if estilo is None:                      # las tres páginas usan las mismas fuentes
             estilo = fuentes_incrustadas(coincidencia.group(1))
         html = ENLACES_FUENTES.sub(lambda _: estilo, html, count=1)
         for otro_origen, otra_salida in PAGINAS.items():
-            html = html.replace(f'href="{otro_origen}"', f'href="{otra_salida}"')
+            html = re.sub(
+                r'href="%s(#[^"]*)?"' % re.escape(otro_origen),
+                lambda m, s=otra_salida: 'href="%s%s"' % (s, m.group(1) or ""),
+                html,
+            )
         (DESTINO / salida).write_text(html, encoding="utf-8")
         print(f"  → export/{salida} · {(DESTINO / salida).stat().st_size // 1024} KB")
 

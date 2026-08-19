@@ -1,14 +1,15 @@
 # Documentación operativa — Giraldo
 
-Dos documentos web autocontenidos, sin dependencias salvo las tipografías de Google Fonts.
+Tres documentos web autocontenidos, sin dependencias salvo las tipografías de Google Fonts.
 Se abren directamente en el navegador o se publican como estáticos en cualquier hosting.
 
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
-| **`manual.html`** | Manual Maestro de Operaciones (v5.1) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
-| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.1) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
+| **`manual.html`** | Manual Maestro de Operaciones (v5.2) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
+| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.2) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
+| **`otros.html`** | Otros documentos del sistema (v1.0) | Los nueve documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación y plan de marca y captación |
 
-Ambos comparten sistema de diseño y están enlazados entre sí.
+Los tres comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
 
 ## Manual Maestro (`manual.html`)
 
@@ -53,20 +54,36 @@ planificación digital, circuito de esterilización y circuito de compras.
 python3 build-export.py
 ```
 
-Genera en `export/` tres archivos que funcionan **sin conexión**, con las
+Genera en `export/` cuatro archivos que funcionan **sin conexión**, con las
 tipografías incrustadas como data URI:
 
 | Archivo | Contenido |
 | --- | --- |
-| `Giraldo-Documentacion-Completa.html` | **Los dos documentos en un solo archivo**, con conmutador entre ambos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
-| `Manual-Maestro-Giraldo-v5.html` | Solo el manual. Se enlaza con el protocolo si ambos conservan su nombre y están en la misma carpeta |
+| `Giraldo-Documentacion-Completa.html` | **Los tres documentos en un solo archivo**, con conmutador entre ellos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
+| `Manual-Maestro-Giraldo-v5.html` | Solo el manual. Se enlaza con los otros dos si conservan su nombre y están en la misma carpeta |
 | `Protocolo-Primera-Visita-Giraldo.html` | Solo el protocolo, con la misma condición |
+| `Otros-Documentos-Giraldo.html` | Solo los otros documentos, con la misma condición |
 
-El archivo único admite enlaces profundos: `#doc-protocolo` abre el protocolo y
-`#pv-f10` abre directamente su Fase 10. Los enlaces entre documentos —incluidos los
+El archivo único admite enlaces profundos: `#doc-protocolo` abre el protocolo,
+`#pv-f10` abre directamente su Fase 10 y `#ot-otros-marca` el plan de marca dentro
+de `#doc-otros`. Los enlaces entre documentos —incluidos los
 que apuntan a una sección concreta, como `manual.html#m13`— se convierten en
 conmutadores internos que abren el otro documento y saltan a esa sección. La carpeta `export/` no se versiona
 porque es regenerable.
+
+## Otros documentos del sistema (`otros.html`)
+
+| # | Documento | Qué aporta |
+| --- | --- | --- |
+| 1 | Compendio Maestro | Ordena la documentación en cuatro niveles, con seis consolidados |
+| 2 | Verificación · 322 puntos | Recorrido físico por 12 zonas más documental, sistemas, procesos, economía y reputación |
+| 3 | Auditoría de la clínica adquirida | El día 1 hora a hora y once áreas, una por semana |
+| 4 | Decisiones de Gerencia | Las 20 decisiones y las 11 verificaciones externas V1–V11 |
+| 5 | Programa de 100 días | Gobernanza, seis flujos de trabajo, tres puertas de paso y registro de riesgos |
+| 6 | Dosier de 30 días | Cuatro semanas con guiones de llamada, plantillas y los cinco números |
+| 7 | Protocolos por perfil | Parte asistencial y comercial de los seis puestos, con checklists y reportes |
+| 8 | Innovación · 18 fichas | Protocolo, guion, contingencia e indicador de cada innovación |
+| 9 | Marca y captación | Naming, siete segmentos y sus embudos, AEO, automatización y economía unitaria |
 
 ## Características comunes
 
