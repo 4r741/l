@@ -46,6 +46,25 @@ planificación digital, circuito de esterilización y circuito de compras.
 | 09 Formación | Incorporación, certificación por rol y entrenamiento continuo |
 | 10 Anexos | Guiones, preguntas frecuentes, errores, checklist imprimible, glosario y gobernanza |
 
+## Exportación a HTML autónomo
+
+```bash
+python3 build-export.py
+```
+
+Genera en `export/` tres archivos que funcionan **sin conexión**, con las
+tipografías incrustadas como data URI:
+
+| Archivo | Contenido |
+| --- | --- |
+| `Giraldo-Documentacion-Completa.html` | **Los dos documentos en un solo archivo**, con conmutador entre ambos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
+| `Manual-Maestro-Giraldo-v4.html` | Solo el manual. Se enlaza con el protocolo si ambos conservan su nombre y están en la misma carpeta |
+| `Protocolo-Primera-Visita-Giraldo.html` | Solo el protocolo, con la misma condición |
+
+El archivo único admite enlaces profundos: `#doc-protocolo` abre el protocolo y
+`#pv-f10` abre directamente su Fase 10. La carpeta `export/` no se versiona
+porque es regenerable.
+
 ## Características comunes
 
 - Filtro por puesto: atenúa las fases sin responsabilidad directa.
@@ -83,3 +102,4 @@ Cada fase es un `<article class="phase">` con atributos que alimentan la interfa
 | `table.raci` | Matriz RACI con letras destacadas |
 | `figure.flow` | Diagrama SVG con pie de figura |
 | `.parthead` | Divisor de parte del manual |
+

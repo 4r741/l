@@ -68,6 +68,232 @@ def fuentes_incrustadas(url_css):
     )
 
 
+
+# ---------------------------------------------------------------------------
+# Archivo único: los dos documentos dentro de un solo HTML
+# ---------------------------------------------------------------------------
+
+UNIFICADO = "Giraldo-Documentacion-Completa.html"
+
+# Un único script para los dos documentos: el original de cada página busca sus
+# elementos por id, y al unirlos habría colisiones. Aquí todo se busca dentro
+# del contenedor de cada documento.
+SCRIPT = """<script>
+(function(){
+  "use strict";
+  var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var docs = Array.prototype.slice.call(document.querySelectorAll(".doc"));
+
+  /* ---- tema, común a los dos documentos ---- */
+  function temaActual(){
+    var marcado = document.documentElement.getAttribute("data-theme");
+    if(marcado) return marcado;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function etiquetarTema(){
+    var texto = temaActual() === "dark" ? "Modo claro" : "Modo oscuro";
+    document.querySelectorAll(".themebtn").forEach(function(b){ b.textContent = texto; });
+  }
+  document.querySelectorAll(".themebtn").forEach(function(b){
+    b.addEventListener("click", function(){
+      document.documentElement.setAttribute("data-theme", temaActual() === "dark" ? "light" : "dark");
+      etiquetarTema();
+    });
+  });
+  etiquetarTema();
+
+  /* ---- conmutador entre documentos ---- */
+  function mostrar(id, moverScroll){
+    var existe = docs.some(function(d){ return d.id === id; });
+    if(!existe) return;
+    docs.forEach(function(d){ d.hidden = (d.id !== id); });
+    var activo = document.getElementById(id);
+    /* nada puede quedar sin revelar al cambiar de documento */
+    activo.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+    if(moverScroll) window.scrollTo(0, 0);
+    try { history.replaceState(null, "", "#" + id); } catch(e){}
+  }
+  document.querySelectorAll("[data-ir-a]").forEach(function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); mostrar(a.dataset.irA, true); });
+  });
+  if(location.hash){
+    var destino = document.getElementById(location.hash.slice(1));
+    if(destino && destino.classList.contains("doc")) mostrar(destino.id, false);
+    else if(destino){
+      var contenedor = destino.closest(".doc");
+      if(contenedor) mostrar(contenedor.id, false);
+    }
+  }
+
+  /* ---- por documento: filtro por puesto, sección activa y revelado ---- */
+  docs.forEach(function(doc){
+    var fases = Array.prototype.slice.call(doc.querySelectorAll(".phase"));
+    var tira = doc.querySelector(".strip");
+    var enlaces = tira ? Array.prototype.slice.call(tira.querySelectorAll("a")) : [];
+    var chips = Array.prototype.slice.call(doc.querySelectorAll(".chip[data-role]"));
+    var limpiar = doc.querySelector(".legend .chip:not([data-role])");
+    var rolActivo = null;
+
+    function coincide(ph){
+      if(!rolActivo) return true;
+      return (" " + ph.dataset.roles + " ").indexOf(" " + rolActivo + " ") > -1;
+    }
+    function aplicarFiltro(){
+      fases.forEach(function(ph){ ph.classList.toggle("is-dimmed", !coincide(ph)); });
+      enlaces.forEach(function(a){
+        var ph = doc.querySelector(a.getAttribute("href"));
+        var esFase = ph && ph.classList.contains("phase");
+        a.classList.toggle("is-off", esFase ? !coincide(ph) : false);
+      });
+      var barra = doc.querySelector(".timemap__bar");
+      if(barra){
+        Array.prototype.slice.call(barra.children).forEach(function(seg){
+          var ph = doc.querySelector("#" + seg.dataset.target);
+          if(ph) seg.style.opacity = coincide(ph) ? "1" : "0.25";
+        });
+      }
+      chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.role === rolActivo)); });
+    }
+    chips.forEach(function(c){
+      c.addEventListener("click", function(){
+        rolActivo = (rolActivo === c.dataset.role) ? null : c.dataset.role;
+        aplicarFiltro();
+      });
+    });
+    if(limpiar) limpiar.addEventListener("click", function(){ rolActivo = null; aplicarFiltro(); });
+
+    /* barra de tiempos, si el documento la tiene */
+    var barra = doc.querySelector(".timemap__bar");
+    if(barra && !barra.children.length){
+      fases.forEach(function(ph){
+        var min = parseInt(ph.dataset.min, 10) || 5;
+        var lider = (ph.dataset.roles || "").split(" ")[0] || "director";
+        var seg = document.createElement("button");
+        seg.type = "button";
+        seg.className = "timemap__seg";
+        seg.dataset.role = lider;
+        seg.dataset.target = ph.id;
+        seg.style.flex = min + " 1 0";
+        var t = ph.dataset.time || (min + " min");
+        seg.title = ph.dataset.label + " · " + t;
+        seg.setAttribute("aria-label", "Ir a la fase " + ph.dataset.label + ", " + t);
+        seg.innerHTML = "<span>" + ph.id.replace(/\\D/g, "") + "</span>";
+        seg.addEventListener("click", function(){ ph.scrollIntoView({behavior: quieto ? "auto" : "smooth", block: "start"}); });
+        barra.appendChild(seg);
+      });
+    }
+
+    function centrarEnTira(a){
+      if(!tira) return;
+      var destino = a.offsetLeft - tira.clientWidth / 2 + a.offsetWidth / 2;
+      destino = Math.max(0, Math.min(destino, tira.scrollWidth - tira.clientWidth));
+      if(Math.abs(destino - tira.scrollLeft) < 24) return;
+      tira.scrollTo({left: destino, behavior: quieto ? "auto" : "smooth"});
+    }
+
+    var objetivos = Array.prototype.slice.call(doc.querySelectorAll("main section[id], main article[id], main div.parthead[id]"));
+    if("IntersectionObserver" in window){
+      var espia = new IntersectionObserver(function(entradas){
+        entradas.forEach(function(e){
+          if(!e.isIntersecting) return;
+          var activo = null;
+          enlaces.forEach(function(a){
+            var on = a.getAttribute("href") === "#" + e.target.id;
+            a.setAttribute("aria-current", String(on));
+            if(on) activo = a;
+          });
+          if(activo) centrarEnTira(activo);
+        });
+      }, {rootMargin: "-130px 0px -70% 0px", threshold: 0});
+      objetivos.forEach(function(t){ espia.observe(t); });
+
+      var revelado = new IntersectionObserver(function(entradas){
+        entradas.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add("in"); revelado.unobserve(e.target); }
+        });
+      }, {rootMargin: "0px 0px -8% 0px", threshold: 0});
+      doc.querySelectorAll(".reveal").forEach(function(el){ revelado.observe(el); });
+    } else {
+      doc.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+    }
+  });
+})();
+</script>"""
+
+ESTILO_DOC = """<style>
+/* Contenedor de cada documento dentro del archivo único */
+[hidden]{display:none!important}
+.doc{display:block}
+</style>"""
+
+
+def cuerpo(html):
+    """Devuelve el contenido de <body> sin el <script> final."""
+    inicio = html.index("<body>") + len("<body>")
+    fin = html.rindex("<script>")
+    return html[inicio:fin]
+
+
+def prefijar(html, prefijo):
+    """Evita colisiones de identificadores entre los dos documentos."""
+    html = re.sub(r'\bid="([^"]+)"', lambda m: 'id="%s%s"' % (prefijo, m.group(1)), html)
+    html = re.sub(r'href="#([^"]+)"', lambda m: 'href="#%s%s"' % (prefijo, m.group(1)), html)
+    html = re.sub(r"url\(#([^)]+)\)", lambda m: "url(#%s%s)" % (prefijo, m.group(1)), html)
+    return html
+
+
+def conmutadores(html, destino, etiqueta):
+    """Convierte los enlaces entre archivos en conmutadores internos."""
+    for nombre in PAGINAS:
+        html = html.replace(
+            'href="%s"' % nombre,
+            'href="#%s" data-ir-a="%s"' % (destino, destino),
+        )
+    return html
+
+
+def unificado(estilo_fuentes):
+    manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
+    protocolo = (RAIZ / "index.html").read_text(encoding="utf-8")
+
+    # la hoja de estilos del manual es un superconjunto de la del protocolo
+    estilos = "\n".join(re.findall(r"<style>.*?</style>", manual, re.S))
+
+    cuerpo_manual = conmutadores(cuerpo(manual), "doc-protocolo", "protocolo")
+    cuerpo_protocolo = conmutadores(prefijar(cuerpo(protocolo), "pv-"), "doc-manual", "manual")
+
+    documento = """<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Documentación operativa del Centro de Excelencia Implantológica Giraldo: Manual Maestro de Operaciones v4.0 y Protocolo de Experiencia Clínica de la Primera Visita, en un solo archivo.">
+<title>Documentación Giraldo</title>
+{fuentes}
+{estilos}
+{estilo_doc}
+</head>
+<body>
+<div class="doc" id="doc-manual">
+{manual}
+</div>
+<div class="doc" id="doc-protocolo" hidden>
+{protocolo}
+</div>
+{script}
+</body>
+</html>
+"""
+    return documento.format(
+        fuentes=estilo_fuentes,
+        estilos=estilos,
+        estilo_doc=ESTILO_DOC,
+        manual=cuerpo_manual,
+        protocolo=cuerpo_protocolo,
+        script=SCRIPT,
+    )
+
+
 def main():
     DESTINO.mkdir(exist_ok=True)
     estilo = None
@@ -84,6 +310,10 @@ def main():
             html = html.replace(f'href="{otro_origen}"', f'href="{otra_salida}"')
         (DESTINO / salida).write_text(html, encoding="utf-8")
         print(f"  → export/{salida} · {(DESTINO / salida).stat().st_size // 1024} KB")
+
+    print("archivo único")
+    (DESTINO / UNIFICADO).write_text(unificado(estilo), encoding="utf-8")
+    print(f"  → export/{UNIFICADO} · {(DESTINO / UNIFICADO).stat().st_size // 1024} KB")
 
 
 if __name__ == "__main__":
