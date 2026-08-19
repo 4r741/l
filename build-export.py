@@ -114,7 +114,13 @@ SCRIPT = """<script>
     try { history.replaceState(null, "", "#" + id); } catch(e){}
   }
   document.querySelectorAll("[data-ir-a]").forEach(function(a){
-    a.addEventListener("click", function(e){ e.preventDefault(); mostrar(a.dataset.irA, true); });
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      var ancla = a.dataset.ancla ? document.getElementById(a.dataset.ancla) : null;
+      mostrar(a.dataset.irA, !ancla);
+      if(ancla) ancla.scrollIntoView({behavior:"instant"});
+      try { history.replaceState(null, "", "#" + (a.dataset.ancla || a.dataset.irA)); } catch(err){}
+    });
   });
   if(location.hash){
     var destino = document.getElementById(location.hash.slice(1));
@@ -243,11 +249,24 @@ def prefijar(html, prefijo):
 
 
 def conmutadores(html, destino, etiqueta):
-    """Convierte los enlaces entre archivos en conmutadores internos."""
+    """Convierte los enlaces entre archivos en conmutadores internos.
+
+    Contempla tanto el enlace al documento completo (`manual.html`) como el
+    enlace a una sección concreta (`manual.html#m13`), que de otro modo
+    quedaría muerto en el archivo unificado.
+    """
+    prefijo = "pv-" if destino == "doc-protocolo" else ""
+
+    def sustituir(coincidencia):
+        ancla = coincidencia.group(2)
+        if not ancla:
+            return 'href="#%s" data-ir-a="%s"' % (destino, destino)
+        ancla = prefijo + ancla
+        return 'href="#%s" data-ir-a="%s" data-ancla="%s"' % (ancla, destino, ancla)
+
     for nombre in PAGINAS:
-        html = html.replace(
-            'href="%s"' % nombre,
-            'href="#%s" data-ir-a="%s"' % (destino, destino),
+        html = re.sub(
+            r'href="%s(#([^"]+))?"' % re.escape(nombre), sustituir, html
         )
     return html
 

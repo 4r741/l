@@ -6,7 +6,7 @@ Se abren directamente en el navegador o se publican como estáticos en cualquier
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
 | **`manual.html`** | Manual Maestro de Operaciones (v5.1) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
-| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
+| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.1) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 
 Ambos comparten sistema de diseño y están enlazados entre sí.
 
@@ -39,8 +39,8 @@ planificación digital, circuito de esterilización y circuito de compras.
 | 01 Fundamentos | Cinco principios rectores y nota de calibración temporal |
 | 02 Mapa de la visita | Distribución del tiempo por fase, filtro por rol y matriz de responsabilidad |
 | 03 Flujo por roles | Diagrama de carriles con las entregas del paciente y los documentos que genera |
-| 04 Las 12 fases | Acciones, cronología, percepción del paciente, guiones, casos especiales, registro, errores y criterio de salida |
-| 05 Estándares transversales | Comunicación, entorno, seguridad clínica, protección de datos y agenda |
+| 04 Las 12 fases | Acciones, cronología, percepción del paciente, guiones, casos especiales, política de descuentos, registro, errores y criterio de salida |
+| 05 Estándares transversales | Comunicación, entorno, seguridad clínica, protección de datos, cartelería obligatoria, verificación observada del circuito y agenda |
 | 06 Casos especiales | Situaciones que obligan a adaptar el circuito |
 | 07 Trazabilidad | Qué se registra, quién responde y en qué plazo |
 | 08 Cuadro de mando | Indicadores y rúbrica de auditoría |
@@ -63,7 +63,9 @@ tipografías incrustadas como data URI:
 | `Protocolo-Primera-Visita-Giraldo.html` | Solo el protocolo, con la misma condición |
 
 El archivo único admite enlaces profundos: `#doc-protocolo` abre el protocolo y
-`#pv-f10` abre directamente su Fase 10. La carpeta `export/` no se versiona
+`#pv-f10` abre directamente su Fase 10. Los enlaces entre documentos —incluidos los
+que apuntan a una sección concreta, como `manual.html#m13`— se convierten en
+conmutadores internos que abren el otro documento y saltan a esa sección. La carpeta `export/` no se versiona
 porque es regenerable.
 
 ## Características comunes
