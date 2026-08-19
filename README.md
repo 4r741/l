@@ -5,7 +5,7 @@ Se abren directamente en el navegador o se publican como estáticos en cualquier
 
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
-| **`manual.html`** | Manual Maestro de Operaciones (v5.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
+| **`manual.html`** | Manual Maestro de Operaciones (v5.1) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
 | **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 
 Ambos comparten sistema de diseño y están enlazados entre sí.
@@ -25,6 +25,7 @@ Ambos comparten sistema de diseño y están enlazados entre sí.
 | VII · Plan de incentivos | Arquitectura, escala, pesos, fórmula de liquidación y gobernanza |
 | VIII · Puesta en marcha | Las 72 horas previas y la mañana del día 1 |
 | Anexos | Diez anexos: plantillas de reporte, cadencia, checklist de implantación, checklist imprimible de la PV, checklists por puesto, calendario, mapa maestro de documentos, ficha de auditoría trimestral, guion de reuniones y glosario de términos |
+| Otros documentos del sistema | Compendio Maestro, Protocolo de Verificación de 322 puntos, Auditoría de la clínica adquirida y las 20 decisiones de gerencia con las 11 verificaciones externas |
 | Notas de edición | Las diez incoherencias detectadas, con la decisión tomada en cada una, los puntos que siguen abiertos y el control de cambios |
 
 Seis diagramas en SVG (sin librerías) sustituyen a los esquemas de texto del documento
