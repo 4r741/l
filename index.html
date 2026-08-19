@@ -3577,7 +3577,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       entries.forEach(function(e){
         if(e.isIntersecting){ e.target.classList.add("in"); reveal.unobserve(e.target); }
       });
-    }, {rootMargin:"0px 0px -8% 0px", threshold:0.02});
+    }, {rootMargin:"0px 0px -8% 0px", threshold:0});
     document.querySelectorAll(".reveal").forEach(function(el){ reveal.observe(el); });
   } else {
     document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });

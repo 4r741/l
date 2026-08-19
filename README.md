@@ -15,15 +15,16 @@ Ambos comparten sistema de diseño y están enlazados entre sí.
 | Parte | Contenido |
 | --- | --- |
 | Marco de vanguardia | Antelación sistematizada, los tres horizontes y los cinco pilares |
+| I bis · Estándares transversales | Comunicación, seguridad clínica, emergencias médicas, protección de datos, plan de continuidad y orden de prioridades |
 | I · Fundamentos | Ficha de control, nueve principios rectores, glosario, sistemas y puntos abiertos |
-| II · Recorrido | Las 14 fases, con acciones, guiones, indicaciones de ejecución, KPI, errores y checklist de salida |
+| II · Recorrido | Las 14 fases, con acciones, cronología minuto a minuto, percepción del paciente, guiones contrastados, casos especiales, contingencias, registro, KPI, errores y checklist de salida |
 | III · Matriz RACI | Responsable, accountable, consultado e informado por fase |
-| IV · Manuales por puesto | Recepción, Doctor, Higienista, Auxiliar, RAC, Dirección y la función transversal de compras |
+| IV · Manuales por puesto | Recepción, Doctor, Higienista, Auxiliar, RAC, Dirección y compras, cada uno con misión, jornada, 26 procedimientos, contingencias, criterios de calidad e incorporación de 30 días |
 | V · Funciones de vanguardia | Circuitos, reglas innegociables, límites e indicadores de cada función |
 | VI · Interdependencias | Compras y proveedores, matriz de interdependencias y cuadro maestro de indicadores |
 | VII · Plan de incentivos | Arquitectura, escala, pesos, fórmula de liquidación y gobernanza |
 | VIII · Puesta en marcha | Las 72 horas previas y la mañana del día 1 |
-| Anexos | Plantillas de reporte, checklists imprimibles y calendario de implantación |
+| Anexos | Diez anexos: plantillas de reporte, cadencia, checklist de implantación, checklist imprimible de la PV, checklists por puesto, calendario, mapa maestro de documentos, ficha de auditoría trimestral, guion de reuniones y glosario de términos |
 | Notas de edición | Incoherencias detectadas entre documentos, para que Dirección las resuelva |
 
 Seis diagramas en SVG (sin librerías) sustituyen a los esquemas de texto del documento
