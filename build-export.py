@@ -20,7 +20,7 @@ DESTINO = RAIZ / "export"
 
 # Los archivos a exportar y el nombre con el que se guardan
 PAGINAS = {
-    "manual.html": "Manual-Maestro-Giraldo-v4.html",
+    "manual.html": "Manual-Maestro-Giraldo-v5.html",
     "index.html": "Protocolo-Primera-Visita-Giraldo.html",
 }
 
