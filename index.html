@@ -388,6 +388,34 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 /* nota al pie de bloque */
 .footnote{margin-top:.9rem;font-size:.82rem;color:var(--muted);max-width:66ch}
 
+/* ============================================================
+   IMPRESIÓN Y PDF — A4 con márgenes de encuadernación, cabecera
+   de clasificación en la primera página y tablas que repiten su
+   encabezado al cambiar de hoja.
+   ============================================================ */
+@page{size:A4;margin:18mm 15mm 20mm}
+.printhead{display:none}
+@media print{
+  .printhead{
+    display:block;border-bottom:1.5pt solid #000;padding-bottom:6pt;margin-bottom:14pt;
+    font-family:var(--f-mono);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .printhead b{font-weight:600}
+  .printhead span{float:right}
+  h1,h2,h3,h4{break-after:avoid-page}
+  h2,h3{break-inside:avoid}
+  p,li{orphans:3;widows:3}
+  thead{display:table-header-group}
+  tfoot{display:table-footer-group}
+  tr,img,svg,figure,.card,.spec,.script,.sheet,.rulebox,.callout,.gate,.saydont>div{break-inside:avoid}
+  .parthead{break-before:page}
+  .tablewrap,.figscroll{overflow:visible!important}
+  table{min-width:0!important;font-size:8.5pt}
+  .hero{padding-top:0}
+  .section{padding:14pt 0}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:7.5pt;color:#555}
+  a[href^="#"]::after,a[href$=".html"]::after{content:""}
+}
 @media print{
   .topbar,.legend,.timemap__bar{display:none!important}
   body{background:#fff;color:#000;font-size:10.5pt}
@@ -442,6 +470,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 </header>
 
 <main>
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v5.5</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="portada">

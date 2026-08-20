@@ -1,10 +1,13 @@
 # Documentación operativa — Giraldo
 
-Tres documentos web autocontenidos, sin dependencias salvo las tipografías de Google Fonts.
-Se abren directamente en el navegador o se publican como estáticos en cualquier hosting.
+Documentación operativa y de gobierno, en HTML autocontenido y sin dependencias salvo
+las tipografías de Google Fonts. Se abren en el navegador, se publican como estáticos
+en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
+| **`memoria.html`** | Memoria de Dirección (v1.0) | Documento para la Junta Directiva: tesis, sistema construido, línea base, riesgos, cuadro de mando, palancas, hoja de ruta, las ocho decisiones que se someten a aprobación y el registro de supuestos |
+| **`deck.html`** | Presentación de Junta | Quince diapositivas en 16:9 derivadas de la memoria, navegables con el teclado y exportables a PDF apaisado |
 | **`manual.html`** | Manual Maestro de Operaciones (v5.5) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
 | **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.5) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 | **`otros.html`** | Otros documentos del sistema (v1.3) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
@@ -71,6 +74,29 @@ que apuntan a una sección concreta, como `manual.html#m13`— se convierten en
 conmutadores internos que abren el otro documento y saltan a esa sección. La carpeta `export/` no se versiona
 porque es regenerable.
 
+## Memoria de Dirección (`memoria.html`)
+
+Pensada para leerse en doce minutos y para deliberar sobre ella en junta.
+
+| Apartado | Contenido |
+| --- | --- |
+| §0 Control | Ficha del documento, marcas de naturaleza (hecho / modelo / pendiente) y cómo citar en acta |
+| §1 Resumen ejecutivo | Qué está hecho, qué falta y qué se pide hoy, en dos minutos |
+| §2 Tesis | Los tres segmentos desatendidos y los cinco indicadores que acreditan liderazgo |
+| §3 Sistema operativo | Qué se ha construido y qué garantiza tenerlo por escrito |
+| §4 Línea base | Los cinco números pendientes y las seis preguntas incómodas sobre lo adquirido |
+| §5 Riesgos | Cinco críticos con propietario y mitigación, más siete de segundo orden |
+| §6 Cuadro de mando | Ocho indicadores nucleares y tres figuras de modelo |
+| §7 Palancas | Cinco, ordenadas por coste de activación |
+| §8 Hoja de ruta | Tres horizontes y tres puertas de paso |
+| §9 Decisiones | D1 a D8, con qué se pide, impacto de no decidir y plazo |
+| §10 Supuestos | Todos los valores empleados en los modelos, con su origen |
+
+Las tres figuras son cálculos derivados de supuestos declarados, no datos de explotación:
+coste real del descuento, primeras visitas necesarias según conversión y valor del paciente
+a cinco años con y sin programa de cuidado. La paleta de los gráficos está validada para
+visión con deficiencia de color.
+
 ## Otros documentos del sistema (`otros.html`)
 
 | # | Documento | Qué aporta |
@@ -89,6 +115,18 @@ porque es regenerable.
 | 12 | Continuidad legal y financiera | Qué se transmite y qué no, huecos de cobertura, producto pendiente heredado, comunicación y plan de 4 semanas |
 | 13 | «No medias sonrisas» | Posicionamiento y objetivo del centro: manifiesto, cinco pilares, qué significa por puesto y por fase, y cómo se comunica |
 | 14 | GTC · Giraldo Te Cuida | El programa de cuidado anual: argumentos, speech por situación, objeciones, campaña, medición y marco legal |
+
+## PDF paginado
+
+```bash
+python3 build-pdf.py
+```
+
+Genera en `export/pdf/` un PDF por documento: A4 con márgenes de encuadernación,
+cabecera de clasificación, pie con «Página X de Y», encabezados de tabla repetidos
+al cambiar de hoja y saltos controlados para que no se parta un cuadro por la mitad.
+La presentación sale en apaisado, una diapositiva por página. Requiere Playwright con
+Chromium.
 
 ## Características comunes
 

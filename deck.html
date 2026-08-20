@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Presentación de la Memoria de Dirección del Centro de Excelencia Implantológica Giraldo ante la Junta Directiva: tesis, sistema operativo, riesgos, cuadro de mando, hoja de ruta y las ocho decisiones que se someten a aprobación.">
+<title>Presentación de Junta Giraldo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#ECEEEA;
+  --surface:#F7F8F5;
+  --surface-2:#E3E6E1;
+  --ink:#0B1A20;
+  --ink-2:#263D45;
+  --muted:#5D7178;
+  --line:rgba(11,26,32,.16);
+  --line-soft:rgba(11,26,32,.08);
+  --accent:#0E7C74;
+  --accent-ink:#0A5C56;
+  --accent-soft:rgba(14,124,116,.10);
+  --signal:#A8631B;
+  --signal-soft:rgba(168,99,27,.12);
+  --shadow:0 1px 0 rgba(11,26,32,.05), 0 18px 40px -32px rgba(11,26,32,.55);
+  --rule:rgba(11,26,32,.28);
+
+  --f-display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --wrap:1180px;
+  --step--1:clamp(.78rem,.76rem + .1vw,.84rem);
+  --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
+  --step-1:clamp(1.18rem,1.1rem + .35vw,1.35rem);
+  --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
+  --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
+  --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
+
+  /* documento de lectura e impresión: solo modo claro */
+  color-scheme:light;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:clamp(14px,1.15vw,19px);line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;margin:0;line-height:1.08;text-wrap:balance}
+p{margin:0}
+.deck{position:relative;height:100vh;overflow:hidden}
+.slide{
+  position:absolute;inset:0;display:none;
+  padding:clamp(2.4rem,4.4vw,4.6rem) clamp(2.4rem,5vw,6rem) clamp(3.6rem,6vw,5.4rem);
+  flex-direction:column;justify-content:center;gap:clamp(1rem,1.6vw,1.8rem);
+}
+.slide.is-on{display:flex;animation:entra .34s cubic-bezier(.2,.7,.3,1) both}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.slide.is-on{animation:none}}
+.eyebrow{
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin:0;
+}
+.slide h2{font-size:clamp(1.9rem,3.5vw,3.2rem);letter-spacing:-.02em;max-width:22ch}
+.slide h2 em{font-style:italic;color:var(--accent-ink)}
+.lede{font-size:clamp(1rem,1.4vw,1.35rem);color:var(--ink-2);max-width:58ch}
+.slide--portada h1{font-size:clamp(2.6rem,6vw,5.2rem);letter-spacing:-.03em;font-variation-settings:"opsz" 144}
+.slide--portada h1 em{font-style:italic;color:var(--accent-ink)}
+.slide--cierre{background:var(--surface)}
+.cols{display:grid;gap:clamp(1rem,2vw,2.4rem);grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))}
+.cols>*{min-width:0}
+.tile{background:var(--surface);border:1px solid var(--line);padding:clamp(.9rem,1.4vw,1.4rem)}
+.tile dt,.tile .k{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font-family:var(--f-display);font-size:clamp(1.6rem,3vw,2.6rem);line-height:1;margin:.3rem 0 .35rem}
+.tile p{font-size:.86rem;color:var(--ink-2)}
+ul.bul{list-style:none;margin:0;padding:0;display:grid;gap:.75rem;max-width:62ch}
+ul.bul li{position:relative;padding-left:1.4rem;color:var(--ink-2)}
+ul.bul li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:1px;background:var(--accent)}
+ul.bul li b,ul.bul li strong{color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:clamp(.76rem,.95vw,.95rem)}
+th,td{text-align:left;padding:.42rem .7rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+thead th{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
+.quote{border-left:3px solid var(--accent);padding:.4rem 0 .4rem 1.2rem;max-width:52ch}
+.quote p{font-family:var(--f-display);font-style:italic;font-size:clamp(1.2rem,2vw,1.8rem);line-height:1.3}
+.fig{margin:0;background:var(--surface);border:1px solid var(--line);padding:clamp(.8rem,1.4vw,1.4rem);overflow-x:auto;min-height:0}
+.fig svg{width:100%;height:auto;max-height:min(46vh,440px);display:block}
+.fig figcaption{margin-top:.7rem;font-size:.78rem;color:var(--muted);max-width:80ch}
+.sem{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .4rem;border-radius:3px;white-space:nowrap}
+.sem--rojo{background:rgba(168,27,27,.12);color:#8E1B1B}
+.sem--ambar{background:rgba(168,99,27,.14);color:#8A5015}
+.sem--verde{background:rgba(14,124,116,.12);color:var(--accent-ink)}
+.barra{position:fixed;left:0;right:0;bottom:0;height:3px;background:var(--line-soft)}
+.barra i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
+.hud{
+  position:fixed;left:0;right:0;bottom:14px;display:flex;align-items:center;gap:1rem;
+  padding:0 clamp(1.2rem,3vw,2.4rem);font-family:var(--f-mono);font-size:.7rem;color:var(--muted);
+}
+.hud__marca{margin-right:auto;letter-spacing:.1em;text-transform:uppercase}
+.hud button{
+  font:inherit;background:transparent;border:1px solid var(--line);color:var(--ink-2);
+  padding:.28rem .6rem;border-radius:999px;cursor:pointer;
+}
+.hud button:hover{border-color:var(--accent);color:var(--accent-ink)}
+.hud__n{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media print{
+  @page{size:297mm 167mm;margin:0}
+  html,body{height:auto;background:#fff}
+  .deck{height:auto;overflow:visible}
+  .slide{position:static;display:flex!important;height:167mm;break-after:page;animation:none;padding:16mm 18mm}
+  .hud,.barra{display:none}
+  .tile,.fig{background:#fff}
+}
+
+</style>
+</head>
+<body>
+
+<div class="deck">
+<section class="slide slide--portada">
+  <p class="eyebrow">Junta Directiva · Agosto 2026 · Uso interno y confidencial</p>
+  <h1>Memoria de<br><em>Dirección</em></h1>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo. Estado del proyecto, línea base, riesgos, hoja de ruta y las ocho decisiones que se someten a aprobación.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§2 · La tesis</p>
+  <h2>Un centro que resuelve lo que otros rechazan y no termina la relación cuando cobra</h2>
+  <div class="quote"><p>«Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.»</p></div>
+  <p class="lede">La primera mitad es el resultado: ningún tratamiento se deja a medias. La segunda es la relación, y tiene instrumento propio: el programa de cuidado anual. La ventaja competitiva no es el equipamiento —lo reivindican todos— sino la ejecución sistemática.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§3 · Qué se ha construido</p>
+  <h2>Un sistema operativo, no un plan</h2>
+  <div class="cols">
+    <div class="tile"><p class="k">Recorrido del paciente</p><p class="v">14</p><p>Fases, de la primera llamada al mantenimiento</p></div>
+    <div class="tile"><p class="k">Puestos normalizados</p><p class="v">6</p><p>Con límites, checklists, derivaciones y reporte</p></div>
+    <div class="tile"><p class="k">Puntos de verificación</p><p class="v">322</p><p>Físicos, documentales, de sistemas y de proceso</p></div>
+    <div class="tile"><p class="k">Documentos vigentes</p><p class="v">17</p><p>Tres troncales y catorce de apoyo</p></div>
+  </div>
+  <p class="lede">Normativa interna con criterios de salida, registros obligatorios e indicador por fase. Escrita para ejecutarse y para auditarse.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§3 · Los tres documentos troncales</p>
+  <h2>Qué garantiza tenerlo por escrito</h2>
+  <ul class="bul">
+    <li><b>Manual Maestro de Operaciones</b> — la norma: catorce fases, manuales de puesto, responsabilidades, indicadores e incentivos</li>
+    <li><b>Protocolo de Primera Visita</b> — el detalle minuto a minuto de la visita que decide la conversión</li>
+    <li><b>Otros documentos del sistema</b> — verificación, auditoría, 100 días, innovación, marca, posicionamiento y programa de cuidado</li>
+  </ul>
+  <p class="lede">Que la calidad no dependa de quién esté de turno; que un profesional nuevo sea productivo en semanas; que una inspección encuentre trazabilidad y no explicaciones; y que la Dirección pueda delegar sin perder control. En términos de Junta: la diferencia entre un negocio dependiente de personas y un negocio con activos transferibles.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§2 · Dónde está la oportunidad</p>
+  <h2>Tres segmentos que casi nadie atiende</h2>
+  <table>
+    <thead><tr><th>Segmento</th><th>Por qué está desatendido</th><th>Barrera de entrada</th></tr></thead>
+    <tbody>
+      <tr><td><b>Casos de alta complejidad</b></td><td>Es más cómodo decir que no</td><td>Criterio y sistema, no equipamiento</td></tr>
+      <tr><td><b>Ansiedad dental severa</b></td><td>Casi nadie lo comunica explícitamente</td><td>Circuito de sedación con habilitación</td></tr>
+      <tr><td><b>Mantenimiento implantológico</b></td><td>No produce caja inmediata</td><td>Constancia y sistema; decisivo a largo plazo</td></tr>
+    </tbody>
+  </table>
+  <p class="lede">Ninguno compra precio: los tres compran solución. Es el terreno donde la competencia en tarifa no llega.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§4 · Dónde estamos</p>
+  <h2>Los cinco números que <em>aún no tenemos</em></h2>
+  <ul class="bul">
+    <li><b>Costes fijos mensuales</b> — día 15</li>
+    <li><b>Punto de equilibrio mensual</b> — día 15</li>
+    <li><b>Primeras visitas necesarias al día</b> — día 30</li>
+    <li><b>Producto pendiente heredado</b> — día 15</li>
+    <li><b>Meses de colchón de tesorería</b> — día 21</li>
+  </ul>
+  <p class="lede">Sin estas cinco cifras, cualquier objetivo comercial es una opinión. Esta memoria no contiene ni un solo dato real de explotación: donde hace falta un orden de magnitud, se usa un supuesto de trabajo declarado.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§5 · Riesgos</p>
+  <h2>Cinco riesgos críticos, con dueño</h2>
+  <table>
+    <thead><tr><th>#</th><th>Riesgo</th><th>Mitigación</th><th>Propietario</th></tr></thead>
+    <tbody>
+      <tr><td class="c">R1</td><td>Cobertura aseguradora insuficiente para tratamientos previos</td><td>Verificación documental antes de abrir</td><td>Gerencia</td></tr>
+      <tr><td class="c">R2</td><td>Producto pendiente heredado sin cuantificar</td><td>Inventario en los tres primeros días</td><td>Dirección</td></tr>
+      <tr><td class="c">R3</td><td>Pérdida de un profesional clave</td><td>Entrevistas tempranas y formación cruzada</td><td>Gerencia</td></tr>
+      <tr><td class="c">R4</td><td>Incumplimiento regulatorio latente</td><td>Auditoría de las once verificaciones</td><td>Gerencia</td></tr>
+      <tr><td class="c">R5</td><td>Deterioro de la percepción del paciente</td><td>Contacto proactivo y escalado único</td><td>Dirección</td></tr>
+    </tbody>
+  </table>
+  <p class="lede"><b>La única regla que detiene la clínica:</b> sin verificación positiva de la cobertura aseguradora no se realiza actividad clínica. Es el riesgo cuyo coste no tiene techo.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§6 · Cuadro de mando</p>
+  <h2>Ocho indicadores, ninguno con serie propia todavía</h2>
+  <div class="cols">
+    <div class="tile"><p class="k">Integridad del sistema</p><p class="v">4</p><p>Verificaciones cerradas · bajas voluntarias · reclamaciones heredadas · documentación en el día</p></div>
+    <div class="tile"><p class="k">Resultado</p><p class="v">4</p><p>Producto pendiente · conversión · mantenimiento activo · captación por recomendación</p></div>
+    <div class="tile"><p class="k">Con dato hoy</p><p class="v">0 / 8</p><p><span class="sem sem--ambar">Primera lectura este trimestre</span></p></div>
+  </div>
+  <p class="lede">Ocho casillas vacías no son una debilidad del documento: son el diagnóstico honesto de dónde estamos. La Junta debe exigir que en la revisión trimestral las ocho tengan valor y tendencia.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§6 · Política de precios <span class="sem sem--ambar">Modelo</span></p>
+  <h2>Lo que cuesta de verdad un descuento</h2>
+  <figure class="fig"><svg viewBox="0 0 860 348" width="860" height="348" role="img" aria-label="Reparto de cada 100 euros facturados según el descuento aplicado: los costes se mantienen en 60 y el beneficio cae de 40 a 20." style="max-width:100%;height:auto">
+<line x1="70" y1="268.0" x2="830" y2="268.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="272.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0</text>
+<line x1="70" y1="226.0" x2="830" y2="226.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="230.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">20</text>
+<line x1="70" y1="184.0" x2="830" y2="184.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="188.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">40</text>
+<line x1="70" y1="142.0" x2="830" y2="142.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="146.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">60</text>
+<line x1="70" y1="100.0" x2="830" y2="100.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="104.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">80</text>
+<line x1="70" y1="58.0" x2="830" y2="58.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="62.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">100</text>
+<rect x="94" y="142.0" width="78" height="126.0" fill="#A8631B"/>
+<rect x="94" y="56.0" width="78" height="84.0" fill="#0E8F84" rx="4" ry="4"/>
+<text x="133.0" y="48.0" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">40 €</text>
+<text x="133.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">sin descuento</text>
+<rect x="212" y="142.0" width="78" height="126.0" fill="#A8631B"/>
+<rect x="212" y="66.5" width="78" height="73.5" fill="#0E8F84" rx="4" ry="4"/>
+<text x="251.0" y="58.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">35 €</text>
+<text x="251.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−5 %</text>
+<text x="251.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−12,5 %</text>
+<rect x="330" y="142.0" width="78" height="126.0" fill="#A8631B"/>
+<rect x="330" y="77.0" width="78" height="63.0" fill="#0E8F84" rx="4" ry="4"/>
+<text x="369.0" y="69.0" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">30 €</text>
+<text x="369.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−10 %</text>
+<text x="369.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−25 %</text>
+<rect x="448" y="142.0" width="78" height="126.0" fill="#A8631B"/>
+<rect x="448" y="87.5" width="78" height="52.5" fill="#0E8F84" rx="4" ry="4"/>
+<text x="487.0" y="79.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">25 €</text>
+<text x="487.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−15 %</text>
+<text x="487.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−37,5 %</text>
+<rect x="566" y="142.0" width="78" height="126.0" fill="#A8631B"/>
+<rect x="566" y="98.0" width="78" height="42.0" fill="#0E8F84" rx="4" ry="4"/>
+<text x="605.0" y="90.0" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">20 €</text>
+<text x="605.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−20 %</text>
+<text x="605.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−50 %</text>
+<line x1="70" y1="268" x2="830" y2="268" stroke="var(--line)" stroke-width="1"/>
+<text x="830" y="308" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">beneficio perdido</text>
+<text x="60" y="22" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">€ por cada 100 facturados</text>
+<rect x="70" y="320" width="12" height="12" rx="3" fill="#0E8F84"/>
+<text x="90" y="330" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Beneficio</text>
+<rect x="190" y="320" width="12" height="12" rx="3" fill="#A8631B"/>
+<text x="210" y="330" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Costes del caso</text>
+</svg>
+    <figcaption>Los costes del caso no bajan cuando baja el precio: el descuento sale íntegramente del beneficio. Un 10 % de descuento cuesta el 25 % del beneficio del caso; compensarlo exige vender un 33 % más. Margen del 40 % como supuesto de trabajo.</figcaption>
+  </figure>
+</section>
+<section class="slide">
+  <p class="eyebrow">§4 · La palanca más barata <span class="sem sem--ambar">Modelo</span></p>
+  <h2>Cada diez puntos de conversión valen una visita diaria</h2>
+  <figure class="fig"><svg viewBox="0 0 860 312" width="860" height="312" role="img" aria-label="Primeras visitas necesarias al día según la tasa de conversión: 5,3 con el 30 por ciento y 2,6 con el 60 por ciento." style="max-width:100%;height:auto">
+<line x1="70" y1="236.0" x2="830" y2="236.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="240.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0</text>
+<line x1="70" y1="172.7" x2="830" y2="172.7" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="176.66666666666666" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">2</text>
+<line x1="70" y1="109.3" x2="830" y2="109.3" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="113.33333333333333" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">4</text>
+<line x1="70" y1="46.0" x2="830" y2="46.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="60" y="50.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">6</text>
+<rect x="110" y="68.2" width="96" height="167.8" fill="#0E8F84" rx="4" ry="4"/>
+<text x="158.0" y="59.16666666666666" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">5,3</text>
+<text x="158.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">30 %</text>
+<rect x="276" y="109.3" width="96" height="126.7" fill="#0E8F84" rx="4" ry="4"/>
+<text x="324.0" y="100.33333333333333" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">4,0</text>
+<text x="324.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">40 %</text>
+<rect x="442" y="134.7" width="96" height="101.3" fill="#0E8F84" rx="4" ry="4"/>
+<text x="490.0" y="125.66666666666669" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">3,2</text>
+<text x="490.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">50 %</text>
+<rect x="608" y="153.7" width="96" height="82.3" fill="#0E8F84" rx="4" ry="4"/>
+<text x="656.0" y="144.66666666666669" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">2,6</text>
+<text x="656.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">60 %</text>
+<line x1="70" y1="236" x2="830" y2="236" stroke="var(--line)" stroke-width="1"/>
+<text x="60" y="18" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">primeras visitas necesarias al día</text>
+<text x="830" y="280" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">tasa de conversión de la primera visita</text>
+</svg>
+    <figcaption>Primeras visitas necesarias al día para alcanzar el equilibrio, según la tasa de conversión. Supuestos: 60.000 € de punto de equilibrio mensual, 1.800 € de ticket medio aceptado y 21 días laborables. Mejorar la conversión no requiere captar a nadie más.</figcaption>
+  </figure>
+</section>
+<section class="slide">
+  <p class="eyebrow">§6 · Relación frente a transacción <span class="sem sem--ambar">Modelo</span></p>
+  <h2>La relación vale del orden del doble</h2>
+  <figure class="fig"><svg viewBox="0 0 860 320" width="860" height="320" role="img" aria-label="Valor a cinco años de un paciente: 720 euros sin programa de cuidado y 1.653 euros con él." style="max-width:100%;height:auto">
+<line x1="70.0" y1="34" x2="70.0" y2="194" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="70.0" y="210" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0 €</text>
+<line x1="323.3" y1="34" x2="323.3" y2="194" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="323.33333333333337" y="210" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">600 €</text>
+<line x1="576.7" y1="34" x2="576.7" y2="194" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="576.6666666666667" y="210" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.200 €</text>
+<line x1="830.0" y1="34" x2="830.0" y2="194" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="830.0" y="210" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.800 €</text>
+<rect x="70.0" y="60" width="302.0" height="62" fill="#0E8F84" rx="4" ry="4"/>
+<text x="221.0" y="96.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">720 €</text>
+<text x="70" y="50" text-anchor="start" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">SIN PROGRAMA DE CUIDADO</text>
+<text x="386.0" y="97.0" text-anchor="start" font-size="17" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">720 €</text>
+<rect x="70.0" y="176" width="302.0" height="62" fill="#0E8F84"/>
+<text x="221.0" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">720 €</text>
+<rect x="374.0" y="176" width="118.3" height="62" fill="#A8631B"/>
+<text x="433.1666666666667" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">285 €</text>
+<rect x="494.3" y="176" width="150.0" height="62" fill="#0E8F84"/>
+<text x="569.3333333333333" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">360 €</text>
+<rect x="646.3" y="176" width="119.6" height="62" fill="#A8631B" rx="4" ry="4"/>
+<text x="706.1333333333332" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">288 €</text>
+<text x="70" y="166" text-anchor="start" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">CON PROGRAMA DE CUIDADO</text>
+<text x="779.9333333333333" y="213.0" text-anchor="start" font-size="17" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.653 €</text>
+<rect x="70" y="294" width="12" height="12" rx="3" fill="#0E8F84"/>
+<text x="90" y="304" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Margen de tratamiento</text>
+<rect x="234.6" y="294" width="12" height="12" rx="3" fill="#A8631B"/>
+<text x="254.6" y="304" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Margen del programa y del referido</text>
+</svg>
+    <figcaption>Valor estimado de un paciente a cinco años. El programa de cuidado no se justifica por su cuota, que es marginal, sino por lo que arrastra: revisiones que detectan a tiempo, tratamientos que se hacen cuando aún son sencillos y familiares que entran por la puerta.</figcaption>
+  </figure>
+</section>
+<section class="slide">
+  <p class="eyebrow">§7 · Palancas de valor</p>
+  <h2>Por dónde se crece, <em>y en qué orden</em></h2>
+  <table>
+    <thead><tr><th>Orden</th><th>Palanca</th><th>Coste de activación</th><th>Horizonte</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td>Producto pendiente: caja ya cobrada que se convierte en producción</td><td>Solo gestión</td><td>Semanas</td></tr>
+      <tr><td class="c">2</td><td>Conversión de la primera visita</td><td>Formación y disciplina</td><td>1-2 trimestres</td></tr>
+      <tr><td class="c">3</td><td>Cartera propia dormida</td><td>Bajo</td><td>1 trimestre</td></tr>
+      <tr><td class="c">4</td><td>Programa de cuidado y mantenimiento</td><td>Bajo, con encaje legal previo</td><td>2-4 trimestres</td></tr>
+      <tr><td class="c">5</td><td>Captación externa</td><td>Medio-alto</td><td>3-6 trimestres</td></tr>
+    </tbody>
+  </table>
+  <p class="lede"><b>Sostener → recuperar → fidelizar → captar.</b> Invertir en captación con la cartera propia desatendida es la asignación de recursos menos eficiente posible.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§8 · Hoja de ruta</p>
+  <h2>Tres horizontes, tres puertas</h2>
+  <div class="cols">
+    <div class="tile"><p class="k">Horizonte 1 · 100 días</p><p class="v">Estabilizar</p><p>Riesgo neutralizado, equipo retenido, continuidad asegurada, línea base establecida</p></div>
+    <div class="tile"><p class="k">Horizonte 2 · 12 meses</p><p class="v">Consolidar</p><p>Protocolo implantado, producto pendiente residual, marca reposicionada, indicadores con serie propia</p></div>
+    <div class="tile"><p class="k">Horizonte 3 · 36 meses</p><p class="v">Liderar</p><p>Referencia en implantología compleja, captación mayoritariamente por recomendación</p></div>
+  </div>
+  <p class="lede">El programa no avanza por calendario, sino por criterios de salida verificados en los días 30, 60 y 100. Ninguna fase se adelanta.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§9 · Lo que se pide hoy</p>
+  <h2>Ocho decisiones</h2>
+  <table>
+    <thead><tr><th>Cód.</th><th>Materia</th><th>Plazo</th></tr></thead>
+    <tbody>
+      <tr><td class="c">D1</td><td>Política de precios y tabla de descuentos</td><td><span class="sem sem--rojo">Inmediato</span></td></tr>
+      <tr><td class="c">D2</td><td>Garantías publicadas por tipo de tratamiento</td><td><span class="sem sem--rojo">Inmediato</span></td></tr>
+      <tr><td class="c">D5</td><td>Programa de cuidado: precio, catálogo y validación jurídica</td><td><span class="sem sem--rojo">Inmediato</span></td></tr>
+      <tr><td class="c">D8</td><td>Responsables funcionales y Comité de Transición</td><td><span class="sem sem--rojo">Inmediato</span></td></tr>
+      <tr><td class="c">D3</td><td>Arquitectura de marca y verificación legal del naming</td><td><span class="sem sem--ambar">Trimestre</span></td></tr>
+      <tr><td class="c">D4</td><td>Presupuesto anual de captación y modelo de ejecución</td><td><span class="sem sem--ambar">Trimestre</span></td></tr>
+      <tr><td class="c">D6</td><td>Línea de sedación consciente</td><td><span class="sem sem--ambar">Trimestre</span></td></tr>
+      <tr><td class="c">D7</td><td>Marco de inversión en flujo digital</td><td><span class="sem sem--ambar">2.º trimestre</span></td></tr>
+    </tbody>
+  </table>
+</section>
+<section class="slide slide--cierre">
+  <p class="eyebrow">Cierre</p>
+  <h2>Qué mide el éxito de este año</h2>
+  <ul class="bul">
+    <li><b>Que el equipo permanezca.</b> El conocimiento operativo reside en las personas y su reposición exige plazos que ningún plan comprime</li>
+    <li><b>Que los pacientes heredados no perciban discontinuidad.</b> Son la base de ingresos inmediata y el primer canal de prescripción</li>
+    <li><b>Que la organización acepte un estándar superior al preexistente.</b> La ventana para establecerlo se cierra en el primer trimestre</li>
+  </ul>
+  <p class="lede">Lo que se pide hoy no es respaldo genérico: es resolver las ocho decisiones y fijar la fecha de la próxima revisión.</p>
+</section>
+</div>
+
+<div class="barra" aria-hidden="true"><i id="progreso"></i></div>
+<div class="hud">
+  <span class="hud__marca">Centro de Excelencia Implantológica Giraldo · Junta Directiva</span>
+  <button id="prev" type="button" aria-label="Diapositiva anterior">←</button>
+  <span class="hud__n" id="n" aria-live="polite">1 / 15</span>
+  <button id="next" type="button" aria-label="Diapositiva siguiente">→</button>
+</div>
+
+<script>
+
+(function(){
+  "use strict";
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var total = slides.length, actual = 0;
+  var num = document.getElementById("n"), barra = document.getElementById("progreso");
+  function ir(i){
+    actual = Math.max(0, Math.min(total - 1, i));
+    slides.forEach(function(s, k){ s.classList.toggle("is-on", k === actual); });
+    num.textContent = (actual + 1) + " / " + total;
+    barra.style.width = ((actual + 1) / total * 100) + "%";
+    try { history.replaceState(null, "", "#" + (actual + 1)); } catch(e){}
+  }
+  document.getElementById("prev").addEventListener("click", function(){ ir(actual - 1); });
+  document.getElementById("next").addEventListener("click", function(){ ir(actual + 1); });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); ir(actual + 1); }
+    else if(e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); ir(actual - 1); }
+    else if(e.key === "Home") ir(0);
+    else if(e.key === "End") ir(total - 1);
+  });
+  var inicio = parseInt((location.hash || "").slice(1), 10);
+  ir(isNaN(inicio) ? 0 : inicio - 1);
+})();
+
+</script>
+</body>
+</html>

@@ -382,6 +382,34 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 /* nota al pie de bloque */
 .footnote{margin-top:.9rem;font-size:.82rem;color:var(--muted);max-width:66ch}
 
+/* ============================================================
+   IMPRESIÓN Y PDF — A4 con márgenes de encuadernación, cabecera
+   de clasificación en la primera página y tablas que repiten su
+   encabezado al cambiar de hoja.
+   ============================================================ */
+@page{size:A4;margin:18mm 15mm 20mm}
+.printhead{display:none}
+@media print{
+  .printhead{
+    display:block;border-bottom:1.5pt solid #000;padding-bottom:6pt;margin-bottom:14pt;
+    font-family:var(--f-mono);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .printhead b{font-weight:600}
+  .printhead span{float:right}
+  h1,h2,h3,h4{break-after:avoid-page}
+  h2,h3{break-inside:avoid}
+  p,li{orphans:3;widows:3}
+  thead{display:table-header-group}
+  tfoot{display:table-footer-group}
+  tr,img,svg,figure,.card,.spec,.script,.sheet,.rulebox,.callout,.gate,.saydont>div{break-inside:avoid}
+  .parthead{break-before:page}
+  .tablewrap,.figscroll{overflow:visible!important}
+  table{min-width:0!important;font-size:8.5pt}
+  .hero{padding-top:0}
+  .section{padding:14pt 0}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:7.5pt;color:#555}
+  a[href^="#"]::after,a[href$=".html"]::after{content:""}
+}
 @media print{
   .topbar,.legend,.timemap__bar{display:none!important}
   body{background:#fff;color:#000;font-size:10.5pt}
@@ -515,6 +543,9 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 </header>
 
 <main>
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v1.3</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="portada">
   <div class="wrap">
@@ -565,6 +596,22 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
           <tr><td class="num">12</td><td><a href="#otros-continuidad" style="color:var(--accent-ink)">Continuidad legal, financiera y de sistemas</a></td><td>Del día 1 al primer mes</td><td>Gerencia y asesorías</td></tr>
           <tr><td class="num">13</td><td><a href="#otros-posicionamiento" style="color:var(--accent-ink)">«No medias sonrisas» · posicionamiento y objetivo</a></td><td>Siempre: es el criterio que ordena todo lo demás</td><td>Todo el equipo</td></tr>
           <tr><td class="num">14</td><td><a href="#otros-gtc" style="color:var(--accent-ink)">GTC · Giraldo Te Cuida</a></td><td>En cada visita: forma parte del cierre de cualquier tratamiento</td><td>Todo el equipo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Control del documento</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
+        <tbody>
+          <tr><td>Versión</td><td>1.3 · Agosto 2026</td></tr>
+          <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
+          <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
+          <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
+          <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
+          <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
+          <tr><td>Documentos relacionados</td><td>Manual Maestro v5.5 · Protocolo de Primera Visita v5.5 · Memoria de Dirección v1.0</td></tr>
         </tbody>
       </table>
     </div>

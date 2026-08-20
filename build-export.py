@@ -21,12 +21,15 @@ DESTINO = RAIZ / "export"
 # Los archivos a exportar: nombre de salida, identificador dentro del archivo
 # único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
+    "memoria.html": "Memoria-Direccion-Giraldo.html",
+    "deck.html": "Presentacion-Junta-Giraldo.html",
     "manual.html": "Manual-Maestro-Giraldo-v5.html",
     "index.html": "Protocolo-Primera-Visita-Giraldo.html",
     "otros.html": "Otros-Documentos-Giraldo.html",
 }
 
 DOCUMENTOS = {
+    "memoria.html": ("doc-memoria", "mem-"),
     "manual.html": ("doc-manual", ""),
     "index.html": ("doc-protocolo", "pv-"),
     "otros.html": ("doc-otros", "ot-"),
@@ -272,7 +275,7 @@ def unificado(estilo_fuentes):
         if prefijo:
             cuerpo_doc = prefijar(cuerpo_doc, prefijo)
         cuerpo_doc = conmutadores(cuerpo_doc, nombre)
-        oculto = "" if ident == "doc-manual" else " hidden"
+        oculto = "" if ident == "doc-memoria" else " hidden"
         bloques.append('<div class="doc" id="%s"%s>\n%s\n</div>' % (ident, oculto, cuerpo_doc))
 
     documento = """<!doctype html>
