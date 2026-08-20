@@ -40,42 +40,9 @@
   --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
   --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
   --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#07141A;
-    --surface:#0D2027;
-    --surface-2:#132B33;
-    --ink:#E7EEEC;
-    --ink-2:#C3D3D2;
-    --muted:#8BA4A8;
-    --line:rgba(231,238,236,.18);
-    --line-soft:rgba(231,238,236,.09);
-    --accent:#4FD6C6;
-    --accent-ink:#8BEDE1;
-    --accent-soft:rgba(79,214,198,.12);
-    --signal:#E3AC5E;
-    --signal-soft:rgba(227,172,94,.14);
-    --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
-    --rule:rgba(231,238,236,.34);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#07141A;
-  --surface:#0D2027;
-  --surface-2:#132B33;
-  --ink:#E7EEEC;
-  --ink-2:#C3D3D2;
-  --muted:#8BA4A8;
-  --line:rgba(231,238,236,.18);
-  --line-soft:rgba(231,238,236,.09);
-  --accent:#4FD6C6;
-  --accent-ink:#8BEDE1;
-  --accent-soft:rgba(79,214,198,.12);
-  --signal:#E3AC5E;
-  --signal-soft:rgba(227,172,94,.14);
-  --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
-  --rule:rgba(231,238,236,.34);
+
+  /* documento de lectura e impresión: solo modo claro */
+  color-scheme:light;
 }
 
 /* ============================================================
@@ -135,12 +102,6 @@ a{color:inherit}
 }
 .brand__mark b{font-weight:600}
 .brand__tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.themebtn{
-  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--line);color:var(--muted);
-  padding:.42rem .7rem;border-radius:999px;cursor:pointer;
-}
-.themebtn:hover{color:var(--ink);border-color:var(--ink)}
 .crosslink{
   display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;
   border:1px solid var(--line);padding:.5rem .9rem;border-radius:999px;
@@ -428,7 +389,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 .footnote{margin-top:.9rem;font-size:.82rem;color:var(--muted);max-width:66ch}
 
 @media print{
-  .topbar,.themebtn,.legend,.timemap__bar{display:none!important}
+  .topbar,.legend,.timemap__bar{display:none!important}
   body{background:#fff;color:#000;font-size:10.5pt}
   .phase,.section{break-inside:avoid;page-break-inside:avoid;border-color:#bbb}
   .phase.is-dimmed{opacity:1}
@@ -448,11 +409,10 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Excelencia Implantológica <b>Giraldo</b></span>
-        <span class="brand__tag">Protocolo PV · v5.3</span>
+        <span class="brand__tag">Protocolo PV · v5.4</span>
       </a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
       <a class="crosslink" href="otros.html">Otros documentos</a>
-      <button class="themebtn" id="themebtn" type="button" aria-live="polite">Tema</button>
     </div>
     <nav class="strip" id="strip" aria-label="Índice de fases">
       <a href="#fundamentos">Fundamentos</a>
@@ -488,7 +448,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 5.3 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 5.4 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="manual.html" style="color:var(--accent-ink)">Manual Maestro de Operaciones</a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -515,6 +475,13 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
       <h2>Cinco principios que sostienen las doce fases</h2>
       <p>Si alguna vez el protocolo entra en conflicto con la realidad de una visita concreta, estos principios deciden. Son el criterio al que apelar cuando el guion no cubre la situación.</p>
     </div>
+
+    <div class="callout" style="max-width:none;border-left-color:var(--accent);background:var(--accent-soft);margin-bottom:2.4rem">
+      <p class="eyebrow" style="color:var(--accent-ink)">Principio 00 · El posicionamiento que está por encima de los cinco <span class="tag">Posicionamiento</span></p>
+      <p style="font-family:var(--f-display);font-size:var(--step-1);color:var(--ink);margin-bottom:.6rem">«No medias sonrisas.»</p>
+      <p>Una media sonrisa es un tratamiento a medias, una solución provisional que se eterniza, un paciente al que se le resuelve solo una parte del problema. Si algo deja al paciente a medias, no es la manera Giraldo de hacer las cosas. En una Primera Visita eso significa: se diagnostica la boca completa aunque venga por una pieza, se presenta el plan definitivo aunque se ejecute por etapas, y no se vende un tratamiento parcial sabiendo que el paciente necesita más sin explicárselo. El desarrollo completo está en <a href="otros.html#otros-posicionamiento" style="color:var(--accent-ink)">Otros · «No medias sonrisas»</a>.</p>
+    </div>
+
     <div class="cards cards--3">
       <article class="card">
         <span class="eyebrow">Principio 01</span>
@@ -2806,6 +2773,32 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
       </div>
 
       <div class="block">
+        <p class="block__title">Fraccionar el pago no es fraccionar el alcance <span class="tag">Posicionamiento</span></p>
+        <p>Cuando el importe aprieta, la salida es siempre la misma: se ajusta <strong>cómo se paga</strong> y <strong>en qué orden se ejecuta</strong>, nunca <em>qué</em> se va a resolver. El plan que se presenta es el completo, aunque se acuerde hacerlo en etapas.</p>
+        <div class="saydont">
+          <div>
+            <h5>Legítimo y recomendable</h5>
+            <ul>
+              <li>Pagar por fases, con el plan completo presentado y aceptado</li>
+              <li>Empezar por la fase clínicamente prioritaria y continuar cuando el paciente decida</li>
+              <li>Financiar el tratamiento para hacerlo asumible</li>
+              <li>Dejar por escrito qué fases quedan pendientes y en qué orden</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Lo que el posicionamiento prohíbe</h5>
+            <ul>
+              <li>Reducir el plan «para que entre» y callar el resto del diagnóstico</li>
+              <li>Vender un tratamiento parcial sabiendo que necesita más, sin explicárselo</li>
+              <li>Alargar por fases lo que puede resolverse en menos tiempo</li>
+              <li>Dejar el caso clínicamente a medias, sin fecha ni seguimiento</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footnote">Un plan aceptado con fases pendientes que nadie persigue es producto pendiente, y el producto pendiente es una media sonrisa sin cerrar. Por eso toda fase no ejecutada sale de esta visita con fecha o con tarea asignada.</p>
+      </div>
+
+      <div class="block">
         <p class="block__title">Política de descuentos <span class="tag">Decisión 7</span></p>
         <p>El descuento es la última herramienta del cierre, nunca la primera. Antes de aplicarlo hay que entender lo que cuesta de verdad: un descuento no reduce la facturación en el porcentaje que se aplica, reduce el beneficio en mucho más.</p>
         <div class="tablewrap">
@@ -3991,7 +3984,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
       <div>
         <p class="eyebrow">Versión</p>
-        <p>v5.3 · Agosto 2026<br>Revisión semestral</p>
+        <p>v5.4 · Agosto 2026<br>Revisión semestral</p>
       </div>
       <div>
         <p class="eyebrow">Contenido</p>
@@ -4094,20 +4087,6 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   } else {
     document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
   }
-
-  /* ---- tema ---- */
-  var btn = document.getElementById("themebtn");
-  function currentTheme(){
-    var stamped = document.documentElement.getAttribute("data-theme");
-    if(stamped) return stamped;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-  function label(){ btn.textContent = currentTheme() === "dark" ? "Modo claro" : "Modo oscuro"; }
-  label();
-  btn.addEventListener("click", function(){
-    document.documentElement.setAttribute("data-theme", currentTheme() === "dark" ? "light" : "dark");
-    label();
-  });
 })();
 </script>
 </body>

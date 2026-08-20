@@ -92,24 +92,6 @@ SCRIPT = """<script>
   var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var docs = Array.prototype.slice.call(document.querySelectorAll(".doc"));
 
-  /* ---- tema, común a los dos documentos ---- */
-  function temaActual(){
-    var marcado = document.documentElement.getAttribute("data-theme");
-    if(marcado) return marcado;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-  function etiquetarTema(){
-    var texto = temaActual() === "dark" ? "Modo claro" : "Modo oscuro";
-    document.querySelectorAll(".themebtn").forEach(function(b){ b.textContent = texto; });
-  }
-  document.querySelectorAll(".themebtn").forEach(function(b){
-    b.addEventListener("click", function(){
-      document.documentElement.setAttribute("data-theme", temaActual() === "dark" ? "light" : "dark");
-      etiquetarTema();
-    });
-  });
-  etiquetarTema();
-
   /* ---- conmutador entre documentos ---- */
   function mostrar(id, moverScroll){
     var existe = docs.some(function(d){ return d.id === id; });

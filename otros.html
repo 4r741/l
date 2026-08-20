@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Los doce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita del Centro de Excelencia Implantológica Giraldo: compendio, verificación de 322 puntos, auditoría, decisiones de gerencia, programa de 100 días, dosier de 30 días, protocolos por perfil, innovación, plan de marca, cuaderno de campo del día 1, puesta en marcha por perfil y continuidad legal y financiera.">
+<meta name="description" content="Los trece documentos que rodean al Manual Maestro y al Protocolo de Primera Visita del Centro de Excelencia Implantológica Giraldo: compendio, verificación de 322 puntos, auditoría, decisiones de gerencia, programa de 100 días, dosier de 30 días, protocolos por perfil, innovación, plan de marca, cuaderno de campo del día 1, puesta en marcha por perfil y continuidad legal y financiera y el posicionamiento «No medias sonrisas».">
 <title>Otros documentos del sistema · Giraldo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,42 +40,9 @@
   --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
   --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
   --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#07141A;
-    --surface:#0D2027;
-    --surface-2:#132B33;
-    --ink:#E7EEEC;
-    --ink-2:#C3D3D2;
-    --muted:#8BA4A8;
-    --line:rgba(231,238,236,.18);
-    --line-soft:rgba(231,238,236,.09);
-    --accent:#4FD6C6;
-    --accent-ink:#8BEDE1;
-    --accent-soft:rgba(79,214,198,.12);
-    --signal:#E3AC5E;
-    --signal-soft:rgba(227,172,94,.14);
-    --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
-    --rule:rgba(231,238,236,.34);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#07141A;
-  --surface:#0D2027;
-  --surface-2:#132B33;
-  --ink:#E7EEEC;
-  --ink-2:#C3D3D2;
-  --muted:#8BA4A8;
-  --line:rgba(231,238,236,.18);
-  --line-soft:rgba(231,238,236,.09);
-  --accent:#4FD6C6;
-  --accent-ink:#8BEDE1;
-  --accent-soft:rgba(79,214,198,.12);
-  --signal:#E3AC5E;
-  --signal-soft:rgba(227,172,94,.14);
-  --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
-  --rule:rgba(231,238,236,.34);
+
+  /* documento de lectura e impresión: solo modo claro */
+  color-scheme:light;
 }
 
 /* ============================================================
@@ -135,12 +102,6 @@ a{color:inherit}
 }
 .brand__mark b{font-weight:600}
 .brand__tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.themebtn{
-  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--line);color:var(--muted);
-  padding:.42rem .7rem;border-radius:999px;cursor:pointer;
-}
-.themebtn:hover{color:var(--ink);border-color:var(--ink)}
 
 /* tira de fases */
 .strip{
@@ -422,7 +383,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 .footnote{margin-top:.9rem;font-size:.82rem;color:var(--muted);max-width:66ch}
 
 @media print{
-  .topbar,.themebtn,.legend,.timemap__bar{display:none!important}
+  .topbar,.legend,.timemap__bar{display:none!important}
   body{background:#fff;color:#000;font-size:10.5pt}
   .phase,.section{break-inside:avoid;page-break-inside:avoid;border-color:#bbb}
   .phase.is-dimmed{opacity:1}
@@ -526,11 +487,10 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Otros documentos <b>Giraldo</b></span>
-        <span class="brand__tag">Sistema · v1.0</span>
+        <span class="brand__tag">Sistema · v1.2</span>
       </a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
       <a class="crosslink" href="index.html">Protocolo de Primera Visita</a>
-      <button class="themebtn" id="themebtn" type="button" aria-live="polite">Tema</button>
     </div>
     <nav class="strip" id="strip" aria-label="Índice de los otros documentos">
       <a href="#presentacion">Cómo leer</a>
@@ -547,6 +507,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <a href="#otros-cuaderno">10 · Cuaderno de campo</a>
       <a href="#otros-transicion-perfiles">11 · Puesta en marcha por perfil</a>
       <a href="#otros-continuidad">12 · Continuidad legal y financiera</a>
+      <a href="#otros-posicionamiento">13 · No medias sonrisas</a>
       <a href="#otros-cierre">Cierre</a>
     </nav>
   </div>
@@ -560,11 +521,11 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
-        <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. Los doce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 1.1 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. Los trece documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 1.2 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
-        <div class="spec"><dt>Documentos</dt><dd>12<small>Del compendio maestro al cuaderno de campo del día 1</small></dd></div>
+        <div class="spec"><dt>Documentos</dt><dd>13<small>Del posicionamiento del centro al cuaderno de campo del día 1</small></dd></div>
         <div class="spec"><dt>Puntos de verificación</dt><dd>322<small>Recorrido físico, documental, de sistemas y de procesos</small></dd></div>
         <div class="spec"><dt>Decisiones de Gerencia</dt><dd>20<small>Más once verificaciones externas</small></dd></div>
         <div class="spec"><dt>Fichas de innovación</dt><dd>18<small>Con protocolo, guion, contingencia e indicador</small></dd></div>
@@ -601,6 +562,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
           <tr><td class="num">10</td><td><a href="#otros-cuaderno" style="color:var(--accent-ink)">Cuaderno de Campo · Día 1</a></td><td>El día 1, impreso y encima</td><td>Dirección</td></tr>
           <tr><td class="num">11</td><td><a href="#otros-transicion-perfiles" style="color:var(--accent-ink)">Manual de Puesta en Marcha · operativa por perfil</a></td><td>Día 1 y primera semana</td><td>Recepción · Doctor · Auxiliar · RAC</td></tr>
           <tr><td class="num">12</td><td><a href="#otros-continuidad" style="color:var(--accent-ink)">Continuidad legal, financiera y de sistemas</a></td><td>Del día 1 al primer mes</td><td>Gerencia y asesorías</td></tr>
+          <tr><td class="num">13</td><td><a href="#otros-posicionamiento" style="color:var(--accent-ink)">«No medias sonrisas» · posicionamiento y objetivo</a></td><td>Siempre: es el criterio que ordena todo lo demás</td><td>Todo el equipo</td></tr>
         </tbody>
       </table>
     </div>
@@ -3958,12 +3920,240 @@ LTV              = Valor inicial
   </div>
 </section>
 
+<!-- NO MEDIAS SONRISAS -->
+<section class="section" id="otros-posicionamiento">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Documento 13</p>
+      <h2>«No medias sonrisas» · posicionamiento y objetivo</h2>
+      <p>El documento que está por encima de todos los demás. No describe un procedimiento: fija el norte con el que se contrasta cada decisión clínica y de gestión del centro. Si algo deja al paciente a medias, no es la manera Giraldo de hacer las cosas.</p>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">El manifiesto</p>
+      <p>«No medias sonrisas.»</p>
+      <p>No es un eslogan publicitario: es la declaración de lo que somos y de lo que no aceptamos. Una media sonrisa es un tratamiento a medias, una solución provisional que se eterniza, un paciente al que se le resuelve solo una parte del problema, una boca rehabilitada por fases interminables que nunca terminan de cerrarse. Nuestra promesa es la contraria: la rehabilitación integral, definitiva y mínimamente invasiva, resuelta en el menor tiempo posible —idealmente en un solo día—. Cuando un paciente sale de aquí, sale con la boca resuelta, no con una etapa cumplida.</p>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">El origen de la filosofía</h3>
+    <p style="color:var(--ink-2);max-width:70ch">«No medias sonrisas» se inspira en la filosofía <em>«No Half Smiles»</em>, concebida por el Dr. Miguel Stanley, fundador de la White Clinic de Lisboa, una de las clínicas de referencia mundial en odontología. Se reconoce y se respeta ese origen, y se hace propia su idea fundacional adaptándola a la identidad y a la especialidad de Giraldo: se ofrece únicamente el mejor tratamiento para el diagnóstico completo realizado. No se tratan síntomas sueltos, se trata la causa raíz; no se ponen parches, se resuelve la boca entera.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Idea heredada</th><th>Qué significa aquí</th></tr></thead>
+        <tbody>
+          <tr><td>Diagnóstico completo, no parches</td><td>Antes de proponer nada se diagnostica la boca entera y se busca la causa raíz. El plan nace de un diagnóstico total, no del motivo puntual de la visita</td></tr>
+          <tr><td>La sonrisa completa</td><td>Se resuelve el caso de forma integral y definitiva, no por fragmentos inconexos que dejan al paciente a medias</td></tr>
+          <tr><td>Mínima invasión y mínimo tiempo</td><td>La mejor técnica con la menor agresión y en el menor tiempo posible, cuidando la experiencia del paciente</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">Un parche trata lo que duele hoy y deja intacto el problema de fondo. Un diagnóstico completo entiende toda la boca —y su relación con la salud general— y propone la solución definitiva. Esa es la diferencia entre una media sonrisa y una sonrisa completa.</p>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Parte 1 · El objetivo</h3>
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">La ambición</p>
+      <p>Ser el centro de referencia mundial en implantología dental y rehabilitaciones complejas mínimamente invasivas, resueltas en un solo día, para pacientes de todo el mundo. No es una aspiración retórica: es una dirección que ordena cada inversión, cada contratación, cada protocolo y cada campaña. Todo lo que se hace se pregunta una sola cosa: <strong>¿nos acerca a ser esa referencia, o nos aparta de ella?</strong></p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Palabra</th><th>Qué significa</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Referencia mundial</strong></td><td>No competir por precio en el barrio, sino por excelencia reconocible a nivel internacional. Que un caso complejo piense en Giraldo</td></tr>
+          <tr><td><strong>Implantología</strong></td><td>El eje. La especialidad en la que se quiere ser insuperable, no una más de la carta</td></tr>
+          <tr><td><strong>Rehabilitación compleja</strong></td><td>Los casos que otros derivan o no saben resolver: bocas completas, atrofias severas, fracasos previos</td></tr>
+          <tr><td><strong>Mínimamente invasiva, en un día</strong></td><td>La menor agresión, el menor tiempo, la mayor predecibilidad. Cirugía guiada y carga inmediata como estándar, no como excepción</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="font-family:var(--f-body);font-size:1.02rem;font-weight:600;margin:1.8rem 0 .4rem">Por qué este foco y no otro</h4>
+    <p style="color:var(--ink-2);max-width:70ch">Una clínica que quiere ser referencia mundial no puede ser referencia de todo. La elección de foco es lo que hace posible la excelencia.</p>
+    <ul class="list" style="max-width:none">
+      <li><strong>Es donde más se sufre y más se transforma una vida.</strong> Recuperar la capacidad de comer, hablar y sonreír de quien ha perdido sus dientes es de los cambios más profundos que puede ofrecer la odontología</li>
+      <li><strong>Es donde la tecnología marca más diferencia.</strong> El 3D, la planificación digital, la cirugía guiada y la carga inmediata convierten en rutina lo que antes era excepcional</li>
+      <li><strong>Es donde el «un solo día» vale más.</strong> Para un paciente internacional, resolver su caso en una estancia corta no es comodidad: es lo que hace viable venir</li>
+      <li><strong>Es donde el lema es más literal.</strong> Rehabilitar completo, no pieza a pieza durante años</li>
+      <li><strong>Es donde tratar la causa raíz cambia una vida.</strong> En rehabilitación compleja no se maquilla un síntoma: se resuelve el origen, con impacto real en la salud general</li>
+    </ul>
+
+    <h4 style="font-family:var(--f-body);font-size:1.02rem;font-weight:600;margin:1.8rem 0 .4rem">El paciente al que se sirve</h4>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Perfil</th><th>Qué busca aquí</th></tr></thead>
+        <tbody>
+          <tr><td>Edentulismo total o parcial severo</td><td>Una solución completa y definitiva, no un parche</td></tr>
+          <tr><td>Fracasos previos</td><td>Quien sepa resolver lo que otros no pudieron</td></tr>
+          <tr><td>Atrofia ósea compleja</td><td>Técnica avanzada sin cirugías interminables</td></tr>
+          <tr><td>Paciente internacional</td><td>Resolución en pocos días, con planificación previa a distancia</td></tr>
+          <tr><td>Paciente que valora la excelencia</td><td>Tecnología, garantías y trato por encima del precio</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Parte 2 · Los cinco pilares</h3>
+    <p style="color:var(--ink-2);max-width:70ch">Ser referencia no se declara: se demuestra con hechos comprobables. Cada pilar tiene su prueba tangible.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Pilar</th><th>La promesa</th><th>La prueba tangible</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Un solo día</strong></td><td>Rehabilitación fija en veinticuatro horas</td><td>Cirugía guiada y carga inmediata como estándar</td></tr>
+          <tr><td><strong>Mínima invasión</strong></td><td>La menor agresión posible</td><td>Planificación digital, guía quirúrgica, menos cirugía</td></tr>
+          <tr><td><strong>Diagnóstico total</strong></td><td>Ver lo que otros no ven</td><td>CBCT 3D, escáner y planificación protésicamente guiada</td></tr>
+          <tr><td><strong>Predecibilidad</strong></td><td>El resultado se planifica antes de operar</td><td>Simulación digital del resultado final</td></tr>
+          <tr><td><strong>Cuidado de por vida</strong></td><td>La relación no termina con la cirugía</td><td>Programa de mantenimiento y seguimiento</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="saydont" style="max-width:none;margin-top:1.6rem">
+      <div>
+        <h5>Clínica convencional</h5>
+        <ul>
+          <li>Rehabilita por fases durante meses o años</li>
+          <li>Deriva los casos complejos</li>
+          <li>Diagnóstico limitado a la zona del dolor</li>
+          <li>Compite por precio</li>
+          <li>El paciente es local</li>
+          <li>La relación acaba al cobrar</li>
+          <li>«Le vamos haciendo»</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Centro de Excelencia Giraldo</h5>
+        <ul>
+          <li>Resuelve en el menor tiempo posible, idealmente en un día</li>
+          <li>Los casos complejos son su especialidad</li>
+          <li>Diagnóstico integral de boca completa</li>
+          <li>Compite por excelencia y resultado</li>
+          <li>El paciente puede venir de todo el mundo</li>
+          <li>La relación se sostiene de por vida</li>
+          <li>«No medias sonrisas»: se resuelve completo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">La promesa en una frase</p>
+      <p>«Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.»</p>
+      <p>Son dos promesas complementarias: la primera es sobre el <strong>resultado</strong> —la sonrisa completa, en un día—; la segunda, sobre la <strong>relación</strong> —el cuidado para siempre, que desarrolla el programa de mantenimiento—. Este documento fija la primera; el <a href="manual.html#m14" style="color:var(--accent-ink)">programa de mantenimiento del Manual Maestro</a> desarrolla la segunda.</p>
+    </div>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Parte 3 · De lema a comportamiento</h3>
+    <p style="color:var(--ink-2);max-width:70ch">Un posicionamiento que no cambia el comportamiento diario es solo un cartel en la pared. Tiene que notarse en cómo se responde al teléfono, cómo se diagnostica, cómo se presenta un plan y cómo se cierra un caso.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Perfil</th><th>Cómo encarna «No medias sonrisas»</th></tr></thead>
+        <tbody>
+          <tr><td>Recepción</td><td>Filtra buscando el caso completo, no solo el motivo puntual. Transmite desde la primera llamada que aquí se resuelven casos complejos</td></tr>
+          <tr><td>Doctor</td><td>Diagnostica la boca completa y propone el plan definitivo, no el parche. Piensa en el resultado final desde el primer día</td></tr>
+          <tr><td>Director</td><td>Presenta la solución integral y su valor; nunca fracciona el plan «para que entre» a costa de dejar el caso a medias</td></tr>
+          <tr><td>RAC</td><td>Garantiza que el plan completo se ejecuta hasta el final; persigue los tratamientos que se quedan a medias</td></tr>
+          <tr><td>Higienista</td><td>Sostiene el resultado en el tiempo; detecta a tiempo para que ninguna rehabilitación se degrade</td></tr>
+          <tr><td>Auxiliar</td><td>Garantiza que la tecnología y el material estén a la altura de resolver el caso completo en un día</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="font-family:var(--f-body);font-size:1.02rem;font-weight:600;margin:1.8rem 0 .4rem">Dónde se juega en cada fase del recorrido</h4>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Fase</th><th>Dónde se juega el posicionamiento</th></tr></thead>
+        <tbody>
+          <tr><td>Primera llamada</td><td>Se comunica que aquí se resuelven casos complejos, no simples urgencias</td></tr>
+          <tr><td>Tour por la tecnología</td><td>La prueba visible del «un solo día» y de la mínima invasión</td></tr>
+          <tr><td>Diagnóstico integral</td><td>Boca completa: se ve el problema entero, no un fragmento</td></tr>
+          <tr><td>Presentación del plan</td><td>Se presenta la solución completa y definitiva</td></tr>
+          <tr><td>Cierre</td><td>Se defiende el plan integral: el fraccionamiento es de pago, no de alcance</td></tr>
+          <tr><td>Ejecución en un día</td><td>La promesa se cumple: rehabilitación fija con la menor cirugía posible</td></tr>
+          <tr><td>Mantenimiento</td><td>El cuidado de por vida garantiza que la sonrisa completa se mantenga completa</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">La distinción que evita malentendidos</p>
+      <p>El <strong>fraccionamiento económico</strong> —pagar por fases— es legítimo y bueno. Lo que «No medias sonrisas» prohíbe es el <strong>fraccionamiento del alcance</strong>: dejar el caso clínicamente a medias. Se puede pagar por partes; no se puede quedar a medias.</p>
+    </div>
+
+    <h4 style="font-family:var(--f-body);font-size:1.02rem;font-weight:600;margin:1.8rem 0 .4rem">Las decisiones que el lema descarta</h4>
+    <ul class="list" style="max-width:none">
+      <li>Resolver solo la urgencia y no ofrecer el diagnóstico completo</li>
+      <li>Vender un tratamiento parcial sabiendo que el paciente necesita más, sin explicárselo</li>
+      <li>Alargar innecesariamente por fases lo que puede resolverse en un día</li>
+      <li>Dejar tratamientos a medias sin seguimiento ni cierre, que es exactamente lo que es el producto pendiente</li>
+      <li>Competir bajando calidad para bajar precio</li>
+    </ul>
+    <p class="footnote">El producto pendiente y los tratamientos sin finalizar que vigilan el <a href="#otros-perfiles" style="color:var(--accent-ink)">circuito de RAC</a> y el <a href="#otros-continuidad" style="color:var(--accent-ink)">inventario heredado</a> son, literalmente, medias sonrisas sin cerrar. Reducirlos a cero no es solo buena gestión: es cumplir el posicionamiento.</p>
+
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Parte 4 · Cómo se comunica</h3>
+    <div class="grid2">
+      <div>
+        <p class="block__title">Hacia dentro · el equipo</p>
+        <p>El primero que tiene que creerlo es el equipo: un paciente nota en dos minutos si quien le atiende cree de verdad en lo que ofrece.</p>
+        <ul class="list">
+          <li><strong>En la incorporación:</strong> quien entra conoce el posicionamiento el primer día, antes que cualquier procedimiento</li>
+          <li><strong>En las reuniones:</strong> las decisiones se contrastan con el lema —«¿esto deja al paciente a medias?»</li>
+          <li><strong>En la visibilidad:</strong> el lema está presente en las zonas internas del equipo, no solo de cara al paciente</li>
+        </ul>
+      </div>
+      <div>
+        <p class="block__title">Hacia fuera · mensajes por audiencia</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Audiencia</th><th>Mensaje principal</th></tr></thead>
+            <tbody>
+              <tr><td>Paciente local</td><td>Aquí se resuelve su caso completo, en el menor tiempo posible</td></tr>
+              <tr><td>Paciente complejo o con fracasos</td><td>Lo que otros no pudieron resolver, aquí sí</td></tr>
+              <tr><td>Paciente internacional</td><td>Su rehabilitación completa en pocos días, planificada antes de venir</td></tr>
+              <tr><td>Prescriptores y colegas</td><td>El centro de referencia al que derivar el caso difícil</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:1.2rem;color:var(--ink-2);max-width:70ch"><strong>Dónde se comunica:</strong> casos reales de rehabilitación completa en un día, con consentimiento, en web y redes; reseñas orientadas a resaltar la resolución completa y el trato; contenido que explique al paciente el «un solo día» y la mínima invasión; y presencia internacional con idiomas, planificación a distancia y facilidades para quien viaja.</p>
+
+    <div class="saydont" style="max-width:none">
+      <div>
+        <h5>Somos</h5>
+        <ul>
+          <li>Excelencia cercana</li>
+          <li>Seguros de nuestra técnica</li>
+          <li>Claros y honestos</li>
+          <li>Centrados en el resultado del paciente</li>
+          <li>Referencia internacional</li>
+        </ul>
+      </div>
+      <div>
+        <h5>No somos</h5>
+        <ul>
+          <li>Lujo frío e inaccesible</li>
+          <li>Arrogantes</li>
+          <li>Vendedores de humo</li>
+          <li>Centrados en el precio</li>
+          <li>Una clínica de barrio más</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">Lo que nunca se dice ni se hace</p>
+      <p>No se prometen resultados que no se puedan garantizar, no se usan testimonios sin consentimiento y no se menciona a la competencia.</p>
+      <p>La ambición de ser referencia mundial nunca justifica una promesa que no se pueda cumplir: eso sería, precisamente, una media sonrisa.</p>
+    </div>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Síntesis</p>
+      <p>Un objetivo —ser referencia mundial—, una especialidad —implantología y rehabilitación compleja mínimamente invasiva en un día— y un criterio que lo ordena todo: <strong>resolver completo, nunca a medias</strong>.</p>
+    </div>
+  </div>
+</section>
+
 <!-- CIERRE -->
 <section class="section" id="otros-cierre">
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Cierre</p>
-      <h2>Cómo encajan los doce documentos</h2>
+      <h2>Cómo encajan los trece documentos</h2>
       <p>Cada uno resuelve una pregunta distinta y en un momento distinto. Leídos en el orden equivocado se contradicen; leídos en el suyo, se apoyan.</p>
     </div>
     <div class="tablewrap">
@@ -3981,6 +4171,7 @@ LTV              = Valor inicial
           <tr><td>La noche antes y el día 1</td><td>¿Qué digo cuando un paciente pregunta por su dinero?</td><td><a href="#otros-cuaderno" style="color:var(--accent-ink)">Cuaderno de campo</a></td></tr>
           <tr><td>Día 1 y semana 1</td><td>¿Qué hace exactamente mi puesto mientras cambia la titularidad?</td><td><a href="#otros-transicion-perfiles" style="color:var(--accent-ink)">Puesta en marcha por perfil</a></td></tr>
           <tr><td>Del día 1 al mes 1</td><td>¿Qué se transmite, qué no, y qué hay que verificar?</td><td><a href="#otros-continuidad" style="color:var(--accent-ink)">Continuidad legal y financiera</a></td></tr>
+          <tr><td>Siempre, antes que nada</td><td>¿Esto deja al paciente a medias?</td><td><a href="#otros-posicionamiento" style="color:var(--accent-ink)">«No medias sonrisas»</a></td></tr>
           <tr><td>Desde el día 30</td><td>¿Cómo llegan los pacientes correctos?</td><td><a href="#otros-marca" style="color:var(--accent-ink)">Plan de marca y captación</a></td></tr>
         </tbody>
       </table>
@@ -4006,11 +4197,11 @@ LTV              = Valor inicial
       </div>
       <div>
         <p class="eyebrow">Versión</p>
-        <p>v1.1 · Agosto 2026<br>Revisión semestral</p>
+        <p>v1.2 · Agosto 2026<br>Revisión semestral</p>
       </div>
       <div>
         <p class="eyebrow">Contenido</p>
-        <p>12 documentos del sistema<br>322 puntos de verificación · 20 decisiones<br>18 fichas de innovación · 6 perfiles operativos</p>
+        <p>13 documentos del sistema<br>322 puntos de verificación · 20 decisiones<br>18 fichas de innovación · 6 perfiles operativos</p>
       </div>
     </div>
     <p style="margin-top:2rem"><a class="crosslink" href="manual.html">Manual Maestro de Operaciones</a> &nbsp; <a class="crosslink" href="index.html">Protocolo de Primera Visita</a></p>
@@ -4077,20 +4268,6 @@ LTV              = Valor inicial
   } else {
     document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
   }
-
-  /* ---- tema ---- */
-  var btn = document.getElementById("themebtn");
-  function currentTheme(){
-    var stamped = document.documentElement.getAttribute("data-theme");
-    if(stamped) return stamped;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-  function label(){ btn.textContent = currentTheme() === "dark" ? "Modo claro" : "Modo oscuro"; }
-  label();
-  btn.addEventListener("click", function(){
-    document.documentElement.setAttribute("data-theme", currentTheme() === "dark" ? "light" : "dark");
-    label();
-  });
 })();
 </script>
 </body>

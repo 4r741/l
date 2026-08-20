@@ -40,42 +40,9 @@
   --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
   --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
   --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#07141A;
-    --surface:#0D2027;
-    --surface-2:#132B33;
-    --ink:#E7EEEC;
-    --ink-2:#C3D3D2;
-    --muted:#8BA4A8;
-    --line:rgba(231,238,236,.18);
-    --line-soft:rgba(231,238,236,.09);
-    --accent:#4FD6C6;
-    --accent-ink:#8BEDE1;
-    --accent-soft:rgba(79,214,198,.12);
-    --signal:#E3AC5E;
-    --signal-soft:rgba(227,172,94,.14);
-    --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
-    --rule:rgba(231,238,236,.34);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#07141A;
-  --surface:#0D2027;
-  --surface-2:#132B33;
-  --ink:#E7EEEC;
-  --ink-2:#C3D3D2;
-  --muted:#8BA4A8;
-  --line:rgba(231,238,236,.18);
-  --line-soft:rgba(231,238,236,.09);
-  --accent:#4FD6C6;
-  --accent-ink:#8BEDE1;
-  --accent-soft:rgba(79,214,198,.12);
-  --signal:#E3AC5E;
-  --signal-soft:rgba(227,172,94,.14);
-  --shadow:0 1px 0 rgba(0,0,0,.4), 0 22px 50px -34px #000;
-  --rule:rgba(231,238,236,.34);
+
+  /* documento de lectura e impresión: solo modo claro */
+  color-scheme:light;
 }
 
 /* ============================================================
@@ -135,12 +102,6 @@ a{color:inherit}
 }
 .brand__mark b{font-weight:600}
 .brand__tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.themebtn{
-  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--line);color:var(--muted);
-  padding:.42rem .7rem;border-radius:999px;cursor:pointer;
-}
-.themebtn:hover{color:var(--ink);border-color:var(--ink)}
 
 /* tira de fases */
 .strip{
@@ -422,7 +383,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 .footnote{margin-top:.9rem;font-size:.82rem;color:var(--muted);max-width:66ch}
 
 @media print{
-  .topbar,.themebtn,.legend,.timemap__bar{display:none!important}
+  .topbar,.legend,.timemap__bar{display:none!important}
   body{background:#fff;color:#000;font-size:10.5pt}
   .phase,.section{break-inside:avoid;page-break-inside:avoid;border-color:#bbb}
   .phase.is-dimmed{opacity:1}
@@ -526,11 +487,10 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Manual Maestro <b>Giraldo</b></span>
-        <span class="brand__tag">Operaciones · v5.3</span>
+        <span class="brand__tag">Operaciones · v5.4</span>
       </a>
       <a class="crosslink" href="index.html">Protocolo de Primera Visita</a>
       <a class="crosslink" href="otros.html">Otros documentos</a>
-      <button class="themebtn" id="themebtn" type="button" aria-live="polite">Tema</button>
     </div>
     <nav class="strip" id="strip" aria-label="Índice del manual">
       <a href="#presentacion">Presentación</a>
@@ -562,7 +522,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 5.3 · Edición integrada · Agosto 2026.<br>Sustituye al Protocolo v2.6, a los manuales de puesto sueltos y al manual de puesta en marcha por separado. Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 5.4 · Edición integrada · Agosto 2026.<br>Sustituye al Protocolo v2.6, a los manuales de puesto sueltos y al manual de puesta en marcha por separado. Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -652,7 +612,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
           <tr><td><a href="#p7" style="color:var(--accent-ink)">VII · Plan de incentivos</a></td><td>Arquitectura, escala, pesos, fórmula y gobernanza</td><td>Todo el equipo</td></tr>
           <tr><td><a href="#p8" style="color:var(--accent-ink)">VIII · Puesta en marcha</a></td><td>Las 72 horas previas y la mañana del día 1</td><td>Gerencia y Dirección</td></tr>
           <tr><td><a href="#anexos" style="color:var(--accent-ink)">Anexos</a></td><td>Plantillas, checklists imprimibles y consolidados, mapa de documentos, auditoría, sistema de reportes y glosario</td><td>Todo el equipo</td></tr>
-          <tr><td><a href="#otros" style="color:var(--accent-ink)">Otros documentos del sistema</a></td><td>Índice de los doce documentos que rodean a este manual, desarrollados en <a href="otros.html" style="color:var(--accent-ink)">documento propio</a>: compendio, verificación de 322 puntos, auditoría, decisiones de gerencia, programa de 100 días, dosier de 30 días, protocolos por perfil, innovación y plan de marca</td><td>Dirección y Gerencia</td></tr>
+          <tr><td><a href="#otros" style="color:var(--accent-ink)">Otros documentos del sistema</a></td><td>Índice de los trece documentos que rodean a este manual, desarrollados en <a href="otros.html" style="color:var(--accent-ink)">documento propio</a>: compendio, verificación de 322 puntos, auditoría, decisiones de gerencia, programa de 100 días, dosier de 30 días, protocolos por perfil, innovación y plan de marca</td><td>Dirección y Gerencia</td></tr>
           <tr><td><a href="#notas" style="color:var(--accent-ink)">Notas de edición</a></td><td>Incoherencias detectadas, pendientes de decisión</td><td>Dirección</td></tr>
         </tbody>
       </table>
@@ -725,7 +685,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>5.3 (Manual Maestro unificado) · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>5.4 (Manual Maestro unificado) · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Giraldo (uso abreviado: Giraldo)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
@@ -781,7 +741,32 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <div><h5>WeDiagnostix</h5><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div>
     </div>
 
-<h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">4 bis · La filosofía que gobierna todo: el tratamiento integral <span class="tag">Protocolos por perfil</span></h3>
+<h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">4 ante · El posicionamiento del centro: «No medias sonrisas» <span class="tag">Posicionamiento</span></h3>
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">El criterio que está por encima de este manual</p>
+      <p>«No medias sonrisas.» Si algo deja al paciente a medias, no es la manera Giraldo de hacer las cosas.</p>
+      <p>Una media sonrisa es un tratamiento a medias, una solución provisional que se eterniza, un paciente al que se le resuelve solo una parte del problema. La promesa es la contraria: rehabilitación integral, definitiva y mínimamente invasiva, en el menor tiempo posible —idealmente en un solo día—. Cuando un paciente sale de aquí, sale con la boca resuelta, no con una etapa cumplida.</p>
+    </div>
+    <p style="color:var(--ink-2);max-width:70ch;margin-top:1.2rem">El objetivo del centro es ser <strong>referencia mundial en implantología y rehabilitación compleja mínimamente invasiva resuelta en un día</strong>. Eso ordena cada inversión, cada contratación, cada protocolo y cada campaña: todo lo que se hace se pregunta si acerca o aparta de esa referencia. La filosofía se inspira en <em>«No Half Smiles»</em>, del Dr. Miguel Stanley (White Clinic, Lisboa), cuyo origen se reconoce expresamente.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Pilar</th><th>La promesa</th><th>La prueba tangible</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Un solo día</strong></td><td>Rehabilitación fija en veinticuatro horas</td><td>Cirugía guiada y carga inmediata como estándar</td></tr>
+          <tr><td><strong>Mínima invasión</strong></td><td>La menor agresión posible</td><td>Planificación digital, guía quirúrgica, menos cirugía</td></tr>
+          <tr><td><strong>Diagnóstico total</strong></td><td>Ver lo que otros no ven</td><td>CBCT 3D, escáner y planificación protésicamente guiada</td></tr>
+          <tr><td><strong>Predecibilidad</strong></td><td>El resultado se planifica antes de operar</td><td>Simulación digital del resultado final</td></tr>
+          <tr><td><strong>Cuidado de por vida</strong></td><td>La relación no termina con la cirugía</td><td>El programa de mantenimiento de la <a href="#m14" style="color:var(--accent-ink)">Fase 14</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">La distinción que hay que tener clara al presentar un plan</p>
+      <p>El <strong>fraccionamiento económico</strong> —pagar por fases— es legítimo y bueno. Lo que el posicionamiento prohíbe es el <strong>fraccionamiento del alcance</strong>: dejar el caso clínicamente a medias. Se puede pagar por partes; no se puede quedar a medias. Por eso el producto pendiente que persigue el <a href="#m13" style="color:var(--accent-ink)">circuito de producción</a> no es solo un problema de caja: son medias sonrisas sin cerrar.</p>
+    </div>
+    <p class="footnote">Desarrollo completo —manifiesto, origen, los cinco pilares, qué significa para cada puesto y en cada fase, y cómo se comunica dentro y fuera— en <a href="otros.html#otros-posicionamiento" style="color:var(--accent-ink)">Otros · «No medias sonrisas»</a>.</p>
+
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">4 bis · La filosofía que gobierna todo: el tratamiento integral <span class="tag">Protocolos por perfil</span></h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Qué significa</p>
       <p>Diagnosticamos la boca completa. Proponemos el plan completo. Ejecutamos con el orden clínico correcto y sin dejar nada a medias.</p>
@@ -7123,7 +7108,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <div class="parthead__num">O</div>
     <div>
       <h2>Otros documentos del sistema</h2>
-      <p>Los doce documentos que rodean a este manual, desde el compendio que lo ordena todo hasta el cuaderno de campo del día 1. Se desarrollan en <a href="otros.html" style="color:var(--accent-ink)">su propio documento</a>, del mismo rango que este; aquí queda el índice y lo que cada uno aporta.</p>
+      <p>Los trece documentos que rodean a este manual, desde el posicionamiento que lo ordena todo hasta el cuaderno de campo del día 1. Se desarrollan en <a href="otros.html" style="color:var(--accent-ink)">su propio documento</a>, del mismo rango que este; aquí queda el índice y lo que cada uno aporta.</p>
     </div>
   </div></div>
 </div>
@@ -7132,7 +7117,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   <div class="wrap">
     <div class="edit" style="max-width:none">
       <p class="eyebrow">Dónde está ahora este apartado</p>
-      <p>Los doce documentos que rodean a este manual se desarrollan en un documento propio, con el mismo rango que este y que el Protocolo de Primera Visita: <a class="crosslink" href="otros.html">Otros documentos del sistema</a>. Nada se ha eliminado; al contrario, allí cada documento está desarrollado por extenso. Aquí queda el índice y los enlaces directos a cada uno.</p>
+      <p>Los trece documentos que rodean a este manual se desarrollan en un documento propio, con el mismo rango que este y que el Protocolo de Primera Visita: <a class="crosslink" href="otros.html">Otros documentos del sistema</a>. Nada se ha eliminado; al contrario, allí cada documento está desarrollado por extenso. Aquí queda el índice y los enlaces directos a cada uno.</p>
     </div>
 
     <div class="tablewrap" style="margin-top:2rem">
@@ -7151,6 +7136,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><td class="num">10</td><td><a href="otros.html#otros-cuaderno" style="color:var(--accent-ink)">Cuaderno de Campo · Día 1</a></td><td>Página de emergencia, cronograma hora a hora, siete guiones de conversaciones difíciles, hojas de registro y semáforo del día</td><td>El día 1, impreso</td></tr>
           <tr><td class="num">11</td><td><a href="otros.html#otros-transicion-perfiles" style="color:var(--accent-ink)">Puesta en marcha · operativa por perfil</a></td><td>Qué hace cada puesto durante la transición, con la casuística del día 1 y la tabla de decisión rápida</td><td>Día 1 y primera semana</td></tr>
           <tr><td class="num">12</td><td><a href="otros.html#otros-continuidad" style="color:var(--accent-ink)">Continuidad legal, financiera y de sistemas</a></td><td>Qué se transmite y qué no, huecos de cobertura, producto pendiente heredado, comunicación institucional y plan de cuatro semanas</td><td>Del día 1 al primer mes</td></tr>
+          <tr><td class="num">13</td><td><a href="otros.html#otros-posicionamiento" style="color:var(--accent-ink)">«No medias sonrisas» · posicionamiento y objetivo</a></td><td>El manifiesto, el objetivo de referencia mundial, los cinco pilares, qué significa para cada puesto y en cada fase, y cómo se comunica</td><td>Siempre: ordena todo lo demás</td></tr>
         </tbody>
       </table>
     </div>
@@ -7210,6 +7196,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
       <table>
         <thead><tr><th>Versión</th><th>Fecha</th><th>Alcance</th><th>Aprobación</th></tr></thead>
         <tbody>
+          <tr><td class="num">5.4</td><td class="num">Agosto 2026</td><td>Se incorpora el posicionamiento «No medias sonrisas» como criterio que ordena el manual, en la Parte I, y como documento 13 de Otros. El protocolo recoge el mismo criterio en sus fundamentos y la distinción entre fraccionar el pago y fraccionar el alcance en la Fase 10. Los tres documentos pasan a modo claro único: se retira el modo oscuro y el conmutador de tema</td><td>Dirección de Centros</td></tr>
           <tr><td class="num">5.3</td><td class="num">Agosto 2026</td><td>Otros documentos pasa de nueve a doce con el cuaderno de campo del día 1, la operativa por perfil de la puesta en marcha y la continuidad legal, financiera y de sistemas. En este manual: qué se rompe cuando un puesto no cumple, al inicio de la Parte IV; durante la jornada, cierre y primeras 72 horas y los siete errores que hunden una transición en la Parte VIII; y el cuadro de escalado de incidencias como Anexo 13. El protocolo incorpora el KPI de cada fase y su propio cuadro de escalado</td><td>Dirección de Centros</td></tr>
           <tr><td class="num">5.2</td><td class="num">Agosto 2026</td><td>«Otros documentos del sistema» pasa a documento propio, con el mismo rango que este manual y que el protocolo, y se amplía de cuatro a nueve documentos: programa de integración de 100 días, dosier de los primeros 30 días, protocolos operativos por perfil, dieciocho fichas de innovación y plan director de marca y captación. En este manual: la filosofía del tratamiento integral en la Parte I, la parte comercial, los reportes diarios y las derivaciones de los seis puestos en la Parte IV, el marco de implantación de innovaciones en la Parte V y las tres puertas de paso del programa en la Parte VIII</td><td>Dirección de Centros</td></tr>
           <tr><td class="num">5.1</td><td class="num">Agosto 2026</td><td>Apartado «Otros documentos del sistema»; tabla de descuentos autorizados en la Fase 10; diseño del programa de mantenimiento en la Fase 14; once verificaciones externas y calendario integral en la Parte VIII; checklists consolidados, sistema de reportes e indicadores del centro en los anexos. El Protocolo de Primera Visita pasa a la misma versión, con la política de descuentos en la Fase 10 y la verificación observada del circuito en los estándares transversales</td><td>Dirección de Centros</td></tr>
@@ -7235,7 +7222,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
       </div>
       <div>
         <p class="eyebrow">Versión</p>
-        <p>5.3 · Edición integrada<br>Agosto 2026<br>Revisión semestral</p>
+        <p>5.4 · Edición integrada<br>Agosto 2026<br>Revisión semestral</p>
       </div>
       <div>
         <p class="eyebrow">Contenido</p>
@@ -7305,20 +7292,6 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   } else {
     document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
   }
-
-  /* ---- tema ---- */
-  var btn = document.getElementById("themebtn");
-  function currentTheme(){
-    var stamped = document.documentElement.getAttribute("data-theme");
-    if(stamped) return stamped;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-  function label(){ btn.textContent = currentTheme() === "dark" ? "Modo claro" : "Modo oscuro"; }
-  label();
-  btn.addEventListener("click", function(){
-    document.documentElement.setAttribute("data-theme", currentTheme() === "dark" ? "light" : "dark");
-    label();
-  });
 })();
 </script>
 </body>
