@@ -5,9 +5,9 @@ Se abren directamente en el navegador o se publican como estáticos en cualquier
 
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
-| **`manual.html`** | Manual Maestro de Operaciones (v5.2) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
-| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.2) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
-| **`otros.html`** | Otros documentos del sistema (v1.0) | Los nueve documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación y plan de marca y captación |
+| **`manual.html`** | Manual Maestro de Operaciones (v5.3) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
+| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.3) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
+| **`otros.html`** | Otros documentos del sistema (v1.1) | Los doce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil y continuidad legal y financiera |
 
 Los tres comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
 
@@ -46,7 +46,7 @@ planificación digital, circuito de esterilización y circuito de compras.
 | 07 Trazabilidad | Qué se registra, quién responde y en qué plazo |
 | 08 Cuadro de mando | Indicadores y rúbrica de auditoría |
 | 09 Formación | Incorporación, certificación por rol y entrenamiento continuo |
-| 10 Anexos | Guiones, preguntas frecuentes, errores, checklist imprimible, glosario y gobernanza |
+| 10 Anexos | Guiones, preguntas frecuentes, errores, checklist imprimible, glosario, gobernanza y escalado de incidencias |
 
 ## Exportación a HTML autónomo
 
@@ -84,6 +84,9 @@ porque es regenerable.
 | 7 | Protocolos por perfil | Parte asistencial y comercial de los seis puestos, con checklists y reportes |
 | 8 | Innovación · 18 fichas | Protocolo, guion, contingencia e indicador de cada innovación |
 | 9 | Marca y captación | Naming, siete segmentos y sus embudos, AEO, automatización y economía unitaria |
+| 10 | Cuaderno de campo · día 1 | Página de emergencia, cronograma hora a hora, siete guiones difíciles, hojas de registro y semáforo |
+| 11 | Puesta en marcha por perfil | Qué hace cada puesto durante la transición, con casuística y tabla de decisión rápida |
+| 12 | Continuidad legal y financiera | Qué se transmite y qué no, huecos de cobertura, producto pendiente heredado, comunicación y plan de 4 semanas |
 
 ## Características comunes
 
