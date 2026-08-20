@@ -409,7 +409,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Excelencia Implantológica <b>Giraldo</b></span>
-        <span class="brand__tag">Protocolo PV · v5.4</span>
+        <span class="brand__tag">Protocolo PV · v5.5</span>
       </a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
       <a class="crosslink" href="otros.html">Otros documentos</a>
@@ -448,7 +448,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 5.4 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 5.5 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="manual.html" style="color:var(--accent-ink)">Manual Maestro de Operaciones</a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -2637,6 +2637,29 @@ explicado bien?»</div>
       </div>
 
       <div class="block">
+        <p class="block__title">GTC · el cierre no termina en el presupuesto <span class="tag">Giraldo Te Cuida</span></p>
+        <p>Un tratamiento aceptado sin seguimiento es media promesa. Por eso, <strong>justo después del sí</strong>, el Director ofrece la tarjeta <strong>Giraldo Te Cuida</strong>: es el instrumento que protege lo que el paciente acaba de decidir, y forma parte del cierre, no de una conversación aparte.</p>
+        <div class="script">
+          <span class="eyebrow">Guion · justo tras la aceptación</span>
+          <q>Me alegro mucho de que vayamos a resolver esto, [nombre]. Y precisamente por eso quiero contarle lo de la tarjeta Giraldo Te Cuida. Ya que va a hacer este tratamiento, con GTC protege su inversión: incluye las revisiones de seguimiento, el mantenimiento y la garantía. Es lo que hace que lo que hoy hacemos bien, dure bien. Son 95 € al año, cubre a cuatro personas de su familia, e incluye la limpieza, las revisiones y las urgencias de todos. ¿Se la añado y así ya se queda todo el seguimiento cubierto?</q>
+        </div>
+        <p style="margin-top:1rem">Si el paciente <strong>no</strong> ha aceptado el tratamiento, GTC se ofrece igualmente: es la forma de que la relación siga viva y de que vuelva a cuidarse aunque hoy no haya decidido. La estructura del ofrecimiento es siempre la misma: qué incluye, cuánto ahorra, a quién más cubre y una pregunta suave para cerrar.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Objeción</th><th>Clave de la respuesta</th></tr></thead>
+            <tbody>
+              <tr><td>«Me lo pienso»</td><td>Sin permanencia; se activa hoy y se disfruta ya</td></tr>
+              <tr><td>«Es caro»</td><td>Es ahorro, no gasto: la limpieza y las revisiones ya lo cubren</td></tr>
+              <tr><td>«No vengo casi al dentista»</td><td>Por eso: nosotros avisamos cuando toca, y la usa su familia</td></tr>
+              <tr><td>«Ya tengo seguro dental»</td><td>No es un seguro: complementa y no se solapa</td></tr>
+              <tr><td>«Os digo algo»</td><td>Información por escrito, activación sin compromiso y registro como pendiente</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote">Una objeción no es un rechazo: es una duda sin resolver. Si tras resolverla el paciente sigue diciendo que no, se acepta con naturalidad y se le vuelve a ofrecer en la siguiente visita. Nunca se presiona. El programa completo —argumentos, speech por situación, campaña y marco legal— está en <a href="otros.html#otros-gtc" style="color:var(--accent-ink)">Otros · GTC</a>.</p>
+      </div>
+
+      <div class="block">
         <p class="block__title">Registro de conversión · Clinic Cloud</p>
         <div class="tablewrap">
           <table>
@@ -2648,6 +2671,7 @@ explicado bien?»</div>
               <tr><td>Método de pago</td><td class="num">Sí</td><td>Contado / Financiación / Por fases</td></tr>
               <tr><td>Fecha de inicio</td><td class="num">Si aplica</td><td>Fecha de la primera cita de tratamiento</td></tr>
               <tr><td>Motivo de no conversión</td><td class="num">Si aplica</td><td>Precio · Necesita pensarlo · Consulta familiar · Segunda opinión · Miedo · Timing</td></tr>
+              <tr><td>Estado GTC</td><td class="num">Sí</td><td>Activada · Pendiente (se le vuelve a ofrecer en la siguiente visita) · Rechazada</td></tr>
               <tr><td>Observaciones</td><td class="num">Recomendado</td><td>Contexto útil para el seguimiento posterior</td></tr>
             </tbody>
           </table>
@@ -2904,7 +2928,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
       </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
-        <p>El estado de la PV está cerrado en Clinic Cloud con importes y motivo. Un «no convertido» sin motivo registrado es un caso perdido: sin él, la Fase 12 no puede diseñar seguimiento alguno.</p>
+        <p>El estado de la PV está cerrado en Clinic Cloud con importes y motivo. Un «no convertido» sin motivo registrado es un caso perdido: sin él, la Fase 12 no puede diseñar seguimiento alguno. Y <strong>ninguna visita se cierra sin que se haya ofrecido GTC al menos una vez</strong>, con su estado registrado.</p>
       </div>
     </div>
   </div></div>
@@ -3039,6 +3063,23 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
           <div><h5>Escáner averiado</h5><p>Captura con dispositivo autorizado del centro y subida inmediata; nunca desde un móvil personal.</p></div>
           <div><h5>Paciente que pide todo en digital</h5><p>Se envía por el canal verificado en la Fase 3 y se registra el envío.</p></div>
         </div>
+      </div>
+
+      <div class="block">
+        <p class="block__title">Alta de GTC · qué se firma y qué se entrega <span class="tag">Giraldo Te Cuida</span></p>
+        <p>Si el paciente ha dicho que sí a la tarjeta, se activa aquí mismo, sin dejarlo para otro día. La activación tiene tres piezas, y las tres se entregan y se digitalizan como el resto de la documentación.</p>
+        <dl class="mini">
+          <div><dt>1 · Información precontractual</dt><dd>Se entrega <strong>antes</strong> de firmar: qué es —un programa de cuidado, no un seguro—, quién lo presta, precio, qué incluye, descuentos, duración, desistimiento y exclusiones. Recepción verifica que ha podido leerla y resolver dudas.</dd></div>
+          <div><dt>2 · Contrato de adhesión</dt><dd>Datos del titular y de los beneficiarios, precio, vigencia de doce meses y renovación voluntaria sin permanencia.</dd></div>
+          <div><dt>3 · Cláusula RGPD</dt><dd>Con sus consentimientos marcados: gestión del programa, comunicaciones comerciales y declaración de contar con el consentimiento de los beneficiarios designados.</dd></div>
+        </dl>
+        <ul class="list" style="margin-top:1rem">
+          <li>Fecha de alta y fecha de vencimiento anotadas en la ficha y en el panel de control del programa</li>
+          <li>Beneficiarios identificados: hasta tres personas además del titular</li>
+          <li>Derecho de desistimiento de catorce días explicado en voz alta, no solo escrito</li>
+          <li>Si dijo «me lo pienso», se registra como <strong>GTC pendiente</strong> antes de que salga</li>
+        </ul>
+        <p class="footnote">El contrato es una plantilla pendiente de validación jurídica: no se comercializa hasta que la asesoría lo revise y Dirección cierre precio, límites y descuentos. <span class="tag">punto abierto</span></p>
       </div>
 
       <div class="block">
@@ -3316,6 +3357,16 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
 
       <div class="block">
+        <p class="block__title">GTC en la despedida y en el seguimiento <span class="tag">Giraldo Te Cuida</span></p>
+        <p><strong>Recepción es la última barrera:</strong> si nadie le ofreció la tarjeta durante la visita, se la ofrece ella al salir. A ningún paciente se le despide sin habérsela ofrecido al menos una vez, haya convertido o no.</p>
+        <div class="script">
+          <span class="eyebrow">Recordatorio breve en la salida</span>
+          <q>¿Recuerda la tarjeta Giraldo Te Cuida que le comenté? Por 95 € al año, revisiones, limpieza y urgencias incluidas para usted y su familia. ¿Se la activo?</q>
+        </div>
+        <p style="margin-top:1rem">En la cadencia de seguimiento, GTC es además un ángulo propio según el motivo de no conversión: para quien aplazó por precio, la tarjeta es la forma de empezar a cuidarse hoy con descuento si más adelante se trata; para quien ya tiene implantes, es el seguimiento que necesitan; y para el paciente inactivo, es el motivo para volver.</p>
+      </div>
+
+      <div class="block">
         <p class="block__title">Errores frecuentes en esta fase</p>
         <ul class="list">
           <li>Llamar solo a los convertidos: el mayor recorrido de conversión está en los demás</li>
@@ -3583,6 +3634,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <tr><td>Estado de la PV e importes</td><td class="num">10</td><td>Director</td><td>Al cierre</td><td>Imposible medir conversión</td></tr>
           <tr><td>Motivo de no conversión</td><td class="num">10</td><td>Director</td><td>Al cierre</td><td>Seguimiento imposible de diseñar</td></tr>
           <tr><td>Documentación escaneada (9 documentos)</td><td class="num">11</td><td>Recepción</td><td>Mismo día</td><td>Sin defensa ante reclamación</td></tr>
+          <tr><td>Estado de GTC: activada, pendiente o rechazada</td><td class="num">10 · 11</td><td>Director · Recepción</td><td>Antes de que salga</td><td>Se pierde el seguimiento y la oportunidad de la siguiente visita</td></tr>
           <tr><td>Tarea de re-contacto o cita programada</td><td class="num">12</td><td>Director</td><td>Mismo día</td><td>Paciente perdido por inacción</td></tr>
         </tbody>
       </table>
@@ -3984,7 +4036,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
       <div>
         <p class="eyebrow">Versión</p>
-        <p>v5.4 · Agosto 2026<br>Revisión semestral</p>
+        <p>v5.5 · Agosto 2026<br>Revisión semestral</p>
       </div>
       <div>
         <p class="eyebrow">Contenido</p>
