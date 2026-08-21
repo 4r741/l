@@ -21,15 +21,15 @@ DESTINO = RAIZ / "export"
 # Los archivos a exportar: nombre de salida, identificador dentro del archivo
 # único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
-    "memoria.html": "Memoria-Direccion-Giraldo.html",
-    "deck.html": "Presentacion-Junta-Giraldo.html",
+    "memoria.html": "Tesis-Direccion-Giraldo-v2.html",
+    "deck.html": "Presentacion-Junta-Giraldo-v2.html",
     "manual.html": "Manual-Maestro-Giraldo-v5.html",
     "index.html": "Protocolo-Primera-Visita-Giraldo.html",
     "otros.html": "Otros-Documentos-Giraldo.html",
 }
 
 DOCUMENTOS = {
-    "memoria.html": ("doc-memoria", "mem-"),
+    "memoria.html": ("doc-tesis", "tes-"),
     "manual.html": ("doc-manual", ""),
     "index.html": ("doc-protocolo", "pv-"),
     "otros.html": ("doc-otros", "ot-"),
@@ -268,6 +268,10 @@ def unificado(estilo_fuentes):
 
     # la hoja de estilos del manual es un superconjunto de la de las otras páginas
     estilos = "\n".join(re.findall(r"<style>.*?</style>", fuentes["manual.html"], re.S))
+    # la capa editorial de la tesis no existe en el manual: se añade aparte
+    capa = re.search(r"(/\* =+\n   CAPA EDITORIAL.*?)</style>", fuentes["memoria.html"], re.S)
+    assert capa, "no se encuentra la capa editorial de la tesis"
+    estilos += "\n<style>\n" + capa.group(1) + "</style>"
 
     bloques = []
     for nombre, (ident, prefijo) in DOCUMENTOS.items():
@@ -275,7 +279,7 @@ def unificado(estilo_fuentes):
         if prefijo:
             cuerpo_doc = prefijar(cuerpo_doc, prefijo)
         cuerpo_doc = conmutadores(cuerpo_doc, nombre)
-        oculto = "" if ident == "doc-memoria" else " hidden"
+        oculto = "" if ident == "doc-tesis" else " hidden"
         bloques.append('<div class="doc" id="%s"%s>\n%s\n</div>' % (ident, oculto, cuerpo_doc))
 
     documento = """<!doctype html>
@@ -283,7 +287,7 @@ def unificado(estilo_fuentes):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Documentación operativa del Centro de Excelencia Implantológica Giraldo: Manual Maestro de Operaciones, Protocolo de Experiencia Clínica de la Primera Visita y Otros documentos del sistema, en un solo archivo.">
+<meta name="description" content="Documentación completa del Centro de Excelencia Implantológica Giraldo: Tesis de Dirección, Manual Maestro de Operaciones, Protocolo de Experiencia Clínica de la Primera Visita y Otros documentos del sistema, en un solo archivo.">
 <title>Documentación Giraldo</title>
 {fuentes}
 {estilos}

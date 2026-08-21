@@ -6,13 +6,16 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
-| **`memoria.html`** | Memoria de Dirección (v1.0) | Documento para la Junta Directiva: tesis, sistema construido, línea base, riesgos, cuadro de mando, palancas, hoja de ruta, las ocho decisiones que se someten a aprobación y el registro de supuestos |
-| **`deck.html`** | Presentación de Junta | Quince diapositivas en 16:9 derivadas de la memoria, navegables con el teclado y exportables a PDF apaisado |
+| **`memoria.html`** | Tesis de Dirección (v2.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
+| **`deck.html`** | Presentación de Junta | Treinta y cuatro diapositivas en 16:9 derivadas de la tesis, con portada de declaración y separadores de parte, navegables con el teclado y exportables a PDF apaisado |
 | **`manual.html`** | Manual Maestro de Operaciones (v5.5) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
 | **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.5) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 | **`otros.html`** | Otros documentos del sistema (v1.3) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
 
-Los tres comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
+Los cinco comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
+La Tesis añade sobre ese sistema una capa editorial propia —portada de declaración,
+aperturas de parte, citas destacadas, notas al margen y fichas de decisión— porque
+se lee en una sala de juntas, no en un puesto de trabajo.
 
 ## Manual Maestro (`manual.html`)
 
@@ -57,45 +60,64 @@ planificación digital, circuito de esterilización y circuito de compras.
 python3 build-export.py
 ```
 
-Genera en `export/` cuatro archivos que funcionan **sin conexión**, con las
+Genera en `export/` seis archivos que funcionan **sin conexión**, con las
 tipografías incrustadas como data URI:
 
 | Archivo | Contenido |
 | --- | --- |
-| `Giraldo-Documentacion-Completa.html` | **Los tres documentos en un solo archivo**, con conmutador entre ellos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
-| `Manual-Maestro-Giraldo-v5.html` | Solo el manual. Se enlaza con los otros dos si conservan su nombre y están en la misma carpeta |
+| `Giraldo-Documentacion-Completa.html` | **Los cuatro documentos de lectura en un solo archivo**, con conmutador entre ellos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
+| `Tesis-Direccion-Giraldo-v2.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
+| `Presentacion-Junta-Giraldo-v2.html` | Solo la presentación, navegable con el teclado |
+| `Manual-Maestro-Giraldo-v5.html` | Solo el manual, con la misma condición |
 | `Protocolo-Primera-Visita-Giraldo.html` | Solo el protocolo, con la misma condición |
 | `Otros-Documentos-Giraldo.html` | Solo los otros documentos, con la misma condición |
 
-El archivo único admite enlaces profundos: `#doc-protocolo` abre el protocolo,
+El archivo único abre en la tesis y admite enlaces profundos: `#doc-protocolo` abre el protocolo,
 `#pv-f10` abre directamente su Fase 10 y `#ot-otros-marca` el plan de marca dentro
 de `#doc-otros`. Los enlaces entre documentos —incluidos los
 que apuntan a una sección concreta, como `manual.html#m13`— se convierten en
 conmutadores internos que abren el otro documento y saltan a esa sección. La carpeta `export/` no se versiona
 porque es regenerable.
 
-## Memoria de Dirección (`memoria.html`)
+## Tesis de Dirección (`memoria.html`)
 
-Pensada para leerse en doce minutos y para deliberar sobre ella en junta.
+No es un informe de situación: afirma qué creemos que es cierto sobre este mercado, qué
+apostamos en consecuencia y bajo qué condiciones estaríamos equivocados. Conserva íntegros
+los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco partes.
 
 | Apartado | Contenido |
 | --- | --- |
+| Manifiesto | Las ocho reglas que ordenan el resto del documento, a partir de «no medias sonrisas» |
 | §0 Control | Ficha del documento, marcas de naturaleza (hecho / modelo / pendiente) y cómo citar en acta |
-| §1 Resumen ejecutivo | Qué está hecho, qué falta y qué se pide hoy, en dos minutos |
+| §1 Resumen ejecutivo | Qué está hecho, qué falta y qué se pide hoy |
+| **I · La posición** | |
 | §2 Tesis | Los tres segmentos desatendidos y los cinco indicadores que acreditan liderazgo |
-| §3 Sistema operativo | Qué se ha construido y qué garantiza tenerlo por escrito |
-| §4 Línea base | Los cinco números pendientes y las seis preguntas incómodas sobre lo adquirido |
-| §5 Riesgos | Cinco críticos con propietario y mitigación, más siete de segundo orden |
-| §6 Cuadro de mando | Ocho indicadores nucleares y tres figuras de modelo |
-| §7 Palancas | Cinco, ordenadas por coste de activación |
-| §8 Hoja de ruta | Tres horizontes y tres puertas de paso |
-| §9 Decisiones | D1 a D8, con qué se pide, impacto de no decidir y plazo |
-| §10 Supuestos | Todos los valores empleados en los modelos, con su origen |
+| §3 Mapa competitivo | Las cuatro posiciones de la implantología en Vigo y por qué la cuarta está libre |
+| §4 El foso | Qué se compra con dinero y qué no, con el tiempo de réplica de cada activo |
+| **II · El sistema** | |
+| §5 Sistema operativo | Qué se ha construido y qué garantiza tenerlo por escrito |
+| §6 Cartera de innovación | Horizontes H1, H2 y H3, cada uno con su criterio de decisión |
+| **III · La economía** | |
+| §7 Línea base | Los cinco números pendientes y las seis preguntas incómodas sobre lo adquirido |
+| §8 Economía unitaria | Escenarios a 36 meses y matriz de sensibilidad conversión × ticket medio |
+| §9 El activo | Valor acumulado por paciente a cinco años y la escalera de valor de empresa |
+| §10 Escalado | Los cinco pasos de un centro a una red, y por qué el orden es innegociable |
+| **IV · El riesgo** | |
+| §11 Riesgos | Cinco críticos con propietario y mitigación, más siete de segundo orden |
+| §12 Pre-mortem | Seis causas de fracaso contadas desde 2029, con señal temprana y antídoto |
+| §13 Cuadro de mando | Ocho indicadores nucleares |
+| **V · La decisión** | |
+| §14 Palancas | Cinco, ordenadas por coste de activación |
+| §15 Asignación de capital | Orden de prelación en cinco prioridades y su única regla de excepción |
+| §16 Hoja de ruta | Tres horizontes y tres puertas de paso |
+| §17 Decisiones | D1 a D8 en tabla y D9 a D14 en ficha, con la alternativa descartada de cada una |
+| §18 Supuestos | Todos los valores empleados en los modelos, con su origen |
 
-Las tres figuras son cálculos derivados de supuestos declarados, no datos de explotación:
-coste real del descuento, primeras visitas necesarias según conversión y valor del paciente
-a cinco años con y sin programa de cuidado. La paleta de los gráficos está validada para
-visión con deficiencia de color.
+Las seis figuras son cálculos derivados de supuestos declarados, no datos de explotación:
+coste real del descuento, primeras visitas necesarias según conversión, valor del paciente
+a cinco años con y sin programa de cuidado, escenarios de facturación a 36 meses, matriz de
+sensibilidad y valor acumulado por paciente. Las paletas están validadas para visión con
+deficiencia de color.
 
 ## Otros documentos del sistema (`otros.html`)
 

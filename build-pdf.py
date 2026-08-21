@@ -16,11 +16,11 @@ NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 
 # archivo de origen → (nombre del PDF, rótulo de cabecera, orientación)
 DOCUMENTOS = {
-    "memoria.html": ("Memoria-Direccion-Giraldo-v1.0.pdf", "Memoria de Dirección · v1.0", False),
+    "memoria.html": ("Tesis-Direccion-Giraldo-v2.0.pdf", "Tesis de Dirección · v2.0", False),
     "manual.html": ("Manual-Maestro-Giraldo-v5.5.pdf", "Manual Maestro de Operaciones · v5.5", False),
     "index.html": ("Protocolo-Primera-Visita-Giraldo-v5.5.pdf", "Protocolo de Primera Visita · v5.5", False),
     "otros.html": ("Otros-Documentos-Giraldo-v1.3.pdf", "Otros documentos del sistema · v1.3", False),
-    "deck.html": ("Presentacion-Junta-Giraldo.pdf", "", True),
+    "deck.html": ("Presentacion-Junta-Giraldo-v2.0.pdf", "", True),
 }
 
 ESTILO_PIE = "font-family:Helvetica,Arial,sans-serif;font-size:7pt;color:#555;width:100%;padding:0 15mm;letter-spacing:.06em"

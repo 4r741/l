@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Presentación de la Memoria de Dirección del Centro de Excelencia Implantológica Giraldo ante la Junta Directiva: tesis, sistema operativo, riesgos, cuadro de mando, hoja de ruta y las ocho decisiones que se someten a aprobación.">
-<title>Presentación de Junta Giraldo</title>
+<meta name="description" content="Presentación de la Tesis de Dirección del Centro de Excelencia Implantológica Giraldo ante la Junta Directiva: posición competitiva, foso, sistema operativo, economía unitaria, valor de empresa, escalado, pre-mortem, asignación de capital y las catorce decisiones que se someten a aprobación.">
+<title>Tesis de Dirección · Junta Giraldo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -93,6 +93,55 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
 .sem--rojo{background:rgba(168,27,27,.12);color:#8E1B1B}
 .sem--ambar{background:rgba(168,99,27,.14);color:#8A5015}
 .sem--verde{background:rgba(14,124,116,.12);color:var(--accent-ink)}
+/* --- diapositiva de declaración: la que se recuerda al salir --- */
+.slide--stmt{background:var(--ink);color:var(--surface);justify-content:center}
+.slide--stmt .eyebrow{color:rgba(247,248,245,.5)}
+.slide--stmt h2{
+  font-size:clamp(2rem,4.4vw,4rem);max-width:20ch;color:var(--surface);
+  font-style:italic;font-weight:400;letter-spacing:-.03em;line-height:1.06;
+}
+.slide--stmt h2 em{font-style:normal;color:#7FD3C9}
+.slide--stmt .lede{color:rgba(247,248,245,.72);max-width:52ch}
+.slide--stmt ul.bul li{color:rgba(247,248,245,.88)}
+.slide--stmt ul.bul li b,.slide--stmt ul.bul li strong{color:var(--surface)}
+.slide--stmt ul.bul li::before{background:#7FD3C9}
+.slide--stmt table{color:rgba(247,248,245,.88)}
+.slide--stmt th,.slide--stmt td{border-color:rgba(247,248,245,.18)}
+.slide--stmt thead th{color:rgba(247,248,245,.5)}
+.slide--stmt td.c{color:#7FD3C9}
+
+/* --- separador de parte --- */
+.slide--div{background:var(--surface);justify-content:center}
+.slide--div .rom{
+  font-family:var(--f-display);font-size:clamp(4rem,11vw,9rem);line-height:.82;
+  letter-spacing:-.05em;color:var(--accent-ink);font-variation-settings:"opsz" 144;
+}
+.slide--div h2{font-size:clamp(1.7rem,3.2vw,2.9rem);max-width:24ch}
+.slide--div .lede{max-width:60ch}
+
+/* --- horizontes y escalones dentro de la presentación --- */
+.hz{display:grid;gap:clamp(.7rem,1.4vw,1.4rem);grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr))}
+.hz>div{background:var(--surface);border:1px solid var(--line);padding:clamp(.85rem,1.3vw,1.3rem);min-width:0}
+.hz b{font-family:var(--f-display);font-size:clamp(1.4rem,2.4vw,2rem);line-height:1;display:block}
+.hz span{display:block;margin:.25rem 0 .6rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.hz ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.hz li{font-size:.84rem;color:var(--ink-2);padding-left:.9rem;position:relative}
+.hz li::before{content:"";position:absolute;left:0;top:.6em;width:4px;height:4px;background:currentColor;opacity:.5}
+.hz--a b{color:#0E8F84}.hz--b b{color:#A8631B}.hz--c b{color:#7A4FA3}
+
+/* --- pasos numerados --- */
+ol.pasos{list-style:none;margin:0;padding:0;display:grid;gap:.55rem;counter-reset:p}
+ol.pasos li{
+  counter-increment:p;position:relative;padding-left:2.6rem;color:var(--ink-2);
+  border-top:1px solid var(--line-soft);padding-top:.55rem;
+}
+ol.pasos li::before{
+  content:counter(p);position:absolute;left:0;top:.5rem;
+  font-family:var(--f-mono);font-size:.72rem;color:var(--accent-ink);
+  border:1px solid var(--line);width:1.7rem;height:1.7rem;
+  display:grid;place-items:center;border-radius:999px;
+}
+ol.pasos li b{color:var(--ink)}
 .barra{position:fixed;left:0;right:0;bottom:0;height:3px;background:var(--line-soft)}
 .barra i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
 .hud{
@@ -106,6 +155,12 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
 }
 .hud button:hover{border-color:var(--accent);color:var(--accent-ink)}
 .hud__n{font-variant-numeric:tabular-nums}
+/* la barra de estado se aclara sobre las diapositivas de tinta */
+body:has(.slide--stmt.is-on) .hud{color:rgba(247,248,245,.6)}
+body:has(.slide--stmt.is-on) .hud button{border-color:rgba(247,248,245,.28);color:rgba(247,248,245,.82)}
+body:has(.slide--stmt.is-on) .hud button:hover{border-color:#7FD3C9;color:#7FD3C9}
+body:has(.slide--stmt.is-on) .barra{background:rgba(247,248,245,.16)}
+body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media print{
   @page{size:297mm 167mm;margin:0}
@@ -114,6 +169,12 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   .slide{position:static;display:flex!important;height:167mm;break-after:page;animation:none;padding:16mm 18mm}
   .hud,.barra{display:none}
   .tile,.fig{background:#fff}
+  .slide--stmt{background:#fff;color:#000}
+  .slide--stmt h2,.slide--stmt .lede,.slide--stmt ul.bul li{color:#000}
+  .slide--stmt ul.bul li::before{background:#0A5C56}
+  .slide--stmt h2 em{color:#0A5C56}
+  .slide--stmt .eyebrow{color:#555}
+  .slide--div{background:#fff}
 }
 
 </style>
@@ -121,37 +182,32 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
 <body>
 
 <div class="deck">
-<section class="slide slide--portada">
+<section class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Agosto 2026 · Uso interno y confidencial</p>
-  <h1>Memoria de<br><em>Dirección</em></h1>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo. Estado del proyecto, línea base, riesgos, hoja de ruta y las ocho decisiones que se someten a aprobación.</p>
+  <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Tesis de Dirección v2.0 · Cinco partes, dieciocho apartados y catorce decisiones que solo puede tomar este órgano.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">El planteamiento</p>
+  <h2>Una tesis, no <em>un informe</em></h2>
+  <div class="cols">
+    <div class="tile"><p class="k">Pregunta 1</p><p class="v">¿Qué?</p><p>Qué creemos que es cierto sobre este mercado y por qué la posición que ocupamos está libre</p></div>
+    <div class="tile"><p class="k">Pregunta 2</p><p class="v">¿Cuánto?</p><p>Qué vale cada palanca, en euros y con los supuestos declarados sobre la mesa</p></div>
+    <div class="tile"><p class="k">Pregunta 3</p><p class="v">¿Y si no?</p><p>Bajo qué condiciones estaríamos equivocados, y qué señal lo avisaría a tiempo</p></div>
+  </div>
+  <p class="lede">Un informe cuenta lo que ha pasado. Una tesis afirma, apuesta y se expone a ser refutada. Cada cifra de esta presentación lleva marcada su naturaleza: <b>hecho</b>, <b>modelo</b> o <b>pendiente</b>.</p>
+</section>
+<section class="slide slide--div">
+  <p class="eyebrow">Parte I · La posición</p>
+  <p class="rom">I</p>
+  <h2>Dónde estamos parados y <em>por qué ahí</em></h2>
+  <p class="lede">La tesis del proyecto, los segmentos desatendidos, el mapa competitivo de Vigo y el foso: qué tendría que hacer un competidor para quitarnos el sitio y cuánto tardaría.</p>
 </section>
 <section class="slide">
   <p class="eyebrow">§2 · La tesis</p>
   <h2>Un centro que resuelve lo que otros rechazan y no termina la relación cuando cobra</h2>
   <div class="quote"><p>«Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.»</p></div>
   <p class="lede">La primera mitad es el resultado: ningún tratamiento se deja a medias. La segunda es la relación, y tiene instrumento propio: el programa de cuidado anual. La ventaja competitiva no es el equipamiento —lo reivindican todos— sino la ejecución sistemática.</p>
-</section>
-<section class="slide">
-  <p class="eyebrow">§3 · Qué se ha construido</p>
-  <h2>Un sistema operativo, no un plan</h2>
-  <div class="cols">
-    <div class="tile"><p class="k">Recorrido del paciente</p><p class="v">14</p><p>Fases, de la primera llamada al mantenimiento</p></div>
-    <div class="tile"><p class="k">Puestos normalizados</p><p class="v">6</p><p>Con límites, checklists, derivaciones y reporte</p></div>
-    <div class="tile"><p class="k">Puntos de verificación</p><p class="v">322</p><p>Físicos, documentales, de sistemas y de proceso</p></div>
-    <div class="tile"><p class="k">Documentos vigentes</p><p class="v">17</p><p>Tres troncales y catorce de apoyo</p></div>
-  </div>
-  <p class="lede">Normativa interna con criterios de salida, registros obligatorios e indicador por fase. Escrita para ejecutarse y para auditarse.</p>
-</section>
-<section class="slide">
-  <p class="eyebrow">§3 · Los tres documentos troncales</p>
-  <h2>Qué garantiza tenerlo por escrito</h2>
-  <ul class="bul">
-    <li><b>Manual Maestro de Operaciones</b> — la norma: catorce fases, manuales de puesto, responsabilidades, indicadores e incentivos</li>
-    <li><b>Protocolo de Primera Visita</b> — el detalle minuto a minuto de la visita que decide la conversión</li>
-    <li><b>Otros documentos del sistema</b> — verificación, auditoría, 100 días, innovación, marca, posicionamiento y programa de cuidado</li>
-  </ul>
-  <p class="lede">Que la calidad no dependa de quién esté de turno; que un profesional nuevo sea productivo en semanas; que una inspección encuentre trazabilidad y no explicaciones; y que la Dirección pueda delegar sin perder control. En términos de Junta: la diferencia entre un negocio dependiente de personas y un negocio con activos transferibles.</p>
 </section>
 <section class="slide">
   <p class="eyebrow">§2 · Dónde está la oportunidad</p>
@@ -167,7 +223,89 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   <p class="lede">Ninguno compra precio: los tres compran solución. Es el terreno donde la competencia en tarifa no llega.</p>
 </section>
 <section class="slide">
-  <p class="eyebrow">§4 · Dónde estamos</p>
+  <p class="eyebrow">§3 · El mapa competitivo</p>
+  <h2>Cuatro formas de vender implantes en Vigo, y la que dejamos libre</h2>
+  <table>
+    <thead><tr><th>Posición</th><th>Cómo compite</th><th>Dónde se rompe</th></tr></thead>
+    <tbody>
+      <tr><td class="c">A</td><td><b>Cadena de precio</b> — captación masiva y financiación</td><td>El profesional rota: en la segunda intervención el paciente no encuentra a quien le operó</td></tr>
+      <tr><td class="c">B</td><td><b>Generalista con implantes</b> — vínculo personal, agenda mixta</td><td>Casuística baja: su límite no es la voluntad, es el número de casos al año</td></tr>
+      <tr><td class="c">C</td><td><b>Especialista aislado</b> — excelencia técnica real</td><td>No hay sistema debajo: su reputación no es transferible ni vendible</td></tr>
+      <tr><td class="c">D</td><td><b>La nuestra</b> — casuística de especialista, estándar verificable y seguimiento contratado</td><td>Solo se rompe por abandono propio</td></tr>
+    </tbody>
+  </table>
+  <p class="lede">El mercado no se segmenta por precio, sino por <b>quién asume el riesgo del resultado</b>. A, B y C compiten por vender el acto; nosotros vendemos que alguien siga respondiendo cuando el acto ya se cobró. <span class="sem sem--ambar">Modelo</span></p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§4 · El foso</p>
+  <h2>Lo que un competidor <em>no puede comprar</em></h2>
+  <table>
+    <thead><tr><th>Activo</th><th>¿Se compra?</th><th>Réplica</th></tr></thead>
+    <tbody>
+      <tr><td>Equipamiento: CBCT, escáner, cirugía guiada</td><td>Sí, con una llamada</td><td class="c">2-3 meses</td></tr>
+      <tr><td>Instalaciones y ubicación</td><td>Sí</td><td class="c">6-12 meses</td></tr>
+      <tr><td>Un cirujano de prestigio</td><td>Sí, fichándolo</td><td class="c">3-9 meses</td></tr>
+      <tr><td><b>Protocolo escrito y verificable</b></td><td>No: se escribe</td><td class="c">18-36 meses</td></tr>
+      <tr><td><b>Equipo que lo ejecuta sin supervisión</b></td><td>No</td><td class="c">24-48 meses</td></tr>
+      <tr><td><b>Base de pacientes en seguimiento contratado</b></td><td>No</td><td class="c">36-60 meses</td></tr>
+      <tr><td><b>Serie clínica propia a cinco años</b></td><td>No</td><td class="c">60 meses+</td></tr>
+    </tbody>
+  </table>
+  <p class="lede">Los tres primeros cuestan dinero. Los cuatro últimos dan ventaja. Estamos invirtiendo, deliberadamente, en la mitad de abajo. <span class="sem sem--ambar">Modelo</span></p>
+</section>
+<section class="slide slide--stmt">
+  <p class="eyebrow">La consecuencia presupuestaria</p>
+  <h2>Un euro en equipamiento nos iguala con cualquiera.<br><em>Un euro en sistema nos separa durante años.</em></h2>
+  <p class="lede">Por eso el gasto en formación, verificación y programa de seguimiento no es estructura ni coste indirecto: es la única partida del presupuesto que compra tiempo de ventaja frente a un competidor con más capital. Y es siempre la primera candidata al recorte.</p>
+</section>
+<section class="slide slide--div">
+  <p class="eyebrow">Parte II · El sistema</p>
+  <p class="rom">II</p>
+  <h2>El activo se llama <em>sistema operativo</em>, no clínica</h2>
+  <p class="lede">Una clínica es un local con pacientes. Un sistema operativo es un conjunto de decisiones ya tomadas que hacen que el resultado no dependa de quién esté ese martes. Lo primero se vende al peso; lo segundo, por múltiplo.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§5 · Qué se ha construido</p>
+  <h2>Un sistema operativo, no un plan</h2>
+  <div class="cols">
+    <div class="tile"><p class="k">Recorrido del paciente</p><p class="v">14</p><p>Fases, de la primera llamada al mantenimiento</p></div>
+    <div class="tile"><p class="k">Puestos normalizados</p><p class="v">6</p><p>Con límites, checklists, derivaciones y reporte</p></div>
+    <div class="tile"><p class="k">Puntos de verificación</p><p class="v">322</p><p>Físicos, documentales, de sistemas y de proceso</p></div>
+    <div class="tile"><p class="k">Documentos vigentes</p><p class="v">17</p><p>Tres troncales y catorce de apoyo</p></div>
+  </div>
+  <p class="lede">Normativa interna con criterios de salida, registros obligatorios e indicador por fase. Escrita para ejecutarse y para auditarse.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§5 · Los tres documentos troncales</p>
+  <h2>Qué garantiza tenerlo por escrito</h2>
+  <ul class="bul">
+    <li><b>Manual Maestro de Operaciones</b> — la norma: catorce fases, manuales de puesto, responsabilidades, indicadores e incentivos</li>
+    <li><b>Protocolo de Primera Visita</b> — el detalle minuto a minuto de la visita que decide la conversión</li>
+    <li><b>Otros documentos del sistema</b> — verificación, auditoría, 100 días, innovación, marca, posicionamiento y programa de cuidado</li>
+  </ul>
+  <p class="lede">Que la calidad no dependa de quién esté de turno; que un profesional nuevo sea productivo en semanas; que una inspección encuentre trazabilidad y no explicaciones; y que la Dirección pueda delegar sin perder control. En términos de Junta: la diferencia entre un negocio dependiente de personas y un negocio con activos transferibles.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§6 · Cartera de innovación</p>
+  <h2>Tres horizontes, <em>tres criterios distintos</em></h2>
+  <div class="hz">
+    <div class="hz--a"><b>H1</b><span>0-12 meses · Explotar · ~70 %</span>
+      <ul><li>Cirugía guiada como estándar</li><li>Flujo digital completo en prótesis</li><li>Recordatorio automatizado de revisiones</li><li>Panel semanal de indicadores</li><li>Programa de cuidado en el 100 % de los cierres</li></ul></div>
+    <div class="hz--b"><b>H2</b><span>12-36 meses · Construir · ~20 %</span>
+      <ul><li>Unidad de casos complejos</li><li>Programa formal de derivación</li><li>Registro propio de resultados a 3 y 5 años</li><li>Segunda unidad preparada</li><li>Itinerario formativo por puesto</li></ul></div>
+    <div class="hz--c"><b>H3</b><span>36 meses+ · Explorar · ~10 %</span>
+      <ul><li>Docencia y publicación de casuística</li><li>Diagnóstico asistido sobre serie propia</li><li>Licencia del sistema a terceros</li><li>Red de dos a cuatro unidades</li></ul></div>
+  </div>
+  <p class="lede">El H1 se juzga por retorno, el H2 por hitos de aprendizaje y el H3 por mantener abierta la opción a coste bajo. Confundir los criterios mata el horizonte largo sin que nadie decida matarlo. <b>Decisión D9.</b></p>
+</section>
+<section class="slide slide--div">
+  <p class="eyebrow">Parte III · La economía</p>
+  <p class="rom">III</p>
+  <h2>De dónde sale el dinero y <em>qué lo destruye</em></h2>
+  <p class="lede">Cuánto vale cada primera visita según cómo la trabajemos, qué le pasa a la facturación si movemos las dos únicas palancas que la gobiernan, y por qué un paciente en seguimiento vale más del doble que un paciente atendido.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§7 · Dónde estamos</p>
   <h2>Los cinco números que <em>aún no tenemos</em></h2>
   <ul class="bul">
     <li><b>Costes fijos mensuales</b> — día 15</li>
@@ -179,32 +317,101 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   <p class="lede">Sin estas cinco cifras, cualquier objetivo comercial es una opinión. Esta memoria no contiene ni un solo dato real de explotación: donde hace falta un orden de magnitud, se usa un supuesto de trabajo declarado.</p>
 </section>
 <section class="slide">
-  <p class="eyebrow">§5 · Riesgos</p>
-  <h2>Cinco riesgos críticos, con dueño</h2>
-  <table>
-    <thead><tr><th>#</th><th>Riesgo</th><th>Mitigación</th><th>Propietario</th></tr></thead>
-    <tbody>
-      <tr><td class="c">R1</td><td>Cobertura aseguradora insuficiente para tratamientos previos</td><td>Verificación documental antes de abrir</td><td>Gerencia</td></tr>
-      <tr><td class="c">R2</td><td>Producto pendiente heredado sin cuantificar</td><td>Inventario en los tres primeros días</td><td>Dirección</td></tr>
-      <tr><td class="c">R3</td><td>Pérdida de un profesional clave</td><td>Entrevistas tempranas y formación cruzada</td><td>Gerencia</td></tr>
-      <tr><td class="c">R4</td><td>Incumplimiento regulatorio latente</td><td>Auditoría de las once verificaciones</td><td>Gerencia</td></tr>
-      <tr><td class="c">R5</td><td>Deterioro de la percepción del paciente</td><td>Contacto proactivo y escalado único</td><td>Dirección</td></tr>
-    </tbody>
-  </table>
-  <p class="lede"><b>La única regla que detiene la clínica:</b> sin verificación positiva de la cobertura aseguradora no se realiza actividad clínica. Es el riesgo cuyo coste no tiene techo.</p>
+  <p class="eyebrow">§8 · Escenarios <span class="sem sem--ambar">Modelo</span></p>
+  <h2>Tres trayectorias a treinta y seis meses</h2>
+  <figure class="fig"><svg viewBox="0 0 880 380" width="880" height="380" role="img" style="max-width:100%;height:auto" aria-label="Tres trayectorias de facturación anual a 36 meses: base de 720 a 770 mil euros, objetivo de 790 a 1.150 y ambición de 840 a 1.650.">
+<line x1="78" y1="290.0" x2="838" y2="290.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="294.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0</text>
+<line x1="78" y1="250.7" x2="838" y2="250.7" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="254.66666666666666" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">300</text>
+<line x1="78" y1="211.3" x2="838" y2="211.3" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="215.33333333333331" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">600</text>
+<line x1="78" y1="172.0" x2="838" y2="172.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="176.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">900</text>
+<line x1="78" y1="132.7" x2="838" y2="132.7" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="136.66666666666666" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.200</text>
+<line x1="78" y1="93.3" x2="838" y2="93.3" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="97.33333333333334" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.500</text>
+<line x1="78" y1="54.0" x2="838" y2="54.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="58.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.800</text>
+<rect x="102.7" y="195.6" width="62" height="94.4" fill="#0E8F84" rx="4" ry="4"/>
+<text x="133.66666666666669" y="187.6" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">720</text>
+<rect x="170.7" y="186.4" width="62" height="103.6" fill="#A8631B" rx="4" ry="4"/>
+<text x="201.66666666666669" y="178.42222222222222" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">790</text>
+<rect x="238.7" y="179.9" width="62" height="110.1" fill="#7A4FA3" rx="4" ry="4"/>
+<text x="269.6666666666667" y="171.86666666666667" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">840</text>
+<text x="204.66666666666669" y="314" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Mes 12</text>
+<rect x="356.0" y="192.3" width="62" height="97.7" fill="#0E8F84" rx="4" ry="4"/>
+<text x="387.00000000000006" y="184.32222222222222" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">745</text>
+<rect x="424.0" y="161.5" width="62" height="128.5" fill="#A8631B" rx="4" ry="4"/>
+<text x="455.00000000000006" y="153.51111111111112" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">980</text>
+<rect x="492.0" y="135.3" width="62" height="154.7" fill="#7A4FA3" rx="4" ry="4"/>
+<text x="523.0" y="127.28888888888889" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.180</text>
+<text x="458.00000000000006" y="314" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Mes 24</text>
+<rect x="609.3" y="189.0" width="62" height="101.0" fill="#0E8F84" rx="4" ry="4"/>
+<text x="640.3333333333334" y="181.04444444444445" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">770</text>
+<rect x="677.3" y="139.2" width="62" height="150.8" fill="#A8631B" rx="4" ry="4"/>
+<text x="708.3333333333334" y="131.22222222222223" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.150</text>
+<rect x="745.3" y="73.7" width="62" height="216.3" fill="#7A4FA3" rx="4" ry="4"/>
+<text x="776.3333333333334" y="65.66666666666666" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.650</text>
+<text x="711.3333333333334" y="314" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Mes 36</text>
+<line x1="78" y1="290" x2="838" y2="290" stroke="var(--line)" stroke-width="1"/>
+<text x="66" y="22" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">facturación anual · miles de €</text>
+<rect x="78" y="352" width="12" height="12" rx="3" fill="#0E8F84"/>
+<text x="97" y="362" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Base · solo sostener</text>
+<rect x="242" y="352" width="12" height="12" rx="3" fill="#A8631B"/>
+<text x="261.0" y="362" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Objetivo · sistema en marcha</text>
+<rect x="458" y="352" width="12" height="12" rx="3" fill="#7A4FA3"/>
+<text x="477.0" y="362" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Ambición · red y líneas nuevas</text>
+</svg>
+    <figcaption>Base: el centro sostiene lo heredado sin cambio de sistema. Objetivo: el sistema operativo en marcha con las palancas activas. Ambición: además, segunda unidad y líneas nuevas del H2. La distancia entre base y objetivo —del orden de 380 k€ anuales en el mes 36— es lo que está en juego en esta sesión.</figcaption>
+  </figure>
 </section>
 <section class="slide">
-  <p class="eyebrow">§6 · Cuadro de mando</p>
-  <h2>Ocho indicadores, ninguno con serie propia todavía</h2>
-  <div class="cols">
-    <div class="tile"><p class="k">Integridad del sistema</p><p class="v">4</p><p>Verificaciones cerradas · bajas voluntarias · reclamaciones heredadas · documentación en el día</p></div>
-    <div class="tile"><p class="k">Resultado</p><p class="v">4</p><p>Producto pendiente · conversión · mantenimiento activo · captación por recomendación</p></div>
-    <div class="tile"><p class="k">Con dato hoy</p><p class="v">0 / 8</p><p><span class="sem sem--ambar">Primera lectura este trimestre</span></p></div>
-  </div>
-  <p class="lede">Ocho casillas vacías no son una debilidad del documento: son el diagnóstico honesto de dónde estamos. La Junta debe exigir que en la revisión trimestral las ocho tengan valor y tendencia.</p>
+  <p class="eyebrow">§8 · Sensibilidad <span class="sem sem--ambar">Modelo</span></p>
+  <h2>Dos variables gobiernan el resultado; <em>el resto son consecuencias</em></h2>
+  <figure class="fig"><svg viewBox="0 0 880 282" width="880" height="282" role="img" style="max-width:100%;height:auto" aria-label="Facturación anual estimada según tasa de conversión y ticket medio, de 353 mil a 1,3 millones de euros.">
+<text x="264.0" y="60" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">30 %</text>
+<text x="412.0" y="60" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">40 %</text>
+<text x="560.0" y="60" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">50 %</text>
+<text x="708.0" y="60" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">60 %</text>
+<text x="486.0" y="34" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">tasa de conversión de la primera visita</text>
+<text x="174" y="104.0" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">1.400 €</text>
+<rect x="190" y="74" width="148" height="52" fill="#E6F3F1" stroke="var(--surface)" stroke-width="2"/>
+<text x="264.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">423 k€</text>
+<rect x="338" y="74" width="148" height="52" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
+<text x="412.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">564 k€</text>
+<rect x="486" y="74" width="148" height="52" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2"/>
+<text x="560.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">706 k€</text>
+<rect x="634" y="74" width="148" height="52" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2"/>
+<text x="708.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">847 k€</text>
+<text x="174" y="156.0" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">1.800 €</text>
+<rect x="190" y="126" width="148" height="52" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
+<text x="264.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">544 k€</text>
+<rect x="338" y="126" width="148" height="52" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2"/>
+<text x="412.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">726 k€</text>
+<rect x="486" y="126" width="148" height="52" fill="#82C8C0" stroke="var(--surface)" stroke-width="2"/>
+<text x="560.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">907 k€</text>
+<rect x="634" y="126" width="148" height="52" fill="#57B3A9" stroke="var(--surface)" stroke-width="2"/>
+<text x="708.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">1.089 k€</text>
+<text x="174" y="208.0" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">2.200 €</text>
+<rect x="190" y="178" width="148" height="52" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
+<text x="264.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">665 k€</text>
+<rect x="338" y="178" width="148" height="52" fill="#82C8C0" stroke="var(--surface)" stroke-width="2"/>
+<text x="412.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">887 k€</text>
+<rect x="486" y="178" width="148" height="52" fill="#57B3A9" stroke="var(--surface)" stroke-width="2"/>
+<text x="560.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">1.109 k€</text>
+<rect x="634" y="178" width="148" height="52" fill="#2FA398" stroke="var(--surface)" stroke-width="2"/>
+<text x="708.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">1.331 k€</text>
+<text x="24" y="152.0" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">ticket</text>
+<text x="24" y="168.0" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">medio</text>
+<text x="190" y="260" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">Capacidad fija: 4 primeras visitas al día · 21 días · 12 meses</text>
+</svg>
+    <figcaption>Facturación anual con capacidad fija de cuatro primeras visitas al día. Pasar del 30 % al 50 % de conversión multiplica por 1,67 sin tocar el precio. Subir el ticket de 1.400 € a 2.200 € multiplica por 1,57. Hacer las dos cosas multiplica por 2,6: las palancas no se suman, se multiplican.</figcaption>
+  </figure>
 </section>
 <section class="slide">
-  <p class="eyebrow">§6 · Política de precios <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">§14 · Política de precios <span class="sem sem--ambar">Modelo</span></p>
   <h2>Lo que cuesta de verdad un descuento</h2>
   <figure class="fig"><svg viewBox="0 0 860 348" width="860" height="348" role="img" aria-label="Reparto de cada 100 euros facturados según el descuento aplicado: los costes se mantienen en 60 y el beneficio cae de 40 a 20." style="max-width:100%;height:auto">
 <line x1="70" y1="268.0" x2="830" y2="268.0" stroke="var(--line-soft)" stroke-width="1"/>
@@ -255,7 +462,7 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   </figure>
 </section>
 <section class="slide">
-  <p class="eyebrow">§4 · La palanca más barata <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">§8 · La palanca más barata <span class="sem sem--ambar">Modelo</span></p>
   <h2>Cada diez puntos de conversión valen una visita diaria</h2>
   <figure class="fig"><svg viewBox="0 0 860 312" width="860" height="312" role="img" aria-label="Primeras visitas necesarias al día según la tasa de conversión: 5,3 con el 30 por ciento y 2,6 con el 60 por ciento." style="max-width:100%;height:auto">
 <line x1="70" y1="236.0" x2="830" y2="236.0" stroke="var(--line-soft)" stroke-width="1"/>
@@ -286,7 +493,7 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   </figure>
 </section>
 <section class="slide">
-  <p class="eyebrow">§6 · Relación frente a transacción <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">§9 · Relación frente a transacción <span class="sem sem--ambar">Modelo</span></p>
   <h2>La relación vale del orden del doble</h2>
   <figure class="fig"><svg viewBox="0 0 860 320" width="860" height="320" role="img" aria-label="Valor a cinco años de un paciente: 720 euros sin programa de cuidado y 1.653 euros con él." style="max-width:100%;height:auto">
 <line x1="70.0" y1="34" x2="70.0" y2="194" stroke="var(--line-soft)" stroke-width="1"/>
@@ -320,7 +527,147 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   </figure>
 </section>
 <section class="slide">
-  <p class="eyebrow">§7 · Palancas de valor</p>
+  <p class="eyebrow">§9 · El activo <span class="sem sem--ambar">Modelo</span></p>
+  <h2>Lo que hoy se deja <em>sobre la mesa</em></h2>
+  <figure class="fig"><svg viewBox="0 0 880 360" width="880" height="360" role="img" style="max-width:100%;height:auto" aria-label="Valor acumulado por paciente a cinco años: 770 euros sin programa de cuidado y 1.653 con él.">
+<line x1="78" y1="276.0" x2="818" y2="276.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="280.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0</text>
+<line x1="78" y1="237.7" x2="818" y2="237.7" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="241.66666666666666" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">300</text>
+<line x1="78" y1="199.3" x2="818" y2="199.3" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="203.33333333333331" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">600</text>
+<line x1="78" y1="161.0" x2="818" y2="161.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="165.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">900</text>
+<line x1="78" y1="122.7" x2="818" y2="122.7" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="126.66666666666666" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.200</text>
+<line x1="78" y1="84.3" x2="818" y2="84.3" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="88.33333333333334" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.500</text>
+<line x1="78" y1="46.0" x2="818" y2="46.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="66" y="50.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.800</text>
+<text x="78.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">alta</text>
+<text x="226.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 1</text>
+<text x="374.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 2</text>
+<text x="522.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 3</text>
+<text x="670.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 4</text>
+<text x="818.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 5</text>
+<polygon points="78.0,184.0 226.0,160.4 374.0,136.7 522.0,113.1 670.0,89.4 818.0,64.8 818.0,177.6 670.0,177.6 522.0,180.8 374.0,180.8 226.0,184.0 78.0,184.0" fill="#0E8F84" opacity=".10"/>
+<path d="M78.0 184.0 L226.0 184.0 L374.0 180.8 L522.0 180.8 L670.0 177.6 L818.0 177.6" fill="none" stroke="#A8631B" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="78.0" cy="184.0" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="226.0" cy="184.0" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="374.0" cy="180.8" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="522.0" cy="180.8" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="670.0" cy="177.6" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="818.0" cy="177.6" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
+<text x="830.0" y="182.61111111111111" text-anchor="start" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">770 €</text>
+<path d="M78.0 184.0 L226.0 160.4 L374.0 136.7 L522.0 113.1 L670.0 89.4 L818.0 64.8" fill="none" stroke="#0E8F84" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="78.0" cy="184.0" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="226.0" cy="160.4" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="374.0" cy="136.7" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="522.0" cy="113.1" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="670.0" cy="89.4" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="818.0" cy="64.8" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<text x="830.0" y="69.78333333333333" text-anchor="start" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.653 €</text>
+<line x1="78" y1="276" x2="818" y2="276" stroke="var(--line)" stroke-width="1"/>
+<text x="66" y="20" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">valor acumulado por paciente · €</text>
+<rect x="78" y="334" width="12" height="12" rx="3" fill="#0E8F84"/>
+<text x="97" y="344" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Con programa de cuidado</text>
+<rect x="264" y="334" width="12" height="12" rx="3" fill="#A8631B"/>
+<text x="282.79999999999995" y="344" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Sin programa de cuidado</text>
+</svg>
+    <figcaption>Valor acumulado por paciente a cinco años, con y sin programa de seguimiento. El área sombreada no se pierde por competencia: se pierde por no volver a llamar. Es también la parte del ingreso que un comprador valora con múltiplo superior, porque es previsible.</figcaption>
+  </figure>
+</section>
+<section class="slide">
+  <p class="eyebrow">§9 · Creación de valor de empresa</p>
+  <h2>Por qué esto vale más que <em>la suma de sus sillones</em></h2>
+  <ol class="pasos">
+    <li><b>Beneficio</b> — lo que el centro gana este año. Es lo único que existe si no hay sistema.</li>
+    <li><b>Beneficio sin dependencia del titular</b> — la parte que sobrevive a que el fundador se aparte. La produce el protocolo escrito, no el talento.</li>
+    <li><b>Ingreso recurrente contratado</b> — cuotas y mantenimientos de la base en seguimiento. Se valora con múltiplo superior al ingreso por acto.</li>
+    <li><b>Sistema replicable</b> — capacidad demostrada de abrir una segunda unidad con el mismo resultado. Convierte un centro en una plataforma.</li>
+    <li><b>Serie clínica propia</b> — resultados documentados a cinco años. El único activo que no se acelera con dinero.</li>
+  </ol>
+  <p class="lede">Cada decisión de hoy puede leerse dos veces: por su efecto en la cuenta de este año y por el nivel de esta escalera al que lleva al centro. La segunda lectura rara vez aparece en el consejo de una clínica.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§10 · Tesis de escalado</p>
+  <h2>De un centro a una red: <em>el orden es innegociable</em></h2>
+  <ol class="pasos">
+    <li><b>Estándar escrito</b> <span class="sem sem--verde">Hecho</span> — 12 fases, 322 puntos, manual por puesto</li>
+    <li><b>Estándar verificado</b> <span class="sem sem--ambar">En curso</span> — auditoría con resultado registrado, no autoevaluación</li>
+    <li><b>Estándar sostenido sin el titular</b> <span class="sem sem--rojo">Pendiente</span> — un trimestre en umbral sin intervención de Dirección</li>
+    <li><b>Formador formado</b> <span class="sem sem--rojo">Pendiente</span> — alguien distinto del fundador capaz de incorporar a un profesional al estándar</li>
+    <li><b>Segunda unidad</b> — solo después de 3 y 4. Antes, no.</li>
+  </ol>
+  <p class="lede">Los centros que fracasan al escalar casi nunca fallan por falta de demanda en la segunda plaza: replicaron una operación que nunca había funcionado sin su fundador delante. <b>Decisión D11.</b></p>
+</section>
+<section class="slide slide--div">
+  <p class="eyebrow">Parte IV · El riesgo</p>
+  <p class="rom">IV</p>
+  <h2>Cómo fracasa esto, contado <em>antes</em> de que ocurra</h2>
+  <p class="lede">Un registro de riesgos enumera lo que puede salir mal. Un pre-mortem se sitúa tres años en el futuro, da por hecho el fracaso y pide explicar la causa. Cambia la pregunta, y con ella el nivel de honestidad de las respuestas.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§11 · Riesgos</p>
+  <h2>Cinco riesgos críticos, con dueño</h2>
+  <table>
+    <thead><tr><th>#</th><th>Riesgo</th><th>Mitigación</th><th>Propietario</th></tr></thead>
+    <tbody>
+      <tr><td class="c">R1</td><td>Cobertura aseguradora insuficiente para tratamientos previos</td><td>Verificación documental antes de abrir</td><td>Gerencia</td></tr>
+      <tr><td class="c">R2</td><td>Producto pendiente heredado sin cuantificar</td><td>Inventario en los tres primeros días</td><td>Dirección</td></tr>
+      <tr><td class="c">R3</td><td>Pérdida de un profesional clave</td><td>Entrevistas tempranas y formación cruzada</td><td>Gerencia</td></tr>
+      <tr><td class="c">R4</td><td>Incumplimiento regulatorio latente</td><td>Auditoría de las once verificaciones</td><td>Gerencia</td></tr>
+      <tr><td class="c">R5</td><td>Deterioro de la percepción del paciente</td><td>Contacto proactivo y escalado único</td><td>Dirección</td></tr>
+    </tbody>
+  </table>
+  <p class="lede"><b>La única regla que detiene la clínica:</b> sin verificación positiva de la cobertura aseguradora no se realiza actividad clínica. Es el riesgo cuyo coste no tiene techo.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§12 · Pre-mortem</p>
+  <h2>Agosto de 2029: el proyecto ha fracasado. <em>¿Qué pasó?</em></h2>
+  <table>
+    <thead><tr><th>Causa</th><th>Señal temprana</th></tr></thead>
+    <tbody>
+      <tr><td><b>1 · El sistema se convirtió en papel.</b> La verificación se espació, primero por una urgencia y luego por costumbre</td><td>Una auditoría aplazada dos veces seguidas</td></tr>
+      <tr><td><b>2 · Se perdió al equipo en los primeros cien días.</b> Se gestionó como un cambio de procedimientos, no de vida laboral</td><td>Una conversación de salida no mantenida a tiempo</td></tr>
+      <tr><td><b>3 · Se compró crecimiento con descuento.</b> Subieron los casos, bajó el margen y el precio de referencia quedó fijado a la baja</td><td>El primer descuento fuera de la tipología cerrada</td></tr>
+      <tr><td><b>4 · El programa de cuidado nunca llegó a venderse.</b> Se ofrecía «cuando encajaba»</td><td>Tasa de ofrecimiento por debajo del 90 %</td></tr>
+      <tr><td><b>5 · Se abrió la segunda unidad demasiado pronto.</b> Se deterioraron las dos</td><td>«Esta oportunidad no se va a repetir» como criterio</td></tr>
+      <tr><td><b>6 · Nunca se supo si iba bien.</b> Se decidió sobre la sensación del último mes</td><td>El primer comité en que se discute sin un número delante</td></tr>
+    </tbody>
+  </table>
+  <p class="lede">Ninguna es un accidente externo: las seis son decisiones que tomamos nosotros o dejamos de tomar.</p>
+</section>
+<section class="slide slide--stmt">
+  <p class="eyebrow">§12 · Decisión D13</p>
+  <h2>Cinco disparadores que obligan a convocar <em>sin valorar la gravedad</em></h2>
+  <ul class="bul">
+    <li>Dos auditorías aplazadas</li>
+    <li>Una salida no prevista en un puesto clave</li>
+    <li>Un descuento fuera de tipología autorizado</li>
+    <li>Ofrecimiento del programa de cuidado bajo el 90 % dos meses seguidos</li>
+    <li>Una apertura planteada sin los pasos 3 y 4 acreditados</li>
+  </ul>
+  <p class="lede">Los seis modos de fallo son lentos y cómodos: nunca parecen suficientemente graves el día en que aún son baratos de corregir. Un disparador automático protege a la Junta de la propia Dirección en ese momento exacto.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§13 · Cuadro de mando</p>
+  <h2>Ocho indicadores, ninguno con serie propia todavía</h2>
+  <div class="cols">
+    <div class="tile"><p class="k">Integridad del sistema</p><p class="v">4</p><p>Verificaciones cerradas · bajas voluntarias · reclamaciones heredadas · documentación en el día</p></div>
+    <div class="tile"><p class="k">Resultado</p><p class="v">4</p><p>Producto pendiente · conversión · mantenimiento activo · captación por recomendación</p></div>
+    <div class="tile"><p class="k">Con dato hoy</p><p class="v">0 / 8</p><p><span class="sem sem--ambar">Primera lectura este trimestre</span></p></div>
+  </div>
+  <p class="lede">Ocho casillas vacías no son una debilidad del documento: son el diagnóstico honesto de dónde estamos. La Junta debe exigir que en la revisión trimestral las ocho tengan valor y tendencia.</p>
+</section>
+<section class="slide slide--div">
+  <p class="eyebrow">Parte V · La decisión</p>
+  <p class="rom">V</p>
+  <h2>Qué se pide hoy, y <em>qué cuesta no pedirlo</em></h2>
+  <p class="lede">Las palancas de valor, el orden en que se asigna el capital, la hoja de ruta a treinta y seis meses y las catorce decisiones que solo puede tomar este órgano.</p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§14 · Palancas de valor</p>
   <h2>Por dónde se crece, <em>y en qué orden</em></h2>
   <table>
     <thead><tr><th>Orden</th><th>Palanca</th><th>Coste de activación</th><th>Horizonte</th></tr></thead>
@@ -335,7 +682,19 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   <p class="lede"><b>Sostener → recuperar → fidelizar → captar.</b> Invertir en captación con la cartera propia desatendida es la asignación de recursos menos eficiente posible.</p>
 </section>
 <section class="slide">
-  <p class="eyebrow">§8 · Hoja de ruta</p>
+  <p class="eyebrow">§15 · Asignación de capital</p>
+  <h2>Un orden de prelación, <em>no una lista de deseos</em></h2>
+  <ol class="pasos">
+    <li><b>Continuidad</b> — nóminas, obligaciones, mantenimiento y colchón de tesorería. No se discute.</li>
+    <li><b>El foso</b> — formación, verificación, documentación y programa de seguimiento. Compra años de ventaja y es lo primero que se recorta en cualquier centro con prisa.</li>
+    <li><b>Conversión</b> — todo lo que mejora la primera visita. Retorno más alto y más rápido que cualquier captación.</li>
+    <li><b>Captación</b> — solo cuando la conversión ya está en umbral: captar más para convertir igual es pagar por desperdicio.</li>
+    <li><b>Capacidad</b> — sillones, equipos, segunda unidad. Se financia con lo producido, no con deuda contra una previsión.</li>
+  </ol>
+  <p class="lede">Excepción legítima, una sola: cuando una prioridad inferior es condición técnica de una superior. Se documenta y se presenta en la Junta siguiente. <b>Decisión D10.</b></p>
+</section>
+<section class="slide">
+  <p class="eyebrow">§16 · Hoja de ruta</p>
   <h2>Tres horizontes, tres puertas</h2>
   <div class="cols">
     <div class="tile"><p class="k">Horizonte 1 · 100 días</p><p class="v">Estabilizar</p><p>Riesgo neutralizado, equipo retenido, continuidad asegurada, línea base establecida</p></div>
@@ -345,8 +704,8 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
   <p class="lede">El programa no avanza por calendario, sino por criterios de salida verificados en los días 30, 60 y 100. Ninguna fase se adelanta.</p>
 </section>
 <section class="slide">
-  <p class="eyebrow">§9 · Lo que se pide hoy</p>
-  <h2>Ocho decisiones</h2>
+  <p class="eyebrow">§17 · Lo que se pide hoy · 1 de 2</p>
+  <h2>Las ocho de la operación</h2>
   <table>
     <thead><tr><th>Cód.</th><th>Materia</th><th>Plazo</th></tr></thead>
     <tbody>
@@ -361,6 +720,22 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
     </tbody>
   </table>
 </section>
+<section class="slide">
+  <p class="eyebrow">§17 · Lo que se pide hoy · 2 de 2</p>
+  <h2>Las seis de <em>la estrategia</em></h2>
+  <table>
+    <thead><tr><th>Cód.</th><th>Materia</th><th>Alternativa descartada</th><th>Plazo</th></tr></thead>
+    <tbody>
+      <tr><td class="c">D9</td><td>Regla de cartera de innovación 70/20/10</td><td>Decidir caso a caso: todo acaba en H1</td><td><span class="sem sem--rojo">Hoy</span></td></tr>
+      <tr><td class="c">D10</td><td>Orden de prelación del capital</td><td>Presupuesto por partidas sin orden</td><td><span class="sem sem--rojo">Hoy</span></td></tr>
+      <tr><td class="c">D11</td><td>Condición de apertura de segunda unidad</td><td>Decidir por oportunidad de mercado</td><td><span class="sem sem--rojo">Hoy</span></td></tr>
+      <tr><td class="c">D12</td><td>Suelo anual de inversión en el foso</td><td>Tratarlo como gasto variable ajustable</td><td><span class="sem sem--rojo">Hoy</span></td></tr>
+      <tr><td class="c">D13</td><td>Disparadores de Junta extraordinaria</td><td>Convocar cuando Dirección lo considere</td><td><span class="sem sem--rojo">Hoy</span></td></tr>
+      <tr><td class="c">D14</td><td>Programa de cuidado obligatorio en el cierre</td><td>Dejarlo a criterio comercial</td><td><span class="sem sem--ambar">Tras D5</span></td></tr>
+    </tbody>
+  </table>
+  <p class="lede">Las ocho anteriores resuelven la operación. Estas seis fijan las reglas con las que la Junta decidirá lo que todavía no está sobre la mesa. Es la diferencia entre gobernar y reaccionar.</p>
+</section>
 <section class="slide slide--cierre">
   <p class="eyebrow">Cierre</p>
   <h2>Qué mide el éxito de este año</h2>
@@ -369,7 +744,7 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
     <li><b>Que los pacientes heredados no perciban discontinuidad.</b> Son la base de ingresos inmediata y el primer canal de prescripción</li>
     <li><b>Que la organización acepte un estándar superior al preexistente.</b> La ventana para establecerlo se cierra en el primer trimestre</li>
   </ul>
-  <p class="lede">Lo que se pide hoy no es respaldo genérico: es resolver las ocho decisiones y fijar la fecha de la próxima revisión.</p>
+  <p class="lede">Lo que se pide hoy no es respaldo genérico: es resolver las catorce decisiones y fijar la fecha de la próxima revisión.</p>
 </section>
 </div>
 
@@ -377,7 +752,7 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
 <div class="hud">
   <span class="hud__marca">Centro de Excelencia Implantológica Giraldo · Junta Directiva</span>
   <button id="prev" type="button" aria-label="Diapositiva anterior">←</button>
-  <span class="hud__n" id="n" aria-live="polite">1 / 15</span>
+  <span class="hud__n" id="n" aria-live="polite">1 / 34</span>
   <button id="next" type="button" aria-label="Diapositiva siguiente">→</button>
 </div>
 
