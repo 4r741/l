@@ -21,11 +21,13 @@ DESTINO = RAIZ / "export"
 # Los archivos a exportar: nombre de salida, identificador dentro del archivo
 # único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
+    "inicio.html": "Giraldo-INICIO-AQUI.html",
     "memoria.html": "Tesis-Direccion-Giraldo-v2.html",
     "deck.html": "Presentacion-Junta-Giraldo-v2.html",
     "manual.html": "Manual-Maestro-Giraldo-v5.html",
     "index.html": "Protocolo-Primera-Visita-Giraldo.html",
     "otros.html": "Otros-Documentos-Giraldo.html",
+    "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-2026.html",
 }
 
 DOCUMENTOS = {
@@ -332,8 +334,10 @@ def main():
             estilo = fuentes_incrustadas(coincidencia.group(1))
         html = ENLACES_FUENTES.sub(lambda _: estilo, html, count=1)
         for otro_origen, otra_salida in PAGINAS.items():
+            # en export/ todo queda plano: se admite el «../» que usan las
+            # páginas guardadas en subcarpeta para apuntar a la raíz
             html = re.sub(
-                r'href="%s(#[^"]*)?"' % re.escape(otro_origen),
+                r'href="(?:\.\./)?%s(#[^"]*)?"' % re.escape(otro_origen),
                 lambda m, s=otra_salida: 'href="%s%s"' % (s, m.group(1) or ""),
                 html,
             )

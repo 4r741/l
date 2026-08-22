@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Puerta de entrada al sistema documental del Centro de Excelencia Implantológica Giraldo: Tesis de Dirección, presentación de Junta, Manual Maestro, Protocolo de Primera Visita, otros documentos del sistema y la hoja de captura de la línea base.">
+<title>Sistema documental Giraldo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   TOKENS — paleta clara por defecto; la oscura solo redefine
+   ============================================================ */
+:root{
+  --paper:#ECEEEA;
+  --surface:#F7F8F5;
+  --surface-2:#E3E6E1;
+  --ink:#0B1A20;
+  --ink-2:#263D45;
+  --muted:#5D7178;
+  --line:rgba(11,26,32,.16);
+  --line-soft:rgba(11,26,32,.08);
+  --accent:#0E7C74;
+  --accent-ink:#0A5C56;
+  --accent-soft:rgba(14,124,116,.10);
+  --signal:#A8631B;
+  --signal-soft:rgba(168,99,27,.12);
+  --shadow:0 1px 0 rgba(11,26,32,.05), 0 18px 40px -32px rgba(11,26,32,.55);
+  --rule:rgba(11,26,32,.28);
+
+  --f-display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --wrap:1180px;
+  --step--1:clamp(.78rem,.76rem + .1vw,.84rem);
+  --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
+  --step-1:clamp(1.18rem,1.1rem + .35vw,1.35rem);
+  --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
+  --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
+  --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
+
+  /* documento de lectura e impresión: solo modo claro */
+  color-scheme:light;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:118px}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:var(--step-0);
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:500;text-wrap:balance;margin:0;line-height:1.12}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{width:min(100% - 2.4rem,var(--wrap));margin-inline:auto}
+.mono{font-family:var(--f-mono)}
+.eyebrow{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);
+}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+/* regla milimétrica: motivo del CBCT */
+.ticks{
+  height:11px;
+  background-image:repeating-linear-gradient(90deg,var(--rule) 0 1px,transparent 1px 9px);
+  opacity:.5;
+}
+.ticks--tall{
+  height:18px;
+  background-image:
+    repeating-linear-gradient(90deg,var(--rule) 0 1px,transparent 1px 45px),
+    repeating-linear-gradient(90deg,var(--rule) 0 1px,transparent 1px 9px);
+  background-size:100% 18px,100% 9px;
+  background-repeat:no-repeat,no-repeat;
+  background-position:0 0,0 0;
+}
+
+/* ============================================================
+   BARRA SUPERIOR
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1px solid var(--line);
+}
+.topbar__in{display:flex;align-items:center;gap:1.2rem;padding:.7rem 0;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:.55rem;margin-right:auto;text-decoration:none}
+.brand__mark{
+  font-family:var(--f-display);font-size:1.06rem;letter-spacing:-.01em;
+}
+.brand__mark b{font-weight:600}
+.brand__tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* tira de fases */
+.strip{
+  display:flex;gap:2px;overflow-x:auto;padding:0 0 .65rem;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);
+  mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);
+}
+.strip::-webkit-scrollbar{display:none}
+.strip a{
+  flex:0 0 auto;text-decoration:none;
+  font-family:var(--f-mono);font-size:.7rem;
+  color:var(--muted);border-top:2px solid var(--line);
+  padding:.42rem .62rem 0;white-space:nowrap;
+  transition:color .18s ease,border-color .18s ease;
+}
+.strip a:hover{color:var(--ink);border-color:var(--ink-2)}
+.strip a[aria-current="true"]{color:var(--accent-ink);border-color:var(--accent);font-weight:500}
+.strip a.is-off{opacity:.3}
+
+/* ============================================================
+   PORTADA
+   ============================================================ */
+.hero{padding:clamp(3rem,8vw,6.5rem) 0 2.6rem;position:relative;overflow:hidden}
+.hero__grid{display:grid;gap:2.4rem}
+.hero__grid>*{min-width:0}
+@media(min-width:900px){.hero__grid{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:3.4rem}}
+.hero h1{
+  font-size:var(--step-4);font-weight:400;letter-spacing:-.025em;
+  font-variation-settings:"opsz" 144;
+}
+.hero h1 em{font-style:italic;color:var(--accent-ink)}
+.hero__lede{margin-top:1.5rem;font-size:var(--step-1);color:var(--ink-2);max-width:34ch;line-height:1.45}
+.hero__note{margin-top:1.3rem;color:var(--muted);max-width:58ch;font-size:var(--step--1)}
+.specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);align-self:start}
+.spec{background:var(--paper);padding:1rem 1.05rem}
+.spec dt{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:.35rem 0 0;font-family:var(--f-display);font-size:1.5rem;font-weight:500;line-height:1.1}
+.spec dd small{display:block;font-family:var(--f-body);font-size:.76rem;color:var(--muted);font-weight:400;margin-top:.25rem;line-height:1.4}
+
+/* ============================================================
+   SECCIONES GENÉRICAS
+   ============================================================ */
+.section{padding:clamp(3rem,6vw,5rem) 0;border-top:1px solid var(--line)}
+.section__head{display:grid;gap:.9rem;margin-bottom:2.4rem;max-width:70ch}
+.section__head h2{font-size:var(--step-3);letter-spacing:-.02em}
+.section__head p{color:var(--ink-2);max-width:62ch}
+
+.cards{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.cards>*{min-width:0}
+@media(min-width:760px){.cards--3{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:760px){.cards--2{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--paper);padding:1.5rem}
+.card h3{font-size:var(--step-1);margin-bottom:.55rem}
+.card p{color:var(--ink-2);font-size:.95rem}
+.card .eyebrow{display:block;margin-bottom:.9rem}
+
+/* ============================================================
+   MAPA DE TIEMPOS
+   ============================================================ */
+.timemap{border:1px solid var(--line);background:var(--surface);padding:1.4rem;max-width:100%;overflow:hidden}
+.timemap__bar{display:flex;gap:2px;height:66px;margin:.4rem 0 1rem}
+.timemap__seg{
+  position:relative;background:var(--surface-2);border:0;padding:0;cursor:pointer;
+  display:flex;align-items:flex-end;justify-content:center;
+  border-bottom:3px solid var(--accent);
+  transition:background .18s ease,transform .18s ease;
+  min-width:14px;
+}
+.timemap__seg:hover{background:var(--accent-soft);transform:translateY(-2px)}
+.timemap__seg span{
+  font-family:var(--f-mono);font-size:.62rem;color:var(--muted);padding-bottom:.3rem;
+}
+.timemap__seg[data-role="recepcion"]{border-bottom-color:#2E6F9E}
+.timemap__seg[data-role="director"]{border-bottom-color:var(--accent)}
+.timemap__seg[data-role="doctor"]{border-bottom-color:#8B5CB8}
+.timemap__seg[data-role="auxiliar"]{border-bottom-color:var(--signal)}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;
+  border:1px solid var(--line);background:transparent;color:var(--ink-2);
+  padding:.34rem .7rem;border-radius:999px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:.45rem;
+}
+.chip::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--dot,var(--muted))}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip--static{cursor:default}
+.chip[data-role="recepcion"]{--dot:#2E6F9E}
+.chip[data-role="director"]{--dot:var(--accent)}
+.chip[data-role="doctor"]{--dot:#8B5CB8}
+.chip[data-role="auxiliar"]{--dot:var(--signal)}
+
+/* ============================================================
+   FASES
+   ============================================================ */
+.phase{
+  border-top:1px solid var(--line);
+  padding:clamp(2.4rem,5vw,3.6rem) 0;
+  transition:opacity .25s ease;
+}
+.phase.is-dimmed{opacity:.24}
+.phase__grid{display:grid;gap:1.8rem}
+.phase__grid>*{min-width:0}
+.phase__body{min-width:0;max-width:76ch}
+@media(min-width:960px){
+  .phase__grid{grid-template-columns:230px minmax(0,1fr);gap:3rem}
+  .phase__meta{position:sticky;top:132px;align-self:start}
+}
+.phase__num{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.18em;color:var(--accent-ink);
+  display:block;margin-bottom:.5rem;
+}
+.phase__big{
+  font-family:var(--f-display);font-size:clamp(3.2rem,9vw,4.6rem);line-height:.86;
+  font-weight:400;letter-spacing:-.04em;color:var(--ink);
+  font-variation-settings:"opsz" 144;
+}
+.phase__facts{margin:1.3rem 0 0;display:grid;gap:.85rem}
+.phase__fact dt{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.phase__fact dd{margin:.15rem 0 0;font-size:.9rem;color:var(--ink-2)}
+.phase h2{font-size:var(--step-2);letter-spacing:-.02em;max-width:24ch}
+.phase__intro{margin-top:1rem;color:var(--ink-2);max-width:66ch}
+.block{margin-top:2rem}
+.block__title{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem;
+}
+.block__title::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.block h4{font-size:1.02rem;font-family:var(--f-body);font-weight:600;margin:1.2rem 0 .3rem}
+.block h4:first-of-type{margin-top:0}
+.block p{color:var(--ink-2);max-width:66ch}
+ul.list{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.4rem;max-width:66ch}
+ul.list li{position:relative;padding-left:1.15rem;color:var(--ink-2);font-size:.95rem}
+ul.list li::before{content:"";position:absolute;left:0;top:.66em;width:6px;height:1px;background:var(--accent)}
+ol.steps{list-style:none;counter-reset:s;margin:.5rem 0 0;padding:0;display:grid;gap:1.1rem;max-width:68ch}
+ol.steps>li{counter-increment:s;position:relative;padding-left:2.4rem}
+ol.steps>li::before{
+  content:counter(s,decimal-leading-zero);position:absolute;left:0;top:.1em;
+  font-family:var(--f-mono);font-size:.72rem;color:var(--accent-ink);
+  border:1px solid var(--line);padding:.1rem .32rem;border-radius:3px;
+}
+.callout{
+  border-left:3px solid var(--signal);background:var(--signal-soft);
+  padding:1rem 1.15rem;margin-top:1.2rem;max-width:68ch;
+}
+.callout .eyebrow{color:var(--signal)}
+.callout p,.callout li{color:var(--ink-2)}
+.callout ul.list li::before{background:var(--signal)}
+.script{
+  border:1px solid var(--line);background:var(--surface);
+  padding:1.15rem 1.3rem;margin-top:1rem;max-width:68ch;
+}
+.script q{
+  font-family:var(--f-display);font-style:italic;font-size:1.08rem;
+  color:var(--ink);quotes:"«" "»" "\201C" "\201D";display:block;line-height:1.5;
+}
+.script .eyebrow{display:block;margin-bottom:.6rem}
+.gate{
+  margin-top:1.4rem;border:1px dashed var(--line);padding:1rem 1.15rem;max-width:68ch;
+  background:var(--accent-soft);
+}
+.gate .eyebrow{color:var(--accent-ink)}
+.gate p{color:var(--ink-2);margin-top:.35rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);margin-top:1.2rem;max-width:100%;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+th,td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+thead th{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);background:var(--surface);border-bottom:1px solid var(--line);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+.checks{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.55rem;max-width:70ch}
+.checks li{
+  display:grid;grid-template-columns:auto 1fr;gap:.7rem;align-items:start;
+  border-bottom:1px solid var(--line-soft);padding-bottom:.55rem;font-size:.94rem;color:var(--ink-2);
+}
+.checks li::before{
+  content:"";width:14px;height:14px;margin-top:.32em;border:1px solid var(--accent);border-radius:2px;
+}
+.checks li b{color:var(--ink);font-weight:600}
+.reveal{opacity:0;transform:translateY(14px)}
+.reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal,.reveal.in{opacity:1;transform:none;transition:none}
+  .timemap__seg:hover{transform:none}
+}
+@media(max-width:640px){
+  html{scroll-padding-top:98px}
+  .brand__tag{display:none}
+  .brand__mark{font-size:.98rem}
+  .topbar__in{padding:.55rem 0}
+  .strip a{font-size:.68rem;padding:.38rem .5rem 0}
+}
+footer.foot{border-top:1px solid var(--line);padding:3rem 0 4rem;color:var(--muted);font-size:.85rem}
+footer.foot strong{color:var(--ink)}
+.foot__grid{display:grid;gap:1.6rem}
+@media(min-width:760px){.foot__grid{grid-template-columns:2fr 1fr 1fr}}
+
+
+/* ============================================================
+   COMPONENTES AMPLIADOS
+   ============================================================ */
+.grid2{display:grid;gap:1.4rem}
+@media(min-width:820px){.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.grid2>*{min-width:0}
+
+/* micro-cronología por fase */
+.mini{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem}
+.mini div{background:var(--paper);padding:.6rem .8rem;flex:1 1 120px;min-width:0}
+.mini dt{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.mini dd{margin:.2rem 0 0;font-size:.82rem;color:var(--ink-2);line-height:1.4}
+
+/* qué decir / qué evitar */
+.saydont{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem;max-width:68ch}
+@media(min-width:720px){.saydont{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.saydont>div{background:var(--paper);padding:1rem 1.1rem}
+.saydont>div:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.saydont>div:last-child{box-shadow:inset 3px 0 0 var(--signal)}
+.saydont h5{margin:0 0 .6rem;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.saydont ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.saydont li{font-size:.9rem;color:var(--ink-2);line-height:1.5}
+.saydont li::before{content:"";display:inline-block;width:5px;height:5px;margin-right:.55rem;vertical-align:.22em;border-radius:50%}
+.saydont>div:first-child li::before{background:var(--accent)}
+.saydont>div:last-child li::before{background:var(--signal)}
+
+/* casos especiales */
+.special{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem}
+@media(min-width:700px){.special{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1080px){.special--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.special>div{background:var(--paper);padding:1.1rem 1.2rem;min-width:0}
+.special h5{margin:0 0 .4rem;font-size:.95rem;font-weight:600}
+.special p{font-size:.88rem;color:var(--ink-2);margin:0}
+
+/* plantillas y documentos modelo */
+.sheet{
+  border:1px solid var(--line);background:var(--surface);margin-top:1rem;
+  font-family:var(--f-mono);font-size:.78rem;line-height:1.75;color:var(--ink-2);
+  padding:1.2rem 1.3rem;overflow-x:auto;white-space:pre-wrap;
+}
+.sheet b{color:var(--ink);font-weight:500}
+
+/* preguntas frecuentes */
+details.faq{border-bottom:1px solid var(--line-soft);padding:.2rem 0}
+details.faq summary{
+  cursor:pointer;padding:.85rem 0;font-weight:500;font-size:.98rem;
+  display:flex;gap:.8rem;align-items:baseline;list-style:none;
+}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::before{content:"+";font-family:var(--f-mono);color:var(--accent);font-size:.9rem}
+details.faq[open] summary::before{content:"–"}
+details.faq .a{padding:0 0 1rem 1.7rem;color:var(--ink-2);font-size:.94rem;max-width:70ch}
+details.faq .a p+p{margin-top:.6rem}
+
+/* rúbrica de auditoría */
+.score{display:inline-block;font-family:var(--f-mono);font-size:.7rem;padding:.12rem .45rem;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+.bar{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;min-width:90px}
+.bar i{display:block;height:100%;background:var(--accent)}
+
+/* figura / diagrama */
+figure.fig{margin:1.6rem 0 0;border:1px solid var(--line);background:var(--surface);padding:1.4rem}
+figure.fig svg{width:100%;height:auto;display:block;color:var(--ink)}
+figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-width:70ch}
+.figscroll{overflow-x:auto}
+.figscroll>svg{min-width:900px}
+
+/* etiquetas en línea */
+.tag{
+  display:inline-block;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid var(--line);padding:.1rem .4rem;border-radius:3px;
+  color:var(--muted);vertical-align:.15em;margin-left:.5rem;
+}
+.tag--rec{color:#2E6F9E;border-color:#2E6F9E}
+.tag--dir{color:var(--accent-ink);border-color:var(--accent)}
+.tag--doc{color:#8B5CB8;border-color:#8B5CB8}
+.tag--aux{color:var(--signal);border-color:var(--signal)}
+
+/* nota al pie de bloque */
+.footnote{margin-top:.9rem;font-size:.82rem;color:var(--muted);max-width:66ch}
+
+/* ============================================================
+   IMPRESIÓN Y PDF — A4 con márgenes de encuadernación, cabecera
+   de clasificación en la primera página y tablas que repiten su
+   encabezado al cambiar de hoja.
+   ============================================================ */
+@page{size:A4;margin:18mm 15mm 20mm}
+.printhead{display:none}
+@media print{
+  .printhead{
+    display:block;border-bottom:1.5pt solid #000;padding-bottom:6pt;margin-bottom:14pt;
+    font-family:var(--f-mono);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .printhead b{font-weight:600}
+  .printhead span{float:right}
+  h1,h2,h3,h4{break-after:avoid-page}
+  h2,h3{break-inside:avoid}
+  p,li{orphans:3;widows:3}
+  thead{display:table-header-group}
+  tfoot{display:table-footer-group}
+  tr,img,svg,figure,.card,.spec,.script,.sheet,.rulebox,.callout,.gate,.saydont>div{break-inside:avoid}
+  .parthead{break-before:page}
+  .tablewrap,.figscroll{overflow:visible!important}
+  table{min-width:0!important;font-size:8.5pt}
+  .hero{padding-top:0}
+  .section{padding:14pt 0}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:7.5pt;color:#555}
+  a[href^="#"]::after,a[href$=".html"]::after{content:""}
+}
+@media print{
+  .topbar,.legend,.timemap__bar{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  .phase,.section{break-inside:avoid;page-break-inside:avoid;border-color:#bbb}
+  .phase.is-dimmed{opacity:1}
+  .reveal{opacity:1!important;transform:none!important}
+  details.faq{border-color:#bbb}
+  details.faq>summary{list-style:none}
+  details.faq:not([open])>*:not(summary){display:block!important}
+  .sheet{background:#fff;border-color:#bbb}
+  a{text-decoration:none}
+}
+</style>
+<style>
+/* ============================================================
+   COMPONENTES DEL MANUAL MAESTRO
+   ============================================================ */
+/* divisor de parte */
+.parthead{
+  border-top:1px solid var(--line);
+  padding:clamp(3.4rem,7vw,6rem) 0 clamp(2rem,4vw,3rem);
+}
+.parthead__in{display:grid;gap:1.1rem}
+@media(min-width:820px){.parthead__in{grid-template-columns:180px minmax(0,1fr);gap:3rem;align-items:start}}
+.parthead__num{
+  font-family:var(--f-display);font-size:clamp(3rem,7vw,4.4rem);line-height:.85;
+  letter-spacing:-.04em;color:var(--accent-ink);font-variation-settings:"opsz" 144;
+}
+.parthead h2{font-size:var(--step-3);letter-spacing:-.02em;margin-bottom:.7rem}
+.parthead p{color:var(--ink-2);max-width:64ch}
+
+/* procedimiento PR-XX */
+.pr{border:1px solid var(--line);background:var(--surface);margin-top:1.2rem}
+.pr__head{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.7rem;
+  padding:.85rem 1.1rem;border-bottom:1px solid var(--line);background:var(--surface-2);
+}
+.pr__code{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;color:var(--accent-ink)}
+.pr__title{font-weight:600;font-size:1rem}
+.pr__meta{margin-left:auto;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pr__body{padding:1.1rem 1.2rem}
+.pr__body>*+*{margin-top:.9rem}
+.pr__body p{color:var(--ink-2);max-width:66ch}
+
+/* regla nuclear */
+.rulebox{
+  border:1px solid var(--accent);background:var(--accent-soft);
+  padding:1rem 1.2rem;margin-top:1.1rem;max-width:70ch;
+}
+.rulebox .eyebrow{color:var(--accent-ink);display:block;margin-bottom:.4rem}
+.rulebox p{color:var(--ink);font-family:var(--f-display);font-size:1.1rem;line-height:1.45}
+.rulebox p+p{margin-top:.5rem;font-family:var(--f-body);font-size:.92rem;color:var(--ink-2)}
+
+/* indicadores compactos */
+.kpis{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem}
+.kpis>div{background:var(--paper);padding:.75rem 1rem;display:flex;gap:1rem;align-items:baseline;justify-content:space-between;min-width:0;flex-wrap:wrap}
+.kpis dt,.kpis .k{font-size:.9rem;color:var(--ink-2)}
+.kpis dd,.kpis .v{margin:0;font-family:var(--f-mono);font-size:.85rem;color:var(--accent-ink);font-variant-numeric:tabular-nums;text-align:right}
+@media(min-width:560px){.kpis dd,.kpis .v{white-space:nowrap}}
+
+/* semáforo de riesgo */
+.sem{display:inline-flex;align-items:center;gap:.42rem;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.sem::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--sem,var(--muted))}
+.sem--rojo{--sem:#C0442E}
+.sem--naranja{--sem:#C97A1E}
+.sem--amarillo{--sem:#B79417}
+.sem--verde{--sem:#3D8A5F}
+
+/* matriz RACI */
+table.raci td{text-align:center;font-family:var(--f-mono);font-size:.78rem}
+table.raci td:first-child{text-align:left;font-family:var(--f-body);font-size:.88rem}
+table.raci td b{
+  display:inline-block;min-width:1.6rem;padding:.1rem .3rem;border-radius:3px;
+  background:var(--accent-soft);color:var(--accent-ink);font-weight:500;
+}
+table.raci td i{font-style:normal;color:var(--muted)}
+
+/* figura de flujo */
+figure.flow{margin:1.3rem 0 0;border:1px solid var(--line);background:var(--surface);padding:1.3rem}
+figure.flow svg{width:auto;max-width:100%;height:auto;display:block;color:var(--ink)}
+figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-width:70ch}
+.flowscroll{overflow-x:auto;max-width:100%}
+.flowscroll>svg{min-width:520px}
+
+/* aviso de edición */
+.edit{border-left:3px solid var(--accent);background:var(--surface);padding:.9rem 1.1rem;margin-top:1rem;max-width:70ch}
+.edit .eyebrow{color:var(--accent-ink);display:block;margin-bottom:.3rem}
+.edit p{color:var(--ink-2);font-size:.92rem}
+
+/* enlace entre documentos */
+.crosslink{
+  display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;
+  border:1px solid var(--line);padding:.5rem .9rem;border-radius:999px;
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+}
+.crosslink:hover{border-color:var(--accent);color:var(--accent-ink)}
+
+.puerta{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1.6rem}
+@media(min-width:820px){.puerta{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.puerta__ficha{
+  background:var(--paper);padding:1.6rem;display:grid;gap:.6rem;align-content:start;
+  text-decoration:none;color:inherit;transition:background .16s ease;min-width:0;
+}
+.puerta__ficha:hover{background:var(--surface)}
+.puerta__ficha:hover h3{color:var(--accent-ink)}
+.puerta__ficha--ancha{grid-column:1/-1;background:var(--accent-soft)}
+.puerta__ficha--ancha:hover{background:rgba(14,124,116,.16)}
+.puerta__ficha h3{font-size:var(--step-2);letter-spacing:-.015em}
+.puerta__ficha p{color:var(--ink-2);font-size:.94rem;max-width:60ch}
+.puerta__pie{
+  margin-top:.4rem;display:flex;flex-wrap:wrap;gap:.4rem .9rem;
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);
+}
+.puerta__pie b{color:var(--accent-ink);font-weight:400}
+.puerta__flecha{font-family:var(--f-mono);color:var(--accent-ink);margin-left:auto}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="topbar__in">
+      <a class="brand" href="#portada">
+        <span class="brand__mark">Sistema documental <b>Giraldo</b></span>
+        <span class="brand__tag">Uso interno</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="portada">
+  <div class="wrap">
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+        <h1>No medias<br><em>sonrisas</em></h1>
+        <p class="hero__lede">Seis documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. Empiece por el que le corresponda.</p>
+        <p class="hero__note">Uso interno y confidencial. Contiene información económica, laboral y estratégica. No se difunde fuera de la organización sin autorización expresa de la Dirección General.</p>
+      </div>
+      <dl class="specs">
+        <div class="spec"><dt>Documentos</dt><dd>6<small>Enlazados entre sí; ninguno es anexo de otro</small></dd></div>
+        <div class="spec"><dt>Decisiones abiertas</dt><dd>14<small>Se someten a la Junta Directiva</small></dd></div>
+        <div class="spec"><dt>Puntos de verificación</dt><dd>322<small>Físicos, documentales, de sistemas y de proceso</small></dd></div>
+        <div class="spec"><dt>Indicadores</dt><dd>10<small>Con definición operativa acordada</small></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+<div class="wrap"><div class="ticks ticks--tall" aria-hidden="true"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">El sistema</p>
+      <h2>Qué es cada cosa</h2>
+      <p>La Tesis dirige, la presentación convence, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, las cinco primeras se apoyan en supuestos.</p>
+    </div>
+    <div class="puerta">
+      <a class="puerta__ficha puerta__ficha--ancha" href="memoria.html">
+        <p class="eyebrow">v2.0 · 19 apartados · Anexo A</p>
+        <h3>Tesis de Dirección</h3>
+        <p>El documento de gobierno. Posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y las catorce decisiones que se someten a la Junta. Incluye el cuadernillo con las catorce hojas de acta.</p>
+        <p class="puerta__pie"><span>57 páginas en papel · lectura 42′</span><span class="puerta__flecha">Abrir →</span></p>
+      </a>
+      <a class="puerta__ficha" href="deck.html">
+        <p class="eyebrow">34 diapositivas · 16:9</p>
+        <h3>Presentación de Junta</h3>
+        <p>La tesis para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, <b>N</b> abre el guion del ponente con el minuto objetivo y la pregunta difícil, <b>E</b> filtra a la ruta corta de doce diapositivas para sesiones de veinte minutos.</p>
+        <p class="puerta__pie"><span>Proyección y guion del ponente</span><span class="puerta__flecha">Abrir →</span></p>
+      </a>
+      <a class="puerta__ficha" href="instrumentos/captura.html">
+        <p class="eyebrow">2026 · 10 indicadores</p>
+        <h3>Captura de la línea base</h3>
+        <p>El instrumento del §7 y del §13: doce hojas mensuales, semáforo automático, resumen anual con tendencia y los cinco números. Se rellena aquí mismo y se guarda en este equipo.</p>
+        <p class="puerta__pie"><span>Se rellena en el navegador</span><span class="puerta__flecha">Abrir →</span></p>
+      </a>
+      <a class="puerta__ficha" href="manual.html">
+        <p class="eyebrow">v5.5 · 10 partes</p>
+        <h3>Manual Maestro de Operaciones</h3>
+        <p>El documento troncal. Las catorce fases del recorrido del paciente, los manuales por puesto, la matriz RACI, los indicadores, el plan de incentivos y la puesta en marcha.</p>
+        <p class="puerta__pie"><span>204 páginas en papel</span><span class="puerta__flecha">Abrir →</span></p>
+      </a>
+      <a class="puerta__ficha" href="index.html">
+        <p class="eyebrow">v5.5 · 12 fases</p>
+        <h3>Protocolo de Primera Visita</h3>
+        <p>El detalle minuto a minuto de la visita que decide la conversión, con estándares transversales, casos especiales, guiones contrastados y anexos.</p>
+        <p class="puerta__pie"><span>90 páginas en papel</span><span class="puerta__flecha">Abrir →</span></p>
+      </a>
+      <a class="puerta__ficha" href="otros.html">
+        <p class="eyebrow">v1.3 · 14 documentos</p>
+        <h3>Otros documentos del sistema</h3>
+        <p>Compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia, programa de 100 días, protocolos por perfil, innovación, marca, «No medias sonrisas» y el programa Giraldo Te Cuida.</p>
+        <p class="puerta__pie"><span>135 páginas en papel</span><span class="puerta__flecha">Abrir →</span></p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Cómo se abren</p>
+      <h2>Sin instalar nada</h2>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))">
+      <div class="card"><p class="eyebrow">En este equipo</p><h3>Doble clic</h3><p>Cada archivo es una página completa: se abre en el navegador que tenga instalado, sin conexión y sin ningún programa adicional. Mantenga los seis en la misma carpeta para que los enlaces entre ellos funcionen.</p></div>
+      <div class="card"><p class="eyebrow">En papel</p><h3>Imprimir</h3><p>Todos llevan hoja de estilos de impresión: A4 con cabecera de clasificación, numeración y tablas que repiten su encabezado. La presentación sale apaisada, una diapositiva por página.</p></div>
+      <div class="card"><p class="eyebrow">Para repartir</p><h3>La carpeta entera</h3><p>Copie la carpeta completa en una memoria o envíela comprimida. No hay servidor, ni cuenta, ni dependencia externa: lo que ve aquí es todo lo que hace falta.</p></div>
+    </div>
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Una advertencia que no conviene saltarse</p>
+      <p>Las cifras económicas de la Tesis y de la presentación son <strong>modelos sobre rangos del sector, marcados como tales</strong> en cada figura y registradas en su §18. No son datos del centro y no deben citarse como tales hasta que exista la línea base. Levantarla es exactamente para lo que sirve la hoja de captura.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="ticks" aria-hidden="true" style="margin-bottom:2rem"></div>
+    <div class="foot__grid">
+      <div>
+        <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Sistema documental · Uso interno y confidencial</p>
+      </div>
+      <div><p class="eyebrow">Lema</p><p>No medias sonrisas.<br>Ni medias decisiones.</p></div>
+      <div><p class="eyebrow">Versiones</p><p>Tesis v2.0 · Manual v5.5<br>Protocolo v5.5 · Otros v1.3</p></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

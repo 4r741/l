@@ -6,9 +6,11 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
+| **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
 | **`memoria.html`** | Tesis de Dirección (v2.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
 | **`deck.html`** | Presentación de Junta | Treinta y cuatro diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
-| **`instrumentos/`** | Captura de la línea base (2026) | Libro de cálculo que acompaña a la Tesis: una hoja por mes, los diez indicadores ya definidos, umbrales editables, semáforo automático, resumen anual con tendencia y la hoja de los cinco números |
+| **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
+| **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
 | **`manual.html`** | Manual Maestro de Operaciones (v5.5) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
 | **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.5) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 | **`otros.html`** | Otros documentos del sistema (v1.3) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
@@ -61,11 +63,14 @@ planificación digital, circuito de esterilización y circuito de compras.
 python3 build-export.py
 ```
 
-Genera en `export/` seis archivos que funcionan **sin conexión**, con las
-tipografías incrustadas como data URI:
+Genera en `export/` ocho archivos que funcionan **sin conexión**, con las
+tipografías incrustadas como data URI, más `LEEME.txt` y `Giraldo-HTML.zip`
+con el paquete entero listo para repartir:
 
 | Archivo | Contenido |
 | --- | --- |
+| `Giraldo-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
+| `Captura-Linea-Base-Giraldo-2026.html` | La hoja de captura, lista para rellenar en el navegador |
 | `Giraldo-Documentacion-Completa.html` | **Los cuatro documentos de lectura en un solo archivo**, con conmutador entre ellos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
 | `Tesis-Direccion-Giraldo-v2.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
 | `Presentacion-Junta-Giraldo-v2.html` | Solo la presentación, con guion del ponente y ruta corta |
@@ -166,6 +171,12 @@ Playwright con Chromium.
 
 ## Captura de la línea base (`instrumentos/`)
 
+Existe en dos formatos con el mismo contenido y los mismos cálculos:
+`captura.html`, que se rellena en el navegador y guarda en el propio equipo, y
+`Captura-Linea-Base-Giraldo-2026.xlsx`, para quien prefiera un libro de cálculo.
+Ambos se han verificado con los mismos valores de prueba y devuelven las mismas
+cifras.
+
 ```bash
 python3 build-libro.py
 python3 scripts/recalc.py instrumentos/Captura-Linea-Base-Giraldo-2026.xlsx   # o abrir y guardar
@@ -195,7 +206,8 @@ aparece como `SIN DATO` y cuenta como rojo. Los resultados de los cinco números
 - Barra de navegación que centra automáticamente la sección activa.
 - Modo claro único: los documentos se leen y se imprimen en papel; no hay modo oscuro ni conmutador de tema.
 - Responsive y con hoja de estilos de impresión.
-- Sin frameworks ni build: HTML, CSS y ~110 líneas de JavaScript por página.
+- Sin frameworks ni build: HTML, CSS y JavaScript sin dependencias.
+- Todo se abre con doble clic, sin conexión y sin instalar nada; basta con mantener los archivos en la misma carpeta.
 - La Tesis lleva una comprobación en directo de los supuestos económicos; en papel manda la matriz fija.
 - La presentación se conduce con el teclado: `←` `→` `espacio` `Inicio` `Fin`, `N` guion del ponente, `E` ruta corta.
 
