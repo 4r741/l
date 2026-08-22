@@ -278,7 +278,7 @@ CUERPO = ("""
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Captura de la <b>línea base</b></span>
-        <span class="brand__tag">2026 · v1.0</span>
+        <span class="brand__tag">2026 · v6.0</span>
       </a>
       <a class="crosslink" href="../memoria.html">Tesis de Dirección</a>
       <a class="crosslink" href="../manual.html">Manual Maestro</a>
@@ -296,7 +296,7 @@ CUERPO = ("""
 
 <main>
 
-<div class="printhead" aria-hidden="true"><b>Captura de la línea base · 2026 · v1.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Captura de la línea base · 2026 · v6.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <section class="hero" id="portada">
   <div class="wrap">
@@ -443,7 +443,7 @@ CUERPO = ("""
         <p style="margin-top:.8rem">Documento de uso interno. Los datos se guardan únicamente en este equipo.</p>
       </div>
       <div><p class="eyebrow">Instrumento de</p><p>§7 · Línea base<br>§13 · Cuadro de mando</p></div>
-      <div><p class="eyebrow">Documentos de referencia</p><p>Tesis de Dirección v2.0<br>Manual Maestro v5.5<br>Protocolo de Primera Visita v5.5</p></div>
+      <div><p class="eyebrow">Documentos de referencia</p><p>Tesis de Dirección v6.0<br>Manual Maestro v6.0<br>Protocolo de Primera Visita v6.0</p></div>
     </div>
   </div>
 </footer>

@@ -24,12 +24,12 @@ PONENTE = ("document.body.classList.add('modo-ponente');"
 
 # origen → (nombre del PDF, rótulo de cabecera, apaisado, preparación extra)
 DOCUMENTOS = [
-    ("memoria.html", "Tesis-Direccion-Giraldo-v2.0.pdf", "Tesis de Dirección · v2.0", False, ""),
-    ("manual.html", "Manual-Maestro-Giraldo-v5.5.pdf", "Manual Maestro de Operaciones · v5.5", False, ""),
-    ("index.html", "Protocolo-Primera-Visita-Giraldo-v5.5.pdf", "Protocolo de Primera Visita · v5.5", False, ""),
-    ("otros.html", "Otros-Documentos-Giraldo-v1.3.pdf", "Otros documentos del sistema · v1.3", False, ""),
-    ("deck.html", "Presentacion-Junta-Giraldo-v2.0.pdf", "", True, ""),
-    ("deck.html", "Guion-del-Ponente-Giraldo-v2.0.pdf", "", "guion", PONENTE),
+    ("memoria.html", "Tesis-Direccion-Giraldo-v6.0.pdf", "Tesis de Dirección · v6.0", False, ""),
+    ("manual.html", "Manual-Maestro-Giraldo-v6.0.pdf", "Manual Maestro de Operaciones · v6.0", False, ""),
+    ("index.html", "Protocolo-Primera-Visita-Giraldo-v6.0.pdf", "Protocolo de Primera Visita · v6.0", False, ""),
+    ("otros.html", "Otros-Documentos-Giraldo-v6.0.pdf", "Otros documentos del sistema · v6.0", False, ""),
+    ("deck.html", "Presentacion-Junta-Giraldo-v6.0.pdf", "", True, ""),
+    ("deck.html", "Guion-del-Ponente-Giraldo-v6.0.pdf", "", "guion", PONENTE),
 ]
 
 ESTILO_PIE = "font-family:Helvetica,Arial,sans-serif;font-size:7pt;color:#555;width:100%;padding:0 15mm;letter-spacing:.06em"

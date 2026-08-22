@@ -22,12 +22,12 @@ DESTINO = RAIZ / "export"
 # único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
     "inicio.html": "Giraldo-INICIO-AQUI.html",
-    "memoria.html": "Tesis-Direccion-Giraldo-v2.html",
-    "deck.html": "Presentacion-Junta-Giraldo-v2.html",
-    "manual.html": "Manual-Maestro-Giraldo-v5.html",
-    "index.html": "Protocolo-Primera-Visita-Giraldo.html",
-    "otros.html": "Otros-Documentos-Giraldo.html",
-    "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-2026.html",
+    "memoria.html": "Tesis-Direccion-Giraldo-v6.html",
+    "deck.html": "Presentacion-Junta-Giraldo-v6.html",
+    "manual.html": "Manual-Maestro-Giraldo-v6.html",
+    "index.html": "Protocolo-Primera-Visita-Giraldo-v6.html",
+    "otros.html": "Otros-Documentos-Giraldo-v6.html",
+    "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-v6.html",
 }
 
 DOCUMENTOS = {

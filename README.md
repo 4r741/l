@@ -7,13 +7,13 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
-| **`memoria.html`** | Tesis de Dirección (v2.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
+| **`memoria.html`** | Tesis de Dirección (v6.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
 | **`deck.html`** | Presentación de Junta | Treinta y cuatro diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
-| **`manual.html`** | Manual Maestro de Operaciones (v5.5) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
-| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.5) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
-| **`otros.html`** | Otros documentos del sistema (v1.3) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
+| **`manual.html`** | Manual Maestro de Operaciones (v6.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
+| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v6.0) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
+| **`otros.html`** | Otros documentos del sistema (v6.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
 
 Los cinco comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
 La Tesis añade sobre ese sistema una capa editorial propia —portada de declaración,
@@ -57,6 +57,28 @@ planificación digital, circuito de esterilización y circuito de compras.
 | 09 Formación | Incorporación, certificación por rol y entrenamiento continuo |
 | 10 Anexos | Guiones, preguntas frecuentes, errores, checklist imprimible, glosario, gobernanza y escalado de incidencias |
 
+## Versión única y verificación de coherencia
+
+Todas las piezas comparten número de versión y fecha: **v6.0 · Agosto 2026**.
+Antes de esta edición convivían cuatro numeraciones —5.5, 1.3, 2.0 y 1.0— y no
+había forma de saber, mirando un documento, si estaba al día respecto de los
+demás. Doce contradicciones se habían colado por ahí; están listadas, una a una,
+en el §0.2 de la Tesis.
+
+```bash
+python3 check-coherencia.py
+```
+
+Afirma diecinueve hechos canónicos —cuántas fases tiene el recorrido y cuántas
+la primera visita, cuántos indicadores, cuántos documentos operativos, qué
+versión lleva cada archivo, cuántas hojas de acta, cuántas diapositivas— y falla
+con código 1 si algún archivo dice otra cosa. Cubre también los nombres que
+generan `build-export.py` y `build-pdf.py`, para que un PDF no salga marcado con
+una versión que ya no existe. **Se ejecuta antes de publicar.**
+
+Un sistema que exige listas de verificación para todo lo demás no puede fiarse
+de la memoria para comprobar su propia coherencia.
+
 ## Exportación a HTML autónomo
 
 ```bash
@@ -64,19 +86,19 @@ python3 build-export.py
 ```
 
 Genera en `export/` ocho archivos que funcionan **sin conexión**, con las
-tipografías incrustadas como data URI, más `LEEME.txt` y `Giraldo-HTML.zip`
+tipografías incrustadas como data URI, más `LEEME.txt` y `Giraldo-HTML-v6.zip`
 con el paquete entero listo para repartir:
 
 | Archivo | Contenido |
 | --- | --- |
 | `Giraldo-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
-| `Captura-Linea-Base-Giraldo-2026.html` | La hoja de captura, lista para rellenar en el navegador |
+| `Captura-Linea-Base-Giraldo-v6.html` | La hoja de captura, lista para rellenar en el navegador |
 | `Giraldo-Documentacion-Completa.html` | **Los cuatro documentos de lectura en un solo archivo**, con conmutador entre ellos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
-| `Tesis-Direccion-Giraldo-v2.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
-| `Presentacion-Junta-Giraldo-v2.html` | Solo la presentación, con guion del ponente y ruta corta |
-| `Manual-Maestro-Giraldo-v5.html` | Solo el manual, con la misma condición |
-| `Protocolo-Primera-Visita-Giraldo.html` | Solo el protocolo, con la misma condición |
-| `Otros-Documentos-Giraldo.html` | Solo los otros documentos, con la misma condición |
+| `Tesis-Direccion-Giraldo-v6.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
+| `Presentacion-Junta-Giraldo-v6.html` | Solo la presentación, con guion del ponente y ruta corta |
+| `Manual-Maestro-Giraldo-v6.html` | Solo el manual, con la misma condición |
+| `Protocolo-Primera-Visita-Giraldo-v6.html` | Solo el protocolo, con la misma condición |
+| `Otros-Documentos-Giraldo-v6.html` | Solo los otros documentos, con la misma condición |
 
 El archivo único abre en la tesis y admite enlaces profundos: `#doc-protocolo` abre el protocolo,
 `#pv-f10` abre directamente su Fase 10 y `#ot-otros-marca` el plan de marca dentro
@@ -95,6 +117,8 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco 
 | --- | --- |
 | Manifiesto | Las ocho reglas que ordenan el resto del documento, a partir de «no medias sonrisas» |
 | §0 Control | Ficha del documento, marcas de naturaleza (hecho / modelo / pendiente) y cómo citar en acta |
+| §0.1 Censo documental | Qué piezas existen, de qué clase y con qué propietario. La única fuente de la cifra «17 documentos operativos» |
+| §0.2 Qué se reconcilió | Las doce contradicciones que arrastraba la 5.5 y cómo quedan resueltas |
 | §1 Resumen ejecutivo | Qué está hecho, qué falta y qué se pide hoy |
 | **I · La posición** | |
 | §2 Tesis | Los tres segmentos desatendidos y los cinco indicadores que acreditan liderazgo |
@@ -111,7 +135,7 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco 
 | **IV · El riesgo** | |
 | §11 Riesgos | Cinco críticos con propietario y mitigación, siete de segundo orden y registro puntuado de diez con exposición, residual y disparador |
 | §12 Pre-mortem | Seis causas de fracaso contadas desde 2029, con señal temprana y antídoto |
-| §13 Cuadro de mando | Diez indicadores nucleares, con diccionario de definiciones operativas: numerador, denominador, fuente y exclusiones |
+| §13 Cuadro de mando | Diez indicadores nucleares —ocho nucleares más los dos que exigen D13 y D14—, con diccionario de definiciones operativas: numerador, denominador, fuente y exclusiones |
 | **V · La decisión** | |
 | §14 Palancas | Cinco, ordenadas por coste de activación |
 | §15 Asignación de capital | Orden de prelación en cinco prioridades y su única regla de excepción |
@@ -162,12 +186,12 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v2.0.pdf` | 57 |
-| `Manual-Maestro-Giraldo-v5.5.pdf` | 204 |
-| `Otros-Documentos-Giraldo-v1.3.pdf` | 135 |
-| `Protocolo-Primera-Visita-Giraldo-v5.5.pdf` | 90 |
-| `Presentacion-Junta-Giraldo-v2.0.pdf` | 34 |
-| `Guion-del-Ponente-Giraldo-v2.0.pdf` | 34 |
+| `Tesis-Direccion-Giraldo-v6.0.pdf` | 59 |
+| `Manual-Maestro-Giraldo-v6.0.pdf` | 204 |
+| `Otros-Documentos-Giraldo-v6.0.pdf` | 135 |
+| `Protocolo-Primera-Visita-Giraldo-v6.0.pdf` | 90 |
+| `Presentacion-Junta-Giraldo-v6.0.pdf` | 34 |
+| `Guion-del-Ponente-Giraldo-v6.0.pdf` | 34 |
 
 ## Captura de la línea base (`instrumentos/`)
 

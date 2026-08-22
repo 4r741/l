@@ -44,29 +44,30 @@ k = cabecera.rindex("</style>")
 cabecera = cabecera[:k] + CSS + "\n" + cabecera[k:]
 
 FICHAS = [
- ("memoria.html", "Tesis de Dirección", "v2.0 · 19 apartados · Anexo A",
+ ("memoria.html", "Tesis de Dirección", "v6.0 · 19 apartados · Anexo A",
   "El documento de gobierno. Posición competitiva y foso, sistema operativo y cartera de innovación, "
   "economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y las catorce decisiones que "
   "se someten a la Junta. Incluye el cuadernillo con las catorce hojas de acta.",
   "57 páginas en papel · lectura 42′", True),
- ("deck.html", "Presentación de Junta", "34 diapositivas · 16:9",
+ ("deck.html", "Presentación de Junta", "v6.0 · 34 diapositivas · 16:9",
   "La tesis para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, "
   "<b>N</b> abre el guion del ponente con el minuto objetivo y la pregunta difícil, "
   "<b>E</b> filtra a la ruta corta de doce diapositivas para sesiones de veinte minutos.",
   "Proyección y guion del ponente", False),
- ("instrumentos/captura.html", "Captura de la línea base", "2026 · 10 indicadores",
+ ("instrumentos/captura.html", "Captura de la línea base", "v6.0 · 10 indicadores",
   "El instrumento del §7 y del §13: doce hojas mensuales, semáforo automático, resumen anual con "
   "tendencia y los cinco números. Se rellena aquí mismo y se guarda en este equipo.",
   "Se rellena en el navegador", False),
- ("manual.html", "Manual Maestro de Operaciones", "v5.5 · 10 partes",
+ ("manual.html", "Manual Maestro de Operaciones", "v6.0 · 8 partes",
   "El documento troncal. Las catorce fases del recorrido del paciente, los manuales por puesto, la "
-  "matriz RACI, los indicadores, el plan de incentivos y la puesta en marcha.",
+  "matriz RACI, los indicadores, el plan de incentivos y la puesta en marcha. Ocho partes "
+  "numeradas, más el marco de vanguardia y los estándares transversales.",
   "204 páginas en papel", False),
- ("index.html", "Protocolo de Primera Visita", "v5.5 · 12 fases",
+ ("index.html", "Protocolo de Primera Visita", "v6.0 · 12 fases de la primera visita",
   "El detalle minuto a minuto de la visita que decide la conversión, con estándares transversales, "
   "casos especiales, guiones contrastados y anexos.",
   "90 páginas en papel", False),
- ("otros.html", "Otros documentos del sistema", "v1.3 · 14 documentos",
+ ("otros.html", "Otros documentos del sistema", "v6.0 · 14 documentos de apoyo",
   "Compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de "
   "Gerencia, programa de 100 días, protocolos por perfil, innovación, marca, «No medias sonrisas» y "
   "el programa Giraldo Te Cuida.",
@@ -89,7 +90,7 @@ CUERPO = """
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Sistema documental <b>Giraldo</b></span>
-        <span class="brand__tag">Uso interno</span>
+        <span class="brand__tag">v6.0 · Uso interno</span>
       </a>
     </div>
   </div>
@@ -103,11 +104,11 @@ CUERPO = """
       <div>
         <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
         <h1>No medias<br><em>sonrisas</em></h1>
-        <p class="hero__lede">Seis documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. Empiece por el que le corresponda.</p>
+        <p class="hero__lede">Seis documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. Todos comparten la versión <strong>v6.0</strong>: si uno cambia lo bastante como para merecer versión nueva, la reciben todos.</p>
         <p class="hero__note">Uso interno y confidencial. Contiene información económica, laboral y estratégica. No se difunde fuera de la organización sin autorización expresa de la Dirección General.</p>
       </div>
       <dl class="specs">
-        <div class="spec"><dt>Documentos</dt><dd>6<small>Enlazados entre sí; ninguno es anexo de otro</small></dd></div>
+        <div class="spec"><dt>Documentos operativos</dt><dd>17<small>Tres troncales y catorce de apoyo. El censo completo, en §0.1 de la Tesis</small></dd></div>
         <div class="spec"><dt>Decisiones abiertas</dt><dd>14<small>Se someten a la Junta Directiva</small></dd></div>
         <div class="spec"><dt>Puntos de verificación</dt><dd>322<small>Físicos, documentales, de sistemas y de proceso</small></dd></div>
         <div class="spec"><dt>Indicadores</dt><dd>10<small>Con definición operativa acordada</small></dd></div>
@@ -158,7 +159,7 @@ CUERPO = """
         <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Sistema documental · Uso interno y confidencial</p>
       </div>
       <div><p class="eyebrow">Lema</p><p>No medias sonrisas.<br>Ni medias decisiones.</p></div>
-      <div><p class="eyebrow">Versiones</p><p>Tesis v2.0 · Manual v5.5<br>Protocolo v5.5 · Otros v1.3</p></div>
+      <div><p class="eyebrow">Versiones</p><p>Versión única del sistema<br><strong>v6.0 · Agosto 2026</strong></p></div>
     </div>
   </div>
 </footer>
