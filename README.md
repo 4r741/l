@@ -186,7 +186,7 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v6.0.pdf` | 60 |
+| `Tesis-Direccion-Giraldo-v6.0.pdf` | 59 |
 | `Manual-Maestro-Giraldo-v6.0.pdf` | 204 |
 | `Otros-Documentos-Giraldo-v6.0.pdf` | 135 |
 | `Protocolo-Primera-Visita-Giraldo-v6.0.pdf` | 90 |
