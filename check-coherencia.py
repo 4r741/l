@@ -39,7 +39,7 @@ CIFRAS = {
     "verificaciones externas": 11,
     "diapositivas de la presentación": 34,
     "piezas del sistema": 21,
-    "incoherencias reconciliadas en v6.0": 12,
+    "incoherencias reconciliadas en v6.0": 13,
 }
 
 DOCUMENTOS = ["memoria.html", "deck.html", "manual.html", "index.html",
@@ -67,13 +67,20 @@ def bruto(ruta):
     return (RAIZ / ruta).read_text(encoding="utf-8")
 
 
+# Bloques donde las versiones antiguas son el contenido, no un descuido: los
+# registros de cambios. Se recortan antes de buscar versiones desfasadas.
+HISTORIALES = ('id="cambios"', 'id="notas"')
+
+
 def sin_historia(t):
-    """Quita el registro de cambios: ahí las versiones viejas son el contenido."""
-    i = t.find('id="cambios"')
-    if i < 0:
-        return t
-    fin = t.find("</table>", i)
-    return t[:i] + t[fin:] if fin > 0 else t[:i]
+    """Quita los registros de cambios de un documento."""
+    for ancla in HISTORIALES:
+        i = t.find(ancla)
+        if i < 0:
+            continue
+        fin = t.rfind("</table>", i, t.find("</section>", i) + 12)
+        t = t[:i] + t[fin:] if fin > 0 else t[:i]
+    return t
 
 
 def falla(doc, que):
@@ -91,6 +98,10 @@ def comprueba_version():
         if "v" + VERSION not in crudo:
             falla(doc, "no declara la versión vigente v%s" % VERSION)
         t = sin_historia(crudo)
+        # también en su forma larga: «Versión 5.0 · Agosto 2026»
+        for larga in sorted(set(re.findall(r"[Vv]ersión (\d+\.\d+)", t))):
+            if larga != VERSION:
+                falla(doc, "declara «Versión %s» fuera de un registro de cambios" % larga)
         for otra in sorted(set(re.findall(r"v\d+\.\d+", t))):
             if otra == "v" + VERSION:
                 continue

@@ -62,8 +62,8 @@ planificación digital, circuito de esterilización y circuito de compras.
 Todas las piezas comparten número de versión y fecha: **v6.0 · Agosto 2026**.
 Antes de esta edición convivían cuatro numeraciones —5.5, 1.3, 2.0 y 1.0— y no
 había forma de saber, mirando un documento, si estaba al día respecto de los
-demás. Doce contradicciones se habían colado por ahí; están listadas, una a una,
-en el §0.2 de la Tesis.
+demás. Trece contradicciones se habían colado por ahí; están listadas, una a una,
+en el §0.2 de la Tesis. La decimotercera la encontró el propio verificador.
 
 ```bash
 python3 check-coherencia.py
@@ -118,7 +118,7 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco 
 | Manifiesto | Las ocho reglas que ordenan el resto del documento, a partir de «no medias sonrisas» |
 | §0 Control | Ficha del documento, marcas de naturaleza (hecho / modelo / pendiente) y cómo citar en acta |
 | §0.1 Censo documental | Qué piezas existen, de qué clase y con qué propietario. La única fuente de la cifra «17 documentos operativos» |
-| §0.2 Qué se reconcilió | Las doce contradicciones que arrastraba la 5.5 y cómo quedan resueltas |
+| §0.2 Qué se reconcilió | Las trece contradicciones que arrastraba la 5.5 y cómo quedan resueltas |
 | §1 Resumen ejecutivo | Qué está hecho, qué falta y qué se pide hoy |
 | **I · La posición** | |
 | §2 Tesis | Los tres segmentos desatendidos y los cinco indicadores que acreditan liderazgo |
@@ -186,7 +186,7 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v6.0.pdf` | 59 |
+| `Tesis-Direccion-Giraldo-v6.0.pdf` | 60 |
 | `Manual-Maestro-Giraldo-v6.0.pdf` | 204 |
 | `Otros-Documentos-Giraldo-v6.0.pdf` | 135 |
 | `Protocolo-Primera-Visita-Giraldo-v6.0.pdf` | 90 |
