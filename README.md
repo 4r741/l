@@ -93,14 +93,20 @@ con el paquete entero listo para repartir:
 | --- | --- |
 | `Giraldo-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
 | `Captura-Linea-Base-Giraldo-v6.html` | La hoja de captura, lista para rellenar en el navegador |
-| `Giraldo-Documentacion-Completa.html` | **Los cuatro documentos de lectura en un solo archivo**, con conmutador entre ellos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
+| `Giraldo-TODO-EN-UNO-v6.html` | **Los siete documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
 | `Tesis-Direccion-Giraldo-v6.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
 | `Presentacion-Junta-Giraldo-v6.html` | Solo la presentación, con guion del ponente y ruta corta |
 | `Manual-Maestro-Giraldo-v6.html` | Solo el manual, con la misma condición |
 | `Protocolo-Primera-Visita-Giraldo-v6.html` | Solo el protocolo, con la misma condición |
 | `Otros-Documentos-Giraldo-v6.html` | Solo los otros documentos, con la misma condición |
 
-El archivo único abre en la tesis y admite enlaces profundos: `#doc-protocolo` abre el protocolo,
+La presentación y la hoja de captura anclan su JavaScript a su propio
+contenedor —`.deck-raiz`, `.captura-raiz`— y buscan sus elementos por atributos
+`data-`, no por identificador, para poder convivir dentro del archivo único con
+los identificadores prefijados. El CSS de la presentación, que redefine `body`,
+`table` y `.eyebrow`, se acota a `#doc-deck` con un reescritor de selectores.
+
+El archivo único abre en la portada y admite enlaces profundos: `#doc-protocolo` abre el protocolo,
 `#pv-f10` abre directamente su Fase 10 y `#ot-otros-marca` el plan de marca dentro
 de `#doc-otros`. Los enlaces entre documentos —incluidos los
 que apuntan a una sección concreta, como `manual.html#m13`— se convierten en

@@ -294,7 +294,7 @@ CUERPO = ("""
   </div>
 </header>
 
-<main>
+<main class="captura-raiz">
 
 <div class="printhead" aria-hidden="true"><b>Captura de la línea base · 2026 · v6.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
@@ -336,7 +336,7 @@ CUERPO = ("""
   </div>
 </section>
 
-<section class="section" id="definiciones">
+<section class="section" id="definiciones" data-def>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Definiciones</p>
@@ -353,7 +353,7 @@ CUERPO = ("""
     </div>
     <div class="cap__barra">
       <p>Los umbrales se expresan en la misma unidad que el resultado: 0,45 significa 45 %.</p>
-      <button class="boton" type="button" id="umbrales-defecto">Restaurar umbrales de origen</button>
+      <button class="boton" type="button" data-cap="umbrales-defecto">Restaurar umbrales de origen</button>
     </div>
   </div>
 </section>
@@ -371,18 +371,18 @@ CUERPO = ("""
     <div class="tablewrap">
       <table class="cap">
         <thead><tr><th>#</th><th>Indicador</th><th style="width:7.5rem">Numerador</th><th style="width:7.5rem">Denominador</th><th>Resultado</th><th>Umbral</th><th>Estado</th><th style="width:10.5rem">Estado del dato</th><th style="min-width:14rem">Notas</th></tr></thead>
-        <tbody id="cuerpo-captura">
+        <tbody data-cap="cuerpo">
           @@CAPTURA@@
         </tbody>
       </table>
     </div>
     <div class="cap__barra">
-      <p id="aviso">El indicador 5 se compara con el mes anterior: su sentido es «descendente», no un umbral fijo.</p>
-      <button class="boton" type="button" id="guardar">Guardar copia</button>
-      <button class="boton" type="button" id="cargar">Cargar copia</button>
-      <button class="boton" type="button" id="imprimir">Imprimir</button>
-      <button class="boton boton--riesgo" type="button" id="vaciar">Vaciar todo</button>
-      <input type="file" id="fichero" accept="application/json,.json" hidden>
+      <p data-cap="aviso">El indicador 5 se compara con el mes anterior: su sentido es «descendente», no un umbral fijo.</p>
+      <button class="boton" type="button" data-cap="guardar">Guardar copia</button>
+      <button class="boton" type="button" data-cap="cargar">Cargar copia</button>
+      <button class="boton" type="button" data-cap="imprimir">Imprimir</button>
+      <button class="boton boton--riesgo" type="button" data-cap="vaciar">Vaciar todo</button>
+      <input type="file" data-cap="fichero" accept="application/json,.json" hidden>
     </div>
   </div>
 </section>
@@ -427,7 +427,7 @@ CUERPO = ("""
     </div>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">La cifra que más incomoda</p>
-      <p id="lectura-pv">Las primeras visitas necesarias al día se comparan con la capacidad real de la agenda. Si salen más de las que caben, el problema no es comercial: es de conversión o de ticket.</p>
+      <p data-cap="lectura-pv">Las primeras visitas necesarias al día se comparan con la capacidad real de la agenda. Si salen más de las que caben, el problema no es comercial: es de conversión o de ticket.</p>
     </div>
   </div>
 </section>
@@ -531,7 +531,11 @@ JS = ("""<script>
 
   // ---------- captura mensual ----------
   var mesActivo = 0;
-  var cuerpo = document.getElementById("cuerpo-captura");
+  var raiz = document.currentScript && document.currentScript.parentNode.querySelector(".captura-raiz")
+             || document.querySelector(".captura-raiz");
+  if(!raiz) return;
+  function pieza(nombre){ return raiz.querySelector('[data-cap="' + nombre + '"]'); }
+  var cuerpo = pieza("cuerpo");
 
   function pintaMes(){
     Array.prototype.forEach.call(cuerpo.querySelectorAll("tr[data-fila]"), function(tr){
@@ -566,7 +570,7 @@ JS = ("""<script>
     }
   });
 
-  var pestanas = Array.prototype.slice.call(document.querySelectorAll(".cap__mes"));
+  var pestanas = Array.prototype.slice.call(raiz.querySelectorAll(".cap__mes"));
   pestanas.forEach(function(b){
     b.addEventListener("click", function(){
       mesActivo = parseInt(b.getAttribute("data-mes"), 10);
@@ -578,7 +582,7 @@ JS = ("""<script>
   });
 
   // ---------- definiciones ----------
-  var tablaDef = document.querySelector("#definiciones tbody");
+  var tablaDef = raiz.querySelector("[data-def] tbody") || raiz.querySelector("table tbody");
   function pintaUmbrales(){
     Array.prototype.forEach.call(tablaDef.querySelectorAll("[data-umbral]"), function(inp){
       var i = parseInt(inp.getAttribute("data-ind"), 10);
@@ -592,7 +596,7 @@ JS = ("""<script>
     (estado.umbrales[i] = estado.umbrales[i] || {})[cual] = ev.target.value;
     escribir(); pintaMes(); pintaAnual();
   });
-  document.getElementById("umbrales-defecto").addEventListener("click", function(){
+  pieza("umbrales-defecto").addEventListener("click", function(){
     estado.umbrales = {}; escribir(); pintaUmbrales(); pintaMes(); pintaAnual();
   });
 
@@ -603,7 +607,7 @@ JS = ("""<script>
       for(var m = 0; m < 12; m++){
         var v = resultado(m, d.n);
         serie.push(v);
-        var td = document.querySelector('[data-anual="' + d.n + '"][data-mes="' + m + '"]');
+        var td = raiz.querySelector('[data-anual="' + d.n + '"][data-mes="' + m + '"]');
         td.textContent = v === null ? "·" : formatea(v, d.fmt);
         td.className = v === null ? "vacio" : "v";
       }
@@ -613,7 +617,7 @@ JS = ("""<script>
       pon("meses", d.n, String(conDato.length));
       pon("primero", d.n, primero === null ? "·" : formatea(primero, d.fmt));
       pon("ultimo", d.n, ultimo === null ? "·" : formatea(ultimo, d.fmt));
-      var t = document.querySelector('[data-res="tend"][data-ind="' + d.n + '"]');
+      var t = raiz.querySelector('[data-res="tend"][data-ind="' + d.n + '"]');
       if(conDato.length < 2){ t.innerHTML = '<span class="tend tend--igual">—</span>'; return; }
       var mejora = d.sentido === "mayor" ? ultimo > primero : ultimo < primero;
       var igual = ultimo === primero;
@@ -623,11 +627,11 @@ JS = ("""<script>
     });
   }
   function pon(cual, i, texto){
-    document.querySelector('[data-res="' + cual + '"][data-ind="' + i + '"]').textContent = texto;
+    raiz.querySelector('[data-res="' + cual + '"][data-ind="' + i + '"]').textContent = texto;
   }
 
   // ---------- los cinco números ----------
-  var entradas = Array.prototype.slice.call(document.querySelectorAll("[data-entrada]"));
+  var entradas = Array.prototype.slice.call(raiz.querySelectorAll("[data-entrada]"));
   entradas.forEach(function(inp){
     var c = inp.getAttribute("data-entrada");
     if(estado.entradas[c] !== undefined) inp.value = estado.entradas[c];
@@ -641,7 +645,7 @@ JS = ("""<script>
     return isNaN(v) ? null : v;
   }
   function ponCinco(cual, texto, pendiente){
-    var b = document.querySelector('[data-cinco="' + cual + '"]');
+    var b = raiz.querySelector('[data-cinco="' + cual + '"]');
     b.textContent = texto;
     b.className = pendiente ? "pend" : "";
   }
@@ -658,7 +662,7 @@ JS = ("""<script>
     var colchon = (tes !== null && costes) ? tes / costes : null;
     ponCinco("colchon", colchon === null ? "pendiente" : colchon.toFixed(1).replace(".", ",") + " meses", colchon === null);
 
-    var lectura = document.getElementById("lectura-pv");
+    var lectura = pieza("lectura-pv");
     if(pvdia === null){
       lectura.textContent = "Las primeras visitas necesarias al día se comparan con la capacidad real de la agenda. " +
         "Rellene costes fijos, margen, ticket, conversión y días para verlo.";
@@ -671,7 +675,7 @@ JS = ("""<script>
   }
 
   // ---------- copia, impresión y vaciado ----------
-  document.getElementById("guardar").addEventListener("click", function(){
+  pieza("guardar").addEventListener("click", function(){
     var blob = new Blob([JSON.stringify(estado, null, 2)], {type:"application/json"});
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -679,8 +683,8 @@ JS = ("""<script>
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
   });
-  var fichero = document.getElementById("fichero");
-  document.getElementById("cargar").addEventListener("click", function(){ fichero.click(); });
+  var fichero = pieza("fichero");
+  pieza("cargar").addEventListener("click", function(){ fichero.click(); });
   fichero.addEventListener("change", function(){
     var f = fichero.files && fichero.files[0];
     if(!f) return;
@@ -696,15 +700,15 @@ JS = ("""<script>
         });
         pintaUmbrales(); pintaMes(); pintaAnual(); pintaCinco();
       } catch(e){
-        document.getElementById("aviso").textContent =
+        pieza("aviso").textContent =
           "Ese archivo no es una copia válida de esta hoja. No se ha cambiado nada.";
       }
       fichero.value = "";
     };
     lector.readAsText(f);
   });
-  document.getElementById("imprimir").addEventListener("click", function(){ window.print(); });
-  document.getElementById("vaciar").addEventListener("click", function(){
+  pieza("imprimir").addEventListener("click", function(){ window.print(); });
+  pieza("vaciar").addEventListener("click", function(){
     if(!confirm("Se borra todo lo introducido en este equipo. ¿Continuar?")) return;
     estado = {umbrales:{}, meses:{}, entradas:{}};
     try { localStorage.removeItem(LLAVE); } catch(e){}

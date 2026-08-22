@@ -31,11 +31,25 @@ PAGINAS = {
 }
 
 DOCUMENTOS = {
+    "inicio.html": ("doc-inicio", "in-"),
     "memoria.html": ("doc-tesis", "tes-"),
+    "deck.html": ("doc-deck", "dk-"),
+    "instrumentos/captura.html": ("doc-captura", "cp-"),
     "manual.html": ("doc-manual", ""),
     "index.html": ("doc-protocolo", "pv-"),
     "otros.html": ("doc-otros", "ot-"),
 }
+
+# Rótulo de cada documento en el conmutador permanente del archivo único.
+ROTULOS = [
+    ("doc-inicio", "Inicio"),
+    ("doc-tesis", "Tesis de Dirección"),
+    ("doc-deck", "Presentación"),
+    ("doc-captura", "Captura"),
+    ("doc-manual", "Manual Maestro"),
+    ("doc-protocolo", "Protocolo"),
+    ("doc-otros", "Otros documentos"),
+]
 
 # Solo se incrustan estos subconjuntos: el resto (cirílico, vietnamita) no se usa
 SUBCONJUNTOS = ("latin", "latin-ext")
@@ -86,7 +100,7 @@ def fuentes_incrustadas(url_css):
 # Archivo único: los tres documentos dentro de un solo HTML
 # ---------------------------------------------------------------------------
 
-UNIFICADO = "Giraldo-Documentacion-Completa.html"
+UNIFICADO = "Giraldo-TODO-EN-UNO-v6.html"
 
 # Un único script para los tres documentos: el original de cada página busca sus
 # elementos por id, y al unirlos habría colisiones. Aquí todo se busca dentro
@@ -102,6 +116,9 @@ SCRIPT = """<script>
     var existe = docs.some(function(d){ return d.id === id; });
     if(!existe) return;
     docs.forEach(function(d){ d.hidden = (d.id !== id); });
+    document.querySelectorAll(".conmutador [data-ir-a]").forEach(function(b){
+      b.setAttribute("aria-current", String(b.dataset.irA === id));
+    });
     var activo = document.getElementById(id);
     /* nada puede quedar sin revelar al cambiar de documento */
     activo.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
@@ -225,7 +242,152 @@ ESTILO_DOC = """<style>
 /* Contenedor de cada documento dentro del archivo único */
 [hidden]{display:none!important}
 .doc{display:block}
+
+/* Conmutador permanente: el archivo no depende de ningún enlace externo */
+:root{--conmutador:52px}
+.conmutador{
+  position:sticky;top:0;z-index:90;background:var(--ink);color:var(--surface);
+  border-bottom:1px solid rgba(247,248,245,.18);
+}
+.conmutador__in{
+  width:min(100% - 2rem,1180px);margin-inline:auto;
+  display:flex;align-items:center;gap:.4rem 1.2rem;flex-wrap:wrap;padding:.5rem 0;
+}
+.conmutador__marca{
+  font-family:var(--f-display);font-size:.95rem;margin-right:auto;white-space:nowrap;
+}
+.conmutador__marca b{font-weight:600}
+.conmutador__marca span{
+  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  color:#7FD3C9;margin-left:.5rem;
+}
+.conmutador__botones{display:flex;gap:2px;flex-wrap:wrap}
+.conmutador button{
+  font:inherit;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;background:transparent;border:1px solid transparent;
+  color:rgba(247,248,245,.7);padding:.36rem .6rem;border-radius:999px;cursor:pointer;
+}
+.conmutador button:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
+.conmutador button[aria-current="true"]{
+  background:rgba(127,211,201,.16);border-color:#7FD3C9;color:#7FD3C9;
+}
+.doc .topbar{top:var(--conmutador)}
+/* la presentación ocupa la altura libre bajo el conmutador */
+#doc-deck .deck{height:calc(100vh - var(--conmutador))}
+#doc-deck .hud{bottom:14px}
+@media print{
+  .conmutador{display:none}
+  .doc[hidden]{display:none!important}
+  #doc-deck .deck{height:auto}
+}
 </style>"""
+
+
+# Dentro del archivo único, la portada no puede seguir hablando de «mantener los
+# archivos en la misma carpeta»: aquí no hay archivos que separar.
+CONTEXTO_UNICO = [
+    ("Cada archivo es una página completa: se abre en el navegador que tenga instalado, "
+     "sin conexión y sin ningún programa adicional. Mantenga los seis en la misma carpeta "
+     "para que los enlaces entre ellos funcionen.",
+     "Está usted dentro del archivo único: los siete documentos viven en este mismo fichero, "
+     "con las tipografías y los gráficos incrustados. No hay nada que mantener junto ni nada "
+     "que se pueda separar; use la barra de arriba para moverse entre ellos."),
+    ("Copie la carpeta completa en una memoria o envíela comprimida. No hay servidor, ni "
+     "cuenta, ni dependencia externa: lo que ve aquí es todo lo que hace falta.",
+     "Copie este único archivo en una memoria o envíelo por correo. No hay servidor, ni "
+     "cuenta, ni dependencia externa, ni segundo archivo que se pueda perder: lo que ve aquí "
+     "es todo lo que hace falta."),
+    ("Seis documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. "
+     "Todos comparten la versión <strong>v6.0</strong>",
+     "Siete documentos dentro de un solo archivo, que se abre en cualquier navegador sin "
+     "instalar nada y sin conexión. Todos comparten la versión <strong>v6.0</strong>"),
+]
+
+
+def _bloque(css, apertura):
+    """Devuelve (contenido, posición tras el cierre) de la llave en `apertura`."""
+    profundidad, i = 0, apertura
+    while i < len(css):
+        if css[i] == "{":
+            profundidad += 1
+        elif css[i] == "}":
+            profundidad -= 1
+            if profundidad == 0:
+                return css[apertura + 1:i], i + 1
+        i += 1
+    return css[apertura + 1:], len(css)
+
+
+def _partir(selectores):
+    """Separa una lista de selectores por comas de primer nivel."""
+    partes, actual, profundidad = [], "", 0
+    for c in selectores:
+        if c in "([":
+            profundidad += 1
+        elif c in ")]":
+            profundidad -= 1
+        if c == "," and profundidad == 0:
+            partes.append(actual); actual = ""
+        else:
+            actual += c
+    partes.append(actual)
+    return [p.strip() for p in partes if p.strip()]
+
+
+def escopar(css, ambito):
+    """Encierra una hoja de estilos dentro de un ámbito.
+
+    La presentación trae su propio CSS con selectores globales —`body`, `table`,
+    `.eyebrow`— que en el archivo único pisarían a los de los demás documentos.
+    Cada selector se antepone con el contenedor de la presentación; las reglas
+    de `@keyframes` y `@page` se dejan intactas porque ahí no hay selectores.
+    """
+    salida, i = [], 0
+    while i < len(css):
+        if css.startswith("/*", i):
+            fin = css.find("*/", i)
+            fin = len(css) if fin < 0 else fin + 2
+            salida.append(css[i:fin]); i = fin; continue
+        if css[i].isspace():
+            salida.append(css[i]); i += 1; continue
+        apertura = css.find("{", i)
+        if apertura < 0:
+            salida.append(css[i:]); break
+        prelude = css[i:apertura].strip()
+        contenido, siguiente = _bloque(css, apertura)
+        if prelude.startswith("@"):
+            regla = re.match(r"@[-\w]+", prelude).group(0)
+            dentro = escopar(contenido, ambito) if regla in ("@media", "@supports") else contenido
+            salida.append("%s{%s}" % (prelude, dentro))
+        else:
+            nuevos = []
+            for s in _partir(prelude):
+                if s in ("html", "body", "html,body"):
+                    nuevos.append(ambito)
+                elif s.startswith("body"):        # estados puestos en el <body> real
+                    resto = s[4:]
+                    corte = len(resto) - len(resto.lstrip())
+                    marca = resto[:corte] if corte else ""
+                    j = 0
+                    while j < len(resto) and resto[j] not in " >+~":
+                        j += 1
+                    nuevos.append("body%s %s%s" % (resto[:j], ambito, resto[j:]))
+                elif s.startswith(ambito):
+                    nuevos.append(s)
+                else:
+                    nuevos.append("%s %s" % (ambito, s))
+            salida.append("%s{%s}" % (",".join(dict.fromkeys(nuevos)), contenido))
+        i = siguiente
+    return "".join(salida)
+
+
+def estilos_propios(html, marca):
+    """El bloque de estilos que un documento añade sobre el sistema común."""
+    bloques = re.findall(r"<style>(.*?)</style>", html, re.S)
+    for b in bloques:
+        if marca in b:
+            return b
+    return ""
 
 
 def cuerpo(html):
@@ -236,14 +398,29 @@ def cuerpo(html):
     último dejaba el primero duplicado dentro del archivo único.
     """
     inicio = html.index("<body>") + len("<body>")
-    fin = html.index("<script>", inicio)
+    fin = html.find("<script>", inicio)
+    if fin < 0:                       # la portada no lleva guion propio
+        fin = html.rindex("</body>")
     return html[inicio:fin]
 
 
-def guiones_propios(html):
+# Guiones que cada documento aporta al archivo único. El de comportamiento
+# común (filtro por puesto, tira de secciones, revelado) lo sustituye SCRIPT;
+# el resto —calculadora de la Tesis, hoja de captura, presentación— viaja tal
+# cual porque cada uno se ancla ya a su propio contenedor.
+GUIONES = {
+    "memoria.html": slice(1, None),
+    "deck.html": slice(0, None),
+    "instrumentos/captura.html": slice(0, None),
+}
+
+
+def guiones_propios(nombre, html):
     """Los <script> que un documento añade sobre el de comportamiento común."""
-    bloques = re.findall(r"<script>.*?</script>", html, re.S)
-    return "\n".join(bloques[1:])
+    corte = GUIONES.get(nombre)
+    if corte is None:
+        return ""
+    return "\n".join(re.findall(r"<script>.*?</script>", html, re.S)[corte])
 
 
 def prefijar(html, prefijo):
@@ -286,14 +463,40 @@ def unificado(estilo_fuentes):
     assert capa, "no se encuentra la capa editorial de la tesis"
     estilos += "\n<style>\n" + capa.group(1) + "</style>"
 
+    # la hoja de captura trae los suyos, sin colisiones con el sistema común
+    hoja = estilos_propios(fuentes["instrumentos/captura.html"], "HOJA DE CAPTURA")
+    assert hoja, "no se encuentran los estilos de la hoja de captura"
+    estilos += "\n<style>\n" + hoja + "</style>"
+
+    # la presentación sí colisiona —redefine body, table, .eyebrow— y se acota
+    deck = estilos_propios(fuentes["deck.html"], ".slide{")
+    assert deck, "no se encuentran los estilos de la presentación"
+    deck = re.sub(r"^\s*:root\{.*?\n\}", "", deck, count=1, flags=re.S)
+    estilos += "\n<style>\n" + escopar(deck, "#doc-deck") + "</style>"
+
     bloques = []
     for nombre, (ident, prefijo) in DOCUMENTOS.items():
         cuerpo_doc = cuerpo(fuentes[nombre])
+        if nombre == "inicio.html":
+            for viejo, sustituto in CONTEXTO_UNICO:
+                assert cuerpo_doc.count(viejo) == 1, viejo[:50]
+                cuerpo_doc = cuerpo_doc.replace(viejo, sustituto, 1)
         if prefijo:
             cuerpo_doc = prefijar(cuerpo_doc, prefijo)
         cuerpo_doc = conmutadores(cuerpo_doc, nombre)
-        oculto = "" if ident == "doc-tesis" else " hidden"
+        oculto = "" if ident == "doc-inicio" else " hidden"
         bloques.append('<div class="doc" id="%s"%s>\n%s\n</div>' % (ident, oculto, cuerpo_doc))
+
+    barra = "\n".join(
+        '      <button type="button" data-ir-a="%s"%s>%s</button>' % (
+            ident, ' aria-current="true"' if ident == "doc-inicio" else "", rotulo)
+        for ident, rotulo in ROTULOS)
+    conmutador = (
+        '<nav class="conmutador" aria-label="Documentos del sistema">\n'
+        '  <div class="conmutador__in">\n'
+        '    <span class="conmutador__marca">Sistema documental <b>Giraldo</b>'
+        '<span>v6.0</span></span>\n'
+        '    <div class="conmutador__botones">\n%s\n    </div>\n  </div>\n</nav>' % barra)
 
     documento = """<!doctype html>
 <html lang="es">
@@ -307,6 +510,7 @@ def unificado(estilo_fuentes):
 {estilo_doc}
 </head>
 <body>
+{conmutador}
 {documentos}
 {script}
 </body>
@@ -316,8 +520,10 @@ def unificado(estilo_fuentes):
         fuentes=estilo_fuentes,
         estilos=estilos,
         estilo_doc=ESTILO_DOC,
+        conmutador=conmutador,
         documentos="\n".join(bloques),
-        script=SCRIPT + "\n" + guiones_propios(fuentes["memoria.html"]),
+        script=SCRIPT + "\n" + "\n".join(
+            guiones_propios(nombre, fuentes[nombre]) for nombre in DOCUMENTOS),
     )
 
 
