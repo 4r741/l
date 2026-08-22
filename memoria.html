@@ -748,6 +748,115 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   .t-fig__scroll{overflow:visible!important}
 }
 
+/* ============================================================
+   COMPROBACIÓN EN DIRECTO — los tres supuestos que gobiernan la
+   facturación, movibles durante la sesión. Solo pantalla: en papel
+   manda la matriz fija.
+   ============================================================ */
+.calc{border:1px solid var(--accent);background:var(--surface);padding:1.4rem;margin-top:1.4rem}
+.calc__mandos{display:grid;gap:1.1rem}
+@media(min-width:820px){.calc__mandos{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.8rem}}
+.calc__mando{display:grid;gap:.5rem;min-width:0}
+.calc__mando>span{
+  display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+}
+.calc__mando>span b{
+  font-family:var(--f-display);font-size:1.25rem;letter-spacing:-.01em;
+  color:var(--accent-ink);text-transform:none;letter-spacing:0;
+}
+.calc input[type=range]{width:100%;accent-color:var(--accent);height:1.4rem;margin:0}
+.calc__salida{
+  display:grid;gap:1.2rem;margin-top:1.5rem;padding-top:1.3rem;
+  border-top:1px solid var(--line);
+}
+@media(min-width:820px){.calc__salida{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2.4rem;align-items:center}}
+.calc__cifra i{
+  display:block;font-style:normal;font-family:var(--f-mono);font-size:.66rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+}
+.calc__cifra b{
+  display:block;margin-top:.25rem;font-family:var(--f-display);font-weight:400;
+  font-size:clamp(2.4rem,2rem + 2.4vw,3.6rem);line-height:1;letter-spacing:-.03em;
+  color:var(--ink);font-variation-settings:"opsz" 144;
+}
+.calc__cifra p{margin-top:.5rem;font-size:.88rem;color:var(--ink-2)}
+.calc__cifra strong{color:var(--accent-ink)}
+.calc__detalle{margin:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.calc__detalle>div{
+  background:var(--paper);padding:.6rem .9rem;display:flex;gap:1rem;
+  justify-content:space-between;align-items:baseline;flex-wrap:wrap;
+}
+.calc__detalle dt{font-size:.86rem;color:var(--ink-2)}
+.calc__detalle dd{
+  margin:0;font-family:var(--f-mono);font-variant-numeric:tabular-nums;
+  font-size:.9rem;color:var(--accent-ink);
+}
+.calc__pie{margin-top:1.1rem;font-size:.8rem;color:var(--muted);max-width:80ch}
+
+/* ============================================================
+   CUADERNILLO DE ACUERDOS — una hoja por decisión, para rellenar
+   a mano durante la sesión y archivar firmada.
+   ============================================================ */
+.acta{
+  border:1px solid var(--ink);background:var(--surface);
+  margin-top:1.6rem;break-inside:avoid;
+}
+.acta__cab{
+  display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:baseline;justify-content:space-between;
+  padding:.85rem 1.2rem;border-bottom:1px solid var(--ink);background:var(--paper);
+}
+.acta__cab b{font-family:var(--f-display);font-size:1.1rem;font-weight:500}
+.acta__cab .mono{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.acta__cod{
+  display:inline-block;margin-right:.6rem;font-family:var(--f-mono);font-size:.72rem;
+  letter-spacing:.1em;color:var(--surface);background:var(--ink);
+  padding:.15rem .5rem;border-radius:3px;vertical-align:.1em;
+}
+.acta__cuerpo{padding:1.1rem 1.2rem 1.3rem}
+.acta__pide{font-size:.92rem;color:var(--ink-2);max-width:80ch}
+.acta__pide b{color:var(--ink)}
+.acta__rot{
+  margin-top:1.1rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+}
+.acta__ops{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.45rem}
+.acta__ops li{display:grid;grid-template-columns:1.1rem 1.1rem minmax(0,1fr);gap:.6rem;align-items:start}
+.acta__ops b{font-family:var(--f-mono);font-size:.78rem;color:var(--accent-ink);font-weight:500}
+.acta__ops span:not(.acta__caja){font-size:.88rem;color:var(--ink-2)}
+.acta__caja{
+  width:1.05rem;height:1.05rem;border:1.5px solid var(--ink);
+  display:block;margin-top:.15rem;background:var(--paper);
+}
+.acta__linea{display:block;border-bottom:1px solid var(--line);min-height:1.35rem;width:100%}
+.acta__pauta{height:1.5rem;border-bottom:1px solid var(--line);margin-top:.55rem}
+.acta__rejilla{display:grid;gap:.9rem 1.4rem;margin-top:1.1rem}
+@media(min-width:620px){.acta__rejilla{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .acta__rejilla--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.acta__rejilla>div span,.acta__firmas>div span{
+  display:block;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+.acta__rejilla>div i,.acta__firmas>div i{display:block;border-bottom:1px solid var(--line);height:1.5rem}
+.acta__meta{margin:1.2rem 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(min-width:620px){.acta__meta{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.acta__meta>div{background:var(--paper);padding:.6rem .9rem}
+.acta__meta dt{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.acta__meta dd{margin:.2rem 0 0;font-size:.85rem;color:var(--ink-2)}
+.acta__firmas{display:grid;gap:1.4rem;margin-top:1.6rem}
+@media(min-width:620px){.acta__firmas{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.acta__firmas>div i{height:2.3rem}
+
+@media print{
+  .calc{display:none}
+  .acta{break-inside:avoid;break-before:page;background:#fff;border-color:#000}
+  .acta__cab{background:#fff}
+  .acta__cod{background:#000;color:#fff}
+  .acta__meta>div,.acta__caja{background:#fff}
+  #acuerdos .section__head,#acuerdos .gate{break-after:avoid-page}
+}
+
 </style>
 </head>
 <body>
@@ -789,6 +898,8 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <a href="#ruta">§16 Hoja de ruta</a>
       <a href="#decisiones">§17 Decisiones</a>
       <a href="#supuestos">§18 Supuestos</a>
+      <a href="#trazabilidad">§19 Trazabilidad</a>
+      <a href="#acuerdos">Anexo A · Acuerdos</a>
     </nav>
   </div>
 </header>
@@ -806,7 +917,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Giraldo</b>Rúa Bolivia nº 2 · Vigo</span>
       <span><b>Tesis de Dirección · v2.0</b>Agosto 2026 · sustituye a la Memoria v1.0</span>
-      <span><b>18 apartados · 5 partes · 14 decisiones</b>Lectura completa 34′ · resumen 3′</span>
+      <span><b>19 apartados · 5 partes · 14 decisiones</b>Lectura completa 42′ · resumen 3′</span>
     </div>
   </div>
 </section>
@@ -818,10 +929,10 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
         <p class="eyebrow">El planteamiento</p>
         <h1>Una tesis, no<br>un <em>informe</em></h1>
         <p class="hero__lede">Un informe cuenta lo que ha pasado. Una tesis afirma qué creemos que es cierto sobre este mercado, qué apostamos en consecuencia, y bajo qué condiciones estaríamos equivocados.</p>
-        <p class="hero__note">Este documento contiene las tres cosas. Estado del proyecto, línea base, riesgos y hoja de ruta —lo que cualquier memoria trae— y además el mapa competitivo, el foso que estamos construyendo, la economía unitaria con sus escenarios, la lógica de creación de valor de empresa, el pre-mortem y la asignación de capital. Cada afirmación lleva su naturaleza marcada —<strong>hecho</strong>, <strong>modelo</strong> o <strong>pendiente</strong>— para que la Junta sepa en todo momento sobre qué está deliberando. No hay una sola cifra presentada como dato propio que no lo sea.</p>
+        <p class="hero__note">Este documento contiene las tres cosas. Estado del proyecto, línea base, riesgos y hoja de ruta —lo que cualquier memoria trae— y además el mapa competitivo, el foso que estamos construyendo, la economía unitaria con sus escenarios, la lógica de creación de valor de empresa, el pre-mortem, la asignación de capital, la trazabilidad de cada acuerdo y el cuadernillo con las catorce hojas de acta. Cada afirmación lleva su naturaleza marcada —<strong>hecho</strong>, <strong>modelo</strong> o <strong>pendiente</strong>— para que la Junta sepa en todo momento sobre qué está deliberando. No hay una sola cifra presentada como dato propio que no lo sea.</p>
       </div>
       <dl class="specs">
-        <div class="spec"><dt>Lectura</dt><dd>34′<small>Resumen ejecutivo: 3 minutos</small></dd></div>
+        <div class="spec"><dt>Lectura</dt><dd>42′<small>Resumen ejecutivo: 3 minutos</small></dd></div>
         <div class="spec"><dt>Decisiones</dt><dd>14<small>Se someten a aprobación en esta sesión</small></dd></div>
         <div class="spec"><dt>Riesgos críticos</dt><dd>5<small>Con propietario y mitigación asignados</small></dd></div>
         <div class="spec"><dt>Sistema documental</dt><dd>17<small>Documentos operativos vigentes</small></dd></div>
@@ -1297,6 +1408,11 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </div>
       <figcaption><strong>Figura 1 · Primeras visitas necesarias al día según la tasa de conversión.</strong> Modelo construido sobre un punto de equilibrio de 60.000 € al mes, un ticket medio aceptado de 1.800 € y 21 días laborables. Los tres valores son supuestos de trabajo no verificados, recogidos en el §18; se sustituyen por los datos reales en cuanto estén disponibles.</figcaption>
     </figure>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">Cómo dejan de faltar</p>
+      <p>Con el libro <strong>«Captura de la línea base · 2026»</strong> que acompaña a este documento. Su hoja <em>Los cinco números</em> pide siete entradas —costes fijos, margen de contribución, ticket medio, conversión, días laborables, tesorería y producto pendiente heredado— y devuelve los cinco resultados calculados, incluida la cifra que más incomoda: cuántas primeras visitas diarias hacen falta para llegar al equilibrio con la conversión actual. Mientras falte una entrada, el resultado dice <em>pendiente</em> en lugar de dar un número: <strong>un número inventado es peor que un hueco declarado</strong>.</p>
+    </div>
   </div>
 </section>
 
@@ -1424,6 +1540,43 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <p class="t-fig__note">Leído de izquierda a derecha se ve el efecto del protocolo; de arriba abajo, el de la composición de casos. La esquina inferior derecha no se alcanza con precios más altos: se alcanza tratando casos más complejos mejor explicados.</p>
     </figure>
 
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Comprobación en directo</h3>
+    <p style="color:var(--ink-2);max-width:68ch">La matriz anterior fija cuatro tasas y tres tickets. Este bloque permite mover los tres supuestos a voluntad durante la sesión, para responder a la pregunta que siempre llega: <em>«¿y si la conversión se queda en el 35 %?»</em>. En la versión impresa aparece la matriz fija; esta comprobación solo existe en pantalla.</p>
+
+    <div class="calc">
+      <div class="calc__mandos">
+        <label class="calc__mando">
+          <span>Tasa de conversión<b data-calc="vc">45 %</b></span>
+          <input data-calc="c" type="range" min="20" max="70" step="1" value="45"
+                 aria-label="Tasa de conversión de la primera visita, en por ciento">
+        </label>
+        <label class="calc__mando">
+          <span>Ticket medio del caso aceptado<b data-calc="vt">1.800 €</b></span>
+          <input data-calc="t" type="range" min="900" max="3200" step="50" value="1800"
+                 aria-label="Ticket medio del caso aceptado, en euros">
+        </label>
+        <label class="calc__mando">
+          <span>Primeras visitas al día<b data-calc="vp">4,0</b></span>
+          <input data-calc="p" type="range" min="1.5" max="7" step="0.5" value="4"
+                 aria-label="Primeras visitas al día">
+        </label>
+      </div>
+      <div class="calc__salida">
+        <div class="calc__cifra">
+          <i>Facturación anual estimada</i>
+          <b data-calc="fact">816 k€</b>
+          <p data-calc="comp">Frente al escenario base de 720 k€: <strong>+96 k€</strong></p>
+        </div>
+        <dl class="calc__detalle">
+          <div><dt>Primeras visitas al año</dt><dd data-calc="pv">1.008</dd></div>
+          <div><dt>Casos aceptados al año</dt><dd data-calc="casos">454</dd></div>
+          <div><dt>Casos aceptados al mes</dt><dd data-calc="mes">38</dd></div>
+        </dl>
+      </div>
+      <p class="calc__pie">Facturación = primeras visitas/día × 21 días × 12 meses × conversión × ticket medio. Capacidad y días laborables fijos. <strong>Naturaleza: modelo.</strong> Ninguno de los tres valores procede de una medición del centro; son los supuestos de trabajo del §18 y se sustituyen por los reales en cuanto exista línea base.</p>
+    </div>
+
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">La lectura de gerencia</p>
       <p>Pasar del 30 % al 50 % de conversión, sin tocar el precio ni la agenda, multiplica la facturación por 1,67. Subir el ticket de 1.400 € a 2.200 € sin tocar la conversión la multiplica por 1,57. Hacer las dos cosas la multiplica por 2,6.</p>
@@ -1502,6 +1655,97 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <li><span class="mono">Nivel 4</span><strong>Sistema replicable</strong><span>La capacidad demostrada de abrir una segunda unidad y obtener el mismo resultado. Convierte un centro en una plataforma.</span></li>
       <li><span class="mono">Nivel 5</span><strong>Serie clínica propia</strong><span>Resultados documentados a cinco años. Es el activo que ningún competidor puede acelerar con dinero.</span></li>
     </ol>
+
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">La aritmética: qué múltiplo compra cada peldaño</h3>
+    <p style="color:var(--ink-2);max-width:68ch">La escalera anterior es cualitativa y por sí sola no decide nada. Un comprador —un grupo, un fondo, un socio— no razona en peldaños: razona en múltiplo sobre resultado. Esta es la traducción, y es la que convierte «el sistema aporta valor» en una cifra que la Junta puede contrastar.</p>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>El mismo EBITDA, cinco valores de empresa distintos</b>
+        <span>Valor de empresa resultante de aplicar a un EBITDA constante de 180 k€ el múltiplo que corresponde a cada peldaño. Naturaleza: <strong>modelo sobre rangos del sector marcados como tales</strong>; los múltiplos son órdenes de magnitud habituales en transacciones de clínicas dentales, no una valoración del centro ni una oferta recibida.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><svg viewBox="0 0 880 366" width="880" height="366" role="img" style="max-width:100%;height:auto" aria-label="Valor de empresa por nivel de la escalera con el mismo EBITDA de 180 mil euros: del rango de 540 a 720 mil euros en el nivel 1 al rango de 1.440 a 1.800 en el nivel 5.">
+<line x1="132.0" y1="52" x2="132.0" y2="338" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="132.0" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0</text>
+<line x1="235.3" y1="52" x2="235.3" y2="338" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="235.33333333333331" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">300</text>
+<line x1="338.7" y1="52" x2="338.7" y2="338" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="338.66666666666663" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">600</text>
+<line x1="442.0" y1="52" x2="442.0" y2="338" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="442.0" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">900</text>
+<line x1="545.3" y1="52" x2="545.3" y2="338" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="545.3333333333333" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.200</text>
+<line x1="648.7" y1="52" x2="648.7" y2="338" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="648.6666666666666" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.500</text>
+<line x1="752.0" y1="52" x2="752.0" y2="338" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="752.0" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.800</text>
+<text x="132" y="24" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">valor de empresa · miles de € · EBITDA constante de 180 k€</text>
+<text x="118" y="72" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 1</text>
+<rect x="318.0" y="62.0" width="62.0" height="20" fill="#C9E7E3" rx="3"/>
+<line x1="318.0" y1="59.0" x2="318.0" y2="85.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<line x1="380.0" y1="59.0" x2="380.0" y2="85.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<text x="392.0" y="77" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">540 – 720</text>
+<text x="138" y="102" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Beneficio, dependiente del titular  ·  múltiplo 3,0–4,0×</text>
+<text x="118" y="130" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 2</text>
+<rect x="411.0" y="120.0" width="62.0" height="20" fill="#A7D9D3" rx="3"/>
+<line x1="411.0" y1="117.0" x2="411.0" y2="143.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<line x1="473.0" y1="117.0" x2="473.0" y2="143.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<text x="485.0" y="135" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">810 – 990</text>
+<text x="138" y="160" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Beneficio sin dependencia  ·  múltiplo 4,5–5,5×</text>
+<text x="118" y="188" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 3</text>
+<rect x="473.0" y="178.0" width="62.0" height="20" fill="#6FC0B7" rx="3"/>
+<line x1="473.0" y1="175.0" x2="473.0" y2="201.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<line x1="535.0" y1="175.0" x2="535.0" y2="201.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<text x="547.0" y="193" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">990 – 1.170</text>
+<text x="138" y="218" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Con ingreso recurrente contratado  ·  múltiplo 5,5–6,5×</text>
+<text x="118" y="246" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 4</text>
+<rect x="535.0" y="236.0" width="93.0" height="20" fill="#2FA398" rx="3"/>
+<line x1="535.0" y1="233.0" x2="535.0" y2="259.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<line x1="628.0" y1="233.0" x2="628.0" y2="259.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<text x="640.0" y="251" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.170 – 1.440</text>
+<text x="138" y="276" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Sistema replicable demostrado  ·  múltiplo 6,5–8,0×</text>
+<text x="118" y="304" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 5</text>
+<rect x="628.0" y="294.0" width="124.0" height="20" fill="#0E8F84" rx="3"/>
+<line x1="628.0" y1="291.0" x2="628.0" y2="317.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<line x1="752.0" y1="291.0" x2="752.0" y2="317.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
+<text x="764.0" y="309" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.440 – 1.800</text>
+<text x="138" y="334" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Con serie clínica propia a 5 años  ·  múltiplo 8,0–10,0×</text>
+</svg></div>
+      <p class="t-fig__note">Entre el peldaño 1 y el 5 hay del orden de un millón de euros de valor de empresa, con exactamente el mismo beneficio anual.</p>
+    </figure>
+
+    <div class="t-body">
+      <div>
+        <h4 style="font-size:var(--step-1);margin-bottom:.6rem">Por qué el múltiplo sube si el beneficio no cambia</h4>
+        <p style="color:var(--ink-2);max-width:66ch">Porque el múltiplo no paga el beneficio: paga <strong>la probabilidad de que ese beneficio siga existiendo dentro de cinco años sin las personas que lo produjeron</strong>. Cada peldaño elimina una fuente de incertidumbre —la dependencia del titular, la volatilidad del ingreso por acto, la imposibilidad de replicar, la falta de evidencia de resultados— y cada fuente eliminada vale medio punto o un punto de múltiplo.</p>
+        <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">De ahí se sigue la consecuencia práctica, y es incómoda: <strong>una inversión que no mueve el beneficio de este año puede ser la más rentable del presupuesto</strong>, si mueve el peldaño. Es literalmente el caso de la prioridad 2 de §15.</p>
+      </div>
+      <aside class="t-aside">
+        <div class="t-note">
+          <b>Cómo leerlo en junta</b>
+          <p>No como una tasación. Como el orden de magnitud de lo que está en juego al decidir si el gasto en sistema es coste o inversión.</p>
+        </div>
+        <div class="t-note">
+          <b>Qué lo haría real</b>
+          <p>Un EBITDA normalizado auditado y, si alguna vez interesa, una valoración independiente. Ninguna de las dos cosas existe hoy.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Peldaño</th><th>Qué elimina de incertidumbre</th><th>Múltiplo orientativo</th><th>Decisión que lo desbloquea</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1 · Beneficio</strong></td><td>Nada: el comprador asume todo el riesgo de continuidad</td><td class="num">3,0–4,0×</td><td>—</td></tr>
+          <tr><td><strong>2 · Sin dependencia del titular</strong></td><td>Que el resultado se vaya con el fundador</td><td class="num">4,5–5,5×</td><td>D12 · inversión sostenida en el sistema</td></tr>
+          <tr><td><strong>3 · Ingreso recurrente contratado</strong></td><td>La volatilidad del ingreso por acto</td><td class="num">5,5–6,5×</td><td>D5 y D14 · programa de cuidado</td></tr>
+          <tr><td><strong>4 · Sistema replicable</strong></td><td>Que el modelo no funcione en otra plaza</td><td class="num">6,5–8,0×</td><td>D11 · condición de apertura</td></tr>
+          <tr><td><strong>5 · Serie clínica propia</strong></td><td>La duda sobre la calidad real del resultado a largo plazo</td><td class="num">8,0–10,0×</td><td>D9 · horizonte H2 del registro de resultados</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Rangos del sector, marcados como tales. No proceden de ninguna transacción del centro ni de una tasación encargada.</p>
 
     <div class="callout" style="max-width:none">
       <p class="eyebrow">Lo que esto implica para esta Junta</p>
@@ -1595,6 +1839,34 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
           <li>Dependencia excesiva de un proveedor crítico</li>
         </ul>
       </div>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Registro puntuado, con residual y fecha de revisión</h3>
+    <p style="color:var(--ink-2);max-width:68ch">La descripción anterior dice qué puede pasar. Un registro dice además <strong>cuánto pesa, cuánto pesará después de mitigarlo, quién responde y cuándo se vuelve a mirar</strong>. La exposición es probabilidad × impacto, ambas de 1 a 5. El residual es la exposición estimada una vez ejecutada la mitigación: si un riesgo no baja al mitigarlo, la mitigación es decorativa.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>Riesgo</th><th>P</th><th>I</th><th>Exp.</th><th>Residual</th><th>Propietario</th><th>Revisión</th><th>Disparador</th></tr></thead>
+        <tbody>
+          <tr><td class="num">R6</td><td><strong>Degradación del sistema por abandono de la verificación</strong><small>Causa 1 del pre-mortem</small></td><td class="num">4</td><td class="num">5</td><td class="num"><span class="sem sem--rojo">20</span></td><td class="num">8</td><td>Dirección</td><td>Mensual</td><td>Dos auditorías aplazadas</td></tr>
+          <tr><td class="num">R2</td><td><strong>Producto pendiente heredado sin cuantificar</strong></td><td class="num">4</td><td class="num">4</td><td class="num"><span class="sem sem--rojo">16</span></td><td class="num">6</td><td>Dirección</td><td>Semanal hasta cierre</td><td>Inventario no cerrado el día 3</td></tr>
+          <tr><td class="num">R1</td><td><strong>Cobertura aseguradora insuficiente para tratamientos previos</strong></td><td class="num">3</td><td class="num">5</td><td class="num"><span class="sem sem--naranja">15</span></td><td class="num">4</td><td>Gerencia</td><td>Antes de abrir</td><td>Verificación no positiva</td></tr>
+          <tr><td class="num">R3</td><td><strong>Pérdida de un profesional clave</strong></td><td class="num">3</td><td class="num">5</td><td class="num"><span class="sem sem--naranja">15</span></td><td class="num">9</td><td>Gerencia</td><td>Mensual</td><td>Salida no prevista en puesto clave</td></tr>
+          <tr><td class="num">R4</td><td><strong>Incumplimiento regulatorio latente</strong></td><td class="num">3</td><td class="num">5</td><td class="num"><span class="sem sem--naranja">15</span></td><td class="num">5</td><td>Gerencia</td><td>Trimestral</td><td>V1–V11 con alguna abierta</td></tr>
+          <tr><td class="num">R5</td><td><strong>Deterioro de la percepción del paciente heredado</strong></td><td class="num">3</td><td class="num">4</td><td class="num"><span class="sem sem--naranja">12</span></td><td class="num">6</td><td>Dirección</td><td>Mensual</td><td>Cualquier reclamación formal</td></tr>
+          <tr><td class="num">R7</td><td><strong>El programa de cuidado no llega a venderse</strong><small>Causa 4 del pre-mortem</small></td><td class="num">4</td><td class="num">3</td><td class="num"><span class="sem sem--naranja">12</span></td><td class="num">5</td><td>Dirección</td><td>Mensual</td><td>Ofrecimiento bajo el 90 % dos meses</td></tr>
+          <tr><td class="num">R8</td><td><strong>Apertura prematura de la segunda unidad</strong><small>Causa 5 del pre-mortem</small></td><td class="num">2</td><td class="num">5</td><td class="num"><span class="sem sem--amarillo">10</span></td><td class="num">3</td><td>Junta</td><td>Ante cualquier oportunidad</td><td>Apertura planteada sin pasos 3 y 4</td></tr>
+          <tr><td class="num">R9</td><td><strong>Erosión del precio por descuento no reglado</strong><small>Causa 3 del pre-mortem</small></td><td class="num">3</td><td class="num">3</td><td class="num"><span class="sem sem--amarillo">9</span></td><td class="num">3</td><td>Gerencia</td><td>Mensual</td><td>Descuento fuera de tipología</td></tr>
+          <tr><td class="num">R10</td><td><strong>Dirección sin datos: se decide por impresión</strong><small>Causa 6 del pre-mortem</small></td><td class="num">3</td><td class="num">4</td><td class="num"><span class="sem sem--amarillo">12</span></td><td class="num">4</td><td>Dirección</td><td>Mensual</td><td>Comité sin cuadro de mando presentado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Lo que dice esta tabla y no decía la anterior</p>
+      <p>El riesgo de mayor exposición del proyecto <strong>no es clínico ni regulatorio: es la erosión silenciosa del propio sistema</strong> (R6, exposición 20). Es también el que menos se parece a una emergencia y el que ningún seguro cubre. Y R3 es el que peor residual conserva —9 sobre 15— porque la formación cruzada reduce el impacto pero no la probabilidad: nadie puede impedir que alguien se marche.</p>
+    </div>
+    <p class="t-fig__note">Puntuaciones de dirección, no actuariales. Naturaleza: modelo. Se revisan con la periodicidad de la columna y en cualquier caso en cada Junta ordinaria.</p>
+
       <div>
         <div class="rulebox" style="max-width:none">
           <p class="eyebrow">La única regla que detiene la clínica</p>
@@ -1697,6 +1969,39 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </table>
     </div>
     <p class="footnote">Un cuadro de mando con ocho casillas vacías no es una debilidad del documento: es el diagnóstico honesto de dónde estamos. La Junta debe exigir que en la revisión trimestral las ocho tengan valor y tendencia.</p>
+
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Diccionario de indicadores</h3>
+    <p style="color:var(--ink-2);max-width:68ch">Un indicador sin definición operativa no se puede medir dos meses seguidos de la misma manera, y una serie que cambia de definición no es una serie. Esta tabla fija, para cada indicador, qué se cuenta arriba, qué se cuenta abajo, de dónde sale el dato y qué queda fuera. <strong>Es la condición previa de la línea base de §7</strong>: mientras no esté acordada, cualquier cifra que se reporte es incomparable con la del mes siguiente.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>Indicador</th><th>Numerador</th><th>Denominador</th><th>Fuente</th><th>Qué queda fuera</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td><strong>Verificaciones regulatorias cerradas</strong></td><td>Verificaciones V1–V11 con evidencia documental archivada y fechada</td><td>11</td><td>Expediente de verificaciones externas</td><td>Nada. Una verificación «en trámite» cuenta como no cerrada</td></tr>
+          <tr><td class="num">2</td><td><strong>Bajas voluntarias del equipo</strong></td><td>Ceses a instancia de la persona trabajadora en el periodo</td><td>Plantilla media del periodo</td><td>Registro laboral</td><td>Fin de contrato temporal ya previsto e incapacidades temporales</td></tr>
+          <tr><td class="num">3</td><td><strong>Reclamaciones de pacientes heredados</strong></td><td>Reclamaciones formales: escrito, hoja oficial, comunicación a colegio o consumo, o reseña pública negativa</td><td>—<small>Recuento absoluto</small></td><td>Registro de incidencias</td><td>Quejas verbales resueltas en el acto y registradas como incidencia de nivel 1</td></tr>
+          <tr><td class="num">4</td><td><strong>Documentación digitalizada el mismo día</strong></td><td>Actos clínicos con historia, consentimiento e imágenes cargados antes del cierre de la jornada</td><td>Actos clínicos del día</td><td>Gestor de clínica</td><td>Nada</td></tr>
+          <tr><td class="num">5</td><td><strong>Producto pendiente</strong></td><td>Importe cobrado o comprometido de tratamientos aceptados y no terminados a fecha de corte</td><td>—<small>Importe en euros</small></td><td>Informe de tratamientos abiertos</td><td>Presupuestos presentados y no aceptados</td></tr>
+          <tr><td class="num">6</td><td><strong>Tasa de conversión de la primera visita</strong></td><td>Primeras visitas del mes M con plan principal aceptado y primer pago o financiación aprobada <strong>dentro de 60 días naturales</strong></td><td>Primeras visitas del mes M</td><td>Agenda y presupuestos, cruzados</td><td>Urgencias, segundas opiniones sin intención de tratarse aquí y derivaciones a otro centro por criterio clínico</td></tr>
+          <tr><td class="num">7</td><td><strong>Pacientes en mantenimiento activo</strong></td><td>Pacientes con revisión o higiene realizada en los últimos 12 meses <strong>y</strong> próxima cita agendada</td><td>Pacientes con implantes colocados por el centro</td><td>Gestor de clínica</td><td>Pacientes con cita agendada pero sin ninguna asistencia en 12 meses</td></tr>
+          <tr><td class="num">8</td><td><strong>Captación por recomendación</strong></td><td>Primeras visitas cuyo origen declarado es la recomendación de un paciente o familiar</td><td>Primeras visitas del mes</td><td>Campo obligatorio de origen en la ficha</td><td>Nada: el origen «no consta» permanece en el denominador</td></tr>
+          <tr><td class="num">9</td><td><strong>Ofrecimiento del programa de cuidado</strong><small>Nuevo · exigido por D14</small></td><td>Cierres de tratamiento con el ofrecimiento registrado en la ficha</td><td>Cierres de tratamiento del mes</td><td>Punto de verificación del cierre</td><td>Nada. Se mide el ofrecimiento, no la contratación</td></tr>
+          <tr><td class="num">10</td><td><strong>Auditorías ejecutadas en fecha</strong><small>Nuevo · exigido por D13</small></td><td>Auditorías realizadas dentro de su ventana con resultado registrado</td><td>Auditorías programadas en el periodo</td><td>Calendario de auditoría</td><td>Nada. Una auditoría realizada sin registro cuenta como no realizada</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">La regla de reporte</p>
+      <p>Un indicador sin dato se reporta en rojo. No se omite, no se deja en blanco y no se sustituye por una impresión.</p>
+      <p>El indicador 6 es el único con <strong>cohorte cerrada</strong>: el dato de un mes no es definitivo hasta sesenta días después. Se reporta provisional y se consolida en la revisión siguiente. Confundir el provisional con el definitivo es la forma más habitual de creerse una mejora que no existe.</p>
+    </div>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">El instrumento que acompaña a esta tabla</p>
+      <p>La definición sola no levanta una serie. Junto a este documento se entrega <strong>«Captura de la línea base · 2026»</strong>, un libro de cálculo con una hoja por mes, los diez indicadores ya definidos, umbrales editables en un solo sitio, semáforo automático y resumen anual con tendencia. Solo se teclean las casillas amarillas. Un indicador sin dato aparece como <em>SIN DATO</em> y cuenta como rojo, que es exactamente la regla de reporte de arriba.</p>
+    </div>
 
     <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Lo que cuesta un descuento <span class="sem sem--amarillo">Modelo</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">La política de precios es una de las decisiones que se someten hoy a la Junta, y conviene verla en su magnitud real. Con un margen del 40 %, los costes del caso no bajan cuando baja el precio: el descuento sale íntegramente del beneficio.</p>
@@ -2010,6 +2315,48 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </div>
     </div>
 
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">El coste de no decidir</h3>
+    <p style="color:var(--ink-2);max-width:68ch">Cada ficha dice, en cualitativo, qué pasa si el acuerdo no se toma. Cuatro de las catorce admiten además una cifra, y conviene tenerla delante: <strong>un consejo aplaza sin esfuerzo lo que no tiene precio, y deja de aplazar lo que lo tiene</strong>. Los importes son de modelo, construidos sobre los supuestos de §18.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Decisión</th><th>Qué se pierde cada trimestre sin ella</th><th>Cómo sale la cifra</th><th>Orden de magnitud</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="num">D1<small>Precios y descuentos</small></td>
+            <td>Descuento no reglado que sale íntegro del beneficio</td>
+            <td>Si el 35 % de los casos lleva un descuento medio del 10 % sobre una facturación anual de 720 k€, y el coste del caso no baja con el precio</td>
+            <td class="num"><strong>≈ 6,3 k€/trimestre</strong><small>≈ 25 k€ al año, en torno a un tercio del beneficio neto anual del supuesto</small></td>
+          </tr>
+          <tr>
+            <td class="num">D5<small>Programa de cuidado</small></td>
+            <td>Pacientes que terminan tratamiento y no se incorporan al seguimiento</td>
+            <td>75 tratamientos terminados por trimestre × 883 € de diferencial de valor a cinco años entre paciente con programa y sin él (§9)</td>
+            <td class="num"><strong>≈ 66 k€/trimestre</strong><small>De valor a cinco años que deja de originarse, no de caja del trimestre</small></td>
+          </tr>
+          <tr>
+            <td class="num">D8<small>Responsables funcionales</small></td>
+            <td>Decisiones que suben a Dirección por no tener dueño nominal</td>
+            <td>Cuatro áreas sin propietario × entre dos y tres horas semanales de Dirección consumidas en resolver lo que debería resolverse abajo</td>
+            <td class="num"><strong>≈ 120 h/trimestre</strong><small>De la agenda más cara del centro, y la única que no se puede contratar</small></td>
+          </tr>
+          <tr>
+            <td class="num">D2<small>Garantías publicadas</small></td>
+            <td>Exposición, no coste recurrente</td>
+            <td>No es un goteo: es el coste de una sola reclamación resuelta sobre una expectativa que nunca se pactó por escrito</td>
+            <td class="num"><strong>Cola larga</strong><small>Baja probabilidad, importe sin techo definido</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">La lectura conjunta</p>
+      <p>Aplazar un trimestre las cuatro decisiones inmediatas cuesta del orden de setenta mil euros de valor y ciento veinte horas de dirección. Ninguna de las cuatro exige información que no esté en este documento.</p>
+      <p>Es la razón por la que están marcadas como inmediatas y no como «primer trimestre»: no es urgencia retórica, es que el retraso tiene factura.</p>
+    </div>
+
     <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Formato de registro del acuerdo</h3>
     <div class="sheet"><b>REGISTRO DE DECISIÓN — Nº ____</b>
 Fecha:                          Órgano: Junta Directiva
@@ -2069,6 +2416,632 @@ REVISIÓN PREVISTA:</div>
         </tbody>
       </table>
     </div>
+  </div>
+</section>
+
+<section class="section" id="trazabilidad">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§19 · Trazabilidad de los acuerdos</p>
+      <h2>Dónde aterriza cada decisión y cómo se comprueba seis meses después</h2>
+      <p>La pregunta que cierra cualquier consejo serio es la misma: <strong>«de acuerdo, lo aprobamos; ¿cómo sé dentro de seis meses que se hizo?»</strong>. Esta matriz la responde para las catorce. Cada acuerdo tiene un documento donde se escribe, un punto donde se verifica y un indicador donde se ve.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Cód.</th><th>Dónde se escribe</th><th>Cómo se verifica</th><th>Dónde se ve</th></tr></thead>
+        <tbody>
+          <tr><td class="num">D1</td><td>Manual Maestro, Parte VI · política comercial · y Protocolo, Fase 10</td><td>Tipología de descuentos publicada y registro de autorizaciones por tramo</td><td>Producto pendiente y margen por caso</td></tr>
+          <tr><td class="num">D2</td><td>Otros documentos, 12 · continuidad legal · y cartelería de sala</td><td>Texto de garantía por tipo de tratamiento visible y entregado con el presupuesto</td><td>Reclamaciones formales (ind. 3)</td></tr>
+          <tr><td class="num">D3</td><td>Otros documentos, 9 · marca y captación</td><td>Certificado de búsqueda registral y disponibilidad de dominios</td><td>Captación por recomendación (ind. 8)</td></tr>
+          <tr><td class="num">D4</td><td>Otros documentos, 9 · economía unitaria del embudo</td><td>Presupuesto aprobado con responsable nominal y modelo de ejecución</td><td>Coste por primera visita captada</td></tr>
+          <tr><td class="num">D5</td><td>Otros documentos, 14 · GTC · y Protocolo, Fases 10 a 12</td><td>Catálogo cerrado y dictamen jurídico del contrato de adhesión archivado</td><td>Pacientes en mantenimiento activo (ind. 7)</td></tr>
+          <tr><td class="num">D6</td><td>Manual Maestro, Parte V · funciones de vanguardia</td><td>Informe de alcance competencial de asesoría y colegio profesional</td><td>Casos atendidos del segmento de ansiedad severa</td></tr>
+          <tr><td class="num">D7</td><td>Manual Maestro, Parte VI · compras e inversión</td><td>Criterio de retorno exigible aplicado a cada partida de compra</td><td>Documentación digitalizada el mismo día (ind. 4)</td></tr>
+          <tr><td class="num">D8</td><td>Manual Maestro, Parte III · RACI · y Anexo de gobernanza</td><td>Acta con nombres y periodicidad del Comité de Transición</td><td>Bajas voluntarias (ind. 2)</td></tr>
+          <tr><td class="num">D9</td><td>Otros documentos, 8 · innovación · §6 de este documento</td><td>Reparto real ejecutado por horizonte, frente al aprobado</td><td>Revisión anual de cartera</td></tr>
+          <tr><td class="num">D10</td><td>§15 de este documento y presupuesto anual</td><td>Toda excepción al orden consta en el registro de decisiones con su fundamento</td><td>Ejecución por prioridad, trimestral</td></tr>
+          <tr><td class="num">D11</td><td>§10 de este documento</td><td>Expediente de acreditación de los pasos 3 y 4, previo a cualquier gasto de prospección</td><td>Un trimestre en umbral sin intervención de Dirección</td></tr>
+          <tr><td class="num">D12</td><td>Presupuesto anual, partida de sistema y formación</td><td>Suelo anual ejecutado, reportado con el cuadro de mando</td><td>Auditorías en fecha (ind. 10)</td></tr>
+          <tr><td class="num">D13</td><td>Anexo de gobernanza del Manual Maestro</td><td>Cada disparador tiene indicador asociado y convocatoria automática</td><td>Indicadores 2, 3, 9 y 10</td></tr>
+          <tr><td class="num">D14</td><td>Protocolo, Fase 12 · cierre · y Otros documentos, 14</td><td>Punto de verificación obligatorio del cierre de tratamiento</td><td>Ofrecimiento del programa (ind. 9)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">La comprobación de coherencia</p>
+      <p>Los diez indicadores del diccionario de §13 aparecen todos en la columna de la derecha, y las catorce decisiones aparecen todas en la de la izquierda. Un acuerdo que no cupiera en esta matriz sería un acuerdo sin forma de comprobarse; un indicador que no apareciera sería un indicador que no sirve para gobernar nada.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="acuerdos">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Anexo A · Cuadernillo de acuerdos</p>
+      <h2>Catorce hojas para salir de la sesión con el acta hecha</h2>
+      <p>Una hoja por decisión, con las alternativas ya redactadas y espacio para la resolución, el fundamento, la fecha de entrada en vigor y las firmas. Se imprimen a una cara, se rellenan durante la sesión y se archivan. <strong>Sin este cuadernillo, la Junta sale con catorce acuerdos y un acta por redactar</strong>; con él, sale con catorce documentos firmados y con fecha.</p>
+    </div>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">Cómo se usa</p>
+      <p>Marque la alternativa adoptada, escriba el fundamento en dos líneas —basta con dos— y fije la fecha de entrada en vigor. Un acuerdo sin fecha de entrada en vigor no llega al equipo, y un acuerdo cuyo fundamento no se anotó es un acuerdo que dentro de tres meses nadie sabrá por qué se tomó así. La opción D existe porque una Junta no está obligada a elegir entre las alternativas que le presentan.</p>
+    </div>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D1</span><b>Política de precios y tabla de descuentos</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Inmediato</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Aprobar la tipología cerrada de descuentos, sus porcentajes máximos por tipo, el tope de acumulación y quién autoriza cada tramo.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Tipología cerrada con tope de acumulación y autorización nominal por tramo</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Descuento máximo único sin tipología, autorizado siempre por Gerencia</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Mantener la situación actual y revisar en el primer trimestre</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Manual Maestro, Parte VI · Protocolo, Fase 10</dd></div>
+          <div><dt>Se verificará en</dt><dd>Margen por caso y producto pendiente</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D2</span><b>Garantías publicadas por tipo de tratamiento</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Inmediato</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Fijar los plazos de garantía por tipo de tratamiento que el centro asume por escrito ante el paciente.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Tabla de garantías publicada y entregada con cada presupuesto</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Garantía única de duración uniforme para todo tratamiento</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Sin garantía publicada, resolución caso a caso</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Otros documentos, 12 · cartelería de sala</dd></div>
+          <div><dt>Se verificará en</dt><dd>Reclamaciones formales · indicador 3</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D3</span><b>Arquitectura de marca y naming</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Primer trimestre</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Aprobar la arquitectura por verticales y ordenar la verificación legal de marca y dominios antes de cualquier adopción.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Arquitectura por verticales, condicionada a verificación registral previa</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Marca única sin verticales</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Aplazar hasta disponer del estudio de mercado</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Otros documentos, 9 · marca y captación</dd></div>
+          <div><dt>Se verificará en</dt><dd>Captación por recomendación · indicador 8</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D4</span><b>Presupuesto anual de captación y modelo de ejecución</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Primer trimestre</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Autorizar el porcentaje de facturación destinado a marca y captación, y el modelo de ejecución: interno, agencia o mixto.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Porcentaje fijo de facturación, ejecución mixta con responsable interno</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Importe cerrado anual con agencia externa</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Sin presupuesto propio hasta que la conversión esté en umbral</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Otros documentos, 9 · economía unitaria</dd></div>
+          <div><dt>Se verificará en</dt><dd>Coste por primera visita captada</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D5</span><b>Programa de cuidado: precio, catálogo y validación jurídica</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Inmediato</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Cerrar precio, catálogo de servicios y límites, y ordenar la validación jurídica del contrato de adhesión antes de comercializarlo.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Cerrar catálogo y precio ahora, comercializar tras dictamen jurídico favorable</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Lanzar con catálogo provisional y revisar tras los primeros contratos</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Aplazar el lanzamiento al segundo semestre</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Otros documentos, 14 · Protocolo, Fases 10 a 12</dd></div>
+          <div><dt>Se verificará en</dt><dd>Mantenimiento activo · indicador 7</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D6</span><b>Línea de sedación consciente</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Primer trimestre</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Autorizar —o posponer— la línea, condicionada a la verificación del alcance competencial con asesoría y colegio profesional.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Autorizar condicionada al informe favorable de alcance competencial</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Posponer la línea y derivar el segmento a un centro colaborador</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Descartar la línea en este horizonte</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Manual Maestro, Parte V</dd></div>
+          <div><dt>Se verificará en</dt><dd>Casos del segmento de ansiedad severa</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D7</span><b>Marco de inversión en flujo digital</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Segundo trimestre</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Aprobar el marco de inversión tecnológica y el criterio de retorno exigible a cada partida.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Marco con periodo de recuperación máximo exigible por partida</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Aprobación caso a caso por la Junta sin marco previo</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Congelar la inversión tecnológica hasta disponer de línea base</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Manual Maestro, Parte VI · compras</dd></div>
+          <div><dt>Se verificará en</dt><dd>Documentación en el día · indicador 4</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D8</span><b>Responsables funcionales y Comité de Transición</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Inmediato</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Designar con nombre al responsable de marca y reseñas, y confirmar la composición y periodicidad del Comité de Transición.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Designación nominal de las cuatro áreas y comité quincenal</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Designación nominal parcial, resto asumido por Dirección</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Mantener todas las áreas bajo Dirección</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Manual Maestro, Parte III · RACI</dd></div>
+          <div><dt>Se verificará en</dt><dd>Bajas voluntarias · indicador 2</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D9</span><b>Regla de cartera de innovación 70/20/10</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Esta sesión</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Aprobar el reparto orientativo entre horizontes H1, H2 y H3 y la regla de que ningún horizonte se financie con recursos comprometidos en otro.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Reparto 70/20/10 con revisión anual</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Decidir caso a caso según mérito de cada iniciativa</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Concentrar todo el esfuerzo en H1 durante el primer año</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Otros documentos, 8 · §6 de la Tesis</dd></div>
+          <div><dt>Se verificará en</dt><dd>Reparto ejecutado frente al aprobado</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D10</span><b>Orden de prelación del capital</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Esta sesión</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Aprobar las cinco prioridades —continuidad, foso, conversión, captación, capacidad— y la regla de excepción documentada.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Orden de prelación con excepción documentada y presentada en Junta</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Presupuesto por partidas contables sin orden de prelación</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Orden de prelación sin regla de excepción</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>§15 de la Tesis · presupuesto anual</dd></div>
+          <div><dt>Se verificará en</dt><dd>Ejecución por prioridad, trimestral</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D11</span><b>Condición de apertura de segunda unidad</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Esta sesión</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Establecer que no se autoriza búsqueda de plaza ni compromiso inmobiliario sin acreditar los pasos 3 y 4 del §10.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Condición estricta: sin pasos 3 y 4 acreditados, no hay prospección</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Condición orientativa, con posibilidad de dispensa de la Junta</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Sin condición: decidir por oportunidad de mercado</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>§10 de la Tesis</dd></div>
+          <div><dt>Se verificará en</dt><dd>Un trimestre en umbral sin intervención de Dirección</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D12</span><b>Suelo anual de inversión en el sistema</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Esta sesión</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Fijar un suelo anual de inversión en formación, verificación y documentación, expresado como porcentaje de facturación, irreducible sin acuerdo expreso.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Suelo porcentual irreducible sin acuerdo expreso de la Junta</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Partida anual revisable trimestralmente según resultado</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Sin suelo: gasto variable ajustable a la marcha del ejercicio</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Presupuesto anual, partida de sistema</dd></div>
+          <div><dt>Se verificará en</dt><dd>Auditorías en fecha · indicador 10</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D13</span><b>Disparadores de Junta extraordinaria</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Esta sesión</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Aprobar los cinco disparadores del pre-mortem como obligación automática de convocatoria, sin valoración previa de gravedad.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Los cinco disparadores, con convocatoria automática</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Los cinco disparadores, con convocatoria a criterio de Dirección</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Sin disparadores: convocatoria ordinaria trimestral</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Anexo de gobernanza del Manual Maestro</dd></div>
+          <div><dt>Se verificará en</dt><dd>Indicadores 2, 3, 9 y 10</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
+        <div><span class="acta__cod">D14</span><b>Programa de cuidado obligatorio en el cierre</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Tras D5</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Establecer que ofrecer el programa es punto verificable obligatorio del cierre de todo tratamiento, y medir la tasa de ofrecimiento además de la de contratación.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>Obligatorio y medido, con umbral del 90 % de ofrecimiento</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>Recomendado, medido pero sin umbral exigible</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>A criterio comercial del profesional</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>Protocolo, Fase 12 · Otros documentos, 14</dd></div>
+          <div><dt>Se verificará en</dt><dd>Ofrecimiento del programa · indicador 9</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -2170,6 +3143,50 @@ REVISIÓN PREVISTA:</div>
   } else {
     document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
   }
+})();
+</script>
+<script>
+/* Comprobación en directo del §8: mueve los tres supuestos que gobiernan la
+   facturación y recalcula. Se localiza por clase y por data-calc, nunca por
+   identificador, para seguir funcionando en el archivo único —donde los
+   identificadores van prefijados— y aunque haya varias copias en la página. */
+(function(){
+  "use strict";
+  var DIAS = 21, MESES = 12, BASE = 720;   // escenario base en miles de €
+
+  function mil(n){
+    return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".calc"), function(caja){
+    function parte(nombre){ return caja.querySelector('[data-calc="' + nombre + '"]'); }
+    var c = parte("c"), t = parte("t"), p = parte("p");
+    if(!c || !t || !p) return;
+
+    function pinta(){
+      var conv = parseFloat(c.value) / 100,
+          tick = parseFloat(t.value),
+          pvd  = parseFloat(p.value);
+      var pv = pvd * DIAS * MESES,
+          casos = pv * conv,
+          factur = casos * tick / 1000,      // miles de €
+          delta = factur - BASE;
+
+      parte("vc").textContent = c.value + " %";
+      parte("vt").textContent = mil(tick) + " €";
+      parte("vp").textContent = pvd.toFixed(1).replace(".", ",");
+
+      parte("fact").textContent = mil(factur) + " k€";
+      parte("pv").textContent = mil(pv);
+      parte("casos").textContent = mil(casos);
+      parte("mes").textContent = mil(casos / MESES);
+      parte("comp").innerHTML = "Frente al escenario base de " + BASE + " k€: <strong>" +
+        (delta >= 0 ? "+" : "\u2212") + " " + mil(Math.abs(delta)) + " k€</strong>";
+    }
+
+    [c, t, p].forEach(function(mando){ mando.addEventListener("input", pinta); });
+    pinta();
+  });
 })();
 </script>
 </body>

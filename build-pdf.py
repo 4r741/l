@@ -4,7 +4,9 @@
     python3 build-pdf.py
 
 Cada PDF sale en A4 con márgenes de encuadernación, cabecera de clasificación y
-pie con numeración «Página X de Y». Requiere Playwright con Chromium instalado.
+pie con numeración «Página X de Y». La presentación sale en apaisado, una
+diapositiva por página, y además en una segunda versión con el guion del ponente
+impreso bajo cada diapositiva. Requiere Playwright con Chromium instalado.
 """
 import pathlib
 
@@ -14,14 +16,21 @@ RAIZ = pathlib.Path(__file__).parent
 DESTINO = RAIZ / "export" / "pdf"
 NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 
-# archivo de origen → (nombre del PDF, rótulo de cabecera, orientación)
-DOCUMENTOS = {
-    "memoria.html": ("Tesis-Direccion-Giraldo-v2.0.pdf", "Tesis de Dirección · v2.0", False),
-    "manual.html": ("Manual-Maestro-Giraldo-v5.5.pdf", "Manual Maestro de Operaciones · v5.5", False),
-    "index.html": ("Protocolo-Primera-Visita-Giraldo-v5.5.pdf", "Protocolo de Primera Visita · v5.5", False),
-    "otros.html": ("Otros-Documentos-Giraldo-v1.3.pdf", "Otros documentos del sistema · v1.3", False),
-    "deck.html": ("Presentacion-Junta-Giraldo-v2.0.pdf", "", True),
-}
+# Todo lo diferible se revela antes de imprimir; el guion del ponente solo se
+# activa en la salida que lo pide.
+REVELAR = "document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'))"
+PONENTE = ("document.body.classList.add('modo-ponente');"
+           "document.querySelectorAll('.nota').forEach(n=>n.hidden=false)")
+
+# origen → (nombre del PDF, rótulo de cabecera, apaisado, preparación extra)
+DOCUMENTOS = [
+    ("memoria.html", "Tesis-Direccion-Giraldo-v2.0.pdf", "Tesis de Dirección · v2.0", False, ""),
+    ("manual.html", "Manual-Maestro-Giraldo-v5.5.pdf", "Manual Maestro de Operaciones · v5.5", False, ""),
+    ("index.html", "Protocolo-Primera-Visita-Giraldo-v5.5.pdf", "Protocolo de Primera Visita · v5.5", False, ""),
+    ("otros.html", "Otros-Documentos-Giraldo-v1.3.pdf", "Otros documentos del sistema · v1.3", False, ""),
+    ("deck.html", "Presentacion-Junta-Giraldo-v2.0.pdf", "", True, ""),
+    ("deck.html", "Guion-del-Ponente-Giraldo-v2.0.pdf", "", "guion", PONENTE),
+]
 
 ESTILO_PIE = "font-family:Helvetica,Arial,sans-serif;font-size:7pt;color:#555;width:100%;padding:0 15mm;letter-spacing:.06em"
 
@@ -46,15 +55,20 @@ def main():
         # sin red: las tipografías se resuelven con las de sistema si no están en caché
         pagina.route("**/*", lambda r: r.abort()
                      if r.request.url.startswith(("http://", "https://")) else r.continue_())
-        for origen, (salida, rotulo, apaisado) in DOCUMENTOS.items():
+        for origen, salida, rotulo, apaisado, preparar in DOCUMENTOS:
             if not (RAIZ / origen).exists():
                 continue
             pagina.goto((RAIZ / origen).as_uri())
             pagina.wait_for_timeout(900)
-            # nada puede quedar sin revelar en el PDF
-            pagina.evaluate("document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'))")
+            pagina.evaluate(REVELAR)
+            if preparar:
+                pagina.evaluate(preparar)
+                pagina.wait_for_timeout(200)
             opciones = dict(path=str(DESTINO / salida), print_background=True)
-            if apaisado:
+            if apaisado == "guion":
+                # el guion usa la hoja con nombre propio que declara su propio CSS
+                opciones.update(prefer_css_page_size=True)
+            elif apaisado:
                 opciones.update(width="297mm", height="167mm",
                                 margin={"top": "0", "bottom": "0", "left": "0", "right": "0"})
             else:

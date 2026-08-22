@@ -155,6 +155,41 @@ ol.pasos li b{color:var(--ink)}
 }
 .hud button:hover{border-color:var(--accent);color:var(--accent-ink)}
 .hud__n{font-variant-numeric:tabular-nums}
+/* --- guion del ponente: solo visible en modo ponente (tecla N) --- */
+.nota{display:none}
+body.modo-ponente .nota{
+  display:grid;gap:1rem;position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:var(--ink);color:rgba(247,248,245,.9);
+  padding:1rem clamp(1.2rem,3vw,2.4rem) 2.6rem;
+  border-top:2px solid #7FD3C9;max-height:42vh;overflow:auto;
+  font-size:clamp(13px,1vw,15px);line-height:1.5;
+}
+@media(min-width:900px){body.modo-ponente .nota{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:2.4rem}}
+body.modo-ponente .nota b{
+  display:block;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.14em;
+  text-transform:uppercase;color:#7FD3C9;margin-bottom:.35rem;font-weight:500;
+}
+body.modo-ponente .nota__dura{border-left:2px solid rgba(247,248,245,.28);padding-left:1rem}
+body.modo-ponente .nota__q{
+  font-family:var(--f-display);font-style:italic;font-size:1.05rem;
+  color:var(--surface);margin-bottom:.4rem;
+}
+body.modo-ponente .slide{padding-bottom:clamp(12rem,44vh,26rem)}
+/* con el guion abierto queda menos alto: la figura se encoge en lugar de recortarse */
+body.modo-ponente .fig svg{max-height:min(30vh,290px)}
+body.modo-ponente .slide h2{font-size:clamp(1.5rem,2.6vw,2.3rem)}
+body.modo-ponente .slide{gap:clamp(.7rem,1.1vw,1.2rem)}
+body.modo-ponente .hud{color:rgba(247,248,245,.6);z-index:41}
+body.modo-ponente .hud button{border-color:rgba(247,248,245,.28);color:rgba(247,248,245,.82)}
+body.modo-ponente .barra{z-index:41;background:rgba(247,248,245,.16)}
+body.modo-ponente .barra i{background:#7FD3C9}
+.hud__modo{
+  font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-ink);border:1px solid var(--accent);border-radius:999px;
+  padding:.16rem .5rem;
+}
+.hud__modo[hidden]{display:none}
+.hud__min{font-variant-numeric:tabular-nums;opacity:.75}
 /* la barra de estado se aclara sobre las diapositivas de tinta */
 body:has(.slide--stmt.is-on) .hud{color:rgba(247,248,245,.6)}
 body:has(.slide--stmt.is-on) .hud button{border-color:rgba(247,248,245,.28);color:rgba(247,248,245,.82)}
@@ -164,6 +199,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media print{
   @page{size:297mm 167mm;margin:0}
+  @page guion{size:297mm 210mm;margin:0}
   html,body{height:auto;background:#fff}
   .deck{height:auto;overflow:visible}
   .slide{position:static;display:flex!important;height:167mm;break-after:page;animation:none;padding:16mm 18mm}
@@ -175,6 +211,33 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
   .slide--stmt h2 em{color:#0A5C56}
   .slide--stmt .eyebrow{color:#555}
   .slide--div{background:#fff}
+  body.modo-ponente .nota{
+    display:block;position:static;background:#fff;color:#000;max-height:none;
+    border-top:1pt solid #000;padding:6pt 0 0;margin-top:8pt;font-size:8.5pt;
+  }
+  body.modo-ponente .nota b{color:#0A5C56}
+  body.modo-ponente .nota__q{color:#000}
+  body.modo-ponente .nota__dura{border-color:#BBB;margin-top:5pt}
+  /* el guion impreso no es una proyección: usa hoja A4 apaisada, más alta,
+     y reparte la nota en dos columnas para que quepa entera */
+  body.modo-ponente .slide{
+    page:guion;height:198mm;padding:11mm 15mm;justify-content:flex-start;overflow:hidden;
+    gap:4mm;font-size:9pt;
+  }
+  body.modo-ponente .slide h2{font-size:19pt;max-width:34ch}
+  body.modo-ponente .slide--stmt h2{font-size:21pt}
+  body.modo-ponente .lede{font-size:9pt;max-width:none}
+  body.modo-ponente table{font-size:7.4pt}
+  body.modo-ponente th,body.modo-ponente td{padding:.28rem .5rem}
+  body.modo-ponente ul.bul{gap:.35rem;max-width:none}
+  body.modo-ponente ul.bul li,body.modo-ponente ol.pasos li,
+  body.modo-ponente .hz li,body.modo-ponente .tile p{font-size:8.2pt}
+  body.modo-ponente .tile .v{font-size:15pt}
+  body.modo-ponente .fig figcaption{font-size:7.4pt}
+  body.modo-ponente .fig svg{max-height:74mm}
+  body.modo-ponente .nota{display:grid;grid-template-columns:1.3fr 1fr;gap:8mm;
+    margin-top:auto;padding-top:5mm;font-size:8.2pt;break-inside:avoid}
+  body.modo-ponente .nota__dura{border-left:1pt solid #BBB;padding-left:5mm;margin-top:0}
 }
 
 </style>
@@ -182,12 +245,17 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 <body>
 
 <div class="deck">
-<section class="slide slide--stmt">
+<section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Agosto 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
   <p class="lede">Centro de Excelencia Implantológica Giraldo · Tesis de Dirección v2.0 · Cinco partes, dieciocho apartados y catorce decisiones que solo puede tomar este órgano.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Esto es un eslogan de marketing?</p><p>Es el criterio de aceptación clínico. Está escrito como punto verificable en doce fases del protocolo; el marketing vino después.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="0:45" class="slide">
   <p class="eyebrow">El planteamiento</p>
   <h2>Una tesis, no <em>un informe</em></h2>
   <div class="cols">
@@ -196,20 +264,34 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <div class="tile"><p class="k">Pregunta 3</p><p class="v">¿Y si no?</p><p>Bajo qué condiciones estaríamos equivocados, y qué señal lo avisaría a tiempo</p></div>
   </div>
   <p class="lede">Un informe cuenta lo que ha pasado. Una tesis afirma, apuesta y se expone a ser refutada. Cada cifra de esta presentación lleva marcada su naturaleza: <b>hecho</b>, <b>modelo</b> o <b>pendiente</b>.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 0:45</b><p>Marcar la diferencia entre informe y tesis. Insistir en que cada cifra lleva su naturaleza marcada y que no hay ni un dato propio disfrazado.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Entonces las cifras no son reales?</p><p>Los rangos son del sector y están marcados como modelo. Los datos propios llegan cuando exista la línea base: es la primera tarea de los cien días y está en el §7.</p></div>
+  </aside>
 </section>
-<section class="slide slide--div">
+<section data-min="2:00" class="slide slide--div">
   <p class="eyebrow">Parte I · La posición</p>
   <p class="rom">I</p>
   <h2>Dónde estamos parados y <em>por qué ahí</em></h2>
   <p class="lede">La tesis del proyecto, los segmentos desatendidos, el mapa competitivo de Vigo y el foso: qué tendría que hacer un competidor para quitarnos el sitio y cuánto tardaría.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 2:00</b><p>Transición. No detenerse: quince segundos.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="2:15" data-esencial="1" class="slide">
   <p class="eyebrow">§2 · La tesis</p>
   <h2>Un centro que resuelve lo que otros rechazan y no termina la relación cuando cobra</h2>
   <div class="quote"><p>«Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.»</p></div>
   <p class="lede">La primera mitad es el resultado: ningún tratamiento se deja a medias. La segunda es la relación, y tiene instrumento propio: el programa de cuidado anual. La ventaja competitiva no es el equipamiento —lo reivindican todos— sino la ejecución sistemática.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 2:15 · ruta corta</b><p>La tesis en una frase, y la segunda mitad —«le cuidamos para siempre»— como el compromiso que tiene instrumento contractual, no como una promesa amable.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No dicen todos lo mismo?</p><p>Todos dicen la primera mitad. Pida a un competidor el documento donde figure por escrito quién responde a los cinco años. Ahí se acaba el parecido.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="3:15" class="slide">
   <p class="eyebrow">§2 · Dónde está la oportunidad</p>
   <h2>Tres segmentos que casi nadie atiende</h2>
   <table>
@@ -221,8 +303,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     </tbody>
   </table>
   <p class="lede">Ninguno compra precio: los tres compran solución. Es el terreno donde la competencia en tarifa no llega.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 3:15</b><p>Tres segmentos, y el matiz que importa: ninguno compra precio. Es el terreno donde la guerra de tarifas no llega.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Hay demanda suficiente en Vigo para tres segmentos?</p><p>Es exactamente lo que no sabemos y lo reconocemos: el estudio de mercado está en la hoja de ruta del primer trimestre. Hoy es una hipótesis declarada, no un dato.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="4:30" data-esencial="1" class="slide">
   <p class="eyebrow">§3 · El mapa competitivo</p>
   <h2>Cuatro formas de vender implantes en Vigo, y la que dejamos libre</h2>
   <table>
@@ -235,8 +322,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     </tbody>
   </table>
   <p class="lede">El mercado no se segmenta por precio, sino por <b>quién asume el riesgo del resultado</b>. A, B y C compiten por vender el acto; nosotros vendemos que alguien siga respondiendo cuando el acto ya se cobró. <span class="sem sem--ambar">Modelo</span></p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 4:30 · ruta corta</b><p>Insistir en el eje: el mercado no se ordena por precio, sino por quién asume el riesgo del resultado. Recorrer A, B y C rápido, y detenerse en D.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué está libre la posición D si es tan buena?</p><p>Porque exige casuística alta, sistema documentado y compromiso con coste asumido por adelantado, las tres a la vez. Ninguna se compra por separado y las tres juntas tardan años.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="6:00" data-esencial="1" class="slide">
   <p class="eyebrow">§4 · El foso</p>
   <h2>Lo que un competidor <em>no puede comprar</em></h2>
   <table>
@@ -252,19 +344,33 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     </tbody>
   </table>
   <p class="lede">Los tres primeros cuestan dinero. Los cuatro últimos dan ventaja. Estamos invirtiendo, deliberadamente, en la mitad de abajo. <span class="sem sem--ambar">Modelo</span></p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 6:00 · ruta corta</b><p>La diapositiva del foso. Señalar físicamente la línea que separa las tres primeras filas de las cuatro últimas.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es más rápido y seguro invertir en tecnología?</p><p>Es más rápido y por eso mismo no defiende: cualquiera con financiación nos iguala en tres meses. Lo que compramos en las cuatro filas de abajo es tiempo que el competidor no puede acortar con dinero.</p></div>
+  </aside>
 </section>
-<section class="slide slide--stmt">
+<section data-min="7:30" class="slide slide--stmt">
   <p class="eyebrow">La consecuencia presupuestaria</p>
   <h2>Un euro en equipamiento nos iguala con cualquiera.<br><em>Un euro en sistema nos separa durante años.</em></h2>
   <p class="lede">Por eso el gasto en formación, verificación y programa de seguimiento no es estructura ni coste indirecto: es la única partida del presupuesto que compra tiempo de ventaja frente a un competidor con más capital. Y es siempre la primera candidata al recorte.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 7:30</b><p>Leerla despacio. Es la frase que debe salir de la sala en la cabeza de todos.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto dinero supone eso al año?</p><p>Es la decisión D12: se pide fijar el suelo como porcentaje y concretar la cifra cuando exista línea base, en la revisión del primer trimestre.</p></div>
+  </aside>
 </section>
-<section class="slide slide--div">
+<section data-min="8:15" class="slide slide--div">
   <p class="eyebrow">Parte II · El sistema</p>
   <p class="rom">II</p>
   <h2>El activo se llama <em>sistema operativo</em>, no clínica</h2>
   <p class="lede">Una clínica es un local con pacientes. Un sistema operativo es un conjunto de decisiones ya tomadas que hacen que el resultado no dependa de quién esté ese martes. Lo primero se vende al peso; lo segundo, por múltiplo.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 8:15</b><p>Transición.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="8:30" class="slide">
   <p class="eyebrow">§5 · Qué se ha construido</p>
   <h2>Un sistema operativo, no un plan</h2>
   <div class="cols">
@@ -274,8 +380,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <div class="tile"><p class="k">Documentos vigentes</p><p class="v">17</p><p>Tres troncales y catorce de apoyo</p></div>
   </div>
   <p class="lede">Normativa interna con criterios de salida, registros obligatorios e indicador por fase. Escrita para ejecutarse y para auditarse.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 8:30</b><p>Los cuatro números del sistema construido. No leerlos: señalarlos y decir que están disponibles para auditar hoy mismo.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Quién ha verificado que eso existe de verdad?</p><p>Está en los tres documentos que acompañan a esta tesis y los 322 puntos son comprobables en un recorrido físico de una mañana. La invitación está abierta.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="9:30" class="slide">
   <p class="eyebrow">§5 · Los tres documentos troncales</p>
   <h2>Qué garantiza tenerlo por escrito</h2>
   <ul class="bul">
@@ -284,8 +395,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <li><b>Otros documentos del sistema</b> — verificación, auditoría, 100 días, innovación, marca, posicionamiento y programa de cuidado</li>
   </ul>
   <p class="lede">Que la calidad no dependa de quién esté de turno; que un profesional nuevo sea productivo en semanas; que una inspección encuentre trazabilidad y no explicaciones; y que la Dirección pueda delegar sin perder control. En términos de Junta: la diferencia entre un negocio dependiente de personas y un negocio con activos transferibles.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 9:30</b><p>Los tres troncales y, sobre todo, la frase final: la diferencia entre un negocio dependiente de personas y uno con activos transferibles.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es demasiada documentación para una clínica?</p><p>La cantidad no es el objetivo: la verificabilidad sí. Un estándar que no se puede comprobar en una lista es una intención.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="10:45" class="slide">
   <p class="eyebrow">§6 · Cartera de innovación</p>
   <h2>Tres horizontes, <em>tres criterios distintos</em></h2>
   <div class="hz">
@@ -297,14 +413,23 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
       <ul><li>Docencia y publicación de casuística</li><li>Diagnóstico asistido sobre serie propia</li><li>Licencia del sistema a terceros</li><li>Red de dos a cuatro unidades</li></ul></div>
   </div>
   <p class="lede">El H1 se juzga por retorno, el H2 por hitos de aprendizaje y el H3 por mantener abierta la opción a coste bajo. Confundir los criterios mata el horizonte largo sin que nadie decida matarlo. <b>Decisión D9.</b></p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 10:45</b><p>Los tres horizontes y el error que evita la regla: exigir retorno inmediato al horizonte largo lo mata sin que nadie decida matarlo. Pedir D9 aquí.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Un 10 % en cosas que no dan dinero?</p><p>Un 10 % en mantener abiertas opciones que, si el mercado cambia, no se pueden abrir después a ningún precio. Y con revisión anual del reparto real frente al aprobado.</p></div>
+  </aside>
 </section>
-<section class="slide slide--div">
+<section data-min="12:00" class="slide slide--div">
   <p class="eyebrow">Parte III · La economía</p>
   <p class="rom">III</p>
   <h2>De dónde sale el dinero y <em>qué lo destruye</em></h2>
   <p class="lede">Cuánto vale cada primera visita según cómo la trabajemos, qué le pasa a la facturación si movemos las dos únicas palancas que la gobiernan, y por qué un paciente en seguimiento vale más del doble que un paciente atendido.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 12:00</b><p>Transición.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="12:15" class="slide">
   <p class="eyebrow">§7 · Dónde estamos</p>
   <h2>Los cinco números que <em>aún no tenemos</em></h2>
   <ul class="bul">
@@ -315,8 +440,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <li><b>Meses de colchón de tesorería</b> — día 21</li>
   </ul>
   <p class="lede">Sin estas cinco cifras, cualquier objetivo comercial es una opinión. Esta memoria no contiene ni un solo dato real de explotación: donde hace falta un orden de magnitud, se usa un supuesto de trabajo declarado.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 12:15</b><p>Reconocer sin rodeos que no tenemos los cinco números. Es la diapositiva que da credibilidad a todas las demás.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cómo se puede dirigir sin esos datos?</p><p>No se puede, y por eso el mes 1 es línea base y no objetivo comercial. La hoja de captura acompaña a este documento y las cinco cifras tienen fecha: días 15, 21 y 30.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="13:45" data-esencial="1" class="slide">
   <p class="eyebrow">§8 · Escenarios <span class="sem sem--ambar">Modelo</span></p>
   <h2>Tres trayectorias a treinta y seis meses</h2>
   <figure class="fig"><svg viewBox="0 0 880 380" width="880" height="380" role="img" style="max-width:100%;height:auto" aria-label="Tres trayectorias de facturación anual a 36 meses: base de 720 a 770 mil euros, objetivo de 790 a 1.150 y ambición de 840 a 1.650.">
@@ -366,8 +496,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 </svg>
     <figcaption>Base: el centro sostiene lo heredado sin cambio de sistema. Objetivo: el sistema operativo en marcha con las palancas activas. Ambición: además, segunda unidad y líneas nuevas del H2. La distancia entre base y objetivo —del orden de 380 k€ anuales en el mes 36— es lo que está en juego en esta sesión.</figcaption>
   </figure>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 13:45 · ruta corta</b><p>Los tres escenarios. Señalar la distancia entre base y objetivo en el mes 36 y decir en voz alta: esto es lo que está en juego hoy.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué probabilidad tiene el escenario objetivo?</p><p>No le asignamos probabilidad porque sería inventarla. Le asignamos condiciones: son las palancas del §14 y las decisiones de esta sesión. Sin ellas, el escenario base.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="15:30" data-esencial="1" class="slide">
   <p class="eyebrow">§8 · Sensibilidad <span class="sem sem--ambar">Modelo</span></p>
   <h2>Dos variables gobiernan el resultado; <em>el resto son consecuencias</em></h2>
   <figure class="fig"><svg viewBox="0 0 880 282" width="880" height="282" role="img" style="max-width:100%;height:auto" aria-label="Facturación anual estimada según tasa de conversión y ticket medio, de 353 mil a 1,3 millones de euros.">
@@ -409,8 +544,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 </svg>
     <figcaption>Facturación anual con capacidad fija de cuatro primeras visitas al día. Pasar del 30 % al 50 % de conversión multiplica por 1,67 sin tocar el precio. Subir el ticket de 1.400 € a 2.200 € multiplica por 1,57. Hacer las dos cosas multiplica por 2,6: las palancas no se suman, se multiplican.</figcaption>
   </figure>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 15:30 · ruta corta</b><p>La matriz. Es la diapositiva más importante de la sesión: las dos palancas se multiplican, no se suman. Si hay tiempo, abrir la comprobación en directo del documento.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si la conversión se queda en el 35 %?</p><p>Se ve en la matriz y podemos moverlo en directo: con 35 % y ticket de 1.800 € son 544 k€. Por eso el protocolo de primera visita es el documento económico central, no un documento de calidad.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="17:15" class="slide">
   <p class="eyebrow">§14 · Política de precios <span class="sem sem--ambar">Modelo</span></p>
   <h2>Lo que cuesta de verdad un descuento</h2>
   <figure class="fig"><svg viewBox="0 0 860 348" width="860" height="348" role="img" aria-label="Reparto de cada 100 euros facturados según el descuento aplicado: los costes se mantienen en 60 y el beneficio cae de 40 a 20." style="max-width:100%;height:auto">
@@ -460,8 +600,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 </svg>
     <figcaption>Los costes del caso no bajan cuando baja el precio: el descuento sale íntegramente del beneficio. Un 10 % de descuento cuesta el 25 % del beneficio del caso; compensarlo exige vender un 33 % más. Margen del 40 % como supuesto de trabajo.</figcaption>
   </figure>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 17:15</b><p>El coste real del descuento. La cifra que hay que dejar caer: un 10 % de descuento se lleva el 25 % del beneficio del caso.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Nunca vamos a hacer descuentos?</p><p>Sí, los reglados. Lo que se pide en D1 es que estén tipificados, topados y autorizados por tramo, y que cada uno se registre con su coste en beneficio, no en facturación.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="18:30" class="slide">
   <p class="eyebrow">§8 · La palanca más barata <span class="sem sem--ambar">Modelo</span></p>
   <h2>Cada diez puntos de conversión valen una visita diaria</h2>
   <figure class="fig"><svg viewBox="0 0 860 312" width="860" height="312" role="img" aria-label="Primeras visitas necesarias al día según la tasa de conversión: 5,3 con el 30 por ciento y 2,6 con el 60 por ciento." style="max-width:100%;height:auto">
@@ -491,8 +636,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 </svg>
     <figcaption>Primeras visitas necesarias al día para alcanzar el equilibrio, según la tasa de conversión. Supuestos: 60.000 € de punto de equilibrio mensual, 1.800 € de ticket medio aceptado y 21 días laborables. Mejorar la conversión no requiere captar a nadie más.</figcaption>
   </figure>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 18:30</b><p>Cada diez puntos de conversión equivalen a una primera visita diaria que no hay que captar ni pagar.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es más fácil captar más pacientes?</p><p>Es más caro. Captar más para convertir igual es pagar por desperdicio: por eso captación es la prioridad 4 y conversión la 3.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="19:30" class="slide">
   <p class="eyebrow">§9 · Relación frente a transacción <span class="sem sem--ambar">Modelo</span></p>
   <h2>La relación vale del orden del doble</h2>
   <figure class="fig"><svg viewBox="0 0 860 320" width="860" height="320" role="img" aria-label="Valor a cinco años de un paciente: 720 euros sin programa de cuidado y 1.653 euros con él." style="max-width:100%;height:auto">
@@ -525,8 +675,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 </svg>
     <figcaption>Valor estimado de un paciente a cinco años. El programa de cuidado no se justifica por su cuota, que es marginal, sino por lo que arrastra: revisiones que detectan a tiempo, tratamientos que se hacen cuando aún son sencillos y familiares que entran por la puerta.</figcaption>
   </figure>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 19:30</b><p>El valor del paciente en relación frente al paciente en transacción.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿La cuota del programa compensa el coste de darlo?</p><p>La cuota es casi irrelevante. Lo que compensa es lo que arrastra: revisiones que detectan a tiempo, tratamientos sencillos en lugar de complejos y familiares que entran por la puerta.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="20:30" data-esencial="1" class="slide">
   <p class="eyebrow">§9 · El activo <span class="sem sem--ambar">Modelo</span></p>
   <h2>Lo que hoy se deja <em>sobre la mesa</em></h2>
   <figure class="fig"><svg viewBox="0 0 880 360" width="880" height="360" role="img" style="max-width:100%;height:auto" aria-label="Valor acumulado por paciente a cinco años: 770 euros sin programa de cuidado y 1.653 con él.">
@@ -576,8 +731,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
 </svg>
     <figcaption>Valor acumulado por paciente a cinco años, con y sin programa de seguimiento. El área sombreada no se pierde por competencia: se pierde por no volver a llamar. Es también la parte del ingreso que un comprador valora con múltiplo superior, porque es previsible.</figcaption>
   </figure>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 20:30 · ruta corta</b><p>El área sombreada. Decir la frase tal cual: no se pierde por competencia, se pierde por no volver a llamar.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto es eso en total?</p><p>Con 75 tratamientos terminados por trimestre son del orden de 66 k€ de valor a cinco años por cada trimestre de retraso en D5. Está cuantificado en el coste de no decidir.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="21:45" class="slide">
   <p class="eyebrow">§9 · Creación de valor de empresa</p>
   <h2>Por qué esto vale más que <em>la suma de sus sillones</em></h2>
   <ol class="pasos">
@@ -588,8 +748,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <li><b>Serie clínica propia</b> — resultados documentados a cinco años. El único activo que no se acelera con dinero.</li>
   </ol>
   <p class="lede">Cada decisión de hoy puede leerse dos veces: por su efecto en la cuenta de este año y por el nivel de esta escalera al que lleva al centro. La segunda lectura rara vez aparece en el consejo de una clínica.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 21:45</b><p>La escalera de valor y, acto seguido, la aritmética del múltiplo. Es el momento de decir que una inversión que no mueve el beneficio de este año puede ser la más rentable del presupuesto.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿De dónde salen esos múltiplos?</p><p>De rangos habituales del sector en transacciones de clínicas dentales, marcados como modelo. No es una tasación ni una oferta: es el orden de magnitud de lo que está en juego.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="23:15" class="slide">
   <p class="eyebrow">§10 · Tesis de escalado</p>
   <h2>De un centro a una red: <em>el orden es innegociable</em></h2>
   <ol class="pasos">
@@ -600,14 +765,23 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <li><b>Segunda unidad</b> — solo después de 3 y 4. Antes, no.</li>
   </ol>
   <p class="lede">Los centros que fracasan al escalar casi nunca fallan por falta de demanda en la segunda plaza: replicaron una operación que nunca había funcionado sin su fundador delante. <b>Decisión D11.</b></p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 23:15</b><p>Los cinco pasos del escalado. El orden es lo único innegociable. Pedir D11 aquí, y subrayar que hoy es barata porque no hay ninguna oportunidad concreta sobre la mesa.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si aparece un local irrepetible el mes que viene?</p><p>Esa frase —«no se va a repetir»— es literalmente la señal temprana de la causa 5 del pre-mortem. Por eso la condición se fija hoy y no cuando el local esté delante.</p></div>
+  </aside>
 </section>
-<section class="slide slide--div">
+<section data-min="24:30" class="slide slide--div">
   <p class="eyebrow">Parte IV · El riesgo</p>
   <p class="rom">IV</p>
   <h2>Cómo fracasa esto, contado <em>antes</em> de que ocurra</h2>
   <p class="lede">Un registro de riesgos enumera lo que puede salir mal. Un pre-mortem se sitúa tres años en el futuro, da por hecho el fracaso y pide explicar la causa. Cambia la pregunta, y con ella el nivel de honestidad de las respuestas.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 24:30</b><p>Transición.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="24:45" class="slide">
   <p class="eyebrow">§11 · Riesgos</p>
   <h2>Cinco riesgos críticos, con dueño</h2>
   <table>
@@ -621,8 +795,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     </tbody>
   </table>
   <p class="lede"><b>La única regla que detiene la clínica:</b> sin verificación positiva de la cobertura aseguradora no se realiza actividad clínica. Es el riesgo cuyo coste no tiene techo.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 24:45</b><p>Los cinco riesgos con dueño, y después el registro puntuado: probabilidad por impacto, residual y fecha de revisión.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué la cobertura aseguradora paraliza la clínica y los demás riesgos no?</p><p>Porque es el único cuyo coste no tiene techo. Los demás se gestionan; ese se evita.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="26:15" data-esencial="1" class="slide">
   <p class="eyebrow">§12 · Pre-mortem</p>
   <h2>Agosto de 2029: el proyecto ha fracasado. <em>¿Qué pasó?</em></h2>
   <table>
@@ -637,8 +816,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     </tbody>
   </table>
   <p class="lede">Ninguna es un accidente externo: las seis son decisiones que tomamos nosotros o dejamos de tomar.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 26:15 · ruta corta</b><p>El pre-mortem. Cambiar el tono: estamos en 2029 y esto ha fracasado. Recorrer las seis causas por su señal temprana, no por su descripción.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es un poco derrotista traer esto a una junta?</p><p>Es lo contrario: las seis son decisiones nuestras, no accidentes externos. Un riesgo con señal temprana escrita es un riesgo que se puede parar barato.</p></div>
+  </aside>
 </section>
-<section class="slide slide--stmt">
+<section data-min="28:00" class="slide slide--stmt">
   <p class="eyebrow">§12 · Decisión D13</p>
   <h2>Cinco disparadores que obligan a convocar <em>sin valorar la gravedad</em></h2>
   <ul class="bul">
@@ -649,8 +833,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <li>Una apertura planteada sin los pasos 3 y 4 acreditados</li>
   </ul>
   <p class="lede">Los seis modos de fallo son lentos y cómodos: nunca parecen suficientemente graves el día en que aún son baratos de corregir. Un disparador automático protege a la Junta de la propia Dirección en ese momento exacto.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 28:00</b><p>Los cinco disparadores. Insistir en «sin valorar la gravedad»: ese es el punto entero.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Eso no ata las manos a la Dirección?</p><p>Protege a la Junta de la Dirección justo cuando la Dirección estaría tentada de minimizar el problema. Y es la decisión D13.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="29:15" class="slide">
   <p class="eyebrow">§13 · Cuadro de mando</p>
   <h2>Ocho indicadores, ninguno con serie propia todavía</h2>
   <div class="cols">
@@ -659,14 +848,23 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <div class="tile"><p class="k">Con dato hoy</p><p class="v">0 / 8</p><p><span class="sem sem--ambar">Primera lectura este trimestre</span></p></div>
   </div>
   <p class="lede">Ocho casillas vacías no son una debilidad del documento: son el diagnóstico honesto de dónde estamos. La Junta debe exigir que en la revisión trimestral las ocho tengan valor y tendencia.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 29:15</b><p>El cuadro de mando: ocho casillas vacías. Convertirlo en fortaleza —es el diagnóstico honesto— y presentar acto seguido el diccionario de indicadores.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuándo tendremos datos?</p><p>En la revisión trimestral, las diez casillas con valor y tendencia. Y la definición operativa ya está acordada, que era el bloqueo real.</p></div>
+  </aside>
 </section>
-<section class="slide slide--div">
+<section data-min="30:45" class="slide slide--div">
   <p class="eyebrow">Parte V · La decisión</p>
   <p class="rom">V</p>
   <h2>Qué se pide hoy, y <em>qué cuesta no pedirlo</em></h2>
   <p class="lede">Las palancas de valor, el orden en que se asigna el capital, la hoja de ruta a treinta y seis meses y las catorce decisiones que solo puede tomar este órgano.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 30:45</b><p>Transición.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="31:00" class="slide">
   <p class="eyebrow">§14 · Palancas de valor</p>
   <h2>Por dónde se crece, <em>y en qué orden</em></h2>
   <table>
@@ -680,8 +878,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     </tbody>
   </table>
   <p class="lede"><b>Sostener → recuperar → fidelizar → captar.</b> Invertir en captación con la cartera propia desatendida es la asignación de recursos menos eficiente posible.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 31:00</b><p>Las cinco palancas en su orden: sostener, recuperar, fidelizar, captar. La menos eficiente es invertir en captación con la cartera propia desatendida.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto tarda la palanca 1 en dar caja?</p><p>Semanas, y no cuesta nada más que gestión: es producto ya cobrado que hay que convertir en producción.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="32:15" data-esencial="1" class="slide">
   <p class="eyebrow">§15 · Asignación de capital</p>
   <h2>Un orden de prelación, <em>no una lista de deseos</em></h2>
   <ol class="pasos">
@@ -692,8 +895,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <li><b>Capacidad</b> — sillones, equipos, segunda unidad. Se financia con lo producido, no con deuda contra una previsión.</li>
   </ol>
   <p class="lede">Excepción legítima, una sola: cuando una prioridad inferior es condición técnica de una superior. Se documenta y se presenta en la Junta siguiente. <b>Decisión D10.</b></p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 32:15 · ruta corta</b><p>El orden de prelación del capital y la única regla de excepción. Decir que la prioridad 2 es la primera que se recorta en cualquier centro con prisa, y que este orden existe para impedirlo. Pedir D10.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si un trimestre viene mal?</p><p>Es exactamente el escenario para el que se aprueba hoy. Sin el orden escrito, la partida que da ventaja competitiva es siempre la primera candidata al recorte.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="33:45" class="slide">
   <p class="eyebrow">§16 · Hoja de ruta</p>
   <h2>Tres horizontes, tres puertas</h2>
   <div class="cols">
@@ -702,8 +910,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <div class="tile"><p class="k">Horizonte 3 · 36 meses</p><p class="v">Liderar</p><p>Referencia en implantología compleja, captación mayoritariamente por recomendación</p></div>
   </div>
   <p class="lede">El programa no avanza por calendario, sino por criterios de salida verificados en los días 30, 60 y 100. Ninguna fase se adelanta.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 33:45</b><p>Los tres horizontes y las tres puertas. Ninguna fase se adelanta por calendario: se pasa por criterio de salida verificado.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si vamos por delante de lo previsto?</p><p>Mejor, pero la puerta sigue siendo la puerta. Adelantar una fase sin criterio de salida es cómo se abre la segunda unidad demasiado pronto.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="35:00" data-esencial="1" class="slide">
   <p class="eyebrow">§17 · Lo que se pide hoy · 1 de 2</p>
   <h2>Las ocho de la operación</h2>
   <table>
@@ -719,8 +932,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
       <tr><td class="c">D7</td><td>Marco de inversión en flujo digital</td><td><span class="sem sem--ambar">2.º trimestre</span></td></tr>
     </tbody>
   </table>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 35:00 · ruta corta</b><p>Las ocho de la operación. Leer solo las cuatro inmediatas y decir, con la cifra delante, lo que cuesta aplazarlas un trimestre.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Se pueden aprobar todas hoy?</p><p>Las inmediatas sí: no requieren información que no esté en el documento. D5 queda condicionada al dictamen jurídico, que es un plazo, no una duda.</p></div>
+  </aside>
 </section>
-<section class="slide">
+<section data-min="38:00" data-esencial="1" class="slide">
   <p class="eyebrow">§17 · Lo que se pide hoy · 2 de 2</p>
   <h2>Las seis de <em>la estrategia</em></h2>
   <table>
@@ -735,8 +953,13 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     </tbody>
   </table>
   <p class="lede">Las ocho anteriores resuelven la operación. Estas seis fijan las reglas con las que la Junta decidirá lo que todavía no está sobre la mesa. Es la diferencia entre gobernar y reaccionar.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 38:00 · ruta corta</b><p>Las seis de la estrategia. Insistir en que fijan las reglas con las que se decidirá lo que aún no está sobre la mesa. Repartir el cuadernillo de acuerdos aquí.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué hay que decidir hoy reglas para problemas que no existen?</p><p>Porque cuando existan, decidirlas será caro y estará contaminado por el caso concreto. Una regla se aprueba barata solo antes de necesitarla.</p></div>
+  </aside>
 </section>
-<section class="slide slide--cierre">
+<section data-min="42:00" data-esencial="1" class="slide slide--cierre">
   <p class="eyebrow">Cierre</p>
   <h2>Qué mide el éxito de este año</h2>
   <ul class="bul">
@@ -745,39 +968,95 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
     <li><b>Que la organización acepte un estándar superior al preexistente.</b> La ventana para establecerlo se cierra en el primer trimestre</li>
   </ul>
   <p class="lede">Lo que se pide hoy no es respaldo genérico: es resolver las catorce decisiones y fijar la fecha de la próxima revisión.</p>
+
+  <aside class="nota" hidden>
+    <div><b>Minuto 42:00 · ruta corta</b><p>Cerrar con los tres resultados verificables. La última frase debe ser la petición concreta: resolver las catorce y fijar la fecha de la próxima revisión.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué pasa si no aprobamos alguna?</p><p>Se registra como no resuelta con su fecha de reconsideración. Lo que no puede pasar es que salga de aquí sin decisión y sin fecha: eso es la causa 6 del pre-mortem.</p></div>
+  </aside>
 </section>
 </div>
 
 <div class="barra" aria-hidden="true"><i id="progreso"></i></div>
 <div class="hud">
   <span class="hud__marca">Centro de Excelencia Implantológica Giraldo · Junta Directiva</span>
+  <span class="hud__modo" id="rotulo-ruta" hidden>Ruta corta</span>
+  <span class="hud__modo" id="rotulo-ponente" hidden>Ponente</span>
+  <span class="hud__min" id="minuto"></span>
   <button id="prev" type="button" aria-label="Diapositiva anterior">←</button>
   <span class="hud__n" id="n" aria-live="polite">1 / 34</span>
   <button id="next" type="button" aria-label="Diapositiva siguiente">→</button>
+  <button id="ruta" type="button" aria-pressed="false" title="Ruta corta: doce diapositivas (tecla E)">E</button>
+  <button id="ponente" type="button" aria-pressed="false" title="Guion del ponente (tecla N)">N</button>
 </div>
 
 <script>
 
 (function(){
   "use strict";
-  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
-  var total = slides.length, actual = 0;
-  var num = document.getElementById("n"), barra = document.getElementById("progreso");
+  var todas = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var esenciales = todas.filter(function(s){ return s.hasAttribute("data-esencial"); });
+  var vista = todas, actual = 0, corta = false;
+
+  var num = document.getElementById("n");
+  var barra = document.getElementById("progreso");
+  var minuto = document.getElementById("minuto");
+  var rotuloRuta = document.getElementById("rotulo-ruta");
+  var rotuloPonente = document.getElementById("rotulo-ponente");
+  var botonRuta = document.getElementById("ruta");
+  var botonPonente = document.getElementById("ponente");
+
   function ir(i){
-    actual = Math.max(0, Math.min(total - 1, i));
-    slides.forEach(function(s, k){ s.classList.toggle("is-on", k === actual); });
-    num.textContent = (actual + 1) + " / " + total;
-    barra.style.width = ((actual + 1) / total * 100) + "%";
+    actual = Math.max(0, Math.min(vista.length - 1, i));
+    todas.forEach(function(s){ s.classList.remove("is-on"); });
+    var activa = vista[actual];
+    activa.classList.add("is-on");
+    num.textContent = (actual + 1) + " / " + vista.length;
+    barra.style.width = ((actual + 1) / vista.length * 100) + "%";
+    minuto.textContent = activa.getAttribute("data-min") || "";
     try { history.replaceState(null, "", "#" + (actual + 1)); } catch(e){}
   }
+
+  function ruta(){
+    if(!esenciales.length) return;
+    var actualEl = vista[actual];
+    corta = !corta;
+    vista = corta ? esenciales : todas;
+    rotuloRuta.hidden = !corta;
+    botonRuta.setAttribute("aria-pressed", corta ? "true" : "false");
+    // conservar el sitio: si la actual no está en la ruta, ir a la anterior que sí
+    var i = vista.indexOf(actualEl);
+    if(i < 0){
+      i = 0;
+      for(var k = 0; k < vista.length; k++){
+        if(todas.indexOf(vista[k]) <= todas.indexOf(actualEl)) i = k;
+      }
+    }
+    ir(i);
+  }
+
+  function ponente(){
+    var on = document.body.classList.toggle("modo-ponente");
+    document.querySelectorAll(".nota").forEach(function(n){ n.hidden = !on; });
+    rotuloPonente.hidden = !on;
+    botonPonente.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+
   document.getElementById("prev").addEventListener("click", function(){ ir(actual - 1); });
   document.getElementById("next").addEventListener("click", function(){ ir(actual + 1); });
+  botonRuta.addEventListener("click", ruta);
+  botonPonente.addEventListener("click", ponente);
+
   document.addEventListener("keydown", function(e){
-    if(e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); ir(actual + 1); }
-    else if(e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); ir(actual - 1); }
-    else if(e.key === "Home") ir(0);
-    else if(e.key === "End") ir(total - 1);
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if(k === "ArrowRight" || k === "PageDown" || k === " ") { e.preventDefault(); ir(actual + 1); }
+    else if(k === "ArrowLeft" || k === "PageUp") { e.preventDefault(); ir(actual - 1); }
+    else if(k === "Home") ir(0);
+    else if(k === "End") ir(vista.length - 1);
+    else if(k === "e" || k === "E") ruta();
+    else if(k === "n" || k === "N") ponente();
   });
+
   var inicio = parseInt((location.hash || "").slice(1), 10);
   ir(isNaN(inicio) ? 0 : inicio - 1);
 })();

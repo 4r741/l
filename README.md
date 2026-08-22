@@ -7,7 +7,8 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
 | **`memoria.html`** | Tesis de Dirección (v2.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
-| **`deck.html`** | Presentación de Junta | Treinta y cuatro diapositivas en 16:9 derivadas de la tesis, con portada de declaración y separadores de parte, navegables con el teclado y exportables a PDF apaisado |
+| **`deck.html`** | Presentación de Junta | Treinta y cuatro diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
+| **`instrumentos/`** | Captura de la línea base (2026) | Libro de cálculo que acompaña a la Tesis: una hoja por mes, los diez indicadores ya definidos, umbrales editables, semáforo automático, resumen anual con tendencia y la hoja de los cinco números |
 | **`manual.html`** | Manual Maestro de Operaciones (v5.5) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
 | **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v5.5) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 | **`otros.html`** | Otros documentos del sistema (v1.3) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
@@ -67,7 +68,7 @@ tipografías incrustadas como data URI:
 | --- | --- |
 | `Giraldo-Documentacion-Completa.html` | **Los cuatro documentos de lectura en un solo archivo**, con conmutador entre ellos. Es el recomendado: no depende de cómo se llame el archivo al guardarlo |
 | `Tesis-Direccion-Giraldo-v2.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
-| `Presentacion-Junta-Giraldo-v2.html` | Solo la presentación, navegable con el teclado |
+| `Presentacion-Junta-Giraldo-v2.html` | Solo la presentación, con guion del ponente y ruta corta |
 | `Manual-Maestro-Giraldo-v5.html` | Solo el manual, con la misma condición |
 | `Protocolo-Primera-Visita-Giraldo.html` | Solo el protocolo, con la misma condición |
 | `Otros-Documentos-Giraldo.html` | Solo los otros documentos, con la misma condición |
@@ -99,25 +100,27 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco 
 | §6 Cartera de innovación | Horizontes H1, H2 y H3, cada uno con su criterio de decisión |
 | **III · La economía** | |
 | §7 Línea base | Los cinco números pendientes y las seis preguntas incómodas sobre lo adquirido |
-| §8 Economía unitaria | Escenarios a 36 meses y matriz de sensibilidad conversión × ticket medio |
-| §9 El activo | Valor acumulado por paciente a cinco años y la escalera de valor de empresa |
+| §8 Economía unitaria | Escenarios a 36 meses, matriz de sensibilidad conversión × ticket medio y comprobación en directo de los tres supuestos |
+| §9 El activo | Valor acumulado por paciente a cinco años, la escalera de valor de empresa y el múltiplo orientativo de cada peldaño |
 | §10 Escalado | Los cinco pasos de un centro a una red, y por qué el orden es innegociable |
 | **IV · El riesgo** | |
-| §11 Riesgos | Cinco críticos con propietario y mitigación, más siete de segundo orden |
+| §11 Riesgos | Cinco críticos con propietario y mitigación, siete de segundo orden y registro puntuado de diez con exposición, residual y disparador |
 | §12 Pre-mortem | Seis causas de fracaso contadas desde 2029, con señal temprana y antídoto |
-| §13 Cuadro de mando | Ocho indicadores nucleares |
+| §13 Cuadro de mando | Diez indicadores nucleares, con diccionario de definiciones operativas: numerador, denominador, fuente y exclusiones |
 | **V · La decisión** | |
 | §14 Palancas | Cinco, ordenadas por coste de activación |
 | §15 Asignación de capital | Orden de prelación en cinco prioridades y su única regla de excepción |
 | §16 Hoja de ruta | Tres horizontes y tres puertas de paso |
-| §17 Decisiones | D1 a D8 en tabla y D9 a D14 en ficha, con la alternativa descartada de cada una |
+| §17 Decisiones | D1 a D8 en tabla y D9 a D14 en ficha, con la alternativa descartada de cada una y el coste de no decidir cuantificado |
 | §18 Supuestos | Todos los valores empleados en los modelos, con su origen |
+| §19 Trazabilidad | Dónde se escribe cada acuerdo, cómo se verifica y en qué indicador se ve |
+| Anexo A | Cuadernillo con las catorce hojas de acta, una por decisión, listas para firmar |
 
-Las seis figuras son cálculos derivados de supuestos declarados, no datos de explotación:
+Las siete figuras son cálculos derivados de supuestos declarados, no datos de explotación:
 coste real del descuento, primeras visitas necesarias según conversión, valor del paciente
 a cinco años con y sin programa de cuidado, escenarios de facturación a 36 meses, matriz de
-sensibilidad y valor acumulado por paciente. Las paletas están validadas para visión con
-deficiencia de color.
+sensibilidad, valor acumulado por paciente y valor de empresa por peldaño. Las paletas están
+validadas para visión con deficiencia de color.
 
 ## Otros documentos del sistema (`otros.html`)
 
@@ -144,11 +147,47 @@ deficiencia de color.
 python3 build-pdf.py
 ```
 
-Genera en `export/pdf/` un PDF por documento: A4 con márgenes de encuadernación,
-cabecera de clasificación, pie con «Página X de Y», encabezados de tabla repetidos
-al cambiar de hoja y saltos controlados para que no se parta un cuadro por la mitad.
-La presentación sale en apaisado, una diapositiva por página. Requiere Playwright con
-Chromium.
+Genera en `export/pdf/` seis PDF: A4 con márgenes de encuadernación, cabecera de
+clasificación, pie con «Página X de Y», encabezados de tabla repetidos al cambiar de
+hoja y saltos controlados para que no se parta un cuadro por la mitad. Las catorce
+hojas de acta del Anexo A salen una por página, listas para rellenar a mano. La
+presentación sale en apaisado 16:9, una diapositiva por página, y el guion del ponente
+en A4 apaisado —hoja más alta— con la nota impresa bajo cada diapositiva. Requiere
+Playwright con Chromium.
+
+| PDF | Páginas |
+| --- | --- |
+| `Tesis-Direccion-Giraldo-v2.0.pdf` | 57 |
+| `Manual-Maestro-Giraldo-v5.5.pdf` | 204 |
+| `Otros-Documentos-Giraldo-v1.3.pdf` | 135 |
+| `Protocolo-Primera-Visita-Giraldo-v5.5.pdf` | 90 |
+| `Presentacion-Junta-Giraldo-v2.0.pdf` | 34 |
+| `Guion-del-Ponente-Giraldo-v2.0.pdf` | 34 |
+
+## Captura de la línea base (`instrumentos/`)
+
+```bash
+python3 build-libro.py
+python3 scripts/recalc.py instrumentos/Captura-Linea-Base-Giraldo-2026.xlsx   # o abrir y guardar
+```
+
+openpyxl escribe las fórmulas sin valor en caché: hay que recalcular una vez
+para que cualquier lector distinto de Excel vea los resultados.
+
+`Captura-Linea-Base-Giraldo-2026.xlsx` es el instrumento del §7 y del §13: sin él, la
+confesión de que faltan los cinco números se queda en confesión.
+
+| Hoja | Contenido |
+| --- | --- |
+| Instrucciones | Qué se teclea, código de color y la regla de reporte |
+| Definiciones | El diccionario de los diez indicadores; los umbrales se editan aquí una sola vez |
+| `01` a `12` | Una hoja de captura por mes, con resultado y semáforo automáticos |
+| Resumen anual | Los doce meses en una rejilla, con meses con dato, primero, último y tendencia |
+| Los cinco números | Siete entradas y los cinco resultados calculados, incluido cuántas primeras visitas diarias exige el equilibrio |
+
+Solo se teclean las casillas amarillas; el resto son fórmulas. Un indicador sin dato
+aparece como `SIN DATO` y cuenta como rojo. Los resultados de los cinco números dicen
+`pendiente` mientras falte una entrada, en lugar de dar una cifra inventada.
 
 ## Características comunes
 
@@ -157,6 +196,8 @@ Chromium.
 - Modo claro único: los documentos se leen y se imprimen en papel; no hay modo oscuro ni conmutador de tema.
 - Responsive y con hoja de estilos de impresión.
 - Sin frameworks ni build: HTML, CSS y ~110 líneas de JavaScript por página.
+- La Tesis lleva una comprobación en directo de los supuestos económicos; en papel manda la matriz fija.
+- La presentación se conduce con el teclado: `←` `→` `espacio` `Inicio` `Fin`, `N` guion del ponente, `E` ruta corta.
 
 ## Edición
 

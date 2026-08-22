@@ -227,10 +227,21 @@ ESTILO_DOC = """<style>
 
 
 def cuerpo(html):
-    """Devuelve el contenido de <body> sin el <script> final."""
+    """Devuelve el contenido de <body> sin los guiones del final.
+
+    Se corta en el PRIMER <script>, no en el último: la Tesis lleva dos —el de
+    comportamiento común y el de la comprobación en directo— y cortar por el
+    último dejaba el primero duplicado dentro del archivo único.
+    """
     inicio = html.index("<body>") + len("<body>")
-    fin = html.rindex("<script>")
+    fin = html.index("<script>", inicio)
     return html[inicio:fin]
+
+
+def guiones_propios(html):
+    """Los <script> que un documento añade sobre el de comportamiento común."""
+    bloques = re.findall(r"<script>.*?</script>", html, re.S)
+    return "\n".join(bloques[1:])
 
 
 def prefijar(html, prefijo):
@@ -304,7 +315,7 @@ def unificado(estilo_fuentes):
         estilos=estilos,
         estilo_doc=ESTILO_DOC,
         documentos="\n".join(bloques),
-        script=SCRIPT,
+        script=SCRIPT + "\n" + guiones_propios(fuentes["memoria.html"]),
     )
 
 
