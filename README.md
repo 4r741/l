@@ -8,7 +8,7 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | --- | --- | --- |
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
 | **`memoria.html`** | Tesis de Dirección (v6.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
-| **`deck.html`** | Presentación de Junta | Treinta y cuatro diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
+| **`deck.html`** | Presentación de Junta | Cuarenta y dos diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
 | **`manual.html`** | Manual Maestro de Operaciones (v6.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
@@ -69,9 +69,9 @@ en el §0.2 de la Tesis. La decimotercera la encontró el propio verificador.
 python3 check-coherencia.py
 ```
 
-Afirma diecinueve hechos canónicos —cuántas fases tiene el recorrido y cuántas
+Afirma veintiún hechos canónicos —cuántas fases tiene el recorrido y cuántas
 la primera visita, cuántos indicadores, cuántos documentos operativos, qué
-versión lleva cada archivo, cuántas hojas de acta, cuántas diapositivas— y falla
+versión lleva cada archivo, cuántas hojas de acta, cuántas campañas, cuántas diapositivas— y falla
 con código 1 si algún archivo dice otra cosa. Cubre también los nombres que
 generan `build-export.py` y `build-pdf.py`, para que un PDF no salga marcado con
 una versión que ya no existe. **Se ejecuta antes de publicar.**
@@ -146,16 +146,23 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco 
 | §14 Palancas | Cinco, ordenadas por coste de activación |
 | §15 Asignación de capital | Orden de prelación en cinco prioridades y su única regla de excepción |
 | §16 Hoja de ruta | Tres horizontes y tres puertas de paso |
-| §17 Decisiones | D1 a D8 en tabla y D9 a D14 en ficha, con la alternativa descartada de cada una y el coste de no decidir cuantificado |
+| §17 Decisiones | D1 a D8 en tabla y D9 a D15 en ficha, con la alternativa descartada de cada una y el coste de no decidir cuantificado |
 | §18 Supuestos | Todos los valores empleados en los modelos, con su origen |
 | §19 Trazabilidad | Dónde se escribe cada acuerdo, cómo se verifica y en qué indicador se ve |
-| Anexo A | Cuadernillo con las catorce hojas de acta, una por decisión, listas para firmar |
+| **VI · La cifra** | |
+| §20 El puente | De 720 k€ a 1,2 M€ bloque a bloque, con el colchón de no ejecución y la comprobación de si cabe en la agenda |
+| §21 La cartera de campañas | Las nueve, con segmento, promesa, canal, contribución exigida, coste, dueño y decisión de la que dependen |
+| §22 Calendario y capacidad | Cuándo arranca cada una, la regla de no más de dos a la vez y la senda 890 · 1.060 · 1.200 |
+| §23 Qué tiene que ser cierto | Las cinco condiciones del objetivo y qué se cae si falla cada una |
+| Anexo A | Cuadernillo con las quince hojas de acta, una por decisión, listas para firmar |
+| Anexo B | Una ficha por campaña: promesa, guion de apertura, contribución exigida, responsable y umbral de parada |
 
-Las siete figuras son cálculos derivados de supuestos declarados, no datos de explotación:
+Las diez figuras son cálculos derivados de supuestos declarados, no datos de explotación:
 coste real del descuento, primeras visitas necesarias según conversión, valor del paciente
 a cinco años con y sin programa de cuidado, escenarios de facturación a 36 meses, matriz de
-sensibilidad, valor acumulado por paciente y valor de empresa por peldaño. Las paletas están
-validadas para visión con deficiencia de color.
+sensibilidad, valor acumulado por paciente, valor de empresa por peldaño, el puente hasta el
+objetivo, el calendario de campañas y la composición de la cifra. Las paletas están validadas
+para visión con deficiencia de color.
 
 ## Otros documentos del sistema (`otros.html`)
 
@@ -192,12 +199,12 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v6.0.pdf` | 59 |
-| `Manual-Maestro-Giraldo-v6.0.pdf` | 204 |
+| `Tesis-Direccion-Giraldo-v6.0.pdf` | 77 |
+| `Manual-Maestro-Giraldo-v6.0.pdf` | 205 |
 | `Otros-Documentos-Giraldo-v6.0.pdf` | 135 |
 | `Protocolo-Primera-Visita-Giraldo-v6.0.pdf` | 90 |
-| `Presentacion-Junta-Giraldo-v6.0.pdf` | 34 |
-| `Guion-del-Ponente-Giraldo-v6.0.pdf` | 34 |
+| `Presentacion-Junta-Giraldo-v6.0.pdf` | 42 |
+| `Guion-del-Ponente-Giraldo-v6.0.pdf` | 42 |
 
 ## Captura de la línea base (`instrumentos/`)
 

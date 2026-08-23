@@ -44,12 +44,13 @@ k = cabecera.rindex("</style>")
 cabecera = cabecera[:k] + CSS + "\n" + cabecera[k:]
 
 FICHAS = [
- ("memoria.html", "Tesis de Dirección", "v6.0 · 19 apartados · Anexo A",
+ ("memoria.html", "Tesis de Dirección", "v6.0 · 23 apartados · Anexos A y B",
   "El documento de gobierno. Posición competitiva y foso, sistema operativo y cartera de innovación, "
-  "economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y las catorce decisiones que "
-  "se someten a la Junta. Incluye el cuadernillo con las catorce hojas de acta.",
+  "economía unitaria y creación de valor de empresa, riesgos y pre-mortem, el puente hasta el "
+  "objetivo de 1,2 M€ con su cartera de nueve campañas, y las quince decisiones que se someten "
+  "a la Junta. Incluye los dos cuadernillos: quince hojas de acta y nueve fichas de campaña.",
   "57 páginas en papel · lectura 42′", True),
- ("deck.html", "Presentación de Junta", "v6.0 · 34 diapositivas · 16:9",
+ ("deck.html", "Presentación de Junta", "v6.0 · 42 diapositivas · 16:9",
   "La tesis para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, "
   "<b>N</b> abre el guion del ponente con el minuto objetivo y la pregunta difícil, "
   "<b>E</b> filtra a la ruta corta de doce diapositivas para sesiones de veinte minutos.",
@@ -109,9 +110,9 @@ CUERPO = """
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos operativos</dt><dd>17<small>Tres troncales y catorce de apoyo. El censo completo, en §0.1 de la Tesis</small></dd></div>
-        <div class="spec"><dt>Decisiones abiertas</dt><dd>14<small>Se someten a la Junta Directiva</small></dd></div>
+        <div class="spec"><dt>Decisiones abiertas</dt><dd>15<small>Se someten a la Junta Directiva</small></dd></div>
         <div class="spec"><dt>Puntos de verificación</dt><dd>322<small>Físicos, documentales, de sistemas y de proceso</small></dd></div>
-        <div class="spec"><dt>Indicadores</dt><dd>10<small>Con definición operativa acordada</small></dd></div>
+        <div class="spec"><dt>Objetivo</dt><dd>1,2 M€<small>Facturación anual en el ejercicio tercero, con nueve campañas</small></dd></div>
       </dl>
     </div>
   </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Tesis de Dirección del Centro de Excelencia Implantológica Giraldo: posición competitiva, foso, sistema operativo, economía unitaria y escenarios, creación de valor de empresa, escalado, pre-mortem, asignación de capital y las catorce decisiones que se someten a la Junta Directiva.">
+<meta name="description" content="Tesis de Dirección del Centro de Excelencia Implantológica Giraldo: posición competitiva, foso, sistema operativo, economía unitaria y escenarios, creación de valor de empresa, escalado, pre-mortem, asignación de capital, el puente hasta el objetivo de 1,2 M€ con su cartera de nueve campañas, y las quince decisiones que se someten a la Junta Directiva.">
 <title>Tesis de Dirección Giraldo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -857,6 +857,30 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   #acuerdos .section__head,#acuerdos .gate{break-after:avoid-page}
 }
 
+/* ============================================================
+   FICHAS DE CAMPAÑA — mismo formato que las hojas de acuerdo,
+   con la promesa arriba y el umbral de parada abajo.
+   ============================================================ */
+.campana__promesa{
+  font-family:var(--f-display);font-style:italic;font-size:1.18rem;line-height:1.4;
+  color:var(--accent-ink);max-width:60ch;
+}
+.campana__campos{margin:1.1rem 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(min-width:680px){.campana__campos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1000px){.campana__campos--pie{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.campana__campos>div{background:var(--paper);padding:.7rem .9rem;min-width:0}
+.campana__campos dt{
+  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);
+}
+.campana__campos dd{margin:.25rem 0 0;font-size:.88rem;color:var(--ink-2);line-height:1.45}
+.campana__campos dd strong{color:var(--accent-ink)}
+.campana .script{max-width:none;margin-top:.5rem}
+@media print{
+  .campana__campos>div{background:#fff}
+  .campana{break-before:page}
+}
+
 </style>
 </head>
 <body>
@@ -901,7 +925,13 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <a href="#decisiones">§17 Decisiones</a>
       <a href="#supuestos">§18 Supuestos</a>
       <a href="#trazabilidad">§19 Trazabilidad</a>
+      <a href="#parte-6">VI · La cifra</a>
+      <a href="#puente">§20 El puente</a>
+      <a href="#cartera">§21 Campañas</a>
+      <a href="#calendario">§22 Calendario</a>
+      <a href="#cierto">§23 Condiciones</a>
       <a href="#acuerdos">Anexo A · Acuerdos</a>
+      <a href="#campanas">Anexo B · Campañas</a>
     </nav>
   </div>
 </header>
@@ -919,7 +949,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Giraldo</b>Rúa Bolivia nº 2 · Vigo</span>
       <span><b>Tesis de Dirección · v6.0</b>Agosto 2026 · versión única del sistema</span>
-      <span><b>19 apartados · 5 partes · 14 decisiones</b>Lectura completa 42′ · resumen 3′</span>
+      <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
 </section>
@@ -931,14 +961,14 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
         <p class="eyebrow">El planteamiento</p>
         <h1>Una tesis, no<br>un <em>informe</em></h1>
         <p class="hero__lede">Un informe cuenta lo que ha pasado. Una tesis afirma qué creemos que es cierto sobre este mercado, qué apostamos en consecuencia, y bajo qué condiciones estaríamos equivocados.</p>
-        <p class="hero__note">Este documento contiene las tres cosas. Estado del proyecto, línea base, riesgos y hoja de ruta —lo que cualquier memoria trae— y además el mapa competitivo, el foso que estamos construyendo, la economía unitaria con sus escenarios, la lógica de creación de valor de empresa, el pre-mortem, la asignación de capital, la trazabilidad de cada acuerdo y el cuadernillo con las catorce hojas de acta. Cada afirmación lleva su naturaleza marcada —<strong>hecho</strong>, <strong>modelo</strong> o <strong>pendiente</strong>— para que la Junta sepa en todo momento sobre qué está deliberando. No hay una sola cifra presentada como dato propio que no lo sea.</p>
+        <p class="hero__note">Este documento contiene las tres cosas. Estado del proyecto, línea base, riesgos y hoja de ruta —lo que cualquier memoria trae— y además el mapa competitivo, el foso que estamos construyendo, la economía unitaria con sus escenarios, la lógica de creación de valor de empresa, el pre-mortem, la asignación de capital, la trazabilidad de cada acuerdo, el puente hasta el objetivo de 1,2 M€ con su cartera de nueve campañas, y los dos cuadernillos: quince hojas de acta y nueve fichas de campaña. Cada afirmación lleva su naturaleza marcada —<strong>hecho</strong>, <strong>modelo</strong> o <strong>pendiente</strong>— para que la Junta sepa en todo momento sobre qué está deliberando. No hay una sola cifra presentada como dato propio que no lo sea.</p>
       </div>
       <dl class="specs">
-        <div class="spec"><dt>Lectura</dt><dd>42′<small>Resumen ejecutivo: 3 minutos</small></dd></div>
-        <div class="spec"><dt>Decisiones</dt><dd>14<small>Se someten a aprobación en esta sesión</small></dd></div>
+        <div class="spec"><dt>Lectura</dt><dd>55′<small>Resumen ejecutivo: 3 minutos</small></dd></div>
+        <div class="spec"><dt>Decisiones</dt><dd>15<small>Se someten a aprobación en esta sesión</small></dd></div>
         <div class="spec"><dt>Riesgos críticos</dt><dd>5<small>Con propietario y mitigación asignados</small></dd></div>
         <div class="spec"><dt>Sistema documental</dt><dd>17<small>Documentos operativos vigentes</small></dd></div>
-        <div class="spec"><dt>Horizonte</dt><dd>36 m<small>Estabilización, consolidación y liderazgo</small></dd></div>
+        <div class="spec"><dt>Objetivo</dt><dd>1,2 M€<small>Facturación anual en el ejercicio tercero</small></dd></div>
         <div class="spec"><dt>Ventana crítica</dt><dd>100 d<small>Lo que no se fija ahora se vuelve costumbre</small></dd></div>
       </dl>
     </div>
@@ -2162,7 +2192,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <p class="t-part__num">Parte<b>V</b>La decisión</p>
       <div>
         <h2>Qué se pide hoy, y <em>qué cuesta no pedirlo</em></h2>
-        <p class="t-part__lede">Las palancas de valor, el orden en que se asigna el capital disponible, la hoja de ruta a treinta y seis meses, las catorce decisiones que solo puede tomar este órgano y el registro completo de lo que hemos supuesto sin poder demostrarlo todavía.</p>
+        <p class="t-part__lede">Las palancas de valor, el orden en que se asigna el capital disponible, la hoja de ruta a treinta y seis meses, las quince decisiones que solo puede tomar este órgano y el registro completo de lo que hemos supuesto sin poder demostrarlo todavía.</p>
       </div>
     </div>
   </div>
@@ -2268,8 +2298,8 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§17 · Decisiones que se someten a la Junta</p>
-      <h2>Catorce acuerdos</h2>
-      <p>Cada decisión lleva su código para el acta, quién la propone, qué se pide exactamente, qué pasa si no se resuelve hoy y de qué depende. Las ocho primeras resuelven la operación; las seis últimas fijan las reglas con las que se decidirá lo que aún no está sobre la mesa. Ninguna requiere información adicional a la contenida en este documento.</p>
+      <h2>Quince acuerdos</h2>
+      <p>Cada decisión lleva su código para el acta, quién la propone, qué se pide exactamente, qué pasa si no se resuelve hoy y de qué depende. Las ocho primeras resuelven la operación; las siete últimas fijan las reglas con las que se decidirá lo que aún no está sobre la mesa, incluida la cifra a la que se dirige todo. Ninguna requiere información adicional a la contenida en este documento.</p>
     </div>
 
     <div class="tablewrap">
@@ -2376,6 +2406,19 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
         <div class="t-brief__rec"><b>Recomendación de Dirección</b><p>Aprobar, condicionada a D5: no puede ofrecerse de forma obligatoria un contrato cuya validación jurídica y cuyo catálogo no estén cerrados. D5 primero, D14 acto seguido.</p></div>
       </div>
     </div>
+
+
+    <div class="t-brief">
+      <div class="t-brief__head"><b>D15 · El objetivo de facturación y su horizonte</b><span class="mono">§20 a §23 · Plazo: esta sesión</span></div>
+      <div class="t-brief__body">
+        <div><b>Qué se pide</b><p>Fijar la cifra —1,2 M€ de facturación anual— y el ejercicio en que se exige. Dirección propone el <strong>tercero</strong>, con 890 k€ en el primero y 1.060 k€ en el segundo, y la cartera de nueve campañas del §21 como contenido de D4.</p></div>
+        <div><b>Alternativa descartada</b><p>Fijar 1,2 M€ para el primer ejercicio. No se descarta por prudencia sino por aritmética: con cuatro primeras visitas al día haría falta un rendimiento de 1.190 € por visita, un 47 % por encima del actual, y las campañas que lo sostienen no maduran en doce meses.</p></div>
+        <div><b>Si no se decide</b><p>Cada área trabaja contra una cifra distinta. El objetivo de un año exigido en otro no acelera nada: solo hace que en diciembre parezca un fracaso lo que iba conforme al plan.</p></div>
+        <div><b>Cómo se verifica</b><p>El puente del §20 se revisa cada trimestre bloque a bloque, no en total: así se ve cuál de los nueve está fallando antes de que lo esté el conjunto.</p></div>
+        <div class="t-brief__rec"><b>Recomendación de Dirección</b><p>Aprobar 1,2 M€ en el ejercicio tercero. Si la Junta prefiere dieciocho meses, que conste en el acta que se anticipa la prioridad 5 del §15 y se asume ampliar capacidad antes de tener el estándar consolidado: es legítimo, pero no es gratis y no puede quedar sin decir.</p></div>
+      </div>
+    </div>
+
 
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">El coste de no decidir</h3>
@@ -2507,13 +2550,561 @@ REVISIÓN PREVISTA:</div>
           <tr><td class="num">D12</td><td>Presupuesto anual, partida de sistema y formación</td><td>Suelo anual ejecutado, reportado con el cuadro de mando</td><td>Auditorías en fecha (ind. 10)</td></tr>
           <tr><td class="num">D13</td><td>Anexo de gobernanza del Manual Maestro</td><td>Cada disparador tiene indicador asociado y convocatoria automática</td><td>Indicadores 2, 3, 9 y 10</td></tr>
           <tr><td class="num">D14</td><td>Protocolo, Fase 12 · cierre · y Otros documentos, 14</td><td>Punto de verificación obligatorio del cierre de tratamiento</td><td>Ofrecimiento del programa (ind. 9)</td></tr>
+        <tr><td class="num">D15</td><td>§20 a §23 de este documento y presupuesto anual</td><td>Puente revisado por bloques cada trimestre, no en total</td><td>Facturación anual frente a la senda de §22</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="gate" style="max-width:none">
       <p class="eyebrow">La comprobación de coherencia</p>
-      <p>Los diez indicadores del diccionario de §13 aparecen todos en la columna de la derecha, y las catorce decisiones aparecen todas en la de la izquierda. Un acuerdo que no cupiera en esta matriz sería un acuerdo sin forma de comprobarse; un indicador que no apareciera sería un indicador que no sirve para gobernar nada.</p>
+      <p>Los diez indicadores del diccionario de §13 aparecen todos en la columna de la derecha, y las quince decisiones aparecen todas en la de la izquierda. Un acuerdo que no cupiera en esta matriz sería un acuerdo sin forma de comprobarse; un indicador que no apareciera sería un indicador que no sirve para gobernar nada.</p>
+    </div>
+  </div>
+</section>
+
+<section class="t-part" id="parte-6">
+  <div class="wrap">
+    <div class="t-part__in">
+      <p class="t-part__num">Parte<b>VI</b>La cifra</p>
+      <div>
+        <h2>Cómo se llega a <em>1,2 M€</em></h2>
+        <p class="t-part__lede">La Junta ha fijado un objetivo de facturación anual de 1,2 millones. Esta parte no lo celebra: lo descompone hasta el último euro, comprueba si cabe en la agenda que tenemos, y pone nombre, mes, dueño y coste a las nueve campañas que lo sostienen. Si al final de la lectura la cifra sigue en pie, es que se puede.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="puente">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§20 · El puente</p>
+      <h2>De 720 k€ a 1,2 M€, bloque a bloque</h2>
+      <p>Un objetivo sin puente es un deseo. Este es el recorrido completo: de dónde sale cada euro que hoy no existe, y cuánto se descuenta de antemano <strong>porque no todo lo que se planifica se ejecuta</strong>.</p>
+    </div>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>El puente hasta el objetivo</b>
+        <span>Desde la base de sostener lo heredado hasta 1,2 M€, con la cartera de campañas del §21 agrupada por familia y el colchón de no ejecución descontado antes de llegar a la cifra. Naturaleza: <strong>modelo</strong> sobre los supuestos declarados en §18.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><svg viewBox="0 0 900 430" width="900" height="430" role="img" style="max-width:100%;height:auto" aria-label="Puente de facturación desde 720 mil euros de base hasta el objetivo de 1,2 millones: se suman 720 mil de cartera de campañas y se descuentan 240 mil de colchón de no ejecución.">
+<line x1="62" y1="328.0" x2="874" y2="328.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="50" y="332.0" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0</text>
+<line x1="62" y1="275.6" x2="874" y2="275.6" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="50" y="279.6" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">300</text>
+<line x1="62" y1="223.2" x2="874" y2="223.2" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="50" y="227.2" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">600</text>
+<line x1="62" y1="170.8" x2="874" y2="170.8" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="50" y="174.8" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">900</text>
+<line x1="62" y1="118.4" x2="874" y2="118.4" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="50" y="122.4" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.200</text>
+<line x1="62" y1="66.0" x2="874" y2="66.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="50" y="70.0" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.500</text>
+<text x="50" y="24" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">facturación anual · miles de €</text>
+<rect x="69.0" y="202.2" width="87.5" height="125.8" fill="#0B1A20" rx="3"/>
+<text x="112.75" y="193.24" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">720</text>
+<text x="112.75" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Base</text>
+<text x="112.75" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Sostener lo heredado</text>
+<line x1="156.5" y1="202.2" x2="170.5" y2="202.2" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+<rect x="170.5" y="161.7" width="87.5" height="40.5" fill="#0E8F84" rx="3"/>
+<text x="214.25" y="152.71733333333333" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+232</text>
+<text x="214.25" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Base propia</text>
+<text x="214.25" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Reactivación,</text>
+<text x="214.25" y="381" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">prescripción y</text>
+<text x="214.25" y="394" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">revisión</text>
+<line x1="258.0" y1="161.7" x2="272.0" y2="161.7" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+<rect x="272.0" y="129.6" width="87.5" height="32.1" fill="#0E8F84" rx="3"/>
+<text x="315.75" y="120.57866666666666" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+184</text>
+<text x="315.75" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Complejidad</text>
+<text x="315.75" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Casos que otros</text>
+<text x="315.75" y="381" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">rechazan y segundas</text>
+<text x="315.75" y="394" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">opiniones</text>
+<line x1="359.5" y1="129.6" x2="373.5" y2="129.6" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+<rect x="373.5" y="99.2" width="87.5" height="30.4" fill="#0E8F84" rx="3"/>
+<text x="417.25" y="90.18666666666667" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+174</text>
+<text x="417.25" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Segmentos</text>
+<text x="417.25" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Ansiedad severa y</text>
+<text x="417.25" y="381" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">red de derivación</text>
+<line x1="461.0" y1="99.2" x2="475.0" y2="99.2" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+<rect x="475.0" y="83.8" width="87.5" height="15.4" fill="#0E8F84" rx="3"/>
+<text x="518.75" y="74.816" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+88</text>
+<text x="518.75" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Recurrente</text>
+<text x="518.75" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Giraldo Te Cuida</text>
+<line x1="562.5" y1="83.8" x2="576.5" y2="83.8" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+<rect x="576.5" y="76.5" width="87.5" height="7.3" fill="#0E8F84" rx="3"/>
+<text x="620.25" y="67.47999999999999" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+42</text>
+<text x="620.25" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Digital</text>
+<text x="620.25" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Presencia, reseñas y</text>
+<text x="620.25" y="381" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">captación</text>
+<line x1="664.0" y1="76.5" x2="678.0" y2="76.5" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+<rect x="678.0" y="76.5" width="87.5" height="41.9" fill="#A8631B" rx="3"/>
+<text x="721.75" y="67.47999999999999" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">−240</text>
+<text x="721.75" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Colchón</text>
+<text x="721.75" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Lo que no se</text>
+<text x="721.75" y="381" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">ejecutará (17 %)</text>
+<line x1="765.5" y1="118.4" x2="779.5" y2="118.4" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+<rect x="779.5" y="118.4" width="87.5" height="209.6" fill="#0B1A20" rx="3"/>
+<text x="823.25" y="109.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.200</text>
+<text x="823.25" y="350" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Objetivo</text>
+<text x="823.25" y="368" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Facturación anual</text>
+<line x1="62" y1="328.0" x2="874" y2="328.0" stroke="var(--line)" stroke-width="1"/>
+</svg></div>
+      <p class="t-fig__note">Se planifican 1.440 k€ para comprometer 1.200 k€. Un plan que suma exactamente el objetivo es un plan que falla el objetivo.</p>
+    </figure>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">Por qué el colchón es del 17 % y no de cero</p>
+      <p>Porque de nueve campañas, dos no arrancarán a tiempo, una dependerá de una decisión que se retrase y otra rendirá la mitad de lo previsto. Eso no es pesimismo: es la tasa normal.</p>
+      <p>Planificar 1.200 para conseguir 1.200 obliga a que las nueve salgan perfectas, y entonces la primera que falle se lleva por delante el objetivo entero. Planificar 1.440 permite que fallen dos y llegar igual. <strong>El colchón no es holgura: es lo que hace que la cifra sea creíble.</strong></p>
+    </div>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">La pregunta que hay que hacerse antes que ninguna</h3>
+    <p class="t-lead">¿Cabe 1,2 M€ en la agenda que tenemos? Con cuatro primeras visitas al día, veintiún días al mes y doce meses, el centro ve <strong>1.008 primeras visitas al año</strong>. Con los supuestos actuales —45 % de conversión y 1.800 € de ticket— eso produce 816 k€. La distancia hasta 1,2 M€ no se cubre viendo más gente: se cubre sacando más de cada visita y construyendo ingreso fuera del embudo de la primera visita.</p>
+
+    <div class="t-stats t-stats--4">
+      <div class="t-stat"><i>Capacidad instalada</i><b>1.008</b><p>Primeras visitas al año: 4 al día × 21 días × 12 meses.</p></div>
+      <div class="t-stat"><i>Rendimiento de hoy</i><b>810 €</b><p>Lo que produce cada primera visita con 45 % y 1.800 €.</p></div>
+      <div class="t-stat"><i>Rendimiento necesario</i><b>893 €</b><p>Para que el bloque de primera visita aporte sus 900 k€. Un 10 % más.</p></div>
+      <div class="t-stat"><i>Si fuera solo captación</i><b>5,9/día</b><p>Las primeras visitas diarias que harían falta al ticket de hoy. La agenda da cuatro.</p></div>
+    </div>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>De qué está hecho el objetivo</b>
+        <span>Comparación entre la facturación de hoy —toda ella de primera visita— y la composición del objetivo. Naturaleza: <strong>modelo</strong>.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><svg viewBox="0 0 880 330" width="880" height="330" role="img" style="max-width:100%;height:auto" aria-label="Composición de la facturación: hoy 816 mil euros, todo de primera visita; en el objetivo 1,2 millones repartidos en 900 de primera visita, 140 de recurrente y 160 de tratamiento derivado de la base propia.">
+<line x1="120" y1="256.0" x2="580" y2="256.0" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="108" y="260.0" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">0</text>
+<line x1="120" y1="209.8" x2="580" y2="209.8" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="108" y="213.84615384615384" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">300</text>
+<line x1="120" y1="163.7" x2="580" y2="163.7" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="108" y="167.69230769230768" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">600</text>
+<line x1="120" y1="117.5" x2="580" y2="117.5" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="108" y="121.53846153846155" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">900</text>
+<line x1="120" y1="71.4" x2="580" y2="71.4" stroke="var(--line-soft)" stroke-width="1"/>
+<text x="108" y="75.38461538461539" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.200</text>
+<text x="108" y="22" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">facturación anual · miles de €</text>
+<rect x="150" y="130.5" width="130" height="125.5" fill="#0E8F84" rx="3"/>
+<text x="215.0" y="198.23076923076923" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">816</text>
+<text x="215.0" y="118.46153846153845" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">816 k€</text>
+<text x="215.0" y="280" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Hoy</text>
+<rect x="400" y="117.5" width="130" height="138.5" fill="#0E8F84" rx="3"/>
+<text x="465.0" y="191.76923076923077" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">900</text>
+<rect x="400" y="96.0" width="130" height="21.5" fill="#A8631B" rx="3"/>
+<text x="390" y="110.76923076923077" text-anchor="end" font-size="11" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">140</text>
+<rect x="400" y="71.4" width="130" height="24.6" fill="#7A4FA3" rx="3"/>
+<text x="465.0" y="88.6923076923077" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">160</text>
+<text x="465.0" y="59.38461538461539" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.200 k€</text>
+<text x="465.0" y="280" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Objetivo</text>
+<rect x="580" y="70" width="12" height="12" rx="3" fill="#0E8F84"/>
+<text x="599" y="80" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Implantología por primera visita</text>
+<rect x="580" y="94" width="12" height="12" rx="3" fill="#A8631B"/>
+<text x="599" y="104" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Recurrente y mantenimiento contratado</text>
+<rect x="580" y="118" width="12" height="12" rx="3" fill="#7A4FA3"/>
+<text x="599" y="128" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Tratamiento derivado de la base propia</text>
+<text x="580" y="166" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">El bloque de primera visita solo crece un 10 %.</text>
+<text x="580" y="184" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">Los otros dos hoy no existen: son 300 k€</text>
+<text x="580" y="202" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">que hay que construir, no captar.</text>
+<line x1="120" y1="256.0" x2="580" y2="256.0" stroke="var(--line)" stroke-width="1"/>
+</svg></div>
+      <p class="t-fig__note">Dos tercios del salto no vienen de vender más implantes: vienen de dos bloques de ingreso que hoy no existen.</p>
+    </figure>
+
+    <div class="t-quote">
+      <p>El objetivo no se alcanza captando más pacientes. Se alcanza sacando un 10 % más de los que ya vienen y construyendo trescientos mil euros de ingreso que hoy no existe.</p>
+      <cite>La tesis del §20, en una frase</cite>
+    </div>
+
+    <div class="t-body">
+      <div>
+        <h4 style="font-size:var(--step-1);margin-bottom:.6rem">Qué significa esto para las campañas</h4>
+        <p style="color:var(--ink-2);max-width:66ch">Que su trabajo <strong>no es traer más primeras visitas</strong>. La agenda no las admite, y una campaña que genera demanda que no se puede atender destruye más de lo que aporta: alarga la espera, empeora la experiencia y quema el presupuesto. El trabajo de las nueve campañas es otro, y es doble.</p>
+        <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem"><strong>Uno:</strong> llenar esas mismas cuatro visitas diarias con pacientes mejor cualificados —casos más complejos, pacientes que llegan con la decisión medio tomada, derivaciones de un colega— que convierten más y tienen ticket mayor. <strong>Dos:</strong> producir ingreso fuera del embudo, en la base de pacientes que el centro ya tiene y que hoy no vuelve.</p>
+      </div>
+      <aside class="t-aside">
+        <div class="t-note">
+          <b>El techo, por si acaso</b>
+          <p>Con 60 % de conversión y 2.400 € de ticket, las mismas 1.008 visitas darían 1.451 k€. El objetivo está dentro del techo de la capacidad actual; lo que no cabe es alcanzarlo por volumen.</p>
+        </div>
+        <div class="t-note">
+          <b>Y si se quiere antes</b>
+          <p>1,2 M€ en dieciocho meses exige ampliar capacidad, y eso rompe el orden de prelación del §15. Está tratado en §23.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cartera">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§21 · La cartera de campañas</p>
+      <h2>Nueve campañas con nombre, dueño y cifra</h2>
+      <p>Giraldo Te Cuida es una de las nueve, no la única. Cada campaña tiene un segmento concreto, una promesa que se puede escribir en una frase, un mes de arranque, un responsable con nombre y <strong>una contribución que se le exige</strong>. Una campaña sin cifra exigida no es una campaña: es publicidad.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Cód.</th><th>Campaña y promesa</th><th>A quién</th><th>Por dónde</th><th>Aporta</th><th>Coste</th><th>Depende de</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="num">C1</td>
+            <td><strong>Giraldo Te Cuida</strong><small>«Su tratamiento no termina cuando se coloca»</small></td>
+            <td>Todo paciente que termina tratamiento</td>
+            <td>El cierre de la Fase 12. No es un canal: es un punto de verificación</td>
+            <td class="num">88 k€</td>
+            <td class="num">Bajo<small>Contrato y cartelería</small></td>
+            <td>D5 y D14</td>
+          </tr>
+          <tr>
+            <td class="num">C2</td>
+            <td><strong>«Su caso no es imposible»</strong><small>Para quien ya oyó un no en otro sitio</small></td>
+            <td>Atrofia severa, rehabilitación completa, casos rechazados</td>
+            <td>Contenido propio, casos documentados, colaboración con prescriptores</td>
+            <td class="num">118 k€</td>
+            <td class="num">Medio</td>
+            <td>Casuística y CBCT<small>Ya disponibles</small></td>
+          </tr>
+          <tr>
+            <td class="num">C3</td>
+            <td><strong>«Volvemos a llamarle»</strong><small>Reactivación de la cartera propia dormida</small></td>
+            <td>Pacientes del centro sin visita en más de 18 meses</td>
+            <td>Teléfono, uno a uno, con guion. Nunca correo masivo</td>
+            <td class="num">104 k€</td>
+            <td class="num">Muy bajo<small>Solo tiempo de Recepción</small></td>
+            <td>Inventario de la cartera</td>
+          </tr>
+          <tr>
+            <td class="num">C4</td>
+            <td><strong>Red de derivación</strong><small>«Le devolvemos a su paciente»</small></td>
+            <td>Clínicas generalistas de la ría que no hacen implantología compleja</td>
+            <td>Visita profesional, acuerdo escrito de devolución del paciente</td>
+            <td class="num">96 k€</td>
+            <td class="num">Medio<small>Tiempo de Dirección</small></td>
+            <td>Protocolo de derivación</td>
+          </tr>
+          <tr>
+            <td class="num">C5</td>
+            <td><strong>«Sin miedo»</strong><small>Ansiedad dental severa</small></td>
+            <td>Quien lleva años sin sentarse en un sillón</td>
+            <td>Mensaje explícito, circuito propio, primera visita sin instrumental</td>
+            <td class="num">78 k€</td>
+            <td class="num">Medio</td>
+            <td><strong>D6</strong><small>Sin sedación autorizada, no arranca</small></td>
+          </tr>
+          <tr>
+            <td class="num">C6</td>
+            <td><strong>«La revisión que evita la cirugía»</strong><small>Mantenimiento implantológico</small></td>
+            <td>Portadores de implantes, propios y de otros centros</td>
+            <td>Agenda de recuerdo, higienista, informe al paciente</td>
+            <td class="num">72 k€</td>
+            <td class="num">Bajo</td>
+            <td>Indicador 7 en marcha</td>
+          </tr>
+          <tr>
+            <td class="num">C7</td>
+            <td><strong>«Segunda opinión, sin compromiso»</strong><small>Con el presupuesto de otro centro en la mano</small></td>
+            <td>Quien tiene un plan de tratamiento y dudas</td>
+            <td>Oferta explícita, diagnóstico completo, sin presión de cierre</td>
+            <td class="num">66 k€</td>
+            <td class="num">Bajo</td>
+            <td><strong>D1</strong><small>Sin política de precios se convierte en regatear</small></td>
+          </tr>
+          <tr>
+            <td class="num">C8</td>
+            <td><strong>Prescripción de pacientes</strong><small>El paciente satisfecho como canal</small></td>
+            <td>La base propia en tratamiento y terminada</td>
+            <td>Petición formal en el momento adecuado del recorrido</td>
+            <td class="num">56 k€</td>
+            <td class="num">Nulo</td>
+            <td>Indicador 8 definido</td>
+          </tr>
+          <tr>
+            <td class="num">C9</td>
+            <td><strong>Presencia digital y reseñas</strong><small>Que quien busca, encuentre y confíe</small></td>
+            <td>Búsqueda activa en Vigo y la ría</td>
+            <td>Ficha de negocio, reseñas, contenido de casos, respuesta a preguntas</td>
+            <td class="num">42 k€</td>
+            <td class="num">Medio-alto<small>La única con gasto externo relevante</small></td>
+            <td><strong>D3 y D4</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Contribuciones anuales objetivo, en régimen. Suman 720 k€ sobre la base; el colchón del §20 se aplica a la cartera completa, no campaña a campaña. Naturaleza: modelo.</p>
+
+    <div class="t-stats t-stats--3">
+      <div class="t-stat"><i>De la base propia</i><b>232 k€</b><p>C3, C6 y C8. Pacientes que ya son del centro. Es el dinero más barato que existe y el que primero se abandona.</p></div>
+      <div class="t-stat"><i>De más ticket</i><b>184 k€</b><p>C2 y C7. No más pacientes: mejores casos en las mismas cuatro visitas al día.</p></div>
+      <div class="t-stat"><i>De segmentos nuevos</i><b>174 k€</b><p>C4 y C5. Los dos únicos bloques que traen pacientes que hoy no llegarían de ninguna manera.</p></div>
+    </div>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Las cuatro reglas de la cartera</p>
+      <p><strong>Una:</strong> nunca más de dos campañas arrancando a la vez. El equipo no sostiene más, y una campaña mal atendida hace daño. <strong>Dos:</strong> ninguna campaña se lanza sin su guion escrito y ensayado en el equipo. <strong>Tres:</strong> toda campaña tiene umbral de parada —si a los sesenta días no llega a la mitad de su ritmo previsto, se detiene y se revisa, no se insiste—. <strong>Cuatro:</strong> el orden de arranque respeta el del §15: primero lo que usa la base propia, después lo que sube el ticket, y solo al final lo que cuesta dinero externo.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="calendario">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§22 · Calendario y capacidad</p>
+      <h2>Cuándo se enciende cada una, y por qué en ese mes</h2>
+      <p>La demanda dental no es plana. Enero y septiembre son los meses en que la gente decide; agosto y diciembre, en los que aplaza. Encender una campaña cara en julio es tirar el dinero, y encender dos a la vez en enero es no atender bien ninguna de las dos.</p>
+    </div>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>Las nueve campañas a lo largo del ejercicio</b>
+        <span>En oscuro el mes de arranque, en claro los de sostenimiento. C1 y C8 no tienen arranque porque son permanentes: viven dentro del protocolo, no fuera. Naturaleza: <strong>modelo</strong>.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><svg viewBox="0 0 900 428" width="900" height="428" role="img" style="max-width:100%;height:auto" aria-label="Calendario de las nueve campañas a lo largo de doce meses, con los meses de arranque y los de sostenimiento, y la contribución anual objetivo de cada una.">
+<text x="291.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">E</text>
+<text x="337.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">F</text>
+<text x="383.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">M</text>
+<text x="429.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">A</text>
+<text x="475.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">M</text>
+<text x="521.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">J</text>
+<text x="567.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">J</text>
+<text x="613.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">A</text>
+<text x="659.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">S</text>
+<text x="705.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">O</text>
+<text x="751.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">N</text>
+<text x="797.0" y="48" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">D</text>
+<text x="268" y="28" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">meses del ejercicio</text>
+<text x="836" y="48" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">k€/año</text>
+<text x="252" y="81.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C1 · Giraldo Te Cuida</text>
+<rect x="268" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="64" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="81.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">88</text>
+<text x="252" y="111.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C2 · «Su caso no es imposible»</text>
+<rect x="268" y="94" width="46" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="94" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="94" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="94" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="94" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="94" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="94" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="94" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="94" width="46" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="94" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="94" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="94" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="111.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">118</text>
+<text x="252" y="141.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C3 · «Volvemos a llamarle»</text>
+<rect x="268" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="124" width="46" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="124" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="124" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="124" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="141.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">104</text>
+<text x="252" y="171.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C4 · Red de derivación</text>
+<rect x="268" y="154" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="154" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="154" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="154" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="154" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="154" width="46" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="154" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="154" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="154" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="154" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="154" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="154" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="171.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">96</text>
+<text x="252" y="201.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C5 · «Sin miedo»</text>
+<rect x="268" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="184" width="46" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="184" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="184" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="184" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="201.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">78</text>
+<text x="252" y="231.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C6 · «La revisión que evita la cirugía»</text>
+<rect x="268" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="214" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="214" width="46" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="214" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="214" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="231.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">72</text>
+<text x="252" y="261.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C7 · «Segunda opinión, sin compromiso»</text>
+<rect x="268" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="244" width="46" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="244" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="244" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="244" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="261.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">66</text>
+<text x="252" y="291.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C8 · Prescripción de pacientes</text>
+<rect x="268" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="274" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="291.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">56</text>
+<text x="252" y="321.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C9 · Presencia digital y reseñas</text>
+<rect x="268" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="314" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="360" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="406" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="452" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="498" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="544" y="304" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="590" y="304" width="46" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="636" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="682" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="728" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="774" y="304" width="46" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="321.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">42</text>
+<line x1="836" y1="338" x2="884" y2="338" stroke="var(--line)" stroke-width="1"/>
+<text x="836" y="358" text-anchor="start" font-size="13" font-weight="600" fill="#0E8F84" font-family="var(--f-body)">720</text>
+<text x="252" y="358" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">Cartera completa, antes del colchón</text>
+<rect x="268" y="383" width="14" height="14" fill="#0E8F84" rx="2" stroke="var(--line)"/>
+<text x="288" y="394" text-anchor="start" font-size="11" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Arranque</text>
+<rect x="418" y="383" width="14" height="14" fill="#A7D9D3" rx="2" stroke="var(--line)"/>
+<text x="438" y="394" text-anchor="start" font-size="11" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Sostenimiento</text>
+<rect x="568" y="383" width="14" height="14" fill="#EDF0EC" rx="2" stroke="var(--line)"/>
+<text x="588" y="394" text-anchor="start" font-size="11" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Inactiva</text>
+<text x="252" y="394" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">Nunca más de dos arranques a la vez</text>
+</svg></div>
+      <p class="t-fig__note">En ningún mes hay más de dos arranques. Es la regla, y el calendario está construido para cumplirla.</p>
+    </figure>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">La senda: el objetivo es de año tres, no de año uno</h3>
+    <p class="t-lead">Duplicar la facturación en doce meses con la misma agenda no es ambición: es aritmética imposible. Las campañas necesitan arrancar, madurar y acumular base. El calendario de arriba es el del primer ejercicio; el objetivo llega cuando las nueve están en régimen y la base recurrente se ha acumulado durante tres años.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Ejercicio</th><th>Qué está en marcha</th><th>Facturación</th><th>Qué hay que haber demostrado al cerrarlo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Año 1</strong></td><td>C1, C3, C8 y C9. Protocolo ejecutado completo y línea base levantada</td><td class="num">890 k€</td><td>Los diez indicadores con serie propia y la conversión por encima del 45 %</td></tr>
+          <tr><td><strong>Año 2</strong></td><td>Se añaden C2, C6 y C7. Ticket medio en ascenso por composición de casos</td><td class="num">1.060 k€</td><td>Base en seguimiento contratado superior a 300 pacientes</td></tr>
+          <tr><td><strong>Año 3</strong></td><td>Cartera completa: entran C4 y C5</td><td class="num">1.200 k€</td><td><strong>El objetivo</strong>, con la capacidad actual y sin abrir una segunda unidad</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Coincide con el escenario «objetivo» del §8, que situaba 1.150 k€ en el mes 36. La diferencia son los 50 k€ que aporta afinar la cartera. Naturaleza: modelo.</p>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">La comprobación que evita el error caro</p>
+      <p>Antes de encender cualquier campaña, una sola pregunta: <strong>¿hay hueco en la agenda para atender lo que va a traer?</strong> Si la respuesta es no, la campaña no se enciende: se aplaza o se cambia por una que suba el ticket en lugar del volumen. Generar demanda que no se puede atender es la forma más cara de hacer marketing, porque se paga dos veces: el coste de la campaña y el daño de la espera.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cierto">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§23 · Qué tiene que ser cierto</p>
+      <h2>Las cinco condiciones del objetivo, y qué pasa si falla alguna</h2>
+      <p>El puente del §20 se sostiene sobre cinco cosas. Ninguna es una campaña: son condiciones. <strong>Si alguna no se cumple, el objetivo no baja un poco: se cae el bloque entero que dependía de ella.</strong></p>
+    </div>
+
+    <div class="t-pm">
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 1</b>Que el protocolo se ejecute completo, no a medias</h4>
+          <p>Todo el puente supone una conversión del 45 % o superior. Hoy es un supuesto de trabajo, no una medición. Si la conversión real resulta ser del 35 %, el bloque de primera visita cae de 900 a 700 k€ y el objetivo se aleja 200.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Indicador 6, con cohorte cerrada a 60 días. Primera lectura fiable: tercer mes.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 2</b>Que exista una cartera propia que reactivar</h4>
+          <p>C3, C6 y C8 aportan 232 k€ y las tres se apoyan en la base de pacientes heredada. Nadie ha contado todavía cuántos son, cuántos siguen localizables y cuántos volverían. Si la cartera resulta ser la mitad de lo supuesto, se van 116 k€.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Inventario de cartera en las dos primeras semanas. Es barato y nadie lo ha hecho.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 3</b>Que las decisiones pendientes se resuelvan a tiempo</h4>
+          <p>C1 depende de D5 y D14; C5 de D6; C7 de D1; C9 de D3 y D4. Son 274 k€ de la cartera esperando acuerdos que solo la Junta puede tomar. Cada trimestre de retraso los desplaza un trimestre.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Las decisiones inmediatas del §17, resueltas en esta sesión con fecha de entrada en vigor.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 4</b>Que el ticket medio suba por complejidad, no por precio</h4>
+          <p>El objetivo exige pasar de 1.800 a cerca de 2.000 € de ticket medio. Si eso se intenta subiendo tarifas en lugar de tratando casos más complejos, la conversión cae y el efecto neto es negativo.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Ticket medio y conversión se leen juntos, nunca por separado. Si uno sube y el otro baja, la palanca está mal accionada.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 5</b>Que el equipo aguante</h4>
+          <p>Nueve campañas, un protocolo nuevo y una línea base que levantar es mucha carga sobre las mismas personas. La condición más silenciosa y la que más veces rompe los planes: no falla la demanda, falla quien tiene que atenderla.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Indicador 2, bajas voluntarias, y la regla de no más de dos arranques simultáneos.</p></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Y si la Junta quiere 1,2 M€ en dieciocho meses</h3>
+    <div class="t-body">
+      <div>
+        <p style="color:var(--ink-2);max-width:66ch">Es una decisión legítima y tiene precio. Comprimir tres años en año y medio no se consigue acelerando las campañas —maduran a su ritmo— sino ampliando capacidad: <strong>un segundo gabinete en uso efectivo y un día más de quirófano a la semana</strong>. Eso significa inversión en la prioridad 5 del §15 antes de haber consolidado las prioridades 2 y 3, que es exactamente el orden que el §15 pide no romper.</p>
+        <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">Se puede hacer. Pero entonces hay que decirlo así en el acta: <em>«la Junta acuerda anticipar la prioridad 5, asumiendo que se hace antes de que el estándar esté consolidado»</em>. Lo que no se puede es fijar el plazo de dieciocho meses y mantener a la vez el orden de prelación intacto, porque una de las dos cosas no será verdad.</p>
+      </div>
+      <aside class="t-aside">
+        <div class="t-note">
+          <b>Se somete como D15</b>
+          <p>Fijar el objetivo y su horizonte. Es la decisión que ordena todo lo demás de esta parte.</p>
+        </div>
+        <div class="t-note">
+          <b>El coste de la prisa</b>
+          <p>Ampliar capacidad antes de tiempo multiplica por más volumen un estándar que todavía no está asentado. Es la causa 1 del pre-mortem, con más pacientes dentro.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">Lo que esta parte pide a la Junta</p>
+      <p>Fijar la cifra y el horizonte —1,2 M€ en el ejercicio tercero—, aprobar la cartera de nueve campañas como contenido de D4, y resolver las seis decisiones de las que dependen 274 k€ de esa cartera.</p>
+      <p>Y una cosa más, que no cuesta dinero: aceptar que el primer año no se parece al tercero. Un objetivo de año tres exigido en el año uno no acelera nada; solo garantiza que en diciembre parezca un fracaso lo que iba conforme al plan.</p>
     </div>
   </div>
 </section>
@@ -2522,8 +3113,8 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Anexo A · Cuadernillo de acuerdos</p>
-      <h2>Catorce hojas para salir de la sesión con el acta hecha</h2>
-      <p>Una hoja por decisión, con las alternativas ya redactadas y espacio para la resolución, el fundamento, la fecha de entrada en vigor y las firmas. Se imprimen a una cara, se rellenan durante la sesión y se archivan. <strong>Sin este cuadernillo, la Junta sale con catorce acuerdos y un acta por redactar</strong>; con él, sale con catorce documentos firmados y con fecha.</p>
+      <h2>Quince hojas para salir de la sesión con el acta hecha</h2>
+      <p>Una hoja por decisión, con las alternativas ya redactadas y espacio para la resolución, el fundamento, la fecha de entrada en vigor y las firmas. Se imprimen a una cara, se rellenan durante la sesión y se archivan. <strong>Sin este cuadernillo, la Junta sale con quince acuerdos y un acta por redactar</strong>; con él, sale con quince documentos firmados y con fecha.</p>
     </div>
 
     <div class="gate" style="max-width:none">
@@ -3066,6 +3657,47 @@ REVISIÓN PREVISTA:</div>
 
     <article class="acta">
       <header class="acta__cab">
+        <div><span class="acta__cod">D15</span><b>Objetivo de facturación y horizonte</b></div>
+        <span class="mono">Registro de decisión nº ______ · Plazo: Esta sesión</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="acta__pide"><b>Qué se somete a acuerdo.</b> Fijar la cifra de facturación anual y el ejercicio en que se exige, y aprobar la cartera de nueve campañas del §21 como contenido de D4.</p>
+        <p class="acta__rot">Alternativas evaluadas · márquese la adoptada</p>
+        <ul class="acta__ops">
+        <li><span class="acta__caja" aria-hidden="true"></span><b>A</b><span>1,2 M€ en el ejercicio tercero, con la senda 890 · 1.060 · 1.200</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>B</b><span>1,2 M€ en dieciocho meses, anticipando la prioridad 5 del §15 y ampliando capacidad</span></li>
+        <li><span class="acta__caja" aria-hidden="true"></span><b>C</b><span>Aplazar la fijación del objetivo hasta disponer de línea base real</span></li>
+          <li><span class="acta__caja" aria-hidden="true"></span><b>D</b><span class="acta__linea">Otra: </span></li>
+        </ul>
+        <p class="acta__rot">Fundamento de la resolución</p>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__pauta" aria-hidden="true"></div>
+        <div class="acta__rejilla">
+          <div><span>Entrada en vigor</span><i></i></div>
+          <div><span>Responsable de ejecución</span><i></i></div>
+          <div><span>Próxima revisión</span><i></i></div>
+          <div><span>Consulta previa realizada</span><i></i></div>
+        </div>
+        <dl class="acta__meta">
+          <div><dt>Documentos afectados</dt><dd>§20 a §23 de la Tesis · presupuesto anual</dd></div>
+          <div><dt>Se verificará en</dt><dd>Facturación anual frente a la senda de §22</dd></div>
+        </dl>
+        <p class="acta__rot">Comunicación del acuerdo</p>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Destinatarios</span><i></i></div>
+          <div><span>Canal</span><i></i></div>
+          <div><span>Fecha</span><i></i></div>
+        </div>
+        <div class="acta__firmas">
+          <div><span>Presidencia</span><i></i></div>
+          <div><span>Secretaría</span><i></i></div>
+          <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta">
+      <header class="acta__cab">
         <div><span class="acta__cod">D14</span><b>Programa de cuidado obligatorio en el cierre</b></div>
         <span class="mono">Registro de decisión nº ______ · Plazo: Tras D5</span>
       </header>
@@ -3101,6 +3733,300 @@ REVISIÓN PREVISTA:</div>
           <div><span>Presidencia</span><i></i></div>
           <div><span>Secretaría</span><i></i></div>
           <div><span>Fecha de la sesión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="campanas">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Anexo B · Fichas de campaña</p>
+      <h2>Nueve hojas para poner en marcha, no para leer</h2>
+      <p>Una por campaña, con la promesa, a quién va dirigida, qué se le ofrece, cómo se abre la conversación, quién responde y —lo que casi nunca se escribe— <strong>en qué momento se para</strong>. Se imprimen, se reparten al responsable de cada una y se revisan a los sesenta días.</p>
+    </div>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">Cómo se usa una ficha</p>
+      <p>La contribución exigida no es una previsión: es el compromiso que asume quien la firma. El umbral de parada no es pesimismo: es lo que impide que una campaña que no funciona siga consumiendo presupuesto y atención durante un año entero porque a nadie le apetece admitirlo. <strong>Una campaña sin umbral de parada no se cancela nunca.</strong></p>
+    </div>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C1</span><b>Giraldo Te Cuida</b></div>
+        <span class="mono">Arranque: Permanente · Aporta 88 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Su tratamiento no termina cuando se coloca: empieza otra cosa</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Todo paciente que termina un tratamiento, sin excepción ni criterio comercial.</dd></div>
+          <div><dt>Dónde está</dt><dd>No hay que encontrarlo: ya está sentado delante. La campaña vive dentro del cierre de la Fase 12.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>El programa de cuidado anual: revisiones, mantenimiento y prioridad de agenda, por una cuota.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Punto de verificación obligatorio del cierre. Permanente, los doce meses.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>Antes de que se vaya, quiero explicarle cómo vamos a cuidar esto a partir de ahora. No es una venta: es cómo trabajamos.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>88 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Bajo · contrato, cartelería y formación del cierre</dd></div>
+          <div><dt>Responsable</dt><dd>Dirección</dd></div>
+          <div><dt>Depende de</dt><dd>D5 · catálogo y validación jurídica · D14 · obligatoriedad en el cierre</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Indicador 9 · ofrecimiento por encima del 90 %</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si el ofrecimiento baja del 90 % dos meses seguidos, se para todo lo demás y se corrige esto.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C2</span><b>«Su caso no es imposible»</b></div>
+        <span class="mono">Arranque: Enero y septiembre · Aporta 118 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Le dijeron que no se podía. Vamos a mirarlo otra vez</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Atrofia severa, rehabilitación completa, fracasos previos, casos rechazados en otros centros.</dd></div>
+          <div><dt>Dónde está</dt><dd>No busca precio: busca a alguien que se atreva. Llega por contenido, por prescripción y por segunda opinión.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Un diagnóstico completo con CBCT y una respuesta honesta, incluida la de que no se puede.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Casos propios documentados, colaboración con prescriptores, presencia en búsqueda. Arranque fuerte en enero y septiembre.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>Tráigame lo que le dijeron. Vamos a ver el caso entero, no solo la zona que le duele, y le voy a decir la verdad.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>118 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Medio · tiempo clínico de diagnóstico y producción de contenido</dd></div>
+          <div><dt>Responsable</dt><dd>Dirección clínica</dd></div>
+          <div><dt>Depende de</dt><dd>Nada externo: casuística y CBCT ya están</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Ticket medio de los casos aceptados y número de casos complejos al mes</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si a los 60 días no hay al menos tres casos complejos aceptados, se revisa el mensaje antes de gastar más.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C3</span><b>«Volvemos a llamarle»</b></div>
+        <span class="mono">Arranque: Febrero · Aporta 104 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Hace tiempo que no le vemos y queremos saber cómo está</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Pacientes del propio centro sin visita en más de dieciocho meses.</dd></div>
+          <div><dt>Dónde está</dt><dd>Están en la base de datos. La campaña más barata que existe y la primera que todo centro abandona.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Una revisión sin coste y, si procede, retomar el tratamiento donde se dejó.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Teléfono, uno a uno, con guion escrito. Nunca correo masivo. Veinte llamadas al día durante ocho semanas.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>Le llamo del centro. Veo que la última vez que vino fue hace dos años y quedó pendiente terminar. ¿Cómo está de eso?</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>104 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Muy bajo · solo tiempo de Recepción</dd></div>
+          <div><dt>Responsable</dt><dd>Recepción, con seguimiento diario de Gerencia</dd></div>
+          <div><dt>Depende de</dt><dd>Inventario de la cartera dormida, que nadie ha hecho todavía</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Llamadas hechas, citas conseguidas y tratamientos retomados</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si de 200 llamadas no salen 20 citas, el problema es el guion, no la cartera: se reescribe.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C4</span><b>Red de derivación</b></div>
+        <span class="mono">Arranque: Junio · Aporta 96 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Le devolvemos a su paciente, y con el caso resuelto</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Clínicas generalistas de Vigo y la ría que no hacen implantología compleja.</dd></div>
+          <div><dt>Dónde está</dt><dd>No es una campaña de pacientes: es de colegas. Se hace en persona, una a una.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Resolver el caso que ellos no hacen y devolver al paciente para todo lo demás, por escrito.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Visita profesional del director clínico. Dos clínicas por semana. Acuerdo escrito de devolución.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>No queremos su paciente. Queremos el caso que usted no va a hacer, y devolvérselo terminado con el informe.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>96 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Medio · tiempo de Dirección y material profesional</dd></div>
+          <div><dt>Responsable</dt><dd>Dirección clínica</dd></div>
+          <div><dt>Depende de</dt><dd>Protocolo de derivación y compromiso de devolución por escrito</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Clínicas con acuerdo firmado y pacientes derivados al trimestre</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si tras veinte visitas no hay cinco acuerdos, el problema es la propuesta, no el mercado.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C5</span><b>«Sin miedo»</b></div>
+        <span class="mono">Arranque: Abril · Aporta 78 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Lleva años sin ir al dentista. No le vamos a reñir</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Ansiedad dental severa: personas que llevan años evitando el sillón.</dd></div>
+          <div><dt>Dónde está</dt><dd>Es el segmento que menos se comunica y más lo agradece. Llega por mensaje explícito, casi nunca preguntando.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Una primera visita sin instrumental, un circuito propio y sedación consciente si hace falta.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Mensaje explícito en todos los canales, circuito diferenciado en el centro. Arranque en abril.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>La primera vez no le vamos a tocar nada. Solo vamos a hablar y a mirar. Usted dice cuándo paramos.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>78 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Medio · circuito, formación y habilitación</dd></div>
+          <div><dt>Responsable</dt><dd>Dirección clínica</dd></div>
+          <div><dt>Depende de</dt><dd>D6 · autorización de la línea de sedación consciente</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Pacientes atendidos del segmento y tasa de abandono entre primera visita y tratamiento</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si la habilitación de sedación no está resuelta, la campaña no arranca: no se promete lo que no se puede dar.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C6</span><b>«La revisión que evita la cirugía»</b></div>
+        <span class="mono">Arranque: Octubre · Aporta 72 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Un implante también se cuida, y cuesta mucho menos que rehacerlo</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Portadores de implantes, propios y de otros centros.</dd></div>
+          <div><dt>Dónde está</dt><dd>Un segmento enorme y desatendido: casi nadie les llama, porque no produce caja inmediata.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Revisión de mantenimiento con informe, y entrada natural al programa de cuidado.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Agenda de recuerdo del higienista e informe escrito al paciente. Arranque en octubre.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>¿Cuándo le revisaron los implantes por última vez? Le explico qué pasa cuando no se revisan.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>72 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Bajo · tiempo de higienista</dd></div>
+          <div><dt>Responsable</dt><dd>Higienista, con supervisión de Dirección</dd></div>
+          <div><dt>Depende de</dt><dd>Indicador 7 definido y en captura</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Indicador 7 · pacientes en mantenimiento activo</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si el mantenimiento activo no crece dos trimestres seguidos, se revisa el circuito de recuerdo.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C7</span><b>«Segunda opinión, sin compromiso»</b></div>
+        <span class="mono">Arranque: Mayo · Aporta 66 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Traiga el presupuesto que le han dado. Lo miramos juntos</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Quien ya tiene un plan de tratamiento de otro centro y no está seguro.</dd></div>
+          <div><dt>Dónde está</dt><dd>Llega con la decisión medio tomada y con toda la información encima de la mesa. Convierte más que ningún otro.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Diagnóstico completo propio y explicación de las diferencias, sin presión de cierre.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Oferta explícita en el mensaje y en recepción. Arranque en mayo.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>No vengo a criticar a nadie. Vamos a mirar su caso desde cero y luego usted compara.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>66 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Bajo</dd></div>
+          <div><dt>Responsable</dt><dd>Dirección</dd></div>
+          <div><dt>Depende de</dt><dd>D1 · política de precios y tabla de descuentos</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Conversión específica del segmento frente a la conversión general</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si acaba convirtiéndose en una negociación de precio, se suspende: destruye la política de D1.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C8</span><b>Prescripción de pacientes</b></div>
+        <span class="mono">Arranque: Permanente · Aporta 56 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Si le hemos tratado bien, dígaselo a quien lo necesite</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>La base propia, en tratamiento y terminada.</dd></div>
+          <div><dt>Dónde está</dt><dd>El canal más barato, el de mayor conversión y el único que nadie puede copiar.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Nada material. Se pide, sencillamente, en el momento adecuado del recorrido.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Petición formal integrada en el protocolo, en el momento de mayor satisfacción. Permanente.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>Si ha estado a gusto, lo que más nos ayuda es que se lo cuente a alguien que lo esté pasando como usted lo pasaba.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>56 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Nulo</dd></div>
+          <div><dt>Responsable</dt><dd>Todo el equipo, con Dirección como responsable</dd></div>
+          <div><dt>Depende de</dt><dd>Indicador 8 definido y campo de origen obligatorio</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Indicador 8 · captación por recomendación</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si la recomendación no crece con la base, es que la experiencia no está a la altura: se mira eso, no la campaña.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acta campana">
+      <header class="acta__cab">
+        <div><span class="acta__cod">C9</span><b>Presencia digital y reseñas</b></div>
+        <span class="mono">Arranque: Enero · Aporta 42 k€/año</span>
+      </header>
+      <div class="acta__cuerpo">
+        <p class="campana__promesa">Que quien nos busque nos encuentre, y que al encontrarnos confíe</p>
+        <dl class="campana__campos">
+          <div><dt>A quién</dt><dd>Quien busca activamente en Vigo y la ría.</dd></div>
+          <div><dt>Dónde está</dt><dd>Búsqueda, ficha de negocio y reseñas. Es el escaparate, no el vendedor.</dd></div>
+          <div><dt>Qué se le ofrece</dt><dd>Información honesta, casos reales y respuesta a las preguntas que la gente hace de verdad.</dd></div>
+          <div><dt>Canal y ritmo</dt><dd>Ficha de negocio, reseñas pedidas sistemáticamente, contenido de casos. Todo el año salvo verano.</dd></div>
+        </dl>
+        <p class="acta__rot">Cómo se abre la conversación</p>
+        <div class="script"><q>No hay guion: hay contenido. La pregunta que responde cada pieza es una que un paciente hizo en consulta.</q></div>
+        <dl class="campana__campos campana__campos--pie">
+          <div><dt>Contribución exigida</dt><dd><strong>42 k€ al año</strong>, en régimen</dd></div>
+          <div><dt>Coste</dt><dd>Medio-alto · la única con gasto externo relevante</dd></div>
+          <div><dt>Responsable</dt><dd>Responsable de marca, designado en D8</dd></div>
+          <div><dt>Depende de</dt><dd>D3 · arquitectura de marca · D4 · presupuesto de captación</dd></div>
+          <div><dt>Cómo se mide</dt><dd>Coste por primera visita captada y volumen de reseñas nuevas</dd></div>
+          <div><dt>Umbral de parada</dt><dd>Si el coste por primera visita supera el margen de contribución del caso medio, se apaga.</dd></div>
+        </dl>
+        <div class="acta__rejilla acta__rejilla--3">
+          <div><span>Fecha de arranque acordada</span><i></i></div>
+          <div><span>Primera revisión (60 días)</span><i></i></div>
+          <div><span>Resultado a la revisión</span><i></i></div>
         </div>
       </div>
     </article>

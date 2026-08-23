@@ -30,15 +30,17 @@ CIFRAS = {
     "documentos de apoyo": 14,
     "documentos operativos": 17,
     "indicadores del cuadro de mando": 10,
-    "decisiones sometidas a la Junta": 14,
+    "decisiones sometidas a la Junta": 15,
     "riesgos críticos": 5,
     "riesgos de segundo orden": 7,
     "riesgos del registro puntuado": 10,
     "fichas de innovación": 18,
     "decisiones de Gerencia": 20,
     "verificaciones externas": 11,
-    "diapositivas de la presentación": 34,
+    "diapositivas de la presentación": 42,
     "piezas del sistema": 21,
+    "campañas de la cartera": 9,
+    "objetivo de facturación en miles de euros": 1200,
     "incoherencias reconciliadas en v6.0": 13,
 }
 
@@ -120,6 +122,10 @@ def comprueba_cifras():
             if mal in t:
                 falla(doc, "dice «%s»; el cuadro de mando tiene %d"
                       % (mal, CIFRAS["indicadores del cuadro de mando"]))
+        for mal in ("catorce decisiones", "Catorce decisiones", "catorce acuerdos",
+                    "Catorce acuerdos", "catorce hojas de acta"):
+            if mal in t:
+                falla(doc, "dice «%s»; se someten %d" % (mal, CIFRAS["decisiones sometidas a la Junta"]))
         for mal in ("ocho decisiones", "Ocho decisiones", "ocho acuerdos", "Ocho acuerdos"):
             if mal in t and "ocho primeras" not in t.lower():
                 falla(doc, "dice «%s»; se someten %d" % (mal, CIFRAS["decisiones sometidas a la Junta"]))
@@ -167,8 +173,8 @@ def comprueba_estructura():
     faltan = {str(i) for i in range(1, CIFRAS["decisiones sometidas a la Junta"] + 1)} - codigos
     if faltan:
         falla("memoria.html", "no menciona las decisiones %s" % sorted(faltan, key=int))
-    if briefs != 6:
-        avisa("memoria.html", "tiene %d fichas de decisión en detalle (se esperaban 6)" % briefs)
+    if briefs != 7:
+        falla("memoria.html", "tiene %d fichas de decisión estratégica y deberían ser 7 (D9 a D15)" % briefs)
 
     d = bruto("deck.html")
     n = len(re.findall(r'<section[^>]*class="slide', d))
@@ -178,6 +184,15 @@ def comprueba_estructura():
     esenciales = d.count('data-esencial="1"')
     if esenciales != 12:
         falla("deck.html", "la ruta corta marca %d diapositivas y deberían ser 12" % esenciales)
+
+    fichas = len(re.findall(r'class="acta campana"', bruto("memoria.html")))
+    if fichas != CIFRAS["campañas de la cartera"]:
+        falla("memoria.html", "el anexo B trae %d fichas de campaña y deberían ser %d"
+              % (fichas, CIFRAS["campañas de la cartera"]))
+    codigos = set(re.findall(r"\bC(\d)\b", texto("memoria.html")))
+    faltan = {str(i) for i in range(1, CIFRAS["campañas de la cartera"] + 1)} - codigos
+    if faltan:
+        falla("memoria.html", "no menciona las campañas %s" % sorted(faltan))
 
     c = bruto("instrumentos/captura.html")
     ind = len(re.findall(r'tr data-fila="\d+"', c))
