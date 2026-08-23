@@ -1,0 +1,114 @@
+<!--@KPIDEF-->
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Diccionario de indicadores</h3>
+    <p style="color:var(--ink-2);max-width:68ch">Un indicador sin definición operativa no se puede medir dos meses seguidos de la misma manera, y una serie que cambia de definición no es una serie. Esta tabla fija, para cada indicador, qué se cuenta arriba, qué se cuenta abajo, de dónde sale el dato y qué queda fuera. <strong>Es la condición previa de la línea base de §7</strong>: mientras no esté acordada, cualquier cifra que se reporte es incomparable con la del mes siguiente.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>Indicador</th><th>Numerador</th><th>Denominador</th><th>Fuente</th><th>Qué queda fuera</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td><strong>Verificaciones regulatorias cerradas</strong></td><td>Verificaciones V1–V11 con evidencia documental archivada y fechada</td><td>11</td><td>Expediente de verificaciones externas</td><td>Nada. Una verificación «en trámite» cuenta como no cerrada</td></tr>
+          <tr><td class="num">2</td><td><strong>Bajas voluntarias del equipo</strong></td><td>Ceses a instancia de la persona trabajadora en el periodo</td><td>Plantilla media del periodo</td><td>Registro laboral</td><td>Fin de contrato temporal ya previsto e incapacidades temporales</td></tr>
+          <tr><td class="num">3</td><td><strong>Reclamaciones de pacientes heredados</strong></td><td>Reclamaciones formales: escrito, hoja oficial, comunicación a colegio o consumo, o reseña pública negativa</td><td>—<small>Recuento absoluto</small></td><td>Registro de incidencias</td><td>Quejas verbales resueltas en el acto y registradas como incidencia de nivel 1</td></tr>
+          <tr><td class="num">4</td><td><strong>Documentación digitalizada el mismo día</strong></td><td>Actos clínicos con historia, consentimiento e imágenes cargados antes del cierre de la jornada</td><td>Actos clínicos del día</td><td>Gestor de clínica</td><td>Nada</td></tr>
+          <tr><td class="num">5</td><td><strong>Producto pendiente</strong></td><td>Importe cobrado o comprometido de tratamientos aceptados y no terminados a fecha de corte</td><td>—<small>Importe en euros</small></td><td>Informe de tratamientos abiertos</td><td>Presupuestos presentados y no aceptados</td></tr>
+          <tr><td class="num">6</td><td><strong>Tasa de conversión de la primera visita</strong></td><td>Primeras visitas del mes M con plan principal aceptado y primer pago o financiación aprobada <strong>dentro de 60 días naturales</strong></td><td>Primeras visitas del mes M</td><td>Agenda y presupuestos, cruzados</td><td>Urgencias, segundas opiniones sin intención de tratarse aquí y derivaciones a otro centro por criterio clínico</td></tr>
+          <tr><td class="num">7</td><td><strong>Pacientes en mantenimiento activo</strong></td><td>Pacientes con revisión o higiene realizada en los últimos 12 meses <strong>y</strong> próxima cita agendada</td><td>Pacientes con implantes colocados por el centro</td><td>Gestor de clínica</td><td>Pacientes con cita agendada pero sin ninguna asistencia en 12 meses</td></tr>
+          <tr><td class="num">8</td><td><strong>Captación por recomendación</strong></td><td>Primeras visitas cuyo origen declarado es la recomendación de un paciente o familiar</td><td>Primeras visitas del mes</td><td>Campo obligatorio de origen en la ficha</td><td>Nada: el origen «no consta» permanece en el denominador</td></tr>
+          <tr><td class="num">9</td><td><strong>Ofrecimiento del programa de cuidado</strong><small>Nuevo · exigido por D14</small></td><td>Cierres de tratamiento con el ofrecimiento registrado en la ficha</td><td>Cierres de tratamiento del mes</td><td>Punto de verificación del cierre</td><td>Nada. Se mide el ofrecimiento, no la contratación</td></tr>
+          <tr><td class="num">10</td><td><strong>Auditorías ejecutadas en fecha</strong><small>Nuevo · exigido por D13</small></td><td>Auditorías realizadas dentro de su ventana con resultado registrado</td><td>Auditorías programadas en el periodo</td><td>Calendario de auditoría</td><td>Nada. Una auditoría realizada sin registro cuenta como no realizada</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">La regla de reporte</p>
+      <p>Un indicador sin dato se reporta en rojo. No se omite, no se deja en blanco y no se sustituye por una impresión.</p>
+      <p>El indicador 6 es el único con <strong>cohorte cerrada</strong>: el dato de un mes no es definitivo hasta sesenta días después. Se reporta provisional y se consolida en la revisión siguiente. Confundir el provisional con el definitivo es la forma más habitual de creerse una mejora que no existe.</p>
+    </div>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">El instrumento que acompaña a esta tabla</p>
+      <p>La definición sola no levanta una serie. Junto a este documento se entrega <strong>«Captura de la línea base · 2026»</strong>, un libro de cálculo con una hoja por mes, los diez indicadores ya definidos, umbrales editables en un solo sitio, semáforo automático y resumen anual con tendencia. Solo se teclean las casillas amarillas. Un indicador sin dato aparece como <em>SIN DATO</em> y cuenta como rojo, que es exactamente la regla de reporte de arriba.</p>
+    </div>
+
+<!--@CALC-->
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Comprobación en directo</h3>
+    <p style="color:var(--ink-2);max-width:68ch">La matriz anterior fija cuatro tasas y tres tickets. Este bloque permite mover los tres supuestos a voluntad durante la sesión, para responder a la pregunta que siempre llega: <em>«¿y si la conversión se queda en el 35 %?»</em>. En la versión impresa aparece la matriz fija; esta comprobación solo existe en pantalla.</p>
+
+    <div class="calc">
+      <div class="calc__mandos">
+        <label class="calc__mando">
+          <span>Tasa de conversión<b data-calc="vc">45 %</b></span>
+          <input data-calc="c" type="range" min="20" max="70" step="1" value="45"
+                 aria-label="Tasa de conversión de la primera visita, en por ciento">
+        </label>
+        <label class="calc__mando">
+          <span>Ticket medio del caso aceptado<b data-calc="vt">1.800 €</b></span>
+          <input data-calc="t" type="range" min="900" max="3200" step="50" value="1800"
+                 aria-label="Ticket medio del caso aceptado, en euros">
+        </label>
+        <label class="calc__mando">
+          <span>Primeras visitas al día<b data-calc="vp">4,0</b></span>
+          <input data-calc="p" type="range" min="1.5" max="7" step="0.5" value="4"
+                 aria-label="Primeras visitas al día">
+        </label>
+      </div>
+      <div class="calc__salida">
+        <div class="calc__cifra">
+          <i>Facturación anual estimada</i>
+          <b data-calc="fact">816 k€</b>
+          <p data-calc="comp">Frente al escenario base de 720 k€: <strong>+96 k€</strong></p>
+        </div>
+        <dl class="calc__detalle">
+          <div><dt>Primeras visitas al año</dt><dd data-calc="pv">1.008</dd></div>
+          <div><dt>Casos aceptados al año</dt><dd data-calc="casos">454</dd></div>
+          <div><dt>Casos aceptados al mes</dt><dd data-calc="mes">38</dd></div>
+        </dl>
+      </div>
+      <p class="calc__pie">Facturación = primeras visitas/día × 21 días × 12 meses × conversión × ticket medio. Capacidad y días laborables fijos. <strong>Naturaleza: modelo.</strong> Ninguno de los tres valores procede de una medición del centro; son los supuestos de trabajo del §18 y se sustituyen por los reales en cuanto exista línea base.</p>
+    </div>
+
+<!--@VALOR-->
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">La aritmética: qué múltiplo compra cada peldaño</h3>
+    <p style="color:var(--ink-2);max-width:68ch">La escalera anterior es cualitativa y por sí sola no decide nada. Un comprador —un grupo, un fondo, un socio— no razona en peldaños: razona en múltiplo sobre resultado. Esta es la traducción, y es la que convierte «el sistema aporta valor» en una cifra que la Junta puede contrastar.</p>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>El mismo EBITDA, cinco valores de empresa distintos</b>
+        <span>Valor de empresa resultante de aplicar a un EBITDA constante de 180 k€ el múltiplo que corresponde a cada peldaño. Naturaleza: <strong>modelo sobre rangos del sector marcados como tales</strong>; los múltiplos son órdenes de magnitud habituales en transacciones de clínicas dentales, no una valoración del centro ni una oferta recibida.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><!--FIG7--></div>
+      <p class="t-fig__note">Entre el peldaño 1 y el 5 hay del orden de un millón de euros de valor de empresa, con exactamente el mismo beneficio anual.</p>
+    </figure>
+
+    <div class="t-body">
+      <div>
+        <h4 style="font-size:var(--step-1);margin-bottom:.6rem">Por qué el múltiplo sube si el beneficio no cambia</h4>
+        <p style="color:var(--ink-2);max-width:66ch">Porque el múltiplo no paga el beneficio: paga <strong>la probabilidad de que ese beneficio siga existiendo dentro de cinco años sin las personas que lo produjeron</strong>. Cada peldaño elimina una fuente de incertidumbre —la dependencia del titular, la volatilidad del ingreso por acto, la imposibilidad de replicar, la falta de evidencia de resultados— y cada fuente eliminada vale medio punto o un punto de múltiplo.</p>
+        <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">De ahí se sigue la consecuencia práctica, y es incómoda: <strong>una inversión que no mueve el beneficio de este año puede ser la más rentable del presupuesto</strong>, si mueve el peldaño. Es literalmente el caso de la prioridad 2 de §15.</p>
+      </div>
+      <aside class="t-aside">
+        <div class="t-note">
+          <b>Cómo leerlo en junta</b>
+          <p>No como una tasación. Como el orden de magnitud de lo que está en juego al decidir si el gasto en sistema es coste o inversión.</p>
+        </div>
+        <div class="t-note">
+          <b>Qué lo haría real</b>
+          <p>Un EBITDA normalizado auditado y, si alguna vez interesa, una valoración independiente. Ninguna de las dos cosas existe hoy.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Peldaño</th><th>Qué elimina de incertidumbre</th><th>Múltiplo orientativo</th><th>Decisión que lo desbloquea</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1 · Beneficio</strong></td><td>Nada: el comprador asume todo el riesgo de continuidad</td><td class="num">3,0–4,0×</td><td>—</td></tr>
+          <tr><td><strong>2 · Sin dependencia del titular</strong></td><td>Que el resultado se vaya con el fundador</td><td class="num">4,5–5,5×</td><td>D12 · inversión sostenida en el sistema</td></tr>
+          <tr><td><strong>3 · Ingreso recurrente contratado</strong></td><td>La volatilidad del ingreso por acto</td><td class="num">5,5–6,5×</td><td>D5 y D14 · programa de cuidado</td></tr>
+          <tr><td><strong>4 · Sistema replicable</strong></td><td>Que el modelo no funcione en otra plaza</td><td class="num">6,5–8,0×</td><td>D11 · condición de apertura</td></tr>
+          <tr><td><strong>5 · Serie clínica propia</strong></td><td>La duda sobre la calidad real del resultado a largo plazo</td><td class="num">8,0–10,0×</td><td>D9 · horizonte H2 del registro de resultados</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Rangos del sector, marcados como tales. No proceden de ninguna transacción del centro ni de una tasación encargada.</p>

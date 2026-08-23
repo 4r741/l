@@ -1,0 +1,26 @@
+<!--@SUPUESTOS6-->
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">S8 · Los supuestos de la cartera de campañas</h3>
+    <p style="color:var(--ink-2);max-width:70ch">La Parte VI no añade supuestos nuevos sobre la clínica: reparte los que ya están en S1 a S7 entre nueve campañas. Lo que sí declara es cuánta agenda ocupa cada una y con qué rendimiento, y eso es lo que va aquí. <strong>Ninguno procede de una medición del centro.</strong> Todos viven en <code>modelo-campanas.py</code>, que se puede ejecutar y modificar; el guion de coherencia comprueba que este documento no diga nada distinto de lo que ese modelo calcula.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Cód.</th><th>Campaña</th><th>Qué se supone</th><th>Por qué ese rendimiento</th><th>Coste</th></tr></thead>
+        <tbody>
+          <tr><td class="num">C1</td><td><strong>Giraldo Te Cuida</strong></td><td>460 adheridos × 190 € de cuota, menos el 30 % que sustituye higienes ya facturables. · 460 adheridos × 16 % que necesita tratamiento nuevo al año × 1.500 € de ticket medio.</td><td>No ocupa agenda de primera visita</td><td class="num">6 k€</td></tr>
+          <tr><td class="num">C2</td><td><strong>«Su caso no es imposible»</strong></td><td>80 primeras visitas al año · 50 % de conversión · 3.400 € de ticket</td><td>Convierte la mitad porque llega decidido, y el plan es de rehabilitación</td><td class="num">14 k€</td></tr>
+          <tr><td class="num">C3</td><td><strong>«Volvemos a llamarle»</strong></td><td>130 primeras visitas al año · 48 % de conversión · 1.900 € de ticket</td><td>Confían, así que convierten bien, pero el caso suele ser ordinario</td><td class="num">3 k€</td></tr>
+          <tr><td class="num">C4</td><td><strong>Red de derivación</strong></td><td>70 primeras visitas al año · 60 % de conversión · 2.400 € de ticket</td><td>La conversión más alta de la cartera: llegan enviados y con el caso acotado</td><td class="num">11 k€</td></tr>
+          <tr><td class="num">C5</td><td><strong>«Sin miedo»</strong></td><td>55 primeras visitas al año · 45 % de conversión · 2.800 € de ticket</td><td>Cuando por fin deciden, el plan acumulado es amplio</td><td class="num">9 k€</td></tr>
+          <tr><td class="num">C6</td><td><strong>«La revisión que evita la cirugía»</strong></td><td>1.050 revisiones al año × 95 €, entre base propia y portadores de otros centros. · 1.050 revisiones × 6 % con hallazgo tratable × 1.150 € de ticket medio.</td><td>No ocupa agenda de primera visita</td><td class="num">5 k€</td></tr>
+          <tr><td class="num">C7</td><td><strong>«Segunda opinión, sin compromiso»</strong></td><td>70 primeras visitas al año · 42 % de conversión · 2.600 € de ticket</td><td>Convierte menos porque compara, pero el diagnóstico completo eleva el plan</td><td class="num">4 k€</td></tr>
+          <tr><td class="num">C8</td><td><strong>Prescripción de pacientes</strong></td><td>120 primeras visitas al año · 55 % de conversión · 2.000 € de ticket</td><td>La mayor confianza previa de todas: la conversión más alta del embudo abierto</td><td class="num">1 k€</td></tr>
+          <tr><td class="num">C9</td><td><strong>Presencia digital y reseñas</strong></td><td>83 primeras visitas al año · 40 % de conversión · 1.900 € de ticket</td><td>Búsqueda fría: la calidad media más baja de la cartera</td><td class="num">34 k€</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Valor de referencia con el que se compara toda campaña: 810 € por primera visita (45 % × 1.800 €, supuestos S2 y S3). Margen de contribución del 40 %, supuesto S4.</p>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">El supuesto más frágil de los nueve</p>
+      <p>Los 130 pacientes al año que C3 supone recuperables de la cartera dormida. Es el único que no se apoya en ningún dato del sector ni en la experiencia del equipo: se apoya en que exista una cartera que nadie ha contado. Dos días de trabajo administrativo lo convertirían en un hecho, y hasta que eso ocurra conviene leer el puente sabiendo que este tramo puede no existir.</p>
+    </div>

@@ -1,0 +1,300 @@
+<!--@P6-->
+<section class="t-part" id="parte-6">
+  <div class="wrap">
+    <div class="t-part__in">
+      <p class="t-part__num">Parte<b>VI</b>La cifra</p>
+      <div>
+        <h2>Cómo se llega a <em>1,2 M€</em></h2>
+        <p class="t-part__lede">Ninguna cifra de esta parte está escrita a mano. Todas salen de un modelo que vive en el repositorio, declara sus supuestos y se puede ejecutar: cada campaña dice cuánta agenda ocupa, a qué tasa convierte y con qué ticket, y de ahí se deriva lo que aporta. Cambie un supuesto y cambian el puente, las figuras y esta página.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--@PUENTE-->
+<section class="section" id="puente">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§20 · El puente</p>
+      <h2>De 720 k€ a 1,2 M€, bloque a bloque</h2>
+      <p>Un objetivo sin puente es un deseo. Este es el recorrido completo, y cada tramo tiene detrás una operación aritmética, no una intuición.</p>
+    </div>
+
+    <h3 style="font-size:var(--step-2);margin:2.4rem 0 .5rem">La regla que gobierna todo el cálculo</h3>
+    <p class="t-lead">Con la agenda llena, <strong>una campaña no vale lo que factura: vale la diferencia entre el paciente que trae y el paciente al que desplaza</strong>. Es una distinción incómoda y es la que separa un plan creíble de una suma de deseos. Si una campaña trae pacientes que convierten al 40 % con ticket de 1.900 €, y la visita que ocupa habría rendido 810 €, esa campaña no aporta lo que factura: aporta la diferencia, y puede ser negativa.</p>
+
+    <div class="t-stats t-stats--4">
+      <div class="t-stat"><i>Agenda instalada</i><b>1.008</b><p>Primeras visitas al año: 4 al día × 21 días × 12 meses.</p></div>
+      <div class="t-stat"><i>Ocupación heredada</i><b>3,5/día</b><p>889 visitas al año. Hay holgura, pero menos de la que parece.</p></div>
+      <div class="t-stat"><i>Valor de una visita hoy</i><b>810 €</b><p>45 % de conversión × 1.800 € de ticket. Es la vara con la que se mide toda campaña.</p></div>
+      <div class="t-stat"><i>Agenda que piden las nueve</i><b>608</b><p>Quedan 400 visitas libres. <strong>La cartera cabe</strong>, y esa comprobación es parte del modelo.</p></div>
+    </div>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>El puente hasta el objetivo</b>
+        <span>Los cuatro tramos y el colchón. Naturaleza: <strong>modelo</strong> ejecutable, con los supuestos declarados en §18 y en el propio archivo del modelo.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><!--FIG8--></div>
+      <p class="t-fig__note">Se planifican 1.363 k€ para comprometer 1.200. Un plan que suma exactamente el objetivo es un plan que lo falla.</p>
+    </figure>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Tramo</th><th>De dónde sale</th><th>Aporta</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Base heredada</strong></td><td>889 primeras visitas al año a 810 € cada una</td><td class="num">720 k€</td></tr>
+          <tr><td><strong>Llenar la agenda</strong></td><td>Pasar de 3,5 a 4 visitas al día: 1.008 − 889 visitas más, al valor de hoy</td><td class="num">+96 k€</td></tr>
+          <tr><td><strong>Mejorar la mezcla</strong></td><td>Las siete campañas que ocupan agenda, cada una valorada por su diferencia con 810 €</td><td class="num">+204 k€</td></tr>
+          <tr><td><strong>Seguimiento y recurrente</strong></td><td>Las dos campañas que producen fuera del embudo: cuotas, revisiones y el tratamiento que detectan</td><td class="num">+343 k€</td></tr>
+          <tr><td><strong>Planificado</strong></td><td>La suma de lo anterior, si las nueve salen</td><td class="num"><strong>1.363 k€</strong></td></tr>
+          <tr><td><strong>Colchón de no ejecución</strong></td><td>El 12 % que se descuenta de antemano</td><td class="num">−163 k€</td></tr>
+          <tr><td><strong>Objetivo</strong></td><td>Lo que se compromete ante la Junta</td><td class="num"><strong>1.200 k€</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">Por qué el colchón es del 12 % y no de cero</p>
+      <p>Porque de nueve campañas, dos no arrancarán a tiempo, una dependerá de una decisión que se retrase y otra rendirá la mitad de lo previsto. Eso no es pesimismo: es la tasa normal.</p>
+      <p>Planificar 1.200 para conseguir 1.200 obliga a que las nueve salgan perfectas, y entonces la primera que falle se lleva por delante el objetivo entero. <strong>El colchón no es holgura: es lo que hace que la cifra sea creíble.</strong></p>
+    </div>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>De qué está hecho el plan</b>
+        <span>La facturación de hoy —toda de primera visita— frente a la composición del plan antes del colchón. Naturaleza: <strong>modelo</strong>.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><!--FIG10--></div>
+      <p class="t-fig__note">El bloque de seguimiento parte de cero: son 343 k€ que no existen hoy y que no dependen de ver a un solo paciente nuevo.</p>
+    </figure>
+
+    <div class="t-quote">
+      <p>El objetivo no se alcanza captando más pacientes. La agenda no los admite. Se alcanza cambiando quién ocupa las visitas que ya tenemos y cobrando por seguir cuidando a quien ya tratamos.</p>
+      <cite>La tesis del §20, derivada del modelo</cite>
+    </div>
+  </div>
+</section>
+
+<!--@CARTERA-->
+<section class="section" id="cartera">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§21 · La cartera de campañas</p>
+      <h2>Nueve campañas, cada una con su cuenta echada</h2>
+      <p>Giraldo Te Cuida es una de las nueve. Cada fila de esta tabla es una multiplicación que se puede rehacer: visitas que ocupa × conversión × ticket, menos lo que habría rendido esa misma visita sin la campaña.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Cód.</th><th>Campaña</th><th>A quién</th><th>Visitas</th><th>Conv.</th><th>Ticket</th><th>Aporta</th><th>Coste</th><th>Retorno</th><th>Depende de</th></tr></thead>
+        <tbody>
+          <tr><td class="num">C1</td><td><strong>Giraldo Te Cuida</strong><small>No ocupa agenda de primera visita</small></td><td>Todo paciente que termina tratamiento</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><strong>171 k€</strong></td><td class="num">6 k€</td><td class="num">28.5×</td><td>D5 · D14</td></tr>
+          <tr><td class="num">C2</td><td><strong>«Su caso no es imposible»</strong><small>Convierte la mitad porque llega decidido, y el plan es de rehabilitación</small></td><td>Atrofia severa, rehabilitación completa, casos rechazados en otros centros</td><td class="num">80</td><td class="num">50 %</td><td class="num">3.400 €</td><td class="num"><strong>71 k€</strong></td><td class="num">14 k€</td><td class="num">5.1×</td><td>—</td></tr>
+          <tr><td class="num">C3</td><td><strong>«Volvemos a llamarle»</strong><small>Confían, así que convierten bien, pero el caso suele ser ordinario</small></td><td>Pacientes del centro sin visita en más de dieciocho meses</td><td class="num">130</td><td class="num">48 %</td><td class="num">1.900 €</td><td class="num"><strong>13 k€</strong></td><td class="num">3 k€</td><td class="num">4.4×</td><td>Inventario de cartera</td></tr>
+          <tr><td class="num">C4</td><td><strong>Red de derivación</strong><small>La conversión más alta de la cartera: llegan enviados y con el caso acotado</small></td><td>Clínicas generalistas de la ría que no hacen implantología compleja</td><td class="num">70</td><td class="num">60 %</td><td class="num">2.400 €</td><td class="num"><strong>44 k€</strong></td><td class="num">11 k€</td><td class="num">4.0×</td><td>—</td></tr>
+          <tr><td class="num">C5</td><td><strong>«Sin miedo»</strong><small>Cuando por fin deciden, el plan acumulado es amplio</small></td><td>Ansiedad dental severa: años sin sentarse en un sillón</td><td class="num">55</td><td class="num">45 %</td><td class="num">2.800 €</td><td class="num"><strong>25 k€</strong></td><td class="num">9 k€</td><td class="num">2.8×</td><td><strong>D6</strong></td></tr>
+          <tr><td class="num">C6</td><td><strong>«La revisión que evita la cirugía»</strong><small>No ocupa agenda de primera visita</small></td><td>Portadores de implantes, propios y de otros centros</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><strong>172 k€</strong></td><td class="num">5 k€</td><td class="num">34.4×</td><td>—</td></tr>
+          <tr><td class="num">C7</td><td><strong>«Segunda opinión, sin compromiso»</strong><small>Convierte menos porque compara, pero el diagnóstico completo eleva el plan</small></td><td>Quien tiene un presupuesto de otro centro y dudas</td><td class="num">70</td><td class="num">42 %</td><td class="num">2.600 €</td><td class="num"><strong>20 k€</strong></td><td class="num">4 k€</td><td class="num">4.9×</td><td><strong>D1</strong></td></tr>
+          <tr><td class="num">C8</td><td><strong>Prescripción de pacientes</strong><small>La mayor confianza previa de todas: la conversión más alta del embudo abierto</small></td><td>La base propia, en tratamiento y terminada</td><td class="num">120</td><td class="num">55 %</td><td class="num">2.000 €</td><td class="num"><strong>35 k€</strong></td><td class="num">1 k€</td><td class="num">34.8×</td><td>—</td></tr>
+          <tr><td class="num">C9</td><td><strong>Presencia digital y reseñas</strong><small>Búsqueda fría: la calidad media más baja de la cartera</small></td><td>Quien busca activamente en Vigo y la ría</td><td class="num">83</td><td class="num">40 %</td><td class="num">1.900 €</td><td class="num"><strong>−4 k€</strong></td><td class="num">34 k€</td><td class="num"><span class="sem sem--rojo">negativo</span></td><td><strong>D3 · D4</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Aporte = visitas × (conversión × ticket − 810 €) para las siete de agenda; para C1 y C6, ingreso directo fuera del embudo. Coste total de la cartera: 87 k€, un 7,2 % del objetivo. Naturaleza: modelo.</p>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Tres resultados que el modelo devuelve y que conviene mirar de frente</h3>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>Lo que devuelve cada euro gastado</b>
+        <span>Aporte anual dividido entre coste anual de la campaña. Naturaleza: <strong>modelo</strong>.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><!--FIG11--></div>
+    </figure>
+
+    <div class="t-body">
+      <div>
+        <h4 style="font-size:var(--step-1);margin-bottom:.6rem">Uno · Las dos campañas más rentables son las dos más baratas, y ninguna capta pacientes</h4>
+        <p style="color:var(--ink-2);max-width:66ch">C6 devuelve 34 € por cada euro y C1 devuelve 28. Las dos trabajan sobre pacientes que ya son del centro. La campaña más cara de la cartera —C9, con −4 k€ de aporte y treinta y cuatro mil de gasto— es la única con retorno directo negativo. <strong>Esto no es una opinión sobre el marketing digital: es lo que sale de multiplicar.</strong></p>
+        <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">Y sin embargo C9 se aprueba. No como campaña de retorno, sino como <strong>habilitador</strong>: sin presencia digital, C2, C4, C5 y C7 no encuentran a nadie, y esas cuatro suman 71 + 44 + 25 + 20 k€. Apagar C9 para ahorrar treinta y cuatro mil euros pondría en riesgo diez veces esa cifra. Que conste así en el acta, porque la tentación de recortarla llegará.</p>
+      </div>
+      <aside class="t-aside">
+        <div class="t-note">
+          <b>La regla de gasto</b>
+          <p>Ninguna campaña puede costar más del 40 % de lo que aporta —el margen de contribución del §18—. C5 lo roza. C9 lo incumple y por eso necesita justificación aparte.</p>
+        </div>
+        <div class="t-note">
+          <b>Lo que esto no dice</b>
+          <p>Que la captación digital no sirva. Dice que con la agenda llena no paga por sí sola, y que su papel es otro.</p>
+        </div>
+      </aside>
+    </div>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>Dónde está concentrado el plan</b>
+        <span>Peso de cada campaña sobre lo que aporta la cartera completa. Naturaleza: <strong>modelo</strong>.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><!--FIG12--></div>
+    </figure>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Dos · El plan está peligrosamente concentrado</p>
+      <p>C6 y C1 aportan el <strong>63 %</strong> de la cartera. Si cualquiera de las dos falla, no se pierde un bloque: se pierde el objetivo, porque el colchón del 12 % no cubre una caída de esa magnitud. Las dos dependen de lo mismo —que el seguimiento se ofrezca y se registre en el cierre de cada tratamiento— y las dos están sometidas a la misma decisión: D14. <strong>D14 no es una decisión menor sobre un programa: es la mitad del objetivo.</strong></p>
+    </div>
+
+    <div class="t-body">
+      <div>
+        <h4 style="font-size:var(--step-1);margin-bottom:.6rem">Tres · La cartera dormida vale mucho más en el año uno que en el tres</h4>
+        <p style="color:var(--ink-2);max-width:66ch">C3 aporta solo 13 k€ en régimen, y a primera vista parece la peor campaña de la lista. No lo es: es la mejor mientras la agenda tenga huecos. Con 3,5 visitas al día hay sitio libre, y ahí una llamada a un paciente propio no desplaza a nadie —factura 810 € limpios en vez de la diferencia—. Cuando la agenda se llene, su valor cae al diferencial.</p>
+        <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">De ahí que arranque en febrero del primer año y no más tarde: <strong>es la campaña que hay que hacer antes de que deje de valer la pena</strong>. Es también la más barata de todas y la que ningún centro hace.</p>
+      </div>
+      <aside class="t-aside">
+        <div class="t-note">
+          <b>Los dos regímenes</b>
+          <p>Con hueco, una campaña suma lo que factura. Con la agenda llena, suma solo su diferencia. El modelo calcula siempre el segundo, que es el conservador.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Las cuatro reglas de la cartera</p>
+      <p><strong>Una:</strong> nunca más de dos campañas arrancando a la vez. <strong>Dos:</strong> ninguna se lanza sin guion escrito y ensayado. <strong>Tres:</strong> toda campaña tiene umbral de parada a los sesenta días. <strong>Cuatro:</strong> ninguna puede costar más del 40 % de lo que aporta, y la excepción —C9— se aprueba nombrándola como excepción.</p>
+    </div>
+  </div>
+</section>
+
+<!--@CALENDARIO-->
+<section class="section" id="calendario">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§22 · Calendario y capacidad</p>
+      <h2>Cuándo se enciende cada una, y por qué en ese mes</h2>
+      <p>La demanda dental no es plana. Enero y septiembre son los meses en que la gente decide; agosto y diciembre, en los que aplaza. Encender una campaña cara en julio es tirar el dinero, y encender dos a la vez en enero es no atender bien ninguna.</p>
+    </div>
+
+    <figure class="t-fig">
+      <figcaption>
+        <b>Las nueve campañas a lo largo del ejercicio</b>
+        <span>En oscuro el arranque, en claro el sostenimiento. C1 y C8 no tienen arranque porque son permanentes: viven dentro del protocolo, no fuera. Naturaleza: <strong>modelo</strong>.</span>
+      </figcaption>
+      <div class="t-fig__scroll"><!--FIG9--></div>
+      <p class="t-fig__note">En ningún mes hay más de dos arranques. Es la regla, y el calendario está construido para cumplirla.</p>
+    </figure>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">La senda: el objetivo es de año tres, no de año uno</h3>
+    <p class="t-lead">Las campañas necesitan arrancar, madurar y acumular base. C1 y C6 —el 63 % del plan— solo alcanzan su régimen cuando la base adherida lleva tres años acumulándose: en el primer ejercicio hay una tercera parte de los pacientes que habrá en el tercero, y la aritmética no admite atajos.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Ejercicio</th><th>Qué está en marcha</th><th>Facturación</th><th>Qué hay que haber demostrado al cerrarlo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Año 1</strong></td><td>C1, C3, C8 y C9. Protocolo ejecutado completo y línea base levantada</td><td class="num">890 k€</td><td>Los diez indicadores con serie propia y la conversión por encima del 45 %</td></tr>
+          <tr><td><strong>Año 2</strong></td><td>Se añaden C2, C6 y C7. El ticket sube por composición de casos</td><td class="num">1.060 k€</td><td>Base en seguimiento contratado por encima de 300 pacientes</td></tr>
+          <tr><td><strong>Año 3</strong></td><td>Cartera completa: entran C4 y C5</td><td class="num">1.200 k€</td><td><strong>El objetivo</strong>, con la capacidad actual y sin abrir una segunda unidad</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Coincide con el escenario «objetivo» del §8, que situaba 1.150 k€ en el mes 36. La diferencia son los 50 k€ que aporta afinar la cartera. Naturaleza: modelo.</p>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">La comprobación que evita el error caro</p>
+      <p>Antes de encender cualquier campaña, una sola pregunta: <strong>¿hay hueco en la agenda para atender lo que va a traer?</strong> El modelo la responde en el agregado —las nueve piden 608 visitas de las 1.008 que hay—, pero mes a mes la responde el responsable de la campaña. Generar demanda que no se puede atender es la forma más cara de hacer marketing: se paga el coste de la campaña y el daño de la espera.</p>
+    </div>
+  </div>
+</section>
+
+<!--@CIERTO-->
+<section class="section" id="cierto">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§23 · Qué tiene que ser cierto</p>
+      <h2>Las cinco condiciones, y el riesgo que ninguna campaña puede permitirse</h2>
+      <p>El puente del §20 se sostiene sobre cinco cosas. Ninguna es una campaña: son condiciones. <strong>Si alguna no se cumple, el objetivo no baja un poco: se cae el bloque entero que dependía de ella.</strong></p>
+    </div>
+
+    <div class="t-pm">
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 1 · La que más pesa</b>Que el seguimiento se ofrezca y se registre siempre</h4>
+          <p>C1 y C6 son el 63 % de la cartera y las dos dependen de un solo gesto repetido: que en el cierre de cada tratamiento se ofrezca el programa y quede constancia. No es una campaña de marketing, es un punto de verificación. Si se ofrece «cuando encaja», se van 171 + 172 k€.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Indicador 9, tasa de ofrecimiento, umbral del 90 %. Y la decisión D14, que lo hace obligatorio.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 2</b>Que el protocolo se ejecute completo, no a medias</h4>
+          <p>Todo el puente supone una conversión base del 45 %. Hoy es un supuesto de trabajo, no una medición. Si la real fuese del 35 %, el valor de la visita cae de 810 a 630 € y con él todos los diferenciales de la tabla del §21.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Indicador 6, con cohorte cerrada a 60 días. Primera lectura fiable: tercer mes.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 3</b>Que exista una cartera propia que reactivar</h4>
+          <p>C3 supone 130 visitas al año traídas de la base dormida. Nadie ha contado todavía cuántos pacientes son, cuántos siguen localizables y cuántos volverían. Es el supuesto más barato de comprobar de toda la Parte VI y está sin comprobar.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Inventario de cartera en las dos primeras semanas. Dos días de trabajo administrativo.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 4</b>Que el ticket suba por complejidad y no por tarifa</h4>
+          <p>La tabla del §21 asigna a C2 un ticket de 3.400 € y a C5 de 2.800. Si eso se intenta subiendo precios en lugar de tratando casos más complejos, la conversión cae y el diferencial se vuelve negativo: la campaña destruiría valor exactamente igual que C9.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Ticket y conversión se leen siempre juntos. Si uno sube y el otro baja, la palanca está mal accionada.</p></div>
+      </div>
+      <div class="t-pm__row">
+        <div>
+          <h4><b>Condición 5</b>Que el equipo aguante</h4>
+          <p>Nueve campañas, un protocolo nuevo y una línea base que levantar es mucha carga sobre las mismas personas. La condición más silenciosa y la que más veces rompe los planes: no falla la demanda, falla quien tiene que atenderla.</p>
+        </div>
+        <div class="t-pm__anti"><b>Cómo se comprueba</b><p>Indicador 2, bajas voluntarias, y la regla de no más de dos arranques simultáneos.</p></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">El riesgo que ninguna campaña puede permitirse: la publicidad sanitaria</h3>
+    <p style="color:var(--ink-2);max-width:70ch">Tres de las nueve tocan materia regulada. La publicidad sanitaria en España no admite prometer resultados, comparar con otros profesionales ni presentar casos como resultado esperable, y la competencia es autonómica. Es la verificación <strong>V11</strong> del sistema, y aquí deja de ser una casilla para convertirse en una condición de arranque: <strong>ninguna campaña marcada en rojo se enciende sin pasar por ella.</strong></p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Cód.</th><th>Campaña</th><th>Riesgo</th><th>Qué exige V11</th></tr></thead>
+        <tbody>
+          <tr><td class="num">C1</td><td><strong>Giraldo Te Cuida</strong></td><td>Bajo</td><td>Contrato de adhesión: es materia de consumo, no de publicidad sanitaria.</td></tr>
+          <tr><td class="num">C2</td><td><strong>«Su caso no es imposible»</strong></td><td><strong>Alto</strong></td><td>Prohibido sugerir resultados garantizados o comparar con otros profesionales. Los casos publicados exigen consentimiento expreso y no pueden presentarse como resultado esperable.</td></tr>
+          <tr><td class="num">C3</td><td><strong>«Volvemos a llamarle»</strong></td><td>Bajo</td><td>Comunicación a pacientes propios, no publicidad.</td></tr>
+          <tr><td class="num">C4</td><td><strong>Red de derivación</strong></td><td>Medio</td><td>Comunicación entre profesionales; el acuerdo no puede incluir contraprestación económica por derivación.</td></tr>
+          <tr><td class="num">C5</td><td><strong>«Sin miedo»</strong></td><td><strong>Alto</strong></td><td>No puede prometerse ausencia de dolor ni presentarse la sedación como servicio general sin la habilitación de D6.</td></tr>
+          <tr><td class="num">C6</td><td><strong>«La revisión que evita la cirugía»</strong></td><td>Bajo</td><td>Recordatorio asistencial a pacientes con tratamiento previo.</td></tr>
+          <tr><td class="num">C7</td><td><strong>«Segunda opinión, sin compromiso»</strong></td><td>Medio</td><td>No puede formularse como comparación desfavorable con otro profesional ni como oferta de precio.</td></tr>
+          <tr><td class="num">C8</td><td><strong>Prescripción de pacientes</strong></td><td>Bajo</td><td>No puede incentivarse económicamente la recomendación.</td></tr>
+          <tr><td class="num">C9</td><td><strong>Presencia digital y reseñas</strong></td><td><strong>Alto</strong></td><td>Toda pieza pasa por V11 antes de publicarse: es el canal con más superficie de exposición.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="t-fig__note">Valoración de dirección, no dictamen jurídico. Las tres marcadas en alto requieren revisión por asesoría antes de publicar la primera pieza.</p>
+
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Y si la Junta quiere 1,2 M€ en dieciocho meses</h3>
+    <div class="t-body">
+      <div>
+        <p style="color:var(--ink-2);max-width:66ch">Es una decisión legítima y tiene precio. Comprimir tres años en año y medio no se consigue acelerando las campañas —C1 y C6, que son el 63 % del plan, maduran al ritmo al que se acumula la base adherida— sino ampliando capacidad: <strong>un segundo gabinete en uso efectivo y un día más de quirófano a la semana</strong>. Eso significa invertir en la prioridad 5 del §15 antes de haber consolidado la 2 y la 3, que es justo el orden que el §15 pide no romper.</p>
+        <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">Se puede hacer. Pero entonces hay que decirlo así en el acta: <em>«la Junta acuerda anticipar la prioridad 5, asumiendo que se hace antes de que el estándar esté consolidado»</em>. Lo que no se puede es fijar el plazo de dieciocho meses y mantener a la vez el orden de prelación intacto, porque una de las dos cosas no será verdad.</p>
+      </div>
+      <aside class="t-aside">
+        <div class="t-note">
+          <b>Se somete como D15</b>
+          <p>Fijar el objetivo y su horizonte. Es la decisión que ordena todo lo demás de esta parte.</p>
+        </div>
+        <div class="t-note">
+          <b>El modelo es auditable</b>
+          <p>Está en <code>modelo-campanas.py</code>. Cualquiera puede ejecutarlo, cambiar un supuesto y ver qué le pasa al puente.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">Lo que esta parte pide a la Junta</p>
+      <p>Fijar la cifra y el horizonte —1.200 k€ en el ejercicio tercero—, aprobar la cartera de nueve campañas como contenido de D4, y entender que <strong>D14 no es un detalle del programa de cuidado: es el 63 % del objetivo</strong>.</p>
+      <p>Y una cosa más, que no cuesta dinero: aceptar que el primer año no se parece al tercero. Un objetivo de año tres exigido en el año uno no acelera nada; solo garantiza que en diciembre parezca un fracaso lo que iba conforme al plan.</p>
+    </div>
+  </div>
+</section>

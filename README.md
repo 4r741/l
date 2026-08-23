@@ -7,7 +7,7 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
-| **`memoria.html`** | Tesis de Dirección (v6.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
+| **`memoria.html`** | Tesis de Dirección (v6.0) | Documento de gobierno para la Junta Directiva, en seis partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, la decisión —palancas, asignación de capital, hoja de ruta y los quince acuerdos que se someten a aprobación— y la cifra: el puente hasta 1,2 M€ con su cartera de nueve campañas |
 | **`deck.html`** | Presentación de Junta | Cuarenta y tres diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
@@ -15,7 +15,7 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v6.0) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
 | **`otros.html`** | Otros documentos del sistema (v6.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
 
-Los cinco comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
+Todos comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
 La Tesis añade sobre ese sistema una capa editorial propia —portada de declaración,
 aperturas de parte, citas destacadas, notas al margen y fichas de decisión— porque
 se lee en una sala de juntas, no en un puesto de trabajo.
@@ -57,6 +57,34 @@ planificación digital, circuito de esterilización y circuito de compras.
 | 09 Formación | Incorporación, certificación por rol y entrenamiento continuo |
 | 10 Anexos | Guiones, preguntas frecuentes, errores, checklist imprimible, glosario, gobernanza y escalado de incidencias |
 
+## Cómo se reconstruye
+
+```bash
+python3 build.py            # documentos + verificación de coherencia
+python3 build.py --todo     # además libro de cálculo, exportaciones y PDF
+```
+
+Ningún archivo publicado se edita a mano: todos se generan. El orden importa y
+lo fija `build.py` —las figuras salen del modelo, la Parte VI de las figuras y
+del modelo, la Tesis ensambla todo eso y la presentación toma sus figuras de las
+mismas fuentes—, y si un paso falla se detiene ahí, porque un sistema a medio
+construir no se publica. Al final ejecuta el verificador.
+
+| Carpeta | Qué contiene |
+| --- | --- |
+| `fuentes/` | Los bloques de contenido de la Tesis: apertura, cada parte, fichas de decisión, censo, anexos, la hoja editorial y la calculadora. Los que llevan sufijo `-generada` los produce un guion y no se editan |
+| `generadores/` | Los nueve guiones que producen figuras, Parte VI, anexos, `memoria.html` y `deck.html` |
+| `build-*.py` | Los generadores de la portada, la hoja de captura, el libro de cálculo, las exportaciones y los PDF |
+| `modelo-campanas.py` | El modelo del que sale toda cifra de la Parte VI |
+| `check-coherencia.py` | El verificador |
+| `recalc.py` | Recálculo del libro con LibreOffice, invocado por `build-libro.py` |
+
+Esto no era así hasta la revisión de agosto: los generadores de la Tesis y de la
+presentación vivían en un directorio temporal, de modo que los dos documentos
+más largos del sistema solo podían corregirse a mano. Un documento que no se
+puede regenerar es un documento que, a la tercera edición, deja de cuadrar con
+los demás.
+
 ## Versión única y verificación de coherencia
 
 Todas las piezas comparten número de versión y fecha: **v6.0 · Agosto 2026**.
@@ -74,7 +102,9 @@ la primera visita, cuántos indicadores, cuántos documentos operativos, qué
 versión lleva cada archivo, cuántas hojas de acta, cuántas campañas, cuántas diapositivas— y falla
 con código 1 si algún archivo dice otra cosa. Cubre también los nombres que
 generan `build-export.py` y `build-pdf.py`, para que un PDF no salga marcado con
-una versión que ya no existe. **Se ejecuta antes de publicar.**
+una versión que ya no existe; el interior del `.xlsx`, que es un zip de XML y se
+audita igual que un HTML; y la numeración de las figuras. **Se ejecuta antes de
+publicar.**
 
 Un sistema que exige listas de verificación para todo lo demás no puede fiarse
 de la memoria para comprobar su propia coherencia.
@@ -147,7 +177,7 @@ porque es regenerable.
 
 No es un informe de situación: afirma qué creemos que es cierto sobre este mercado, qué
 apostamos en consecuencia y bajo qué condiciones estaríamos equivocados. Conserva íntegros
-los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco partes.
+los diez apartados de la Memoria v1.0 —renumerados— y los reordena en seis partes.
 
 | Apartado | Contenido |
 | --- | --- |
@@ -192,8 +222,10 @@ coste real del descuento, primeras visitas necesarias según conversión, valor 
 a cinco años con y sin programa de cuidado, escenarios de facturación a 36 meses, matriz de
 sensibilidad, valor acumulado por paciente, valor de empresa por peldaño, el puente hasta el
 objetivo, el calendario de campañas, la composición de la cifra, el retorno de cada
-campaña y la concentración de la cartera. Las paletas están validadas
-para visión con deficiencia de color.
+campaña y la concentración de la cartera. Van numeradas 1 a 12 en el orden en
+que se leen, y el número lo pone el generador: escribirlo a mano es lo que dejó
+nueve figuras sin numerar y las otras tres desordenadas. Las paletas están
+validadas para visión con deficiencia de color.
 
 ## Otros documentos del sistema (`otros.html`)
 
@@ -222,7 +254,7 @@ python3 build-pdf.py
 
 Genera en `export/pdf/` seis PDF: A4 con márgenes de encuadernación, cabecera de
 clasificación, pie con «Página X de Y», encabezados de tabla repetidos al cambiar de
-hoja y saltos controlados para que no se parta un cuadro por la mitad. Las catorce
+hoja y saltos controlados para que no se parta un cuadro por la mitad. Las quince
 hojas de acta del Anexo A salen una por página, listas para rellenar a mano. La
 presentación sale en apaisado 16:9, una diapositiva por página, y el guion del ponente
 en A4 apaisado —hoja más alta— con la nota impresa bajo cada diapositiva. Requiere
@@ -246,12 +278,15 @@ Ambos se han verificado con los mismos valores de prueba y devuelven las mismas
 cifras.
 
 ```bash
-python3 build-libro.py
-python3 scripts/recalc.py instrumentos/Captura-Linea-Base-Giraldo-2026.xlsx   # o abrir y guardar
+python3 build-libro.py     # genera y recalcula
 ```
 
-openpyxl escribe las fórmulas sin valor en caché: hay que recalcular una vez
-para que cualquier lector distinto de Excel vea los resultados.
+openpyxl escribe las fórmulas sin valor en caché, así que el generador termina
+pasando el libro por LibreOffice (`recalc.py`). No es un paso aparte que haya que
+recordar: un libro publicado sin recalcular enseña casillas vacías a cualquier
+lector que no calcule. La versión que declara la hoja «Instrucciones» tampoco se
+teclea —la toma del verificador— y el propio verificador la comprueba dentro del
+`.xlsx`, que es por donde se le escapó una vez.
 
 `Captura-Linea-Base-Giraldo-2026.xlsx` es el instrumento del §7 y del §13: sin él, la
 confesión de que faltan los cinco números se queda en confesión.

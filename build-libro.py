@@ -8,17 +8,25 @@ Doce hojas mensuales con los diez indicadores del §13 ya definidos, umbrales
 editables en un único sitio, semáforo automático, resumen anual con tendencia y
 la hoja de los cinco números del §7. Solo se teclean las casillas amarillas.
 
-Tras generarlo hay que recalcular con LibreOffice para que las fórmulas lleven
-sus valores en caché; openpyxl las escribe sin resultado.
+Al terminar recalcula con LibreOffice: openpyxl escribe las fórmulas sin
+resultado y el libro tiene que salir con sus valores en caché.
 """
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
 import pathlib
+import re
 
 RUTA = str(pathlib.Path(__file__).parent / "instrumentos" /
            "Captura-Linea-Base-Giraldo-2026.xlsx")
+
+# La versión no se teclea en la hoja: se toma del verificador, que es donde
+# vive la versión canónica del sistema. Un libro con versión propia se queda
+# atrás en la primera publicación y nadie lo nota hasta la Junta.
+VERSION = re.search(r'^VERSION = "([\d.]+)"',
+                    (pathlib.Path(__file__).parent / "check-coherencia.py")
+                    .read_text(encoding="utf-8"), re.M).group(1)
 
 TINTA   = "FF0B1A20"
 ENTRADA = Font(name="Arial", size=10, color="FF0000FF")          # azul: dato que se teclea
@@ -80,7 +88,8 @@ def linea(fila, rotulo, texto, fuente=NORMAL):
 
 h["B2"] = "Captura de la línea base · Centro de Excelencia Implantológica Giraldo"
 h["B2"].font = TITULO
-h["B3"] = "Instrumento del §7 y del §13 de la Tesis de Dirección v2.0 · Ejercicio 2026"
+h["B3"] = ("Instrumento del §7 y del §13 de la Tesis de Dirección v%s · Ejercicio 2026"
+              % VERSION)
 h["B3"].font = SUAVE
 
 linea(5, "Para qué sirve", "La Tesis declara que el centro no dispone todavía de sus cinco números ni de serie propia en ninguno "
@@ -331,4 +340,10 @@ n5.cell(21, 2, "Los resultados dicen «pendiente» mientras falte alguna entrada
 
 pathlib.Path(RUTA).parent.mkdir(parents=True, exist_ok=True)
 wb.save(RUTA)
+
+# Recalcular es parte de generar, no un paso aparte que alguien recuerde: un
+# libro publicado con las fórmulas sin resultado enseña casillas vacías a
+# quien lo abra con un visor que no calcule.
+from recalc import recalcula
+recalcula(RUTA)
 print("  → %s" % RUTA)

@@ -1,0 +1,107 @@
+<!--@RIESGOSPUNT-->
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Registro puntuado, con residual y fecha de revisión</h3>
+    <p style="color:var(--ink-2);max-width:68ch">La descripción anterior dice qué puede pasar. Un registro dice además <strong>cuánto pesa, cuánto pesará después de mitigarlo, quién responde y cuándo se vuelve a mirar</strong>. La exposición es probabilidad × impacto, ambas de 1 a 5. El residual es la exposición estimada una vez ejecutada la mitigación: si un riesgo no baja al mitigarlo, la mitigación es decorativa.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>Riesgo</th><th>P</th><th>I</th><th>Exp.</th><th>Residual</th><th>Propietario</th><th>Revisión</th><th>Disparador</th></tr></thead>
+        <tbody>
+          <tr><td class="num">R6</td><td><strong>Degradación del sistema por abandono de la verificación</strong><small>Causa 1 del pre-mortem</small></td><td class="num">4</td><td class="num">5</td><td class="num"><span class="sem sem--rojo">20</span></td><td class="num">8</td><td>Dirección</td><td>Mensual</td><td>Dos auditorías aplazadas</td></tr>
+          <tr><td class="num">R2</td><td><strong>Producto pendiente heredado sin cuantificar</strong></td><td class="num">4</td><td class="num">4</td><td class="num"><span class="sem sem--rojo">16</span></td><td class="num">6</td><td>Dirección</td><td>Semanal hasta cierre</td><td>Inventario no cerrado el día 3</td></tr>
+          <tr><td class="num">R1</td><td><strong>Cobertura aseguradora insuficiente para tratamientos previos</strong></td><td class="num">3</td><td class="num">5</td><td class="num"><span class="sem sem--naranja">15</span></td><td class="num">4</td><td>Gerencia</td><td>Antes de abrir</td><td>Verificación no positiva</td></tr>
+          <tr><td class="num">R3</td><td><strong>Pérdida de un profesional clave</strong></td><td class="num">3</td><td class="num">5</td><td class="num"><span class="sem sem--naranja">15</span></td><td class="num">9</td><td>Gerencia</td><td>Mensual</td><td>Salida no prevista en puesto clave</td></tr>
+          <tr><td class="num">R4</td><td><strong>Incumplimiento regulatorio latente</strong></td><td class="num">3</td><td class="num">5</td><td class="num"><span class="sem sem--naranja">15</span></td><td class="num">5</td><td>Gerencia</td><td>Trimestral</td><td>V1–V11 con alguna abierta</td></tr>
+          <tr><td class="num">R5</td><td><strong>Deterioro de la percepción del paciente heredado</strong></td><td class="num">3</td><td class="num">4</td><td class="num"><span class="sem sem--naranja">12</span></td><td class="num">6</td><td>Dirección</td><td>Mensual</td><td>Cualquier reclamación formal</td></tr>
+          <tr><td class="num">R7</td><td><strong>El programa de cuidado no llega a venderse</strong><small>Causa 4 del pre-mortem</small></td><td class="num">4</td><td class="num">3</td><td class="num"><span class="sem sem--naranja">12</span></td><td class="num">5</td><td>Dirección</td><td>Mensual</td><td>Ofrecimiento bajo el 90 % dos meses</td></tr>
+          <tr><td class="num">R8</td><td><strong>Apertura prematura de la segunda unidad</strong><small>Causa 5 del pre-mortem</small></td><td class="num">2</td><td class="num">5</td><td class="num"><span class="sem sem--amarillo">10</span></td><td class="num">3</td><td>Junta</td><td>Ante cualquier oportunidad</td><td>Apertura planteada sin pasos 3 y 4</td></tr>
+          <tr><td class="num">R9</td><td><strong>Erosión del precio por descuento no reglado</strong><small>Causa 3 del pre-mortem</small></td><td class="num">3</td><td class="num">3</td><td class="num"><span class="sem sem--amarillo">9</span></td><td class="num">3</td><td>Gerencia</td><td>Mensual</td><td>Descuento fuera de tipología</td></tr>
+          <tr><td class="num">R10</td><td><strong>Dirección sin datos: se decide por impresión</strong><small>Causa 6 del pre-mortem</small></td><td class="num">3</td><td class="num">4</td><td class="num"><span class="sem sem--amarillo">12</span></td><td class="num">4</td><td>Dirección</td><td>Mensual</td><td>Comité sin cuadro de mando presentado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="max-width:none">
+      <p class="eyebrow">Lo que dice esta tabla y no decía la anterior</p>
+      <p>El riesgo de mayor exposición del proyecto <strong>no es clínico ni regulatorio: es la erosión silenciosa del propio sistema</strong> (R6, exposición 20). Es también el que menos se parece a una emergencia y el que ningún seguro cubre. Y R3 es el que peor residual conserva —9 sobre 15— porque la formación cruzada reduce el impacto pero no la probabilidad: nadie puede impedir que alguien se marche.</p>
+    </div>
+    <p class="t-fig__note">Puntuaciones de dirección, no actuariales. Naturaleza: modelo. Se revisan con la periodicidad de la columna y en cualquier caso en cada Junta ordinaria.</p>
+
+<!--@INACCION-->
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">El coste de no decidir</h3>
+    <p style="color:var(--ink-2);max-width:68ch">Cada ficha dice, en cualitativo, qué pasa si el acuerdo no se toma. Cuatro de las catorce admiten además una cifra, y conviene tenerla delante: <strong>un consejo aplaza sin esfuerzo lo que no tiene precio, y deja de aplazar lo que lo tiene</strong>. Los importes son de modelo, construidos sobre los supuestos de §18.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Decisión</th><th>Qué se pierde cada trimestre sin ella</th><th>Cómo sale la cifra</th><th>Orden de magnitud</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="num">D1<small>Precios y descuentos</small></td>
+            <td>Descuento no reglado que sale íntegro del beneficio</td>
+            <td>Si el 35 % de los casos lleva un descuento medio del 10 % sobre una facturación anual de 720 k€, y el coste del caso no baja con el precio</td>
+            <td class="num"><strong>≈ 6,3 k€/trimestre</strong><small>≈ 25 k€ al año, en torno a un tercio del beneficio neto anual del supuesto</small></td>
+          </tr>
+          <tr>
+            <td class="num">D5<small>Programa de cuidado</small></td>
+            <td>Pacientes que terminan tratamiento y no se incorporan al seguimiento</td>
+            <td>75 tratamientos terminados por trimestre × 883 € de diferencial de valor a cinco años entre paciente con programa y sin él (§9)</td>
+            <td class="num"><strong>≈ 66 k€/trimestre</strong><small>De valor a cinco años que deja de originarse, no de caja del trimestre</small></td>
+          </tr>
+          <tr>
+            <td class="num">D8<small>Responsables funcionales</small></td>
+            <td>Decisiones que suben a Dirección por no tener dueño nominal</td>
+            <td>Cuatro áreas sin propietario × entre dos y tres horas semanales de Dirección consumidas en resolver lo que debería resolverse abajo</td>
+            <td class="num"><strong>≈ 120 h/trimestre</strong><small>De la agenda más cara del centro, y la única que no se puede contratar</small></td>
+          </tr>
+          <tr>
+            <td class="num">D2<small>Garantías publicadas</small></td>
+            <td>Exposición, no coste recurrente</td>
+            <td>No es un goteo: es el coste de una sola reclamación resuelta sobre una expectativa que nunca se pactó por escrito</td>
+            <td class="num"><strong>Cola larga</strong><small>Baja probabilidad, importe sin techo definido</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rulebox" style="max-width:none">
+      <p class="eyebrow">La lectura conjunta</p>
+      <p>Aplazar un trimestre las cuatro decisiones inmediatas cuesta del orden de setenta mil euros de valor y ciento veinte horas de dirección. Ninguna de las cuatro exige información que no esté en este documento.</p>
+      <p>Es la razón por la que están marcadas como inmediatas y no como «primer trimestre»: no es urgencia retórica, es que el retraso tiene factura.</p>
+    </div>
+
+<!--@TRAZA-->
+<section class="section" id="trazabilidad">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">§19 · Trazabilidad de los acuerdos</p>
+      <h2>Dónde aterriza cada decisión y cómo se comprueba seis meses después</h2>
+      <p>La pregunta que cierra cualquier consejo serio es la misma: <strong>«de acuerdo, lo aprobamos; ¿cómo sé dentro de seis meses que se hizo?»</strong>. Esta matriz la responde para las catorce. Cada acuerdo tiene un documento donde se escribe, un punto donde se verifica y un indicador donde se ve.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Cód.</th><th>Dónde se escribe</th><th>Cómo se verifica</th><th>Dónde se ve</th></tr></thead>
+        <tbody>
+          <tr><td class="num">D1</td><td>Manual Maestro, Parte VI · política comercial · y Protocolo, Fase 10</td><td>Tipología de descuentos publicada y registro de autorizaciones por tramo</td><td>Producto pendiente y margen por caso</td></tr>
+          <tr><td class="num">D2</td><td>Otros documentos, 12 · continuidad legal · y cartelería de sala</td><td>Texto de garantía por tipo de tratamiento visible y entregado con el presupuesto</td><td>Reclamaciones formales (ind. 3)</td></tr>
+          <tr><td class="num">D3</td><td>Otros documentos, 9 · marca y captación</td><td>Certificado de búsqueda registral y disponibilidad de dominios</td><td>Captación por recomendación (ind. 8)</td></tr>
+          <tr><td class="num">D4</td><td>Otros documentos, 9 · economía unitaria del embudo</td><td>Presupuesto aprobado con responsable nominal y modelo de ejecución</td><td>Coste por primera visita captada</td></tr>
+          <tr><td class="num">D5</td><td>Otros documentos, 14 · GTC · y Protocolo, Fases 10 a 12</td><td>Catálogo cerrado y dictamen jurídico del contrato de adhesión archivado</td><td>Pacientes en mantenimiento activo (ind. 7)</td></tr>
+          <tr><td class="num">D6</td><td>Manual Maestro, Parte V · funciones de vanguardia</td><td>Informe de alcance competencial de asesoría y colegio profesional</td><td>Casos atendidos del segmento de ansiedad severa</td></tr>
+          <tr><td class="num">D7</td><td>Manual Maestro, Parte VI · compras e inversión</td><td>Criterio de retorno exigible aplicado a cada partida de compra</td><td>Documentación digitalizada el mismo día (ind. 4)</td></tr>
+          <tr><td class="num">D8</td><td>Manual Maestro, Parte III · RACI · y Anexo de gobernanza</td><td>Acta con nombres y periodicidad del Comité de Transición</td><td>Bajas voluntarias (ind. 2)</td></tr>
+          <tr><td class="num">D9</td><td>Otros documentos, 8 · innovación · §6 de este documento</td><td>Reparto real ejecutado por horizonte, frente al aprobado</td><td>Revisión anual de cartera</td></tr>
+          <tr><td class="num">D10</td><td>§15 de este documento y presupuesto anual</td><td>Toda excepción al orden consta en el registro de decisiones con su fundamento</td><td>Ejecución por prioridad, trimestral</td></tr>
+          <tr><td class="num">D11</td><td>§10 de este documento</td><td>Expediente de acreditación de los pasos 3 y 4, previo a cualquier gasto de prospección</td><td>Un trimestre en umbral sin intervención de Dirección</td></tr>
+          <tr><td class="num">D12</td><td>Presupuesto anual, partida de sistema y formación</td><td>Suelo anual ejecutado, reportado con el cuadro de mando</td><td>Auditorías en fecha (ind. 10)</td></tr>
+          <tr><td class="num">D13</td><td>Anexo de gobernanza del Manual Maestro</td><td>Cada disparador tiene indicador asociado y convocatoria automática</td><td>Indicadores 2, 3, 9 y 10</td></tr>
+          <tr><td class="num">D14</td><td>Protocolo, Fase 12 · cierre · y Otros documentos, 14</td><td>Punto de verificación obligatorio del cierre de tratamiento</td><td>Ofrecimiento del programa (ind. 9)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="gate" style="max-width:none">
+      <p class="eyebrow">La comprobación de coherencia</p>
+      <p>Los diez indicadores del diccionario de §13 aparecen todos en la columna de la derecha, y las quince decisiones aparecen todas en la de la izquierda. Un acuerdo que no cupiera en esta matriz sería un acuerdo sin forma de comprobarse; un indicador que no apareciera sería un indicador que no sirve para gobernar nada.</p>
+    </div>
+  </div>
+</section>

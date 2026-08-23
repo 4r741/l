@@ -11,6 +11,7 @@ cosa. Sale con código 1 si encuentra cualquier discrepancia.
 """
 import html
 import re
+import zipfile
 import sys
 from pathlib import Path
 
@@ -313,6 +314,80 @@ def comprueba_modelo():
                   % (rotulo, mil(valor / 1000)))
 
 
+# ---------------------------------------------------------------- 8 · el libro de cálculo
+def comprueba_libro():
+    """El instrumento del §7 y del §13 es un documento más y se audita igual.
+
+    Un xlsx es un zip de XML, así que no hace falta abrirlo con una biblioteca:
+    basta leer su tabla de textos. Se comprueba lo mismo que en los HTML —la
+    versión vigente, ninguna versión atrasada, ninguna palabra proscrita— y
+    además que las fórmulas salgan con su resultado en caché. La versión de este
+    libro se le escapó a la revisión de v6.0 justamente por no estar aquí.
+    """
+    ruta = RAIZ / "instrumentos" / "Captura-Linea-Base-Giraldo-2026.xlsx"
+    nombre = "instrumentos/" + ruta.name
+    if not ruta.exists():
+        falla(nombre, "no está en el repositorio: el §7 se queda sin instrumento")
+        return
+    with zipfile.ZipFile(ruta) as z:
+        piezas = z.namelist()
+        cadenas = z.read("xl/sharedStrings.xml").decode("utf-8") if "xl/sharedStrings.xml" in piezas else ""
+        hojas = [z.read(n).decode("utf-8") for n in piezas if n.startswith("xl/worksheets/sheet")]
+    t = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", cadenas)))
+
+    if "v" + VERSION not in t:
+        falla(nombre, "no declara la versión vigente v%s" % VERSION)
+    for v in sorted(set(re.findall(r"\bv(\d+\.\d+)", t))):
+        if v != VERSION:
+            falla(nombre, "arrastra la versión v%s, y la vigente es v%s" % (v, VERSION))
+    for palabra in PROHIBIDOS:
+        if palabra in t:
+            falla(nombre, "contiene «%s», que no puede aparecer en ningún sitio" % palabra)
+
+    # Fórmulas con resultado: <f> sin <v> hermano es una casilla que se verá
+    # vacía en cualquier visor que no calcule.
+    sin_valor = 0
+    for hoja in hojas:
+        for celda in re.findall(r"<c\b[^>]*>.*?</c>", hoja, re.S):
+            if "<f" in celda and "<v>" not in celda:
+                sin_valor += 1
+    if sin_valor:
+        falla(nombre, "tiene %d fórmula(s) sin valor en caché: hay que pasar recalc.py"
+              % sin_valor)
+
+
+
+# ---------------------------------------------------------------- 9 · figuras
+def comprueba_figuras():
+    """Las figuras van numeradas 1..N en el orden en que se leen.
+
+    Doce figuras con tres numeradas, y esas tres fuera de orden, es lo que había
+    antes de que el generador las rotulara solo. La comprobación es barata y
+    cierra la puerta a que alguien vuelva a escribir el número a mano.
+    """
+    t = bruto("memoria.html")
+    pies = re.findall(r"<figcaption[^>]*>\s*(?:<[^>]+>\s*)?(Figura (\d+) ·|.{0,30})", t, re.S)
+    numeros = []
+    for entero, n in pies:
+        if not n:
+            falla("memoria.html", "hay un pie de figura sin numerar: «%s…»" % entero.strip()[:40])
+        else:
+            numeros.append(int(n))
+    if numeros and numeros != list(range(1, len(numeros) + 1)):
+        falla("memoria.html", "las figuras no van 1..%d en orden de lectura: %s"
+              % (len(numeros), numeros))
+
+    sin_marca = re.sub(r"<figcaption.*?</figcaption>", " ", t, flags=re.S)
+    citadas = {int(n) for n in re.findall(r"[Ff]igura (\d+)", texto(sin_marca, ya_limpio=True))}
+    huerfanas = sorted(citadas - set(numeros))
+    if huerfanas:
+        falla("memoria.html", "remite a figuras que no existen: %s" % huerfanas)
+    for marca in ("@Fig:", "@fig:", "<!--FIG"):
+        if marca in t:
+            falla("memoria.html", "conserva la marca «%s» sin resolver" % marca)
+
+
+
 def main():
     comprueba_version()
     comprueba_cifras()
@@ -321,6 +396,8 @@ def main():
     comprueba_censo()
     comprueba_generadores()
     comprueba_modelo()
+    comprueba_libro()
+    comprueba_figuras()
     print("Coherencia del sistema documental · versión canónica v%s · %s\n" % (VERSION, FECHA))
     for a in avisos:
         print("  aviso   " + a)
@@ -331,7 +408,7 @@ def main():
         print("\n%d incoherencia(s). El sistema no puede publicarse así." % len(fallos))
         return 1
     print("  Sin incoherencias: %d hechos canónicos verificados en %d documentos."
-          % (len(CIFRAS), len(DOCUMENTOS)))
+          % (len(CIFRAS), len(DOCUMENTOS) + 1))
     return 0
 
 
