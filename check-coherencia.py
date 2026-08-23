@@ -37,7 +37,7 @@ CIFRAS = {
     "fichas de innovación": 18,
     "decisiones de Gerencia": 20,
     "verificaciones externas": 11,
-    "diapositivas de la presentación": 42,
+    "diapositivas de la presentación": 43,
     "piezas del sistema": 21,
     "campañas de la cartera": 9,
     "objetivo de facturación en miles de euros": 1200,
@@ -265,6 +265,54 @@ def comprueba_generadores():
                 falla(guion, "genera archivos marcados v%s, y la versión vigente es v%s" % (v, VERSION))
 
 
+# ---------------------------------------------------------------- 7 · el modelo
+def comprueba_modelo():
+    """Las cifras de la Parte VI tienen que ser las que devuelve el modelo.
+
+    Es la comprobación que cierra el círculo: el documento no puede afirmar un
+    número que el modelo no produzca. Si alguien edita la Tesis a mano, esto lo
+    detecta; si alguien cambia un supuesto del modelo sin regenerar, también.
+    """
+    ruta = RAIZ / "modelo-campanas.py"
+    if not ruta.exists():
+        falla("modelo-campanas.py", "no está en el repositorio: la Parte VI queda sin respaldo")
+        return
+    # Se ejecuta el código fuente en un espacio propio, sin pasar por el sistema
+    # de importación: un .pyc obsoleto podría validar contra un modelo viejo, y
+    # un verificador que da verde por caché es peor que no tenerlo.
+    entorno = {"__name__": "modelo_auditado", "__file__": str(ruta)}
+    exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
+    d = entorno["calcula"]()
+
+    def mil(v):
+        return "{:,}".format(int(round(v))).replace(",", ".")
+
+    doc = texto("memoria.html")
+    if len(d["campanas"]) != CIFRAS["campañas de la cartera"]:
+        falla("modelo-campanas.py", "modela %d campañas y deberían ser %d"
+              % (len(d["campanas"]), CIFRAS["campañas de la cartera"]))
+    if d["puente"]["objetivo"] != CIFRAS["objetivo de facturación en miles de euros"] * 1000:
+        falla("modelo-campanas.py", "su objetivo no es el canónico de %d k€"
+              % CIFRAS["objetivo de facturación en miles de euros"])
+    if d["capacidad"]["pv_campanas"] > d["capacidad"]["pv_ano"]:
+        falla("modelo-campanas.py", "las campañas piden más agenda de la que hay")
+
+    faltan = []
+    for f in d["campanas"]:
+        if mil(abs(f["aporte"]) / 1000) not in doc:
+            faltan.append("%s (%s k€)" % (f["cod"], mil(f["aporte"] / 1000)))
+    if faltan:
+        falla("memoria.html", "no recoge el aporte que el modelo calcula para %s" % ", ".join(faltan))
+
+    p = d["puente"]
+    for rotulo, valor in (("base", p["base"]), ("llenar la agenda", p["llenar"]),
+                          ("mejora de mezcla", p["mezcla"]), ("seguimiento", p["seguimiento"]),
+                          ("planificado", p["planificado"]), ("colchón", -p["colchon"])):
+        if mil(valor / 1000) not in doc:
+            falla("memoria.html", "el tramo «%s» del puente (%s k€) no aparece en el documento"
+                  % (rotulo, mil(valor / 1000)))
+
+
 def main():
     comprueba_version()
     comprueba_cifras()
@@ -272,6 +320,7 @@ def main():
     comprueba_higiene()
     comprueba_censo()
     comprueba_generadores()
+    comprueba_modelo()
     print("Coherencia del sistema documental · versión canónica v%s · %s\n" % (VERSION, FECHA))
     for a in avisos:
         print("  aviso   " + a)

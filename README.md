@@ -8,7 +8,7 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | --- | --- | --- |
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
 | **`memoria.html`** | Tesis de Dirección (v6.0) | Documento de gobierno para la Junta Directiva, en cinco partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, y la decisión —palancas, asignación de capital, hoja de ruta y los catorce acuerdos que se someten a aprobación |
-| **`deck.html`** | Presentación de Junta | Cuarenta y dos diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
+| **`deck.html`** | Presentación de Junta | Cuarenta y tres diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
 | **`manual.html`** | Manual Maestro de Operaciones (v6.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
@@ -79,6 +79,36 @@ una versión que ya no existe. **Se ejecuta antes de publicar.**
 Un sistema que exige listas de verificación para todo lo demás no puede fiarse
 de la memoria para comprobar su propia coherencia.
 
+## El modelo de la cartera de campañas
+
+```bash
+python3 modelo-campanas.py            # la tabla, el puente y la concentración
+python3 modelo-campanas.py --json     # los mismos datos, para figuras y documento
+```
+
+Ninguna cifra de la Parte VI está escrita a mano. Cada campaña declara cuánta
+agenda ocupa, a qué tasa convierte y con qué ticket, y de ahí se deriva lo que
+aporta. La regla que gobierna el cálculo es deliberadamente conservadora: **con
+la agenda llena, una campaña no vale lo que factura, sino la diferencia entre el
+paciente que trae y el paciente al que desplaza.**
+
+De ahí salen tres resultados que no se buscaron:
+
+- Las dos campañas más rentables son las dos más baratas —34× y 28×— y ninguna
+  capta pacientes: trabajan sobre los que ya son del centro.
+- Esas dos son el 63 % de lo que aporta la cartera. El colchón del 12 % no cubre
+  que falle ninguna: si cae una, cae el objetivo.
+- La única campaña con gasto externo relevante es la única con retorno directo
+  negativo, porque en régimen de agenda llena desplaza visitas de más valor del
+  que trae. Se aprueba igual, pero como habilitador de otras cuatro, no como
+  campaña de retorno, y así consta.
+
+`check-coherencia.py` ejecuta el modelo y comprueba que el documento no afirme
+ningún número distinto del que ese modelo calcula. Lo hace leyendo el código
+fuente y compilándolo en memoria, sin pasar por el sistema de importación: un
+`.pyc` obsoleto podría validar contra un modelo viejo, y un verificador que da
+verde por caché es peor que no tenerlo.
+
 ## Exportación a HTML autónomo
 
 ```bash
@@ -147,21 +177,22 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en cinco 
 | §15 Asignación de capital | Orden de prelación en cinco prioridades y su única regla de excepción |
 | §16 Hoja de ruta | Tres horizontes y tres puertas de paso |
 | §17 Decisiones | D1 a D8 en tabla y D9 a D15 en ficha, con la alternativa descartada de cada una y el coste de no decidir cuantificado |
-| §18 Supuestos | Todos los valores empleados en los modelos, con su origen |
+| §18 Supuestos | Todos los valores empleados en los modelos, con su origen, incluidos los de las nueve campañas |
 | §19 Trazabilidad | Dónde se escribe cada acuerdo, cómo se verifica y en qué indicador se ve |
 | **VI · La cifra** | |
 | §20 El puente | De 720 k€ a 1,2 M€ bloque a bloque, con el colchón de no ejecución y la comprobación de si cabe en la agenda |
-| §21 La cartera de campañas | Las nueve, con segmento, promesa, canal, contribución exigida, coste, dueño y decisión de la que dependen |
+| §21 La cartera de campañas | Las nueve, con la visita que ocupan, su conversión, su ticket, lo que aportan, lo que cuestan y su retorno. Todo derivado del modelo |
 | §22 Calendario y capacidad | Cuándo arranca cada una, la regla de no más de dos a la vez y la senda 890 · 1.060 · 1.200 |
-| §23 Qué tiene que ser cierto | Las cinco condiciones del objetivo y qué se cae si falla cada una |
+| §23 Qué tiene que ser cierto | Las cinco condiciones del objetivo, el riesgo de publicidad sanitaria campaña a campaña y qué cuesta comprimir el plazo |
 | Anexo A | Cuadernillo con las quince hojas de acta, una por decisión, listas para firmar |
 | Anexo B | Una ficha por campaña: promesa, guion de apertura, contribución exigida, responsable y umbral de parada |
 
-Las diez figuras son cálculos derivados de supuestos declarados, no datos de explotación:
+Las doce figuras son cálculos derivados de supuestos declarados, no datos de explotación:
 coste real del descuento, primeras visitas necesarias según conversión, valor del paciente
 a cinco años con y sin programa de cuidado, escenarios de facturación a 36 meses, matriz de
 sensibilidad, valor acumulado por paciente, valor de empresa por peldaño, el puente hasta el
-objetivo, el calendario de campañas y la composición de la cifra. Las paletas están validadas
+objetivo, el calendario de campañas, la composición de la cifra, el retorno de cada
+campaña y la concentración de la cartera. Las paletas están validadas
 para visión con deficiencia de color.
 
 ## Otros documentos del sistema (`otros.html`)
@@ -199,12 +230,12 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v6.0.pdf` | 77 |
+| `Tesis-Direccion-Giraldo-v6.0.pdf` | 79 |
 | `Manual-Maestro-Giraldo-v6.0.pdf` | 205 |
 | `Otros-Documentos-Giraldo-v6.0.pdf` | 135 |
 | `Protocolo-Primera-Visita-Giraldo-v6.0.pdf` | 90 |
-| `Presentacion-Junta-Giraldo-v6.0.pdf` | 42 |
-| `Guion-del-Ponente-Giraldo-v6.0.pdf` | 42 |
+| `Presentacion-Junta-Giraldo-v6.0.pdf` | 43 |
+| `Guion-del-Ponente-Giraldo-v6.0.pdf` | 43 |
 
 ## Captura de la línea base (`instrumentos/`)
 

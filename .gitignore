@@ -1,2 +1,6 @@
 # Salida de build-export.py: se regenera con `python3 build-export.py`
 export/
+
+# Bytecode: puede quedar obsoleto y confundir al verificador
+__pycache__/
+*.pyc
