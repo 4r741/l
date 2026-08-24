@@ -8,6 +8,14 @@ import re
 from pathlib import Path
 
 RAIZ = Path(__file__).parent
+
+_check = (RAIZ / "check-coherencia.py").read_text(encoding="utf-8")
+def canonica(nombre):
+    return re.search(r'"%s": (\d+)' % nombre, _check).group(1)
+DIAPOSITIVAS = canonica("diapositivas de la presentación")
+ACCIONES = canonica("acciones del catálogo de marketing")
+ESTADOS = canonica("estados del paciente")
+
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
@@ -49,12 +57,18 @@ FICHAS = [
   "economía unitaria y creación de valor de empresa, riesgos y pre-mortem, el puente hasta el "
   "objetivo de 1,2 M€ con su cartera de nueve campañas, y las quince decisiones que se someten "
   "a la Junta. Incluye los dos cuadernillos: quince hojas de acta y nueve fichas de campaña.",
-  "57 páginas en papel · lectura 42′", True),
- ("deck.html", "Presentación de Junta", "v6.0 · 42 diapositivas · 16:9",
+  "79 páginas en papel · lectura 55′", True),
+ ("deck.html", "Presentación de Junta", "v6.0 · %s diapositivas · 16:9" % DIAPOSITIVAS,
   "La tesis para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, "
   "<b>N</b> abre el guion del ponente con el minuto objetivo y la pregunta difícil, "
   "<b>E</b> filtra a la ruta corta de doce diapositivas para sesiones de veinte minutos.",
   "Proyección y guion del ponente", False),
+ ("marketing.html", "Plan Maestro de Marketing", "v6.0 · %s acciones · %s estados" % (ACCIONES, ESTADOS),
+  "Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, "
+  "organizado por el estado de su relación con su propia boca y no por canales. Catálogo completo "
+  "con dueño, coste, plazo y semáforo legal; las diez piezas que nadie está haciendo en esta "
+  "ciudad; el mapa de la ría y la Campaña de Mar.",
+  "Documento de dirección", False),
  ("instrumentos/captura.html", "Captura de la línea base", "v6.0 · 10 indicadores",
   "El instrumento del §7 y del §13: doce hojas mensuales, semáforo automático, resumen anual con "
   "tendencia y los cinco números. Se rellena aquí mismo y se guarda en este equipo.",

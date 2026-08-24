@@ -28,6 +28,7 @@ DOCUMENTOS = [
     ("manual.html", "Manual-Maestro-Giraldo-v6.0.pdf", "Manual Maestro de Operaciones · v6.0", False, ""),
     ("index.html", "Protocolo-Primera-Visita-Giraldo-v6.0.pdf", "Protocolo de Primera Visita · v6.0", False, ""),
     ("otros.html", "Otros-Documentos-Giraldo-v6.0.pdf", "Otros documentos del sistema · v6.0", False, ""),
+    ("marketing.html", "Plan-Marketing-Giraldo-v6.0.pdf", "Plan Maestro de Marketing · v6.0", False, ""),
     ("deck.html", "Presentacion-Junta-Giraldo-v6.0.pdf", "", True, ""),
     ("deck.html", "Guion-del-Ponente-Giraldo-v6.0.pdf", "", "guion", PONENTE),
 ]

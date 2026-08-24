@@ -39,13 +39,17 @@ CIFRAS = {
     "decisiones de Gerencia": 20,
     "verificaciones externas": 11,
     "diapositivas de la presentación": 43,
-    "piezas del sistema": 21,
+    "piezas del sistema": 22,
     "campañas de la cartera": 9,
     "objetivo de facturación en miles de euros": 1200,
     "incoherencias reconciliadas en v6.0": 13,
+    "acciones del catálogo de marketing": 76,
+    "estados del paciente": 12,
+    "grupos del catálogo": 7,
+    "piezas propias del plan de marketing": 10,
 }
 
-DOCUMENTOS = ["memoria.html", "deck.html", "manual.html", "index.html",
+DOCUMENTOS = ["memoria.html", "deck.html", "marketing.html", "manual.html", "index.html",
               "otros.html", "otros.html", "inicio.html", "instrumentos/captura.html"]
 DOCUMENTOS = list(dict.fromkeys(DOCUMENTOS))
 
@@ -365,26 +369,92 @@ def comprueba_figuras():
     antes de que el generador las rotulara solo. La comprobación es barata y
     cierra la puerta a que alguien vuelva a escribir el número a mano.
     """
-    t = bruto("memoria.html")
+    for doc in ("memoria.html", "marketing.html"):
+        figuras_de(doc)
+
+
+def figuras_de(doc):
+    t = bruto(doc)
     pies = re.findall(r"<figcaption[^>]*>\s*(?:<[^>]+>\s*)?(Figura (\d+) ·|.{0,30})", t, re.S)
     numeros = []
     for entero, n in pies:
         if not n:
-            falla("memoria.html", "hay un pie de figura sin numerar: «%s…»" % entero.strip()[:40])
+            falla(doc, "hay un pie de figura sin numerar: «%s…»" % entero.strip()[:40])
         else:
             numeros.append(int(n))
     if numeros and numeros != list(range(1, len(numeros) + 1)):
-        falla("memoria.html", "las figuras no van 1..%d en orden de lectura: %s"
+        falla(doc, "las figuras no van 1..%d en orden de lectura: %s"
               % (len(numeros), numeros))
 
     sin_marca = re.sub(r"<figcaption.*?</figcaption>", " ", t, flags=re.S)
     citadas = {int(n) for n in re.findall(r"[Ff]igura (\d+)", texto(sin_marca, ya_limpio=True))}
     huerfanas = sorted(citadas - set(numeros))
     if huerfanas:
-        falla("memoria.html", "remite a figuras que no existen: %s" % huerfanas)
+        falla(doc, "remite a figuras que no existen: %s" % huerfanas)
     for marca in ("@Fig:", "@fig:", "<!--FIG"):
         if marca in t:
-            falla("memoria.html", "conserva la marca «%s» sin resolver" % marca)
+            falla(doc, "conserva la marca «%s» sin resolver" % marca)
+
+
+
+# ---------------------------------------------------------------- 10 · el catálogo de marketing
+def comprueba_catalogo():
+    """El Plan Maestro no puede afirmar un recuento que el catálogo no produzca.
+
+    Mismo principio que con el modelo de campañas, y por el mismo motivo: el
+    documento se genera a partir de los datos, así que la única forma de que
+    diverjan es que alguien edite el HTML a mano. Esto lo detecta.
+    """
+    ruta = RAIZ / "catalogo-acciones.py"
+    if not ruta.exists():
+        falla("catalogo-acciones.py", "no está en el repositorio: el plan queda sin respaldo")
+        return
+    entorno = {"__name__": "catalogo_auditado", "__file__": str(ruta)}
+    exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
+    d = entorno["calcula"]()
+
+    if d["total"] != CIFRAS["acciones del catálogo de marketing"]:
+        falla("catalogo-acciones.py", "cataloga %d acciones y deberían ser %d"
+              % (d["total"], CIFRAS["acciones del catálogo de marketing"]))
+    if len(d["estados"]) != CIFRAS["estados del paciente"]:
+        falla("catalogo-acciones.py", "define %d estados y deberían ser %d"
+              % (len(d["estados"]), CIFRAS["estados del paciente"]))
+    if len(d["grupos"]) != CIFRAS["grupos del catálogo"]:
+        falla("catalogo-acciones.py", "define %d grupos y deberían ser %d"
+              % (len(d["grupos"]), CIFRAS["grupos del catálogo"]))
+
+    # la regla de admisión del plan: ninguna acción sin decir qué gana el paciente
+    mudas = [a["cod"] for a in d["acciones"] if not a["gana"]]
+    if mudas:
+        falla("catalogo-acciones.py", "estas acciones no dicen qué gana el paciente: %s" % mudas[:5])
+
+    doc = bruto("marketing.html")
+    # cada código tiene que aparecer en el documento, y ninguno de más
+    for a in d["acciones"]:
+        if a["cod"] not in doc:
+            falla("marketing.html", "no recoge la acción %s del catálogo" % a["cod"])
+            break
+    fichas = doc.count('class="t-brief"')
+    if fichas != CIFRAS["piezas propias del plan de marketing"]:
+        falla("marketing.html", "trae %d fichas de pieza propia y deberían ser %d"
+              % (fichas, CIFRAS["piezas propias del plan de marketing"]))
+
+    texto_plan = texto(doc, ya_limpio=True)
+    for cifra, rotulo in ((d["total"], "el total de acciones"),
+                          (d["sin_coste"], "las acciones sin coste"),
+                          (d["inmediatas"], "las acciones inmediatas")):
+        if str(cifra) not in texto_plan:
+            falla("marketing.html", "no declara %s (%d) que calcula el catálogo" % (rotulo, cifra))
+
+    # el plan no puede contradecir a la cartera: toda campaña citada tiene que existir
+    ruta_modelo = RAIZ / "modelo-campanas.py"
+    entorno_m = {"__name__": "modelo_auditado", "__file__": str(ruta_modelo)}
+    exec(compile(ruta_modelo.read_text(encoding="utf-8"), str(ruta_modelo), "exec"), entorno_m)
+    validas = {f["cod"] for f in entorno_m["calcula"]()["campanas"]}
+    citadas = {a["campana"] for a in d["acciones"] if a["campana"] != "—"}
+    huerfanas = sorted(citadas - validas)
+    if huerfanas:
+        falla("catalogo-acciones.py", "asigna acciones a campañas inexistentes: %s" % huerfanas)
 
 
 
@@ -398,6 +468,7 @@ def main():
     comprueba_modelo()
     comprueba_libro()
     comprueba_figuras()
+    comprueba_catalogo()
     print("Coherencia del sistema documental · versión canónica v%s · %s\n" % (VERSION, FECHA))
     for a in avisos:
         print("  aviso   " + a)

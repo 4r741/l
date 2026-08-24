@@ -30,6 +30,8 @@ DOCUMENTOS = [
     (GEN / "campanas.py", "Anexo B · fichas de campaña"),
     (GEN / "tesis.py", "memoria.html · Tesis de Dirección"),
     (GEN / "deck.py", "deck.html · presentación de Junta"),
+    (GEN / "marketing-figuras.py", "Figuras del Plan Maestro de Marketing"),
+    (GEN / "marketing.py", "marketing.html · Plan Maestro de Marketing"),
     (RAIZ / "build-captura.py", "instrumentos/captura.html · hoja de captura"),
     (RAIZ / "build-inicio.py", "inicio.html · portada del sistema"),
 ]

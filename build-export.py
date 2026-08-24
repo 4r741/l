@@ -24,6 +24,7 @@ PAGINAS = {
     "inicio.html": "Giraldo-INICIO-AQUI.html",
     "memoria.html": "Tesis-Direccion-Giraldo-v6.html",
     "deck.html": "Presentacion-Junta-Giraldo-v6.html",
+    "marketing.html": "Plan-Marketing-Giraldo-v6.html",
     "manual.html": "Manual-Maestro-Giraldo-v6.html",
     "index.html": "Protocolo-Primera-Visita-Giraldo-v6.html",
     "otros.html": "Otros-Documentos-Giraldo-v6.html",
@@ -34,6 +35,7 @@ DOCUMENTOS = {
     "inicio.html": ("doc-inicio", "in-"),
     "memoria.html": ("doc-tesis", "tes-"),
     "deck.html": ("doc-deck", "dk-"),
+    "marketing.html": ("doc-marketing", "mk-"),
     "instrumentos/captura.html": ("doc-captura", "cp-"),
     "manual.html": ("doc-manual", ""),
     "index.html": ("doc-protocolo", "pv-"),
@@ -45,6 +47,7 @@ ROTULOS = [
     ("doc-inicio", "Inicio"),
     ("doc-tesis", "Tesis de Dirección"),
     ("doc-deck", "Presentación"),
+    ("doc-marketing", "Plan de Marketing"),
     ("doc-captura", "Captura"),
     ("doc-manual", "Manual Maestro"),
     ("doc-protocolo", "Protocolo"),
@@ -410,6 +413,7 @@ def cuerpo(html):
 # cual porque cada uno se ancla ya a su propio contenedor.
 GUIONES = {
     "memoria.html": slice(1, None),
+    "marketing.html": slice(1, None),
     "deck.html": slice(0, None),
     "instrumentos/captura.html": slice(0, None),
 }

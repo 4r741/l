@@ -158,6 +158,14 @@ orden = [
 ]
 cuerpo = "\n\n".join(bloque.strip("\n") for bloque in orden)
 
+# El Plan Maestro de Marketing entra en la barra de la Tesis junto a los
+# demás enlaces cruzados: un documento al que no se llega desde ningún
+# sitio es un documento que no existe.
+cruzado = '<a class="crosslink" href="otros.html">Otros documentos</a>'
+assert cuerpo.count(cruzado) >= 1
+cuerpo = cuerpo.replace(cruzado, cruzado + '\n      '
+                        '<a class="crosslink" href="marketing.html">Plan de Marketing</a>', 1)
+
 # ---------------------------------------------------------------- numeración de figuras
 # Las figuras se numeran solas, en el orden en que el lector las encuentra. El
 # número escrito a mano se queda atrás en cuanto se reordena un apartado: así

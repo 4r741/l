@@ -9,6 +9,7 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
 | **`memoria.html`** | Tesis de Dirección (v6.0) | Documento de gobierno para la Junta Directiva, en seis partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, la decisión —palancas, asignación de capital, hoja de ruta y los quince acuerdos que se someten a aprobación— y la cifra: el puente hasta 1,2 M€ con su cartera de nueve campañas |
 | **`deck.html`** | Presentación de Junta | Cuarenta y tres diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
+| **`marketing.html`** | Plan Maestro de Marketing (v6.0) | Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales: 12 estados, 6 arquetipos de la ría, 7 momentos de verdad, un catálogo de 76 acciones con dueño, coste, plazo y semáforo legal, 10 piezas propias y la Campaña de Mar |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
 | **`manual.html`** | Manual Maestro de Operaciones (v6.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
@@ -72,10 +73,11 @@ construir no se publica. Al final ejecuta el verificador.
 
 | Carpeta | Qué contiene |
 | --- | --- |
-| `fuentes/` | Los bloques de contenido de la Tesis: apertura, cada parte, fichas de decisión, censo, anexos, la hoja editorial y la calculadora. Los que llevan sufijo `-generada` los produce un guion y no se editan |
-| `generadores/` | Los nueve guiones que producen figuras, Parte VI, anexos, `memoria.html` y `deck.html` |
+| `fuentes/` | Los bloques de contenido de la Tesis y del Plan de Marketing: apertura, cada parte, fichas de decisión, censo, anexos, la hoja editorial y la calculadora. Los que llevan sufijo `-generada` los produce un guion y no se editan |
+| `generadores/` | Los once guiones que producen figuras, Parte VI, anexos, `memoria.html`, `deck.html` y `marketing.html` |
 | `build-*.py` | Los generadores de la portada, la hoja de captura, el libro de cálculo, las exportaciones y los PDF |
 | `modelo-campanas.py` | El modelo del que sale toda cifra de la Parte VI |
+| `catalogo-acciones.py` | Las 76 acciones del Plan de Marketing, como datos: se pueden contar, ordenar y cruzar con la cartera |
 | `check-coherencia.py` | El verificador |
 | `recalc.py` | Recálculo del libro con LibreOffice, invocado por `build-libro.py` |
 
@@ -97,10 +99,11 @@ en el §0.2 de la Tesis. La decimotercera la encontró el propio verificador.
 python3 check-coherencia.py
 ```
 
-Afirma veintiún hechos canónicos —cuántas fases tiene el recorrido y cuántas
+Afirma veinticinco hechos canónicos —cuántas fases tiene el recorrido y cuántas
 la primera visita, cuántos indicadores, cuántos documentos operativos, qué
-versión lleva cada archivo, cuántas hojas de acta, cuántas campañas, cuántas diapositivas— y falla
-con código 1 si algún archivo dice otra cosa. Cubre también los nombres que
+versión lleva cada archivo, cuántas hojas de acta, cuántas campañas, cuántas diapositivas, cuántas acciones
+tiene el catálogo de marketing— y falla con código 1 si algún archivo dice otra
+cosa. Cubre también los nombres que
 generan `build-export.py` y `build-pdf.py`, para que un PDF no salga marcado con
 una versión que ya no existe; el interior del `.xlsx`, que es un zip de XML y se
 audita igual que un HTML; y la numeración de las figuras. **Se ejecuta antes de
@@ -145,7 +148,7 @@ verde por caché es peor que no tenerlo.
 python3 build-export.py
 ```
 
-Genera en `export/` ocho archivos que funcionan **sin conexión**, con las
+Genera en `export/` nueve archivos que funcionan **sin conexión**, con las
 tipografías incrustadas como data URI, más `LEEME.txt` y `Giraldo-HTML-v6.zip`
 con el paquete entero listo para repartir:
 
@@ -153,9 +156,10 @@ con el paquete entero listo para repartir:
 | --- | --- |
 | `Giraldo-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
 | `Captura-Linea-Base-Giraldo-v6.html` | La hoja de captura, lista para rellenar en el navegador |
-| `Giraldo-TODO-EN-UNO-v6.html` | **Los siete documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
+| `Giraldo-TODO-EN-UNO-v6.html` | **Los ocho documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
 | `Tesis-Direccion-Giraldo-v6.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
 | `Presentacion-Junta-Giraldo-v6.html` | Solo la presentación, con guion del ponente y ruta corta |
+| `Plan-Marketing-Giraldo-v6.html` | Solo el plan de marketing, con la misma condición |
 | `Manual-Maestro-Giraldo-v6.html` | Solo el manual, con la misma condición |
 | `Protocolo-Primera-Visita-Giraldo-v6.html` | Solo el protocolo, con la misma condición |
 | `Otros-Documentos-Giraldo-v6.html` | Solo los otros documentos, con la misma condición |
@@ -227,6 +231,55 @@ que se leen, y el número lo pone el generador: escribirlo a mano es lo que dej�
 nueve figuras sin numerar y las otras tres desordenadas. Las paletas están
 validadas para visión con deficiencia de color.
 
+## Plan Maestro de Marketing (`marketing.html`)
+
+```bash
+python3 catalogo-acciones.py          # el catálogo en pantalla
+python3 catalogo-acciones.py --json   # los mismos datos, para el documento
+```
+
+Un plan de marketing dental normal se organiza por canales y se mide por
+captación. Este se organiza por **el estado de la relación de una persona con su
+propia boca**, y se mide por si esa persona obtuvo lo que necesitaba —incluso
+cuando lo que necesitaba de nosotros era nada.
+
+La razón no es ideológica, es aritmética: el modelo de la Parte VI ya había
+demostrado que las dos campañas más rentables de la cartera no captan a nadie
+—trabajan sobre pacientes que ya son del centro— y que entre las dos son el 63 %
+de lo que aporta la cartera entera. En un centro con la agenda casi llena, el
+marketing que más produce no es el que trae gente nueva, sino el que impide que
+se vaya la que ya está.
+
+| Parte | Contenido |
+| --- | --- |
+| I · La doctrina | Por qué el plan no se organiza por canales, la regla de admisión del catálogo, las ocho cosas que no se harán nunca y el marco de la publicidad sanitaria |
+| II · El paciente | Los 12 estados y sus tránsitos, los 6 arquetipos de la ría, los 7 momentos de verdad y la asimetría de información que explica la desconfianza del sector |
+| III · El catálogo | Las 76 acciones en 7 grupos, cada una con código estable, dueño, banda de coste, plazo, indicador y semáforo legal |
+| IV · Las diez piezas | Segunda Opinión Honesta, índice de «no necesita tratamiento», Consulta del Miedo, Presupuesto sin Prisa, Archivo de tu Boca, Campaña de Mar, Día de los que no Volvieron, Carta del Tercer Año, Prótesis a la Vista y El Acompañante — cada una con su casilla incómoda: por qué nadie lo hace |
+| V · El territorio | La presencia digital como infraestructura y no como campaña de retorno, el mapa de la ría en cuatro coronas y la Campaña de Mar |
+| VI · La prioridad | Qué aporta cada grupo, en qué orden se activa y qué presupuesto pide de verdad |
+| VII · El gobierno | Las 8 medidas del plan, el calendario con sus cuatro puertas de paso y las reglas de parada |
+| Anexos | Semáforo legal por acción, correspondencia con las nueve campañas de la cartera y lo que se activa este trimestre |
+
+**La regla de admisión es ejecutable, no retórica.** Una acción entra en el
+catálogo si —y solo si— puede decir en una línea qué gana el paciente, y el
+generador se niega a producir el documento si algún campo `gana` está vacío o es
+demasiado corto para decir algo. Esa regla sola expulsa casi todo el repertorio
+habitual del sector: «sorteo de una limpieza» no la pasa, porque lo que gana el
+paciente es una lotería.
+
+Ninguna cifra del documento está escrita a mano. Los recuentos salen de
+`catalogo-acciones.py` y los aportes, de `modelo-campanas.py`;
+`check-coherencia.py` ejecuta los dos y comprueba que el documento no afirme
+nada distinto, incluida la regla de que ninguna acción se asigne a una campaña
+que no existe en la cartera.
+
+Tres resultados del catálogo que conviene leer juntos: **32 de las 76 acciones
+no cuestan dinero**, las mismas 32 se pueden empezar esta semana, y el techo de
+gasto si se activara el catálogo entero son 201.000 € —que no es lo que se
+propone. Lo que el plan pide que no esté ya aprobado no es una partida: son dos
+decisiones.
+
 ## Otros documentos del sistema (`otros.html`)
 
 | # | Documento | Qué aporta |
@@ -252,7 +305,7 @@ validadas para visión con deficiencia de color.
 python3 build-pdf.py
 ```
 
-Genera en `export/pdf/` seis PDF: A4 con márgenes de encuadernación, cabecera de
+Genera en `export/pdf/` siete PDF: A4 con márgenes de encuadernación, cabecera de
 clasificación, pie con «Página X de Y», encabezados de tabla repetidos al cambiar de
 hoja y saltos controlados para que no se parta un cuadro por la mitad. Las quince
 hojas de acta del Anexo A salen una por página, listas para rellenar a mano. La
@@ -266,6 +319,7 @@ Playwright con Chromium.
 | `Manual-Maestro-Giraldo-v6.0.pdf` | 205 |
 | `Otros-Documentos-Giraldo-v6.0.pdf` | 135 |
 | `Protocolo-Primera-Visita-Giraldo-v6.0.pdf` | 90 |
+| `Plan-Marketing-Giraldo-v6.0.pdf` | 49 |
 | `Presentacion-Junta-Giraldo-v6.0.pdf` | 43 |
 | `Guion-del-Ponente-Giraldo-v6.0.pdf` | 43 |
 
