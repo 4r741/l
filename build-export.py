@@ -11,7 +11,9 @@ Requiere conexión solo durante la exportación. El resultado no depende de nada
 externo: ni fuentes, ni scripts, ni imágenes.
 """
 import base64
+import json
 import pathlib
+import html as html_mod
 import re
 import urllib.request
 
@@ -53,6 +55,17 @@ ROTULOS = [
     ("doc-protocolo", "Protocolo"),
     ("doc-otros", "Otros documentos"),
 ]
+
+CORTOS = {
+    "doc-inicio": "Inicio",
+    "doc-tesis": "Tesis",
+    "doc-deck": "Presentación",
+    "doc-marketing": "Marketing",
+    "doc-captura": "Captura",
+    "doc-manual": "Manual",
+    "doc-protocolo": "Protocolo",
+    "doc-otros": "Otros",
+}
 
 # Solo se incrustan estos subconjuntos: el resto (cirílico, vietnamita) no se usa
 SUBCONJUNTOS = ("latin", "latin-ext")
@@ -171,6 +184,262 @@ SCRIPT = """<script>
     e.preventDefault();
     mostrar(orden[i], true);
   });
+
+  /* ------------------------------------------------------------------------
+     Buscador. La tira de secciones se corta por la derecha —la Tesis tiene
+     treinta y cinco entradas y en pantalla caben doce—, así que llegar a un
+     apartado concreto obligaba a rascar hasta encontrarlo. Aquí se escriben dos
+     letras y se llega, sin salir del teclado y sin saber en qué documento está.
+
+     Busca en el texto completo, no solo en los titulares: quien escribe
+     «descuento» o «miedo» quiere el apartado que habla de eso, y ese apartado
+     casi nunca se llama así. El texto no se incrusta —ya está en la página—,
+     se lee del propio documento la primera vez que hace falta y se guarda.
+     ------------------------------------------------------------------------ */
+  var paleta = document.getElementById("paleta");
+  var campo = document.getElementById("paleta-texto");
+  var lista = document.getElementById("paleta-lista");
+  var cuenta = document.getElementById("paleta-cuenta");
+  var indice = window.__INDICE__ || [];
+  var filas = [], elegida = -1, ultimoFoco = null, guardado = {}, crudos = {};
+
+  /* Sin tildes y en minúscula: nadie escribe «asimetría» con tilde al buscar.
+     Se traduce carácter a carácter en vez de descomponer en NFD porque la
+     longitud tiene que conservarse: las posiciones que encuentra la búsqueda se
+     usan luego para recortar el texto original, con sus tildes y sus mayúsculas. */
+  var CON = "áàäâãéèëêíìïîóòöôõúùüûñçÁÀÄÂÃÉÈËÊÍÌÏÎÓÒÖÔÕÚÙÜÛÑÇ";
+  var SIN = "aaaaaeeeeiiiiooooouuuuncaaaaaeeeeiiiiooooouuuunc";
+  function llano(s){
+    var fuera = "";
+    for(var i = 0; i < s.length; i++){
+      var c = s.charAt(i), j = CON.indexOf(c);
+      fuera += j > -1 ? SIN.charAt(j) : c.toLowerCase();
+    }
+    return fuera;
+  }
+  function escapar(s){
+    return s.replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; });
+  }
+  /* Principio de palabra: si no, «acta» aparece dentro de «exactamente». */
+  function donde(texto, trozo){
+    var i = texto.indexOf(trozo);
+    while(i > -1){
+      var antes = i === 0 ? " " : texto.charAt(i - 1);
+      if(!/[a-z0-9]/.test(antes)) return i;
+      i = texto.indexOf(trozo, i + 1);
+    }
+    return -1;
+  }
+  function casan(texto, trozos){
+    for(var i = 0; i < trozos.length; i++) if(donde(texto, trozos[i]) < 0) return false;
+    return true;
+  }
+
+  /* El texto de un apartado: del titular al siguiente titular del mismo rango.
+     Se pasa por el marcado y no por textContent porque textContent pega las
+     palabras de bloques contiguos —«es amplioansiedad»— y eso ensucia el
+     retazo que se le enseña al lector. */
+  var cajon = document.createElement("div");
+  function plano(html){
+    cajon.innerHTML = html.replace(/<[^>]+>/g, " ");
+    return (cajon.textContent || "").replace(/\s+/g, " ").trim();
+  }
+  function crudoDe(ancla){
+    if(crudos[ancla] !== undefined) return crudos[ancla];
+    var el = document.getElementById(ancla), t = "";
+    if(el){
+      if(/^H[23]$/.test(el.tagName)){
+        var tope = el.tagName, n = el.nextElementSibling, trozos = [el.outerHTML];
+        while(n && !(/^H[23]$/.test(n.tagName) && n.tagName <= tope)){
+          trozos.push(n.outerHTML); n = n.nextElementSibling;
+        }
+        t = plano(trozos.join(" "));
+      } else {
+        t = plano(el.innerHTML || "");
+      }
+    }
+    crudos[ancla] = t.slice(0, 6000);
+    return crudos[ancla];
+  }
+  function textoDe(ancla){
+    if(guardado[ancla] === undefined) guardado[ancla] = llano(crudoDe(ancla));
+    return guardado[ancla];
+  }
+
+  function resaltar(texto, trozos){
+    if(!trozos.length) return escapar(texto);
+    var plano = llano(texto), mejor = -1, largo = 0;
+    trozos.forEach(function(p){
+      var i = donde(plano, p);
+      if(i > -1 && (mejor < 0 || i < mejor)){ mejor = i; largo = p.length; }
+    });
+    if(mejor < 0) return escapar(texto);
+    return escapar(texto.slice(0, mejor)) + "<mark>" +
+           escapar(texto.slice(mejor, mejor + largo)) + "</mark>" +
+           escapar(texto.slice(mejor + largo));
+  }
+
+  /* Un trozo del cuerpo alrededor de la primera coincidencia, para que se vea
+     por qué sale ese resultado sin tener que abrirlo. */
+  function retazo(ancla, trozos){
+    var texto = textoDe(ancla), i = -1;
+    for(var n = 0; n < trozos.length && i < 0; n++) i = donde(texto, trozos[n]);
+    if(i < 0) return "";
+    var crudo = crudoDe(ancla);
+    var desde = Math.max(0, i - 46), hasta = Math.min(crudo.length, i + 90);
+    var trozo = (desde ? "…" : "") + crudo.slice(desde, hasta).trim() +
+                (hasta < crudo.length ? "…" : "");
+    return resaltar(trozo, trozos);
+  }
+
+  /* Cuántas veces aparece el trozo más largo: sirve de relevancia sin montar
+     un índice invertido para un archivo que se abre con doble clic. */
+  function veces(texto, trozo){
+    if(!trozo) return 0;
+    var n = 0, desde = 0;
+    while(n < 40){
+      var i = donde(texto.slice(desde), trozo);
+      if(i < 0) break;
+      n++;
+      desde += i + trozo.length;
+    }
+    return n;
+  }
+
+  function pintar(consulta){
+    var trozos = llano(consulta).split(/\s+/).filter(Boolean);
+    var largo = trozos.slice().sort(function(a, b){ return b.length - a.length; })[0] || "";
+    var grupos = [];
+
+    indice.forEach(function(doc){
+      var titulo = llano(doc.titulo), propias = [];
+      if(!trozos.length || casan(titulo, trozos))
+        propias.push({doc: doc.doc, ancla: null, rotulo: doc.titulo, esDoc: true,
+                      retazo: "", punto: 1000});
+      doc.entradas.forEach(function(e){
+        var rot = llano(e.rotulo);
+        if(!trozos.length){
+          propias.push({doc: doc.doc, ancla: e.ancla, rotulo: e.rotulo, esDoc: false,
+                        retazo: "", punto: 0});
+          return;
+        }
+        if(casan(rot + " " + titulo, trozos)){
+          /* El titular manda sobre el cuerpo, y empezar por el término manda
+             sobre mencionarlo a mitad de frase. */
+          var punto = 500 + (donde(rot, largo) === 0 ? 60 : 0) +
+                      (casan(rot, trozos) ? 30 : 0);
+          propias.push({doc: doc.doc, ancla: e.ancla, rotulo: e.rotulo, esDoc: false,
+                        retazo: "", punto: punto});
+          return;
+        }
+        var cuerpo = textoDe(e.ancla);
+        if(casan(cuerpo, trozos))
+          propias.push({doc: doc.doc, ancla: e.ancla, rotulo: e.rotulo, esDoc: false,
+                        retazo: retazo(e.ancla, trozos), punto: 100 + veces(cuerpo, largo)});
+      });
+      if(!propias.length) return;
+      if(trozos.length){
+        propias.sort(function(a, b){ return b.punto - a.punto; });
+        grupos.push({doc: doc, filas: propias,
+                     punto: propias.reduce(function(m, r){ return Math.max(m, r.punto); }, 0)});
+      } else {
+        grupos.push({doc: doc, filas: propias, punto: 0});
+      }
+    });
+    /* Con búsqueda, manda la relevancia; sin ella, el orden de los documentos. */
+    if(trozos.length) grupos.sort(function(a, b){ return b.punto - a.punto; });
+
+    var html = [], total = 0;
+    filas = [];
+    grupos.forEach(function(g){
+      html.push('<p class="paleta__grupo">' + escapar(g.doc.titulo) + "</p>");
+      g.filas.forEach(function(r){
+        var i = filas.length;
+        filas.push(r);
+        html.push('<button type="button" class="paleta__fila' + (r.esDoc ? " paleta__fila--doc" : "") +
+          '" role="option" data-i="' + i + '"><span><b>' + resaltar(r.rotulo, trozos) + "</b>" +
+          (r.retazo ? "<em>" + r.retazo + "</em>" : "") + "</span>" +
+          (r.esDoc ? "<i>abrir el documento</i>" : "") + "</button>");
+        total++;
+      });
+    });
+    lista.innerHTML = html.length ? html.join("") :
+      '<p class="paleta__vacio">Nada con «' + escapar(consulta) + "». Pruebe con menos palabras.</p>";
+    cuenta.textContent = total ? total + (total === 1 ? " resultado" : " resultados") : "";
+    lista.scrollTop = 0;
+    marcar(filas.length ? 0 : -1, false);
+  }
+
+  function marcar(i, mover){
+    elegida = i;
+    var botones = lista.querySelectorAll(".paleta__fila");
+    botones.forEach(function(b, n){ b.setAttribute("aria-selected", String(n === i)); });
+    if(mover && botones[i]) botones[i].scrollIntoView({block:"nearest"});
+  }
+
+  function ir(r){
+    if(!r) return;
+    cerrarPaleta();
+    mostrar(r.doc, !r.ancla);
+    if(r.ancla){
+      var destino = document.getElementById(r.ancla);
+      if(destino) destino.scrollIntoView({behavior:"instant", block:"start"});
+      try { history.replaceState(null, "", "#" + r.ancla); } catch(e){}
+    }
+  }
+
+  function abrirPaleta(){
+    if(!paleta) return;
+    ultimoFoco = document.activeElement;
+    paleta.hidden = false;
+    document.body.style.overflow = "hidden";
+    campo.value = "";
+    pintar("");
+    campo.focus();
+  }
+  function cerrarPaleta(){
+    if(!paleta || paleta.hidden) return;
+    paleta.hidden = true;
+    document.body.style.overflow = "";
+    if(ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  if(paleta){
+    var abrir = document.getElementById("abrir-buscador");
+    if(abrir) abrir.addEventListener("click", abrirPaleta);
+    paleta.querySelectorAll("[data-cerrar]").forEach(function(el){
+      el.addEventListener("click", cerrarPaleta);
+    });
+    campo.addEventListener("input", function(){ pintar(campo.value); });
+    lista.addEventListener("click", function(e){
+      var fila = e.target.closest(".paleta__fila");
+      if(fila) ir(filas[+fila.dataset.i]);
+    });
+    lista.addEventListener("mousemove", function(e){
+      var fila = e.target.closest(".paleta__fila");
+      if(fila && +fila.dataset.i !== elegida) marcar(+fila.dataset.i, false);
+    });
+    campo.addEventListener("keydown", function(e){
+      if(e.key === "ArrowDown" || e.key === "ArrowUp"){
+        e.preventDefault();
+        if(!filas.length) return;
+        marcar((elegida + (e.key === "ArrowDown" ? 1 : filas.length - 1)) % filas.length, true);
+      } else if(e.key === "Enter"){
+        e.preventDefault(); ir(filas[elegida]);
+      } else if(e.key === "Escape"){
+        e.preventDefault(); cerrarPaleta();
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && !paleta.hidden){ cerrarPaleta(); return; }
+      var t = e.target;
+      if(t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      /* La barra inclinada es el gesto que todo el mundo tiene aprendido; se
+         admite además Ctrl+K y Cmd+K, que es el otro. */
+      if(e.key === "/" && !e.ctrlKey && !e.metaKey){ e.preventDefault(); abrirPaleta(); }
+      else if(e.key.toLowerCase() === "k" && (e.ctrlKey || e.metaKey)){ e.preventDefault(); abrirPaleta(); }
+    });
+  }
 
   document.querySelectorAll("[data-ir-a]").forEach(function(a){
     a.addEventListener("click", function(e){
@@ -303,7 +572,7 @@ ESTILO_DOC = """<style>
 .cabecera{position:sticky;top:0;z-index:95}
 .cabecera__in{
   width:min(100% - 2rem,1180px);margin-inline:auto;
-  display:flex;align-items:center;gap:.3rem 1.4rem;
+  display:flex;align-items:center;gap:.3rem .9rem;
 }
 .cabecera__fila{
   background:var(--ink);color:var(--surface);
@@ -311,18 +580,19 @@ ESTILO_DOC = """<style>
 }
 .cabecera__fila .cabecera__in{flex-wrap:wrap;padding:.52rem 0}
 .cabecera__marca{
-  font-family:var(--f-display);font-size:.98rem;margin-right:auto;white-space:nowrap;
+  font-family:var(--f-display);font-size:.98rem;white-space:nowrap;
 }
 .cabecera__marca b{font-weight:600}
 .cabecera__marca span{
   font-family:var(--f-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
   color:#7FD3C9;margin-left:.5rem;
 }
-.cabecera__docs{display:flex;gap:2px;flex-wrap:wrap}
+.cabecera__docs{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
 .cabecera__docs button{
   font:inherit;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
   text-transform:uppercase;background:transparent;border:1px solid transparent;
-  color:rgba(247,248,245,.72);padding:.36rem .62rem;border-radius:999px;cursor:pointer;
+  color:rgba(247,248,245,.72);padding:.36rem .55rem;border-radius:999px;cursor:pointer;
+  white-space:nowrap;
   transition:color .16s ease,border-color .16s ease,background .16s ease;
 }
 .cabecera__docs button:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
@@ -368,6 +638,91 @@ ESTILO_DOC = """<style>
 @media(max-width:700px){
   .cabecera__marca{font-size:.86rem;width:100%;margin-bottom:.2rem}
 }
+
+
+/* ---------------------------------------------------------------------------
+   Buscador de la cabecera y paleta de índice completo
+   --------------------------------------------------------------------------- */
+.buscador{
+  flex:0 0 auto;display:flex;align-items:center;gap:.45rem;font:inherit;cursor:pointer;
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;
+  background:rgba(247,248,245,.07);border:1px solid rgba(247,248,245,.22);
+  color:rgba(247,248,245,.72);padding:.34rem .6rem;border-radius:999px;
+  transition:border-color .16s ease,color .16s ease,background .16s ease;
+}
+.buscador:hover{color:#7FD3C9;border-color:rgba(127,211,201,.55);background:rgba(127,211,201,.1)}
+.buscador kbd{
+  font:inherit;border:1px solid rgba(247,248,245,.28);border-radius:3px;
+  padding:0 .28rem;line-height:1.35;
+}
+
+.paleta{position:fixed;inset:0;z-index:200;display:flex;justify-content:center;
+  align-items:flex-start;padding:clamp(1rem,7vh,5rem) 1rem 1rem}
+.paleta[hidden]{display:none}
+.paleta__velo{position:absolute;inset:0;background:rgba(11,26,32,.55);backdrop-filter:blur(2px)}
+.paleta__caja{
+  position:relative;width:min(100%,720px);max-height:min(72vh,640px);
+  display:flex;flex-direction:column;background:var(--paper);
+  border:1px solid var(--line);box-shadow:0 24px 64px rgba(11,26,32,.28);
+}
+.paleta__campo{display:flex;align-items:center;gap:.7rem;padding:.9rem 1.1rem;
+  border-bottom:1px solid var(--line);color:var(--muted)}
+.paleta__campo input{
+  flex:1;font:inherit;font-family:var(--f-body);font-size:1.02rem;color:var(--ink);
+  background:transparent;border:0;outline:none;min-width:0;
+}
+.paleta__campo input::placeholder{color:var(--muted)}
+.paleta__campo input::-webkit-search-cancel-button{display:none}
+.paleta__cerrar{
+  font:inherit;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;background:var(--surface);border:1px solid var(--line);
+  border-radius:3px;color:var(--muted);padding:.14rem .4rem;cursor:pointer;
+}
+.paleta__cerrar:hover{color:var(--ink);border-color:var(--ink-2)}
+
+.paleta__lista{overflow-y:auto;padding:.4rem 0;scrollbar-width:thin}
+.paleta__grupo{
+  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);padding:.85rem 1.1rem .3rem;
+}
+.paleta__grupo:first-child{padding-top:.35rem}
+.paleta__fila{
+  display:flex;align-items:baseline;gap:.8rem;width:100%;text-align:left;
+  font:inherit;background:transparent;border:0;cursor:pointer;
+  padding:.44rem 1.1rem;color:var(--ink);border-left:2px solid transparent;
+}
+.paleta__fila:hover{background:var(--surface)}
+.paleta__fila[aria-selected="true"]{background:var(--accent-soft);border-left-color:var(--accent)}
+.paleta__fila>span{min-width:0;display:block}
+.paleta__fila b{font-weight:500;font-size:.95rem;display:block}
+.paleta__fila em{
+  display:block;font-style:normal;font-size:.82rem;color:var(--muted);
+  margin-top:.12rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.paleta__fila em mark{background:rgba(14,143,132,.18);color:var(--ink-2);border-radius:2px}
+.paleta__fila b mark{background:rgba(14,143,132,.2);color:inherit;padding:0 .05em;border-radius:2px}
+.paleta__fila i{
+  margin-left:auto;font-style:normal;font-family:var(--f-mono);font-size:.6rem;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--muted);white-space:nowrap;
+}
+.paleta__fila--doc b{font-family:var(--f-display);font-size:1.05rem}
+.paleta__vacio{padding:1.4rem 1.1rem;color:var(--muted);font-size:.95rem}
+.paleta__pie{
+  display:flex;gap:1.1rem;align-items:center;padding:.5rem 1.1rem;
+  border-top:1px solid var(--line);background:var(--surface);
+  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.paleta__pie kbd{
+  font:inherit;background:var(--paper);border:1px solid var(--line);border-radius:3px;
+  padding:0 .3rem;margin-right:.2rem;color:var(--ink-2);
+}
+.paleta__cuenta{margin-left:auto}
+@media(max-width:700px){
+  .buscador span{display:none}
+  .paleta__caja{max-height:82vh}
+}
+@media print{.paleta{display:none!important}}
 
 @media print{
   .cabecera,.avance{display:none}
@@ -568,6 +923,73 @@ SIN_INDICE = {
 }
 
 
+# ---------------------------------------------------------------------------
+# El índice completo, buscable. La tira de secciones se corta por la derecha —la
+# Tesis tiene treinta y cinco entradas y en pantalla caben doce—, así que ir a un
+# apartado concreto obligaba a rascar horizontalmente hasta encontrarlo. Esto lo
+# sustituye por lo que uno espera: escribir dos letras y llegar.
+# ---------------------------------------------------------------------------
+PALETA = """
+<div class="paleta" id="paleta" hidden>
+  <div class="paleta__velo" data-cerrar></div>
+  <div class="paleta__caja" role="dialog" aria-modal="true" aria-label="Buscar en los siete documentos">
+    <div class="paleta__campo">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <input type="search" id="paleta-texto" autocomplete="off" spellcheck="false"
+             placeholder="Escriba un apartado, un documento o una palabra">
+      <button type="button" class="paleta__cerrar" data-cerrar aria-label="Cerrar">esc</button>
+    </div>
+    <div class="paleta__lista" id="paleta-lista" role="listbox"></div>
+    <div class="paleta__pie">
+      <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> moverse</span>
+      <span><kbd>&#8629;</kbd> abrir</span>
+      <span><kbd>esc</kbd> cerrar</span>
+      <span class="paleta__cuenta" id="paleta-cuenta"></span>
+    </div>
+  </div>
+</div>
+"""
+
+
+def solo_texto(html):
+    """Texto plano de un fragmento, en una línea y sin entidades."""
+    return re.sub(r"\s+", " ", html_mod.unescape(re.sub(r"<[^>]+>", " ", html))).strip()
+
+
+def titulares(cuerpo):
+    """Todo titular del documento con su ancla, para que el buscador llegue hondo.
+
+    Con solo las entradas de la tira, buscar «acta» no encontraba el «Anexo A ·
+    Acuerdos», que es exactamente lo que uno busca cuando escribe «acta». Aquí
+    se recorre el cuerpo entero y se empareja cada <h2> y <h3> con el
+    identificador más cercano por encima, que es el que sirve de destino.
+    """
+    anclas = [(m.start(), m.group(1)) for m in re.finditer(r'\sid="([^"]+)"', cuerpo)]
+    fuera = []
+    for m in re.finditer(r"<h([23])\b[^>]*>(.*?)</h\1>", cuerpo, re.S):
+        rotulo = solo_texto(m.group(2))
+        if not rotulo or len(rotulo) > 110:
+            continue
+        propio = re.search(r'\sid="([^"]+)"', m.group(0))
+        if propio:
+            fuera.append((propio.group(1), rotulo))
+            continue
+        previas = [a for pos, a in anclas if pos < m.start()]
+        if previas:
+            fuera.append((previas[-1], rotulo))
+    vistas, limpias = set(), []
+    for ancla, rotulo in fuera:
+        clave = (ancla, rotulo.lower())
+        if clave in vistas:
+            continue
+        vistas.add(clave)
+        limpias.append({"ancla": ancla, "rotulo": rotulo})
+    return limpias
+
+
 def descabezar(html, ident):
     """Quita la cabecera propia del documento y devuelve su índice de secciones.
 
@@ -585,14 +1007,16 @@ def descabezar(html, ident):
     if tira:
         marcado = re.sub(r'\sid="[^"]*"', "", tira.group(0), count=1)
         marcado = marcado.replace('<nav class="strip"', '<nav class="strip" data-de="%s"' % ident, 1)
-        return html, "      " + marcado
+        entradas = [{"ancla": a, "rotulo": re.sub(r"\s+", " ", html_mod.unescape(r)).strip()}
+                    for a, r in re.findall(r'<a href="#([^"]+)">(.*?)</a>', marcado, re.S)]
+        return html, "      " + marcado, entradas
     # La portada y la presentación no tienen índice de secciones. Si su fila se
     # queda vacía, la cabecera cambia de altura al conmutar y el texto pega un
     # salto: es la última costura que quedaba. Se les da una fila propia.
     suplente = SIN_INDICE.get(ident)
     if not suplente:
-        return html, ""
-    return html, ('      <nav class="strip strip--nota" data-de="%s">%s</nav>' % (ident, suplente))
+        return html, "", []
+    return html, ('      <nav class="strip strip--nota" data-de="%s">%s</nav>' % (ident, suplente)), []
 
 
 def unificado(estilo_fuentes):
@@ -616,7 +1040,7 @@ def unificado(estilo_fuentes):
     deck = re.sub(r"^\s*:root\{.*?\n\}", "", deck, count=1, flags=re.S)
     estilos += "\n<style>\n" + escopar(deck, "#doc-deck") + "</style>"
 
-    bloques, tiras = [], []
+    bloques, tiras, indice = [], [], []
     for nombre, (ident, prefijo) in DOCUMENTOS.items():
         cuerpo_doc = cuerpo(fuentes[nombre])
         if nombre == "inicio.html":
@@ -630,15 +1054,22 @@ def unificado(estilo_fuentes):
         # su marca y sus enlaces cruzados, de modo que el archivo único
         # apilaba tres barras y repetía la navegación dos veces. Se le quita la
         # cabecera y su índice de secciones sube a la cabecera común.
-        cuerpo_doc, tira = descabezar(cuerpo_doc, ident)
+        cuerpo_doc, tira, entradas = descabezar(cuerpo_doc, ident)
         if tira:
             tiras.append(tira)
+        vistos = {e["ancla"] for e in entradas}
+        for h in titulares(cuerpo_doc):
+            if h["ancla"] not in vistos:
+                vistos.add(h["ancla"])
+                entradas.append(h)
+        indice.append({"doc": ident, "titulo": dict(ROTULOS)[ident], "entradas": entradas})
         oculto = "" if ident == "doc-inicio" else " hidden"
         bloques.append('<div class="doc" id="%s"%s>\n%s\n</div>' % (ident, oculto, cuerpo_doc))
 
     barra = "\n".join(
-        '        <button type="button" data-ir-a="%s"%s>%s</button>' % (
-            ident, ' aria-current="true"' if ident == "doc-inicio" else "", rotulo)
+        '        <button type="button" data-ir-a="%s"%s title="%s">%s</button>' % (
+            ident, ' aria-current="true"' if ident == "doc-inicio" else "",
+            rotulo, CORTOS[ident])
         for ident, rotulo in ROTULOS)
     conmutador = (
         '<header class="cabecera">\n'
@@ -647,9 +1078,17 @@ def unificado(estilo_fuentes):
         '      <span class="cabecera__marca">Sistema documental <b>Giraldo</b>'
         '<span>v6.0</span></span>\n'
         '      <nav class="cabecera__docs" aria-label="Documentos del sistema">\n%s\n'
-        '      </nav>\n    </div>\n  </div>\n'
+        '      </nav>\n'
+        '      <button type="button" class="buscador" id="abrir-buscador" '
+        'aria-haspopup="dialog">'
+        '<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">'
+        '<circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>'
+        '<path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.6" '
+        'stroke-linecap="round"/></svg>'
+        '<span>Buscar</span><kbd>/</kbd></button>\n'
+        '    </div>\n  </div>\n'
         '  <div class="cabecera__indice">\n    <div class="cabecera__in">\n%s\n'
-        '    </div>\n  </div>\n</header>' % (barra, "\n".join(tiras)))
+        '    </div>\n  </div>\n</header>\n' % (barra, "\n".join(tiras))) + PALETA
 
     documento = """<!doctype html>
 <html lang="es">
@@ -675,7 +1114,8 @@ def unificado(estilo_fuentes):
         estilo_doc=ESTILO_DOC,
         conmutador=conmutador,
         documentos="\n".join(bloques),
-        script=SCRIPT + "\n" + "\n".join(
+        script=('<script>window.__INDICE__ = ' + json.dumps(indice, ensure_ascii=False)
+                + ';</script>\n' + SCRIPT) + "\n" + "\n".join(
             guiones_propios(nombre, fuentes[nombre]) for nombre in DOCUMENTOS),
     )
 

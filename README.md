@@ -164,6 +164,21 @@ con el paquete entero listo para repartir:
 | `Protocolo-Primera-Visita-Giraldo-v6.html` | Solo el protocolo, con la misma condición |
 | `Otros-Documentos-Giraldo-v6.html` | Solo los otros documentos, con la misma condición |
 
+**Buscador de todo el compendio.** `/` —o `Ctrl+K`, o el botón de la
+cabecera— abre una lista sobre el documento: se escriben dos letras y se llega,
+sin saber en qué documento está lo que se busca. Con el campo vacío es el índice
+completo de los siete documentos, agrupado y navegable con `↑` `↓` `⏎`.
+
+Busca en el **texto completo**, no solo en los titulares: quien escribe
+«descuento» o «miedo» quiere el apartado que habla de eso, y ese apartado casi
+nunca se llama así. El texto no se incrusta —ya está en la página—: se lee del
+propio documento la primera vez que hace falta y se guarda, así que el buscador
+no añade peso al archivo. Cada resultado enseña el trozo donde aparece el
+término, con tildes y mayúsculas, para no tener que abrirlo para saber si es ese.
+El orden es por relevancia: primero lo que se llama así, después lo que habla de
+ello, y dentro de eso por número de apariciones. Los términos casan por principio
+de palabra, o «acta» aparecería dentro de «exactamente».
+
 **Una sola cabecera.** Cada documento traía la suya —marca, enlaces a los
 demás, índice de secciones—, así que el archivo único apilaba tres barras y
 repetía la navegación dos veces. Ahora se le quita la cabecera a cada documento
