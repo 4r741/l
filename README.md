@@ -156,13 +156,25 @@ con el paquete entero listo para repartir:
 | --- | --- |
 | `Giraldo-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
 | `Captura-Linea-Base-Giraldo-v6.html` | La hoja de captura, lista para rellenar en el navegador |
-| `Giraldo-TODO-EN-UNO-v6.html` | **Los ocho documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
+| `Giraldo-TODO-EN-UNO-v6.html` | **Los siete documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
 | `Tesis-Direccion-Giraldo-v6.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
 | `Presentacion-Junta-Giraldo-v6.html` | Solo la presentación, con guion del ponente y ruta corta |
 | `Plan-Marketing-Giraldo-v6.html` | Solo el plan de marketing, con la misma condición |
 | `Manual-Maestro-Giraldo-v6.html` | Solo el manual, con la misma condición |
 | `Protocolo-Primera-Visita-Giraldo-v6.html` | Solo el protocolo, con la misma condición |
 | `Otros-Documentos-Giraldo-v6.html` | Solo los otros documentos, con la misma condición |
+
+**Una sola cabecera.** Cada documento traía la suya —marca, enlaces a los
+demás, índice de secciones—, así que el archivo único apilaba tres barras y
+repetía la navegación dos veces. Ahora se le quita la cabecera a cada documento
+y su índice sube a la cabecera común: una fila negra para cambiar de documento
+y una clara con el índice del que esté abierto. La fila del índice tiene altura
+fija y los dos documentos sin secciones —la portada y la presentación— llevan en
+su lugar las teclas que sí les sirven, de modo que **la cabecera mide siempre lo
+mismo y el texto no salta al conmutar**. Su altura la mide el guion y la publica
+en `--cabecera`, que es de donde la presentación saca la suya: un píxel de más
+dejaría barra de desplazamiento. Con `[` y `]` se pasa de documento sin soltar
+el teclado, también desde dentro de la presentación.
 
 La presentación y la hoja de captura anclan su JavaScript a su propio
 contenedor —`.deck-raiz`, `.captura-raiz`— y buscan sus elementos por atributos

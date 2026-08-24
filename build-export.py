@@ -119,15 +119,59 @@ SCRIPT = """<script>
     var existe = docs.some(function(d){ return d.id === id; });
     if(!existe) return;
     docs.forEach(function(d){ d.hidden = (d.id !== id); });
-    document.querySelectorAll(".conmutador [data-ir-a]").forEach(function(b){
+    document.querySelectorAll(".cabecera [data-ir-a]").forEach(function(b){
       b.setAttribute("aria-current", String(b.dataset.irA === id));
     });
     var activo = document.getElementById(id);
+    /* el índice de la cabecera es el del documento abierto, y solo ese */
+    document.querySelectorAll(".cabecera .strip").forEach(function(s){
+      s.hidden = (s.dataset.de !== id);
+    });
     /* nada puede quedar sin revelar al cambiar de documento */
     activo.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+    avanzar();
     if(moverScroll) window.scrollTo(0, 0);
     try { history.replaceState(null, "", "#" + id); } catch(e){}
   }
+  /* ---- hilo de avance del documento abierto ---- */
+  var hilo = document.createElement("div");
+  hilo.className = "avance";
+  document.body.appendChild(hilo);
+  function avanzar(){
+    var alto = document.documentElement.scrollHeight - window.innerHeight;
+    hilo.style.width = (alto > 40 ? (window.scrollY / alto) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", avanzar, {passive:true});
+  window.addEventListener("resize", avanzar);
+
+  var cabecera = document.querySelector(".cabecera");
+  function medirCabecera(){
+    if(!cabecera) return;
+    document.documentElement.style.setProperty(
+      "--cabecera", Math.round(cabecera.getBoundingClientRect().height) + "px");
+  }
+  medirCabecera();
+  window.addEventListener("resize", medirCabecera);
+  if("ResizeObserver" in window) new ResizeObserver(medirCabecera).observe(cabecera);
+
+  /* ---- teclado: se pasa de documento como se pasa de capítulo ---- */
+  document.addEventListener("keydown", function(e){
+    if(e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target;
+    if(t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+    /* Se usan corchetes y no flechas a propósito: la presentación conduce sus
+       diapositivas con las flechas, y quien está dentro de ella tiene que poder
+       salir con el teclado igual que entró. */
+    if(e.key !== "[" && e.key !== "]") return;
+    var abierto = docs.filter(function(d){ return !d.hidden; })[0];
+    if(!abierto) return;
+    var orden = docs.map(function(d){ return d.id; });
+    var i = orden.indexOf(abierto.id) + (e.key === "]" ? 1 : -1);
+    if(i < 0 || i >= orden.length) return;
+    e.preventDefault();
+    mostrar(orden[i], true);
+  });
+
   document.querySelectorAll("[data-ir-a]").forEach(function(a){
     a.addEventListener("click", function(e){
       e.preventDefault();
@@ -137,6 +181,10 @@ SCRIPT = """<script>
       try { history.replaceState(null, "", "#" + (a.dataset.ancla || a.dataset.irA)); } catch(err){}
     });
   });
+  document.querySelectorAll(".cabecera .strip").forEach(function(s){
+    s.hidden = (s.dataset.de !== "doc-inicio");
+  });
+  avanzar();
   if(location.hash){
     var destino = document.getElementById(location.hash.slice(1));
     if(destino && destino.classList.contains("doc")) mostrar(destino.id, false);
@@ -149,7 +197,7 @@ SCRIPT = """<script>
   /* ---- por documento: filtro por puesto, sección activa y revelado ---- */
   docs.forEach(function(doc){
     var fases = Array.prototype.slice.call(doc.querySelectorAll(".phase"));
-    var tira = doc.querySelector(".strip");
+    var tira = document.querySelector('.cabecera .strip[data-de="' + doc.id + '"]');
     var enlaces = tira ? Array.prototype.slice.call(tira.querySelectorAll("a")) : [];
     var chips = Array.prototype.slice.call(doc.querySelectorAll(".chip[data-role]"));
     var limpiar = doc.querySelector(".legend .chip:not([data-role])");
@@ -246,65 +294,112 @@ ESTILO_DOC = """<style>
 [hidden]{display:none!important}
 .doc{display:block}
 
-/* Conmutador permanente: el archivo no depende de ningún enlace externo */
-:root{--conmutador:52px}
-.conmutador{
-  position:sticky;top:0;z-index:90;background:var(--ink);color:var(--surface);
-  border-bottom:1px solid rgba(247,248,245,.18);
-}
-.conmutador__in{
+/* ---------------------------------------------------------------------------
+   Cabecera única. El archivo no depende de ningún enlace externo y no apila
+   barras: una fila con la marca y los documentos, otra con el índice de
+   secciones del documento que esté abierto.
+   --------------------------------------------------------------------------- */
+:root{--cabecera:92px}  /* valor de arranque; el guion lo mide y lo corrige */
+.cabecera{position:sticky;top:0;z-index:95}
+.cabecera__in{
   width:min(100% - 2rem,1180px);margin-inline:auto;
-  display:flex;align-items:center;gap:.4rem 1.2rem;flex-wrap:wrap;padding:.5rem 0;
+  display:flex;align-items:center;gap:.3rem 1.4rem;
 }
-.conmutador__marca{
-  font-family:var(--f-display);font-size:.95rem;margin-right:auto;white-space:nowrap;
+.cabecera__fila{
+  background:var(--ink);color:var(--surface);
+  border-bottom:1px solid rgba(247,248,245,.14);
 }
-.conmutador__marca b{font-weight:600}
-.conmutador__marca span{
+.cabecera__fila .cabecera__in{flex-wrap:wrap;padding:.52rem 0}
+.cabecera__marca{
+  font-family:var(--f-display);font-size:.98rem;margin-right:auto;white-space:nowrap;
+}
+.cabecera__marca b{font-weight:600}
+.cabecera__marca span{
   font-family:var(--f-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
   color:#7FD3C9;margin-left:.5rem;
 }
-.conmutador__botones{display:flex;gap:2px;flex-wrap:wrap}
-.conmutador button{
+.cabecera__docs{display:flex;gap:2px;flex-wrap:wrap}
+.cabecera__docs button{
   font:inherit;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
   text-transform:uppercase;background:transparent;border:1px solid transparent;
-  color:rgba(247,248,245,.7);padding:.36rem .6rem;border-radius:999px;cursor:pointer;
+  color:rgba(247,248,245,.72);padding:.36rem .62rem;border-radius:999px;cursor:pointer;
+  transition:color .16s ease,border-color .16s ease,background .16s ease;
 }
-.conmutador button:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
-.conmutador button[aria-current="true"]{
+.cabecera__docs button:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
+.cabecera__docs button[aria-current="true"]{
   background:rgba(127,211,201,.16);border-color:#7FD3C9;color:#7FD3C9;
 }
-.doc .topbar{top:var(--conmutador)}
-/* la presentación ocupa la altura libre bajo el conmutador */
-#doc-deck .deck{height:calc(100vh - var(--conmutador))}
+
+/* Segunda fila: el índice del documento activo. Si el documento no tiene
+   índice —la presentación— la fila desaparece y no deja un hueco vacío. */
+.cabecera__indice{
+  background:var(--paper);border-bottom:1px solid var(--line);
+}
+/* Altura fija: si la fila cambia de alto al conmutar, el texto pega un salto y
+   se nota la costura. Todos los índices ocupan lo mismo, tengan lo que tengan. */
+.cabecera__indice .cabecera__in{display:block;height:44px}
+.cabecera__indice .strip{height:44px;align-items:center;padding:0;mask-image:none;-webkit-mask-image:none}
+.cabecera__indice .strip a{padding:.3rem .58rem 0;border-top-width:2px}
+.strip--nota{
+  display:flex;gap:.4rem 1.5rem;flex-wrap:nowrap;align-items:center;overflow-x:auto;
+  white-space:nowrap;scrollbar-width:none;
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);
+}
+.strip--nota::-webkit-scrollbar{display:none}
+.strip--nota>*{flex:0 0 auto}
+.strip--nota b{color:var(--accent-ink);font-weight:400;letter-spacing:.1em}
+.strip--nota kbd{
+  font:inherit;background:var(--surface);border:1px solid var(--line);
+  border-radius:3px;padding:.05rem .3rem;color:var(--ink-2);
+}
+
+/* Hilo de avance: dice cuánto queda del documento abierto sin ocupar sitio. */
+.avance{
+  position:fixed;top:0;left:0;height:2px;width:0;z-index:99;
+  background:var(--accent);transition:width .12s linear;
+}
+@media(prefers-reduced-motion:reduce){.avance{transition:none}}
+
+/* La presentación ocupa la altura libre bajo la cabecera. */
+#doc-deck .deck{height:calc(100vh - var(--cabecera))}
 #doc-deck .hud{bottom:14px}
+
+@media(max-width:700px){
+  .cabecera__marca{font-size:.86rem;width:100%;margin-bottom:.2rem}
+}
+
 @media print{
-  .conmutador{display:none}
+  .cabecera,.avance{display:none}
   .doc[hidden]{display:none!important}
   #doc-deck .deck{height:auto}
 }
-</style>"""
+</style>
+"""
 
 
 # Dentro del archivo único, la portada no puede seguir hablando de «mantener los
 # archivos en la misma carpeta»: aquí no hay archivos que separar.
 CONTEXTO_UNICO = [
     ("Cada archivo es una página completa: se abre en el navegador que tenga instalado, "
-     "sin conexión y sin ningún programa adicional. Mantenga los seis en la misma carpeta "
+     "sin conexión y sin ningún programa adicional. Mantenga los siete en la misma carpeta "
      "para que los enlaces entre ellos funcionen.",
      "Está usted dentro del archivo único: los siete documentos viven en este mismo fichero, "
-     "con las tipografías y los gráficos incrustados. No hay nada que mantener junto ni nada "
-     "que se pueda separar; use la barra de arriba para moverse entre ellos."),
+     "con las tipografías, los gráficos y las hojas de cálculo incrustados. No hay nada que "
+     "mantener junto ni nada que se pueda separar. Use la barra negra de arriba para cambiar "
+     "de documento y la clara para moverse dentro de él; con <b>[</b> y <b>]</b> se pasa de "
+     "documento sin soltar el teclado."),
     ("Copie la carpeta completa en una memoria o envíela comprimida. No hay servidor, ni "
      "cuenta, ni dependencia externa: lo que ve aquí es todo lo que hace falta.",
      "Copie este único archivo en una memoria o envíelo por correo. No hay servidor, ni "
      "cuenta, ni dependencia externa, ni segundo archivo que se pueda perder: lo que ve aquí "
      "es todo lo que hace falta."),
-    ("Seis documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. "
+    ("Siete documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. "
      "Todos comparten la versión <strong>v6.0</strong>",
      "Siete documentos dentro de un solo archivo, que se abre en cualquier navegador sin "
      "instalar nada y sin conexión. Todos comparten la versión <strong>v6.0</strong>"),
 ]
+
 
 
 def _bloque(css, apertura):
@@ -457,6 +552,49 @@ def conmutadores(html, propio):
     return html
 
 
+# Fila de índice para los dos documentos que no tienen secciones. No es relleno:
+# dice lo que a esa altura le hace falta saber a quien está mirando.
+SIN_INDICE = {
+    "doc-inicio": ("<b>Siete documentos, un archivo</b>"
+                   "<span>Barra negra: cambiar de documento</span>"
+                   "<span>Barra clara: moverse dentro de él</span>"
+                   "<span>Teclas <kbd>[</kbd> y <kbd>]</kbd>: documento anterior y siguiente</span>"
+                   "<span>Todo funciona sin conexión</span>"),
+    "doc-deck": ("<b>43 diapositivas · 16:9</b>"
+                 "<span><kbd>←</kbd> <kbd>→</kbd> <kbd>espacio</kbd> pasar</span>"
+                 "<span><kbd>N</kbd> guion del ponente</span>"
+                 "<span><kbd>E</kbd> ruta corta de doce</span>"
+                 "<span><kbd>Inicio</kbd> <kbd>Fin</kbd> primera y última</span>"),
+}
+
+
+def descabezar(html, ident):
+    """Quita la cabecera propia del documento y devuelve su índice de secciones.
+
+    En el archivo único solo puede haber una cabecera. La del documento repetía
+    la marca, repetía los enlaces a los demás documentos —que el conmutador ya
+    ofrece— y dejaba tres barras apiladas encima del texto. El índice de
+    secciones sí sirve, así que sube a la cabecera común y se muestra cuando su
+    documento está activo.
+    """
+    cabecera = re.search(r'<header class="topbar">.*?</header>', html, re.S)
+    if cabecera:
+        html = html.replace(cabecera.group(0), "", 1)
+    tira = re.search(r'<nav class="strip"[^>]*>.*?</nav>',
+                     cabecera.group(0) if cabecera else "", re.S)
+    if tira:
+        marcado = re.sub(r'\sid="[^"]*"', "", tira.group(0), count=1)
+        marcado = marcado.replace('<nav class="strip"', '<nav class="strip" data-de="%s"' % ident, 1)
+        return html, "      " + marcado
+    # La portada y la presentación no tienen índice de secciones. Si su fila se
+    # queda vacía, la cabecera cambia de altura al conmutar y el texto pega un
+    # salto: es la última costura que quedaba. Se les da una fila propia.
+    suplente = SIN_INDICE.get(ident)
+    if not suplente:
+        return html, ""
+    return html, ('      <nav class="strip strip--nota" data-de="%s">%s</nav>' % (ident, suplente))
+
+
 def unificado(estilo_fuentes):
     fuentes = {nombre: (RAIZ / nombre).read_text(encoding="utf-8") for nombre in DOCUMENTOS}
 
@@ -478,7 +616,7 @@ def unificado(estilo_fuentes):
     deck = re.sub(r"^\s*:root\{.*?\n\}", "", deck, count=1, flags=re.S)
     estilos += "\n<style>\n" + escopar(deck, "#doc-deck") + "</style>"
 
-    bloques = []
+    bloques, tiras = [], []
     for nombre, (ident, prefijo) in DOCUMENTOS.items():
         cuerpo_doc = cuerpo(fuentes[nombre])
         if nombre == "inicio.html":
@@ -488,19 +626,30 @@ def unificado(estilo_fuentes):
         if prefijo:
             cuerpo_doc = prefijar(cuerpo_doc, prefijo)
         cuerpo_doc = conmutadores(cuerpo_doc, nombre)
+        # Aquí se cierra la fisura: cada documento traía su propia cabecera con
+        # su marca y sus enlaces cruzados, de modo que el archivo único
+        # apilaba tres barras y repetía la navegación dos veces. Se le quita la
+        # cabecera y su índice de secciones sube a la cabecera común.
+        cuerpo_doc, tira = descabezar(cuerpo_doc, ident)
+        if tira:
+            tiras.append(tira)
         oculto = "" if ident == "doc-inicio" else " hidden"
         bloques.append('<div class="doc" id="%s"%s>\n%s\n</div>' % (ident, oculto, cuerpo_doc))
 
     barra = "\n".join(
-        '      <button type="button" data-ir-a="%s"%s>%s</button>' % (
+        '        <button type="button" data-ir-a="%s"%s>%s</button>' % (
             ident, ' aria-current="true"' if ident == "doc-inicio" else "", rotulo)
         for ident, rotulo in ROTULOS)
     conmutador = (
-        '<nav class="conmutador" aria-label="Documentos del sistema">\n'
-        '  <div class="conmutador__in">\n'
-        '    <span class="conmutador__marca">Sistema documental <b>Giraldo</b>'
+        '<header class="cabecera">\n'
+        '  <div class="cabecera__fila">\n'
+        '    <div class="cabecera__in">\n'
+        '      <span class="cabecera__marca">Sistema documental <b>Giraldo</b>'
         '<span>v6.0</span></span>\n'
-        '    <div class="conmutador__botones">\n%s\n    </div>\n  </div>\n</nav>' % barra)
+        '      <nav class="cabecera__docs" aria-label="Documentos del sistema">\n%s\n'
+        '      </nav>\n    </div>\n  </div>\n'
+        '  <div class="cabecera__indice">\n    <div class="cabecera__in">\n%s\n'
+        '    </div>\n  </div>\n</header>' % (barra, "\n".join(tiras)))
 
     documento = """<!doctype html>
 <html lang="es">

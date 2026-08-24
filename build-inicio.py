@@ -15,6 +15,10 @@ def canonica(nombre):
 DIAPOSITIVAS = canonica("diapositivas de la presentación")
 ACCIONES = canonica("acciones del catálogo de marketing")
 ESTADOS = canonica("estados del paciente")
+_cat = (RAIZ / "catalogo-acciones.py").read_text(encoding="utf-8")
+_ns = {"__name__": "catalogo_portada", "__file__": "catalogo-acciones.py"}
+exec(compile(_cat, "catalogo-acciones.py", "exec"), _ns)
+SINCOSTE = str(_ns["calcula"]()["sin_coste"])
 
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
@@ -90,6 +94,12 @@ FICHAS = [
 ]
 
 
+# El número de documentos se cuenta; no se teclea. Decía «seis» con siete
+# documentos y «siete» con ocho, que es el desfase de siempre.
+LETRA = {5: "Cinco", 6: "Seis", 7: "Siete", 8: "Ocho", 9: "Nueve", 10: "Diez"}
+CUANTOS = LETRA[len(FICHAS)]
+
+
 def ficha(destino, titulo, etiqueta, texto, pie, ancha):
     return ('<a class="puerta__ficha%s" href="%s">\n'
             '        <p class="eyebrow">%s</p>\n'
@@ -119,7 +129,7 @@ CUERPO = """
       <div>
         <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
         <h1>No medias<br><em>sonrisas</em></h1>
-        <p class="hero__lede">Seis documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. Todos comparten la versión <strong>v6.0</strong>: si uno cambia lo bastante como para merecer versión nueva, la reciben todos.</p>
+        <p class="hero__lede">@CUANTOS@ documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. Todos comparten la versión <strong>v6.0</strong>: si uno cambia lo bastante como para merecer versión nueva, la reciben todos.</p>
         <p class="hero__note">Uso interno y confidencial. Contiene información económica, laboral y estratégica. No se difunde fuera de la organización sin autorización expresa de la Dirección General.</p>
       </div>
       <dl class="specs">
@@ -127,6 +137,8 @@ CUERPO = """
         <div class="spec"><dt>Decisiones abiertas</dt><dd>15<small>Se someten a la Junta Directiva</small></dd></div>
         <div class="spec"><dt>Puntos de verificación</dt><dd>322<small>Físicos, documentales, de sistemas y de proceso</small></dd></div>
         <div class="spec"><dt>Objetivo</dt><dd>1,2 M€<small>Facturación anual en el ejercicio tercero, con nueve campañas</small></dd></div>
+        <div class="spec"><dt>Acciones de marketing</dt><dd>@ACCIONES@<small>Sobre @ESTADOS@ estados del paciente. @SINCOSTE@ de ellas no cuestan dinero</small></dd></div>
+        <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
       </dl>
     </div>
   </div>
@@ -138,7 +150,7 @@ CUERPO = """
     <div class="section__head">
       <p class="eyebrow">El sistema</p>
       <h2>Qué es cada cosa</h2>
-      <p>La Tesis dirige, la presentación convence, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, las cinco primeras se apoyan en supuestos.</p>
+      <p>La Tesis dirige, la presentación convence, el Plan de Marketing llena la agenda, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, todas las demás se apoyan en supuestos.</p>
     </div>
     <div class="puerta">
       @@FICHAS@@
@@ -153,7 +165,7 @@ CUERPO = """
       <h2>Sin instalar nada</h2>
     </div>
     <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))">
-      <div class="card"><p class="eyebrow">En este equipo</p><h3>Doble clic</h3><p>Cada archivo es una página completa: se abre en el navegador que tenga instalado, sin conexión y sin ningún programa adicional. Mantenga los seis en la misma carpeta para que los enlaces entre ellos funcionen.</p></div>
+      <div class="card"><p class="eyebrow">En este equipo</p><h3>Doble clic</h3><p>Cada archivo es una página completa: se abre en el navegador que tenga instalado, sin conexión y sin ningún programa adicional. Mantenga los @cuantos@ en la misma carpeta para que los enlaces entre ellos funcionen.</p></div>
       <div class="card"><p class="eyebrow">En papel</p><h3>Imprimir</h3><p>Todos llevan hoja de estilos de impresión: A4 con cabecera de clasificación, numeración y tablas que repiten su encabezado. La presentación sale apaisada, una diapositiva por página.</p></div>
       <div class="card"><p class="eyebrow">Para repartir</p><h3>La carpeta entera</h3><p>Copie la carpeta completa en una memoria o envíela comprimida. No hay servidor, ni cuenta, ni dependencia externa: lo que ve aquí es todo lo que hace falta.</p></div>
     </div>
@@ -179,6 +191,11 @@ CUERPO = """
   </div>
 </footer>
 """.replace("@@FICHAS@@", "\n      ".join(ficha(*f) for f in FICHAS))
+
+CUERPO = (CUERPO.replace("@CUANTOS@", CUANTOS).replace("@cuantos@", CUANTOS.lower())
+          .replace("@ACCIONES@", ACCIONES).replace("@ESTADOS@", ESTADOS)
+          .replace("@SINCOSTE@", SINCOSTE))
+assert "@CUANTOS@" not in CUERPO and "@cuantos@" not in CUERPO, "queda alguna marca"
 
 (RAIZ / "inicio.html").write_text(cabecera + "\n" + CUERPO + "\n</body>\n</html>\n", encoding="utf-8")
 print("inicio.html ·", (RAIZ / "inicio.html").stat().st_size // 1024, "KB")
