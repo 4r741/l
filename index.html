@@ -49,7 +49,7 @@
    BASE
    ============================================================ */
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:118px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barra) + 1.1rem)}
 body{
   margin:0;
   background:var(--paper);
@@ -89,6 +89,16 @@ a{color:inherit}
 /* ============================================================
    BARRA SUPERIOR
    ============================================================ */
+/* ---------------------------------------------------------------------------
+   Aire bajo la barra fija. Un enlace del índice que deja el titular medio
+   tapado por la cabecera parece roto aunque haya funcionado: el lector no ve
+   llegar el salto. Antes esta reserva era un número fijo pensado para el
+   escritorio; en pantalla estrecha la barra se pliega en tres filas y pasa de
+   los doscientos píxeles, y el titular quedaba debajo. Ahora el guion mide la
+   barra y esta variable la sigue.
+   --------------------------------------------------------------------------- */
+:root{--barra:118px}
+
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -296,7 +306,8 @@ td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:n
   .timemap__seg:hover{transform:none}
 }
 @media(max-width:640px){
-  html{scroll-padding-top:98px}
+  /* la barra medida ya manda; aquí solo se estrecha el aire */
+  html{scroll-padding-top:calc(var(--barra) + .95rem)}
   .brand__tag{display:none}
   .brand__mark{font-size:.98rem}
   .topbar__in{padding:.55rem 0}
@@ -504,7 +515,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">01 · Fundamentos</p>
-      <h2>Cinco principios que sostienen las doce fases de la primera visita</h2>
+      <h2 id="p-cinco-principios-sostienen-doce-fases-primera">Cinco principios que sostienen las doce fases de la primera visita</h2>
       <p>Si alguna vez el protocolo entra en conflicto con la realidad de una visita concreta, estos principios deciden. Son el criterio al que apelar cuando el guion no cubre la situación.</p>
     </div>
 
@@ -517,32 +528,32 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
     <div class="cards cards--3">
       <article class="card">
         <span class="eyebrow">Principio 01</span>
-        <h3>El diagnóstico manda</h3>
+        <h3 id="p-diagnostico-manda">El diagnóstico manda</h3>
         <p>Ninguna propuesta económica existe antes que un diagnóstico completo, validado y firmado. La secuencia —pruebas, exploración, informe, presentación, presupuesto— no se altera ni se comprime.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Principio 02</span>
-        <h3>Lo que no está en Clinic Cloud, no ha ocurrido</h3>
+        <h3 id="p-no-esta-clinic-cloud-no-ha">Lo que no está en Clinic Cloud, no ha ocurrido</h3>
         <p>Cada fase termina con un registro. La trazabilidad clínica y legal se construye durante la visita, no al final del día ni la semana siguiente.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Principio 03</span>
-        <h3>El paciente entiende lo que ve</h3>
+        <h3 id="p-paciente-entiende-ve">El paciente entiende lo que ve</h3>
         <p>La imagen intraoral, el CBCT y la fotografía sustituyen a la explicación abstracta. Mostrar siempre antes que argumentar; la evidencia visual es el lenguaje común.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Principio 04</span>
-        <h3>Una sola voz</h3>
+        <h3 id="p-sola-voz">Una sola voz</h3>
         <p>Doctor y Director acuerdan diagnóstico, plan y enfoque <em>antes</em> de sentarse con el paciente. El paciente nunca percibe duda, contradicción ni improvisación entre profesionales.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Principio 05</span>
-        <h3>Cierre honesto</h3>
+        <h3 id="p-cierre-honesto">Cierre honesto</h3>
         <p>Se guía la decisión, no se presiona. Riesgos, alternativas y limitaciones se dicen en voz alta. Un «no» bien atendido hoy es una conversión posible mañana; un «sí» forzado es una reclamación futura.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Cómo leer este documento</span>
-        <h3>Siete capas por fase</h3>
+        <h3 id="p-siete-capas-fase">Siete capas por fase</h3>
         <p><strong>Acciones</strong> en orden · <strong>cronología</strong> minuto a minuto · <strong>qué percibe el paciente</strong> · <strong>qué decir y qué evitar</strong> · <strong>casos especiales</strong> · <strong>registro obligatorio</strong> en Clinic Cloud · <strong>criterio de salida</strong>, la condición sin la cual no se avanza.</p>
       </article>
     </div>
@@ -560,7 +571,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">02 · Mapa de la visita</p>
-      <h2>Los 115 a 120 minutos, a escala</h2>
+      <h2 id="p-115-120-minutos-escala">Los 115 a 120 minutos, a escala</h2>
       <p>Cada bloque es una fase, proporcional a su duración nominal, coloreada por el rol que la lidera. Filtra por rol para leer el protocolo desde tu puesto: verás únicamente las fases en las que tienes responsabilidad directa.</p>
     </div>
     <div class="timemap">
@@ -576,7 +587,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-top:2.6rem">Matriz de responsabilidad</h3>
+    <h3 style="font-size:var(--step-1);margin-top:2.6rem" id="p-matriz-responsabilidad">Matriz de responsabilidad</h3>
     <div class="tablewrap">
       <table>
         <thead>
@@ -609,7 +620,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">03 · Flujo por roles</p>
-      <h2>Quién tiene al paciente en cada momento</h2>
+      <h2 id="p-quien-tiene-paciente-cada-momento">Quién tiene al paciente en cada momento</h2>
       <p>El paciente atraviesa cuatro carriles y cambia de manos siete veces. Cada cambio es un punto de fricción posible: si nadie le presenta, si hay que repetir lo ya contado o si el siguiente profesional no viene informado, la experiencia se rompe justo ahí.</p>
     </div>
     <figure class="fig">
@@ -733,17 +744,17 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
     <div class="cards cards--3" style="margin-top:2rem">
       <article class="card">
         <span class="eyebrow">Regla de entrega</span>
-        <h3>Nadie se entrega solo</h3>
+        <h3 id="p-nadie-entrega-solo">Nadie se entrega solo</h3>
         <p>Ningún paciente recorre un pasillo sin acompañante ni entra en una sala sin que le presenten. Quien entrega dice el nombre del paciente, el motivo de consulta y qué se ha hecho ya.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Regla de continuidad</span>
-        <h3>No se repite ninguna pregunta</h3>
+        <h3 id="p-no-repite-ninguna-pregunta">No se repite ninguna pregunta</h3>
         <p>Cada rol lee en Clinic Cloud lo que registró el anterior. Preguntar dos veces lo mismo comunica desorganización con más fuerza que cualquier folleto.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Regla de evidencia</span>
-        <h3>Cada tramo deja rastro</h3>
+        <h3 id="p-cada-tramo-deja-rastro">Cada tramo deja rastro</h3>
         <p>Los nueve documentos y las pruebas se generan dentro del circuito, no después. Al salir el paciente, la ficha debe poder leerse como el relato completo de la visita.</p>
       </article>
     </div>
@@ -755,7 +766,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">04 · Las doce fases</p>
-      <h2>Las doce fases de la primera visita, una por una</h2>
+      <h2 id="p-doce-fases-primera-visita">Las doce fases de la primera visita, una por una</h2>
       <p>Cada fase incluye su propósito, la secuencia de acciones, la cronología interna, lo que percibe el paciente, los guiones sugeridos con su contrapartida de lo que conviene evitar, los casos especiales que obligan a adaptarla, el registro obligatorio en Clinic Cloud, los errores detectados en auditoría y el criterio de salida. Los guiones son una base sobre la que construir con naturalidad, nunca un texto para recitar.</p>
     </div>
   </div>
@@ -776,7 +787,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Preparación previa: la visita empieza en la primera llamada</h2>
+      <h2 id="p-preparacion-previa-visita-empieza-primera-llamada">Preparación previa: la visita empieza en la primera llamada</h2>
       <p class="phase__intro">El paciente decide si viene —y con qué expectativa viene— en los primeros tres minutos de conversación. Esta fase persigue dos cosas simultáneas: capturar información limpia para que el equipo trabaje sobre datos reales, y transmitir el valor diferencial de la Primera Visita antes de que el paciente cuelgue.</p>
 
       <div class="block">
@@ -1042,7 +1053,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Acogida, Sala VIP y recorrido por la tecnología</h2>
+      <h2 id="p-acogida-sala-vip-recorrido-tecnologia">Acogida, Sala VIP y recorrido por la tecnología</h2>
       <p class="phase__intro">Cinco minutos que fijan el marco de todo lo que viene después. El paciente debe percibir, sin que nadie se lo diga, tres cosas: que le esperaban, que el sitio es distinto y que la tecnología que va a ver justifica lo que luego escuchará.</p>
 
       <div class="block">
@@ -1238,7 +1249,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Datos personales, protección de datos y alta en Clinic Cloud</h2>
+      <h2 id="p-datos-personales-proteccion-datos-alta-clinic">Datos personales, protección de datos y alta en Clinic Cloud</h2>
       <p class="phase__intro">La parte administrativa se hace en un despacho y no en un mostrador por una razón deliberada: convierte un trámite en una conversación. Mientras se completan los datos, el Director conoce al paciente como persona —a qué se dedica, con quién vive, qué le preocupa— y esa información será decisiva en las fases 7 y 10.</p>
 
       <div class="block">
@@ -1423,7 +1434,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Historia médica y consentimiento radiológico</h2>
+      <h2 id="p-historia-medica-consentimiento-radiologico">Historia médica y consentimiento radiológico</h2>
       <p class="phase__intro">Aquí cambia la autoridad de la conversación. El Director presenta al Doctor y se retira del primer plano: a partir de este momento, quien decide qué es clínicamente correcto es el Doctor, y el paciente debe percibirlo con nitidez.</p>
 
       <div class="block">
@@ -1625,7 +1636,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Pruebas diagnósticas avanzadas y documentación fotográfica</h2>
+      <h2 id="p-pruebas-diagnosticas-avanzadas-documentacion-fotogra">Pruebas diagnósticas avanzadas y documentación fotográfica</h2>
       <p class="phase__intro">La batería completa de pruebas es, a la vez, la base del diagnóstico y el argumento más sólido de la clínica. Se ejecuta con precisión técnica y con cuidado del confort: el paciente debe saber en todo momento qué se le va a hacer, cuánto dura y qué va a notar.</p>
 
       <div class="block">
@@ -1830,7 +1841,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Briefing entre Doctor y Director</h2>
+      <h2 id="p-briefing-entre-doctor-director">Briefing entre Doctor y Director</h2>
       <p class="phase__intro">Cinco minutos que determinan la coherencia de los sesenta siguientes. Doctor y Director revisan juntos lo que ya saben y salen de la sala con una única versión del diagnóstico, del plan y del enfoque. Esta reunión ocurre mientras el paciente descansa tras las pruebas.</p>
 
       <div class="block">
@@ -1968,7 +1979,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Anamnesis de expectativas y exploración clínica detallada</h2>
+      <h2 id="p-anamnesis-expectativas-exploracion-clinica-detallada">Anamnesis de expectativas y exploración clínica detallada</h2>
       <p class="phase__intro">Un plan técnicamente impecable que no responde a lo que el paciente quiere resolver es un plan que no se acepta. Esta fase tiene dos mitades inseparables: entender qué espera la persona y explorar exhaustivamente qué ocurre en su boca.</p>
 
       <div class="block">
@@ -2196,7 +2207,7 @@ PROYECCIÓN A 5 AÑOS SIN INTERVENCIÓN: ........................</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Informe de Análisis Clínico: elaboración, firma y entrega</h2>
+      <h2 id="p-informe-analisis-clinico-elaboracion-firma-entrega">Informe de Análisis Clínico: elaboración, firma y entrega</h2>
       <p class="phase__intro">El IAC es la pieza que convierte una exploración en un documento. Sostiene la propuesta económica, acompaña al paciente a casa y tiene valor probatorio. Se redacta a cuatro manos: el Doctor dicta, el Director escribe, el Doctor revisa y firma.</p>
 
       <div class="block">
@@ -2370,7 +2381,7 @@ Firma del Doctor: ..............  N.º de colegiado: ..............  Fecha: ....
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Presentación del diagnóstico 3D y del plan de tratamiento</h2>
+      <h2 id="p-presentacion-diagnostico-3d-plan-tratamiento">Presentación del diagnóstico 3D y del plan de tratamiento</h2>
       <p class="phase__intro">Es el momento en que todo lo anterior se vuelve comprensible para el paciente. El objetivo no es impresionar con imágenes: es que la persona vea su propio caso, entienda qué le pasa, qué ocurrirá si no actúa y cómo se resuelve.</p>
 
       <div class="block">
@@ -2599,7 +2610,7 @@ explicado bien?»</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Propuesta económica de valor y cierre</h2>
+      <h2 id="p-propuesta-economica-valor-cierre">Propuesta económica de valor y cierre</h2>
       <p class="phase__intro">El presupuesto no se presenta como un precio, sino como la consecuencia lógica de un diagnóstico que el paciente ya ha entendido y aceptado. Todo lo dicho aquí debe poder rastrearse hasta el IAC firmado en la Fase 8.</p>
 
       <div class="block">
@@ -2981,7 +2992,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Cierre administrativo, planificación y digitalización documental</h2>
+      <h2 id="p-cierre-administrativo-planificacion-digitalizacion-d">Cierre administrativo, planificación y digitalización documental</h2>
       <p class="phase__intro">La visita termina en Recepción, acepte o no acepte el paciente. Aquí se formaliza el compromiso, se programa lo siguiente y se completa la trazabilidad legal de todo lo firmado durante la visita.</p>
 
       <div class="block">
@@ -3147,7 +3158,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Despedida y seguimiento estratégico</h2>
+      <h2 id="p-despedida-seguimiento-estrategico">Despedida y seguimiento estratégico</h2>
       <p class="phase__intro">La visita acaba en la puerta; la relación, no. Más de la mitad de las conversiones de un centro maduro proceden de pacientes que no aceptaron el primer día y fueron atendidos bien después.</p>
 
       <div class="block">
@@ -3421,11 +3432,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">05 · Estándares transversales</p>
-      <h2>Lo que se cumple en las doce fases de la primera visita</h2>
+      <h2 id="p-cumple-doce-fases-primera-visita">Lo que se cumple en las doce fases de la primera visita</h2>
       <p>Reglas que no pertenecen a ninguna fase concreta porque rigen en todas. Un fallo aquí no arruina un paso: arruina la percepción completa del centro.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Comunicación</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="p-comunicacion">Comunicación</h3>
     <div class="saydont" style="max-width:none">
       <div>
         <h5>Lenguaje preferido</h5>
@@ -3458,7 +3469,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <li><strong>Idioma:</strong> se atiende en la lengua que el paciente elija entre las disponibles, y se registra cuál es</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Entorno físico</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-entorno-fisico">Entorno físico</h3>
     <div class="grid2">
       <div>
         <p class="block__title">Apertura de la clínica</p>
@@ -3484,7 +3495,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Seguridad clínica</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-seguridad-clinica">Seguridad clínica</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Ámbito</th><th>Estándar del centro</th><th>Responsable</th></tr></thead>
@@ -3500,7 +3511,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Protección de datos en el día a día</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-proteccion-datos-dia-dia">Protección de datos en el día a día</h3>
     <ul class="list" style="max-width:none">
       <li>Pantallas bloqueadas al levantarse; ninguna ficha abierta a la vista de otro paciente</li>
       <li>Monitores de recepción orientados de forma que no sean legibles desde el mostrador</li>
@@ -3511,7 +3522,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <li>Las bajas de personal implican revocación inmediata de accesos</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Cartelería y señalización obligatoria <span class="tag">Protocolo de Verificación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-carteleria-senalizacion-obligatoria-protocolo-verifi">Cartelería y señalización obligatoria <span class="tag">Protocolo de Verificación</span></h3>
     <p style="max-width:70ch">Se revisa una vez al mes y siempre que cambie una tarifa, un horario o el director técnico. Su ausencia es una infracción administrativa, y en la sala de espera es lo primero que lee un paciente que está solo y nervioso.</p>
     <ul class="list" style="max-width:none">
       <li>Autorización sanitaria del centro</li>
@@ -3529,7 +3540,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <p>Documentación de pacientes visible sobre el mostrador · pantallas orientadas hacia la zona pública · sesiones abiertas sin vigilancia · efectivo accesible · conversaciones de recepción audibles desde la sala de espera. Cualquiera de las cinco invalida el trabajo de confidencialidad que se hace en el resto del circuito.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Verificación observada del circuito <span class="tag">Protocolo de Verificación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-verificacion-observada-circuito-protocolo-verificaci">Verificación observada del circuito <span class="tag">Protocolo de Verificación</span></h3>
     <p style="max-width:70ch">Estos veintiún puntos no se comprueban preguntando ni leyendo registros: se comprueban observando una jornada real sin intervenir. Es la auditoría de campo del protocolo y complementa la rúbrica del Anexo G.</p>
     <div class="tablewrap">
       <table>
@@ -3561,7 +3572,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
     </div>
     <p class="footnote">Procede del Protocolo Maestro de Verificación de 322 puntos, cuya Parte F audita el circuito asistencial. El protocolo completo, con las nueve partes del recorrido, está en Otros documentos del sistema. <a class="crosslink" href="otros.html#otros-verificacion">Ver el protocolo de verificación</a></p>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Agenda y tiempos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-agenda-tiempos">Agenda y tiempos</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Regla</th><th>Detalle</th></tr></thead>
@@ -3583,7 +3594,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">06 · Casos especiales</p>
-      <h2>Cuando el circuito estándar no encaja</h2>
+      <h2 id="p-cuando-circuito-estandar-no-encaja">Cuando el circuito estándar no encaja</h2>
       <p>El protocolo cubre la visita típica. Estas situaciones aparecen cada semana y exigen adaptar el recorrido sin renunciar a ninguna de sus garantías: diagnóstico completo, documentación firmada y registro trazable.</p>
     </div>
     <div class="tablewrap">
@@ -3617,25 +3628,25 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Fases 13 y 14</p>
-      <h2>Dónde continúa el recorrido</h2>
+      <h2 id="p-donde-continua-recorrido">Dónde continúa el recorrido</h2>
       <p>Este protocolo desarrolla las fases 1 a 12. El recorrido del paciente tiene catorce, y las dos últimas se desarrollan en el Manual Maestro de Operaciones.</p>
     </div>
     <div class="cards cards--3">
       <article class="card">
         <span class="eyebrow">Fase 13 · RAC</span>
-        <h3>Circuito de producción</h3>
+        <h3 id="p-circuito-produccion">Circuito de producción</h3>
         <p>Lo aceptado en la Fase 11 se convierte en tratamiento ejecutado: registro del caso, pedido inmediato de material, doble verificación de pago y material, agendado, checklist de 24-48 h y control del producto pendiente.</p>
         <p style="margin-top:.8rem"><a class="crosslink" href="manual.html#m13">Ver la Fase 13</a></p>
       </article>
       <article class="card">
         <span class="eyebrow">Fase 14 · Higienista</span>
-        <h3>Mantenimiento y seguimiento</h3>
+        <h3 id="p-mantenimiento-seguimiento">Mantenimiento y seguimiento</h3>
         <p>El resultado se sostiene en el tiempo: alta en el programa de mantenimiento, periodicidad según perfil de riesgo, detección precoz con derivación inmediata y el perfil Giraldo anual.</p>
         <p style="margin-top:.8rem"><a class="crosslink" href="manual.html#m14">Ver la Fase 14</a></p>
       </article>
       <article class="card">
         <span class="eyebrow">Tercer documento</span>
-        <h3>Otros documentos del sistema</h3>
+        <h3 id="p-otros-documentos-sistema">Otros documentos del sistema</h3>
         <p>Los nueve documentos que rodean a este protocolo y al manual: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, dieciocho fichas de innovación y plan de marca y captación.</p>
         <p style="margin-top:.8rem"><a class="crosslink" href="otros.html">Ver Otros documentos</a></p>
       </article>
@@ -3648,7 +3659,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">07 · Trazabilidad</p>
-      <h2>Qué queda registrado, quién responde y cuándo</h2>
+      <h2 id="p-queda-registrado-quien-responde-cuando">Qué queda registrado, quién responde y cuándo</h2>
       <p>Resumen operativo de la evidencia que genera una Primera Visita. Sirve como lista de verificación de cierre de jornada: si una PV del día no cumple todas las filas, no está cerrada.</p>
     </div>
     <div class="tablewrap">
@@ -3679,7 +3690,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">08 · Cuadro de mando</p>
-      <h2>Cómo se mide si el protocolo funciona</h2>
+      <h2 id="p-como-mide-si-protocolo-funciona">Cómo se mide si el protocolo funciona</h2>
       <p>Seis indicadores revisados en el comité mensual de dirección. Miden ejecución (¿se cumple el protocolo?) y resultado (¿produce lo que debe?). Los objetivos son propuestas de partida; dirección los ajusta con el histórico real del centro.</p>
     </div>
     <div class="tablewrap">
@@ -3696,7 +3707,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Rúbrica de auditoría de una Primera Visita</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-rubrica-auditoria-primera-visita">Rúbrica de auditoría de una Primera Visita</h3>
     <p style="color:var(--ink-2);max-width:66ch">Dirección audita cada mes una muestra de PV contra esta rúbrica, revisando la ficha en Clinic Cloud y, cuando procede, acompañando la visita. Cien puntos posibles; por debajo de 80 se activa plan de refuerzo con el equipo del centro.</p>
     <div class="tablewrap">
       <table>
@@ -3746,11 +3757,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">09 · Formación</p>
-      <h2>Cómo se aprende y se certifica este protocolo</h2>
+      <h2 id="p-como-aprende-certifica-este-protocolo">Cómo se aprende y se certifica este protocolo</h2>
       <p>Un protocolo que no se entrena se convierte en un documento decorativo. Nadie participa en una Primera Visita sin haber recorrido este itinerario y sin estar certificado en su rol.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Incorporación · primeros 30 días</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="p-incorporacion-primeros-30-dias">Incorporación · primeros 30 días</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Periodo</th><th>Contenido</th><th>Evidencia de aprendizaje</th></tr></thead>
@@ -3765,7 +3776,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Certificación por rol</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-certificacion-rol">Certificación por rol</h3>
     <div class="special special--3">
       <div><h5>Recepción <span class="tag tag--rec">Fases 1, 2, 11</span></h5><p>Domina la llamada de PV, el speech de valor, la agenda, la acogida y la digitalización completa el mismo día.</p></div>
       <div><h5>Director <span class="tag tag--dir">Fases 2, 3, 6, 8, 9, 10, 12</span></h5><p>Domina el alta, el RGPD, la redacción del IAC, la presentación económica, el manejo de objeciones y la cadencia de seguimiento.</p></div>
@@ -3775,7 +3786,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <div><h5>Suplencias</h5><p>Solo cubre una fase quien esté certificado en ella. Si no hay nadie certificado, se reprograma la visita.</p></div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Entrenamiento continuo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-entrenamiento-continuo">Entrenamiento continuo</h3>
     <div class="grid2">
       <div>
         <p class="block__title">Rutina semanal · 30 minutos</p>
@@ -3809,11 +3820,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">10 · Anexos</p>
-      <h2>Material de apoyo</h2>
+      <h2 id="p-material-apoyo">Material de apoyo</h2>
       <p>Siete anexos de consulta: la biblioteca completa de guiones, las respuestas modelo a lo que el paciente siempre pregunta, los errores detectados en auditoría, el checklist imprimible de la visita, el vocabulario común del equipo, la gobernanza del documento y su control de cambios.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Anexo A · Biblioteca de guiones</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="p-anexo-biblioteca-guiones">Anexo A · Biblioteca de guiones</h3>
     <p style="color:var(--ink-2);max-width:66ch">Todos los guiones del protocolo, reunidos para consulta rápida y para los role-play semanales. Son estructura, no texto para recitar: cada profesional los dice con sus palabras.</p>
 
     <h4 style="font-family:var(--f-body);font-size:1rem;font-weight:600;margin:1.6rem 0 .2rem">Llamada entrante <span class="tag tag--rec">Fase 1</span></h4>
@@ -3902,7 +3913,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
                        revisáramos cómo está la situación? Su diagnóstico sigue
                        en su ficha y la revisión no tiene coste.»</div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo B · Preguntas frecuentes del paciente</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="p-anexo-b-preguntas-frecuentes-paciente">Anexo B · Preguntas frecuentes del paciente</h3>
     <p style="color:var(--ink-2);max-width:66ch">Respuestas modelo para las preguntas que aparecen en casi todas las visitas. Se responden igual, las haga quien las haga.</p>
     <div style="margin-top:1rem;max-width:74ch">
       <details class="faq"><summary>¿Por qué la primera visita no cuesta nada?</summary><div class="a"><p>Porque es la única forma honesta de proponerle un tratamiento. Sin tomografía 3D, panorámica y escaneado no hay diagnóstico serio, y sin diagnóstico no hay presupuesto fiable. Asumimos ese coste porque confiamos en que, cuando vea el nivel de análisis, entienda con quién está tratando.</p></div></details>
@@ -3919,7 +3930,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <details class="faq"><summary>Me lo tengo que pensar. ¿Hay algún problema?</summary><div class="a"><p>Ninguno. Se lleva su informe, sus imágenes y su presupuesto. Si le parece bien, le llamamos en unos días por si le ha surgido alguna duda; y si prefiere que no le llamemos, nos lo dice y lo respetamos.</p></div></details>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo C · Errores frecuentes y cómo se corrigen</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="p-anexo-c-errores-frecuentes-como-corrigen">Anexo C · Errores frecuentes y cómo se corrigen</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Error observado</th><th>Efecto</th><th>Corrección</th></tr></thead>
@@ -3935,7 +3946,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo D · Checklist imprimible de la Primera Visita</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="p-anexo-d-checklist-imprimible-primera-visita">Anexo D · Checklist imprimible de la Primera Visita</h3>
     <p style="color:var(--ink-2);max-width:66ch">Una hoja para tener en el despacho. Se repasa al cerrar cada PV; si queda una casilla sin marcar, la visita no está cerrada.</p>
     <div class="grid2" style="margin-top:1.2rem">
       <div>
@@ -3978,17 +3989,17 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo E · Glosario</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="p-anexo-e-glosario">Anexo E · Glosario</h3>
     <div class="cards cards--3" style="margin-top:1rem">
-      <article class="card"><span class="eyebrow">PV</span><h3>Primera Visita</h3><p>Circuito completo de acogida, diagnóstico y propuesta descrito en este protocolo.</p></article>
-      <article class="card"><span class="eyebrow">IAC</span><h3>Informe de Análisis Clínico</h3><p>Documento firmado por el Doctor con hallazgos, diagnóstico y plan de tratamiento.</p></article>
-      <article class="card"><span class="eyebrow">CBCT</span><h3>Tomografía de haz cónico</h3><p>Estudio tridimensional del complejo maxilofacial con dosis reducida.</p></article>
-      <article class="card"><span class="eyebrow">OPG</span><h3>Ortopantomografía</h3><p>Radiografía panorámica digital de ambos maxilares.</p></article>
-      <article class="card"><span class="eyebrow">Clinic Cloud</span><h3>Sistema de gestión</h3><p>Historia clínica, agenda, presupuestos, tareas y trazabilidad documental del centro.</p></article>
-      <article class="card"><span class="eyebrow">Carpeta Giraldo</span><h3>Dossier del paciente</h3><p>Libro de la clínica, presupuesto, OPG y fotografías que todo paciente se lleva.</p></article>
+      <article class="card"><span class="eyebrow">PV</span><h3 id="p-primera-visita">Primera Visita</h3><p>Circuito completo de acogida, diagnóstico y propuesta descrito en este protocolo.</p></article>
+      <article class="card"><span class="eyebrow">IAC</span><h3 id="p-informe-analisis-clinico">Informe de Análisis Clínico</h3><p>Documento firmado por el Doctor con hallazgos, diagnóstico y plan de tratamiento.</p></article>
+      <article class="card"><span class="eyebrow">CBCT</span><h3 id="p-tomografia-haz-conico">Tomografía de haz cónico</h3><p>Estudio tridimensional del complejo maxilofacial con dosis reducida.</p></article>
+      <article class="card"><span class="eyebrow">OPG</span><h3 id="p-ortopantomografia">Ortopantomografía</h3><p>Radiografía panorámica digital de ambos maxilares.</p></article>
+      <article class="card"><span class="eyebrow">Clinic Cloud</span><h3 id="p-sistema-gestion">Sistema de gestión</h3><p>Historia clínica, agenda, presupuestos, tareas y trazabilidad documental del centro.</p></article>
+      <article class="card"><span class="eyebrow">Carpeta Giraldo</span><h3 id="p-dossier-paciente">Dossier del paciente</h3><p>Libro de la clínica, presupuesto, OPG y fotografías que todo paciente se lleva.</p></article>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo F · Gobernanza del documento</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="p-anexo-f-gobernanza-documento">Anexo F · Gobernanza del documento</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Aspecto</th><th>Definición</th></tr></thead>
@@ -4003,7 +4014,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo G · Control de cambios</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="p-anexo-g-control-cambios">Anexo G · Control de cambios</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Versión</th><th>Fecha</th><th>Alcance del cambio</th><th>Aprobación</th></tr></thead>
@@ -4035,7 +4046,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo H · Cuadro de escalado de incidencias <span class="tag">Matriz de obligaciones</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="p-anexo-h-cuadro-escalado-incidencias-matriz">Anexo H · Cuadro de escalado de incidencias <span class="tag">Matriz de obligaciones</span></h3>
     <p style="max-width:70ch;color:var(--ink-2)">Cuando algo del circuito falla, esta tabla dice quién lo detecta, a quién se escala y qué corrección corresponde. Una incidencia comentada de pasillo no corrige nada; escalada según este cuadro, sí.</p>
     <div class="tablewrap">
       <table>
@@ -4081,6 +4092,19 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 <script>
 (function(){
   "use strict";
+  /* ---- alto real de la barra, para que ningún salto quede debajo ---- */
+  (function(){
+    var barra = document.querySelector(".topbar");
+    if(!barra) return;
+    function medir(){
+      document.documentElement.style.setProperty(
+        "--barra", Math.round(barra.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    if("ResizeObserver" in window) new ResizeObserver(medir).observe(barra);
+  })();
+
   var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
   var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
 

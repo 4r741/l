@@ -166,8 +166,11 @@ SCRIPT = """<script>
   var cabecera = document.querySelector(".cabecera");
   function medirCabecera(){
     if(!cabecera) return;
-    document.documentElement.style.setProperty(
-      "--cabecera", Math.round(cabecera.getBoundingClientRect().height) + "px");
+    var alto = Math.round(cabecera.getBoundingClientRect().height) + "px";
+    document.documentElement.style.setProperty("--cabecera", alto);
+    /* la hoja base reserva ese hueco por encima de todo destino con
+       identificador; aquí la barra es esta, no la de los documentos sueltos */
+    document.documentElement.style.setProperty("--barra", alto);
   }
   medirCabecera();
   window.addEventListener("resize", medirCabecera);
@@ -868,6 +871,9 @@ def cuerpo(html):
 # el resto —calculadora de la Tesis, hoja de captura, presentación— viaja tal
 # cual porque cada uno se ancla ya a su propio contenedor.
 GUIONES = {
+    # la portada solo aporta el del índice, y ahí es donde más falta hace: sin
+    # él el filtro de las 649 líneas queda muerto justo en el archivo único
+    "inicio.html": slice(0, None),
     "memoria.html": slice(1, None),
     "marketing.html": slice(1, None),
     "deck.html": slice(0, None),

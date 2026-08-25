@@ -60,22 +60,40 @@ planificación digital, circuito de esterilización y circuito de compras.
 
 ## Índice general
 
-La portada abre con **el índice completo del sistema**: 125 apartados repartidos
-en los siete documentos, cada uno con qué es, para quién y todos sus apartados
-enlazados. Está entero —no es una selección— y después del índice viene qué es
-cada cosa, en ese orden.
+La portada abre con **el índice completo del sistema**: **125 apartados y 524
+subapartados —649 líneas— repartidos en los siete documentos**, cada uno con qué
+es, para quién y todo su contenido enlazado, titular a titular. Está entero —no
+es una selección ni un resumen— y después del índice viene qué es cada cosa, en
+ese orden.
 
 ```bash
 python3 indice.py            # el índice en pantalla
+python3 anclas.py            # pone ancla a todo titular que no la tenga
 ```
 
-No está tecleado: se extrae de la tira de secciones que cada documento lleva en
-su cabecera, de modo que si un documento gana un apartado el índice lo tiene en
-la siguiente construcción. Un índice escrito a mano es un índice que a la
-tercera edición miente.
+No está tecleado: se extrae de los propios documentos. El primer nivel sale de
+la tira de secciones que cada documento lleva en su cabecera; el segundo, de
+todos sus `<h2>` y `<h3>`, asignados a la sección que los contiene. Si un
+documento gana un apartado, el índice lo tiene en la siguiente construcción. Un
+índice escrito a mano es un índice que a la tercera edición miente.
 
-Dentro del archivo único, las 125 líneas se convierten en conmutadores: pulsar
-una abre su documento y salta a su apartado.
+Para que el segundo nivel fuese enlazable hubo que resolver algo previo: de los
+más de cuatrocientos titulares del sistema **solo nueve tenían identificador**,
+y sin identificador no hay a dónde saltar. `anclas.py` se los pone, derivados
+del propio texto y con prefijo por documento, de modo que la misma frase produce
+siempre la misma ancla y los enlaces publicados siguen valiendo entre ediciones.
+Solo añade: un titular que ya tiene ancla se queda como está. Corre dentro de
+`build.py`, antes de construir la portada.
+
+El índice trae mando propio —filtro en vivo, contador de líneas y un botón para
+plegarlo a solo apartados— y dentro del archivo único **las 649 líneas se
+convierten en conmutadores**: pulsar una abre su documento y salta a su titular.
+
+Un índice tan detallado hace además de auditor. Al sacar a la superficie todos
+los titulares, la primera construcción destapó cuatro que seguían hablando de
+«ocho decisiones» cuando hace tres versiones que se someten quince, y una cita
+de ejemplo que remitía a un §9 renumerado hace tiempo a §17. Ninguno se veía
+leyendo el documento seguido; todos se vieron en el índice.
 
 ## Una sola versión, en un solo sitio
 

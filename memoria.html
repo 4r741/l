@@ -49,7 +49,7 @@
    BASE
    ============================================================ */
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:118px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barra) + 1.1rem)}
 body{
   margin:0;
   background:var(--paper);
@@ -89,6 +89,16 @@ a{color:inherit}
 /* ============================================================
    BARRA SUPERIOR
    ============================================================ */
+/* ---------------------------------------------------------------------------
+   Aire bajo la barra fija. Un enlace del índice que deja el titular medio
+   tapado por la cabecera parece roto aunque haya funcionado: el lector no ve
+   llegar el salto. Antes esta reserva era un número fijo pensado para el
+   escritorio; en pantalla estrecha la barra se pliega en tres filas y pasa de
+   los doscientos píxeles, y el titular quedaba debajo. Ahora el guion mide la
+   barra y esta variable la sigue.
+   --------------------------------------------------------------------------- */
+:root{--barra:118px}
+
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -290,7 +300,8 @@ td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:n
   .timemap__seg:hover{transform:none}
 }
 @media(max-width:640px){
-  html{scroll-padding-top:98px}
+  /* la barra medida ya manda; aquí solo se estrecha el aire */
+  html{scroll-padding-top:calc(var(--barra) + .95rem)}
   .brand__tag{display:none}
   .brand__mark{font-size:.98rem}
   .topbar__in{padding:.55rem 0}
@@ -992,7 +1003,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-manifiesto__grid">
       <div>
         <p class="eyebrow">Manifiesto · La regla que ordena todo lo demás</p>
-        <h2>Media sonrisa es<br>la que se hace <em>a medias</em>:<br>el corte que nadie ve<br>y el paciente sí nota.</h2>
+        <h2 id="t-media-sonrisa-hace-medias-corte-nadie">Media sonrisa es<br>la que se hace <em>a medias</em>:<br>el corte que nadie ve<br>y el paciente sí nota.</h2>
         <p>No hablamos de estética. Hablamos de la mitad que se recorta cuando hay prisa, cuando falta una pieza, cuando el paciente no va a protestar. La sonrisa que se entrega funcionando pero sin explicar. La revisión que se agenda «cuando llame». El presupuesto que se firma sin que nadie haya dicho en voz alta qué pasa si falla.</p>
         <p>Esa mitad invisible es exactamente donde se decide si un centro es bueno o es excelente. Y es la única parte del negocio que ningún competidor puede copiarnos comprando una máquina.</p>
         <p class="t-manifiesto__cierre">Por eso el lema no es publicidad. Es el criterio de aceptación de cada acto clínico y de cada decisión de esta Junta.</p>
@@ -1015,7 +1026,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§0 · Control del documento</p>
-      <h2>Qué es esto, quién responde y cómo se cita</h2>
+      <h2 id="t-esto-quien-responde-como-cita">Qué es esto, quién responde y cómo se cita</h2>
       <p>La Junta delibera sobre documentos controlados: con propietario, versión, fecha de aprobación y trazabilidad de cambios. Este bloque existe para que cualquier acuerdo pueda referirse a un apartado concreto de una versión concreta.</p>
     </div>
 
@@ -1056,8 +1067,8 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (§1 a §19) y cada decisión su código (D1 a D14). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del §17 de la Tesis de Dirección v7.0»</span>. Los documentos operativos se citan por su nombre y versión, que desde esta edición es la misma para todos: Manual Maestro v7.0, Protocolo de Primera Visita v7.0, Otros documentos del sistema v7.0.</p>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="t-como-citar-acta">Cómo citar en acta</h3>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (§1 a §23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del §17 de la Memoria de Dirección v7.0»</span>. Los documentos operativos se citan por su nombre y versión, que desde esta edición es la misma para todos: Manual Maestro v7.0, Protocolo de Primera Visita v7.0, Otros documentos del sistema v7.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="censo">§0.1 · Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -1105,7 +1116,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
           <tr><td class="num">5</td><td>La portada atribuía al Manual «<strong>10 partes</strong>»; el propio Manual declara ocho más los estándares transversales</td><td>Ocho partes, la misma cifra en los dos sitios</td></tr>
           <tr><td class="num">6</td><td>«17 documentos» aparecía en tres sitios sin que constara en ninguno <strong>de qué se componían</strong></td><td>Censo documental en §0.1: 3 troncales + 14 de apoyo = 17 operativos</td></tr>
           <tr><td class="num">7</td><td>Cuatro numeraciones conviviendo —5.5, 1.3, 2.0 y 1.0— sin forma de saber si un documento estaba al día</td><td>Regla de versión única: los siete archivos comparten número y fecha</td></tr>
-          <tr><td class="num">8</td><td>§0 remitía a «§1 a §10» y «D1 a D8» cuando ya existían §19 y D14</td><td>Rangos corregidos y verificados por el guion de coherencia</td></tr>
+          <tr><td class="num">8</td><td>§0 remitía a «§1 a §10» y «D1 a D8» cuando ya existían §23 y D15</td><td>Rangos corregidos y verificados por el guion de coherencia</td></tr>
           <tr><td class="num">9</td><td>El pie citaba Manual v5.5, Protocolo v5.5 y Otros v1.3, y omitía la hoja de captura</td><td>Los cuatro documentos de referencia, todos en v7.0</td></tr>
           <tr><td class="num">10</td><td>El Protocolo llamaba «<strong>el recorrido</strong>» a sus doce fases, el mismo término con el que el Manual nombra las catorce del recorrido del paciente</td><td>«Las doce fases de la primera visita» en el Protocolo; «el recorrido del paciente» queda reservado a las catorce del Manual</td></tr>
           <tr><td class="num">11</td><td>El panel de control de Otros documentos citaba una Tesis en v2.0 junto a documentos en v5.5</td><td>Una sola versión para los cuatro</td></tr>
@@ -1126,7 +1137,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§1 · Resumen ejecutivo</p>
-      <h2>Dos minutos</h2>
+      <h2 id="t-dos-minutos">Dos minutos</h2>
       <p>Si la Junta solo lee una página, esta es la página.</p>
     </div>
 
@@ -1139,22 +1150,22 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="cards cards--3" style="margin-top:2rem">
       <article class="card">
         <span class="eyebrow">Qué está hecho <span class="sem sem--verde">Hecho</span></span>
-        <h3>El sistema operativo, completo</h3>
+        <h3 id="t-sistema-operativo-completo">El sistema operativo, completo</h3>
         <p>Diecisiete documentos operativos vigentes —tres troncales y catorce de apoyo, censados en §0.1— que cubren el recorrido del paciente en catorce fases, los seis puestos, la puesta en marcha, la verificación del centro, la innovación y la captación. No es un plan: es normativa interna aplicable desde hoy.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Qué falta <span class="sem sem--naranja">Pendiente</span></span>
-        <h3>Los números propios y ocho decisiones</h3>
-        <p>La línea base económica no está cerrada y hay ocho decisiones de gobierno —precios, garantías, marca, presupuesto, GTC, sedación, tecnología y ejecución de marketing— que bloquean o condicionan el resto del plan.</p>
+        <h3 id="t-numeros-propios-quince-decisiones">Los números propios y quince decisiones</h3>
+        <p>La línea base económica no está cerrada y hay quince decisiones de gobierno —precios, garantías, marca, presupuesto de captación, programa de cuidado, sedación, flujo digital, responsables funcionales, regla de innovación, prelación del capital, condición de segunda unidad, suelo de inversión en el sistema, disparadores de Junta extraordinaria, obligatoriedad del cuidado en el cierre y objetivo de facturación— que bloquean o condicionan el resto del plan.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Qué se pide hoy</span>
-        <h3>Decidir, no informarse</h3>
-        <p>La Junta no tiene que validar el sistema operativo: tiene que resolver las ocho decisiones del §17, autorizar el presupuesto del primer año y fijar la fecha de la revisión trimestral.</p>
+        <h3 id="t-decidir-no-informarse">Decidir, no informarse</h3>
+        <p>La Junta no tiene que validar el sistema operativo: tiene que resolver las quince decisiones del §17, autorizar el presupuesto del primer año y fijar la fecha de la revisión trimestral.</p>
       </article>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Las cinco ideas que sostienen la memoria</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-cinco-ideas-sostienen-memoria">Las cinco ideas que sostienen la memoria</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>#</th><th>Idea</th><th>Consecuencia para la Junta</th></tr></thead>
@@ -1175,7 +1186,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>I</b>La posición</p>
       <div>
-        <h2>Dónde estamos parados y <em>por qué ahí</em></h2>
+        <h2 id="t-donde-estamos-parados-ahi">Dónde estamos parados y <em>por qué ahí</em></h2>
         <p class="t-part__lede">Toda estrategia empieza por una afirmación sobre el mercado que puede resultar falsa. Aquí está la nuestra, el mapa de quién ocupa cada posición en Vigo y la única pregunta que importa: qué tendría que hacer un competidor para quitarnos el sitio, y cuánto tiempo tardaría.</p>
       </div>
     </div>
@@ -1186,7 +1197,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§2 · Tesis del proyecto</p>
-      <h2>Por qué este centro y no otro</h2>
+      <h2 id="t-este-centro-no-otro">Por qué este centro y no otro</h2>
       <p>Vigo tiene densidad alta de oferta generalista y competencia creciente en precio. Diferenciarse por tecnología es insuficiente: la reivindican todos. La oportunidad está en tres segmentos que casi nadie atiende y que comparten una característica: no compran precio, compran solución.</p>
     </div>
 
@@ -1228,7 +1239,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§3 · El mapa competitivo</p>
-      <h2>Cuatro formas de vender implantes en Vigo, y la que dejamos libre</h2>
+      <h2 id="t-cuatro-formas-vender-implantes-vigo-dejamos">Cuatro formas de vender implantes en Vigo, y la que dejamos libre</h2>
       <p>El mercado de la implantología en una ciudad media no se segmenta por precio, sino por <strong>quién asume el riesgo del resultado</strong>. Esa es la variable que ordena el mapa y la que explica por qué el hueco que ocupamos existe.</p>
     </div>
 
@@ -1264,7 +1275,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
     <div class="t-body">
       <div>
-        <h3 style="font-size:var(--step-1);margin-bottom:.7rem">Por qué la posición D está estructuralmente poco ocupada</h3>
+        <h3 style="font-size:var(--step-1);margin-bottom:.7rem" id="t-posicion-d-esta-estructuralmente-poco-ocupada">Por qué la posición D está estructuralmente poco ocupada</h3>
         <p style="color:var(--ink-2);max-width:66ch">No por falta de intención: por coste de construcción. Ocupar la D exige simultáneamente casuística alta (que solo da el volumen), sistema documentado (que solo da el tiempo y la disciplina) y un compromiso de seguimiento con coste real asumido por adelantado (que solo da la convicción de que el paciente recurrente vale más que el captado). Las tres a la vez son caras. Una sola no diferencia.</p>
         <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">La cadena no puede asumir el compromiso porque su modelo se apoya en la rotación. El generalista no alcanza la casuística. El especialista aislado no puede documentar un sistema que, por definición, es él. La posición está libre porque es la única que no se ocupa comprando nada.</p>
       </div>
@@ -1286,7 +1297,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§4 · El foso</p>
-      <h2>Lo que un competidor no puede comprar aunque tenga el dinero</h2>
+      <h2 id="t-competidor-no-puede-comprar-aunque-tenga">Lo que un competidor no puede comprar aunque tenga el dinero</h2>
       <p>La pregunta de Junta no es «¿somos buenos?». Es <strong>«si mañana un fondo abre enfrente con el doble de presupuesto, qué tarda en igualarnos y qué no podría igualar nunca»</strong>. Esta sección responde exactamente eso.</p>
     </div>
 
@@ -1330,7 +1341,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>II</b>El sistema</p>
       <div>
-        <h2>El activo se llama <em>sistema operativo</em>, no clínica</h2>
+        <h2 id="t-activo-llama-sistema-operativo-no-clinica">El activo se llama <em>sistema operativo</em>, no clínica</h2>
         <p class="t-part__lede">Una clínica es un local con pacientes. Un sistema operativo es un conjunto de decisiones ya tomadas que hacen que el resultado no dependa de quién esté ese martes. Lo primero se vende al peso; lo segundo se vende por múltiplo. Esta parte describe qué tenemos construido y qué estamos construyendo a continuación.</p>
       </div>
     </div>
@@ -1341,7 +1352,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§5 · El sistema operativo <span class="sem sem--verde">Hecho</span></p>
-      <h2>Qué se ha construido</h2>
+      <h2 id="t-ha-construido">Qué se ha construido</h2>
       <p>No es documentación descriptiva: es normativa interna con criterios de salida, registros obligatorios e indicadores por fase. Está escrita para ejecutarse y para auditarse.</p>
     </div>
 
@@ -1354,23 +1365,23 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       <div class="spec"><dt>Decisiones registradas</dt><dd>20<small>Más once verificaciones externas obligatorias</small></dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Los tres documentos troncales</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-tres-documentos-troncales">Los tres documentos troncales</h3>
     <div class="cards cards--3">
       <article class="card">
         <span class="eyebrow">Documento 1</span>
-        <h3>Manual Maestro de Operaciones</h3>
+        <h3 id="t-manual-maestro-operaciones">Manual Maestro de Operaciones</h3>
         <p>La norma. Las catorce fases del recorrido, los manuales de puesto, las funciones de vanguardia, la matriz de responsabilidad, los indicadores, los incentivos y la puesta en marcha.</p>
         <p style="margin-top:.8rem"><a class="crosslink" href="manual.html">Abrir</a></p>
       </article>
       <article class="card">
         <span class="eyebrow">Documento 2</span>
-        <h3>Protocolo de Primera Visita</h3>
+        <h3 id="t-protocolo-primera-visita">Protocolo de Primera Visita</h3>
         <p>El detalle minuto a minuto de la visita que decide la conversión: doce fases con guiones, criterios de salida, registros e indicador propio de cada una.</p>
         <p style="margin-top:.8rem"><a class="crosslink" href="index.html">Abrir</a></p>
       </article>
       <article class="card">
         <span class="eyebrow">Documento 3</span>
-        <h3>Otros documentos del sistema</h3>
+        <h3 id="t-otros-documentos-sistema">Otros documentos del sistema</h3>
         <p>Los catorce documentos que rodean a los anteriores: verificación, auditoría, programa de 100 días, protocolos por perfil, innovación, marca, posicionamiento y programa de cuidado.</p>
         <p style="margin-top:.8rem"><a class="crosslink" href="otros.html">Abrir</a></p>
       </article>
@@ -1387,7 +1398,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§6 · Cartera de innovación</p>
-      <h2>Tres horizontes, tres criterios de decisión distintos</h2>
+      <h2 id="t-tres-horizontes-tres-criterios-decision-distintos">Tres horizontes, tres criterios de decisión distintos</h2>
       <p>Innovar sin cartera es hacer lo que llega. La disciplina que se propone a la Junta es clasificar cada iniciativa por horizonte y <strong>juzgar cada horizonte con el criterio que le corresponde</strong>: el H1 por retorno, el H2 por aprendizaje, el H3 por opción.</p>
     </div>
 
@@ -1446,7 +1457,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>III</b>La economía</p>
       <div>
-        <h2>De dónde sale el dinero y <em>qué lo destruye</em></h2>
+        <h2 id="t-donde-sale-dinero-destruye">De dónde sale el dinero y <em>qué lo destruye</em></h2>
         <p class="t-part__lede">Tres preguntas y tres respuestas cuantificadas: cuánto vale cada primera visita según cómo la trabajemos, qué le pasa a la facturación si movemos las dos únicas palancas que la gobiernan, y por qué el valor de un paciente en seguimiento es más del doble que el de un paciente atendido.</p>
       </div>
     </div>
@@ -1457,7 +1468,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§7 · Línea base económica <span class="sem sem--naranja">Pendiente</span></p>
-      <h2>Los cinco números que aún no tenemos</h2>
+      <h2 id="t-cinco-numeros-aun-no-tenemos">Los cinco números que aún no tenemos</h2>
       <p>La dirección de un centro se sostiene sobre cinco cifras. Ninguna está cerrada todavía, y esa es la primera tarea del trimestre: sin ellas, cualquier objetivo comercial es una opinión.</p>
     </div>
 
@@ -1479,7 +1490,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       <p>La información económica de una transmisión se presenta, por naturaleza, en su configuración más favorable. No se presume mala fe: se aplica diligencia debida posterior. ¿La facturación presentada incorpora anticipos de tratamientos no ejecutados? ¿Hay estacionalidad no comunicada? ¿Los costes fijos comunicados son exhaustivos? ¿Hay saldos de cobro incobrables? ¿Hay pasivos con proveedores no comunicados? ¿Descendió la captación en los meses previos a la venta —es decir, se transmitió un negocio o una tendencia—?</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Cuánta actividad exige el equilibrio <span class="sem sem--amarillo">Modelo</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-cuanta-actividad-exige-equilibrio-modelo">Cuánta actividad exige el equilibrio <span class="sem sem--amarillo">Modelo</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Mientras llegan los datos propios, el orden de magnitud se razona con los supuestos del §18. La conclusión que importa no es el número exacto, sino la <strong>sensibilidad</strong>: cada diez puntos de conversión ganados reducen en torno a una primera visita diaria la actividad necesaria para llegar al equilibrio. Es la palanca más barata que existe, porque no requiere captar a nadie más.</p>
     <figure class="fig">
       <div class="figscroll" style="overflow-x:auto">
@@ -1523,7 +1534,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§8 · Economía unitaria y escenarios</p>
-      <h2>Dos variables gobiernan el resultado; el resto son consecuencias</h2>
+      <h2 id="t-dos-variables-gobiernan-resultado-resto-son">Dos variables gobiernan el resultado; el resto son consecuencias</h2>
       <p>Con la capacidad instalada fija, la facturación de implantología depende de <strong>la tasa de conversión de la primera visita</strong> y del <strong>ticket medio del caso aceptado</strong>. Todo lo demás —captación, marketing, horarios— actúa sobre una de esas dos o no actúa sobre nada.</p>
     </div>
 
@@ -1582,7 +1593,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
     <div class="t-body">
       <div>
-        <h3 style="font-size:var(--step-1);margin-bottom:.7rem">Qué separa realmente los tres escenarios</h3>
+        <h3 style="font-size:var(--step-1);margin-bottom:.7rem" id="t-separa-realmente-tres-escenarios">Qué separa realmente los tres escenarios</h3>
         <p style="color:var(--ink-2);max-width:66ch">No es el esfuerzo comercial, ni la inversión en captación. Es si el protocolo de primera visita se ejecuta completo o a medias. Un centro con la misma agenda, el mismo equipo y el mismo equipamiento produce el escenario base o el escenario objetivo según una sola cosa: si el paciente sale de la primera visita habiendo entendido su caso o habiendo recibido un presupuesto.</p>
         <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">Por eso la matriz siguiente es la diapositiva más importante del documento: muestra que mover la conversión diez puntos vale más que cualquier campaña, y que ambas palancas se multiplican entre sí en lugar de sumarse.</p>
       </div>
@@ -1644,7 +1655,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     </figure>
 
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Comprobación en directo</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-comprobacion-directo">Comprobación en directo</h3>
     <p style="color:var(--ink-2);max-width:68ch">La matriz anterior fija cuatro tasas y tres tickets. Este bloque permite mover los tres supuestos a voluntad durante la sesión, para responder a la pregunta que siempre llega: <em>«¿y si la conversión se queda en el 35 %?»</em>. En la versión impresa aparece la matriz fija; esta comprobación solo existe en pantalla.</p>
 
     <div class="calc">
@@ -1692,7 +1703,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§9 · El activo</p>
-      <h2>Por qué esto vale más que la suma de sus sillones</h2>
+      <h2 id="t-esto-vale-mas-suma-sillones">Por qué esto vale más que la suma de sus sillones</h2>
       <p>Un centro se valora por su beneficio recurrente y por el riesgo de que ese beneficio desaparezca cuando cambie el propietario. Las dos mitades de esa frase se gobiernan con las mismas decisiones que ya están sobre la mesa.</p>
     </div>
 
@@ -1760,7 +1771,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     </ol>
 
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">La aritmética: qué múltiplo compra cada peldaño</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-aritmetica-multiplo-compra-cada-peldano">La aritmética: qué múltiplo compra cada peldaño</h3>
     <p style="color:var(--ink-2);max-width:68ch">La escalera anterior es cualitativa y por sí sola no decide nada. Un comprador —un grupo, un fondo, un socio— no razona en peldaños: razona en múltiplo sobre resultado. Esta es la traducción, y es la que convierte «el sistema aporta valor» en una cifra que la Junta puede contrastar.</p>
 
     <figure class="t-fig">
@@ -1861,13 +1872,13 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§10 · Tesis de escalado</p>
-      <h2>De un centro a una red: la condición que no se puede saltar</h2>
+      <h2 id="t-centro-red-condicion-no-puede-saltar">De un centro a una red: la condición que no se puede saltar</h2>
       <p>La pregunta no es si se puede abrir un segundo centro. Es <strong>qué prueba tenemos de que el resultado del segundo no dependerá de que el fundador esté en él</strong>. Sin esa prueba, abrir es multiplicar el riesgo, no el negocio.</p>
     </div>
 
     <div class="t-body">
       <div>
-        <h3 style="font-size:var(--step-1);margin-bottom:.7rem">La secuencia, y por qué el orden es innegociable</h3>
+        <h3 style="font-size:var(--step-1);margin-bottom:.7rem" id="t-secuencia-orden-innegociable">La secuencia, y por qué el orden es innegociable</h3>
         <p style="color:var(--ink-2);max-width:66ch">Los centros que fracasan al escalar casi nunca fallan por falta de demanda en la segunda plaza. Fallan porque replicaron una operación que nunca había funcionado sin su fundador delante. Se lleva a la segunda unidad un sistema que en realidad era una persona, y el estándar se desploma en el mes cuatro.</p>
         <ol class="t-ladder" style="margin-top:1.2rem">
           <li><span class="mono">Paso 1</span><strong>Estándar escrito</strong><span>Hecho. Protocolo de 12 fases, 322 puntos de verificación, manual por puesto.</span></li>
@@ -1901,7 +1912,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>IV</b>El riesgo</p>
       <div>
-        <h2>Cómo fracasa esto, contado <em>antes</em> de que ocurra</h2>
+        <h2 id="t-como-fracasa-esto-contado-antes-ocurra">Cómo fracasa esto, contado <em>antes</em> de que ocurra</h2>
         <p class="t-part__lede">Un registro de riesgos enumera lo que puede salir mal. Un pre-mortem hace algo distinto y más incómodo: se sitúa tres años en el futuro, da por hecho el fracaso y pide explicar la causa. Cambia la pregunta de «¿qué podría pasar?» a «¿qué pasó?», y con ella el nivel de honestidad de las respuestas.</p>
       </div>
     </div>
@@ -1912,7 +1923,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§11 · Riesgos</p>
-      <h2>Lo que puede salir mal, con dueño y con fecha</h2>
+      <h2 id="t-puede-salir-mal-dueno-fecha">Lo que puede salir mal, con dueño y con fecha</h2>
       <p>Cinco riesgos críticos y siete de segundo orden, y debajo el registro que puntúa diez: esos cinco críticos más los cinco que salen del pre-mortem de §12. Cada uno tiene mitigación definida y un propietario nominal: un riesgo sin dueño es un riesgo sin gestionar.</p>
     </div>
 
@@ -1943,7 +1954,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
         </ul>
       </div>
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Registro puntuado, con residual y fecha de revisión</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-registro-puntuado-residual-fecha-revision">Registro puntuado, con residual y fecha de revisión</h3>
     <p style="color:var(--ink-2);max-width:68ch">La descripción anterior dice qué puede pasar. Un registro dice además <strong>cuánto pesa, cuánto pesará después de mitigarlo, quién responde y cuándo se vuelve a mirar</strong>. La exposición es probabilidad × impacto, ambas de 1 a 5. El residual es la exposición estimada una vez ejecutada la mitigación: si un riesgo no baja al mitigarlo, la mitigación es decorativa.</p>
 
     <div class="tablewrap">
@@ -1985,7 +1996,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§12 · Pre-mortem</p>
-      <h2>Estamos en agosto de 2029 y el proyecto ha fracasado. ¿Qué pasó?</h2>
+      <h2 id="t-estamos-agosto-2029-proyecto-ha-fracasado">Estamos en agosto de 2029 y el proyecto ha fracasado. ¿Qué pasó?</h2>
       <p>Seis explicaciones plausibles, cada una con su señal temprana y su antídoto. Ninguna es un accidente externo: <strong>las seis son decisiones que tomamos nosotros o dejamos de tomar</strong>.</p>
     </div>
 
@@ -2052,7 +2063,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§13 · Cuadro de mando</p>
-      <h2>Con qué se dirige, mes a mes</h2>
+      <h2 id="t-dirige-mes-mes">Con qué se dirige, mes a mes</h2>
       <p>Diez indicadores nucleares. Los cuatro primeros son de integridad —miden si el sistema se está cumpliendo—, los cuatro siguientes son de resultado y los dos últimos los exigen las decisiones D13 y D14. Ninguno tiene aún serie histórica propia: la primera lectura se toma este trimestre.</p>
     </div>
 
@@ -2074,7 +2085,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <p class="footnote">Un cuadro de mando con ocho casillas vacías no es una debilidad del documento: es el diagnóstico honesto de dónde estamos. La Junta debe exigir que en la revisión trimestral las ocho tengan valor y tendencia.</p>
 
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Diccionario de indicadores</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-diccionario-indicadores">Diccionario de indicadores</h3>
     <p style="color:var(--ink-2);max-width:68ch">Un indicador sin definición operativa no se puede medir dos meses seguidos de la misma manera, y una serie que cambia de definición no es una serie. Esta tabla fija, para cada indicador, qué se cuenta arriba, qué se cuenta abajo, de dónde sale el dato y qué queda fuera. <strong>Es la condición previa de la línea base de §7</strong>: mientras no esté acordada, cualquier cifra que se reporte es incomparable con la del mes siguiente.</p>
 
     <div class="tablewrap">
@@ -2106,7 +2117,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       <p>La definición sola no levanta una serie. Junto a este documento se entrega <strong>«Captura de la línea base · 2026»</strong>, un libro de cálculo con una hoja por mes, los diez indicadores ya definidos, umbrales editables en un solo sitio, semáforo automático y resumen anual con tendencia. Solo se teclean las casillas amarillas. Un indicador sin dato aparece como <em>SIN DATO</em> y cuenta como rojo, que es exactamente la regla de reporte de arriba.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Lo que cuesta un descuento <span class="sem sem--amarillo">Modelo</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-cuesta-descuento-modelo">Lo que cuesta un descuento <span class="sem sem--amarillo">Modelo</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">La política de precios es una de las decisiones que se someten hoy a la Junta, y conviene verla en su magnitud real. Con un margen del 40 %, los costes del caso no bajan cuando baja el precio: el descuento sale íntegramente del beneficio.</p>
     <figure class="fig">
       <div class="figscroll" style="overflow-x:auto">
@@ -2159,7 +2170,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       <figcaption><strong>Figura 6 · Reparto de cada 100 € facturados según el descuento aplicado.</strong> Un descuento del 10 % no cuesta el 10 %: cuesta el 25 % del beneficio del caso. Uno del 20 % cuesta la mitad. Compensar un 10 % de descuento con un margen del 40 % exige vender un 33 % más de volumen. Margen del 40 % como supuesto de trabajo (§18).</figcaption>
     </figure>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Lo que vale una relación frente a una transacción <span class="sem sem--amarillo">Modelo</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-vale-relacion-frente-transaccion-modelo">Lo que vale una relación frente a una transacción <span class="sem sem--amarillo">Modelo</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">El programa de cuidado anual no se justifica por su cuota, que es marginal, sino por lo que arrastra: revisiones que detectan a tiempo, tratamientos que se hacen cuando aún son sencillos y familiares que entran por la puerta.</p>
     <figure class="fig">
       <div class="figscroll" style="overflow-x:auto">
@@ -2202,7 +2213,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>V</b>La decisión</p>
       <div>
-        <h2>Qué se pide hoy, y <em>qué cuesta no pedirlo</em></h2>
+        <h2 id="t-pide-hoy-cuesta-no-pedirlo">Qué se pide hoy, y <em>qué cuesta no pedirlo</em></h2>
         <p class="t-part__lede">Las palancas de valor, el orden en que se asigna el capital disponible, la hoja de ruta a treinta y seis meses, las quince decisiones que solo puede tomar este órgano y el registro completo de lo que hemos supuesto sin poder demostrarlo todavía.</p>
       </div>
     </div>
@@ -2213,7 +2224,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§14 · Palancas de valor</p>
-      <h2>Por dónde se crece, y en qué orden</h2>
+      <h2 id="t-donde-crece-orden">Por dónde se crece, y en qué orden</h2>
       <p>Cinco palancas, ordenadas por coste de activación. Las tres primeras no requieren captar un solo paciente nuevo: actúan sobre lo que ya existe.</p>
     </div>
 
@@ -2242,7 +2253,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§15 · Asignación de capital</p>
-      <h2>Un orden de prelación, no una lista de deseos</h2>
+      <h2 id="t-orden-prelacion-no-lista-deseos">Un orden de prelación, no una lista de deseos</h2>
       <p>Todo presupuesto de clínica se parece: equipamiento, obra, marketing, personal. Lo que distingue una asignación estratégica de una contable es el <strong>orden</strong>, y el criterio explícito para saltarse ese orden.</p>
     </div>
 
@@ -2258,7 +2269,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
     <div class="t-body" style="margin-top:1.8rem">
       <div>
-        <h3 style="font-size:var(--step-1);margin-bottom:.7rem">La regla de excepción</h3>
+        <h3 style="font-size:var(--step-1);margin-bottom:.7rem" id="t-regla-excepcion">La regla de excepción</h3>
         <p style="color:var(--ink-2);max-width:66ch">Saltarse el orden es legítimo exactamente en un caso: cuando una prioridad inferior es condición técnica de una superior —un equipo cuya avería impide ejecutar el estándar, por ejemplo—. En ese supuesto la excepción se documenta con el formato de registro de decisión y se presenta en la Junta siguiente. Fuera de eso, el orden se respeta aunque la oportunidad parezca buena.</p>
         <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">Esta disciplina es la que impide el patrón más común de deterioro en centros que crecen: financiar capacidad con optimismo, descubrir que la conversión no acompaña y recortar entonces la prioridad 2, que era la única que sostenía la diferencia.</p>
       </div>
@@ -2280,7 +2291,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§16 · Hoja de ruta</p>
-      <h2>Tres horizontes y tres puertas</h2>
+      <h2 id="t-tres-horizontes-tres-puertas">Tres horizontes y tres puertas</h2>
       <p>El programa no avanza por calendario, sino por criterios de salida verificados. Ninguna fase se adelanta: cada una se apoya en la anterior.</p>
     </div>
 
@@ -2290,7 +2301,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       <div><dt>Horizonte 3 · 36 meses</dt><dd><strong>Liderazgo.</strong> Referencia reconocida en implantología compleja en el área, con captación mayoritariamente por recomendación y base amplia en mantenimiento activo.</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Las tres puertas de paso</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-tres-puertas-paso">Las tres puertas de paso</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Puerta</th><th>Día</th><th>No se pasa sin…</th></tr></thead>
@@ -2309,7 +2320,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§17 · Decisiones que se someten a la Junta</p>
-      <h2>Quince acuerdos</h2>
+      <h2 id="t-quince-acuerdos">Quince acuerdos</h2>
       <p>Cada decisión lleva su código para el acta, quién la propone, qué se pide exactamente, qué pasa si no se resuelve hoy y de qué depende. Las ocho primeras resuelven la operación; las siete últimas fijan las reglas con las que se decidirá lo que aún no está sobre la mesa, incluida la cifra a la que se dirige todo. Ninguna requiere información adicional a la contenida en este documento.</p>
     </div>
 
@@ -2349,7 +2360,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     </div>
 
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Las seis decisiones de la capa estratégica</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-seis-decisiones-capa-estrategica">Las seis decisiones de la capa estratégica</h3>
     <p style="color:var(--ink-2);max-width:66ch">Las ocho anteriores resuelven la operación. Estas seis nacen de las partes I a V y resuelven algo distinto: fijan las reglas con las que la Junta tomará las decisiones que todavía no sabe que va a tener que tomar. Se presentan en ficha, no en tabla, porque cada una lleva una alternativa descartada que conviene que conste en acta.</p>
 
     <div class="t-brief">
@@ -2432,7 +2443,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
 
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">El coste de no decidir</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-coste-no-decidir">El coste de no decidir</h3>
     <p style="color:var(--ink-2);max-width:68ch">Cada ficha dice, en cualitativo, qué pasa si el acuerdo no se toma. Cuatro de las catorce admiten además una cifra, y conviene tenerla delante: <strong>un consejo aplaza sin esfuerzo lo que no tiene precio, y deja de aplazar lo que lo tiene</strong>. Los importes son de modelo, construidos sobre los supuestos de §18.</p>
 
     <div class="tablewrap">
@@ -2473,7 +2484,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       <p>Es la razón por la que están marcadas como inmediatas y no como «primer trimestre»: no es urgencia retórica, es que el retraso tiene factura.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Formato de registro del acuerdo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-formato-registro-acuerdo">Formato de registro del acuerdo</h3>
     <div class="sheet"><b>REGISTRO DE DECISIÓN — Nº ____</b>
 Fecha:                          Órgano: Junta Directiva
 Código de la memoria: D__       Nivel de autoridad: N2 / N3
@@ -2495,7 +2506,7 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§18 · Registro de supuestos</p>
-      <h2>Sobre qué se ha razonado</h2>
+      <h2 id="t-sobre-ha-razonado">Sobre qué se ha razonado</h2>
       <p>Todos los valores empleados en los modelos de esta memoria, con su origen. Ninguno procede de la explotación del centro: son <strong>supuestos de trabajo no verificados</strong>, elegidos como órdenes de magnitud plausibles para poder razonar mientras llegan los datos reales. Se sustituyen en cuanto exista línea base.</p>
     </div>
 
@@ -2519,7 +2530,7 @@ REVISIÓN PREVISTA:</div>
       <p>La cifra concreta de un modelo no es una previsión: es la consecuencia aritmética de los supuestos de esta tabla. Lo que sí es robusto —y lo único que conviene llevarse— es la <strong>dirección y el orden de magnitud</strong>: que el descuento sale del beneficio y no del coste; que la conversión es la palanca más barata; y que la relación continuada vale del orden del doble que la transacción aislada. Si cambian los supuestos, cambian las cifras, pero no esas tres conclusiones.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Qué falta por resolver, además de las ocho decisiones</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="t-falta-resolver-ademas-quince-decisiones">Qué falta por resolver, además de las quince decisiones</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Punto abierto</th><th>De quién depende</th><th>Cómo se opera mientras tanto</th></tr></thead>
@@ -2533,7 +2544,7 @@ REVISIÓN PREVISTA:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">S8 · Los supuestos de la cartera de campañas</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-s8-supuestos-cartera-campanas">S8 · Los supuestos de la cartera de campañas</h3>
     <p style="color:var(--ink-2);max-width:70ch">La Parte VI no añade supuestos nuevos sobre la clínica: reparte los que ya están en S1 a S7 entre nueve campañas. Lo que sí declara es cuánta agenda ocupa cada una y con qué rendimiento, y eso es lo que va aquí. <strong>Ninguno procede de una medición del centro.</strong> Todos viven en <code>modelo-campanas.py</code>, que se puede ejecutar y modificar; el guion de coherencia comprueba que este documento no diga nada distinto de lo que ese modelo calcula.</p>
 
     <div class="tablewrap">
@@ -2565,7 +2576,7 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§19 · Trazabilidad de los acuerdos</p>
-      <h2>Dónde aterriza cada decisión y cómo se comprueba seis meses después</h2>
+      <h2 id="t-donde-aterriza-cada-decision-como-comprueba">Dónde aterriza cada decisión y cómo se comprueba seis meses después</h2>
       <p>La pregunta que cierra cualquier consejo serio es la misma: <strong>«de acuerdo, lo aprobamos; ¿cómo sé dentro de seis meses que se hizo?»</strong>. Esta matriz la responde para las catorce. Cada acuerdo tiene un documento donde se escribe, un punto donde se verifica y un indicador donde se ve.</p>
     </div>
 
@@ -2604,7 +2615,7 @@ REVISIÓN PREVISTA:</div>
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>VI</b>La cifra</p>
       <div>
-        <h2>Cómo se llega a <em>1,2 M€</em></h2>
+        <h2 id="t-como-llega-1-2-m">Cómo se llega a <em>1,2 M€</em></h2>
         <p class="t-part__lede">Ninguna cifra de esta parte está escrita a mano. Todas salen de un modelo que vive en el repositorio, declara sus supuestos y se puede ejecutar: cada campaña dice cuánta agenda ocupa, a qué tasa convierte y con qué ticket, y de ahí se deriva lo que aporta. Cambie un supuesto y cambian el puente, las figuras y esta página.</p>
       </div>
     </div>
@@ -2615,11 +2626,11 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§20 · El puente</p>
-      <h2>De 720 k€ a 1,2 M€, bloque a bloque</h2>
+      <h2 id="t-720-k-1-2-m-bloque">De 720 k€ a 1,2 M€, bloque a bloque</h2>
       <p>Un objetivo sin puente es un deseo. Este es el recorrido completo, y cada tramo tiene detrás una operación aritmética, no una intuición.</p>
     </div>
 
-    <h3 style="font-size:var(--step-2);margin:2.4rem 0 .5rem">La regla que gobierna todo el cálculo</h3>
+    <h3 style="font-size:var(--step-2);margin:2.4rem 0 .5rem" id="t-regla-gobierna-todo-calculo">La regla que gobierna todo el cálculo</h3>
     <p class="t-lead">Con la agenda llena, <strong>una campaña no vale lo que factura: vale la diferencia entre el paciente que trae y el paciente al que desplaza</strong>. Es una distinción incómoda y es la que separa un plan creíble de una suma de deseos. Si una campaña trae pacientes que convierten al 40 % con ticket de 1.900 €, y la visita que ocupa habría rendido 810 €, esa campaña no aporta lo que factura: aporta la diferencia, y puede ser negativa.</p>
 
     <div class="t-stats t-stats--4">
@@ -2759,7 +2770,7 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§21 · La cartera de campañas</p>
-      <h2>Nueve campañas, cada una con su cuenta echada</h2>
+      <h2 id="t-nueve-campanas-cada-cuenta-echada">Nueve campañas, cada una con su cuenta echada</h2>
       <p>Giraldo Te Cuida es una de las nueve. Cada fila de esta tabla es una multiplicación que se puede rehacer: visitas que ocupa × conversión × ticket, menos lo que habría rendido esa misma visita sin la campaña.</p>
     </div>
 
@@ -2781,7 +2792,7 @@ REVISIÓN PREVISTA:</div>
     </div>
     <p class="t-fig__note">Aporte = visitas × (conversión × ticket − 810 €) para las siete de agenda; para C1 y C6, ingreso directo fuera del embudo. Coste total de la cartera: 87 k€, un 7,2 % del objetivo. Naturaleza: modelo.</p>
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Tres resultados que el modelo devuelve y que conviene mirar de frente</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-tres-resultados-modelo-devuelve-conviene-mirar">Tres resultados que el modelo devuelve y que conviene mirar de frente</h3>
 
     <figure class="t-fig">
       <figcaption>
@@ -2917,7 +2928,7 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§22 · Calendario y capacidad</p>
-      <h2>Cuándo se enciende cada una, y por qué en ese mes</h2>
+      <h2 id="t-cuando-enciende-cada-ese-mes">Cuándo se enciende cada una, y por qué en ese mes</h2>
       <p>La demanda dental no es plana. Enero y septiembre son los meses en que la gente decide; agosto y diciembre, en los que aplaza. Encender una campaña cara en julio es tirar el dinero, y encender dos a la vez en enero es no atender bien ninguna.</p>
     </div>
 
@@ -3081,7 +3092,7 @@ REVISIÓN PREVISTA:</div>
       <p class="t-fig__note">En ningún mes hay más de dos arranques. Es la regla, y el calendario está construido para cumplirla.</p>
     </figure>
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">La senda: el objetivo es de año tres, no de año uno</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-senda-objetivo-ano-tres-no-ano">La senda: el objetivo es de año tres, no de año uno</h3>
     <p class="t-lead">Las campañas necesitan arrancar, madurar y acumular base. C1 y C6 —el 63 % del plan— solo alcanzan su régimen cuando la base adherida lleva tres años acumulándose: en el primer ejercicio hay una tercera parte de los pacientes que habrá en el tercero, y la aritmética no admite atajos.</p>
 
     <div class="tablewrap">
@@ -3107,7 +3118,7 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§23 · Qué tiene que ser cierto</p>
-      <h2>Las cinco condiciones, y el riesgo que ninguna campaña puede permitirse</h2>
+      <h2 id="t-cinco-condiciones-riesgo-ninguna-campana-puede">Las cinco condiciones, y el riesgo que ninguna campaña puede permitirse</h2>
       <p>El puente del §20 se sostiene sobre cinco cosas. Ninguna es una campaña: son condiciones. <strong>Si alguna no se cumple, el objetivo no baja un poco: se cae el bloque entero que dependía de ella.</strong></p>
     </div>
 
@@ -3149,7 +3160,7 @@ REVISIÓN PREVISTA:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">El riesgo que ninguna campaña puede permitirse: la publicidad sanitaria</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-riesgo-ninguna-campana-puede-permitirse-publicidad">El riesgo que ninguna campaña puede permitirse: la publicidad sanitaria</h3>
     <p style="color:var(--ink-2);max-width:70ch">Tres de las nueve tocan materia regulada. La publicidad sanitaria en España no admite prometer resultados, comparar con otros profesionales ni presentar casos como resultado esperable, y la competencia es autonómica. Es la verificación <strong>V11</strong> del sistema, y aquí deja de ser una casilla para convertirse en una condición de arranque: <strong>ninguna campaña marcada en rojo se enciende sin pasar por ella.</strong></p>
 
     <div class="tablewrap">
@@ -3170,7 +3181,7 @@ REVISIÓN PREVISTA:</div>
     </div>
     <p class="t-fig__note">Valoración de dirección, no dictamen jurídico. Las tres marcadas en alto requieren revisión por asesoría antes de publicar la primera pieza.</p>
 
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem">Y si la Junta quiere 1,2 M€ en dieciocho meses</h3>
+    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="t-si-junta-quiere-1-2-m">Y si la Junta quiere 1,2 M€ en dieciocho meses</h3>
     <div class="t-body">
       <div>
         <p style="color:var(--ink-2);max-width:66ch">Es una decisión legítima y tiene precio. Comprimir tres años en año y medio no se consigue acelerando las campañas —C1 y C6, que son el 63 % del plan, maduran al ritmo al que se acumula la base adherida— sino ampliando capacidad: <strong>un segundo gabinete en uso efectivo y un día más de quirófano a la semana</strong>. Eso significa invertir en la prioridad 5 del §15 antes de haber consolidado la 2 y la 3, que es justo el orden que el §15 pide no romper.</p>
@@ -3200,7 +3211,7 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Anexo A · Cuadernillo de acuerdos</p>
-      <h2>Quince hojas para salir de la sesión con el acta hecha</h2>
+      <h2 id="t-quince-hojas-salir-sesion-acta-hecha">Quince hojas para salir de la sesión con el acta hecha</h2>
       <p>Una hoja por decisión, con las alternativas ya redactadas y espacio para la resolución, el fundamento, la fecha de entrada en vigor y las firmas. Se imprimen a una cara, se rellenan durante la sesión y se archivan. <strong>Sin este cuadernillo, la Junta sale con quince acuerdos y un acta por redactar</strong>; con él, sale con quince documentos firmados y con fecha.</p>
     </div>
 
@@ -3830,7 +3841,7 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Anexo B · Fichas de campaña</p>
-      <h2>Nueve hojas para poner en marcha, no para leer</h2>
+      <h2 id="t-nueve-hojas-poner-marcha-no-leer">Nueve hojas para poner en marcha, no para leer</h2>
       <p>Una por campaña, con la promesa, a quién va dirigida, qué se le ofrece, cómo se abre la conversación, quién responde y —lo que casi nunca se escribe— <strong>en qué momento se para</strong>. Se imprimen, se reparten al responsable de cada una y se revisan a los sesenta días.</p>
     </div>
 
@@ -4142,14 +4153,14 @@ REVISIÓN PREVISTA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Cierre</p>
-      <h2>Qué mide el éxito de este año</h2>
+      <h2 id="t-mide-exito-este-ano">Qué mide el éxito de este año</h2>
     </div>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Los tres resultados verificables</p>
       <p>Que el equipo permanezca. Que los pacientes heredados no perciban discontinuidad. Que la organización acepte un estándar de trabajo superior al preexistente.</p>
       <p>Los objetivos de crecimiento, diferenciación y liderazgo dependen íntegramente de esos tres. No son una fase previa al proyecto: son su fundamento. Un programa de integración no se evalúa por la sofisticación de su planificación, sino por si al cierre del periodo esas tres cosas han ocurrido.</p>
     </div>
-    <p style="margin-top:1.6rem;color:var(--ink-2);max-width:70ch">La Junta dispone de un sistema operativo construido y verificable, de un mapa honesto de lo que aún no se sabe y de ocho decisiones que solo ella puede tomar. Lo que se pide hoy no es respaldo genérico: es resolver esas ocho y fijar la fecha de la próxima revisión.</p>
+    <p style="margin-top:1.6rem;color:var(--ink-2);max-width:70ch">La Junta dispone de un sistema operativo construido y verificable, de un mapa honesto de lo que aún no se sabe y de quince decisiones que solo ella puede tomar. Lo que se pide hoy no es respaldo genérico: es resolver esas quince y fijar la fecha de la próxima revisión.</p>
   </div>
 </section>
 
@@ -4179,6 +4190,19 @@ REVISIÓN PREVISTA:</div>
 <script>
 (function(){
   "use strict";
+  /* ---- alto real de la barra, para que ningún salto quede debajo ---- */
+  (function(){
+    var barra = document.querySelector(".topbar");
+    if(!barra) return;
+    function medir(){
+      document.documentElement.style.setProperty(
+        "--barra", Math.round(barra.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    if("ResizeObserver" in window) new ResizeObserver(medir).observe(barra);
+  })();
+
   var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
   var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
 

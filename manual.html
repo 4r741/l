@@ -49,7 +49,7 @@
    BASE
    ============================================================ */
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:118px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barra) + 1.1rem)}
 body{
   margin:0;
   background:var(--paper);
@@ -89,6 +89,16 @@ a{color:inherit}
 /* ============================================================
    BARRA SUPERIOR
    ============================================================ */
+/* ---------------------------------------------------------------------------
+   Aire bajo la barra fija. Un enlace del índice que deja el titular medio
+   tapado por la cabecera parece roto aunque haya funcionado: el lector no ve
+   llegar el salto. Antes esta reserva era un número fijo pensado para el
+   escritorio; en pantalla estrecha la barra se pliega en tres filas y pasa de
+   los doscientos píxeles, y el titular quedaba debajo. Ahora el guion mide la
+   barra y esta variable la sigue.
+   --------------------------------------------------------------------------- */
+:root{--barra:118px}
+
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -290,7 +300,8 @@ td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:n
   .timemap__seg:hover{transform:none}
 }
 @media(max-width:640px){
-  html{scroll-padding-top:98px}
+  /* la barra medida ya manda; aquí solo se estrecha el aire */
+  html{scroll-padding-top:calc(var(--barra) + .95rem)}
   .brand__tag{display:none}
   .brand__mark{font-size:.98rem}
   .topbar__in{padding:.55rem 0}
@@ -574,28 +585,28 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Presentación</p>
-      <h2>Un documento, tres usos</h2>
+      <h2 id="m-documento-tres-usos">Un documento, tres usos</h2>
       <p>Este Manual Maestro reúne en un solo cuerpo todo el sistema operativo del centro: el recorrido completo del paciente, los manuales de cada puesto, la matriz de responsabilidades y el protocolo de puesta en marcha.</p>
     </div>
     <div class="cards cards--3">
       <article class="card">
         <span class="eyebrow">Uso 01</span>
-        <h3>Material de formación</h3>
+        <h3 id="m-material-formacion">Material de formación</h3>
         <p>Quien se incorpora entiende no solo qué hace, sino por qué lo hace y qué palabras exactas emplear.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Uso 02</span>
-        <h3>Manual de operación</h3>
+        <h3 id="m-manual-operacion">Manual de operación</h3>
         <p>Cada procedimiento, paso a paso, con sus checklists y sus reglas innegociables.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Uso 03</span>
-        <h3>Herramienta de auditoría</h3>
+        <h3 id="m-herramienta-auditoria">Herramienta de auditoría</h3>
         <p>Fija los indicadores con los que se mide cada fase y cada puesto, de modo que la calidad no dependa de quién esté de turno.</p>
       </article>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem">Cómo está organizado</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem" id="m-como-esta-organizado">Cómo está organizado</h3>
     <ul class="list" style="max-width:none">
       <li><strong>Marco de vanguardia.</strong> El principio que gobierna todos los protocolos: la antelación sistematizada.</li>
       <li><strong>Parte I — Fundamentos.</strong> Ficha de control, principios rectores, glosario de roles, sistemas y puntos abiertos.</li>
@@ -626,7 +637,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Índice</p>
-      <h2>Dónde está cada cosa</h2>
+      <h2 id="m-donde-esta-cada-cosa">Dónde está cada cosa</h2>
       <p>Cada persona empieza por su manual de puesto y por las fases en las que interviene. La Dirección lo usa completo.</p>
     </div>
     <div class="tablewrap">
@@ -657,7 +668,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Marco de vanguardia</p>
-      <h2>El principio que gobierna todos los protocolos</h2>
+      <h2 id="m-principio-gobierna-todos-protocolos">El principio que gobierna todos los protocolos</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -666,7 +677,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <p>Un centro reacciona o dirige según cuándo hace las cosas. El que prepara el día anterior, verifica antes de agendar y anticipa el material de una cirugía con una semana de margen, trabaja sin sobresaltos. El que resuelve todo en el último momento vive en la urgencia permanente y comete errores caros. Todo este manual está construido sobre esa diferencia.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Los tres horizontes</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-tres-horizontes">Los tres horizontes</h3>
     <p style="color:var(--ink-2);max-width:66ch">Todo perfil trabaja simultáneamente en tres marcos temporales. Un profesional que solo trabaja en el «hoy» reacciona; uno que trabaja en los tres, dirige su función.</p>
     <div class="tablewrap">
       <table>
@@ -679,7 +690,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Los cinco pilares transversales</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-cinco-pilares-transversales">Los cinco pilares transversales</h3>
     <p style="color:var(--ink-2);max-width:66ch">Cinco principios se aplican en todos los perfiles, sin excepción. Son el estándar de calidad común del centro.</p>
     <div class="tablewrap">
       <table>
@@ -694,7 +705,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Estructura común de los manuales de puesto</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-estructura-comun-manuales-puesto">Estructura común de los manuales de puesto</h3>
     <p style="color:var(--ink-2);max-width:70ch">Para que sean fáciles de consultar, todos los manuales de la Parte IV siguen el mismo orden: misión y ámbito; cronograma de jornada; procedimientos numerados (PR-XX); guiones literales; checklists operativos; protocolos de contingencia; criterios de calidad; indicadores y reportes; y errores documentados. Quien conoce la estructura de un puesto sabe dónde buscar en cualquier otro.</p>
   </div>
 </section>
@@ -704,7 +715,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">I</div>
     <div>
-      <h2>Fundamentos</h2>
+      <h2 id="m-fundamentos">Fundamentos</h2>
       <p>Ficha de control, principios rectores, glosario, sistemas y puntos abiertos.</p>
     </div>
   </div></div>
@@ -712,7 +723,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 
 <section class="section" style="border-top:0;padding-top:0">
   <div class="wrap">
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">1 · Ficha de control del documento</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-1-ficha-control-documento">1 · Ficha de control del documento</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
@@ -730,7 +741,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">2 · Principios rectores del protocolo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-2-principios-rectores-protocolo">2 · Principios rectores del protocolo</h3>
     <p style="color:var(--ink-2);max-width:66ch">Nueve principios rigen todas las decisiones del recorrido. Cuando una situación no está prevista, se resuelve preguntándose cuál de estos principios aplica.</p>
     <div class="tablewrap">
       <table>
@@ -749,7 +760,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">3 · Glosario de roles</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-3-glosario-roles">3 · Glosario de roles</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Rol</th><th>Abrev.</th><th>Función</th></tr></thead>
@@ -765,7 +776,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">4 · Sistemas y herramientas</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-4-sistemas-herramientas">4 · Sistemas y herramientas</h3>
     <p style="color:var(--ink-2);max-width:66ch">El centro opera sobre un núcleo de herramientas que hay que conocer:</p>
     <div class="special special--3">
       <div><h5>Clinic Cloud</h5><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div>
@@ -773,7 +784,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <div><h5>WeDiagnostix</h5><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div>
     </div>
 
-<h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">4 ante · El posicionamiento del centro: «No medias sonrisas» <span class="tag">Posicionamiento</span></h3>
+<h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-4-ante-posicionamiento-centro-no-medias">4 ante · El posicionamiento del centro: «No medias sonrisas» <span class="tag">Posicionamiento</span></h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">El criterio que está por encima de este manual</p>
       <p>«No medias sonrisas.» Si algo deja al paciente a medias, no es la manera Giraldo de hacer las cosas.</p>
@@ -798,7 +809,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     </div>
     <p class="footnote">Desarrollo completo —manifiesto, origen, los cinco pilares, qué significa para cada puesto y en cada fase, y cómo se comunica dentro y fuera— en <a href="otros.html#otros-posicionamiento" style="color:var(--accent-ink)">Otros · «No medias sonrisas»</a>.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">4 ante bis · GTC · Giraldo Te Cuida, la otra mitad de la promesa <span class="tag">Giraldo Te Cuida</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-4-ante-bis-gtc-giraldo-te">4 ante bis · GTC · Giraldo Te Cuida, la otra mitad de la promesa <span class="tag">Giraldo Te Cuida</span></h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">La promesa completa</p>
       <p>«Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.»</p>
@@ -818,7 +829,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     </div>
     <p class="footnote">Programa completo —qué incluye, los cuatro argumentos, el speech por situación, el manejo de objeciones, la campaña sobre la cartera, la medición y el marco legal— en <a href="otros.html#otros-gtc" style="color:var(--accent-ink)">Otros · GTC · Giraldo Te Cuida</a>. Precio, límites, descuentos y validación jurídica del contrato son decisión de Gerencia y están pendientes de cerrar.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">4 bis · La filosofía que gobierna todo: el tratamiento integral <span class="tag">Protocolos por perfil</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-4-bis-filosofia-gobierna-todo-tratamiento">4 bis · La filosofía que gobierna todo: el tratamiento integral <span class="tag">Protocolos por perfil</span></h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Qué significa</p>
       <p>Diagnosticamos la boca completa. Proponemos el plan completo. Ejecutamos con el orden clínico correcto y sin dejar nada a medias.</p>
@@ -877,7 +888,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     </div>
     <p class="footnote">Un tratamiento integral no lo hace un profesional: lo hacen seis perfiles ejecutando cada uno su parte sin saltarse ninguna. Si uno solo emparcha, el sistema entero emparcha. Desarrollo completo en <a href="otros.html#otros-perfiles" style="color:var(--accent-ink)">Otros · Protocolos Operativos por Perfil</a>.</p>
 
-        <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">5 · Puntos abiertos pendientes de confirmar</h3>
+        <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-5-puntos-abiertos-pendientes-confirmar">5 · Puntos abiertos pendientes de confirmar</h3>
     <p style="color:var(--ink-2);max-width:66ch">Cuestiones que la Dirección debe cerrar y que, hasta entonces, se operan según la última instrucción vigente.</p>
     <div class="tablewrap">
       <table>
@@ -899,7 +910,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">I<span style="font-size:.4em;vertical-align:super">bis</span></div>
     <div>
-      <h2>Estándares transversales <span class="tag">ampliación</span></h2>
+      <h2 id="m-estandares-transversales-ampliacion">Estándares transversales <span class="tag">ampliación</span></h2>
       <p>Lo que se cumple en las catorce fases y en los seis puestos. No pertenece a ninguna fase concreta porque rige en todas.</p>
     </div>
   </div></div>
@@ -908,7 +919,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 <section class="section" style="border-top:0;padding-top:0">
   <div class="wrap">
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">1 · Comunicación y trato</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-1-comunicacion-trato">1 · Comunicación y trato</h3>
     <div class="saydont" style="max-width:none">
       <div>
         <h5>Lenguaje preferido</h5>
@@ -942,7 +953,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <li><strong>Una sola versión:</strong> lo que se dice en la Fase 9 debe coincidir con el IAC, con el presupuesto y con lo que diga cualquier otro miembro del equipo</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">2 · Seguridad clínica</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-2-seguridad-clinica">2 · Seguridad clínica</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Ámbito</th><th>Estándar del centro</th><th>Responsable</th></tr></thead>
@@ -959,7 +970,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">3 · Emergencias médicas en la clínica</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-3-emergencias-medicas-clinica">3 · Emergencias médicas en la clínica</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Principio</p>
       <p>Ante cualquier emergencia: detener el procedimiento, pedir ayuda en voz alta y activar el aviso a emergencias si hay compromiso vital.</p>
@@ -980,7 +991,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     </div>
     <p class="footnote">Este apartado fija la organización del centro ante una emergencia. El manejo clínico concreto de cada cuadro corresponde al criterio del profesional y a la formación acreditada de cada persona.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">4 · Protección de datos en el día a día</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-4-proteccion-datos-dia-dia">4 · Protección de datos en el día a día</h3>
     <ul class="list" style="max-width:none">
       <li>Pantallas bloqueadas al levantarse; ninguna ficha abierta a la vista de otro paciente</li>
       <li>Monitores de recepción orientados de forma que no sean legibles desde el mostrador</li>
@@ -992,7 +1003,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <li>Las bajas de personal implican revocación inmediata de accesos</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">5 · Plan de continuidad del centro</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-5-plan-continuidad-centro">5 · Plan de continuidad del centro</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Incidencia</th><th>Respuesta inmediata</th><th>Quién decide</th></tr></thead>
@@ -1013,14 +1024,14 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <p>Se informa al paciente, se documenta lo ocurrido y se registra qué se hizo en lugar de lo previsto.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">6 · Orden de prioridades del centro</h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-6-orden-prioridades-centro">6 · Orden de prioridades del centro</h3>
     <div class="cards cards--3">
-      <article class="card"><span class="eyebrow">Prioridad 01</span><h3>Seguridad del paciente</h3><p>Ninguna consideración de agenda, comercial o económica se antepone a ella.</p></article>
-      <article class="card"><span class="eyebrow">Prioridad 02</span><h3>Calidad del diagnóstico</h3><p>Antes que la rapidez y antes que el cierre: sin diagnóstico completo no hay propuesta.</p></article>
-      <article class="card"><span class="eyebrow">Prioridad 03</span><h3>Experiencia del paciente</h3><p>Confort, información y trato, en cada una de las catorce fases.</p></article>
-      <article class="card"><span class="eyebrow">Prioridad 04</span><h3>Entrega de lo vendido</h3><p>Un tratamiento aceptado que no se ejecuta es un riesgo, no un logro.</p></article>
-      <article class="card"><span class="eyebrow">Prioridad 05</span><h3>Conversión</h3><p>Consecuencia de las cuatro anteriores, nunca sustituto de ninguna.</p></article>
-      <article class="card"><span class="eyebrow">Cómo se usa</span><h3>Ante lo no previsto</h3><p>Se aplica este orden. Cualquier decisión que lo altere se consulta con Dirección antes de tomarla.</p></article>
+      <article class="card"><span class="eyebrow">Prioridad 01</span><h3 id="m-seguridad-paciente">Seguridad del paciente</h3><p>Ninguna consideración de agenda, comercial o económica se antepone a ella.</p></article>
+      <article class="card"><span class="eyebrow">Prioridad 02</span><h3 id="m-calidad-diagnostico">Calidad del diagnóstico</h3><p>Antes que la rapidez y antes que el cierre: sin diagnóstico completo no hay propuesta.</p></article>
+      <article class="card"><span class="eyebrow">Prioridad 03</span><h3 id="m-experiencia-paciente">Experiencia del paciente</h3><p>Confort, información y trato, en cada una de las catorce fases.</p></article>
+      <article class="card"><span class="eyebrow">Prioridad 04</span><h3 id="m-entrega-vendido">Entrega de lo vendido</h3><p>Un tratamiento aceptado que no se ejecuta es un riesgo, no un logro.</p></article>
+      <article class="card"><span class="eyebrow">Prioridad 05</span><h3 id="m-conversion">Conversión</h3><p>Consecuencia de las cuatro anteriores, nunca sustituto de ninguna.</p></article>
+      <article class="card"><span class="eyebrow">Cómo se usa</span><h3 id="m-ante-no-previsto">Ante lo no previsto</h3><p>Se aplica este orden. Cualquier decisión que lo altere se consulta con Dirección antes de tomarla.</p></article>
     </div>
   </div>
 </section>
@@ -1030,7 +1041,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">II</div>
     <div>
-      <h2>El recorrido del paciente</h2>
+      <h2 id="m-recorrido-paciente">El recorrido del paciente</h2>
       <p>Las catorce fases, de la primera llamada al mantenimiento a largo plazo.</p>
     </div>
   </div></div>
@@ -1046,7 +1057,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <p>Las fases 9 (presentación) y 10 (cierre) concentran la conversión: son las dos donde se gana o se pierde al paciente. Pero fallan más a menudo por causas que vienen de atrás —una Fase 7 sin material emocional, un briefing saltado, una Fase 1 que trajo al paciente equivocado—. Cuando la producción baje, se auditan primero esas dos, pero se revisa toda la cadena.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem">Las catorce fases de un vistazo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem" id="m-catorce-fases-vistazo">Las catorce fases de un vistazo</h3>
     <p style="color:var(--ink-2);max-width:64ch">Filtra por puesto para ver solo las fases en las que intervienes.</p>
     <div class="legend" id="legend" style="margin:1rem 0 1.4rem">
       <button class="chip" data-role="rec" aria-pressed="false" type="button">Recepción</button>
@@ -1094,7 +1105,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Preparación previa · la llamada</h2>
+      <h2 id="m-preparacion-previa-llamada">Preparación previa · la llamada</h2>
       <p class="phase__intro">La primera llamada no es «coger una cita»: es el primer momento de verdad del centro. En unos 90 segundos el paciente decide, de forma inconsciente, si el sitio le transmite confianza, y se recoge la información que hará personalizado —o genérico— todo el recorrido posterior.</p>
 
       <div class="block">
@@ -1292,7 +1303,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Recepción, Sala VIP y tour</h2>
+      <h2 id="m-recepcion-sala-vip-tour">Recepción, Sala VIP y tour</h2>
       <p class="phase__intro">Esta fase construye la percepción de nivel. El paciente ha decidido dar una oportunidad al centro; en los primeros cinco minutos confirma o revisa esa decisión. Un centro de excelencia se demuestra, no se dice: el tour por la tecnología es la primera prueba tangible de que el nombre significa algo.</p>
 
       <div class="block">
@@ -1470,7 +1481,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Anamnesis inicial, RGPD y alta en Clinic Cloud</h2>
+      <h2 id="m-anamnesis-inicial-rgpd-alta-clinic-cloud">Anamnesis inicial, RGPD y alta en Clinic Cloud</h2>
       <p class="phase__intro">Dos capas en paralelo. La humana: el Director crea el vínculo, conoce a la persona y recoge sus expectativas iniciales. La administrativa y legal: se cumple el RGPD, se dan de alta los datos y se garantiza la trazabilidad. El error de fondo es convertir la fase en un puro trámite de papeles: el paciente que solo rellena formularios no conecta.</p>
 
       <div class="block">
@@ -1656,7 +1667,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Historial médico y consentimiento radiológico</h2>
+      <h2 id="m-historial-medico-consentimiento-radiologico">Historial médico y consentimiento radiológico</h2>
       <p class="phase__intro">Primera fase puramente clínica y la de mayor riesgo clínico-legal de toda la visita. Una anamnesis incompleta puede derivar en una complicación grave: una alergia no detectada, una interacción medicamentosa, una contraindicación ignorada.</p>
 
       <div class="block">
@@ -1843,7 +1854,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Pruebas diagnósticas y documentación fotográfica</h2>
+      <h2 id="m-pruebas-diagnosticas-documentacion-fotografica">Pruebas diagnósticas y documentación fotográfica</h2>
       <p class="phase__intro">Aquí se genera la evidencia objetiva sobre la que se sostienen el diagnóstico y la presentación. Una prueba mal hecha o mal cargada arruina la Fase 9 y reduce la conversión. Además es un momento de experiencia: el paciente vive la tecnología prometida.</p>
 
       <div class="block">
@@ -2008,7 +2019,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Briefing odontólogo–director</h2>
+      <h2 id="m-briefing-odontologo-director">Briefing odontólogo–director</h2>
       <p class="phase__intro">Fase invisible para el paciente y decisiva para la conversión. Doctor y Director se alinean para presentar una propuesta única, coherente y sólida. Sin briefing, el paciente percibe dudas, contradicciones o improvisación, y no compra. El principio: el paciente nunca debe ver improvisación; todo lo que verá en las Fases 7, 9 y 10 se cocina aquí.</p>
 
       <div class="block">
@@ -2119,7 +2130,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Anamnesis de expectativas y exploración</h2>
+      <h2 id="m-anamnesis-expectativas-exploracion">Anamnesis de expectativas y exploración</h2>
       <p class="phase__intro">Fase clínica y emocional a la vez. El Doctor explora físicamente y confirma el diagnóstico, y extrae el material emocional que hará que la presentación conecte. La clave que casi nadie entiende: un paciente no compra un tratamiento por sus características técnicas, sino por lo que significa para su vida. Ese «para qué» se descubre aquí.</p>
 
       <div class="block">
@@ -2293,7 +2304,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>IAC, solicitud de presupuesto e informe</h2>
+      <h2 id="m-iac-solicitud-presupuesto-e-informe">IAC, solicitud de presupuesto e informe</h2>
       <p class="phase__intro">Aquí se crea el documento que sostiene legal y clínicamente todo lo demás: el Informe de Análisis Clínico (IAC). El principio de separación: el Doctor decide el contenido clínico (dicta), el Director lo redacta, pero el Doctor valida y firma. Ante una reclamación o inspección, el IAC es la prueba de que el diagnóstico y el plan fueron correctos, completos y documentados. Un tratamiento excelente sin IAC es indefendible.</p>
 
       <div class="block">
@@ -2459,7 +2470,7 @@ Firma del Doctor: ..........................  Fecha: ..........</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Presentación del diagnóstico y plan</h2>
+      <h2 id="m-presentacion-diagnostico-plan">Presentación del diagnóstico y plan</h2>
       <p class="phase__intro">Primera de las dos fases donde se gana o se pierde al paciente. Aquí pasa de «me han mirado» a «entiendo lo que tengo y por qué necesito tratarlo». Si falla, no hay cierre posible: nadie compra la solución a un problema que no ha entendido. El principio: no se presenta un tratamiento, se presenta un problema y su solución, en ese orden.</p>
 
       <div class="rulebox">
@@ -2650,7 +2661,7 @@ vemos [hallazgo]. Se lo enseño también en la foto de su boca.»
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Propuesta económica y cierre</h2>
+      <h2 id="m-propuesta-economica-cierre">Propuesta económica y cierre</h2>
       <p class="phase__intro">La segunda fase donde se gana o se pierde al paciente, y la más delicada. Aquí un diagnóstico aceptado se transforma en una decisión de tratamiento. El principio ético: se guía hacia la decisión, no se presiona. La regla de oro: el precio se justifica con valor, nunca con comparación ni con rebaja improvisada.</p>
 
       <div class="block">
@@ -3002,7 +3013,7 @@ Firma de aceptación del paciente ..........................  Fecha ..........</
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Cierre administrativo y escaneo</h2>
+      <h2 id="m-cierre-administrativo-escaneo">Cierre administrativo y escaneo</h2>
       <p class="phase__intro">Aquí se formaliza y se blinda todo. La experiencia termina con la misma pulcritud con la que empezó, y la trazabilidad documental queda garantizada. Es administrativa, pero con consecuencias legales directas.</p>
 
       <div class="block">
@@ -3179,7 +3190,7 @@ Firma de aceptación del paciente ..........................  Fecha ..........</
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Despedida y seguimiento</h2>
+      <h2 id="m-despedida-seguimiento">Despedida y seguimiento</h2>
       <p class="phase__intro">La relación no termina en la puerta. Esta fase decide si un no convertido se recupera y si un convertido se fideliza. Es la más descuidada y una de las más rentables.</p>
 
       <div class="block">
@@ -3344,7 +3355,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Circuito de producción</h2>
+      <h2 id="m-circuito-produccion">Circuito de producción</h2>
       <p class="phase__intro">Aquí se cierra el círculo: lo vendido se convierte en lo ejecutado. Una venta no es un éxito hasta que el tratamiento se ha realizado. Un presupuesto aceptado que no se ejecuta es un riesgo, no un logro. El indicador que gobierna la fase es el producto pendiente: cuanto más bajo, más sana la clínica.</p>
 
       <div class="block">
@@ -3583,7 +3594,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2>Mantenimiento y seguimiento a largo plazo</h2>
+      <h2 id="m-mantenimiento-seguimiento-largo-plazo">Mantenimiento y seguimiento a largo plazo</h2>
       <p class="phase__intro">El recorrido no termina con la cirugía: continúa en el mantenimiento, que sostiene el resultado en el tiempo y da coherencia al nombre del centro. Es, además, una de las principales fuentes de fidelización y de producción recurrente. Un centro de excelencia implantológica se demuestra en el seguimiento de sus implantes.</p>
 
       <div class="block">
@@ -3893,7 +3904,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">III</div>
     <div>
-      <h2>Matriz RACI</h2>
+      <h2 id="m-matriz-raci">Matriz RACI</h2>
       <p>Quién es responsable, quién rinde cuentas, quién es consultado y quién informado.</p>
     </div>
   </div></div>
@@ -3944,7 +3955,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">IV</div>
     <div>
-      <h2>Manuales por puesto</h2>
+      <h2 id="m-manuales-puesto">Manuales por puesto</h2>
       <p>Misión, jornada, procedimientos, guiones e indicadores de cada perfil.</p>
     </div>
   </div></div>
@@ -3954,7 +3965,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Antes de las fichas</p>
-      <h2>Qué pasa exactamente cuando un puesto no cumple <span class="tag">Matriz de obligaciones</span></h2>
+      <h2 id="m-pasa-exactamente-cuando-puesto-no-cumple">Qué pasa exactamente cuando un puesto no cumple <span class="tag">Matriz de obligaciones</span></h2>
       <p>Cada manual de puesto termina con sus indicadores. Esta tabla dice lo contrario: qué se rompe aguas abajo cuando algo no se hace. Casi ningún fallo se queda en el puesto que lo comete.</p>
     </div>
     <div class="tablewrap">
@@ -3986,7 +3997,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Puesto · REC</p>
-      <h2>Recepción</h2>
+      <h2 id="m-recepcion">Recepción</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -3995,7 +4006,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <p>Recepción es el primer y el último contacto del paciente, y el guardián de la trazabilidad documental. Su ámbito abarca la gestión de la demanda (todos los canales de entrada), la arquitectura de la agenda (diseño, ocupación y recuperación), la custodia documental, la gestión económica de mostrador y el seguimiento (confirmaciones, cortesía, recuperación).</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">R.2 · Jornada minuto a minuto</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-r-2-jornada-minuto-minuto">R.2 · Jornada minuto a minuto</h3>
     <div class="grid2">
       <div>
         <p class="block__title">Apertura · 30 minutos antes</p>
@@ -4018,7 +4029,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
     </div>
     <p class="footnote">Durante la jornada, el trabajo se organiza en bloques: atención al paciente presente, gestión telefónica, confirmaciones del día siguiente y digitalización documental. Entre paciente y paciente, se sube al momento lo firmado. Al mediodía, punto de control de cinco minutos: ausencias, huecos por cubrir, documentación pendiente y confirmaciones en marcha.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">R.3 · Procedimientos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-r-3-procedimientos">R.3 · Procedimientos</h3>
 
     <div class="pr">
       <div class="pr__head"><span class="pr__code">PR-01</span><span class="pr__title">Atención telefónica de primer contacto</span><span class="pr__meta">Criticidad alta</span></div>
@@ -4127,7 +4138,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">R.5 · Contingencias <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-r-5-contingencias-ampliacion">R.5 · Contingencias <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
@@ -4142,7 +4153,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">R.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-r-5-criterios-calidad-ampliacion">R.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
     <ul class="list" style="max-width:none">
           <li>Ningún paciente espera en sala general durante una primera visita</li>
           <li>Ningún día se cierra con documentación sin subir</li>
@@ -4152,7 +4163,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <li>Ninguna ausencia se queda sin llamada el mismo día</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">R.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-r-5-primeros-30-dias-puesto">R.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
@@ -4166,7 +4177,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
         </tbody>
       </table>
     </div>
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">R.3 bis · Su papel comercial real <span class="tag">Protocolos por perfil</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-r-3-bis-papel-comercial-real">R.3 bis · Su papel comercial real <span class="tag">Protocolos por perfil</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Recepción no vende tratamientos, pero determina si el paciente llega o no. Cada momento del puesto tiene una consecuencia comercial concreta que conviene tener explícita.</p>
     <div class="tablewrap">
       <table>
@@ -4200,7 +4211,7 @@ CAJA
 INCIDENCIAS DEL DÍA:
 MAÑANA — casos delicados / cirugías:</div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">R.4 · Indicadores del puesto</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-r-4-indicadores-puesto">R.4 · Indicadores del puesto</h3>
     <dl class="kpis">
       <div><dt>Fichas sin duplicados</dt><dd>100 %</dd></div>
       <div><dt>Documentación subida el mismo día</dt><dd>100 %</dd></div>
@@ -4216,7 +4227,7 @@ MAÑANA — casos delicados / cirugías:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Puesto · DR</p>
-      <h2>Doctor</h2>
+      <h2 id="m-doctor">Doctor</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -4225,7 +4236,7 @@ MAÑANA — casos delicados / cirugías:</div>
       <p>El Doctor es la autoridad clínica única del centro. Su criterio clínico no es revisable por gestión; y, a la inversa, ese criterio no exime del cumplimiento documental, que es obligatorio. Su ámbito: diagnóstico y plan, consentimiento informado, ejecución de tratamientos, trazabilidad clínica y de implantes.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.2 · Cronograma de jornada</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-2-cronograma-jornada">D.2 · Cronograma de jornada</h3>
     <p style="color:var(--ink-2);max-width:66ch"><strong>Preparación del día anterior — 25 minutos.</strong> La función que más distingue a un profesional de vanguardia: ningún caso se conoce a la vez que el paciente.</p>
     <ul class="checks">
       <li><span><b>Historial, cuestionario y pruebas previas</b> revisados, paciente por paciente</span></li>
@@ -4249,7 +4260,7 @@ MAÑANA — casos delicados / cirugías:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.3 · Procedimientos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-3-procedimientos">D.3 · Procedimientos</h3>
 
     <div class="pr">
       <div class="pr__head"><span class="pr__code">PR-D01</span><span class="pr__title">Preparación anticipada del caso</span><span class="pr__meta">Diaria · tarde anterior · criticidad máxima</span></div>
@@ -4293,7 +4304,7 @@ MAÑANA — casos delicados / cirugías:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.4 · Errores documentados</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-4-errores-documentados">D.4 · Errores documentados</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Error</th><th>Consecuencia</th></tr></thead>
@@ -4308,7 +4319,7 @@ MAÑANA — casos delicados / cirugías:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.6 · Contingencias <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-6-contingencias-ampliacion">D.6 · Contingencias <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
@@ -4323,7 +4334,7 @@ MAÑANA — casos delicados / cirugías:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.6 · Criterios de calidad <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-6-criterios-calidad-ampliacion">D.6 · Criterios de calidad <span class="tag">ampliación</span></h3>
     <ul class="list" style="max-width:none">
           <li>Ningún caso se conoce a la vez que el paciente</li>
           <li>Ningún diagnóstico se limita a la zona del motivo de consulta</li>
@@ -4333,7 +4344,7 @@ MAÑANA — casos delicados / cirugías:</div>
           <li>Ninguna promesa de resultado se hace fuera de lo que el IAC sostiene</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.6 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-6-primeros-30-dias-puesto">D.6 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
@@ -4347,7 +4358,7 @@ MAÑANA — casos delicados / cirugías:</div>
         </tbody>
       </table>
     </div>
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.4 bis · Secuencia clínica del plan integral <span class="tag">Protocolos por perfil</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-4-bis-secuencia-clinica-plan">D.4 bis · Secuencia clínica del plan integral <span class="tag">Protocolos por perfil</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">El plan integral no es una lista de tratamientos: es una secuencia con orden clínico. Un paciente que viene por un diente y sale con el diagnóstico de un diente no ha sido diagnosticado.</p>
     <dl class="mini">
       <div><dt>Fase 0</dt><dd><strong>Urgencia.</strong> Lo que no puede esperar: dolor, infección.</dd></div>
@@ -4358,7 +4369,7 @@ MAÑANA — casos delicados / cirugías:</div>
     </dl>
     <p class="footnote">Regla clínica innegociable: no se rehabilita sobre una base no estabilizada. La secuencia no se altera por conveniencia comercial ni por prisa del paciente.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.4 ter · Su papel comercial y sus límites</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-4-ter-papel-comercial-limites">D.4 ter · Su papel comercial y sus límites</h3>
     <p style="color:var(--ink-2);max-width:70ch">El Doctor no negocia precios, pero es quien genera la convicción: la conversión no se decide en el momento del precio, sino en el momento en que el paciente entiende su problema.</p>
     <div class="grid2">
       <div>
@@ -4401,7 +4412,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">D.5 · Indicadores del Doctor</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-d-5-indicadores-doctor">D.5 · Indicadores del Doctor</h3>
     <dl class="kpis">
       <div><dt>Historiales completos (alergias, medicación, cirugías)</dt><dd>100 %</dd></div>
       <div><dt>Consentimientos con verificación registrada</dt><dd>100 %</dd></div>
@@ -4417,7 +4428,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Puesto · HIG</p>
-      <h2>Higienista</h2>
+      <h2 id="m-higienista">Higienista</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -4431,10 +4442,10 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       <p>El alcance concreto de las actuaciones clínicas lo determina su titulación y la normativa vigente. Este protocolo organiza la función; no amplía competencias.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">H.2 · Por qué este puesto es estratégico</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-h-2-este-puesto-estrategico">H.2 · Por qué este puesto es estratégico</h3>
     <p style="color:var(--ink-2);max-width:70ch">El centro se llama de excelencia implantológica. El seguimiento y mantenimiento de los implantes es la prueba de que el nombre significa algo, y el higienista es quien lo sostiene en el día a día. La reactivación del segmento de mantenimiento descansa en gran parte en este puesto, que es a la vez una de las principales fuentes de fidelización y de producción recurrente.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">H.3 · Procedimientos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-h-3-procedimientos">H.3 · Procedimientos</h3>
 
     <div class="pr">
       <div class="pr__head"><span class="pr__code">PR-H01</span><span class="pr__title">Programa de mantenimiento periimplantario</span><span class="pr__meta">Recurrente · criticidad alta</span></div>
@@ -4465,7 +4476,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">H.5 · Contingencias <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-h-5-contingencias-ampliacion">H.5 · Contingencias <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
@@ -4479,7 +4490,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">H.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-h-5-criterios-calidad-ampliacion">H.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
     <ul class="list" style="max-width:none">
           <li>Ningún portador de implantes sale del alta sin entrar en el programa</li>
           <li>Ninguna visita termina sin la próxima cita agendada</li>
@@ -4488,7 +4499,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
           <li>Ninguna periodicidad se cambia sin criterio del Doctor</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">H.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-h-5-primeros-30-dias-puesto">H.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
@@ -4502,7 +4513,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         </tbody>
       </table>
     </div>
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">H.3 bis · Detección, derivación y papel comercial <span class="tag">Protocolos por perfil</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-h-3-bis-deteccion-derivacion-papel">H.3 bis · Detección, derivación y papel comercial <span class="tag">Protocolos por perfil</span></h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Derivar no es un fallo</p>
       <p>Ante cualquier duda, se deriva. Derivar es hacer bien el trabajo.</p>
@@ -4526,7 +4537,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       <q>Su tratamiento no termina cuando colocamos el implante. Termina cuando ese implante lleva veinte años funcionando bien. Para eso está el mantenimiento.</q>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">H.4 · Indicadores del higienista</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-h-4-indicadores-higienista">H.4 · Indicadores del higienista</h3>
     <dl class="kpis">
       <div><dt>Higienes y mantenimientos realizados</dt><dd>Se mide</dd></div>
       <div><dt>Pacientes con implantes en seguimiento activo</dt><dd>Creciente</dd></div>
@@ -4542,7 +4553,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Puesto · AUX</p>
-      <h2>Auxiliar</h2>
+      <h2 id="m-auxiliar">Auxiliar</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -4551,7 +4562,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       <p>El auxiliar ejecuta las pruebas diagnósticas, asiste al Doctor en gabinete y quirófano, mantiene la esterilización y controla el material. Cuatro áreas: diagnóstica, apoyo clínico, bioseguridad (responsabilidad crítica) y material.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">X.2 · Procedimientos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-x-2-procedimientos">X.2 · Procedimientos</h3>
 
     <div class="pr">
       <div class="pr__head"><span class="pr__code">PR-A01</span><span class="pr__title">Batería diagnóstica y carga de imágenes</span><span class="pr__meta">Fase 5</span></div>
@@ -4585,7 +4596,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">X.4 · Contingencias <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-x-4-contingencias-ampliacion">X.4 · Contingencias <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
@@ -4600,7 +4611,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">X.4 · Criterios de calidad <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-x-4-criterios-calidad-ampliacion">X.4 · Criterios de calidad <span class="tag">ampliación</span></h3>
     <ul class="list" style="max-width:none">
           <li>Ningún ciclo de esterilización sin registro completo</li>
           <li>Ningún instrumental con duda de esterilidad se utiliza</li>
@@ -4610,7 +4621,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
           <li>Ningún residuo se almacena en zona de paciente o de paso</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">X.4 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-x-4-primeros-30-dias-puesto">X.4 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
@@ -4624,7 +4635,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         </tbody>
       </table>
     </div>
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">X.2 bis · Documentar la boca completa y explicar cada prueba <span class="tag">Protocolos por perfil</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-x-2-bis-documentar-boca-completa">X.2 bis · Documentar la boca completa y explicar cada prueba <span class="tag">Protocolos por perfil</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Sin registro completo no hay diagnóstico integral posible, ni comparación futura, ni material de presentación. El Auxiliar no vende, pero construye o destruye la experiencia: la calidad de sus imágenes es el material con el que se cierra en la Fase 9, y durante las pruebas el paciente cuenta cosas que no le dice al Doctor.</p>
     <div class="tablewrap">
       <table>
@@ -4648,7 +4659,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
     </div>
     <p class="footnote">Lo que detecta y deriva: ansiedad significativa al Doctor y al Director; un problema no consultado que el paciente menciona, al Doctor; interés en otro tratamiento o una queja, al Director. Una imagen de calidad dudosa no se deriva: se repite.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">X.3 · Indicadores del auxiliar</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-x-3-indicadores-auxiliar">X.3 · Indicadores del auxiliar</h3>
     <dl class="kpis">
       <div><dt>Tiempo medio de la batería diagnóstica</dt><dd>≤ 15 min</dd></div>
       <div><dt>Tasa de repetición de pruebas por calidad</dt><dd>&lt; 5 %</dd></div>
@@ -4664,7 +4675,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Puesto · RAC</p>
-      <h2>RAC · Responsable de Producción</h2>
+      <h2 id="m-rac-responsable-produccion">RAC · Responsable de Producción</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -4672,14 +4683,14 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       <p>Garantizar que todo tratamiento aceptado y pagado se ejecute realmente, en el menor tiempo posible y sin incidencias. Es el dueño del indicador de producto pendiente.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">C.2 · Poder de bloqueo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-c-2-poder-bloqueo">C.2 · Poder de bloqueo</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Regla nuclear</p>
       <p>Ninguna cirugía se agenda sin pago confirmado y material disponible.</p>
       <p>Es el único puesto con poder de bloqueo, y ninguna presión comercial lo anula: si el Director quiere agendar sin verificación, se escala a Gerencia.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">C.3 · Procedimientos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-c-3-procedimientos">C.3 · Procedimientos</h3>
 
     <div class="pr">
       <div class="pr__head"><span class="pr__code">PR-R01</span><span class="pr__title">Doble verificación</span><span class="pr__meta">Antes de cada agendado · criticidad máxima</span></div>
@@ -4709,7 +4720,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">C.5 · Contingencias <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-c-5-contingencias-ampliacion">C.5 · Contingencias <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
@@ -4724,7 +4735,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">C.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-c-5-criterios-calidad-ampliacion">C.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
     <ul class="list" style="max-width:none">
           <li>Ninguna cirugía se agenda sin pago y material verificados</li>
           <li>Ningún caso aceptado queda sin registrar en el panel el mismo día</li>
@@ -4733,7 +4744,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
           <li>Ningún caso de más de seis meses queda sin contacto del Director</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">C.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-c-5-primeros-30-dias-puesto">C.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
@@ -4747,7 +4758,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         </tbody>
       </table>
     </div>
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">C.3 bis · El guardián del plan completo <span class="tag">Protocolos por perfil</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-c-3-bis-guardian-plan-completo">C.3 bis · El guardián del plan completo <span class="tag">Protocolos por perfil</span></h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Seguimiento del plan integral</p>
       <p>Un plan de tres fases aceptado y con solo la primera ejecutada es un plan incompleto, no un plan terminado.</p>
@@ -4764,7 +4775,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
     </div>
     <p class="footnote">Si el pago no consta pero el paciente afirma haber pagado, nunca se le cuestiona: se deriva a Dirección. Una cirugía cancelada por falta de material es una incidencia grave y se reporta como tal.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">C.4 · Indicadores del RAC</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-c-4-indicadores-rac">C.4 · Indicadores del RAC</h3>
     <dl class="kpis">
       <div><dt>Producto pendiente total</dt><dd>Tendencia descendente</dd></div>
       <div><dt>Tiempo medio aceptación → ejecución</dt><dd>Mínimo</dd></div>
@@ -4779,7 +4790,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Puesto · DC</p>
-      <h2>Dirección de Clínica</h2>
+      <h2 id="m-direccion-clinica">Dirección de Clínica</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -4788,7 +4799,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       <p>Es el puente entre Gerencia y el equipo, y el responsable último de que lo que se vende se entregue.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">G.2 · Autoridad y sus límites</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-g-2-autoridad-limites">G.2 · Autoridad y sus límites</h3>
     <div class="grid2">
       <div>
         <p class="block__title">Decide</p>
@@ -4809,7 +4820,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">G.3 · Procedimientos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-g-3-procedimientos">G.3 · Procedimientos</h3>
 
     <div class="pr">
       <div class="pr__head"><span class="pr__code">PR-G01</span><span class="pr__title">Conducción del proceso comercial</span><span class="pr__meta">Fases 3, 6, 9, 10</span></div>
@@ -4839,7 +4850,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">G.5 · Contingencias <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-g-5-contingencias-ampliacion">G.5 · Contingencias <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
@@ -4854,7 +4865,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">G.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-g-5-criterios-calidad-ampliacion">G.5 · Criterios de calidad <span class="tag">ampliación</span></h3>
     <ul class="list" style="max-width:none">
           <li>Ninguna presentación sin briefing previo</li>
           <li>Ningún presupuesto sin solicitud firmada por el Doctor</li>
@@ -4864,7 +4875,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
           <li>Ninguna decisión reservada a Gerencia se toma sin consultarla</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">G.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-g-5-primeros-30-dias-puesto">G.5 · Primeros 30 días en el puesto <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
@@ -4878,7 +4889,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         </tbody>
       </table>
     </div>
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">G.3 bis · Estructura de la presentación económica <span class="tag">Protocolos por perfil</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-g-3-bis-estructura-presentacion-economica">G.3 bis · Estructura de la presentación económica <span class="tag">Protocolos por perfil</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Se presenta el plan completo. Siempre. Aunque se ejecute por fases. Se adapta la ejecución, nunca el diagnóstico.</p>
     <dl class="mini">
       <div><dt>1 · Valor</dt><dd>Justificar antes del número: diagnóstico completo, tecnología, materiales, garantías y seguimiento.</dd></div>
@@ -4920,7 +4931,7 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">G.4 · Indicadores de Dirección</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-g-4-indicadores-direccion">G.4 · Indicadores de Dirección</h3>
     <dl class="kpis">
       <div><dt>Tasa de conversión de primeras visitas</dt><dd>Creciente</dd></div>
       <div><dt>Ticket medio</dt><dd>Creciente</dd></div>
@@ -4937,10 +4948,10 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Función transversal</p>
-      <h2>Compras y material</h2>
+      <h2 id="m-compras-material">Compras y material</h2>
     </div>
     <p style="color:var(--ink-2);max-width:70ch"><strong>K.1 · Misión.</strong> Compras no es un puesto, sino una responsabilidad transversal (habitualmente del Auxiliar) que garantiza que nunca falte material crítico y que no se inmovilice capital en stock caducado. Propone; el Director autoriza; Gerencia autoriza las compras relevantes.</p>
-    <h3 style="font-size:var(--step-1);margin:2rem 0 .4rem">K.2 · Funciones</h3>
+    <h3 style="font-size:var(--step-1);margin:2rem 0 .4rem" id="m-k-2-funciones">K.2 · Funciones</h3>
     <ul class="list">
       <li>Mantener el control de stock actualizado y detectar necesidades con antelación (stock mínimo).</li>
       <li>Proponer pedidos y verificar la recepción contra albarán.</li>
@@ -4959,7 +4970,7 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">V</div>
     <div>
-      <h2>Funciones de vanguardia por perfil</h2>
+      <h2 id="m-funciones-vanguardia-perfil">Funciones de vanguardia por perfil</h2>
       <p>Cada perfil con sus funciones delimitadas, sus flujos, sus límites e indicadores.</p>
     </div>
   </div></div>
@@ -4975,7 +4986,7 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Marco de implantación</p>
-      <h2>Cómo entra una función nueva sin romper lo que funciona <span class="tag">Innovación</span></h2>
+      <h2 id="m-como-entra-funcion-nueva-sin-romper">Cómo entra una función nueva sin romper lo que funciona <span class="tag">Innovación</span></h2>
       <p>Las funciones de vanguardia de esta parte no se activan todas a la vez. El sistema documentado para incorporarlas —dieciocho fichas con protocolo, guion, contingencia e indicador— está en <a class="crosslink" href="otros.html#otros-innovacion">Otros · Innovación aplicada al protocolo</a>. Estas son sus reglas, que se aplican a cualquier cambio de este manual.</p>
     </div>
 
@@ -5015,7 +5026,7 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
       <p>Ninguna innovación puede convertirse en un requisito para atender a un paciente. Si el sistema falla, la clínica funciona igual, aunque con más trabajo manual: el cuestionario se rellena en consulta, la firma se hace en papel, el diagnóstico se hace igual sin prediagnóstico y la presentación se hace con imágenes estáticas.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Secuencia de formación · nadie usa una innovación con un paciente antes del paso 5</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-secuencia-formacion-nadie-usa-innovacion-paciente">Secuencia de formación · nadie usa una innovación con un paciente antes del paso 5</h3>
     <dl class="mini">
       <div><dt>1 · Explicar</dt><dd>Qué es, por qué y qué mejora · 15 min.</dd></div>
       <div><dt>2 · Demostrar</dt><dd>Uso real delante del equipo · 15 min.</dd></div>
@@ -5031,11 +5042,11 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Perfil 1</p>
-      <h2>Recepción · funciones de vanguardia</h2>
+      <h2 id="m-recepcion-funciones-vanguardia">Recepción · funciones de vanguardia</h2>
       <p>Misión: ser el sistema nervioso del centro. Todo entra y sale por aquí, y nada se pierde.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Función 1.1 · Gestión de la demanda</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-funcion-1-1-gestion-demanda">Función 1.1 · Gestión de la demanda</h3>
     <p style="color:var(--ink-2);max-width:70ch">No es «coger el teléfono». Es cualificar, clasificar y asignar cada contacto que llega por cualquier canal.</p>
     <div class="tablewrap">
       <table>
@@ -5087,7 +5098,7 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
       <div><dt>Cuestionarios cumplimentados</dt><dd>≥ 60 %</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 1.2 · Arquitectura de agenda</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-1-2-arquitectura-agenda">Función 1.2 · Arquitectura de agenda</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Por qué importa</p>
       <p>Esta es la función menos valorada y la que más producción libera. La agenda no se rellena: se diseña.</p>
@@ -5177,7 +5188,7 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
       <div><dt>Ausencias sin aviso</dt><dd>Descendente</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 1.3 · Custodia documental</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-1-3-custodia-documental">Función 1.3 · Custodia documental</h3>
     <div class="rulebox" style="max-width:none"><p class="eyebrow">El principio</p><p>Lo que no está en el sistema, no ha ocurrido.</p></div>
     <div class="sheet"><b>CIRCUITO DE VANGUARDIA</b>
 DOCUMENTO FIRMADO DIGITALMENTE
@@ -5213,7 +5224,7 @@ AUDITORÍA SEMANAL por Dirección</div>
     </div>
     <dl class="kpis"><div><dt>Documentación completa y archivada el mismo día</dt><dd>100 %</dd></div></dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 1.4 · Gestión económica de mostrador</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-1-4-gestion-economica-mostrador">Función 1.4 · Gestión económica de mostrador</h3>
     <div class="sheet"><b>PROTOCOLO DE COBRO</b>
 1. VERIFICAR importe contra presupuesto aceptado
 2. COBRAR por el medio elegido
@@ -5242,7 +5253,7 @@ AUDITORÍA SEMANAL por Dirección</div>
       <div><dt>Arqueos firmados</dt><dd>100 %</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 1.5 · Seguimiento y recuperación</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-1-5-seguimiento-recuperacion">Función 1.5 · Seguimiento y recuperación</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Flujo</th><th>Momento</th><th>Canal</th></tr></thead>
@@ -5286,11 +5297,11 @@ AUDITORÍA SEMANAL por Dirección</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Perfil 2</p>
-      <h2>Doctor · funciones de vanguardia</h2>
+      <h2 id="m-doctor-funciones-vanguardia">Doctor · funciones de vanguardia</h2>
       <p>Misión: diagnosticar el futuro, no solo el presente. Y dejarlo documentado con precisión defendible.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Función 2.1 · Preparación anticipada del caso</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-funcion-2-1-preparacion-anticipada-caso">Función 2.1 · Preparación anticipada del caso</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">El principio · la función que más distingue a un profesional de vanguardia</p>
       <p>Ningún caso se conoce a la vez que el paciente.</p>
@@ -5316,7 +5327,7 @@ AUDITORÍA SEMANAL por Dirección</div>
     </div>
     <dl class="kpis"><div><dt>Pacientes con historial revisado antes de su cita</dt><dd>100 %</dd></div></dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 2.2 · Diagnóstico integral y predictivo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-2-2-diagnostico-integral-predictivo">Función 2.2 · Diagnóstico integral y predictivo</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Diagnóstico convencional</th><th>Diagnóstico de vanguardia</th></tr></thead>
@@ -5365,7 +5376,7 @@ PROYECCIÓN A 5 AÑOS SIN INTERVENCIÓN: ____________________________</div>
       <div><dt>Discrepancias con IA registradas</dt><dd>Todas</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 2.3 · Planificación digital de tratamientos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-2-3-planificacion-digital-tratamientos">Función 2.3 · Planificación digital de tratamientos</h3>
 
           <figure class="flow">
         <div class="flowscroll">
@@ -5449,7 +5460,7 @@ PROYECCIÓN A 5 AÑOS SIN INTERVENCIÓN: ____________________________</div>
 <b>TIEMPO ESTIMADO DE QUIRÓFANO:</b> ______ min    <b>PERSONAL:</b> ___________</div>
     <div class="rulebox" style="max-width:none"><p class="eyebrow">Cuándo se envía</p><p>Esta ficha va a RAC en el momento de la planificación, no cuando se acerca la fecha.</p></div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 2.4 · Consentimiento informado real</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-2-4-consentimiento-informado-real">Función 2.4 · Consentimiento informado real</h3>
     <div class="rulebox" style="max-width:none"><p class="eyebrow">El estándar</p><p>Una firma sin comprensión verificada no es consentimiento.</p></div>
     <div class="sheet"><b>PROTOCOLO</b>
 1. EXPLICAR con soporte visual (modelo 3D, imágenes)
@@ -5477,7 +5488,7 @@ PROYECCIÓN A 5 AÑOS SIN INTERVENCIÓN: ____________________________</div>
     </div>
     <dl class="kpis"><div><dt>Consentimientos con verificación registrada</dt><dd>100 %</dd></div></dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 2.5 · Ejecución clínica</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-2-5-ejecucion-clinica">Función 2.5 · Ejecución clínica</h3>
     <p style="color:var(--ink-2);max-width:66ch">Checklist quirúrgico de seguridad, digital y firmado.</p>
     <div class="grid2">
       <div>
@@ -5510,7 +5521,7 @@ PROYECCIÓN A 5 AÑOS SIN INTERVENCIÓN: ____________________________</div>
     </div>
     <div class="rulebox" style="max-width:none"><p class="eyebrow">Bloqueo del sistema</p><p>Sin checklist completo, el sistema no permite marcar la cirugía como iniciada.</p></div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 2.6 · Registro y trazabilidad</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-2-6-registro-trazabilidad">Función 2.6 · Registro y trazabilidad</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Elemento</th><th>Requisito</th></tr></thead>
@@ -5558,11 +5569,11 @@ MEDIDA CORRECTORA: ___________________________________</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Perfil 3</p>
-      <h2>Higienista · funciones de vanguardia</h2>
+      <h2 id="m-higienista-funciones-vanguardia">Higienista · funciones de vanguardia</h2>
       <p>Misión: sostener el resultado en el tiempo y detectar lo que aparece antes de que sea un problema.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Función 3.1 · Programa de mantenimiento</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-funcion-3-1-programa-mantenimiento">Función 3.1 · Programa de mantenimiento</h3>
     <div class="rulebox" style="max-width:none"><p class="eyebrow">El principio</p><p>El paciente no termina: pasa a mantenimiento.</p></div>
     <p style="color:var(--ink-2);max-width:66ch;margin-top:1rem">La arquitectura del programa está representada en el diagrama de la <a href="#m14" style="color:var(--accent-ink)">Fase 14</a>: alta del tratamiento, clasificación por perfil de riesgo definido por el Doctor, cita agendada antes de salir, visita de mantenimiento con registro e instrucción, y derivación inmediata ante cualquier signo de alarma.</p>
     <div class="tablewrap">
@@ -5585,7 +5596,7 @@ MEDIDA CORRECTORA: ___________________________________</div>
       <div><dt>Registros de índices completos</dt><dd>100 %</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 3.2 · Detección precoz y derivación</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-3-2-deteccion-precoz-derivacion">Función 3.2 · Detección precoz y derivación</h3>
     <div class="rulebox" style="max-width:none"><p class="eyebrow">El principio</p><p>Ante la duda, se deriva. Derivar no es un fallo: es hacer bien el trabajo.</p></div>
     <div class="tablewrap">
       <table>
@@ -5606,7 +5617,7 @@ MEDIDA CORRECTORA: ___________________________________</div>
 2. Se avisa al Doctor EN EL MOMENTO
 3. El paciente no se marcha sin valoración si el signo es relevante</div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 3.3 · Monitorización remota</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-3-3-monitorizacion-remota">Función 3.3 · Monitorización remota</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Aplicación</th><th>Protocolo</th></tr></thead>
@@ -5635,7 +5646,7 @@ DÍA 7   Valoración de evolución
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 3.4 · El perfil Giraldo anual</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-3-4-perfil-giraldo-anual">Función 3.4 · El perfil Giraldo anual</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Qué es</p>
       <p>El informe predictivo que se entrega a cada miembro del programa. El producto que ningún competidor tiene.</p>
@@ -5680,11 +5691,11 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Perfil 4</p>
-      <h2>Auxiliar · funciones de vanguardia</h2>
+      <h2 id="m-auxiliar-funciones-vanguardia">Auxiliar · funciones de vanguardia</h2>
       <p>Misión: garantizar que la actividad clínica se desarrolla con seguridad absoluta y que el diagnóstico dispone de material impecable.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Función 4.1 · Gestión de equipos</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-funcion-4-1-gestion-equipos">Función 4.1 · Gestión de equipos</h3>
     <div class="sheet"><b>COMPROBACIÓN DIARIA (15 min antes de abrir)</b>
 ☐ Equipos informáticos y acceso al sistema
 ☐ CBCT: arranque y calibración
@@ -5715,7 +5726,7 @@ DÍA 7   Valoración de evolución
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 4.2 · Batería diagnóstica</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-4-2-bateria-diagnostica">Función 4.2 · Batería diagnóstica</h3>
     <div class="sheet">1. CBCT                 posicionamiento verificado
 2. OPG                  panorámica completa
 3. ESCANEADO INTRAORAL  ambas arcadas completas
@@ -5747,7 +5758,7 @@ DÍA 7   Valoración de evolución
       <div><dt>Fusiones correctas</dt><dd>≥ 95 %</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 4.3 · Esterilización y bioseguridad</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-4-3-esterilizacion-bioseguridad">Función 4.3 · Esterilización y bioseguridad</h3>
     <p style="color:var(--ink-2);max-width:66ch">La función que más determina la calidad real de una clínica.</p>
 
           <figure class="flow">
@@ -5859,7 +5870,7 @@ DÍA 7   Valoración de evolución
       </ul>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 4.4 · Gestión de material y stock</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-4-4-gestion-material-stock">Función 4.4 · Gestión de material y stock</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">El principio de vanguardia</p>
       <p>El stock no se controla cuando falta. Se controla contra la agenda de las próximas tres semanas.</p>
@@ -5903,7 +5914,7 @@ RAC AGENDA EN CONSECUENCIA</div>
       <div><dt>Exactitud en verificación a RAC</dt><dd>100 %</dd></div>
     </dl>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 4.5 · Gestión de residuos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-4-5-gestion-residuos">Función 4.5 · Gestión de residuos</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Categoría</th><th>Contenedor</th><th>Norma</th></tr></thead>
@@ -5947,11 +5958,11 @@ RAC AGENDA EN CONSECUENCIA</div>
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Perfil 5</p>
-      <h2>RAC · funciones de vanguardia</h2>
+      <h2 id="m-rac-funciones-vanguardia">RAC · funciones de vanguardia</h2>
       <p>Misión: garantizar que todo lo vendido se entrega completo, en el menor tiempo posible y sin una sola incidencia evitable.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Función 5.1 · Circuito de producción</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-funcion-5-1-circuito-produccion">Función 5.1 · Circuito de producción</h3>
     <div class="sheet"><b>FASE 11 · PRESUPUESTO ACEPTADO</b>
  1. REGISTRO DEL CASO (tratamiento · importe · pago · plan)
  2. RECEPCIÓN DE FICHA DE MATERIAL (del Doctor)
@@ -5971,7 +5982,7 @@ RAC AGENDA EN CONSECUENCIA</div>
       <p>Esto elimina de raíz la causa más frecuente de cancelación quirúrgica.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 5.2 · Doble verificación y poder de bloqueo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-5-2-doble-verificacion-poder">Función 5.2 · Doble verificación y poder de bloqueo</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">La regla innegociable</p>
       <p>Ninguna cirugía se agenda sin verificar pago y material. Las dos. Siempre.</p>
@@ -5990,7 +6001,7 @@ RAC AGENDA EN CONSECUENCIA</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 5.3 · Planificación quirúrgica</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-5-3-planificacion-quirurgica">Función 5.3 · Planificación quirúrgica</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Elemento</th><th>Verificación</th></tr></thead>
@@ -6013,7 +6024,7 @@ RAC AGENDA EN CONSECUENCIA</div>
       <p>Pago confirmado · material físicamente disponible · guía probada · consentimiento firmado · quirófano reservado · Doctor y Auxiliar confirmados · paciente confirmado con instrucciones. Si algo falla, se resuelve o se reprograma. Nunca se llega al día con una casilla sin marcar.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 5.4 · Control de producto pendiente</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-5-4-control-producto-pendiente">Función 5.4 · Control de producto pendiente</h3>
     <p style="color:var(--ink-2);max-width:70ch">El producto pendiente es el valor de todo lo aceptado y pagado que aún no se ha ejecutado. Es el indicador que gobierna todo el puesto.</p>
     <div class="sheet"><b>PANEL DE CONTROL</b>
 Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días │ Estado │ Bloqueo
@@ -6064,11 +6075,11 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Perfil 6</p>
-      <h2>Dirección clínica · funciones de vanguardia</h2>
+      <h2 id="m-direccion-clinica-funciones-vanguardia">Dirección clínica · funciones de vanguardia</h2>
       <p>Misión: coordinar el sistema, conducir el proceso comercial y garantizar que nada de lo prometido se queda sin entregar.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Función 6.1 · Coordinación operativa</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-funcion-6-1-coordinacion-operativa">Función 6.1 · Coordinación operativa</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Instrumento</th><th>Frecuencia</th><th>Duración</th></tr></thead>
@@ -6090,7 +6101,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
 4. Incidencias pendientes del día anterior
 5. «¿Alguien necesita algo?»</div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 6.2 · Proceso comercial</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-6-2-proceso-comercial">Función 6.2 · Proceso comercial</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Fase</th><th>Función de Dirección</th></tr></thead>
@@ -6120,7 +6131,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
    y solo entonces, si procede y con autorización:
 4. DESCUENTO    Dentro de tabla, con registro</div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Función 6.3 · Control de gestión</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-funcion-6-3-control-gestion">Función 6.3 · Control de gestión</h3>
     <p class="block__title">Panel diario</p>
     <ul class="checks">
       <li><span><b>Documentación 100 % subida</b></span></li>
@@ -6166,7 +6177,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">VI</div>
     <div>
-      <h2>Interdependencias e indicadores</h2>
+      <h2 id="m-interdependencias-e-indicadores">Interdependencias e indicadores</h2>
       <p>Función transversal de compras, matriz de interdependencias y cuadro maestro de indicadores.</p>
     </div>
   </div></div>
@@ -6176,11 +6187,11 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Perfil fx · función transversal</p>
-      <h2>Compras y proveedores</h2>
+      <h2 id="m-compras-proveedores">Compras y proveedores</h2>
       <p>Asignada a un perfil, habitualmente el Auxiliar, con autorización de Dirección.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">III.1 · El circuito de vanguardia</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-iii-1-circuito-vanguardia">III.1 · El circuito de vanguardia</h3>
 
           <figure class="flow">
         <div class="flowscroll">
@@ -6248,7 +6259,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
       <figcaption>El circuito de compras de vanguardia. La necesidad tiene tres orígenes posibles y solo uno de ellos es reactivo: los otros dos —la ficha de material de una planificación y la revisión semanal contra la agenda de 21 días— anticipan la compra semanas antes de que el material haga falta.</figcaption>
       </figure>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">III.2 · Niveles de autorización</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-iii-2-niveles-autorizacion">III.2 · Niveles de autorización</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Importe / tipo</th><th>Autoriza</th></tr></thead>
@@ -6262,7 +6273,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">III.3 · Gestión de proveedores</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-iii-3-gestion-proveedores">III.3 · Gestión de proveedores</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Elemento</th><th>Control</th></tr></thead>
@@ -6277,7 +6288,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
     </div>
     <div class="rulebox" style="max-width:none"><p class="eyebrow">Regla de dependencia</p><p>Todo material crítico debe tener un proveedor alternativo identificado.</p></div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">III.4 · Gestión del laboratorio protésico</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-iii-4-gestion-laboratorio-protesico">III.4 · Gestión del laboratorio protésico</h3>
     <p style="color:var(--ink-2);max-width:66ch">La relación con más impacto en el producto pendiente.</p>
     <div class="tablewrap">
       <table>
@@ -6309,7 +6320,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">IV · Interdependencias</p>
-      <h2>Qué necesita cada perfil de los demás</h2>
+      <h2 id="m-necesita-cada-perfil-demas">Qué necesita cada perfil de los demás</h2>
       <p>Cada fila es un punto de fallo potencial: si algo se rompe en la clínica, casi siempre es una de estas conexiones.</p>
     </div>
     <div class="tablewrap">
@@ -6341,7 +6352,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">V · Cuadro maestro</p>
-      <h2>Indicadores por perfil</h2>
+      <h2 id="m-indicadores-perfil">Indicadores por perfil</h2>
     </div>
     <div class="tablewrap">
       <table>
@@ -6363,17 +6374,17 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem">Los cinco indicadores que definen una clínica de vanguardia</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem" id="m-cinco-indicadores-definen-clinica-vanguardia">Los cinco indicadores que definen una clínica de vanguardia</h3>
     <div class="cards cards--3">
-      <article class="card"><span class="eyebrow">Indicador 01</span><h3>Historiales revisados antes de la cita</h3><p>Nadie improvisa.</p></article>
-      <article class="card"><span class="eyebrow">Indicador 02</span><h3>Perfiles de riesgo registrados</h3><p>Se diagnostica el futuro.</p></article>
-      <article class="card"><span class="eyebrow">Indicador 03</span><h3>Cirugías canceladas por material</h3><p>La anticipación funciona.</p></article>
-      <article class="card"><span class="eyebrow">Indicador 04</span><h3>Producto pendiente descendente</h3><p>Lo vendido se entrega.</p></article>
-      <article class="card"><span class="eyebrow">Indicador 05</span><h3>Documentación el mismo día</h3><p>La trazabilidad es real.</p></article>
-      <article class="card"><span class="eyebrow">Lectura conjunta</span><h3>Se leen juntos</h3><p>Un indicador aislado se puede maquillar; los cinco a la vez describen si el sistema se está cumpliendo de verdad.</p></article>
+      <article class="card"><span class="eyebrow">Indicador 01</span><h3 id="m-historiales-revisados-antes-cita">Historiales revisados antes de la cita</h3><p>Nadie improvisa.</p></article>
+      <article class="card"><span class="eyebrow">Indicador 02</span><h3 id="m-perfiles-riesgo-registrados">Perfiles de riesgo registrados</h3><p>Se diagnostica el futuro.</p></article>
+      <article class="card"><span class="eyebrow">Indicador 03</span><h3 id="m-cirugias-canceladas-material">Cirugías canceladas por material</h3><p>La anticipación funciona.</p></article>
+      <article class="card"><span class="eyebrow">Indicador 04</span><h3 id="m-producto-pendiente-descendente">Producto pendiente descendente</h3><p>Lo vendido se entrega.</p></article>
+      <article class="card"><span class="eyebrow">Indicador 05</span><h3 id="m-documentacion-mismo-dia">Documentación el mismo día</h3><p>La trazabilidad es real.</p></article>
+      <article class="card"><span class="eyebrow">Lectura conjunta</span><h3 id="m-leen-juntos">Se leen juntos</h3><p>Un indicador aislado se puede maquillar; los cinco a la vez describen si el sistema se está cumpliendo de verdad.</p></article>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem">VI · Lo que define la vanguardia</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .6rem" id="m-vi-define-vanguardia">VI · Lo que define la vanguardia</h3>
     <p style="color:var(--ink-2);max-width:66ch">Cinco comportamientos que ninguna tecnología sustituye:</p>
     <ul class="list" style="max-width:none">
       <li>Nadie conoce un caso a la vez que el paciente.</li>
@@ -6388,7 +6399,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
       <p>Es una clínica con buen equipamiento y mala organización. Y esa diferencia el paciente la percibe antes que cualquier tecnología.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Indicadores del programa GTC <span class="tag">Giraldo Te Cuida</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="m-indicadores-programa-gtc-giraldo-te-cuida">Indicadores del programa GTC <span class="tag">Giraldo Te Cuida</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Se revisan con la misma cadencia que los demás. El primero es el que manda: mide el comportamiento del equipo, no la decisión del paciente.</p>
     <div class="tablewrap">
       <table>
@@ -6404,7 +6415,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
     </div>
     <p class="footnote">El seguimiento operativo vive en el panel del programa: titulares con su fecha de alta y de vencimiento, movimiento mensual de altas, renovaciones y bajas, y el cálculo del ahorro real con los precios de la clínica. Detalle en <a href="otros.html#otros-gtc" style="color:var(--accent-ink)">Otros · GTC</a>.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem">Indicadores consolidados del centro <span class="tag">Compendio Maestro</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .6rem" id="m-indicadores-consolidados-centro-compendio-maestro">Indicadores consolidados del centro <span class="tag">Compendio Maestro</span></h3>
     <div class="grid2">
       <div>
         <p class="block__title">Económicos</p>
@@ -6459,7 +6470,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">VII</div>
     <div>
-      <h2>Plan de incentivos</h2>
+      <h2 id="m-plan-incentivos">Plan de incentivos</h2>
       <p>Cómo se convierten los indicadores en retribución variable.</p>
     </div>
   </div></div>
@@ -6467,7 +6478,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
 
 <section class="section" style="border-top:0;padding-top:0">
   <div class="wrap">
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">VII.1 · Filosofía del plan</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-vii-1-filosofia-plan">VII.1 · Filosofía del plan</h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Principio</p>
       <p>Se incentiva lo que se puede medir y lo que la persona controla.</p>
@@ -6481,7 +6492,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
       <li><strong>Trimestral con revisión anual.</strong> Se liquida por trimestre y se recalibran los umbrales una vez al año.</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.2 · Arquitectura de la retribución variable</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-2-arquitectura-retribucion-variable">VII.2 · Arquitectura de la retribución variable</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Bloque</th><th>Qué mide</th><th>Naturaleza</th></tr></thead>
@@ -6498,7 +6509,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
       <p>Si los indicadores de calidad del trimestre están por debajo del umbral, el bonus de ese trimestre es cero por muy buenos que sean B y C. Es la garantía de que la vanguardia nunca se sacrifica por producción.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.3 · Escala de cumplimiento</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-3-escala-cumplimiento">VII.3 · Escala de cumplimiento</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Nivel de logro</th><th>Denominación</th><th>% del objetivo del indicador</th></tr></thead>
@@ -6513,7 +6524,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
     </div>
     <p class="footnote">El tope del 130 % evita que un indicador dispare el coste y protege el equilibrio del plan. La «excelencia sostenida» premia la constancia, no el pico puntual.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.4 · Pesos por perfil</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-4-pesos-perfil">VII.4 · Pesos por perfil</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Perfil</th><th>A · Calidad (gate)</th><th>B · Individual</th><th>C · Equipo</th></tr></thead>
@@ -6529,7 +6540,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
     </div>
     <p class="footnote">Dirección tiene el mayor peso de equipo (50 %) porque su función es que el conjunto funcione. El Auxiliar tiene el mayor peso individual (75 %) porque su trabajo es muy medible y directo. En todos, la calidad es gate, no porcentaje.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.5 · Indicadores incentivados por perfil</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-5-indicadores-incentivados-perfil">VII.5 · Indicadores incentivados por perfil</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Perfil</th><th>Bloque</th><th>Indicador</th><th>Umbral</th><th>Objetivo</th></tr></thead>
@@ -6561,7 +6572,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.6 · El componente de equipo</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-6-componente-equipo">VII.6 · El componente de equipo</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Indicador de equipo</th><th>Umbral</th><th>Objetivo</th><th>Peso dentro de C</th></tr></thead>
@@ -6574,7 +6585,7 @@ Paciente │ Tratamiento │ Importe │ Cobrado │ F. aceptación │ Días �
     </div>
     <p class="footnote">El producto pendiente entra en el bonus de equipo a propósito: obliga a que Recepción, RAC, Auxiliar y Doctor colaboren para que los casos aceptados se ejecuten. Es el antídoto contra vender mucho y entregar poco.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.7 · Fórmula de liquidación</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-7-formula-liquidacion">VII.7 · Fórmula de liquidación</h3>
     <div class="sheet"><b>BONUS DEL TRIMESTRE</b>
 
 SI (indicadores de calidad ≥ umbral)  →  continúa
@@ -6590,7 +6601,7 @@ y el resultado por indicador se topa al 130 %.</div>
       <p style="margin-top:.6rem"><strong>Bonus = 600 € × [ (0,75 × 1,07) + (0,25 × 1,06) ] = 600 € × (0,80 + 0,265) ≈ 639 €.</strong></p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.8 · Incentivos no económicos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-8-incentivos-no-economicos">VII.8 · Incentivos no económicos</h3>
     <ul class="list" style="max-width:none">
       <li><strong>Reconocimiento del trimestre.</strong> A la persona o al perfil con mejor cumplimiento sostenido de su gate de calidad.</li>
       <li><strong>Presupuesto de formación.</strong> Quien mantiene excelencia dos trimestres accede a formación avanzada financiada.</li>
@@ -6598,7 +6609,7 @@ y el resultado por indicador se topa al 130 %.</div>
       <li><strong>Participación en decisiones.</strong> Los perfiles con mejor desempeño participan en la revisión anual de protocolos.</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">VII.9 · Gobernanza del plan</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-vii-9-gobernanza-plan">VII.9 · Gobernanza del plan</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Aspecto</th><th>Regla</th></tr></thead>
@@ -6624,7 +6635,7 @@ y el resultado por indicador se topa al 130 %.</div>
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">VIII</div>
     <div>
-      <h2>Puesta en marcha</h2>
+      <h2 id="m-puesta-marcha">Puesta en marcha</h2>
       <p>Las 72 horas previas y la mañana del día 1 en un centro recién adquirido.</p>
     </div>
   </div></div>
@@ -6637,7 +6648,7 @@ y el resultado por indicador se topa al 130 %.</div>
       <p>Esta parte aplica a la puesta en marcha del centro tras la adquisición de Arclimedent. En esta clínica, el rol de Asesor Comercial lo asume el Director de Clínica. El objetivo de los primeros días es doble: que ningún paciente note el cambio y que ninguna persona del equipo se vaya. La continuidad es la credibilidad de partida.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">A.1 · Las cinco verificaciones que haces en persona</h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-1-cinco-verificaciones-haces-persona">A.1 · Las cinco verificaciones que haces en persona</h3>
     <p style="color:var(--ink-2);max-width:70ch">Cinco comprobaciones no se delegan: se hacen en persona y con el documento delante, no fiándose de lo que cuenten.</p>
     <div class="special special--3">
       <div><h5>Autorización sanitaria de funcionamiento</h5><p>Ver la resolución del cambio de titularidad, no que la asesoría diga que «está en trámite». Si no saben responder con claridad, es señal de alarma.</p></div>
@@ -6648,7 +6659,7 @@ y el resultado por indicador se topa al 130 %.</div>
       <div><h5>Cómo se registra <span class="tag">ampliación</span></h5><p>Cada verificación se cierra con la fecha, el documento visto y quién lo mostró. Lo que no tenga documento a la vista se anota como pendiente con responsable y plazo.</p></div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">A.2 · Los cuatro documentos que preparas</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-2-cuatro-documentos-preparas">A.2 · Los cuatro documentos que preparas</h3>
     <p style="color:var(--ink-2);max-width:66ch">No tienen que estar perfectos. Tienen que existir.</p>
     <ul class="checks">
       <li><span><b>Inventario de pacientes en tratamiento activo</b> — nombre, tratamiento, fase, profesional, próxima cita y clasificación de riesgo</span></li>
@@ -6657,7 +6668,7 @@ y el resultado por indicador se topa al 130 %.</div>
       <li><span><b>Listado de personal</b> — con rol asignado para mañana y situación laboral confirmada</span></li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">A.3 · Clasificación de riesgo de pacientes</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-3-clasificacion-riesgo-pacientes">A.3 · Clasificación de riesgo de pacientes</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Color</th><th>Criterio</th><th>Ejemplo</th></tr></thead>
@@ -6674,14 +6685,14 @@ y el resultado por indicador se topa al 130 %.</div>
       <p>Ninguno puede llegar el día 1 sin que sepas quién le atiende y en qué punto está.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">A.4 · Qué preparas físicamente en la clínica</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-4-preparas-fisicamente-clinica">A.4 · Qué preparas físicamente en la clínica</h3>
     <ul class="list">
       <li><strong>Cartelería de continuidad en recepción.</strong> Breve y visible. El paciente no debe descubrir el cambio de marca por sorpresa.</li>
       <li><strong>Archivo localizado y accesible.</strong> Que Recepción sepa exactamente dónde está y llegue a él en menos de un minuto.</li>
       <li><strong>Sistema operativo comprobado.</strong> Enciende y entra en Clinic Cloud hoy, no mañana a las nueve menos cinco.</li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem">A.5 · Dónde encaja esto en el programa de 100 días <span class="tag">Programa de integración</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="m-5-donde-encaja-esto-programa-100">A.5 · Dónde encaja esto en el programa de 100 días <span class="tag">Programa de integración</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">La puesta en marcha de este manual es la fase 1 de un programa con tres puertas de paso. Ninguna fase se adelanta: el paso de una a otra exige autorización expresa del Comité de Transición previa verificación de los criterios de salida. El programa completo, con sus seis flujos de trabajo y su registro de riesgos, está en <a class="crosslink" href="otros.html#otros-100dias">Otros · Programa de 100 días</a>.</p>
     <div class="tablewrap">
       <table>
@@ -6699,10 +6710,10 @@ y el resultado por indicador se topa al 130 %.</div>
       <p>Durante los primeros treinta días no se lanzan líneas avanzadas, ni campañas de pago, ni cambios de precios, ni reorganizaciones del equipo, ni cambios de protocolo: no se conocen aún los márgenes, ni las personas, ni por qué las cosas están como están. El detalle semana a semana está en <a href="otros.html#otros-30dias" style="color:var(--accent-ink)">Otros · Dosier de los primeros 30 días</a>.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">B.1 · Tu llegada</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-b-1-tu-llegada">B.1 · Tu llegada</h3>
     <p style="color:var(--ink-2);max-width:70ch">Llega el primero. Antes de que aparezca nadie del equipo, haz una vuelta en solitario por todo el centro: lo que se ve cuando no hay nadie es la verdad del sitio. Comprueba instalaciones, esterilización, sistema y agenda del día.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">B.2 · La reunión de equipo · guion en siete bloques</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-b-2-reunion-equipo-guion-siete">B.2 · La reunión de equipo · guion en siete bloques</h3>
     <ol class="steps">
       <li><h4>Apertura · 2 min</h4><p>Directo a lo que todos tienen en la cabeza: hay un cambio de titularidad y vas a explicarlo.</p></li>
       <li><h4>Situación laboral, persona por persona · 5-8 min</h4><p>Nadie escucha nada más hasta saber si conserva su trabajo. Si alguien plantea una duda que no puedes resolver, la anotas y te comprometes a resolverla; nunca dejas a nadie empezar la jornada con esa duda.</p></li>
@@ -6713,14 +6724,14 @@ y el resultado por indicador se topa al 130 %.</div>
       <li><h4>Cierre · 2 min</h4><p>«Voy a mirar y preguntar mucho; no es control. Si algo no funciona, decídmelo: el problema es que lo descubra dentro de tres meses.»</p></li>
     </ol>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">B.3 · Instrucciones que das a cada perfil</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-b-3-instrucciones-das-cada-perfil">B.3 · Instrucciones que das a cada perfil</h3>
     <div class="special special--3">
       <div><h5>A Recepción</h5><p>Todo lo firmado hoy se escanea hoy; ninguna información económica de casos heredados (se pasa al Director); y un paciente con cita que no aparece en el sistema se atiende igual y se investiga después. Se le entrega el listado impreso de citas de los próximos días.</p></div>
       <div><h5>A cada Doctor</h5><p>El historial se revisa antes de cada paciente; ningún consentimiento sin explicar y verificar; y el lote de cada implante se registra sin excepción.</p></div>
       <div><h5>Al Auxiliar</h5><p>Comprobar los equipos antes del primer paciente; y sobre material, comprobar siempre físicamente, nunca «creo que sí».</p></div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">B.4 · Durante la jornada <span class="tag">Puesta en marcha</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-b-4-durante-jornada-puesta-marcha">B.4 · Durante la jornada <span class="tag">Puesta en marcha</span></h3>
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Tu posición el día 1</p>
       <p>No te encierres en el despacho. Tu sitio es donde se pueda escalar cualquier cosa en diez segundos: disponible, visible y accesible.</p>
@@ -6741,7 +6752,7 @@ y el resultado por indicador se topa al 130 %.</div>
     </div>
     <p class="footnote">Los guiones literales de esas conversaciones —dinero pagado, desconfianza en el nuevo profesional, petición de devolución, dudas sobre el futuro de la clínica, subida de precios y espera larga de una cirugía— están en <a href="otros.html#otros-cuaderno" style="color:var(--accent-ink)">Otros · Cuaderno de Campo del Día 1</a>. Cada incidencia se registra en el momento: sin ese registro, el día 5 no se podrá distinguir un problema estructural de una anécdota.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">B.5 · Cierre de jornada y primeras 72 horas <span class="tag">Puesta en marcha</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-b-5-cierre-jornada-primeras-72">B.5 · Cierre de jornada y primeras 72 horas <span class="tag">Puesta en marcha</span></h3>
     <div class="script">
       <span class="eyebrow">Reunión de cierre del día 1 · 10-15 minutos</span>
       <q>Antes de irnos, tres cosas rápidas. Primero: ¿qué ha pasado hoy que no esperábamos? Sin filtro, quiero saberlo todo, aunque parezca una tontería. […] Segundo: mañana tenemos estos casos que requieren atención: [casos rojos del día siguiente]. [Doctor], ¿los tienes revisados? Tercero: gracias. Hoy ha ido [valoración honesta]. Mañana seguimos.</q>
@@ -6775,7 +6786,7 @@ y el resultado por indicador se topa al 130 %.</div>
       <p><strong>Día 2:</strong> empieza la formación en el protocolo. Cada perfil lee y practica en voz alta su propia ficha, no en grupo genérico. <strong>Día 3:</strong> formación práctica en software con casos ficticios, nunca con datos reales de pacientes. Ambos días se mantienen la reunión breve de cierre y la posición de Dirección como punto único de escalado.</p>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">B.6 · Los siete errores que hunden una transición <span class="tag">Puesta en marcha</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-b-6-siete-errores-hunden-transicion">B.6 · Los siete errores que hunden una transición <span class="tag">Puesta en marcha</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Ninguno es técnico, y son los que de verdad cuestan pacientes y equipo.</p>
     <div class="tablewrap">
       <table>
@@ -6792,7 +6803,7 @@ y el resultado por indicador se topa al 130 %.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">A.5 · Las once verificaciones externas <span class="tag">Decisiones de Gerencia</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-5-once-verificaciones-externas-decisiones-gerencia">A.5 · Las once verificaciones externas <span class="tag">Decisiones de Gerencia</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Las cinco verificaciones que se hacen en persona conviven con once comprobaciones que dependen de terceros. No se resuelven técnicamente desde Dirección: se exigen, se verifican y se archivan en la carpeta legal accesible en el centro. El detalle de cada una, con la pregunta exacta que hay que hacer y el documento que hay que exigir, está en <a href="otros.html#otros-decisiones" style="color:var(--accent-ink)">Otros · Decisiones de Gerencia</a>.</p>
     <div class="tablewrap">
       <table>
@@ -6813,7 +6824,7 @@ y el resultado por indicador se topa al 130 %.</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">C · Calendario integral de implantación <span class="tag">Compendio Maestro</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-c-calendario-integral-implantacion-compendio-maestro">C · Calendario integral de implantación <span class="tag">Compendio Maestro</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Tramo</th><th>Foco</th><th>Hitos que quedan cerrados</th></tr></thead>
@@ -6840,7 +6851,7 @@ y el resultado por indicador se topa al 130 %.</div>
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">A</div>
     <div>
-      <h2>Anexos</h2>
+      <h2 id="m-anexos">Anexos</h2>
       <p>Plantillas de reporte, checklists imprimibles y calendario de implantación.</p>
     </div>
   </div></div>
@@ -6848,7 +6859,7 @@ y el resultado por indicador se topa al 130 %.</div>
 
 <section class="section" style="border-top:0;padding-top:0">
   <div class="wrap">
-    <h3 style="font-size:var(--step-1);margin-bottom:.4rem">Anexo 1 · Plantilla de cierre diario del Director</h3>
+    <h3 style="font-size:var(--step-1);margin-bottom:.4rem" id="m-anexo-1-plantilla-cierre-diario-director">Anexo 1 · Plantilla de cierre diario del Director</h3>
     <div class="sheet"><b>CIERRE DIARIO</b>
 Fecha: ____ / ____ / ______
 Pacientes atendidos: __________
@@ -6861,7 +6872,7 @@ Cirugías de mañana verificadas: ☐ Sí   ☐ No
 Incidencias: ____________________________________________
 Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 2 · Cadencia de reportes</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-2-cadencia-reportes">Anexo 2 · Cadencia de reportes</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Cuándo</th><th>Qué</th><th>Quién</th></tr></thead>
@@ -6873,7 +6884,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 3 · Checklist de implantación para Gerencia</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-3-checklist-implantacion-gerencia">Anexo 3 · Checklist de implantación para Gerencia</h3>
     <ul class="checks">
       <li><span>Cerrar las <b>cinco verificaciones</b> de las 72 horas previas</span></li>
       <li><span>Preparar los <b>cuatro documentos</b> de arranque</span></li>
@@ -6887,7 +6898,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
       <li><span>Fijar la <b>frecuencia de las evaluaciones</b> formales</span></li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 4 · Checklist imprimible de la Primera Visita <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-4-checklist-imprimible-primera-visita">Anexo 4 · Checklist imprimible de la Primera Visita <span class="tag">ampliación</span></h3>
     <p style="color:var(--ink-2);max-width:66ch">Una hoja por visita. Si queda una casilla sin marcar, la PV no está cerrada.</p>
     <div class="grid2">
       <div>
@@ -6926,7 +6937,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 5 · Checklists de apertura y cierre por puesto <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-5-checklists-apertura-cierre-puesto">Anexo 5 · Checklists de apertura y cierre por puesto <span class="tag">ampliación</span></h3>
     <div class="grid2">
       <div>
         <p class="block__title">Apertura</p>
@@ -6952,7 +6963,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 6 · Calendario de implantación <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-6-calendario-implantacion-ampliacion">Anexo 6 · Calendario de implantación <span class="tag">ampliación</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Momento</th><th>Hito</th><th>Responsable</th></tr></thead>
@@ -6969,7 +6980,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 7 · Mapa maestro de documentos <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-7-mapa-maestro-documentos-ampliacion">Anexo 7 · Mapa maestro de documentos <span class="tag">ampliación</span></h3>
     <p style="color:var(--ink-2);max-width:66ch">Lista única de la documentación que genera un paciente, con quién la produce, quién la firma y cuándo se digitaliza. Unifica lo que la Fase 11 y la Función 1.3 enumeran por separado.</p>
     <div class="tablewrap">
       <table>
@@ -6995,7 +7006,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 8 · Ficha de auditoría trimestral <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-8-ficha-auditoria-trimestral-ampliacion">Anexo 8 · Ficha de auditoría trimestral <span class="tag">ampliación</span></h3>
     <p style="color:var(--ink-2);max-width:66ch">Cien puntos. Por debajo de 80 se abre plan de refuerzo con el equipo del centro. Es también la evidencia del bloque A (gate de calidad) del plan de incentivos.</p>
     <div class="tablewrap">
       <table>
@@ -7033,7 +7044,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
       </div>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 9 · Guion de las reuniones <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-9-guion-reuniones-ampliacion">Anexo 9 · Guion de las reuniones <span class="tag">ampliación</span></h3>
     <div class="sheet"><b>BRIEFING DE APERTURA · 5 min · diario</b>
 1. Pacientes complejos o delicados del día
 2. Cirugías y necesidades especiales
@@ -7054,7 +7065,7 @@ Producción · conversión · producto pendiente · stock · laboratorio · adhe
 Indicadores de ejecución primero, de resultado después · auditoría de fichas ·
 origen de pacientes y coste por paciente convertido · decisiones, que se versionan</div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Anexo 10 · Glosario de términos <span class="tag">ampliación</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-anexo-10-glosario-terminos-ampliacion">Anexo 10 · Glosario de términos <span class="tag">ampliación</span></h3>
     <div class="special special--3">
       <div><h5>PV</h5><p>Primera Visita: el circuito de las fases 2 a 11, con una duración real de 115 a 120 minutos según el caso.</p></div>
       <div><h5>IAC</h5><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div>
@@ -7075,7 +7086,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     </div>
 
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo 11 · Checklists consolidados del sistema <span class="tag">Compendio Maestro</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-anexo-11-checklists-consolidados-sistema-compendio">Anexo 11 · Checklists consolidados del sistema <span class="tag">Compendio Maestro</span></h3>
     <p style="color:var(--ink-2);max-width:66ch">Los nueve checklists del sistema, reunidos. Los cinco primeros ya están desarrollados en sus fases y puestos; los cuatro últimos se incorporan aquí.</p>
     <div class="grid2">
       <div>
@@ -7155,7 +7166,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
       <li><span><b>Firmas de email</b> y directorios actualizados</span></li>
     </ul>
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo 12 · Sistema de reportes consolidado <span class="tag">Compendio Maestro</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-anexo-12-sistema-reportes-consolidado-compendio">Anexo 12 · Sistema de reportes consolidado <span class="tag">Compendio Maestro</span></h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Cuándo</th><th>Reporte</th><th>Responsable</th><th>Destinatario</th><th>Tiempo</th></tr></thead>
@@ -7178,7 +7189,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
 </section>
 
 
-    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem">Anexo 13 · Cuadro de escalado de incidencias <span class="tag">Matriz de obligaciones</span></h3>
+    <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="m-anexo-13-cuadro-escalado-incidencias-matriz">Anexo 13 · Cuadro de escalado de incidencias <span class="tag">Matriz de obligaciones</span></h3>
     <p style="color:var(--ink-2);max-width:70ch">Quién detecta cada incidencia, a quién se escala y qué acción correctiva corresponde. Sin este cuadro, las incidencias se comentan de pasillo y no corrigen nada.</p>
     <div class="tablewrap">
       <table>
@@ -7201,7 +7212,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   <div class="wrap"><div class="parthead__in">
     <div class="parthead__num">O</div>
     <div>
-      <h2>Otros documentos del sistema</h2>
+      <h2 id="m-otros-documentos-sistema">Otros documentos del sistema</h2>
       <p>Los catorce documentos que rodean a este manual, desde el posicionamiento que lo ordena todo hasta el programa de cuidado GTC. Se desarrollan en <a href="otros.html" style="color:var(--accent-ink)">su propio documento</a>, del mismo rango que este; aquí queda el índice y lo que cada uno aporta.</p>
     </div>
   </div></div>
@@ -7249,7 +7260,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Notas de edición · historial</p>
-      <h2>Incoherencias detectadas y cómo se han resuelto</h2>
+      <h2 id="m-incoherencias-detectadas-como-han-resuelto">Incoherencias detectadas y cómo se han resuelto</h2>
       <p>Las diez discrepancias que aparecían al leer el manual junto al protocolo de Primera Visita, detectadas y resueltas al pasar de la 4.0 a la 5.0. Se conserva la observación original para que la decisión sea trazable: <strong>un cambio no declarado es indistinguible de un error</strong>.</p>
       <p><strong>Esta edición es la v7.0.</strong> La reconciliación posterior —las doce contradicciones que la 5.5 arrastraba entre documentos, y la regla de versión única que ahora comparten los siete archivos— está en el §0.2 de la <a href="memoria.html#cambios" style="color:var(--accent-ink)">Tesis de Dirección</a>, junto al censo documental del §0.1.</p>
     </div>
@@ -7271,7 +7282,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Puntos que siguen abiertos</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-puntos-siguen-abiertos">Puntos que siguen abiertos</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Punto</th><th>Estado</th><th>Cómo se opera mientras tanto</th></tr></thead>
@@ -7287,7 +7298,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
       </table>
     </div>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem">Control de cambios</h3>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="m-control-cambios">Control de cambios</h3>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Versión</th><th>Fecha</th><th>Alcance</th><th>Aprobación</th></tr></thead>
@@ -7332,6 +7343,19 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
 <script>
 (function(){
   "use strict";
+  /* ---- alto real de la barra, para que ningún salto quede debajo ---- */
+  (function(){
+    var barra = document.querySelector(".topbar");
+    if(!barra) return;
+    function medir(){
+      document.documentElement.style.setProperty(
+        "--barra", Math.round(barra.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    if("ResizeObserver" in window) new ResizeObserver(medir).observe(barra);
+  })();
+
   var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
   var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
 

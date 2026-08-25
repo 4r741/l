@@ -49,7 +49,7 @@
    BASE
    ============================================================ */
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:118px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barra) + 1.1rem)}
 body{
   margin:0;
   background:var(--paper);
@@ -89,6 +89,16 @@ a{color:inherit}
 /* ============================================================
    BARRA SUPERIOR
    ============================================================ */
+/* ---------------------------------------------------------------------------
+   Aire bajo la barra fija. Un enlace del índice que deja el titular medio
+   tapado por la cabecera parece roto aunque haya funcionado: el lector no ve
+   llegar el salto. Antes esta reserva era un número fijo pensado para el
+   escritorio; en pantalla estrecha la barra se pliega en tres filas y pasa de
+   los doscientos píxeles, y el titular quedaba debajo. Ahora el guion mide la
+   barra y esta variable la sigue.
+   --------------------------------------------------------------------------- */
+:root{--barra:118px}
+
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -290,7 +300,8 @@ td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:n
   .timemap__seg:hover{transform:none}
 }
 @media(max-width:640px){
-  html{scroll-padding-top:98px}
+  /* la barra medida ya manda; aquí solo se estrecha el aire */
+  html{scroll-padding-top:calc(var(--barra) + .95rem)}
   .brand__tag{display:none}
   .brand__mark{font-size:.98rem}
   .topbar__in{padding:.55rem 0}
@@ -667,12 +678,12 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Cómo se usa</p>
-      <h2>Tres reglas y ninguna más</h2>
+      <h2 id="c-tres-reglas-ninguna-mas">Tres reglas y ninguna más</h2>
     </div>
     <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))">
-      <div class="card"><p class="eyebrow">Regla 1</p><h3>Solo se teclea lo amarillo</h3><p>Numeradores, denominadores y las siete entradas de los cinco números. El resultado, el semáforo, el resumen anual y la tendencia se calculan solos.</p></div>
-      <div class="card"><p class="eyebrow">Regla 2</p><h3>Sin dato es rojo</h3><p>No se deja en blanco ni se sustituye por una impresión. Mientras no haya cifra, la casilla dice SIN DATO y cuenta como roja en la revisión de Junta.</p></div>
-      <div class="card"><p class="eyebrow">Regla 3</p><h3>El 6 nace provisional</h3><p>La conversión tiene cohorte cerrada a sesenta días: el dato de un mes no es definitivo hasta dos meses después. Se marca en «Estado del dato» y se corrige en la revisión siguiente.</p></div>
+      <div class="card"><p class="eyebrow">Regla 1</p><h3 id="c-solo-teclea-amarillo">Solo se teclea lo amarillo</h3><p>Numeradores, denominadores y las siete entradas de los cinco números. El resultado, el semáforo, el resumen anual y la tendencia se calculan solos.</p></div>
+      <div class="card"><p class="eyebrow">Regla 2</p><h3 id="c-sin-dato-rojo">Sin dato es rojo</h3><p>No se deja en blanco ni se sustituye por una impresión. Mientras no haya cifra, la casilla dice SIN DATO y cuenta como roja en la revisión de Junta.</p></div>
+      <div class="card"><p class="eyebrow">Regla 3</p><h3 id="c-6-nace-provisional">El 6 nace provisional</h3><p>La conversión tiene cohorte cerrada a sesenta días: el dato de un mes no es definitivo hasta dos meses después. Se marca en «Estado del dato» y se corrige en la revisión siguiente.</p></div>
     </div>
     <div class="callout" style="max-width:none">
       <p class="eyebrow">Dónde vive lo que escribe</p>
@@ -685,7 +696,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Definiciones</p>
-      <h2>Qué se cuenta arriba, qué se cuenta abajo</h2>
+      <h2 id="c-cuenta-arriba-cuenta-abajo">Qué se cuenta arriba, qué se cuenta abajo</h2>
       <p>Un indicador sin definición operativa no se puede medir dos meses seguidos de la misma manera. Los umbrales de las dos últimas columnas son <strong>supuestos de trabajo</strong>, no objetivos aprobados: se cambian aquí una sola vez y los recogen las doce hojas.</p>
     </div>
     <div class="tablewrap">
@@ -716,7 +727,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Captura mensual</p>
-      <h2>Una hoja por mes</h2>
+      <h2 id="c-hoja-mes">Una hoja por mes</h2>
       <p>Elija el mes y rellene lo amarillo. Lo introducido se guarda al momento.</p>
     </div>
     <div class="cap__meses" role="tablist" aria-label="Mes">
@@ -765,7 +776,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Resumen anual</p>
-      <h2>Los doce meses en una rejilla</h2>
+      <h2 id="c-doce-meses-rejilla">Los doce meses en una rejilla</h2>
       <p><strong>Meses con dato</strong> es la medida honesta de cuánto se sabe realmente. La Junta debe exigir que llegue a doce.</p>
     </div>
     <div class="tablewrap">
@@ -793,7 +804,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Los cinco números</p>
-      <h2>Sin ellos, cualquier objetivo comercial es una opinión</h2>
+      <h2 id="c-sin-ellos-cualquier-objetivo-comercial-opinion">Sin ellos, cualquier objetivo comercial es una opinión</h2>
       <p>Siete entradas y cinco resultados. Mientras falte una entrada, el resultado dice «pendiente»: un número inventado es peor que un hueco declarado.</p>
     </div>
     <div class="entradas">

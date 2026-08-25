@@ -45,25 +45,47 @@ INDICE = _idx["calcula"]()
 APARTADOS = sum(len(x["entradas"]) for x in INDICE)
 
 
-def bloque_indice(x):
-    """Un documento del índice: qué es, para quién, y todos sus apartados."""
-    enlaces = "".join(
-        '<li><a href="%s#%s">%s</a></li>' % (x["archivo"], e["ancla"], e["rotulo"])
-        for e in x["entradas"]) or '<li class="idx__sin">Sin apartados numerados</li>'
+def bloque_indice(x, n):
+    """Un documento del índice: qué es, para quién, y todo lo que contiene."""
+    filas = []
+    for e in x["entradas"]:
+        hijos = "".join(
+            '<li><a href="%s#%s" data-buscable="%s">%s</a></li>'
+            % (x["archivo"], h["ancla"], llano(h["rotulo"]), h["rotulo"])
+            for h in e["hijos"])
+        filas.append(
+            '<li class="idx__rama">'
+            '<a class="idx__uno" href="%s#%s" data-buscable="%s">%s</a>%s</li>'
+            % (x["archivo"], e["ancla"], llano(e["rotulo"]), e["rotulo"],
+               ('<ol class="idx__dos">%s</ol>' % hijos) if hijos else ""))
+    lista = "".join(filas) or '<li class="idx__sin">Sin apartados numerados</li>'
+    sub = sum(len(e["hijos"]) for e in x["entradas"])
+    cuenta = "%d apartados" % len(x["entradas"])
+    if sub:
+        cuenta += " · %d subapartados" % sub
     return (
-        '<section class="idx__doc">\n'
+        '<section class="idx__doc" data-doc="%d">\n'
         '        <div class="idx__cab">\n'
         '          <p class="eyebrow">%s</p>\n'
         '          <h3><a href="%s">%s</a></h3>\n'
         '          <p class="idx__que">%s</p>\n'
-        '          <p class="idx__quien">Para <b>%s</b> · <span>%d apartados</span></p>\n'
+        '          <p class="idx__quien">Para <b>%s</b></p>\n'
+        '          <p class="idx__cuenta"><span>%s</span></p>\n'
         '        </div>\n'
         '        <ol class="idx__lista">%s</ol>\n'
-        '      </section>' % (x["clase"], x["archivo"], x["rotulo"], x["que"],
-                             x["quien"], len(x["entradas"]), enlaces))
+        '      </section>' % (n, x["clase"], x["archivo"], x["rotulo"], x["que"],
+                             x["quien"], cuenta, lista))
 
 
-INDICE_HTML = "\n      ".join(bloque_indice(x) for x in INDICE)
+def llano(s):
+    """Sin tildes y en minúscula, para que el filtro no exija acentuar."""
+    import unicodedata
+    s = unicodedata.normalize("NFD", s)
+    return "".join(c for c in s if unicodedata.category(c) != "Mn").lower()
+
+
+INDICE_HTML = "\n      ".join(bloque_indice(x, n) for n, x in enumerate(INDICE))
+SUBAPARTADOS = sum(len(e["hijos"]) for x in INDICE for e in x["entradas"])
 
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
@@ -100,36 +122,89 @@ CSS = """
 /* ---------------------------------------------------------------------------
    Índice general. Va delante de todo lo demás porque es lo primero que uno
    quiere de un sistema de siete documentos: ver qué hay, entero, sin abrir nada.
+   Dos niveles —apartado y subapartado— y un filtro, porque seiscientas líneas
+   sin filtro no son un índice: son una pared.
    --------------------------------------------------------------------------- */
-.idx{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1.8rem}
+.idx__mando{
+  display:flex;align-items:center;gap:.7rem 1rem;flex-wrap:wrap;margin-top:1.6rem;
+  padding:.5rem .7rem;border:1px solid var(--line);background:var(--surface);
+  position:sticky;top:0;z-index:20;
+}
+.idx__buscar{display:flex;align-items:center;gap:.55rem;flex:1 1 260px;min-width:0;color:var(--muted)}
+.idx__buscar input{
+  flex:1;min-width:0;font:inherit;font-family:var(--f-body);font-size:.95rem;
+  color:var(--ink);background:transparent;border:0;outline:none;padding:.3rem 0;
+}
+.idx__buscar input::placeholder{color:var(--muted)}
+.idx__buscar input::-webkit-search-cancel-button{display:none}
+.idx__marcador{
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--accent-ink);white-space:nowrap;
+}
+.idx__plegar{
+  font:inherit;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;cursor:pointer;color:var(--ink-2);white-space:nowrap;
+  background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.32rem .7rem;
+}
+.idx__plegar:hover{border-color:var(--ink-2);color:var(--ink)}
+.idx__plegar[aria-pressed="true"]{
+  background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink);
+}
+
+.idx{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-top:0}
 .idx__doc{background:var(--paper);padding:1.5rem 1.6rem 1.7rem;display:grid;gap:1rem;min-width:0}
-@media(min-width:900px){.idx__doc{grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:2.4rem}}
+@media(min-width:960px){.idx__doc{grid-template-columns:minmax(0,262px) minmax(0,1fr);gap:2.6rem}}
+.idx__doc[hidden]{display:none}
 .idx__cab{align-self:start}
+@media(min-width:960px){.idx__cab{position:sticky;top:4.2rem}}
 .idx__cab h3{font-size:var(--step-1);letter-spacing:-.015em;margin:.15rem 0 .4rem}
 .idx__cab h3 a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
 .idx__cab h3 a:hover{color:var(--accent-ink);border-color:var(--accent)}
 .idx__que{color:var(--ink-2);font-size:.9rem;max-width:44ch}
-.idx__quien{
-  margin-top:.5rem;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;
+.idx__quien,.idx__cuenta{
+  margin-top:.45rem;font-family:var(--f-mono);font-size:.63rem;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);
 }
 .idx__quien b{color:var(--ink-2);font-weight:400}
-.idx__quien span{color:var(--accent-ink)}
-.idx__lista{
-  list-style:none;margin:0;padding:0;columns:2;column-gap:2rem;
-  font-size:.88rem;line-height:1.45;
+.idx__cuenta span{color:var(--accent-ink)}
+
+.idx__lista{list-style:none;margin:0;padding:0;columns:2;column-gap:2.4rem}
+@media(max-width:820px){.idx__lista{columns:1}}
+.idx__rama{break-inside:avoid;margin:0 0 .5rem}
+.idx__rama[hidden]{display:none}
+.idx__uno{
+  display:block;font-size:.93rem;line-height:1.4;color:var(--ink);text-decoration:none;
+  padding:.16rem .3rem .16rem .6rem;border-left:2px solid var(--line);
+  transition:color .14s ease,border-color .14s ease;
 }
-@media(max-width:620px){.idx__lista{columns:1}}
-.idx__lista li{break-inside:avoid;margin:0 0 .2rem}
-.idx__lista a{
-  color:var(--ink-2);text-decoration:none;display:block;padding:.14rem .3rem .14rem 0;
-  border-left:2px solid transparent;padding-left:.55rem;transition:color .14s ease,border-color .14s ease;
+.idx__uno:hover{color:var(--accent-ink);border-left-color:var(--accent)}
+.idx__dos{list-style:none;margin:.1rem 0 0;padding:0}
+.idx__dos li[hidden]{display:none}
+.idx__dos a{
+  display:block;font-size:.83rem;line-height:1.38;color:var(--muted);text-decoration:none;
+  padding:.1rem .3rem .1rem 1.5rem;border-left:2px solid transparent;
+  transition:color .14s ease,border-color .14s ease;
 }
-.idx__lista a:hover{color:var(--accent-ink);border-left-color:var(--accent)}
-.idx__sin{color:var(--muted);font-size:.85rem;padding-left:.55rem}
+.idx__dos a:hover{color:var(--accent-ink);border-left-color:var(--accent)}
+.idx__uno mark,.idx__dos mark{background:rgba(14,143,132,.2);color:inherit;border-radius:2px;padding:0 .05em}
+.idx--plegado .idx__dos{display:none}
+.idx__sin{color:var(--muted);font-size:.85rem;padding-left:.6rem}
+.idx__vacio{margin-top:1.4rem;color:var(--muted)}
+.idx__vacio b{color:var(--ink-2);font-weight:500}
+.idx__vacio-mas{display:block;margin-top:.3rem;font-size:.94em}
+.idx__vacio-mas kbd{
+  font-family:var(--f-mono);font-size:.8em;background:var(--surface);
+  border:1px solid var(--line);border-radius:3px;padding:.05rem .32rem;color:var(--ink-2);
+}
+.idx__vacio[hidden]{display:none}
+
 @media print{
-  .idx__doc{break-inside:avoid}
-  .idx__lista a{color:var(--ink-2)}
+  .idx__mando{display:none}
+  .idx{border-top:1px solid var(--line)}
+  .idx__doc{break-inside:avoid;grid-template-columns:minmax(0,240px) minmax(0,1fr)}
+  .idx__cab{position:static}
+  .idx__lista{columns:2}
+  .idx__uno,.idx__dos a{color:var(--ink-2)}
 }
 """
 k = cabecera.rindex("</style>")
@@ -230,11 +305,26 @@ CUERPO = """
     <div class="section__head">
       <p class="eyebrow">Índice general</p>
       <h2>Todo lo que hay</h2>
-      <p>@APARTADOS@ apartados repartidos en @cuantos@ documentos. Está entero: no es una selección ni un resumen. Cualquier línea de esta lista abre el apartado correspondiente en su documento.</p>
+      <p>@APARTADOS@ apartados y @SUBAPARTADOS@ subapartados repartidos en @cuantos@ documentos: <b>@LINEAS@ líneas en total</b>. Está entero —no es una selección ni un resumen— y cualquiera de esas líneas abre su apartado en su documento.</p>
     </div>
-    <div class="idx">
+
+    <div class="idx__mando">
+      <label class="idx__buscar">
+        <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="idx-filtro" autocomplete="off" spellcheck="false"
+               placeholder="Filtrar el índice: escriba una palabra">
+      </label>
+      <p class="idx__marcador" id="idx-marcador">@LINEAS@ líneas</p>
+      <button type="button" class="idx__plegar" id="idx-plegar" aria-pressed="false">Ver solo apartados</button>
+    </div>
+
+    <div class="idx" id="idx">
       @INDICE@
     </div>
+    <p class="idx__vacio" id="idx-vacio" hidden>Ningún <b>titular</b> lleva ese texto.<span class="idx__vacio-mas"></span></p>
   </div>
 </section>
 
@@ -287,12 +377,167 @@ CUERPO = """
 </footer>
 """.replace("@@FICHAS@@", "\n      ".join(ficha(*f) for f in FICHAS))
 
+
+# ---------------------------------------------------------------------------
+# El comportamiento del índice. Vive aquí y no en el guion común porque es lo
+# único que tiene la portada, y porque dentro del archivo único ese guion se
+# sustituye entero: si estuviera allí, se perdería.
+# ---------------------------------------------------------------------------
+JS_INDICE = """
+<script>
+(function(){
+  "use strict";
+
+  /* ---- alto real de la barra, para que ningún salto quede debajo ----
+     En el archivo único esta barra no existe —la sustituye la cabecera común,
+     que se mide sola— y esta parte se retira sin hacer nada. */
+  (function(){
+    var barra = document.querySelector(".topbar");
+    if(!barra) return;
+    function medir(){
+      document.documentElement.style.setProperty(
+        "--barra", Math.round(barra.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    if("ResizeObserver" in window) new ResizeObserver(medir).observe(barra);
+  })();
+
+  /* Se busca por clase y no por identificador a propósito: el archivo único
+     prefija todos los id al fundir los siete documentos en uno, y un
+     getElementById fijo dejaba el filtro muerto justo en el archivo, que es
+     donde más falta hace. */
+  var caja = document.querySelector(".idx");
+  var campo = document.querySelector(".idx__buscar input");
+  if(!caja || !campo) return;
+  var marcador = document.querySelector(".idx__marcador");
+  var vacio = document.querySelector(".idx__vacio");
+  var plegar = document.querySelector(".idx__plegar");
+
+  /* El índice busca en titulares, no en el texto. Una palabra puede estar en
+     el sistema sin ser el título de nada —«miedo» lo está cinco veces y no
+     encabeza ningún apartado—, y un «no hay nada» ahí sería mentira. Donde
+     existe la búsqueda a texto completo, el vacío la ofrece. */
+  var mas = document.querySelector(".idx__vacio-mas");
+  if(mas){
+    mas.innerHTML = document.querySelector(".paleta")
+      ? "Puede estar en el cuerpo del texto: pulse <kbd>/</kbd> para buscar en los siete documentos enteros."
+      : "El índice recorre titulares, no el cuerpo del texto. Pruebe con menos palabras o abra el documento.";
+  }
+  var docs = [].slice.call(caja.querySelectorAll(".idx__doc"));
+  var ramas = [].slice.call(caja.querySelectorAll(".idx__rama"));
+  var hijos = [].slice.call(caja.querySelectorAll(".idx__dos li"));
+  var total = ramas.length + hijos.length;
+
+  function llano(s){
+    return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  /* Principio de palabra: si no, «acta» sale dentro de «exactamente». */
+  function casa(texto, trozo){
+    var i = texto.indexOf(trozo);
+    while(i > -1){
+      if(i === 0 || !/[a-z0-9]/.test(texto.charAt(i - 1))) return true;
+      i = texto.indexOf(trozo, i + 1);
+    }
+    return false;
+  }
+  function casan(texto, trozos){
+    for(var i = 0; i < trozos.length; i++) if(!casa(texto, trozos[i])) return false;
+    return true;
+  }
+  function pinta(a, trozos){
+    var texto = a.textContent;
+    if(!trozos.length){ a.textContent = texto; return; }
+    var plano = llano(texto), mejor = -1, largo = 0;
+    trozos.forEach(function(p){
+      var i = plano.indexOf(p);
+      while(i > -1 && !(i === 0 || !/[a-z0-9]/.test(plano.charAt(i - 1)))) i = plano.indexOf(p, i + 1);
+      if(i > -1 && (mejor < 0 || i < mejor)){ mejor = i; largo = p.length; }
+    });
+    if(mejor < 0){ a.textContent = texto; return; }
+    a.textContent = "";
+    a.appendChild(document.createTextNode(texto.slice(0, mejor)));
+    var m = document.createElement("mark");
+    m.textContent = texto.slice(mejor, mejor + largo);
+    a.appendChild(m);
+    a.appendChild(document.createTextNode(texto.slice(mejor + largo)));
+  }
+
+  function filtra(){
+    var trozos = llano(campo.value).split(/\s+/).filter(Boolean);
+    var vistas = 0;
+    docs.forEach(function(doc){
+      var suyas = 0;
+      [].slice.call(doc.querySelectorAll(".idx__rama")).forEach(function(rama){
+        var uno = rama.querySelector(".idx__uno");
+        var propios = [].slice.call(rama.querySelectorAll(".idx__dos li"));
+        var padreCasa = !trozos.length || casan(uno.dataset.buscable, trozos);
+        var conHijos = 0;
+        propios.forEach(function(li){
+          var a = li.querySelector("a");
+          /* Si el apartado casa, se enseñan todos sus hijos: el lector busca un
+             capítulo y quiere verlo entero, no recortado. */
+          var ok = padreCasa || casan(a.dataset.buscable, trozos);
+          li.hidden = !ok;
+          if(ok){ conHijos++; pinta(a, padreCasa ? [] : trozos); }
+        });
+        var ok = padreCasa || conHijos > 0;
+        rama.hidden = !ok;
+        if(ok){ pinta(uno, trozos); suyas += 1 + conHijos; }
+      });
+      doc.hidden = suyas === 0;
+      vistas += suyas;
+    });
+    if(vacio) vacio.hidden = vistas > 0;
+    if(marcador){
+      marcador.textContent = trozos.length
+        ? vistas + (vistas === 1 ? " línea" : " líneas")
+        : total + " líneas";
+    }
+    /* Al filtrar se despliega: esconder resultados sería absurdo. */
+    if(trozos.length) caja.classList.remove("idx--plegado");
+    else if(plegar && plegar.getAttribute("aria-pressed") === "true")
+      caja.classList.add("idx--plegado");
+  }
+
+  campo.addEventListener("input", filtra);
+  campo.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){ campo.value = ""; filtra(); }
+  });
+  if(plegar){
+    plegar.addEventListener("click", function(){
+      var puesto = plegar.getAttribute("aria-pressed") === "true";
+      plegar.setAttribute("aria-pressed", String(!puesto));
+      plegar.textContent = puesto ? "Ver solo apartados" : "Ver todo el detalle";
+      caja.classList.toggle("idx--plegado", !puesto);
+    });
+  }
+  /* La barra inclinada lleva al filtro, como en el resto del sistema. */
+  document.addEventListener("keydown", function(e){
+    var t = e.target;
+    if(t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+    if(e.key === "/" && !e.ctrlKey && !e.metaKey){
+      e.preventDefault();
+      campo.scrollIntoView({block:"center", behavior:"smooth"});
+      campo.focus();
+    }
+  });
+  filtra();
+})();
+</script>
+"""
+
+
 CUERPO = (CUERPO.replace("@INDICE@", INDICE_HTML)
           .replace("@APARTADOS@", str(APARTADOS))
+          .replace("@SUBAPARTADOS@", str(SUBAPARTADOS))
+          .replace("@LINEAS@", str(APARTADOS + SUBAPARTADOS))
           .replace("@CUANTOS@", CUANTOS).replace("@cuantos@", CUANTOS.lower())
           .replace("@ACCIONES@", ACCIONES).replace("@ESTADOS@", ESTADOS)
           .replace("@SINCOSTE@", SINCOSTE))
 assert "@CUANTOS@" not in CUERPO and "@cuantos@" not in CUERPO, "queda alguna marca"
 
-(RAIZ / "inicio.html").write_text(sello(cabecera + "\n" + CUERPO + "\n</body>\n</html>\n"), encoding="utf-8")
+(RAIZ / "inicio.html").write_text(
+    sello(cabecera + "\n" + CUERPO + "\n" + JS_INDICE + "\n</body>\n</html>\n"),
+    encoding="utf-8")
 print("inicio.html ·", (RAIZ / "inicio.html").stat().st_size // 1024, "KB")

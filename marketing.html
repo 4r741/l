@@ -49,7 +49,7 @@
    BASE
    ============================================================ */
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:118px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barra) + 1.1rem)}
 body{
   margin:0;
   background:var(--paper);
@@ -89,6 +89,16 @@ a{color:inherit}
 /* ============================================================
    BARRA SUPERIOR
    ============================================================ */
+/* ---------------------------------------------------------------------------
+   Aire bajo la barra fija. Un enlace del índice que deja el titular medio
+   tapado por la cabecera parece roto aunque haya funcionado: el lector no ve
+   llegar el salto. Antes esta reserva era un número fijo pensado para el
+   escritorio; en pantalla estrecha la barra se pliega en tres filas y pasa de
+   los doscientos píxeles, y el titular quedaba debajo. Ahora el guion mide la
+   barra y esta variable la sigue.
+   --------------------------------------------------------------------------- */
+:root{--barra:118px}
+
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -290,7 +300,8 @@ td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:n
   .timemap__seg:hover{transform:none}
 }
 @media(max-width:640px){
-  html{scroll-padding-top:98px}
+  /* la barra medida ya manda; aquí solo se estrecha el aire */
+  html{scroll-padding-top:calc(var(--barra) + .95rem)}
   .brand__tag{display:none}
   .brand__mark{font-size:.98rem}
   .topbar__in{padding:.55rem 0}
@@ -965,7 +976,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§0</p>
-      <h2>Ficha de control</h2>
+      <h2 id="k-ficha-control">Ficha de control</h2>
     </div>
 
     <div class="tablewrap">
@@ -995,7 +1006,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>I</b>La doctrina</p>
       <div>
-        <h2>Qué creemos, y qué nos prohibimos en consecuencia</h2>
+        <h2 id="k-creemos-nos-prohibimos-consecuencia">Qué creemos, y qué nos prohibimos en consecuencia</h2>
         <p class="t-part__lede">Casi todo lo que este sector hace para captar pacientes funciona porque el paciente no sabe algo. Esta parte fija qué creemos sobre cómo se elige de verdad un dentista, cuál es la única regla de admisión del catálogo, las ocho cosas que no haremos nunca y el marco legal que gobierna a las setenta y seis.</p>
       </div>
     </div>
@@ -1006,7 +1017,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§1</p>
-      <h2>Por qué este plan no se parece a un plan de marketing</h2>
+      <h2 id="k-este-plan-no-parece-plan-marketing">Por qué este plan no se parece a un plan de marketing</h2>
     </div>
 
     <p class="t-lead">Un plan de marketing dental normal se organiza por canales y se mide por captación. Este se organiza por <strong>el estado de la relación de una persona con su propia boca</strong>, y se mide por si esa persona obtuvo lo que necesitaba —incluso cuando lo que necesitaba de nosotros era nada.</p>
@@ -1036,7 +1047,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§2</p>
-      <h2>La regla de la ficha</h2>
+      <h2 id="k-regla-ficha">La regla de la ficha</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -1066,7 +1077,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§3</p>
-      <h2>Las ocho que no haremos nunca</h2>
+      <h2 id="k-ocho-no-haremos-nunca">Las ocho que no haremos nunca</h2>
     </div>
 
     <p class="t-lead">Un plan que solo enumera lo que va a hacer no compromete a nada. Estas ocho fijan el borde, y son las que hay que sostener el día que un trimestre venga flojo.</p>
@@ -1091,7 +1102,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§4</p>
-      <h2>El marco de la publicidad sanitaria</h2>
+      <h2 id="k-marco-publicidad-sanitaria">El marco de la publicidad sanitaria</h2>
     </div>
 
     <p class="t-lead">La publicidad de un centro sanitario no se rige por las reglas de la publicidad comercial, y esa es una <strong>buena noticia para nosotros</strong>: el marco prohíbe exactamente lo que hace la competencia agresiva —prometer resultado, exhibir testimonios que sugieran eficacia, cerrar por precio— y no prohíbe nada de lo que este plan propone hacer.</p>
@@ -1131,7 +1142,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>II</b>El paciente</p>
       <div>
-        <h2>Doce estados, seis personas y siete minutos que lo deciden todo</h2>
+        <h2 id="k-doce-estados-seis-personas-siete-minutos">Doce estados, seis personas y siete minutos que lo deciden todo</h2>
         <p class="t-part__lede">Dónde está, qué le pasa y en qué momentos se decide todo. Nada de esto es un segmento de mercado: son personas de esta ría.</p>
       </div>
     </div>
@@ -1142,7 +1153,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§5</p>
-      <h2>Los doce estados</h2>
+      <h2 id="k-doce-estados">Los doce estados</h2>
     </div>
 
     <p class="t-lead">Un embudo va en un sentido y termina en la venta. Una persona va y viene, se apaga, vuelve, recomienda y a veces se pierde. Sustituir el embudo por <strong>doce estados</strong> con tránsitos en los dos sentidos no es un capricho de diseño: cambia qué acciones parecen importantes.</p>
@@ -1178,7 +1189,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§6</p>
-      <h2>Los seis de la ría</h2>
+      <h2 id="k-seis-ria">Los seis de la ría</h2>
     </div>
 
     <p class="t-lead">No son segmentos demográficos ni perfiles de manual. Son seis situaciones vitales reconocibles en Vigo y su ría, cada una con una barrera distinta y una puerta distinta. Quien trabaja en recepción los reconoce a los treinta segundos de teléfono.</p>
@@ -1186,7 +1197,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="cards">
       <article class="card">
         <p class="eyebrow">Arquetipo 1</p>
-        <h3>El que lleva años sin ir</h3>
+        <h3 id="k-lleva-anos-sin-ir">El que lleva años sin ir</h3>
         <p><b>Qué le pasa.</b> Diez, quince, veinte años sin sentarse en un sillón. No es dejadez: es una mezcla de miedo, vergüenza por el estado en que sabe que tiene la boca, y la certeza de que le van a reñir.</p>
         <p><b>Qué le frena.</b> No el precio. El primer minuto.</p>
         <p><b>La puerta.</b> Una visita en la que <em>por norma</em> no se le propone tratamiento: <b>A27</b>, la Consulta del Miedo. Y la garantía de que nadie va a comentar cuánto tiempo ha pasado.</p>
@@ -1195,7 +1206,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
       <article class="card">
         <p class="eyebrow">Arquetipo 2</p>
-        <h3>El que se lo quitó todo</h3>
+        <h3 id="k-quito-todo">El que se lo quitó todo</h3>
         <p><b>Qué le pasa.</b> Lleva una prótesis que se mueve, o ninguna. Ha dejado de comer en público, de reírse en las fotos y a veces de hablar de cerca. Le han dicho en dos sitios que su caso no tiene solución.</p>
         <p><b>Qué le frena.</b> Creer que ya se lo han dicho todo.</p>
         <p><b>La puerta.</b> «Su caso no es imposible» —la campaña C2— y casos reales contados por el clínico que los trató, <b>A30</b>, sin promesa de resultado.</p>
@@ -1204,7 +1215,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
       <article class="card">
         <p class="eyebrow">Arquetipo 3</p>
-        <h3>El que embarca</h3>
+        <h3 id="k-embarca">El que embarca</h3>
         <p><b>Qué le pasa.</b> Trabaja embarcado. Su calendario no lo decide él: lo decide la marea, la campaña o el armador. Un dolor de muelas a mil millas de puerto es un problema operativo, no solo suyo.</p>
         <p><b>Qué le frena.</b> No tener tres semanas seguidas en tierra.</p>
         <p><b>La puerta.</b> Tratamiento planificado dentro de su ventana real: <b>A69</b> a <b>A72</b>, la Campaña de Mar del §13.</p>
@@ -1213,7 +1224,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
       <article class="card">
         <p class="eyebrow">Arquetipo 4</p>
-        <h3>El que acompaña</h3>
+        <h3 id="k-acompana">El que acompaña</h3>
         <p><b>Qué le pasa.</b> No es el paciente. Es la hija que trae al padre, el cónyuge que empuja la silla, el cuidador de una persona dependiente. Escucha todo y decide la mitad.</p>
         <p><b>Qué le frena.</b> Que nadie le hable a él, y salir sin entender lo que se ha dicho.</p>
         <p><b>La puerta.</b> Silla, nombre y copia del plan también para él: <b>A37</b>. Cuesta cero euros.</p>
@@ -1222,7 +1233,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
       <article class="card">
         <p class="eyebrow">Arquetipo 5</p>
-        <h3>El que ya se lo hizo fuera</h3>
+        <h3 id="k-ya-hizo-fuera">El que ya se lo hizo fuera</h3>
         <p><b>Qué le pasa.</b> Se trató a bajo coste, aquí o a mil kilómetros, y algo ha fallado. Vuelve avergonzado y a la defensiva, esperando un sermón.</p>
         <p><b>Qué le frena.</b> Temer que le cobremos el error de otro con intereses.</p>
         <p><b>La puerta.</b> Segunda opinión con informe escrito que se lleva, diga lo que diga: <b>A25</b>. Y la comparativa honesta de <b>A32</b>, con el coste total de revisión y garantía incluido.</p>
@@ -1231,7 +1242,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
       <article class="card">
         <p class="eyebrow">Arquetipo 6</p>
-        <h3>El que no tiene hueco</h3>
+        <h3 id="k-no-tiene-hueco">El que no tiene hueco</h3>
         <p><b>Qué le pasa.</b> Sabe lo que necesita y tiene con qué pagarlo. Lo que no tiene es una mañana libre. Lleva dos años posponiendo una cita que dura cuarenta minutos.</p>
         <p><b>Qué le frena.</b> El horario, y tener que llamar en horario de oficina para pedir cita.</p>
         <p><b>La puerta.</b> Cita en línea con hueco real a las once de la noche —<b>A19</b>—, y el acuerdo con su empresa: <b>A75</b>.</p>
@@ -1245,7 +1256,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§7</p>
-      <h2>Los siete momentos de verdad</h2>
+      <h2 id="k-siete-momentos-verdad">Los siete momentos de verdad</h2>
     </div>
 
     <p class="t-lead">Hay siete instantes en los que una relación se gana o se pierde entera. Ninguno dura más de tres minutos y ninguno cuesta dinero. Cinco ocurren dentro de la clínica y dos, al teléfono.</p>
@@ -1277,7 +1288,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§8</p>
-      <h2>Lo que él no sabe y nosotros sí</h2>
+      <h2 id="k-no-sabe-nosotros-si">Lo que él no sabe y nosotros sí</h2>
     </div>
 
     <p class="t-lead">Toda la desconfianza del sector nace de una asimetría real: el paciente no puede evaluar lo que le proponemos. No sabe si necesita ese implante, si ese precio es alto, ni si el fallo de dentro de seis años será culpa del material, de la técnica o suya. Un plan de marketing honesto es, básicamente, una lista de maneras de reducir esa asimetría.</p>
@@ -1310,7 +1321,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>III</b>El catálogo</p>
       <div>
-        <h2>Todo lo que se puede hacer, contado una vez y con dueño</h2>
+        <h2 id="k-todo-puede-hacer-contado-vez-dueno">Todo lo que se puede hacer, contado una vez y con dueño</h2>
         <p class="t-part__lede">El inventario completo de lo posible, del que después se elige: setenta y seis acciones repartidas en siete grupos, cada una con código estable, dueño, banda de coste, plazo, el número que mueve y su semáforo legal. Ninguna entra sin decir en una línea qué gana el paciente.</p>
       </div>
     </div>
@@ -1321,7 +1332,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§9</p>
-      <h2>Las setenta y seis acciones</h2>
+      <h2 id="k-setenta-seis-acciones">Las setenta y seis acciones</h2>
     </div>
 
     <p class="t-lead">Este es el inventario completo. No es una selección ni una recomendación: es el mapa de lo posible, del que después se elige. Cada acción lleva código estable —se cita en acta y en calendario—, dueño, banda de coste, plazo, el número que mueve y su semáforo legal.</p>
@@ -1357,7 +1368,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>IV</b>Las diez piezas</p>
       <div>
-        <h2>Lo que nadie está haciendo en esta ciudad</h2>
+        <h2 id="k-nadie-esta-haciendo-esta-ciudad">Lo que nadie está haciendo en esta ciudad</h2>
         <p class="t-part__lede">De las setenta y seis, diez son distintas. Todas nacen de la misma idea —que al paciente se le debe algo aunque no compre— y todas llevan una casilla incómoda: por qué nadie lo hace.</p>
       </div>
     </div>
@@ -1368,7 +1379,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§10</p>
-      <h2>Las diez piezas, una a una</h2>
+      <h2 id="k-diez-piezas">Las diez piezas, una a una</h2>
     </div>
 
     <p class="t-lead">Cada una lleva una casilla incómoda —«por qué nadie lo hace»— porque si una idea es buena, barata y evidente, y aun así nadie la aplica, hay un motivo. Casi siempre es que cuesta facturación a corto plazo, y ese es exactamente el precio de entrada.</p>
@@ -1497,7 +1508,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>V</b>El territorio</p>
       <div>
-        <h2>La ría, el canal y el calendario del mar</h2>
+        <h2 id="k-ria-canal-calendario-mar">La ría, el canal y el calendario del mar</h2>
         <p class="t-part__lede">Dónde estamos, a quién alcanzamos y por qué el canal va después del territorio y no al revés.</p>
       </div>
     </div>
@@ -1508,7 +1519,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§11</p>
-      <h2>La presencia digital, al servicio de lo demás</h2>
+      <h2 id="k-presencia-digital-servicio-demas">La presencia digital, al servicio de lo demás</h2>
     </div>
 
     <p class="t-lead">La campaña C9 —presencia digital y reseñas— es la única de la cartera con gasto externo relevante y la única con retorno directo negativo: <strong>−4 k€</strong>. No es un error del modelo: con la agenda casi llena, la visita que trae desplaza a otra de más valor. Se aprueba igual, y conviene entender por qué.</p>
@@ -1543,7 +1554,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§12</p>
-      <h2>El mapa de la ría</h2>
+      <h2 id="k-mapa-ria">El mapa de la ría</h2>
     </div>
 
     <p class="t-lead">El área de influencia de un centro dental no se mide en kilómetros: se mide en <strong>minutos de puerta a sillón</strong>, y en esta ría los minutos no son los que dice el mapa. Cangas está a nueve kilómetros de Vigo en línea recta y a cuarenta minutos por carretera, o a veinte por mar.</p>
@@ -1572,7 +1583,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§13</p>
-      <h2>La Campaña de Mar</h2>
+      <h2 id="k-campana-mar">La Campaña de Mar</h2>
     </div>
 
     <p class="t-lead">Vigo vive del mar y ninguna clínica dental de la ciudad organiza su agenda alrededor de esa realidad. Quien embarca no elige cuándo tiene tres semanas seguidas en tierra, y un tratamiento implantológico exige varias citas separadas en el tiempo. El resultado es que <strong>un colectivo entero queda fuera del sistema por un problema de calendario, no de dinero ni de voluntad.</strong></p>
@@ -1616,7 +1627,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>VI</b>La prioridad</p>
       <div>
-        <h2>Qué va primero, y con qué dinero</h2>
+        <h2 id="k-va-primero-dinero">Qué va primero, y con qué dinero</h2>
         <p class="t-part__lede">Setenta y seis acciones no se hacen a la vez. Qué va primero, con qué dinero y por qué en ese orden.</p>
       </div>
     </div>
@@ -1627,7 +1638,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§14</p>
-      <h2>Lo que aporta cada grupo</h2>
+      <h2 id="k-aporta-cada-grupo">Lo que aporta cada grupo</h2>
     </div>
 
     <p class="t-lead">La regla que gobierna toda la aritmética de este plan es la misma que la de la Parte VI de la Tesis, y es deliberadamente conservadora: <strong>con la agenda llena, una acción no vale lo que factura, sino la diferencia entre el paciente que trae y el paciente al que desplaza.</strong></p>
@@ -1656,7 +1667,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§15</p>
-      <h2>Qué va primero</h2>
+      <h2 id="k-va-primero">Qué va primero</h2>
     </div>
 
     <figure class="t-fig">
@@ -1691,7 +1702,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§16</p>
-      <h2>Presupuesto y techo</h2>
+      <h2 id="k-presupuesto-techo">Presupuesto y techo</h2>
     </div>
 
     <p class="t-lead">Si se activara el catálogo entero, el techo de gasto anual sería de <strong>201.000 €</strong>. No es lo que se propone: es el límite superior de lo posible, y sirve para saber que este plan nunca va a pedir una cifra que la clínica no pueda sostener.</p>
@@ -1720,7 +1731,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num">Parte<b>VII</b>El gobierno</p>
       <div>
-        <h2>Cómo se mide, y con qué regla se para</h2>
+        <h2 id="k-como-mide-regla">Cómo se mide, y con qué regla se para</h2>
         <p class="t-part__lede">Ocho medidas que no se pueden mejorar tratando peor a alguien, cuatro puertas de paso que son puertas de verdad, y una regla de parada que cualquiera del centro puede invocar. Sin esto, un catálogo de setenta y seis acciones es una lista de deseos.</p>
       </div>
     </div>
@@ -1731,7 +1742,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§17</p>
-      <h2>Las ocho medidas del plan</h2>
+      <h2 id="k-ocho-medidas-plan">Las ocho medidas del plan</h2>
     </div>
 
     <p class="t-lead">Los <strong>diez indicadores</strong> nucleares del §13 de la Tesis siguen siendo los del centro y no se tocan. Lo que sigue son <strong>ocho medidas</strong> propias de este plan —M1 a M8—, y se llaman medidas y no indicadores a propósito: para que nadie las confunda con los diez del cuadro de mando cuando se citen en Junta. Se eligieron con un criterio: <strong>ninguna se puede mejorar tratando peor a alguien.</strong> Es el filtro que descarta casi todas las métricas de marketing al uso.</p>
@@ -1764,7 +1775,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§18</p>
-      <h2>El calendario del ejercicio</h2>
+      <h2 id="k-calendario-ejercicio">El calendario del ejercicio</h2>
     </div>
 
     <p class="t-lead">El calendario de las nueve campañas está en el §22 de la Tesis y no se repite aquí. Lo que sigue es el calendario del <em>plan</em>: cuándo se activa cada tramo del catálogo y qué tiene que estar hecho antes de pasar al siguiente.</p>
@@ -1791,7 +1802,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">§19</p>
-      <h2>Reglas de parada</h2>
+      <h2 id="k-reglas-parada">Reglas de parada</h2>
     </div>
 
     <p class="t-lead">Toda acción con coste lleva escrita, antes de empezar, la condición con la que se para. Sin ella, una acción que no funciona sobrevive por inercia hasta que alguien se acuerda de mirarla, y eso suele ser al cierre del ejercicio.</p>
@@ -1827,7 +1838,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="t-part__in">
       <p class="t-part__num"><b>Anexos</b></p>
       <div>
-        <h2>Lo que hay que tener a mano</h2>
+        <h2 id="k-hay-tener-mano">Lo que hay que tener a mano</h2>
         <p class="t-part__lede">Tres listas de trabajo: qué puede publicarse y con qué trámite, qué acción sostiene qué campaña, y qué se activa este trimestre.</p>
       </div>
     </div>
@@ -1838,14 +1849,14 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Anexo I</p>
-      <h2>Semáforo legal por acción</h2>
+      <h2 id="k-semaforo-legal-accion">Semáforo legal por acción</h2>
     </div>
 
     <p class="t-lead">El reparto completo del catálogo según el marco del §4. La regla de gobierno es una sola: <strong>ninguna acción naranja se activa sin que conste por escrito quién la revisó y cuándo.</strong></p>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem"><span class="sem sem--naranja">Revisión previa</span> &nbsp;11 acciones</h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué hay que resolver antes</th></tr></thead><tbody><tr><td class="num">A03</td><td>Convenio con colegios: salud bucodental infantil, sin ninguna captación comercial dentro del aula</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A20</td><td>WhatsApp de centro con norma publicada: aquí no se diagnostica por foto</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A23</td><td>Solicitud sistemática de reseña a todo paciente al alta, nunca incentivada y nunca filtrada</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A24</td><td>Respuesta pública a toda reseña, y en veinticuatro horas a la negativa</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A30</td><td>Casos reales contados por el clínico, con consentimiento expreso y sin promesa de resultado</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A33</td><td>Financiación con coste total visible y sin comisión para quien la ofrece</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A50</td><td>El Archivo de tu Boca: su historia clínica, imágenes y plan, en formato que se lleva aunque se marche</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A51</td><td>Fotografía clínica normalizada para el archivo del paciente, no para el escaparate</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A68</td><td>Red de derivación con médicos de familia, odontólogos generalistas y protésicos</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A71</td><td>Informe de aptitud dental para el embarque, dirigido al propio tripulante</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A72</td><td>Protocolo de urgencia dental a distancia y contenido del botiquín de a bordo</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr></tbody></table></div>
-<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem"><span class="sem sem--amarillo">Revisar contenido</span> &nbsp;29 acciones</h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué hay que resolver antes</th></tr></thead><tbody><tr><td class="num">A02</td><td>Programa en residencias de mayores: revisión anual en el propio centro, con informe a la familia</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A04</td><td>Ciclo abierto «lo que nadie le cuenta de los implantes», en el propio centro, con turno de preguntas</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A05</td><td>Material informativo en farmacias de barrio, sin promesa de resultado ni oferta</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A06</td><td>Contenido que responde a las preguntas que la gente hace de verdad, no a las que nos gustaría que hiciera</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A09</td><td>Presencia en medios locales como fuente experta, no como anunciante</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A11</td><td>Programa de salud bucodental para empresas del puerto, del polígono y de la conserva</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A14</td><td>Web construida sobre preguntas reales, con la respuesta firmada por quien la sostiene</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A15</td><td>Página por tratamiento con precio de partida publicado y qué incluye</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A17</td><td>Búsqueda de pago acotada a intención alta y a radio corto, con tope mensual duro</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A25</td><td>Segunda Opinión Honesta: informe escrito que el paciente se lleva, diga lo que diga</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A26</td><td>Publicación anual del índice de «no necesita tratamiento» sobre las segundas opiniones</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A27</td><td>Consulta del Miedo: primera visita para quien lleva más de diez años sin ir, sin propuesta de tratamiento ese día</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A28</td><td>Presupuesto sin prisa: sin caducidad comercial, con la consecuencia clínica de esperar seis, doce y veinticuatro meses</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A32</td><td>Comparativa honesta con tratarse fuera: coste total incluyendo revisiones, garantía y quién responde si falla</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A34</td><td>Tabla de garantías publicada por tipo de tratamiento, entregada con cada presupuesto</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A37</td><td>El Acompañante: silla, nombre, y copia del plan también para él</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A56</td><td>Política de devolución en supuestos tasados, resuelta sin discusión y sin abogado</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A57</td><td>Giraldo Te Cuida: programa anual de mantenimiento, revisión y prioridad de agenda</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A59</td><td>Revisión sistemática que evita la cirugía: se llama por criterio clínico, no por calendario comercial</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A60</td><td>El Día de los que no Volvieron: una jornada al año para reabrir planes abandonados, sin presión y sin oferta</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A61</td><td>Rescate del paciente dormido por antigüedad y por riesgo clínico, en ese orden</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A63</td><td>Aviso de mantenimiento por tipo de prótesis y fecha de colocación</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A65</td><td>Recuperación del producto pendiente heredado: caja ya cobrada que hay que convertir en producción</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A66</td><td>Contacto anual con el paciente sin tratamiento activo, con algo útil y sin oferta</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A67</td><td>Prescripción de pacientes: se pide de frente, se agradece siempre y no se paga nunca</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A69</td><td>Acuerdo con cofradías y armadores: revisión antes del embarque</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A70</td><td>Campaña de Mar: ventana de tratamiento en tierra, ajustada al calendario real de las campañas de pesca</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A73</td><td>Convenio con residencias y servicios de ayuda en el hogar</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A75</td><td>Acuerdo con empresas: revisión anual como retribución en especie para la plantilla</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr></tbody></table></div>
-<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem"><span class="sem sem--verde">Sin trámite</span> &nbsp;36 acciones</h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué hay que resolver antes</th></tr></thead><tbody><tr><td class="num">A01</td><td>Aula da Boca: charla mensual en asociaciones vecinales, centros culturales y clubes de la ciudad</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A07</td><td>Recorrido en vídeo por la clínica, sin pacientes y sin música de anuncio</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A08</td><td>Prótesis a la vista: jornada de puertas abiertas al laboratorio y al flujo digital</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A10</td><td>Patrocinio deportivo de base con contrapartida sanitaria: revisión al equipo, no logotipo en la camiseta</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A12</td><td>Señalética y fachada legibles desde la calle, con el número de registro sanitario visible</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A13</td><td>Ficha de negocio completa: horarios reales, fotos propias, servicios y accesibilidad</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A16</td><td>Página por localidad de la ría con el tiempo real de desplazamiento y dónde aparcar</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A18</td><td>Respuesta en menos de quince minutos en horario; fuera de él, respuesta automática que dice la verdad sobre cuándo se le contestará</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A19</td><td>Cita en línea con hueco real, no formulario de contacto</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A21</td><td>Teléfono contestado por persona durante todo el horario, con registro de llamadas perdidas</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A22</td><td>Recuperación de toda llamada perdida antes de dos horas, sin excepción</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A29</td><td>Explicación de qué se paga: material, tiempo clínico, laboratorio, garantía y revisión</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A31</td><td>Visita previa de cinco minutos para ver la clínica y conocer al equipo, sin sillón</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A35</td><td>Recordatorio de cita que cuenta lo que va a pasar, cuánto dura y qué traer</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A36</td><td>Acogida en noventa segundos, por su nombre y sin mostrador de por medio</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A38</td><td>Sala de espera sin televisión comercial ni publicidad de tratamiento</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A39</td><td>Explicación con el modelo y la imagen en la mano, no con folleto</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A40</td><td>Entrega del plan por escrito el mismo día, siempre, también cuando el plan es no hacer nada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A41</td><td>Nada se cierra el día del miedo: por norma se le invita a pensarlo</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A42</td><td>Registro literal de lo que dijo que le preocupaba, en su ficha y en sus palabras</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A43</td><td>Encuesta de una sola pregunta al salir, contestada de pie y en diez segundos</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A44</td><td>Hueco útil: la cancelación se ofrece por orden clínico a quien espera, no por orden de importe</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A45</td><td>Información real de aparcamiento, bus y accesibilidad, publicada y comprobada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A46</td><td>Atención en gallego y apoyo de traducción para quien lo necesite</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A47</td><td>Llamada del propio clínico veinticuatro horas después de cualquier cirugía</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A48</td><td>Vía directa para cuando algo va mal, con nombre, número y plazo de respuesta comprometido</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A49</td><td>Informe de progreso a mitad de tratamiento, con lo hecho y lo que queda</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A52</td><td>Acompañamiento pactado paso a paso para el paciente con miedo, con señal de parada acordada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A53</td><td>Aviso antes de ejecutar cualquier cambio de coste sobre el plan aprobado</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A54</td><td>Documento de alta con lo conseguido y lo que toca a partir de ahora</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A55</td><td>Encuesta de experiencia al alta con una pregunta abierta que alguien lee</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A58</td><td>La Carta del Tercer Año: se escribe para confirmar que aquello sigue funcionando, no para vender nada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A62</td><td>Entrevista de salida al paciente que se va, sin ningún intento de retenerle</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A64</td><td>Cadencia de higiene profesional según riesgo individual, no según calendario comercial</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A74</td><td>Alianza con clubes deportivos: férulas de protección y revisión de temporada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A76</td><td>Presencia como docente en colegio profesional y formación de posgrado</td><td>Nada. Se ejecuta sin trámite</td></tr></tbody></table></div>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-revision-previa-11-acciones"><span class="sem sem--naranja">Revisión previa</span> &nbsp;11 acciones</h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué hay que resolver antes</th></tr></thead><tbody><tr><td class="num">A03</td><td>Convenio con colegios: salud bucodental infantil, sin ninguna captación comercial dentro del aula</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A20</td><td>WhatsApp de centro con norma publicada: aquí no se diagnostica por foto</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A23</td><td>Solicitud sistemática de reseña a todo paciente al alta, nunca incentivada y nunca filtrada</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A24</td><td>Respuesta pública a toda reseña, y en veinticuatro horas a la negativa</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A30</td><td>Casos reales contados por el clínico, con consentimiento expreso y sin promesa de resultado</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A33</td><td>Financiación con coste total visible y sin comisión para quien la ofrece</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A50</td><td>El Archivo de tu Boca: su historia clínica, imágenes y plan, en formato que se lleva aunque se marche</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A51</td><td>Fotografía clínica normalizada para el archivo del paciente, no para el escaparate</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A68</td><td>Red de derivación con médicos de familia, odontólogos generalistas y protésicos</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A71</td><td>Informe de aptitud dental para el embarque, dirigido al propio tripulante</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr><tr><td class="num">A72</td><td>Protocolo de urgencia dental a distancia y contenido del botiquín de a bordo</td><td>Consentimiento expreso o verificación jurídica previa, con constancia escrita de quién revisó y cuándo</td></tr></tbody></table></div>
+<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-revisar-contenido-29-acciones"><span class="sem sem--amarillo">Revisar contenido</span> &nbsp;29 acciones</h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué hay que resolver antes</th></tr></thead><tbody><tr><td class="num">A02</td><td>Programa en residencias de mayores: revisión anual en el propio centro, con informe a la familia</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A04</td><td>Ciclo abierto «lo que nadie le cuenta de los implantes», en el propio centro, con turno de preguntas</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A05</td><td>Material informativo en farmacias de barrio, sin promesa de resultado ni oferta</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A06</td><td>Contenido que responde a las preguntas que la gente hace de verdad, no a las que nos gustaría que hiciera</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A09</td><td>Presencia en medios locales como fuente experta, no como anunciante</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A11</td><td>Programa de salud bucodental para empresas del puerto, del polígono y de la conserva</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A14</td><td>Web construida sobre preguntas reales, con la respuesta firmada por quien la sostiene</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A15</td><td>Página por tratamiento con precio de partida publicado y qué incluye</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A17</td><td>Búsqueda de pago acotada a intención alta y a radio corto, con tope mensual duro</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A25</td><td>Segunda Opinión Honesta: informe escrito que el paciente se lleva, diga lo que diga</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A26</td><td>Publicación anual del índice de «no necesita tratamiento» sobre las segundas opiniones</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A27</td><td>Consulta del Miedo: primera visita para quien lleva más de diez años sin ir, sin propuesta de tratamiento ese día</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A28</td><td>Presupuesto sin prisa: sin caducidad comercial, con la consecuencia clínica de esperar seis, doce y veinticuatro meses</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A32</td><td>Comparativa honesta con tratarse fuera: coste total incluyendo revisiones, garantía y quién responde si falla</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A34</td><td>Tabla de garantías publicada por tipo de tratamiento, entregada con cada presupuesto</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A37</td><td>El Acompañante: silla, nombre, y copia del plan también para él</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A56</td><td>Política de devolución en supuestos tasados, resuelta sin discusión y sin abogado</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A57</td><td>Giraldo Te Cuida: programa anual de mantenimiento, revisión y prioridad de agenda</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A59</td><td>Revisión sistemática que evita la cirugía: se llama por criterio clínico, no por calendario comercial</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A60</td><td>El Día de los que no Volvieron: una jornada al año para reabrir planes abandonados, sin presión y sin oferta</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A61</td><td>Rescate del paciente dormido por antigüedad y por riesgo clínico, en ese orden</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A63</td><td>Aviso de mantenimiento por tipo de prótesis y fecha de colocación</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A65</td><td>Recuperación del producto pendiente heredado: caja ya cobrada que hay que convertir en producción</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A66</td><td>Contacto anual con el paciente sin tratamiento activo, con algo útil y sin oferta</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A67</td><td>Prescripción de pacientes: se pide de frente, se agradece siempre y no se paga nunca</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A69</td><td>Acuerdo con cofradías y armadores: revisión antes del embarque</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A70</td><td>Campaña de Mar: ventana de tratamiento en tierra, ajustada al calendario real de las campañas de pesca</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A73</td><td>Convenio con residencias y servicios de ayuda en el hogar</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr><tr><td class="num">A75</td><td>Acuerdo con empresas: revisión anual como retribución en especie para la plantilla</td><td>Revisión del contenido: una frase de más lo convierte en promesa de resultado</td></tr></tbody></table></div>
+<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-sin-tramite-36-acciones"><span class="sem sem--verde">Sin trámite</span> &nbsp;36 acciones</h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué hay que resolver antes</th></tr></thead><tbody><tr><td class="num">A01</td><td>Aula da Boca: charla mensual en asociaciones vecinales, centros culturales y clubes de la ciudad</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A07</td><td>Recorrido en vídeo por la clínica, sin pacientes y sin música de anuncio</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A08</td><td>Prótesis a la vista: jornada de puertas abiertas al laboratorio y al flujo digital</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A10</td><td>Patrocinio deportivo de base con contrapartida sanitaria: revisión al equipo, no logotipo en la camiseta</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A12</td><td>Señalética y fachada legibles desde la calle, con el número de registro sanitario visible</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A13</td><td>Ficha de negocio completa: horarios reales, fotos propias, servicios y accesibilidad</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A16</td><td>Página por localidad de la ría con el tiempo real de desplazamiento y dónde aparcar</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A18</td><td>Respuesta en menos de quince minutos en horario; fuera de él, respuesta automática que dice la verdad sobre cuándo se le contestará</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A19</td><td>Cita en línea con hueco real, no formulario de contacto</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A21</td><td>Teléfono contestado por persona durante todo el horario, con registro de llamadas perdidas</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A22</td><td>Recuperación de toda llamada perdida antes de dos horas, sin excepción</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A29</td><td>Explicación de qué se paga: material, tiempo clínico, laboratorio, garantía y revisión</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A31</td><td>Visita previa de cinco minutos para ver la clínica y conocer al equipo, sin sillón</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A35</td><td>Recordatorio de cita que cuenta lo que va a pasar, cuánto dura y qué traer</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A36</td><td>Acogida en noventa segundos, por su nombre y sin mostrador de por medio</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A38</td><td>Sala de espera sin televisión comercial ni publicidad de tratamiento</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A39</td><td>Explicación con el modelo y la imagen en la mano, no con folleto</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A40</td><td>Entrega del plan por escrito el mismo día, siempre, también cuando el plan es no hacer nada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A41</td><td>Nada se cierra el día del miedo: por norma se le invita a pensarlo</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A42</td><td>Registro literal de lo que dijo que le preocupaba, en su ficha y en sus palabras</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A43</td><td>Encuesta de una sola pregunta al salir, contestada de pie y en diez segundos</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A44</td><td>Hueco útil: la cancelación se ofrece por orden clínico a quien espera, no por orden de importe</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A45</td><td>Información real de aparcamiento, bus y accesibilidad, publicada y comprobada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A46</td><td>Atención en gallego y apoyo de traducción para quien lo necesite</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A47</td><td>Llamada del propio clínico veinticuatro horas después de cualquier cirugía</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A48</td><td>Vía directa para cuando algo va mal, con nombre, número y plazo de respuesta comprometido</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A49</td><td>Informe de progreso a mitad de tratamiento, con lo hecho y lo que queda</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A52</td><td>Acompañamiento pactado paso a paso para el paciente con miedo, con señal de parada acordada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A53</td><td>Aviso antes de ejecutar cualquier cambio de coste sobre el plan aprobado</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A54</td><td>Documento de alta con lo conseguido y lo que toca a partir de ahora</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A55</td><td>Encuesta de experiencia al alta con una pregunta abierta que alguien lee</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A58</td><td>La Carta del Tercer Año: se escribe para confirmar que aquello sigue funcionando, no para vender nada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A62</td><td>Entrevista de salida al paciente que se va, sin ningún intento de retenerle</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A64</td><td>Cadencia de higiene profesional según riesgo individual, no según calendario comercial</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A74</td><td>Alianza con clubes deportivos: férulas de protección y revisión de temporada</td><td>Nada. Se ejecuta sin trámite</td></tr><tr><td class="num">A76</td><td>Presencia como docente en colegio profesional y formación de posgrado</td><td>Nada. Se ejecuta sin trámite</td></tr></tbody></table></div>
 
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Lo que dice el reparto</p>
@@ -1859,7 +1870,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Anexo II</p>
-      <h2>Correspondencia con la cartera de campañas</h2>
+      <h2 id="k-correspondencia-cartera-campanas">Correspondencia con la cartera de campañas</h2>
     </div>
 
     <p class="t-lead">Qué acciones de este catálogo sostienen cada una de las nueve campañas de la Parte VI de la Tesis. Sirve para lo contrario de lo que parece: para ver <strong>qué campaña se queda sin suelo</strong> si una acción no se ejecuta.</p>
@@ -1877,16 +1888,16 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Anexo III</p>
-      <h2>Lo que se activa este trimestre</h2>
+      <h2 id="k-activa-este-trimestre">Lo que se activa este trimestre</h2>
     </div>
 
     <p class="t-lead">Las acciones de coste cero y plazo inmediato, que son las que arrancan en T1. No necesitan presupuesto, ni obra, ni contratar a nadie: necesitan que alguien firme que a partir del lunes se trabaja así.</p>
 
-    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem">Dirección General <span class="sem sem--verde">3</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A24</td><td>Respuesta pública a toda reseña, y en veinticuatro horas a la negativa</td><td>Ve cómo tratamos a quien se queja, que es el único dato fiable</td><td>Reseñas negativas con respuesta y su plazo</td></tr><tr><td class="num">A34</td><td>Tabla de garantías publicada por tipo de tratamiento, entregada con cada presupuesto</td><td>Sabe por escrito qué pasa si algo falla dentro de cinco años</td><td>Presupuestos entregados con tabla adjunta</td></tr><tr><td class="num">A41</td><td>Nada se cierra el día del miedo: por norma se le invita a pensarlo</td><td>Nadie le arranca un sí el día que llegó asustado</td><td>Aceptaciones diferidas sobre el total</td></tr></tbody></table></div>
-<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem">Gerencia <span class="sem sem--verde">2</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A33</td><td>Financiación con coste total visible y sin comisión para quien la ofrece</td><td>Nadie gana nada por empujarle a financiar</td><td>Financiaciones y tasa de impago</td></tr><tr><td class="num">A53</td><td>Aviso antes de ejecutar cualquier cambio de coste sobre el plan aprobado</td><td>Nunca le llega una factura que no esperaba</td><td>Desviaciones comunicadas antes de ejecutar</td></tr></tbody></table></div>
-<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem">Recepción <span class="sem sem--verde">10</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A13</td><td>Ficha de negocio completa: horarios reales, fotos propias, servicios y accesibilidad</td><td>No se planta en la puerta un día que está cerrado</td><td>Impresiones, llamadas y cómo-llegar</td></tr><tr><td class="num">A18</td><td>Respuesta en menos de quince minutos en horario; fuera de él, respuesta automática que dice la verdad sobre cuándo se le contestará</td><td>No se queda esperando sin saber si alguien le ha leído</td><td>Tiempo hasta primera respuesta, mediana y p90</td></tr><tr><td class="num">A20</td><td>WhatsApp de centro con norma publicada: aquí no se diagnostica por foto</td><td>No recibe un diagnóstico falso por una foto mal hecha</td><td>Consultas resueltas y derivadas a visita</td></tr><tr><td class="num">A22</td><td>Recuperación de toda llamada perdida antes de dos horas, sin excepción</td><td>Le devuelven la llamada aunque él ya se haya rendido</td><td>Llamadas perdidas recuperadas</td></tr><tr><td class="num">A31</td><td>Visita previa de cinco minutos para ver la clínica y conocer al equipo, sin sillón</td><td>Conoce el sitio sin comprometerse a nada</td><td>Visitas previas y su conversión</td></tr><tr><td class="num">A35</td><td>Recordatorio de cita que cuenta lo que va a pasar, cuánto dura y qué traer</td><td>Llega sabiendo a qué viene y no en ayunas por si acaso</td><td>Ausencias sin avisar</td></tr><tr><td class="num">A36</td><td>Acogida en noventa segundos, por su nombre y sin mostrador de por medio</td><td>Le reciben como a una persona esperada, no como a un turno</td><td>Cumplimiento observado de la Fase 1</td></tr><tr><td class="num">A37</td><td>El Acompañante: silla, nombre, y copia del plan también para él</td><td>Quien viene con él entiende lo mismo y puede ayudarle a decidir en casa</td><td>Planes entregados por duplicado</td></tr><tr><td class="num">A43</td><td>Encuesta de una sola pregunta al salir, contestada de pie y en diez segundos</td><td>Le preguntan cuando aún se acuerda</td><td>Respuestas y su serie mensual</td></tr><tr><td class="num">A45</td><td>Información real de aparcamiento, bus y accesibilidad, publicada y comprobada</td><td>Sabe dónde dejar el coche y si entra con silla de ruedas</td><td>Incidencias de acceso registradas</td></tr></tbody></table></div>
-<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem">RAC <span class="sem sem--verde">2</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A23</td><td>Solicitud sistemática de reseña a todo paciente al alta, nunca incentivada y nunca filtrada</td><td>Lee opiniones que no están compradas</td><td>Reseñas nuevas al mes y nota media</td></tr><tr><td class="num">A42</td><td>Registro literal de lo que dijo que le preocupaba, en su ficha y en sus palabras</td><td>La próxima vez alguien se acuerda de lo que le importaba</td><td>Fichas con preocupación registrada</td></tr></tbody></table></div>
-<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem">Doctor <span class="sem sem--verde">5</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A28</td><td>Presupuesto sin prisa: sin caducidad comercial, con la consecuencia clínica de esperar seis, doce y veinticuatro meses</td><td>Decide con información en vez de con urgencia inventada</td><td>Tasa de aceptación y días hasta aceptar</td></tr><tr><td class="num">A40</td><td>Entrega del plan por escrito el mismo día, siempre, también cuando el plan es no hacer nada</td><td>Sale con papel. Siempre</td><td>Planes entregados el mismo día sobre visitas</td></tr><tr><td class="num">A47</td><td>Llamada del propio clínico veinticuatro horas después de cualquier cirugía</td><td>Le llama quien le operó, no un número desconocido</td><td>Llamadas hechas sobre cirugías</td></tr><tr><td class="num">A52</td><td>Acompañamiento pactado paso a paso para el paciente con miedo, con señal de parada acordada</td><td>Puede parar la intervención con una señal, y se respeta</td><td>Pacientes en circuito de miedo y abandonos</td></tr><tr><td class="num">A54</td><td>Documento de alta con lo conseguido y lo que toca a partir de ahora</td><td>Sabe qué pasa el año que viene y el siguiente</td><td>Altas con documento entregado</td></tr></tbody></table></div>
+    <h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-direccion-general-3">Dirección General <span class="sem sem--verde">3</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A24</td><td>Respuesta pública a toda reseña, y en veinticuatro horas a la negativa</td><td>Ve cómo tratamos a quien se queja, que es el único dato fiable</td><td>Reseñas negativas con respuesta y su plazo</td></tr><tr><td class="num">A34</td><td>Tabla de garantías publicada por tipo de tratamiento, entregada con cada presupuesto</td><td>Sabe por escrito qué pasa si algo falla dentro de cinco años</td><td>Presupuestos entregados con tabla adjunta</td></tr><tr><td class="num">A41</td><td>Nada se cierra el día del miedo: por norma se le invita a pensarlo</td><td>Nadie le arranca un sí el día que llegó asustado</td><td>Aceptaciones diferidas sobre el total</td></tr></tbody></table></div>
+<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-gerencia-2">Gerencia <span class="sem sem--verde">2</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A33</td><td>Financiación con coste total visible y sin comisión para quien la ofrece</td><td>Nadie gana nada por empujarle a financiar</td><td>Financiaciones y tasa de impago</td></tr><tr><td class="num">A53</td><td>Aviso antes de ejecutar cualquier cambio de coste sobre el plan aprobado</td><td>Nunca le llega una factura que no esperaba</td><td>Desviaciones comunicadas antes de ejecutar</td></tr></tbody></table></div>
+<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-recepcion-10">Recepción <span class="sem sem--verde">10</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A13</td><td>Ficha de negocio completa: horarios reales, fotos propias, servicios y accesibilidad</td><td>No se planta en la puerta un día que está cerrado</td><td>Impresiones, llamadas y cómo-llegar</td></tr><tr><td class="num">A18</td><td>Respuesta en menos de quince minutos en horario; fuera de él, respuesta automática que dice la verdad sobre cuándo se le contestará</td><td>No se queda esperando sin saber si alguien le ha leído</td><td>Tiempo hasta primera respuesta, mediana y p90</td></tr><tr><td class="num">A20</td><td>WhatsApp de centro con norma publicada: aquí no se diagnostica por foto</td><td>No recibe un diagnóstico falso por una foto mal hecha</td><td>Consultas resueltas y derivadas a visita</td></tr><tr><td class="num">A22</td><td>Recuperación de toda llamada perdida antes de dos horas, sin excepción</td><td>Le devuelven la llamada aunque él ya se haya rendido</td><td>Llamadas perdidas recuperadas</td></tr><tr><td class="num">A31</td><td>Visita previa de cinco minutos para ver la clínica y conocer al equipo, sin sillón</td><td>Conoce el sitio sin comprometerse a nada</td><td>Visitas previas y su conversión</td></tr><tr><td class="num">A35</td><td>Recordatorio de cita que cuenta lo que va a pasar, cuánto dura y qué traer</td><td>Llega sabiendo a qué viene y no en ayunas por si acaso</td><td>Ausencias sin avisar</td></tr><tr><td class="num">A36</td><td>Acogida en noventa segundos, por su nombre y sin mostrador de por medio</td><td>Le reciben como a una persona esperada, no como a un turno</td><td>Cumplimiento observado de la Fase 1</td></tr><tr><td class="num">A37</td><td>El Acompañante: silla, nombre, y copia del plan también para él</td><td>Quien viene con él entiende lo mismo y puede ayudarle a decidir en casa</td><td>Planes entregados por duplicado</td></tr><tr><td class="num">A43</td><td>Encuesta de una sola pregunta al salir, contestada de pie y en diez segundos</td><td>Le preguntan cuando aún se acuerda</td><td>Respuestas y su serie mensual</td></tr><tr><td class="num">A45</td><td>Información real de aparcamiento, bus y accesibilidad, publicada y comprobada</td><td>Sabe dónde dejar el coche y si entra con silla de ruedas</td><td>Incidencias de acceso registradas</td></tr></tbody></table></div>
+<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-rac-2">RAC <span class="sem sem--verde">2</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A23</td><td>Solicitud sistemática de reseña a todo paciente al alta, nunca incentivada y nunca filtrada</td><td>Lee opiniones que no están compradas</td><td>Reseñas nuevas al mes y nota media</td></tr><tr><td class="num">A42</td><td>Registro literal de lo que dijo que le preocupaba, en su ficha y en sus palabras</td><td>La próxima vez alguien se acuerda de lo que le importaba</td><td>Fichas con preocupación registrada</td></tr></tbody></table></div>
+<h3 style="font-size:var(--step-1);margin:2.6rem 0 .5rem" id="k-doctor-5">Doctor <span class="sem sem--verde">5</span></h3><div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Acción</th><th>Qué gana el paciente</th><th>Indicador</th></tr></thead><tbody><tr><td class="num">A28</td><td>Presupuesto sin prisa: sin caducidad comercial, con la consecuencia clínica de esperar seis, doce y veinticuatro meses</td><td>Decide con información en vez de con urgencia inventada</td><td>Tasa de aceptación y días hasta aceptar</td></tr><tr><td class="num">A40</td><td>Entrega del plan por escrito el mismo día, siempre, también cuando el plan es no hacer nada</td><td>Sale con papel. Siempre</td><td>Planes entregados el mismo día sobre visitas</td></tr><tr><td class="num">A47</td><td>Llamada del propio clínico veinticuatro horas después de cualquier cirugía</td><td>Le llama quien le operó, no un número desconocido</td><td>Llamadas hechas sobre cirugías</td></tr><tr><td class="num">A52</td><td>Acompañamiento pactado paso a paso para el paciente con miedo, con señal de parada acordada</td><td>Puede parar la intervención con una señal, y se respeta</td><td>Pacientes en circuito de miedo y abandonos</td></tr><tr><td class="num">A54</td><td>Documento de alta con lo conseguido y lo que toca a partir de ahora</td><td>Sabe qué pasa el año que viene y el siguiente</td><td>Altas con documento entregado</td></tr></tbody></table></div>
 
     <div class="callout" style="max-width:none">
       <p class="eyebrow">Cómo se pone en marcha</p>
@@ -1899,7 +1910,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Cierre</p>
-      <h2>Qué se pide con este plan</h2>
+      <h2 id="k-pide-este-plan">Qué se pide con este plan</h2>
     </div>
 
     <div class="rulebox" style="max-width:none">
@@ -1943,6 +1954,19 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <script>
 (function(){
   "use strict";
+  /* ---- alto real de la barra, para que ningún salto quede debajo ---- */
+  (function(){
+    var barra = document.querySelector(".topbar");
+    if(!barra) return;
+    function medir(){
+      document.documentElement.style.setProperty(
+        "--barra", Math.round(barra.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    if("ResizeObserver" in window) new ResizeObserver(medir).observe(barra);
+  })();
+
   var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
   var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
 
