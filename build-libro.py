@@ -24,9 +24,10 @@ RUTA = str(pathlib.Path(__file__).parent / "instrumentos" /
 # La versión no se teclea en la hoja: se toma del verificador, que es donde
 # vive la versión canónica del sistema. Un libro con versión propia se queda
 # atrás en la primera publicación y nadie lo nota hasta la Junta.
-VERSION = re.search(r'^VERSION = "([\d.]+)"',
-                    (pathlib.Path(__file__).parent / "check-coherencia.py")
-                    .read_text(encoding="utf-8"), re.M).group(1)
+_v = {}
+exec(compile((pathlib.Path(__file__).parent / "version.py").read_text(encoding="utf-8"),
+             "version.py", "exec"), _v)
+VERSION = _v["VERSION"]
 
 TINTA   = "FF0B1A20"
 ENTRADA = Font(name="Arial", size=10, color="FF0000FF")          # azul: dato que se teclea

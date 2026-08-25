@@ -527,6 +527,41 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 .puerta__pie b{color:var(--accent-ink);font-weight:400}
 .puerta__flecha{font-family:var(--f-mono);color:var(--accent-ink);margin-left:auto}
 
+/* ---------------------------------------------------------------------------
+   Índice general. Va delante de todo lo demás porque es lo primero que uno
+   quiere de un sistema de siete documentos: ver qué hay, entero, sin abrir nada.
+   --------------------------------------------------------------------------- */
+.idx{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1.8rem}
+.idx__doc{background:var(--paper);padding:1.5rem 1.6rem 1.7rem;display:grid;gap:1rem;min-width:0}
+@media(min-width:900px){.idx__doc{grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:2.4rem}}
+.idx__cab{align-self:start}
+.idx__cab h3{font-size:var(--step-1);letter-spacing:-.015em;margin:.15rem 0 .4rem}
+.idx__cab h3 a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+.idx__cab h3 a:hover{color:var(--accent-ink);border-color:var(--accent)}
+.idx__que{color:var(--ink-2);font-size:.9rem;max-width:44ch}
+.idx__quien{
+  margin-top:.5rem;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.idx__quien b{color:var(--ink-2);font-weight:400}
+.idx__quien span{color:var(--accent-ink)}
+.idx__lista{
+  list-style:none;margin:0;padding:0;columns:2;column-gap:2rem;
+  font-size:.88rem;line-height:1.45;
+}
+@media(max-width:620px){.idx__lista{columns:1}}
+.idx__lista li{break-inside:avoid;margin:0 0 .2rem}
+.idx__lista a{
+  color:var(--ink-2);text-decoration:none;display:block;padding:.14rem .3rem .14rem 0;
+  border-left:2px solid transparent;padding-left:.55rem;transition:color .14s ease,border-color .14s ease;
+}
+.idx__lista a:hover{color:var(--accent-ink);border-left-color:var(--accent)}
+.idx__sin{color:var(--muted);font-size:.85rem;padding-left:.55rem}
+@media print{
+  .idx__doc{break-inside:avoid}
+  .idx__lista a{color:var(--ink-2)}
+}
+
 </style>
 </head>
 <body>
@@ -536,7 +571,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Sistema documental <b>Giraldo</b></span>
-        <span class="brand__tag">v6.0 · Uso interno</span>
+        <span class="brand__tag">v7.0 · Uso interno</span>
       </a>
     </div>
   </div>
@@ -550,7 +585,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
       <div>
         <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
         <h1>No medias<br><em>sonrisas</em></h1>
-        <p class="hero__lede">Siete documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. Todos comparten la versión <strong>v6.0</strong>: si uno cambia lo bastante como para merecer versión nueva, la reciben todos.</p>
+        <p class="hero__lede">Siete documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. Todos comparten la versión <strong>v7.0</strong>: si uno cambia lo bastante como para merecer versión nueva, la reciben todos.</p>
         <p class="hero__note">Uso interno y confidencial. Contiene información económica, laboral y estratégica. No se difunde fuera de la organización sin autorización expresa de la Dirección General.</p>
       </div>
       <dl class="specs">
@@ -566,52 +601,129 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 </section>
 <div class="wrap"><div class="ticks ticks--tall" aria-hidden="true"></div></div>
 
+<section class="section" id="indice">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Índice general</p>
+      <h2>Todo lo que hay</h2>
+      <p>125 apartados repartidos en siete documentos. Está entero: no es una selección ni un resumen. Cualquier línea de esta lista abre el apartado correspondiente en su documento.</p>
+    </div>
+    <div class="idx">
+      <section class="idx__doc">
+        <div class="idx__cab">
+          <p class="eyebrow">Gobierno</p>
+          <h3><a href="memoria.html">Tesis de Dirección</a></h3>
+          <p class="idx__que">Qué creemos, qué apostamos y las quince decisiones que se someten a la Junta</p>
+          <p class="idx__quien">Para <b>Junta Directiva</b> · <span>35 apartados</span></p>
+        </div>
+        <ol class="idx__lista"><li><a href="memoria.html#manifiesto">Manifiesto</a></li><li><a href="memoria.html#control">§0 Control</a></li><li><a href="memoria.html#censo">§0.1 Censo</a></li><li><a href="memoria.html#cambios">§0.2 Cambios</a></li><li><a href="memoria.html#resumen">§1 Resumen</a></li><li><a href="memoria.html#parte-1">I · Posición</a></li><li><a href="memoria.html#tesis">§2 Tesis</a></li><li><a href="memoria.html#mapa">§3 Mapa competitivo</a></li><li><a href="memoria.html#foso">§4 El foso</a></li><li><a href="memoria.html#parte-2">II · Sistema</a></li><li><a href="memoria.html#sistema">§5 Sistema operativo</a></li><li><a href="memoria.html#innovacion">§6 Innovación</a></li><li><a href="memoria.html#parte-3">III · Economía</a></li><li><a href="memoria.html#linea-base">§7 Línea base</a></li><li><a href="memoria.html#unidad">§8 Economía unitaria</a></li><li><a href="memoria.html#activo">§9 El activo</a></li><li><a href="memoria.html#escalado">§10 Escalado</a></li><li><a href="memoria.html#parte-4">IV · Riesgo</a></li><li><a href="memoria.html#riesgos">§11 Riesgos</a></li><li><a href="memoria.html#premortem">§12 Pre-mortem</a></li><li><a href="memoria.html#mando">§13 Cuadro de mando</a></li><li><a href="memoria.html#parte-5">V · Decisión</a></li><li><a href="memoria.html#palancas">§14 Palancas</a></li><li><a href="memoria.html#capital">§15 Capital</a></li><li><a href="memoria.html#ruta">§16 Hoja de ruta</a></li><li><a href="memoria.html#decisiones">§17 Decisiones</a></li><li><a href="memoria.html#supuestos">§18 Supuestos</a></li><li><a href="memoria.html#trazabilidad">§19 Trazabilidad</a></li><li><a href="memoria.html#parte-6">VI · La cifra</a></li><li><a href="memoria.html#puente">§20 El puente</a></li><li><a href="memoria.html#cartera">§21 Campañas</a></li><li><a href="memoria.html#calendario">§22 Calendario</a></li><li><a href="memoria.html#cierto">§23 Condiciones</a></li><li><a href="memoria.html#acuerdos">Anexo A · Acuerdos</a></li><li><a href="memoria.html#campanas">Anexo B · Campañas</a></li></ol>
+      </section>
+      <section class="idx__doc">
+        <div class="idx__cab">
+          <p class="eyebrow">Derivado</p>
+          <h3><a href="deck.html">Presentación de Junta</a></h3>
+          <p class="idx__que">La Tesis para proyectar, con guion del ponente y ruta corta</p>
+          <p class="idx__quien">Para <b>Quien presenta</b> · <span>0 apartados</span></p>
+        </div>
+        <ol class="idx__lista"><li class="idx__sin">Sin apartados numerados</li></ol>
+      </section>
+      <section class="idx__doc">
+        <div class="idx__cab">
+          <p class="eyebrow">Plan</p>
+          <h3><a href="marketing.html">Plan Maestro de Marketing</a></h3>
+          <p class="idx__que">Las 76 acciones posibles sobre los 12 estados del paciente</p>
+          <p class="idx__quien">Para <b>Dirección y Gerencia</b> · <span>31 apartados</span></p>
+        </div>
+        <ol class="idx__lista"><li><a href="marketing.html#portada">Portada</a></li><li><a href="marketing.html#control">§0 Control</a></li><li><a href="marketing.html#parte-1">I · Doctrina</a></li><li><a href="marketing.html#doctrina">§1 Por qué</a></li><li><a href="marketing.html#regla">§2 La regla</a></li><li><a href="marketing.html#nunca">§3 Las ocho que no</a></li><li><a href="marketing.html#legal">§4 Marco legal</a></li><li><a href="marketing.html#parte-2">II · El paciente</a></li><li><a href="marketing.html#estados">§5 Doce estados</a></li><li><a href="marketing.html#arquetipos">§6 Seis de la ría</a></li><li><a href="marketing.html#momentos">§7 Momentos de verdad</a></li><li><a href="marketing.html#asimetria">§8 La asimetría</a></li><li><a href="marketing.html#parte-3">III · El catálogo</a></li><li><a href="marketing.html#catalogo">§9 Las 76 acciones</a></li><li><a href="marketing.html#parte-4">IV · Las diez piezas</a></li><li><a href="marketing.html#piezas">§10 Las diez piezas</a></li><li><a href="marketing.html#parte-5">V · El territorio</a></li><li><a href="marketing.html#digital">§11 Digital</a></li><li><a href="marketing.html#ria">§12 El mapa de la ría</a></li><li><a href="marketing.html#mar">§13 Campaña de Mar</a></li><li><a href="marketing.html#parte-6">VI · La prioridad</a></li><li><a href="marketing.html#economia">§14 Qué aporta cada grupo</a></li><li><a href="marketing.html#prioridad">§15 Qué va primero</a></li><li><a href="marketing.html#presupuesto">§16 Presupuesto</a></li><li><a href="marketing.html#parte-7">VII · El gobierno</a></li><li><a href="marketing.html#indicadores">§17 Las ocho medidas</a></li><li><a href="marketing.html#calendario">§18 Calendario</a></li><li><a href="marketing.html#parada">§19 Reglas de parada</a></li><li><a href="marketing.html#anexo-legal">Anexo I · Legal</a></li><li><a href="marketing.html#anexo-cartera">Anexo II · Cartera</a></li><li><a href="marketing.html#anexo-trimestre">Anexo III · Este trimestre</a></li></ol>
+      </section>
+      <section class="idx__doc">
+        <div class="idx__cab">
+          <p class="eyebrow">Troncal</p>
+          <h3><a href="manual.html">Manual Maestro de Operaciones</a></h3>
+          <p class="idx__que">Las 14 fases del recorrido, los 6 puestos, RACI, indicadores e incentivos</p>
+          <p class="idx__quien">Para <b>Todo el equipo</b> · <span>15 apartados</span></p>
+        </div>
+        <ol class="idx__lista"><li><a href="manual.html#presentacion">Presentación</a></li><li><a href="manual.html#indice">Índice</a></li><li><a href="manual.html#vanguardia">Marco de vanguardia</a></li><li><a href="manual.html#p1">I · Fundamentos</a></li><li><a href="manual.html#estandares">Estándares transversales</a></li><li><a href="manual.html#p2">II · Recorrido</a></li><li><a href="manual.html#p3">III · RACI</a></li><li><a href="manual.html#p4">IV · Puestos</a></li><li><a href="manual.html#p5">V · Funciones de vanguardia</a></li><li><a href="manual.html#p6">VI · Indicadores</a></li><li><a href="manual.html#p7">VII · Incentivos</a></li><li><a href="manual.html#p8">VIII · Puesta en marcha</a></li><li><a href="manual.html#anexos">Anexos</a></li><li><a href="manual.html#otros">Otros documentos</a></li><li><a href="manual.html#notas">Notas de edición</a></li></ol>
+      </section>
+      <section class="idx__doc">
+        <div class="idx__cab">
+          <p class="eyebrow">Troncal</p>
+          <h3><a href="index.html">Protocolo de Primera Visita</a></h3>
+          <p class="idx__que">Las 12 fases de la primera visita, minuto a minuto</p>
+          <p class="idx__quien">Para <b>Recepción, Doctor, RAC</b> · <span>22 apartados</span></p>
+        </div>
+        <ol class="idx__lista"><li><a href="index.html#fundamentos">Fundamentos</a></li><li><a href="index.html#mapa">Mapa 90′</a></li><li><a href="index.html#flujo">Flujo</a></li><li><a href="index.html#f01">01 Preparación</a></li><li><a href="index.html#f02">02 Acogida</a></li><li><a href="index.html#f03">03 Alta y RGPD</a></li><li><a href="index.html#f04">04 Historia clínica</a></li><li><a href="index.html#f05">05 Diagnóstico</a></li><li><a href="index.html#f06">06 Briefing</a></li><li><a href="index.html#f07">07 Expectativas</a></li><li><a href="index.html#f08">08 IAC</a></li><li><a href="index.html#f09">09 Presentación 3D</a></li><li><a href="index.html#f10">10 Propuesta</a></li><li><a href="index.html#f11">11 Cierre admin.</a></li><li><a href="index.html#f12">12 Seguimiento</a></li><li><a href="index.html#estandares">Estándares</a></li><li><a href="index.html#casos">Casos especiales</a></li><li><a href="index.html#continua">Fases 13 y 14</a></li><li><a href="index.html#trazabilidad">Trazabilidad</a></li><li><a href="index.html#indicadores">Indicadores</a></li><li><a href="index.html#formacion">Formación</a></li><li><a href="index.html#anexos">Anexos</a></li></ol>
+      </section>
+      <section class="idx__doc">
+        <div class="idx__cab">
+          <p class="eyebrow">Troncal</p>
+          <h3><a href="otros.html">Otros documentos del sistema</a></h3>
+          <p class="idx__que">Los 14 documentos de apoyo, del compendio maestro al programa de cuidado</p>
+          <p class="idx__quien">Para <b>Según el documento</b> · <span>17 apartados</span></p>
+        </div>
+        <ol class="idx__lista"><li><a href="otros.html#presentacion">Cómo leer</a></li><li><a href="otros.html#otros-mapa">Mapa del sistema</a></li><li><a href="otros.html#otros-compendio">1 · Compendio Maestro</a></li><li><a href="otros.html#otros-verificacion">2 · Verificación · 322 puntos</a></li><li><a href="otros.html#otros-auditoria">3 · Auditoría integral</a></li><li><a href="otros.html#otros-decisiones">4 · Decisiones de Gerencia</a></li><li><a href="otros.html#otros-100dias">5 · Programa de 100 días</a></li><li><a href="otros.html#otros-30dias">6 · Dosier de 30 días</a></li><li><a href="otros.html#otros-perfiles">7 · Protocolos por perfil</a></li><li><a href="otros.html#otros-innovacion">8 · Innovación · 18 fichas</a></li><li><a href="otros.html#otros-marca">9 · Marca y captación</a></li><li><a href="otros.html#otros-cuaderno">10 · Cuaderno de campo</a></li><li><a href="otros.html#otros-transicion-perfiles">11 · Puesta en marcha por perfil</a></li><li><a href="otros.html#otros-continuidad">12 · Continuidad legal y financiera</a></li><li><a href="otros.html#otros-posicionamiento">13 · No medias sonrisas</a></li><li><a href="otros.html#otros-gtc">14 · GTC · Giraldo Te Cuida</a></li><li><a href="otros.html#otros-cierre">Cierre</a></li></ol>
+      </section>
+      <section class="idx__doc">
+        <div class="idx__cab">
+          <p class="eyebrow">Instrumento</p>
+          <h3><a href="instrumentos/captura.html">Captura de la línea base</a></h3>
+          <p class="idx__que">Los 10 indicadores y los 5 números, mes a mes</p>
+          <p class="idx__quien">Para <b>Gerencia</b> · <span>5 apartados</span></p>
+        </div>
+        <ol class="idx__lista"><li><a href="instrumentos/captura.html#instrucciones">Instrucciones</a></li><li><a href="instrumentos/captura.html#definiciones">Definiciones</a></li><li><a href="instrumentos/captura.html#captura">Captura mensual</a></li><li><a href="instrumentos/captura.html#anual">Resumen anual</a></li><li><a href="instrumentos/captura.html#cinco">Los cinco números</a></li></ol>
+      </section>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="ticks" aria-hidden="true"></div></div>
+
 <section class="section">
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">El sistema</p>
       <h2>Qué es cada cosa</h2>
-      <p>La Tesis dirige, la presentación convence, el Plan de Marketing llena la agenda, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, todas las demás se apoyan en supuestos.</p>
+      <p>El índice dice dónde está todo; esto dice para qué sirve cada pieza. La Tesis dirige, la presentación convence, el Plan de Marketing llena la agenda, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, todas las demás se apoyan en supuestos.</p>
     </div>
     <div class="puerta">
       <a class="puerta__ficha puerta__ficha--ancha" href="memoria.html">
-        <p class="eyebrow">v6.0 · 23 apartados · Anexos A y B</p>
+        <p class="eyebrow">v7.0 · 23 apartados · Anexos A y B</p>
         <h3>Tesis de Dirección</h3>
         <p>El documento de gobierno. Posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, el puente hasta el objetivo de 1,2 M€ con su cartera de nueve campañas, y las quince decisiones que se someten a la Junta. Incluye los dos cuadernillos: quince hojas de acta y nueve fichas de campaña.</p>
         <p class="puerta__pie"><span>79 páginas en papel · lectura 55′</span><span class="puerta__flecha">Abrir →</span></p>
       </a>
       <a class="puerta__ficha" href="deck.html">
-        <p class="eyebrow">v6.0 · 43 diapositivas · 16:9</p>
+        <p class="eyebrow">v7.0 · 43 diapositivas · 16:9</p>
         <h3>Presentación de Junta</h3>
         <p>La tesis para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, <b>N</b> abre el guion del ponente con el minuto objetivo y la pregunta difícil, <b>E</b> filtra a la ruta corta de doce diapositivas para sesiones de veinte minutos.</p>
         <p class="puerta__pie"><span>Proyección y guion del ponente</span><span class="puerta__flecha">Abrir →</span></p>
       </a>
       <a class="puerta__ficha" href="marketing.html">
-        <p class="eyebrow">v6.0 · 76 acciones · 12 estados</p>
+        <p class="eyebrow">v7.0 · 76 acciones · 12 estados</p>
         <h3>Plan Maestro de Marketing</h3>
         <p>Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales. Catálogo completo con dueño, coste, plazo y semáforo legal; las diez piezas que nadie está haciendo en esta ciudad; el mapa de la ría y la Campaña de Mar.</p>
         <p class="puerta__pie"><span>Documento de dirección</span><span class="puerta__flecha">Abrir →</span></p>
       </a>
       <a class="puerta__ficha" href="instrumentos/captura.html">
-        <p class="eyebrow">v6.0 · 10 indicadores</p>
+        <p class="eyebrow">v7.0 · 10 indicadores</p>
         <h3>Captura de la línea base</h3>
         <p>El instrumento del §7 y del §13: doce hojas mensuales, semáforo automático, resumen anual con tendencia y los cinco números. Se rellena aquí mismo y se guarda en este equipo.</p>
         <p class="puerta__pie"><span>Se rellena en el navegador</span><span class="puerta__flecha">Abrir →</span></p>
       </a>
       <a class="puerta__ficha" href="manual.html">
-        <p class="eyebrow">v6.0 · 8 partes</p>
+        <p class="eyebrow">v7.0 · 8 partes</p>
         <h3>Manual Maestro de Operaciones</h3>
         <p>El documento troncal. Las catorce fases del recorrido del paciente, los manuales por puesto, la matriz RACI, los indicadores, el plan de incentivos y la puesta en marcha. Ocho partes numeradas, más el marco de vanguardia y los estándares transversales.</p>
         <p class="puerta__pie"><span>204 páginas en papel</span><span class="puerta__flecha">Abrir →</span></p>
       </a>
       <a class="puerta__ficha" href="index.html">
-        <p class="eyebrow">v6.0 · 12 fases de la primera visita</p>
+        <p class="eyebrow">v7.0 · 12 fases de la primera visita</p>
         <h3>Protocolo de Primera Visita</h3>
         <p>El detalle minuto a minuto de la visita que decide la conversión, con estándares transversales, casos especiales, guiones contrastados y anexos.</p>
         <p class="puerta__pie"><span>90 páginas en papel</span><span class="puerta__flecha">Abrir →</span></p>
       </a>
       <a class="puerta__ficha" href="otros.html">
-        <p class="eyebrow">v6.0 · 14 documentos de apoyo</p>
+        <p class="eyebrow">v7.0 · 14 documentos de apoyo</p>
         <h3>Otros documentos del sistema</h3>
         <p>Compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia, programa de 100 días, protocolos por perfil, innovación, marca, «No medias sonrisas» y el programa Giraldo Te Cuida.</p>
         <p class="puerta__pie"><span>135 páginas en papel</span><span class="puerta__flecha">Abrir →</span></p>
@@ -648,7 +760,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
         <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Sistema documental · Uso interno y confidencial</p>
       </div>
       <div><p class="eyebrow">Lema</p><p>No medias sonrisas.<br>Ni medias decisiones.</p></div>
-      <div><p class="eyebrow">Versiones</p><p>Versión única del sistema<br><strong>v6.0 · Agosto 2026</strong></p></div>
+      <div><p class="eyebrow">Versiones</p><p>Versión única del sistema<br><strong>v7.0 · Agosto 2026</strong></p></div>
     </div>
   </div>
 </footer>

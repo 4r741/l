@@ -18,19 +18,25 @@ import re
 import urllib.request
 
 RAIZ = pathlib.Path(__file__).parent
+
+# La versión no se teclea: sale de version.py, que es el único sitio donde vive.
+_v = {}
+exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
+VERSION, FECHA, CORTA = _v["VERSION"], _v["FECHA"], _v["CORTA"]
+
 DESTINO = RAIZ / "export"
 
 # Los archivos a exportar: nombre de salida, identificador dentro del archivo
 # único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
     "inicio.html": "Giraldo-INICIO-AQUI.html",
-    "memoria.html": "Tesis-Direccion-Giraldo-v6.html",
-    "deck.html": "Presentacion-Junta-Giraldo-v6.html",
-    "marketing.html": "Plan-Marketing-Giraldo-v6.html",
-    "manual.html": "Manual-Maestro-Giraldo-v6.html",
-    "index.html": "Protocolo-Primera-Visita-Giraldo-v6.html",
-    "otros.html": "Otros-Documentos-Giraldo-v6.html",
-    "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-v6.html",
+    "memoria.html": "Tesis-Direccion-Giraldo-v%s.html" % CORTA,
+    "deck.html": "Presentacion-Junta-Giraldo-v%s.html" % CORTA,
+    "marketing.html": "Plan-Marketing-Giraldo-v%s.html" % CORTA,
+    "manual.html": "Manual-Maestro-Giraldo-v%s.html" % CORTA,
+    "index.html": "Protocolo-Primera-Visita-Giraldo-v%s.html" % CORTA,
+    "otros.html": "Otros-Documentos-Giraldo-v%s.html" % CORTA,
+    "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-v%s.html" % CORTA,
 }
 
 DOCUMENTOS = {
@@ -116,7 +122,7 @@ def fuentes_incrustadas(url_css):
 # Archivo único: los tres documentos dentro de un solo HTML
 # ---------------------------------------------------------------------------
 
-UNIFICADO = "Giraldo-TODO-EN-UNO-v6.html"
+UNIFICADO = "Giraldo-TODO-EN-UNO-v%s.html" % CORTA
 
 # Un único script para los tres documentos: el original de cada página busca sus
 # elementos por id, y al unirlos habría colisiones. Aquí todo se busca dentro
@@ -750,9 +756,9 @@ CONTEXTO_UNICO = [
      "cuenta, ni dependencia externa, ni segundo archivo que se pueda perder: lo que ve aquí "
      "es todo lo que hace falta."),
     ("Siete documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. "
-     "Todos comparten la versión <strong>v6.0</strong>",
+     "Todos comparten la versión <strong>v7.0</strong>",
      "Siete documentos dentro de un solo archivo, que se abre en cualquier navegador sin "
-     "instalar nada y sin conexión. Todos comparten la versión <strong>v6.0</strong>"),
+     "instalar nada y sin conexión. Todos comparten la versión <strong>v7.0</strong>"),
 ]
 
 
@@ -1029,6 +1035,13 @@ def unificado(estilo_fuentes):
     assert capa, "no se encuentra la capa editorial de la tesis"
     estilos += "\n<style>\n" + capa.group(1) + "</style>"
 
+    # La portada trae los suyos —la rejilla de fichas y el índice general— y no
+    # viajaban al archivo único: el índice salía como una lista numerada sin
+    # formato. Sus clases son propias, así que entran sin acotar.
+    portada = estilos_propios(fuentes["inicio.html"], ".puerta__ficha{")
+    assert portada, "no se encuentran los estilos de la portada"
+    estilos += "\n<style>\n" + portada + "</style>"
+
     # la hoja de captura trae los suyos, sin colisiones con el sistema común
     hoja = estilos_propios(fuentes["instrumentos/captura.html"], "HOJA DE CAPTURA")
     assert hoja, "no se encuentran los estilos de la hoja de captura"
@@ -1076,7 +1089,7 @@ def unificado(estilo_fuentes):
         '  <div class="cabecera__fila">\n'
         '    <div class="cabecera__in">\n'
         '      <span class="cabecera__marca">Sistema documental <b>Giraldo</b>'
-        '<span>v6.0</span></span>\n'
+        '<span>v7.0</span></span>\n'
         '      <nav class="cabecera__docs" aria-label="Documentos del sistema">\n%s\n'
         '      </nav>\n'
         '      <button type="button" class="buscador" id="abrir-buscador" '

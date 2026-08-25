@@ -7,14 +7,14 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
-| **`memoria.html`** | Tesis de Dirección (v6.0) | Documento de gobierno para la Junta Directiva, en seis partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, la decisión —palancas, asignación de capital, hoja de ruta y los quince acuerdos que se someten a aprobación— y la cifra: el puente hasta 1,2 M€ con su cartera de nueve campañas |
+| **`memoria.html`** | Tesis de Dirección (v7.0) | Documento de gobierno para la Junta Directiva, en seis partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, la decisión —palancas, asignación de capital, hoja de ruta y los quince acuerdos que se someten a aprobación— y la cifra: el puente hasta 1,2 M€ con su cartera de nueve campañas |
 | **`deck.html`** | Presentación de Junta | Cuarenta y tres diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
-| **`marketing.html`** | Plan Maestro de Marketing (v6.0) | Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales: 12 estados, 6 arquetipos de la ría, 7 momentos de verdad, un catálogo de 76 acciones con dueño, coste, plazo y semáforo legal, 10 piezas propias y la Campaña de Mar |
+| **`marketing.html`** | Plan Maestro de Marketing (v7.0) | Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales: 12 estados, 6 arquetipos de la ría, 7 momentos de verdad, un catálogo de 76 acciones con dueño, coste, plazo y semáforo legal, 10 piezas propias y la Campaña de Mar |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
-| **`manual.html`** | Manual Maestro de Operaciones (v6.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
-| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v6.0) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
-| **`otros.html`** | Otros documentos del sistema (v6.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
+| **`manual.html`** | Manual Maestro de Operaciones (v7.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
+| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v7.0) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
+| **`otros.html`** | Otros documentos del sistema (v7.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
 
 Todos comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
 La Tesis añade sobre ese sistema una capa editorial propia —portada de declaración,
@@ -58,6 +58,40 @@ planificación digital, circuito de esterilización y circuito de compras.
 | 09 Formación | Incorporación, certificación por rol y entrenamiento continuo |
 | 10 Anexos | Guiones, preguntas frecuentes, errores, checklist imprimible, glosario, gobernanza y escalado de incidencias |
 
+## Índice general
+
+La portada abre con **el índice completo del sistema**: 125 apartados repartidos
+en los siete documentos, cada uno con qué es, para quién y todos sus apartados
+enlazados. Está entero —no es una selección— y después del índice viene qué es
+cada cosa, en ese orden.
+
+```bash
+python3 indice.py            # el índice en pantalla
+```
+
+No está tecleado: se extrae de la tira de secciones que cada documento lleva en
+su cabecera, de modo que si un documento gana un apartado el índice lo tiene en
+la siguiente construcción. Un índice escrito a mano es un índice que a la
+tercera edición miente.
+
+Dentro del archivo único, las 125 líneas se convierten en conmutadores: pulsar
+una abre su documento y salta a su apartado.
+
+## Una sola versión, en un solo sitio
+
+```bash
+python3 version.py           # v7.0 · Agosto 2026
+```
+
+La regla de versión única estaba escrita desde la v6.0 y aun así el número vivía
+tecleado en catorce archivos, así que subir de versión era una tarea manual con
+catorce oportunidades de olvidarse de uno. Ahora **`version.py` es el único
+sitio donde vive**: lo leen los generadores, el verificador, el libro de cálculo
+y los nombres de los archivos que se publican. Los ficheros fuente llevan
+`@VERSION@` y `@FECHA@`, y cada generador los estampa al escribir.
+
+Subir de versión es cambiar una línea y ejecutar `python3 build.py --todo`.
+
 ## Cómo se reconstruye
 
 ```bash
@@ -89,7 +123,7 @@ los demás.
 
 ## Versión única y verificación de coherencia
 
-Todas las piezas comparten número de versión y fecha: **v6.0 · Agosto 2026**.
+Todas las piezas comparten número de versión y fecha: **v7.0 · Agosto 2026**.
 Antes de esta edición convivían cuatro numeraciones —5.5, 1.3, 2.0 y 1.0— y no
 había forma de saber, mirando un documento, si estaba al día respecto de los
 demás. Trece contradicciones se habían colado por ahí; están listadas, una a una,
@@ -149,20 +183,20 @@ python3 build-export.py
 ```
 
 Genera en `export/` nueve archivos que funcionan **sin conexión**, con las
-tipografías incrustadas como data URI, más `LEEME.txt` y `Giraldo-HTML-v6.zip`
+tipografías incrustadas como data URI, más `LEEME.txt` y `Giraldo-HTML-v7.zip`
 con el paquete entero listo para repartir:
 
 | Archivo | Contenido |
 | --- | --- |
 | `Giraldo-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
-| `Captura-Linea-Base-Giraldo-v6.html` | La hoja de captura, lista para rellenar en el navegador |
-| `Giraldo-TODO-EN-UNO-v6.html` | **Los siete documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
-| `Tesis-Direccion-Giraldo-v6.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
-| `Presentacion-Junta-Giraldo-v6.html` | Solo la presentación, con guion del ponente y ruta corta |
-| `Plan-Marketing-Giraldo-v6.html` | Solo el plan de marketing, con la misma condición |
-| `Manual-Maestro-Giraldo-v6.html` | Solo el manual, con la misma condición |
-| `Protocolo-Primera-Visita-Giraldo-v6.html` | Solo el protocolo, con la misma condición |
-| `Otros-Documentos-Giraldo-v6.html` | Solo los otros documentos, con la misma condición |
+| `Captura-Linea-Base-Giraldo-v7.html` | La hoja de captura, lista para rellenar en el navegador |
+| `Giraldo-TODO-EN-UNO-v7.html` | **Los siete documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
+| `Tesis-Direccion-Giraldo-v7.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
+| `Presentacion-Junta-Giraldo-v7.html` | Solo la presentación, con guion del ponente y ruta corta |
+| `Plan-Marketing-Giraldo-v7.html` | Solo el plan de marketing, con la misma condición |
+| `Manual-Maestro-Giraldo-v7.html` | Solo el manual, con la misma condición |
+| `Protocolo-Primera-Visita-Giraldo-v7.html` | Solo el protocolo, con la misma condición |
+| `Otros-Documentos-Giraldo-v7.html` | Solo los otros documentos, con la misma condición |
 
 **Buscador de todo el compendio.** `/` —o `Ctrl+K`, o el botón de la
 cabecera— abre una lista sobre el documento: se escriben dos letras y se llega,
@@ -342,13 +376,13 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v6.0.pdf` | 79 |
-| `Manual-Maestro-Giraldo-v6.0.pdf` | 205 |
-| `Otros-Documentos-Giraldo-v6.0.pdf` | 135 |
-| `Protocolo-Primera-Visita-Giraldo-v6.0.pdf` | 90 |
-| `Plan-Marketing-Giraldo-v6.0.pdf` | 49 |
-| `Presentacion-Junta-Giraldo-v6.0.pdf` | 43 |
-| `Guion-del-Ponente-Giraldo-v6.0.pdf` | 43 |
+| `Tesis-Direccion-Giraldo-v7.0.pdf` | 79 |
+| `Manual-Maestro-Giraldo-v7.0.pdf` | 205 |
+| `Otros-Documentos-Giraldo-v7.0.pdf` | 135 |
+| `Protocolo-Primera-Visita-Giraldo-v7.0.pdf` | 90 |
+| `Plan-Marketing-Giraldo-v7.0.pdf` | 49 |
+| `Presentacion-Junta-Giraldo-v7.0.pdf` | 43 |
+| `Guion-del-Ponente-Giraldo-v7.0.pdf` | 43 |
 
 ## Captura de la línea base (`instrumentos/`)
 

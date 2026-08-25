@@ -18,8 +18,12 @@ from pathlib import Path
 RAIZ = Path(__file__).parent
 
 # ---------------------------------------------------------------- hechos canónicos
-VERSION = "6.0"
-FECHA = "Agosto 2026"
+# La versión vive en version.py y en ningún otro sitio. Se lee del código fuente
+# y no por importación, por el mismo motivo que el modelo de campañas: un .pyc
+# obsoleto validaría contra una versión que ya no es la vigente.
+_v = {}
+exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
+VERSION, FECHA = _v["VERSION"], _v["FECHA"]
 
 CIFRAS = {
     "partes numeradas del Manual": 8,

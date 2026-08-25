@@ -11,6 +11,25 @@ import re
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
+
+# La versión no se teclea: sale de version.py, que es el único sitio donde vive.
+_v = {}
+exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
+VERSION, FECHA, CORTA = _v["VERSION"], _v["FECHA"], _v["CORTA"]
+
+
+def sello(t):
+    """Estampa la versión vigente en el documento antes de escribirlo.
+
+    Los archivos fuente llevan @VERSION@ y @FECHA@ en vez del número, de modo
+    que subir de versión sea cambiar una línea de version.py y no catorce
+    archivos con catorce oportunidades de olvidarse de uno.
+    """
+    t = t.replace("@VERSION@", VERSION).replace("@FECHA@", FECHA).replace("@CORTA@", CORTA)
+    assert "@VERSION@" not in t and "@FECHA@" not in t
+    return t
+
+
 SP = RAIZ / "fuentes"
 
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
@@ -307,7 +326,7 @@ DIAPOSITIVAS = []
 A = DIAPOSITIVAS.append
 
 A('''<section class="slide slide--portada">
-  <p class="eyebrow">Junta Directiva · Agosto 2026 · Uso interno y confidencial</p>
+  <p class="eyebrow">Junta Directiva · @FECHA@ · Uso interno y confidencial</p>
   <h1>Memoria de<br><em>Dirección</em></h1>
   <p class="lede">Centro de Excelencia Implantológica Giraldo. Estado del proyecto, línea base, riesgos, hoja de ruta y las ocho decisiones que se someten a aprobación.</p>
 </section>''')
@@ -510,9 +529,9 @@ def parte(numero, rotulo, titulo, lede):
 
 # 1 · portada de declaración
 A('''<section class="slide slide--stmt">
-  <p class="eyebrow">Junta Directiva · Agosto 2026 · Uso interno y confidencial</p>
+  <p class="eyebrow">Junta Directiva · @FECHA@ · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Tesis de Dirección v6.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Tesis de Dirección v@VERSION@ · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 </section>''')
 
 # 2 · la pregunta de la sesión
@@ -998,7 +1017,7 @@ documento = """<!doctype html>
 
 <div class="barra" aria-hidden="true"><i data-deck="progreso"></i></div>
 <div class="hud">
-  <span class="hud__marca">Centro de Excelencia Implantológica Giraldo · Junta Directiva · v6.0</span>
+  <span class="hud__marca">Centro de Excelencia Implantológica Giraldo · Junta Directiva · v@VERSION@</span>
   <span class="hud__modo" data-deck="rotulo-ruta" hidden>Ruta corta</span>
   <span class="hud__modo" data-deck="rotulo-ponente" hidden>Ponente</span>
   <span class="hud__min" data-deck="minuto"></span>
@@ -1017,5 +1036,5 @@ documento = """<!doctype html>
 </html>
 """ % (fuentes, tokens, CSS, "\n".join(DIAPOSITIVAS), len(DIAPOSITIVAS), JS)
 
-(RAIZ / "deck.html").write_text(documento, encoding="utf-8")
+(RAIZ / "deck.html").write_text(sello(documento), encoding="utf-8")
 print("deck.html ·", len(DIAPOSITIVAS), "diapositivas ·", (RAIZ / "deck.html").stat().st_size // 1024, "KB")

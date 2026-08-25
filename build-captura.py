@@ -14,6 +14,25 @@ from pathlib import Path
 
 RAIZ = Path(__file__).parent
 
+# La versión no se teclea: sale de version.py, que es el único sitio donde vive.
+_v = {}
+exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
+VERSION, FECHA, CORTA = _v["VERSION"], _v["FECHA"], _v["CORTA"]
+
+
+def sello(t):
+    """Estampa la versión vigente en el documento antes de escribirlo.
+
+    Los archivos fuente llevan @VERSION@ y @FECHA@ en vez del número, de modo
+    que subir de versión sea cambiar una línea de version.py y no catorce
+    archivos con catorce oportunidades de olvidarse de uno.
+    """
+    t = t.replace("@VERSION@", VERSION).replace("@FECHA@", FECHA).replace("@CORTA@", CORTA)
+    assert "@VERSION@" not in t and "@FECHA@" not in t
+    return t
+
+
+
 CSS = """
 /* ============================================================
    HOJA DE CAPTURA — mismo sistema de diseño, con celdas que se
@@ -278,7 +297,7 @@ CUERPO = ("""
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Captura de la <b>línea base</b></span>
-        <span class="brand__tag">2026 · v6.0</span>
+        <span class="brand__tag">2026 · v@VERSION@</span>
       </a>
       <a class="crosslink" href="../memoria.html">Tesis de Dirección</a>
       <a class="crosslink" href="../manual.html">Manual Maestro</a>
@@ -296,7 +315,7 @@ CUERPO = ("""
 
 <main class="captura-raiz">
 
-<div class="printhead" aria-hidden="true"><b>Captura de la línea base · 2026 · v6.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Captura de la línea base · 2026 · v@VERSION@</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <section class="hero" id="portada">
   <div class="wrap">
@@ -443,7 +462,7 @@ CUERPO = ("""
         <p style="margin-top:.8rem">Documento de uso interno. Los datos se guardan únicamente en este equipo.</p>
       </div>
       <div><p class="eyebrow">Instrumento de</p><p>§7 · Línea base<br>§13 · Cuadro de mando</p></div>
-      <div><p class="eyebrow">Documentos de referencia</p><p>Tesis de Dirección v6.0<br>Manual Maestro v6.0<br>Protocolo de Primera Visita v6.0</p></div>
+      <div><p class="eyebrow">Documentos de referencia</p><p>Tesis de Dirección v@VERSION@<br>Manual Maestro v@VERSION@<br>Protocolo de Primera Visita v@VERSION@</p></div>
     </div>
   </div>
 </footer>
@@ -726,5 +745,5 @@ JS = ("""<script>
 
 destino = RAIZ / "instrumentos" / "captura.html"
 destino.parent.mkdir(parents=True, exist_ok=True)
-destino.write_text(cabecera + "\n" + CUERPO + "\n" + JS + "\n</body>\n</html>\n", encoding="utf-8")
+destino.write_text(sello(cabecera + "\n" + CUERPO + "\n" + JS + "\n</body>\n</html>\n"), encoding="utf-8")
 print("captura.html ·", destino.stat().st_size // 1024, "KB")

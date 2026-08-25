@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Ensambla marketing.html, el Plan Maestro de Marketing v6.0.
+"""Ensambla marketing.html, el Plan Maestro de Marketing v@VERSION@.
 
 La prosa vive en fuentes/marketing-0*.html; las tablas, los recuentos y las
 cuatro figuras se derivan de catalogo-acciones.py y de modelo-campanas.py. No
@@ -13,6 +13,24 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 SP = RAIZ / "fuentes"
+
+# La versión no se teclea: sale de version.py, que es el único sitio donde vive.
+_v = {}
+exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
+VERSION, FECHA, CORTA = _v["VERSION"], _v["FECHA"], _v["CORTA"]
+
+
+def sello(t):
+    """Estampa la versión vigente en el documento antes de escribirlo.
+
+    Los archivos fuente llevan @VERSION@ y @FECHA@ en vez del número, de modo
+    que subir de versión sea cambiar una línea de version.py y no catorce
+    archivos con catorce oportunidades de olvidarse de uno.
+    """
+    t = t.replace("@VERSION@", VERSION).replace("@FECHA@", FECHA).replace("@CORTA@", CORTA)
+    assert "@VERSION@" not in t and "@FECHA@" not in t
+    return t
+
 
 
 def carga(nombre, archivo):
@@ -78,7 +96,7 @@ barra = """
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Plan Maestro de <b>Marketing</b></span>
-        <span class="brand__tag">Giraldo · v6.0</span>
+        <span class="brand__tag">Giraldo · v@VERSION@</span>
       </a>
       <a class="crosslink" href="memoria.html">Tesis de Dirección</a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
@@ -92,7 +110,7 @@ barra = """
 
 <main>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v6.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v@VERSION@</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 """ % "\n".join('      <a href="%s">%s</a>' % (h, r) for h, r in TIRA)
 
 
@@ -234,8 +252,9 @@ FICHAS = {
 }
 for marca, valor in FICHAS.items():
     cuerpo = cuerpo.replace(marca, valor)
-sobran = re.findall(r"@[A-Z_0-9]+@", cuerpo)
-assert not sobran, "quedan marcas sin sustituir: %s" % sorted(set(sobran))
+# El sello de versión se estampa al final, así que sus marcas no cuentan aquí.
+sobran = set(re.findall(r"@[A-Z_0-9]+@", cuerpo)) - {"@VERSION@", "@FECHA@", "@CORTA@"}
+assert not sobran, "quedan marcas sin sustituir: %s" % sorted(sobran)
 
 # ---------------------------------------------------------------- numeración de figuras
 # Igual que en la Tesis: el número lo pone el generador, en el orden en que el
@@ -259,6 +278,6 @@ def numera(texto):
 cuerpo, n_figuras = numera(cuerpo)
 
 salida = RAIZ / "marketing.html"
-salida.write_text(cabecera + "\n" + barra + "\n" + cuerpo + "\n\n" + script, encoding="utf-8")
+salida.write_text(sello(cabecera + "\n" + barra + "\n" + cuerpo + "\n\n" + script), encoding="utf-8")
 print("marketing.html · %d acciones · %d figuras · %d KB"
       % (CAT["total"], n_figuras, salida.stat().st_size // 1024))

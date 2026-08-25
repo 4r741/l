@@ -13,6 +13,12 @@ import pathlib
 from playwright.sync_api import sync_playwright
 
 RAIZ = pathlib.Path(__file__).parent
+
+# La versión no se teclea: sale de version.py, que es el único sitio donde vive.
+_v = {}
+exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
+VERSION, FECHA, CORTA = _v["VERSION"], _v["FECHA"], _v["CORTA"]
+
 DESTINO = RAIZ / "export" / "pdf"
 NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 
@@ -24,13 +30,13 @@ PONENTE = ("document.body.classList.add('modo-ponente');"
 
 # origen → (nombre del PDF, rótulo de cabecera, apaisado, preparación extra)
 DOCUMENTOS = [
-    ("memoria.html", "Tesis-Direccion-Giraldo-v6.0.pdf", "Tesis de Dirección · v6.0", False, ""),
-    ("manual.html", "Manual-Maestro-Giraldo-v6.0.pdf", "Manual Maestro de Operaciones · v6.0", False, ""),
-    ("index.html", "Protocolo-Primera-Visita-Giraldo-v6.0.pdf", "Protocolo de Primera Visita · v6.0", False, ""),
-    ("otros.html", "Otros-Documentos-Giraldo-v6.0.pdf", "Otros documentos del sistema · v6.0", False, ""),
-    ("marketing.html", "Plan-Marketing-Giraldo-v6.0.pdf", "Plan Maestro de Marketing · v6.0", False, ""),
-    ("deck.html", "Presentacion-Junta-Giraldo-v6.0.pdf", "", True, ""),
-    ("deck.html", "Guion-del-Ponente-Giraldo-v6.0.pdf", "", "guion", PONENTE),
+    ("memoria.html", "Tesis-Direccion-Giraldo-v%s.pdf" % VERSION, "Tesis de Dirección · v7.0", False, ""),
+    ("manual.html", "Manual-Maestro-Giraldo-v%s.pdf" % VERSION, "Manual Maestro de Operaciones · v7.0", False, ""),
+    ("index.html", "Protocolo-Primera-Visita-Giraldo-v%s.pdf" % VERSION, "Protocolo de Primera Visita · v7.0", False, ""),
+    ("otros.html", "Otros-Documentos-Giraldo-v%s.pdf" % VERSION, "Otros documentos del sistema · v7.0", False, ""),
+    ("marketing.html", "Plan-Marketing-Giraldo-v%s.pdf" % VERSION, "Plan Maestro de Marketing · v7.0", False, ""),
+    ("deck.html", "Presentacion-Junta-Giraldo-v%s.pdf" % VERSION, "", True, ""),
+    ("deck.html", "Guion-del-Ponente-Giraldo-v%s.pdf" % VERSION, "", "guion", PONENTE),
 ]
 
 ESTILO_PIE = "font-family:Helvetica,Arial,sans-serif;font-size:7pt;color:#555;width:100%;padding:0 15mm;letter-spacing:.06em"

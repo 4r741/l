@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Ensambla memoria.html, la Tesis de Dirección v6.0.
+"""Ensambla memoria.html, la Tesis de Dirección v@VERSION@.
 
 Conserva íntegros los diez apartados de la Memoria v1.0 —renumerados— y los
 reordena en seis partes, intercalando la capa estratégica y la Parte VI, cuyas
@@ -12,6 +12,24 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 SP = RAIZ / "fuentes"
+
+# La versión no se teclea: sale de version.py, que es el único sitio donde vive.
+_v = {}
+exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
+VERSION, FECHA, CORTA = _v["VERSION"], _v["FECHA"], _v["CORTA"]
+
+
+def sello(t):
+    """Estampa la versión vigente en el documento antes de escribirlo.
+
+    Los archivos fuente llevan @VERSION@ y @FECHA@ en vez del número, de modo
+    que subir de versión sea cambiar una línea de version.py y no catorce
+    archivos con catorce oportunidades de olvidarse de uno.
+    """
+    t = t.replace("@VERSION@", VERSION).replace("@FECHA@", FECHA).replace("@CORTA@", CORTA)
+    assert "@VERSION@" not in t and "@FECHA@" not in t
+    return t
+
 
 # ---------------------------------------------------------------- cabecera
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
@@ -208,12 +226,14 @@ assert "<!--FIG" not in cuerpo
 
 # el documento cambia de nombre y de versión en todas sus referencias internas
 cuerpo = (cuerpo
-          .replace("Memoria de Dirección v1.0", "Tesis de Dirección v6.0")
+          .replace("Memoria de Dirección v1.0", "Tesis de Dirección v@VERSION@")
           .replace("Memoria de Dirección para la Junta Directiva",
                    "Tesis de Dirección para la Junta Directiva")
-          .replace("v1.0 · Agosto 2026<br>Revisión trimestral",
-                   "v6.0 · Agosto 2026<br>Revisión trimestral"))
+          .replace("v1.0 · @FECHA@<br>Revisión trimestral",
+                   "v@VERSION@ · @FECHA@<br>Revisión trimestral"))
 
-(RAIZ / "memoria.html").write_text(cabecera + "\n\n" + cuerpo + "\n\n" + script.replace(
-                              "</body>", (SP / "calculadora.js").read_text(encoding="utf-8") + "</body>"), encoding="utf-8")
+(RAIZ / "memoria.html").write_text(sello(
+    cabecera + "\n\n" + cuerpo + "\n\n" + script.replace(
+        "</body>", (SP / "calculadora.js").read_text(encoding="utf-8") + "</body>")),
+    encoding="utf-8")
 print("memoria.html ·", (RAIZ / "memoria.html").stat().st_size // 1024, "KB")
