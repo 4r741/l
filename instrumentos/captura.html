@@ -1069,13 +1069,54 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   }
 
   // ---------- copia, impresión y vaciado ----------
-  pieza("guardar").addEventListener("click", function(){
-    var blob = new Blob([JSON.stringify(estado, null, 2)], {type:"application/json"});
+  // Esta hoja se abre de tres maneras: como archivo suelto en el ordenador,
+  // dentro del archivo único y publicada en la web. En las dos primeras el
+  // enlace de descarga de siempre funciona; en la tercera el visor no deja que
+  // una página se descargue nada por su cuenta y el botón se quedaba mudo, que
+  // es lo peor que puede hacer un botón en la única hoja donde se teclean datos
+  // que cuesta trabajo reunir. Se pide la vía del visor cuando existe y se cae
+  // al enlace de siempre cuando no.
+  var NOMBRE_COPIA = "captura-linea-base-giraldo-2026.json";
+
+  function guardarPorEnlace(texto){
+    var blob = new Blob([texto], {type:"application/json"});
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "captura-linea-base-giraldo-2026.json";
+    a.download = NOMBRE_COPIA;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  var descargas;  // undefined = sin preguntar todavía; null = no hay
+  function conDescargas(){
+    if(descargas !== undefined) return Promise.resolve(descargas);
+    if(!(window.claude && typeof window.claude.use === "function")){
+      descargas = null;
+      return Promise.resolve(null);
+    }
+    return Promise.resolve(window.claude.use("downloads")).then(function(d){
+      descargas = d || null;
+      return descargas;
+    }, function(){ descargas = null; return null; });
+  }
+
+  pieza("guardar").addEventListener("click", function(){
+    var texto = JSON.stringify(estado, null, 2);
+    var aviso = pieza("aviso");
+    conDescargas().then(function(d){
+      if(!d){ guardarPorEnlace(texto); return; }
+      return d.save({filename: NOMBRE_COPIA, data: texto}).then(function(){
+        if(aviso) aviso.textContent = "Copia guardada: " + NOMBRE_COPIA;
+      }, function(err){
+        var cod = err && err.code;
+        if(cod === "declined") return;               // dijo que no; no se insiste
+        if(cod === "rate_limited"){
+          if(aviso) aviso.textContent = "Hay otra descarga esperando respuesta. Inténtelo en un momento.";
+          return;
+        }
+        guardarPorEnlace(texto);                      // último recurso
+      });
+    });
   });
   var fichero = pieza("fichero");
   pieza("cargar").addEventListener("click", function(){ fichero.click(); });
