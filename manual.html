@@ -99,6 +99,67 @@ a{color:inherit}
    --------------------------------------------------------------------------- */
 :root{--barra:118px}
 
+/* ---------------------------------------------------------------------------
+   Lo que se desplaza en horizontal tiene que decir por dónde sigue. Una tira de
+   secciones cortada a hueso en el borde no parece una tira que se desplaza:
+   parece una tira rota, y el lector no la arrastra porque no sabe que puede.
+   El desvanecido aparece solo del lado por el que queda contenido.
+   --------------------------------------------------------------------------- */
+.strip,.strip--nota{
+  --vel-izq:0px;--vel-der:0px;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--vel-izq),
+                     #000 calc(100% - var(--vel-der)),transparent 100%);
+  mask-image:linear-gradient(to right,transparent 0,#000 var(--vel-izq),
+             #000 calc(100% - var(--vel-der)),transparent 100%);
+  scroll-behavior:smooth;
+}
+.strip.hay-izq,.strip--nota.hay-izq{--vel-izq:38px}
+.strip.hay-der,.strip--nota.hay-der{--vel-der:38px}
+@media(prefers-reduced-motion:reduce){.strip,.strip--nota{scroll-behavior:auto}}
+
+/* Las tablas anchas lo dicen solas, sin guion: los dos primeros degradados van
+   con el contenido y tapan la sombra al llegar al borde; los dos últimos se
+   quedan quietos en la caja. Si no hay nada que desplazar, no se ve nada. */
+.tablewrap{
+  background:
+    linear-gradient(to right,var(--paper) 42%,rgba(247,248,245,0)) left center/38px 100% no-repeat local,
+    linear-gradient(to left,var(--paper) 42%,rgba(247,248,245,0)) right center/38px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%,rgba(23,32,30,.13),rgba(23,32,30,0)) left center/13px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%,rgba(23,32,30,.13),rgba(23,32,30,0)) right center/13px 100% no-repeat scroll;
+}
+
+/* ---------------------------------------------------------------------------
+   Volver arriba. Estos documentos son largos —la Tesis pasa de las sesenta
+   pantallas— y hasta ahora la única manera de regresar al principio era
+   arrastrar hacia arriba durante un rato o usar una tecla que en un teléfono no
+   existe. Aparece cuando ya se ha bajado de verdad y no antes, y no sale en
+   papel.
+   --------------------------------------------------------------------------- */
+.volver{
+  position:fixed;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));
+  z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:.4rem;
+  opacity:0;visibility:hidden;transform:translateY(.5rem);
+  transition:opacity .22s ease,transform .22s ease,visibility .22s;
+}
+.volver.se-ve{opacity:1;visibility:visible;transform:none}
+.volver button{
+  font:inherit;font-family:var(--f-mono);font-size:.63rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-2);background:color-mix(in srgb,var(--paper) 92%,transparent);
+  -webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);
+  border:1px solid var(--line);border-radius:999px;padding:.52rem .85rem;cursor:pointer;
+  display:flex;align-items:center;gap:.42rem;white-space:nowrap;
+  box-shadow:0 1px 2px rgba(23,32,30,.05),0 6px 18px rgba(23,32,30,.09);
+  transition:color .16s ease,border-color .16s ease,background .16s ease;
+}
+.volver button:hover{color:var(--accent-ink);border-color:var(--accent)}
+.volver button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.volver svg{flex:0 0 auto}
+@media(max-width:560px){
+  .volver button span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .volver button{padding:.62rem}
+}
+@media(prefers-reduced-motion:reduce){.volver{transition:none}}
+@media print{.volver{display:none}}
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -116,8 +177,6 @@ a{color:inherit}
 /* tira de fases */
 .strip{
   display:flex;gap:2px;overflow-x:auto;padding:0 0 .65rem;scrollbar-width:none;
-  -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);
-  mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);
 }
 .strip::-webkit-scrollbar{display:none}
 .strip a{
@@ -7343,6 +7402,62 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
 <script>
 (function(){
   "use strict";
+  /* ---- por dónde sigue una tira que se desplaza ---- */
+  (function(){
+    if(window.__TIRAS__) return; window.__TIRAS__ = 1;
+    var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));
+    if(!tiras.length) return;
+    function estado(t){
+      var mas = t.scrollWidth - t.clientWidth;
+      t.classList.toggle("hay-izq", mas > 2 && t.scrollLeft > 2);
+      t.classList.toggle("hay-der", mas > 2 && t.scrollLeft < mas - 2);
+    }
+    tiras.forEach(function(t){
+      estado(t);
+      t.addEventListener("scroll", function(){ estado(t); }, {passive:true});
+      if("ResizeObserver" in window) new ResizeObserver(function(){ estado(t); }).observe(t);
+    });
+    window.addEventListener("resize", function(){ tiras.forEach(estado); });
+    /* al conmutar de documento la tira cambia de contenido sin que nada haga
+       scroll: hay que volver a mirarla */
+    document.addEventListener("click", function(){ setTimeout(function(){ tiras.forEach(estado); }, 60); }, true);
+  })();
+
+  /* ---- volver arriba ---- */
+  (function(){
+    if(document.querySelector(".volver")) return;
+    var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var caja = document.createElement("div");
+    caja.className = "volver";
+    function boton(rotulo, etiqueta, dibujo){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", etiqueta);
+      b.innerHTML = dibujo + "<span>" + rotulo + "</span>";
+      caja.appendChild(b);
+      return b;
+    }
+    var FLECHA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M6 10.5V2M6 2 2.2 5.8M6 2l3.8 3.8" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var LISTA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M1.6 2.5h8.8M1.6 6h8.8M1.6 9.5h5.6" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round"/></svg>';
+    boton("Arriba", "Volver al principio del documento", FLECHA)
+      .addEventListener("click", function(){
+        window.scrollTo({top:0, behavior: quieto ? "auto" : "smooth"});
+      });
+    document.body.appendChild(caja);
+    var visible = false;
+    function mirar(){
+      var debe = window.scrollY > window.innerHeight * 1.2;
+      if(debe !== visible){ visible = debe; caja.classList.toggle("se-ve", debe); }
+    }
+    mirar();
+    window.addEventListener("scroll", mirar, {passive:true});
+    window.addEventListener("resize", mirar);
+  })();
+
   /* ---- alto real de la barra, para que ningún salto quede debajo ---- */
   (function(){
     var barra = document.querySelector(".topbar");

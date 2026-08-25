@@ -128,7 +128,10 @@ CSS = """
 .idx__mando{
   display:flex;align-items:center;gap:.7rem 1rem;flex-wrap:wrap;margin-top:1.6rem;
   padding:.5rem .7rem;border:1px solid var(--line);background:var(--surface);
-  position:sticky;top:0;z-index:20;
+  /* Se queda a la vista mientras se recorre el índice, pero por debajo de la
+     barra y no detrás de ella: pegado a top:0 el filtro se metía bajo la
+     cabecera fija justo cuando hay 649 líneas que filtrar. */
+  position:sticky;top:var(--barra);z-index:20;
 }
 .idx__buscar{display:flex;align-items:center;gap:.55rem;flex:1 1 260px;min-width:0;color:var(--muted)}
 .idx__buscar input{
@@ -387,6 +390,63 @@ JS_INDICE = """
 <script>
 (function(){
   "use strict";
+
+  /* ---- por dónde sigue una tira que se desplaza ---- */
+  (function(){
+    if(window.__TIRAS__) return; window.__TIRAS__ = 1;
+    var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));
+    if(!tiras.length) return;
+    function estado(t){
+      var mas = t.scrollWidth - t.clientWidth;
+      t.classList.toggle("hay-izq", mas > 2 && t.scrollLeft > 2);
+      t.classList.toggle("hay-der", mas > 2 && t.scrollLeft < mas - 2);
+    }
+    tiras.forEach(function(t){
+      estado(t);
+      t.addEventListener("scroll", function(){ estado(t); }, {passive:true});
+      if("ResizeObserver" in window) new ResizeObserver(function(){ estado(t); }).observe(t);
+    });
+    window.addEventListener("resize", function(){ tiras.forEach(estado); });
+    /* al conmutar de documento la tira cambia de contenido sin que nada haga
+       scroll: hay que volver a mirarla */
+    document.addEventListener("click", function(){ setTimeout(function(){ tiras.forEach(estado); }, 60); }, true);
+  })();
+
+  /* ---- volver arriba ---- */
+  (function(){
+    if(document.querySelector(".volver")) return;
+    var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var caja = document.createElement("div");
+    caja.className = "volver";
+    function boton(rotulo, etiqueta, dibujo){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", etiqueta);
+      b.innerHTML = dibujo + "<span>" + rotulo + "</span>";
+      caja.appendChild(b);
+      return b;
+    }
+    var FLECHA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M6 10.5V2M6 2 2.2 5.8M6 2l3.8 3.8" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var LISTA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M1.6 2.5h8.8M1.6 6h8.8M1.6 9.5h5.6" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round"/></svg>';
+    boton("Arriba", "Volver al principio del documento", FLECHA)
+      .addEventListener("click", function(){
+        window.scrollTo({top:0, behavior: quieto ? "auto" : "smooth"});
+      });
+    document.body.appendChild(caja);
+    var visible = false;
+    function mirar(){
+      var debe = window.scrollY > window.innerHeight * 1.2;
+      if(debe !== visible){ visible = debe; caja.classList.toggle("se-ve", debe); }
+    }
+    mirar();
+    window.addEventListener("scroll", mirar, {passive:true});
+    window.addEventListener("resize", mirar);
+  })();
+
 
   /* ---- alto real de la barra, para que ningún salto quede debajo ----
      En el archivo único esta barra no existe —la sustituye la cabecera común,

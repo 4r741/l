@@ -176,6 +176,72 @@ SCRIPT = """<script>
   window.addEventListener("resize", medirCabecera);
   if("ResizeObserver" in window) new ResizeObserver(medirCabecera).observe(cabecera);
 
+
+  /* ---- por dónde sigue una tira que se desplaza ---- */
+  (function(){
+    if(window.__TIRAS__) return; window.__TIRAS__ = 1;
+    var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));
+    if(!tiras.length) return;
+    function estado(t){
+      var mas = t.scrollWidth - t.clientWidth;
+      t.classList.toggle("hay-izq", mas > 2 && t.scrollLeft > 2);
+      t.classList.toggle("hay-der", mas > 2 && t.scrollLeft < mas - 2);
+    }
+    tiras.forEach(function(t){
+      estado(t);
+      t.addEventListener("scroll", function(){ estado(t); }, {passive:true});
+      if("ResizeObserver" in window) new ResizeObserver(function(){ estado(t); }).observe(t);
+    });
+    window.addEventListener("resize", function(){ tiras.forEach(estado); });
+    /* al conmutar de documento la tira cambia de contenido sin que nada haga
+       scroll: hay que volver a mirarla */
+    document.addEventListener("click", function(){ setTimeout(function(){ tiras.forEach(estado); }, 60); }, true);
+  })();
+
+  /* ---- volver arriba ---- */
+  (function(){
+    if(document.querySelector(".volver")) return;
+    var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var caja = document.createElement("div");
+    caja.className = "volver";
+    function boton(rotulo, etiqueta, dibujo){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", etiqueta);
+      b.innerHTML = dibujo + "<span>" + rotulo + "</span>";
+      caja.appendChild(b);
+      return b;
+    }
+    var FLECHA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M6 10.5V2M6 2 2.2 5.8M6 2l3.8 3.8" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var LISTA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M1.6 2.5h8.8M1.6 6h8.8M1.6 9.5h5.6" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round"/></svg>';
+    boton("Índice", "Ir al índice general del sistema", LISTA)
+      .addEventListener("click", function(){
+        mostrar("doc-inicio", true);
+        var idx = document.querySelector(".idx__mando");
+        if(idx) idx.scrollIntoView({behavior: quieto ? "auto" : "smooth", block:"start"});
+        else window.scrollTo({top:0, behavior: quieto ? "auto" : "smooth"});
+      });
+    boton("Arriba", "Volver al principio del documento", FLECHA)
+      .addEventListener("click", function(){
+        window.scrollTo({top:0, behavior: quieto ? "auto" : "smooth"});
+      });
+    document.body.appendChild(caja);
+    var visible = false;
+    function mirar(){
+      var deck = document.getElementById("doc-deck");
+      var enDeck = deck && deck.style.display !== "none" && deck.offsetParent !== null;
+      var debe = !enDeck && window.scrollY > window.innerHeight * 1.2;
+      if(debe !== visible){ visible = debe; caja.classList.toggle("se-ve", debe); }
+    }
+    mirar();
+    window.addEventListener("scroll", mirar, {passive:true});
+    window.addEventListener("resize", mirar);
+  })();
+
   /* ---- teclado: se pasa de documento como se pasa de capítulo ---- */
   document.addEventListener("keydown", function(e){
     if(e.ctrlKey || e.metaKey || e.altKey) return;
@@ -617,7 +683,7 @@ ESTILO_DOC = """<style>
 /* Altura fija: si la fila cambia de alto al conmutar, el texto pega un salto y
    se nota la costura. Todos los índices ocupan lo mismo, tengan lo que tengan. */
 .cabecera__indice .cabecera__in{display:block;height:44px}
-.cabecera__indice .strip{height:44px;align-items:center;padding:0;mask-image:none;-webkit-mask-image:none}
+.cabecera__indice .strip{height:44px;align-items:center;padding:0}
 .cabecera__indice .strip a{padding:.3rem .58rem 0;border-top-width:2px}
 .strip--nota{
   display:flex;gap:.4rem 1.5rem;flex-wrap:nowrap;align-items:center;overflow-x:auto;
@@ -645,7 +711,26 @@ ESTILO_DOC = """<style>
 #doc-deck .hud{bottom:14px}
 
 @media(max-width:700px){
-  .cabecera__marca{font-size:.86rem;width:100%;margin-bottom:.2rem}
+  /* La fila de documentos se plegaba en tres líneas y la cabecera se comía la
+     quinta parte de la pantalla de un teléfono, en un archivo que se lee casi
+     todo hacia abajo. Ahora la marca y el buscador comparten renglón y los ocho
+     documentos se desplazan en uno solo, con su desvanecido diciendo por dónde
+     sigue la fila. */
+  .cabecera__fila .cabecera__in{flex-wrap:wrap;gap:.3rem .6rem;padding:.44rem 0}
+  .cabecera__marca{font-size:.86rem;margin:0}
+  .buscador{margin-left:auto}
+  .cabecera__docs{
+    order:3;width:100%;margin-left:0;justify-content:flex-start;
+    flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    --vel-izq:0px;--vel-der:0px;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--vel-izq),
+                       #000 calc(100% - var(--vel-der)),transparent 100%);
+    mask-image:linear-gradient(to right,transparent 0,#000 var(--vel-izq),
+               #000 calc(100% - var(--vel-der)),transparent 100%);
+  }
+  .cabecera__docs::-webkit-scrollbar{display:none}
+  .cabecera__docs.hay-izq{--vel-izq:26px}
+  .cabecera__docs.hay-der{--vel-der:26px}
 }
 
 
@@ -922,11 +1007,15 @@ def conmutadores(html, propio):
 # Fila de índice para los dos documentos que no tienen secciones. No es relleno:
 # dice lo que a esa altura le hace falta saber a quien está mirando.
 SIN_INDICE = {
+    # Cabe entera en la pantalla en la que se presenta esto. Lo que sobre por
+    # la derecha en una más estrecha lo dice el desvanecido del borde, pero lo
+    # que se lee de un vistazo tiene que ser lo útil, no el principio de una
+    # frase cortada.
     "doc-inicio": ("<b>Siete documentos, un archivo</b>"
                    "<span>Barra negra: cambiar de documento</span>"
-                   "<span>Barra clara: moverse dentro de él</span>"
-                   "<span>Teclas <kbd>[</kbd> y <kbd>]</kbd>: documento anterior y siguiente</span>"
-                   "<span>Todo funciona sin conexión</span>"),
+                   "<span>Barra clara: moverse dentro</span>"
+                   "<span><kbd>/</kbd> buscar · <kbd>[</kbd> <kbd>]</kbd> anterior y siguiente</span>"
+                   "<span>Funciona sin conexión</span>"),
     "doc-deck": ("<b>43 diapositivas · 16:9</b>"
                  "<span><kbd>←</kbd> <kbd>→</kbd> <kbd>espacio</kbd> pasar</span>"
                  "<span><kbd>N</kbd> guion del ponente</span>"

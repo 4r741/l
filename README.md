@@ -95,6 +95,30 @@ los titulares, la primera construcción destapó cuatro que seguían hablando de
 de ejemplo que remitía a un §9 renumerado hace tiempo a §17. Ninguno se veía
 leyendo el documento seguido; todos se vieron en el índice.
 
+## Moverse
+
+Siete documentos y seiscientas páginas de texto no se recorren solo con el
+índice. Lo que hay para moverse dentro de ellos:
+
+| Pieza | Qué resuelve |
+|---|---|
+| Tira de secciones | Marca en qué apartado se está y se desplaza sola para tenerlo a la vista |
+| Desvanecido de los bordes | Toda fila que se desplaza en horizontal —tira, conmutador, tabla ancha— dice por qué lado sigue, y solo por ese lado |
+| Volver arriba | Aparece cuando ya se ha bajado de verdad. En el archivo, con un segundo botón al índice general |
+| Buscador `/` | Texto completo de los siete documentos, con relevancia y fragmento |
+| Teclas `[` y `]` | Documento anterior y siguiente, dentro del archivo |
+
+Ninguna aparece en papel.
+
+Tres de ellas se añadieron después de mirar la interfaz con ojos de lector y no
+de autor. La tira de secciones se cortaba a hueso en el borde: no parecía una
+tira que se desplaza, parecía una tira rota, y nadie la arrastraba porque nada
+decía que se pudiera. El mando del índice estaba pegado a `top:0`, es decir
+**detrás** de la cabecera fija: al recorrer las 649 líneas el filtro
+desaparecía justo cuando hace falta. Y en un teléfono la fila de documentos se
+plegaba en tres líneas y la cabecera se comía la quinta parte de la pantalla; en
+una sola fila que se desplaza, pasó de 188 a 123 píxeles.
+
 ## Una sola versión, en un solo sitio
 
 ```bash
