@@ -7,14 +7,14 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | Archivo | Documento | Alcance |
 | --- | --- | --- |
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
-| **`memoria.html`** | Tesis de Dirección (v7.0) | Documento de gobierno para la Junta Directiva, en seis partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, la decisión —palancas, asignación de capital, hoja de ruta y los quince acuerdos que se someten a aprobación— y la cifra: el puente hasta 1,2 M€ con su cartera de nueve campañas |
+| **`memoria.html`** | Tesis de Dirección (v8.0) | Documento de gobierno para la Junta Directiva, en seis partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, la decisión —palancas, asignación de capital, hoja de ruta y los quince acuerdos que se someten a aprobación— y la cifra: el puente hasta 1,2 M€ con su cartera de nueve campañas |
 | **`deck.html`** | Presentación de Junta | Cuarenta y tres diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
-| **`marketing.html`** | Plan Maestro de Marketing (v7.0) | Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales: 12 estados, 6 arquetipos de la ría, 7 momentos de verdad, un catálogo de 76 acciones con dueño, coste, plazo y semáforo legal, 10 piezas propias y la Campaña de Mar |
+| **`marketing.html`** | Plan Maestro de Marketing (v8.0) | Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales: 12 estados, 6 arquetipos de la ría, 7 momentos de verdad, un catálogo de 76 acciones con dueño, coste, plazo y semáforo legal, 10 piezas propias y la Campaña de Mar |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
-| **`manual.html`** | Manual Maestro de Operaciones (v7.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
-| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v7.0) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
-| **`otros.html`** | Otros documentos del sistema (v7.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
+| **`manual.html`** | Manual Maestro de Operaciones (v8.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
+| **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v8.0) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
+| **`otros.html`** | Otros documentos del sistema (v8.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
 
 Todos comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
 La Tesis añade sobre ese sistema una capa editorial propia —portada de declaración,
@@ -37,7 +37,7 @@ se lee en una sala de juntas, no en un puesto de trabajo.
 | VIII · Puesta en marcha | Las 72 horas previas y la mañana del día 1 |
 | Anexos | Diez anexos: plantillas de reporte, cadencia, checklist de implantación, checklist imprimible de la PV, checklists por puesto, calendario, mapa maestro de documentos, ficha de auditoría trimestral, guion de reuniones y glosario de términos |
 | Otros documentos del sistema | Compendio Maestro, Protocolo de Verificación de 322 puntos, Auditoría de la clínica adquirida y las 20 decisiones de gerencia con las 11 verificaciones externas |
-| Notas de edición | Las diez incoherencias detectadas, con la decisión tomada en cada una, los puntos que siguen abiertos y el control de cambios |
+| Puntos abiertos | Lo que todavía no está cerrado, de quién depende y cómo se opera mientras tanto |
 
 Seis diagramas en SVG (sin librerías) sustituyen a los esquemas de texto del documento
 original: circuito de producción, programa de mantenimiento, gestión de huecos,
@@ -60,8 +60,8 @@ planificación digital, circuito de esterilización y circuito de compras.
 
 ## Índice general
 
-La portada abre con **el índice completo del sistema**: **125 apartados y 524
-subapartados —649 líneas— repartidos en los siete documentos**, cada uno con qué
+La portada abre con **el índice completo del sistema**: **124 apartados y 522
+subapartados —646 líneas— repartidos en los siete documentos**, cada uno con qué
 es, para quién y todo su contenido enlazado, titular a titular. Está entero —no
 es una selección ni un resumen— y después del índice viene qué es cada cosa, en
 ese orden.
@@ -86,7 +86,7 @@ Solo añade: un titular que ya tiene ancla se queda como está. Corre dentro de
 `build.py`, antes de construir la portada.
 
 El índice trae mando propio —filtro en vivo, contador de líneas y un botón para
-plegarlo a solo apartados— y dentro del archivo único **las 649 líneas se
+plegarlo a solo apartados— y dentro del archivo único **las 646 líneas se
 convierten en conmutadores**: pulsar una abre su documento y salta a su titular.
 
 Un índice tan detallado hace además de auditor. Al sacar a la superficie todos
@@ -114,10 +114,45 @@ Tres de ellas se añadieron después de mirar la interfaz con ojos de lector y n
 de autor. La tira de secciones se cortaba a hueso en el borde: no parecía una
 tira que se desplaza, parecía una tira rota, y nadie la arrastraba porque nada
 decía que se pudiera. El mando del índice estaba pegado a `top:0`, es decir
-**detrás** de la cabecera fija: al recorrer las 649 líneas el filtro
+**detrás** de la cabecera fija: al recorrer las 646 líneas el filtro
 desaparecía justo cuando hace falta. Y en un teléfono la fila de documentos se
 plegaba en tres líneas y la cabecera se comía la quinta parte de la pantalla; en
 una sola fila que se desplaza, pasó de 188 a 123 píxeles.
+
+## Sin historial de ediciones
+
+Un documento de gobierno dice lo que el centro hace, **no lo que el documento
+decía antes**. El sistema arrastraba lo contrario: un §0.2 entero de la Tesis
+—«Qué se reconcilió en esta versión», con trece filas de «qué decía la 5.5» y
+«qué dice la 6.0»—, una sección de «Notas de edición · historial» en el Manual
+con diez incoherencias resueltas y un control de cambios de la 2.6 a la 5.5, y
+un Anexo G del Protocolo con lo mismo. Eso es trabajo de taller: le interesa a
+quien lo edita y le estorba a quien lo lee.
+
+Fuera, entero. Lo que sí se queda es lo que mira hacia delante: **los puntos
+abiertos** —qué falta por decidir, de quién depende y cómo se opera mientras
+tanto— y **el censo documental del §0.1**, que es un inventario de lo que existe
+hoy, no un relato de cómo se llegó hasta aquí.
+
+Para que no vuelva, tres reglas en el verificador:
+
+| Regla | Qué impide |
+|---|---|
+| `comprueba_sin_historial` | Veinte expresiones —«notas de edición», «control de cambios», «qué se reconcilió», «en esta versión»— no pueden aparecer en ningún documento |
+| `comprueba_numeros_de_version` | Toda versión que un documento declare tiene que ser la vigente, buscada por patrón y no por forma |
+| `comprueba_pies` | El pie de cada documento declara la versión vigente |
+
+Las tres nacieron de fallos reales. **El pie del Manual llevaba tres ediciones
+anunciando la 5.5**, y su ficha de control también: están a seis mil líneas del
+principio y nadie baja hasta ahí a leer un número que da por supuesto. La ficha
+se escapó incluso a la primera versión de la comprobación, porque pone el rótulo
+en una casilla y el número en la de al lado, de modo que la palabra «versión»
+nunca llega a tocar la cifra. Por eso la regla busca ahora el patrón.
+
+Y `versiona.py` cierra el círculo: los cinco documentos generados toman la
+versión de `version.py` al construirse, y los tres escritos a mano la reciben en
+el primer paso de `build.py`. Subir de versión vuelve a ser lo que decía que
+era: **cambiar una línea**.
 
 ## Con teclado, con lector de pantalla y con el dedo
 
@@ -126,7 +161,7 @@ una sola fila que se desplaza, pasó de 188 a 123 píxeles.
 | Saltar al contenido | Primera parada del tabulador. Sin él había entre cuarenta y cincuenta paradas —marca, ocho documentos, hasta treinta y cinco secciones— antes de la primera línea de texto |
 | Tablas alcanzables | Una tabla más ancha que su caja solo se podía recorrer con ratón o con el dedo. Ahora se llega con el tabulador y se recorre con las flechas, anunciada con el titular de su apartado |
 | Recuentos anunciados | «4 líneas», «53 resultados»: un lector de pantalla los dice al cambiar |
-| Dianas del dedo | Cada línea del índice pasa de 22 a 29 píxeles donde se toca. Son 649 y hay que acertar |
+| Dianas del dedo | Cada línea del índice pasa de 22 a 29 píxeles donde se toca. Son 646 y hay que acertar |
 | Paleta táctil | En un teléfono no hay Esc ni flechas: el pie deja de explicar teclas que no existen y el botón de cerrar es un botón de 44 px, no la palabra «esc» |
 
 La hoja de captura ya tenía nombre accesible en sus sesenta y cinco campos. La
@@ -137,7 +172,7 @@ que hubo que hacer fue que las piezas nuevas no salieran impresas.
 ## Una sola versión, en un solo sitio
 
 ```bash
-python3 version.py           # v7.0 · Agosto 2026
+python3 version.py           # v8.0 · Agosto 2026
 ```
 
 La regla de versión única estaba escrita desde la v6.0 y aun así el número vivía
@@ -192,11 +227,11 @@ fórmulas y los mismos 146 valores en caché que antes.
 
 ## Versión única y verificación de coherencia
 
-Todas las piezas comparten número de versión y fecha: **v7.0 · Agosto 2026**.
+Todas las piezas comparten número de versión y fecha: **v8.0 · Agosto 2026**.
 Antes de esta edición convivían cuatro numeraciones —5.5, 1.3, 2.0 y 1.0— y no
 había forma de saber, mirando un documento, si estaba al día respecto de los
 demás. Trece contradicciones se habían colado por ahí; están listadas, una a una,
-en el §0.2 de la Tesis. La decimotercera la encontró el propio verificador.
+por el propio verificador antes de publicar.
 
 ```bash
 python3 check-coherencia.py
@@ -318,7 +353,6 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en seis p
 | Manifiesto | Las ocho reglas que ordenan el resto del documento, a partir de «no medias sonrisas» |
 | §0 Control | Ficha del documento, marcas de naturaleza (hecho / modelo / pendiente) y cómo citar en acta |
 | §0.1 Censo documental | Qué piezas existen, de qué clase y con qué propietario. La única fuente de la cifra «17 documentos operativos» |
-| §0.2 Qué se reconcilió | Las trece contradicciones que arrastraba la 5.5 y cómo quedan resueltas |
 | §1 Resumen ejecutivo | Qué está hecho, qué falta y qué se pide hoy |
 | **I · La posición** | |
 | §2 Tesis | Los tres segmentos desatendidos y los cinco indicadores que acreditan liderazgo |
@@ -445,13 +479,13 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v7.0.pdf` | 79 |
-| `Manual-Maestro-Giraldo-v7.0.pdf` | 205 |
-| `Otros-Documentos-Giraldo-v7.0.pdf` | 135 |
-| `Protocolo-Primera-Visita-Giraldo-v7.0.pdf` | 90 |
-| `Plan-Marketing-Giraldo-v7.0.pdf` | 49 |
-| `Presentacion-Junta-Giraldo-v7.0.pdf` | 43 |
-| `Guion-del-Ponente-Giraldo-v7.0.pdf` | 43 |
+| `Tesis-Direccion-Giraldo-v8.0.pdf` | 79 |
+| `Manual-Maestro-Giraldo-v8.0.pdf` | 205 |
+| `Otros-Documentos-Giraldo-v8.0.pdf` | 135 |
+| `Protocolo-Primera-Visita-Giraldo-v8.0.pdf` | 90 |
+| `Plan-Marketing-Giraldo-v8.0.pdf` | 49 |
+| `Presentacion-Junta-Giraldo-v8.0.pdf` | 43 |
+| `Guion-del-Ponente-Giraldo-v8.0.pdf` | 43 |
 
 ## Captura de la línea base (`instrumentos/`)
 

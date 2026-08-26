@@ -21,6 +21,10 @@ GEN = RAIZ / "generadores"
 
 # (guion, rótulo). Se ejecutan en este orden y no en otro.
 DOCUMENTOS = [
+    # Lo primero: que los tres documentos escritos a mano lleven la versión
+    # vigente. Los generados la toman de version.py al construirse; aquellos la
+    # llevaban tecleada, y uno se quedó atrás tres ediciones seguidas.
+    (RAIZ / "versiona.py", "versión vigente en los documentos escritos a mano"),
     (GEN / "figuras-1-3.py", "Figuras F1–F3 · descuento, conversión y valor del paciente"),
     (GEN / "figuras-4-6.py", "Figuras F4–F6 · escenarios, sensibilidad y valor acumulado"),
     (GEN / "figuras-7.py", "Figura F7 · valor de empresa por peldaño"),

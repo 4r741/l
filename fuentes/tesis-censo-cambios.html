@@ -27,35 +27,6 @@
 
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">La regla de versión única</p>
-      <p>Todas las piezas del sistema comparten número de versión y fecha. No hay documentos «en la 5.5» conviviendo con otros «en la 1.3».</p>
-      <p>Antes de esta edición había cuatro numeraciones distintas en circulación, y ninguna forma de saber, mirando un documento, si estaba al día respecto de los demás. A partir de v@VERSION@ se publica el sistema entero o no se publica: si un documento cambia lo suficiente como para merecer versión nueva, la reciben todos. Es más caro de mantener y es la única manera de que una cifra citada en Junta signifique lo mismo en los siete archivos.</p>
-    </div>
-
-    <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="cambios">§0.2 · Qué se reconcilió en esta versión</h3>
-    <p style="color:var(--ink-2);max-width:70ch">La edición 5.5 acumulaba trece contradicciones entre documentos. Ninguna era grave por separado; juntas hacían imposible citar una cifra con seguridad. Se listan porque <strong>un cambio no declarado es indistinguible de un error</strong>, y porque la Junta tiene derecho a saber qué se ha tocado desde la última vez que leyó estos documentos.</p>
-
-    <div class="tablewrap">
-      <table>
-        <thead><tr><th>#</th><th>Qué decía la 5.5</th><th>Qué dice la 6.0</th></tr></thead>
-        <tbody>
-          <tr><td class="num">1</td><td>La ficha de control de este documento se declaraba <strong>versión 1.0</strong> mientras el resto del documento se anunciaba como 2.0</td><td>Versión única v@VERSION@, declarada en la ficha, en la portada, en la cabecera de impresión y en el pie</td></tr>
-          <tr><td class="num">2</td><td>§13 abría con «<strong>ocho</strong> indicadores nucleares» y su propio diccionario definía diez</td><td>Diez, con el origen de los dos últimos explicado: los exigen D13 y D14</td></tr>
-          <tr><td class="num">3</td><td>La presentación decía «ocho indicadores» y mostraba «<strong>0 / 8</strong>»</td><td>Diez y «0 / 10», con el mismo desglose que §13</td></tr>
-          <tr><td class="num">4</td><td>§11 anunciaba cinco críticos y siete de segundo orden, sin mencionar el registro puntuado de diez que va justo debajo</td><td>Las tres cifras se anuncian juntas y se explica de dónde salen los cinco del registro que no son críticos</td></tr>
-          <tr><td class="num">5</td><td>La portada atribuía al Manual «<strong>10 partes</strong>»; el propio Manual declara ocho más los estándares transversales</td><td>Ocho partes, la misma cifra en los dos sitios</td></tr>
-          <tr><td class="num">6</td><td>«17 documentos» aparecía en tres sitios sin que constara en ninguno <strong>de qué se componían</strong></td><td>Censo documental en §0.1: 3 troncales + 14 de apoyo = 17 operativos</td></tr>
-          <tr><td class="num">7</td><td>Cuatro numeraciones conviviendo —5.5, 1.3, 2.0 y 1.0— sin forma de saber si un documento estaba al día</td><td>Regla de versión única: los siete archivos comparten número y fecha</td></tr>
-          <tr><td class="num">8</td><td>§0 remitía a «§1 a §10» y «D1 a D8» cuando ya existían §23 y D15</td><td>Rangos corregidos y verificados por el guion de coherencia</td></tr>
-          <tr><td class="num">9</td><td>El pie citaba Manual v5.5, Protocolo v5.5 y Otros v1.3, y omitía la hoja de captura</td><td>Los cuatro documentos de referencia, todos en v@VERSION@</td></tr>
-          <tr><td class="num">10</td><td>El Protocolo llamaba «<strong>el recorrido</strong>» a sus doce fases, el mismo término con el que el Manual nombra las catorce del recorrido del paciente</td><td>«Las doce fases de la primera visita» en el Protocolo; «el recorrido del paciente» queda reservado a las catorce del Manual</td></tr>
-          <tr><td class="num">11</td><td>El panel de control de Otros documentos citaba una Tesis en v2.0 junto a documentos en v5.5</td><td>Una sola versión para los cuatro</td></tr>
-          <tr><td class="num">12</td><td>La hoja de captura se declaraba v1.0 y remitía a documentos v5.5</td><td>v@VERSION@, como el resto</td></tr>
-          <tr><td class="num">13</td><td>El Manual conservaba su propio registro de edición rotulado «<strong>versión 5.0</strong>», con una fila que anunciaba en presente una «numeración única: Versión 5.0». Dentro de un documento que se publicaba como 5.5</td><td>Ese registro queda rotulado como historial —de la 4.0 a la 5.0— y remite al §0.2 de esta Tesis para la reconciliación posterior. El Protocolo y Otros documentos marcan igual sus referencias a resoluciones de ediciones anteriores</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="gate" style="max-width:none">
-      <p class="eyebrow">Cómo se impide que vuelva a ocurrir</p>
-      <p>Con una lista de verificación, que es lo que este sistema exige para todo lo demás. El repositorio incluye <strong><code>check-coherencia.py</code></strong>: afirma veinticinco hechos canónicos —cuántas fases tiene el recorrido y cuántas la primera visita, cuántos indicadores, cuántos documentos operativos, qué versión lleva cada archivo, cuántas hojas de acta, cuántas diapositivas, cuántas acciones tiene el catálogo de marketing— y falla si alguno dice otra cosa. La decimotercera contradicción de la lista la encontró él, no yo. Se ejecuta antes de publicar. Un estándar que no puede comprobarse en una lista es una intención, y eso vale también para la coherencia de estos documentos.</p>
+      <p>Todas las piezas del sistema comparten número de versión y fecha. No hay documentos de una edición conviviendo con documentos de otra.</p>
+      <p>Se publica el sistema entero o no se publica: si un documento cambia lo suficiente como para merecer versión nueva, la reciben todos. Es más caro de mantener y es la única manera de que una cifra citada en Junta signifique lo mismo en los siete archivos.</p>
     </div>

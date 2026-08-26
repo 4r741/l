@@ -46,7 +46,6 @@ CIFRAS = {
     "piezas del sistema": 22,
     "campañas de la cartera": 9,
     "objetivo de facturación en miles de euros": 1200,
-    "incoherencias reconciliadas en v6.0": 13,
     "acciones del catálogo de marketing": 76,
     "estados del paciente": 12,
     "grupos del catálogo": 7,
@@ -78,22 +77,6 @@ def bruto(ruta):
     return (RAIZ / ruta).read_text(encoding="utf-8")
 
 
-# Bloques donde las versiones antiguas son el contenido, no un descuido: los
-# registros de cambios. Se recortan antes de buscar versiones desfasadas.
-HISTORIALES = ('id="cambios"', 'id="notas"')
-
-
-def sin_historia(t):
-    """Quita los registros de cambios de un documento."""
-    for ancla in HISTORIALES:
-        i = t.find(ancla)
-        if i < 0:
-            continue
-        fin = t.rfind("</table>", i, t.find("</section>", i) + 12)
-        t = t[:i] + t[fin:] if fin > 0 else t[:i]
-    return t
-
-
 def falla(doc, que):
     fallos.append("%-26s %s" % (doc, que))
 
@@ -108,7 +91,7 @@ def comprueba_version():
         crudo = bruto(doc)
         if "v" + VERSION not in crudo:
             falla(doc, "no declara la versión vigente v%s" % VERSION)
-        t = sin_historia(crudo)
+        t = crudo
         # también en su forma larga: «Versión 5.0 · Agosto 2026»
         for larga in sorted(set(re.findall(r"[Vv]ersión (\d+\.\d+)", t))):
             if larga != VERSION:
@@ -126,7 +109,7 @@ def comprueba_version():
 def comprueba_cifras():
     # ningún documento puede afirmar un número de indicadores distinto de diez
     for doc in DOCUMENTOS:
-        t = texto(sin_historia(bruto(doc)), ya_limpio=True)
+        t = texto(bruto(doc), ya_limpio=True)
         for mal in ("ocho indicadores", "Ocho indicadores", "8 indicadores", "0 / 8", "0/8"):
             if mal in t:
                 falla(doc, "dice «%s»; el cuadro de mando tiene %d"
@@ -225,17 +208,69 @@ def comprueba_higiene():
             falla(doc, "tiene anclas rotas: %s" % rotas[:5])
 
 
+# Un documento de gobierno dice lo que el centro hace, no lo que el documento
+# hacía antes. El historial de ediciones —qué decía la versión pasada, qué se
+# reconcilió, qué incoherencia se corrigió— es trabajo de taller: interesa a
+# quien lo edita y estorba a quien lo lee. Estas expresiones no pueden volver a
+# aparecer, y la lista está aquí para que nadie tenga que acordarse.
+HISTORIAL = [
+    "notas de edición", "control de cambios", "registro de cambios",
+    "historial de versiones", "qué se reconcilió", "reconciliación",
+    "incoherencias detectadas", "en esta versión", "esta edición",
+    "edición anterior", "versión anterior", "antes decía", "qué decía la",
+    "v5.5", "v5.0", "v4.0", "v1.3", "v2.6", "la 5.5", "la 4.0",
+]
+
+
+def comprueba_sin_historial():
+    """Ningún documento puede explicar en qué se diferencia de su versión pasada."""
+    for doc in DOCUMENTOS:
+        t = texto(bruto(doc), ya_limpio=True).lower()
+        for frase in HISTORIAL:
+            if frase in t:
+                falla(doc, "explica cambios entre versiones: «%s»" % frase)
+
+
+def comprueba_numeros_de_version():
+    """Toda versión que un documento declare tiene que ser la vigente.
+
+    Las comprobaciones anteriores buscaban formas concretas —«v7.0», «Versión
+    7.0»— y por eso se les escapó la ficha de control, que pone el rótulo en una
+    casilla y el número en la de al lado. Esta busca el patrón, no la forma: si
+    en el texto aparece una versión, o es la vigente o es un descuido.
+    """
+    patron = re.compile(r"(?:versi[oó]n\s+v?|(?<![\w.])v)(\d+\.\d+)", re.I)
+    for doc in DOCUMENTOS:
+        t = texto(bruto(doc), ya_limpio=True)
+        # el rótulo y el número separados por la casilla de una tabla
+        t = re.sub(r"\bVersi[oó]n\s+(?=\d+\.\d+)", "version ", t, flags=re.I)
+        malas = sorted({v for v in patron.findall(t) if v != VERSION})
+        if malas:
+            falla(doc, "declara versiones que no son la vigente: %s" % ", ".join(malas))
+
+
+def comprueba_pies():
+    """El pie de cada documento declara la versión, y tiene que ser la vigente.
+
+    El pie del Manual se quedó anunciando la 5.5 durante tres versiones sin que
+    nadie lo viera: está a seis mil líneas del principio y nadie baja hasta ahí
+    a leer un número que da por supuesto.
+    """
+    for doc in DOCUMENTOS:
+        t = bruto(doc)
+        i = t.rfind('class="eyebrow">Versión</p>')
+        if i < 0:
+            continue
+        pie = texto(t[i:i + 400], ya_limpio=True)
+        if ("v" + VERSION) not in pie:
+            falla(doc, "el pie no declara la versión vigente: «%s»" % pie[:70])
+
+
 # ---------------------------------------------------------------- 5 · censo y cambios
 def comprueba_censo():
     t = bruto("memoria.html")
-    for ancla, que in (('id="censo"', "el censo documental (§0.1)"),
-                       ('id="cambios"', "el registro de cambios (§0.2)")):
-        if ancla not in t:
-            falla("memoria.html", "no incluye %s" % que)
-    n = filas("memoria.html", 'id="cambios"')
-    if n != CIFRAS["incoherencias reconciliadas en v6.0"]:
-        falla("memoria.html", "el registro de cambios lista %s reconciliaciones y deberían ser %d"
-              % (n, CIFRAS["incoherencias reconciliadas en v6.0"]))
+    if 'id="censo"' not in t:
+        falla("memoria.html", "no incluye el censo documental (§0.1)")
 
     # la aritmética del censo tiene que aparecer y cuadrar
     censo = texto(bruto("memoria.html"), ya_limpio=True)
@@ -467,6 +502,9 @@ def main():
     comprueba_cifras()
     comprueba_estructura()
     comprueba_higiene()
+    comprueba_sin_historial()
+    comprueba_numeros_de_version()
+    comprueba_pies()
     comprueba_censo()
     comprueba_generadores()
     comprueba_modelo()

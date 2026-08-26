@@ -946,9 +946,9 @@ CONTEXTO_UNICO = [
      "cuenta, ni dependencia externa, ni segundo archivo que se pueda perder: lo que ve aquí "
      "es todo lo que hace falta."),
     ("Siete documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. "
-     "Todos comparten la versión <strong>v7.0</strong>",
+     "Todos comparten la versión <strong>v" + VERSION + "</strong>",
      "Siete documentos dentro de un solo archivo, que se abre en cualquier navegador sin "
-     "instalar nada y sin conexión. Todos comparten la versión <strong>v7.0</strong>"),
+     "instalar nada y sin conexión. Todos comparten la versión <strong>v" + VERSION + "</strong>"),
 ]
 
 
@@ -1287,7 +1287,7 @@ def unificado(estilo_fuentes):
         '  <div class="cabecera__fila">\n'
         '    <div class="cabecera__in">\n'
         '      <span class="cabecera__marca">Sistema documental <b>Giraldo</b>'
-        '<span>v7.0</span></span>\n'
+        '<span>v' + VERSION + '</span></span>\n'
         '      <nav class="cabecera__docs" aria-label="Documentos del sistema">\n%s\n'
         '      </nav>\n'
         '      <button type="button" class="buscador" id="abrir-buscador" '
