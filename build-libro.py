@@ -15,11 +15,17 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
+import datetime
 import pathlib
 import re
 
+# El ejercicio estaba tecleado en tres sitios —el nombre del archivo, la
+# entradilla y la cabecera de cada hoja mensual—, que son tres oportunidades de
+# que uno se quede atrás al cambiar de año.
+EJERCICIO = "2026"
+
 RUTA = str(pathlib.Path(__file__).parent / "instrumentos" /
-           "Captura-Linea-Base-Giraldo-2026.xlsx")
+           ("Captura-Linea-Base-Giraldo-%s.xlsx" % EJERCICIO))
 
 # La versión no se teclea en la hoja: se toma del verificador, que es donde
 # vive la versión canónica del sistema. Un libro con versión propia se queda
@@ -72,6 +78,10 @@ IND = [
 ]
 PRIMERA = 6                                   # primera fila de datos en las hojas mensuales
 
+# Fecha del libro: la del ejercicio que documenta, para que el archivo no cambie
+# de un día para otro sin que haya cambiado su contenido.
+FECHA_LIBRO = datetime.datetime(int(EJERCICIO), 1, 1)
+
 wb = Workbook()
 
 # ----------------------------------------------------------------- instrucciones
@@ -89,8 +99,8 @@ def linea(fila, rotulo, texto, fuente=NORMAL):
 
 h["B2"] = "Captura de la línea base · Centro de Excelencia Implantológica Giraldo"
 h["B2"].font = TITULO
-h["B3"] = ("Instrumento del §7 y del §13 de la Tesis de Dirección v%s · Ejercicio 2026"
-              % VERSION)
+h["B3"] = ("Instrumento del §7 y del §13 de la Tesis de Dirección v%s · Ejercicio %s"
+           % (VERSION, EJERCICIO))
 h["B3"].font = SUAVE
 
 linea(5, "Para qué sirve", "La Tesis declara que el centro no dispone todavía de sus cinco números ni de serie propia en ninguno "
@@ -181,7 +191,7 @@ def semaforo(fila, i):
 for m, mes in enumerate(MESES):
     s = wb.create_sheet(mes)
     s.sheet_view.showGridLines = False
-    s["A1"] = "Captura mensual · %s de 2026" % mes[3:]
+    s["A1"] = "Captura mensual · %s de %s" % (mes[3:], EJERCICIO)
     s["A1"].font = TITULO
     s["A2"] = "Rellénense únicamente las casillas amarillas. El resultado y el semáforo se calculan solos."
     s["A2"].font = SUAVE
@@ -339,6 +349,24 @@ for i, (rotulo, formula, fmt, nota) in enumerate(RES):
 n5.cell(21, 2, "Los resultados dicen «pendiente» mientras falte alguna entrada. Es deliberado: "
                "un número inventado es peor que un hueco declarado.").font = SUAVE
 
+# Las propiedades del libro no pueden ser las que pone openpyxl por su cuenta:
+# el autor salía como «openpyxl», el título vacío, y la fecha de creación era la
+# del momento de construir, de modo que dos construcciones del mismo contenido
+# daban dos archivos distintos y el repositorio quedaba sucio después de cada
+# una. Se fijan aquí, con la fecha de la versión y no la del reloj.
+wb.properties.creator = "Centro de Excelencia Implantológica Giraldo"
+wb.properties.lastModifiedBy = "Centro de Excelencia Implantológica Giraldo"
+wb.properties.title = "Captura de la línea base · %s" % EJERCICIO
+wb.properties.subject = "Los diez indicadores del §13 de la Tesis de Dirección"
+wb.properties.description = (
+    "Instrumento del §7 y del §13. Uso interno. Una hoja por mes, resumen anual "
+    "y los cinco números. Versión v%s del sistema documental." % VERSION)
+wb.properties.category = "Uso interno y confidencial"
+wb.properties.language = "es-ES"
+wb.properties.revision = None
+wb.properties.created = FECHA_LIBRO
+wb.properties.modified = FECHA_LIBRO
+
 pathlib.Path(RUTA).parent.mkdir(parents=True, exist_ok=True)
 wb.save(RUTA)
 
@@ -347,4 +375,40 @@ wb.save(RUTA)
 # quien lo abra con un visor que no calcule.
 from recalc import recalcula
 recalcula(RUTA)
+
+
+def normaliza(ruta, cuando):
+    """Deja el libro idéntico byte a byte entre dos construcciones iguales.
+
+    Un .xlsx es un zip, y tanto openpyxl como LibreOffice escriben dentro la
+    hora del reloj: la de creación en docProps/core.xml y la de cada entrada del
+    zip. El resultado era que construir dos veces el mismo contenido daba dos
+    archivos distintos, el repositorio quedaba sucio después de cada
+    construcción y no había manera de saber, mirando el archivo, si había
+    cambiado algo de verdad. Aquí se sustituyen todas esas horas por la del
+    ejercicio que el libro documenta, que no depende de cuándo se construya.
+    """
+    import re as _re, shutil, tempfile, zipfile
+    marca = cuando.strftime("%Y-%m-%dT%H:%M:%SZ")
+    fecha = (cuando.year, cuando.month, cuando.day,
+             cuando.hour, cuando.minute, cuando.second)
+    with zipfile.ZipFile(ruta) as zin:
+        piezas = [(i, zin.read(i.filename)) for i in zin.infolist()]
+    tmp = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
+    tmp.close()
+    with zipfile.ZipFile(tmp.name, "w", zipfile.ZIP_DEFLATED) as zout:
+        for info, datos in piezas:
+            if info.filename == "docProps/core.xml":
+                texto = datos.decode("utf-8")
+                texto = _re.sub(r"(<dcterms:(?:created|modified)[^>]*>)[^<]*(</)",
+                                r"\g<1>" + marca + r"\g<2>", texto)
+                datos = texto.encode("utf-8")
+            nuevo = zipfile.ZipInfo(info.filename, date_time=fecha)
+            nuevo.compress_type = info.compress_type
+            nuevo.external_attr = info.external_attr
+            zout.writestr(nuevo, datos)
+    shutil.move(tmp.name, ruta)
+
+
+normaliza(RUTA, FECHA_LIBRO)
 print("  → %s" % RUTA)

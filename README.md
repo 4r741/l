@@ -178,6 +178,18 @@ más largos del sistema solo podían corregirse a mano. Un documento que no se
 puede regenerar es un documento que, a la tercera edición, deja de cuadrar con
 los demás.
 
+**Construir dos veces el mismo contenido da los mismos archivos, byte a byte.**
+Suena a detalle y no lo es: mientras no fue cierto, el repositorio quedaba sucio
+después de cada construcción y no había manera de saber, mirando el estado, si
+había cambiado algo de verdad o solo la hora. Los ocho documentos HTML ya lo
+cumplían; el libro de cálculo no, porque un `.xlsx` es un zip y tanto openpyxl
+como el recálculo de LibreOffice escriben dentro la hora del reloj —la de
+creación, la de modificación y la de cada entrada del zip—. Ahora se sustituyen
+todas por la del ejercicio que el libro documenta, y de paso el autor deja de
+ser «openpyxl» y el título deja de estar vacío. Comprobado con tres
+construcciones seguidas: la misma huella las tres veces, con las mismas 406
+fórmulas y los mismos 146 valores en caché que antes.
+
 ## Versión única y verificación de coherencia
 
 Todas las piezas comparten número de versión y fecha: **v7.0 · Agosto 2026**.
