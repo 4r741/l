@@ -46,35 +46,40 @@ APARTADOS = sum(len(x["entradas"]) for x in INDICE)
 
 
 def bloque_indice(x, n):
-    """Un documento del índice: qué es, para quién, y todo lo que contiene."""
+    """Un documento del índice: qué es y qué contiene.
+
+    El detalle no se enseña de entrada. Con 646 líneas abiertas a la vez el
+    índice dejaba de ser un índice y pasaba a ser una pared de letra pequeña: no
+    se lee, se sufre. Ahora se ve el documento y sus apartados, y el que tiene
+    detalle lo dice con un número a la derecha; se abre el que interese.
+    """
     filas = []
     for e in x["entradas"]:
         hijos = "".join(
             '<li><a href="%s#%s" data-buscable="%s">%s</a></li>'
             % (x["archivo"], h["ancla"], llano(h["rotulo"]), h["rotulo"])
             for h in e["hijos"])
+        abre = ""
+        if hijos:
+            abre = ('<button class="idx__abre" type="button" aria-expanded="false" '
+                    'aria-label="Ver los %d apartados de %s">%d</button>'
+                    % (len(e["hijos"]), e["rotulo"].replace('"', "&quot;"), len(e["hijos"])))
         filas.append(
             '<li class="idx__rama">'
-            '<a class="idx__uno" href="%s#%s" data-buscable="%s">%s</a>%s</li>'
-            % (x["archivo"], e["ancla"], llano(e["rotulo"]), e["rotulo"],
-               ('<ol class="idx__dos">%s</ol>' % hijos) if hijos else ""))
-    lista = "".join(filas) or '<li class="idx__sin">Sin apartados numerados</li>'
-    sub = sum(len(e["hijos"]) for e in x["entradas"])
-    cuenta = "%d apartados" % len(x["entradas"])
-    if sub:
-        cuenta += " · %d subapartados" % sub
+            '<span class="idx__fila">'
+            '<a class="idx__uno" href="%s#%s" data-buscable="%s">%s</a>%s</span>%s</li>'
+            % (x["archivo"], e["ancla"], llano(e["rotulo"]), e["rotulo"], abre,
+               ('<ol class="idx__dos" hidden>%s</ol>' % hijos) if hijos else ""))
+    lista = "".join(filas) or '<li class="idx__sin">Se recorre entera, diapositiva a diapositiva.</li>'
     return (
-        '<section class="idx__doc" data-doc="%d">\n'
+        '<section class="idx__doc" data-doc="%d" data-buscable="%s">\n'
         '        <div class="idx__cab">\n'
-        '          <p class="eyebrow">%s</p>\n'
         '          <h3><a href="%s">%s</a></h3>\n'
         '          <p class="idx__que">%s</p>\n'
-        '          <p class="idx__quien">Para <b>%s</b></p>\n'
-        '          <p class="idx__cuenta"><span>%s</span></p>\n'
         '        </div>\n'
         '        <ol class="idx__lista">%s</ol>\n'
-        '      </section>' % (n, x["clase"], x["archivo"], x["rotulo"], x["que"],
-                             x["quien"], cuenta, lista))
+        '      </section>' % (n, llano(x["rotulo"] + " " + x["que"]),
+                             x["archivo"], x["rotulo"], x["que"], lista))
 
 
 def llano(s):
@@ -154,51 +159,64 @@ CSS = """
   background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink);
 }
 
-.idx{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-top:0}
-.idx__doc{background:var(--paper);padding:1.5rem 1.6rem 1.7rem;display:grid;gap:1rem;min-width:0}
-@media(min-width:960px){.idx__doc{grid-template-columns:minmax(0,262px) minmax(0,1fr);gap:2.6rem}}
+.idx{display:grid;gap:2.6rem;margin-top:2.2rem}
+.idx__doc{background:var(--paper);min-width:0;padding-top:1.6rem;border-top:1px solid var(--line)}
 .idx__doc[hidden]{display:none}
-.idx__cab{align-self:start}
-@media(min-width:960px){.idx__cab{position:sticky;top:4.2rem}}
-.idx__cab h3{font-size:var(--step-1);letter-spacing:-.015em;margin:.15rem 0 .4rem}
-.idx__cab h3 a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
-.idx__cab h3 a:hover{color:var(--accent-ink);border-color:var(--accent)}
-.idx__que{color:var(--ink-2);font-size:.9rem;max-width:44ch}
-.idx__quien,.idx__cuenta{
-  margin-top:.45rem;font-family:var(--f-mono);font-size:.63rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);
-}
-.idx__quien b{color:var(--ink-2);font-weight:400}
-.idx__cuenta span{color:var(--accent-ink)}
+.idx__cab{max-width:62ch;margin-bottom:1.5rem}
+.idx__cab h3{font-size:var(--step-2);letter-spacing:-.018em;margin:0 0 .35rem}
+.idx__cab h3 a{color:inherit;text-decoration:none}
+.idx__cab h3 a:hover{color:var(--accent-ink)}
+.idx__que{color:var(--ink-2);font-size:.95rem;line-height:1.55}
 
-.idx__lista{list-style:none;margin:0;padding:0;columns:2;column-gap:2.4rem}
-@media(max-width:820px){.idx__lista{columns:1}}
-.idx__rama{break-inside:avoid;margin:0 0 .5rem}
+/* Los apartados en columnas, con aire. Antes cada línea llevaba una barra
+   vertical a la izquierda: setecientas barras no ordenan nada, solo ensucian. */
+.idx__lista{list-style:none;margin:0;padding:0;columns:2;column-gap:3rem}
+@media(max-width:860px){.idx__lista{columns:1}}
+.idx__rama{break-inside:avoid;margin:0 0 .1rem}
 .idx__rama[hidden]{display:none}
+/* El tirador va pegado al título y no al borde de la columna: sueltos a la
+   derecha parecían etiquetas puestas ahí por casualidad. */
+.idx__fila{display:flex;align-items:center;gap:.15rem}
 .idx__uno{
-  display:block;font-size:.93rem;line-height:1.4;color:var(--ink);text-decoration:none;
-  padding:.16rem .3rem .16rem .6rem;border-left:2px solid var(--line);
-  transition:color .14s ease,border-color .14s ease;
+  min-width:0;font-size:.96rem;line-height:1.45;
+  color:var(--ink);text-decoration:none;padding:.34rem 0;
+  border-bottom:1px solid transparent;transition:color .14s ease,border-color .14s ease;
 }
-.idx__uno:hover{color:var(--accent-ink);border-left-color:var(--accent)}
-.idx__dos{list-style:none;margin:.1rem 0 0;padding:0}
+.idx__uno:hover{color:var(--accent-ink);border-bottom-color:var(--accent)}
+
+/* Cuánto hay dentro, y el modo de verlo. Sin caja ni relleno: una cifra
+   pequeña al lado del título, que solo se dibuja cuando el ratón pasa por
+   encima. Un apartado sin cifra es un apartado sin más detalle. */
+.idx__abre{
+  flex:0 0 auto;font:inherit;font-family:var(--f-mono);font-size:.63rem;
+  color:var(--muted);background:transparent;border:1px solid transparent;
+  border-radius:999px;min-width:1.45rem;height:1.45rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:color .14s ease,border-color .14s ease,background .14s ease;
+}
+.idx__rama:hover .idx__abre{border-color:var(--line)}
+.idx__abre:hover{color:var(--accent-ink);border-color:var(--accent)}
+.idx__abre:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-color:var(--accent)}
+.idx__abre[aria-expanded="true"]{
+  background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink);
+}
+
+.idx__dos{list-style:none;margin:.05rem 0 .8rem;padding:0 0 0 .9rem;border-left:1px solid var(--line)}
+.idx__dos[hidden]{display:none}
 .idx__dos li[hidden]{display:none}
 .idx__dos a{
-  display:block;font-size:.83rem;line-height:1.38;color:var(--muted);text-decoration:none;
-  padding:.1rem .3rem .1rem 1.5rem;border-left:2px solid transparent;
-  transition:color .14s ease,border-color .14s ease;
+  display:block;font-size:.87rem;line-height:1.45;color:var(--ink-2);text-decoration:none;
+  padding:.26rem 0;transition:color .14s ease;
 }
-.idx__dos a:hover{color:var(--accent-ink);border-left-color:var(--accent)}
+.idx__dos a:hover{color:var(--accent-ink)}
 .idx__uno mark,.idx__dos mark{background:rgba(14,143,132,.2);color:inherit;border-radius:2px;padding:0 .05em}
-/* Donde se toca con el dedo, cada línea del índice tiene que ser un blanco de
-   verdad. En una sola línea de texto la caja se quedaba en 22 px y hay 649 que
-   acertar; 26 es el mínimo con el que se acierta a la primera. */
+/* Donde se toca con el dedo, cada línea tiene que ser un blanco de verdad. */
 @media(pointer:coarse),(max-width:640px){
-  .idx__uno{padding-top:.34rem;padding-bottom:.34rem}
-  .idx__dos a{padding-top:.3rem;padding-bottom:.3rem;font-size:.86rem}
+  .idx__uno{padding-top:.45rem;padding-bottom:.45rem}
+  .idx__dos a{padding-top:.4rem;padding-bottom:.4rem}
+  .idx__abre{height:1.9rem;min-width:2.2rem}
 }
-.idx--plegado .idx__dos{display:none}
-.idx__sin{color:var(--muted);font-size:.85rem;padding-left:.6rem}
+.idx__sin{color:var(--muted);font-size:.85rem}
 .idx__vacio{margin-top:1.4rem;color:var(--muted)}
 .idx__vacio b{color:var(--ink-2);font-weight:500}
 .idx__vacio-mas{display:block;margin-top:.3rem;font-size:.94em}
@@ -210,8 +228,10 @@ CSS = """
 
 @media print{
   .idx__mando{display:none}
-  .idx{border-top:1px solid var(--line)}
-  .idx__doc{break-inside:avoid;grid-template-columns:minmax(0,240px) minmax(0,1fr)}
+  .idx__abre{display:none}
+  /* En papel no hay nada que pulsar: el índice sale entero. */
+  .idx__dos[hidden]{display:block!important}
+  .idx__doc{break-inside:avoid}
   .idx__cab{position:static}
   .idx__lista{columns:2}
   .idx__uno,.idx__dos a{color:var(--ink-2)}
@@ -325,8 +345,8 @@ CUERPO = """
         <input type="search" id="idx-filtro" autocomplete="off" spellcheck="false"
                placeholder="Filtrar el índice: escriba una palabra">
       </label>
-      <p class="idx__marcador" id="idx-marcador" role="status" aria-live="polite" aria-atomic="true">@LINEAS@ líneas</p>
-      <button type="button" class="idx__plegar" id="idx-plegar" aria-pressed="false">Ver solo apartados</button>
+      <p class="idx__marcador" id="idx-marcador" role="status" aria-live="polite" aria-atomic="true">@APARTADOS@ apartados</p>
+      <button type="button" class="idx__plegar" id="idx-plegar" aria-pressed="false">Abrir todo el detalle</button>
     </div>
 
     <div class="idx" id="idx">
@@ -564,7 +584,7 @@ JS_INDICE = """
   var docs = [].slice.call(caja.querySelectorAll(".idx__doc"));
   var ramas = [].slice.call(caja.querySelectorAll(".idx__rama"));
   var hijos = [].slice.call(caja.querySelectorAll(".idx__dos li"));
-  var total = ramas.length + hijos.length;
+  var total = ramas.length;
 
   function llano(s){
     return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -600,9 +620,40 @@ JS_INDICE = """
     a.appendChild(document.createTextNode(texto.slice(mejor + largo)));
   }
 
+  /* Abrir y cerrar un apartado. El estado vive en el botón, que es quien lo
+     anuncia, y la lista solo obedece. */
+  function abre(rama, si){
+    var b = rama.querySelector(".idx__abre");
+    var ol = rama.querySelector(".idx__dos");
+    if(!b || !ol) return;
+    b.setAttribute("aria-expanded", String(si));
+    ol.hidden = !si;
+  }
+
+  caja.addEventListener("click", function(e){
+    var b = e.target.closest(".idx__abre");
+    if(!b) return;
+    var rama = b.closest(".idx__rama");
+    abre(rama, b.getAttribute("aria-expanded") !== "true");
+    sincroniza();
+  });
+
+  /* El botón del mando dice lo que va a pasar, no lo que pasó: si queda algo
+     cerrado, abre; si está todo abierto, cierra. */
+  function sincroniza(){
+    if(!plegar) return;
+    var conDetalle = ramas.filter(function(r){ return r.querySelector(".idx__abre"); });
+    var abiertas = conDetalle.filter(function(r){
+      return r.querySelector(".idx__abre").getAttribute("aria-expanded") === "true";
+    }).length;
+    var todo = abiertas === conDetalle.length && conDetalle.length > 0;
+    plegar.setAttribute("aria-pressed", String(abiertas > 0));
+    plegar.textContent = todo ? "Cerrar el detalle" : "Abrir todo el detalle";
+  }
+
   function filtra(){
     var trozos = llano(campo.value).split(/\s+/).filter(Boolean);
-    var vistas = 0;
+    var apartados = 0, sueltos = 0;
     docs.forEach(function(doc){
       var suyas = 0;
       [].slice.call(doc.querySelectorAll(".idx__rama")).forEach(function(rama){
@@ -620,21 +671,33 @@ JS_INDICE = """
         });
         var ok = padreCasa || conHijos > 0;
         rama.hidden = !ok;
-        if(ok){ pinta(uno, trozos); suyas += 1 + conHijos; }
+        if(ok){
+          pinta(uno, trozos);
+          apartados++; suyas++;
+          /* Buscando, lo encontrado se abre solo; con el campo vacío se vuelve
+             al estado de reposo, que es cerrado. */
+          if(trozos.length) abre(rama, !padreCasa && conHijos > 0);
+          else abre(rama, false);
+          if(trozos.length && !padreCasa) sueltos += conHijos;
+        }
       });
-      doc.hidden = suyas === 0;
-      vistas += suyas;
+      /* Un documento se ve si le queda algún apartado a la vista, o si es él
+         mismo lo que se busca. La presentación no tiene apartados —es un pase
+         de diapositivas, no un texto con secciones— y aun así forma parte del
+         sistema: desaparecer del índice por no tener índice propio sería una
+         manera rara de contar lo que hay. */
+      var propio = !trozos.length || casan(doc.dataset.buscable || "", trozos);
+      doc.hidden = !suyas && !propio;
+      if(propio && !suyas) apartados++;
     });
-    if(vacio) vacio.hidden = vistas > 0;
+    if(vacio) vacio.hidden = apartados > 0;
     if(marcador){
+      var n = apartados + sueltos;
       marcador.textContent = trozos.length
-        ? vistas + (vistas === 1 ? " línea" : " líneas")
-        : total + " líneas";
+        ? (n + (n === 1 ? " resultado" : " resultados"))
+        : total + " apartados";
     }
-    /* Al filtrar se despliega: esconder resultados sería absurdo. */
-    if(trozos.length) caja.classList.remove("idx--plegado");
-    else if(plegar && plegar.getAttribute("aria-pressed") === "true")
-      caja.classList.add("idx--plegado");
+    sincroniza();
   }
 
   campo.addEventListener("input", filtra);
@@ -643,10 +706,13 @@ JS_INDICE = """
   });
   if(plegar){
     plegar.addEventListener("click", function(){
-      var puesto = plegar.getAttribute("aria-pressed") === "true";
-      plegar.setAttribute("aria-pressed", String(!puesto));
-      plegar.textContent = puesto ? "Ver solo apartados" : "Ver todo el detalle";
-      caja.classList.toggle("idx--plegado", !puesto);
+      var conDetalle = ramas.filter(function(r){ return r.querySelector(".idx__abre"); });
+      var abiertas = conDetalle.filter(function(r){
+        return r.querySelector(".idx__abre").getAttribute("aria-expanded") === "true";
+      }).length;
+      var todo = abiertas === conDetalle.length && conDetalle.length > 0;
+      conDetalle.forEach(function(r){ abre(r, !todo); });
+      sincroniza();
     });
   }
   /* La barra inclinada lleva al filtro, como en el resto del sistema. */
