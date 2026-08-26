@@ -929,27 +929,6 @@ ESTILO_DOC = """<style>
 """
 
 
-# Dentro del archivo único, la portada no puede seguir hablando de «mantener los
-# archivos en la misma carpeta»: aquí no hay archivos que separar.
-CONTEXTO_UNICO = [
-    ("Cada archivo es una página completa: se abre en el navegador que tenga instalado, "
-     "sin conexión y sin ningún programa adicional. Mantenga los siete en la misma carpeta "
-     "para que los enlaces entre ellos funcionen.",
-     "Está usted dentro del archivo único: los siete documentos viven en este mismo fichero, "
-     "con las tipografías, los gráficos y las hojas de cálculo incrustados. No hay nada que "
-     "mantener junto ni nada que se pueda separar. Use la barra negra de arriba para cambiar "
-     "de documento y la clara para moverse dentro de él; con <b>[</b> y <b>]</b> se pasa de "
-     "documento sin soltar el teclado."),
-    ("Copie la carpeta completa en una memoria o envíela comprimida. No hay servidor, ni "
-     "cuenta, ni dependencia externa: lo que ve aquí es todo lo que hace falta.",
-     "Copie este único archivo en una memoria o envíelo por correo. No hay servidor, ni "
-     "cuenta, ni dependencia externa, ni segundo archivo que se pueda perder: lo que ve aquí "
-     "es todo lo que hace falta."),
-    ("Siete documentos que se abren en cualquier navegador, sin instalar nada y sin conexión. "
-     "Todos comparten la versión <strong>v" + VERSION + "</strong>",
-     "Siete documentos dentro de un solo archivo, que se abre en cualquier navegador sin "
-     "instalar nada y sin conexión. Todos comparten la versión <strong>v" + VERSION + "</strong>"),
-]
 
 
 
@@ -1109,15 +1088,12 @@ def conmutadores(html, propio):
 # Fila de índice para los dos documentos que no tienen secciones. No es relleno:
 # dice lo que a esa altura le hace falta saber a quien está mirando.
 SIN_INDICE = {
-    # Cabe entera en la pantalla en la que se presenta esto. Lo que sobre por
-    # la derecha en una más estrecha lo dice el desvanecido del borde, pero lo
-    # que se lee de un vistazo tiene que ser lo útil, no el principio de una
-    # frase cortada.
-    "doc-inicio": ("<b>Siete documentos, un archivo</b>"
-                   "<span>Barra negra: cambiar de documento</span>"
-                   "<span>Barra clara: moverse dentro</span>"
-                   "<span><kbd>/</kbd> buscar · <kbd>[</kbd> <kbd>]</kbd> anterior y siguiente</span>"
-                   "<span>Funciona sin conexión</span>"),
+    # La portada llevaba aquí una fila de instrucciones —qué barra hace qué, qué
+    # tecla pulsar— que en un documento de gobierno no pinta nada. En su lugar,
+    # lo que identifica al documento: qué es y para quién.
+    "doc-inicio": ("<b>Sistema documental del Centro de Excelencia Implantológica Giraldo</b>"
+                   "<span>Rúa Bolivia nº 2 · Vigo</span>"
+                   "<span>Uso interno y confidencial</span>"),
     "doc-deck": ("<b>43 diapositivas · 16:9</b>"
                  "<span><kbd>←</kbd> <kbd>→</kbd> <kbd>espacio</kbd> pasar</span>"
                  "<span><kbd>N</kbd> guion del ponente</span>"
@@ -1254,10 +1230,6 @@ def unificado(estilo_fuentes):
     bloques, tiras, indice = [], [], []
     for nombre, (ident, prefijo) in DOCUMENTOS.items():
         cuerpo_doc = cuerpo(fuentes[nombre])
-        if nombre == "inicio.html":
-            for viejo, sustituto in CONTEXTO_UNICO:
-                assert cuerpo_doc.count(viejo) == 1, viejo[:50]
-                cuerpo_doc = cuerpo_doc.replace(viejo, sustituto, 1)
         if prefijo:
             cuerpo_doc = prefijar(cuerpo_doc, prefijo)
         cuerpo_doc = conmutadores(cuerpo_doc, nombre)

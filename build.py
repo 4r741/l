@@ -44,7 +44,8 @@ DOCUMENTOS = [
 EXTRAS = [
     (RAIZ / "build-libro.py", "instrumentos/…xlsx · libro de cálculo"),
     (RAIZ / "build-export.py", "export/ · HTML autónomo y archivo único"),
-    (RAIZ / "build-pdf.py", "export/pdf/ · seis PDF paginados"),
+    (RAIZ / "build-pdf.py", "export/pdf/ · los PDF por documento"),
+    (RAIZ / "build-pdf-completo.py", "export/ · el sistema entero en un PDF"),
 ]
 
 

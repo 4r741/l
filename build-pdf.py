@@ -29,12 +29,22 @@ PONENTE = ("document.body.classList.add('modo-ponente');"
            "document.querySelectorAll('.nota').forEach(n=>n.hidden=false)")
 
 # origen → (nombre del PDF, rótulo de cabecera, apaisado, preparación extra)
+# El rótulo de cabecera llevaba la versión tecleada, de modo que cada página de
+# cada PDF anunciaba una versión que ya no era la del archivo. Sale de VERSION,
+# como todo lo demás.
 DOCUMENTOS = [
-    ("memoria.html", "Tesis-Direccion-Giraldo-v%s.pdf" % VERSION, "Tesis de Dirección · v7.0", False, ""),
-    ("manual.html", "Manual-Maestro-Giraldo-v%s.pdf" % VERSION, "Manual Maestro de Operaciones · v7.0", False, ""),
-    ("index.html", "Protocolo-Primera-Visita-Giraldo-v%s.pdf" % VERSION, "Protocolo de Primera Visita · v7.0", False, ""),
-    ("otros.html", "Otros-Documentos-Giraldo-v%s.pdf" % VERSION, "Otros documentos del sistema · v7.0", False, ""),
-    ("marketing.html", "Plan-Marketing-Giraldo-v%s.pdf" % VERSION, "Plan Maestro de Marketing · v7.0", False, ""),
+    ("memoria.html", "Tesis-Direccion-Giraldo-v%s.pdf" % VERSION,
+     "Tesis de Dirección · v%s" % VERSION, False, ""),
+    ("manual.html", "Manual-Maestro-Giraldo-v%s.pdf" % VERSION,
+     "Manual Maestro de Operaciones · v%s" % VERSION, False, ""),
+    ("index.html", "Protocolo-Primera-Visita-Giraldo-v%s.pdf" % VERSION,
+     "Protocolo de Primera Visita · v%s" % VERSION, False, ""),
+    ("otros.html", "Otros-Documentos-Giraldo-v%s.pdf" % VERSION,
+     "Otros documentos del sistema · v%s" % VERSION, False, ""),
+    ("marketing.html", "Plan-Marketing-Giraldo-v%s.pdf" % VERSION,
+     "Plan Maestro de Marketing · v%s" % VERSION, False, ""),
+    ("instrumentos/captura.html", "Captura-Linea-Base-Giraldo-v%s.pdf" % VERSION,
+     "Captura de la línea base · v%s" % VERSION, False, ""),
     ("deck.html", "Presentacion-Junta-Giraldo-v%s.pdf" % VERSION, "", True, ""),
     ("deck.html", "Guion-del-Ponente-Giraldo-v%s.pdf" % VERSION, "", "guion", PONENTE),
 ]
