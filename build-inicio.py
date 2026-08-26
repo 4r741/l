@@ -132,7 +132,8 @@ CSS = """
    --------------------------------------------------------------------------- */
 .idx__mando{
   display:flex;align-items:center;gap:.7rem 1rem;flex-wrap:wrap;margin-top:1.6rem;
-  padding:.5rem .7rem;border:1px solid var(--line);background:var(--surface);
+  padding:.6rem .85rem;border:1px solid var(--line);border-radius:var(--radio);
+  background:var(--surface);box-shadow:var(--sombra-1);
   /* Se queda a la vista mientras se recorre el índice, pero por debajo de la
      barra y no detrás de ella: pegado a top:0 el filtro se metía bajo la
      cabecera fija justo cuando hay 649 líneas que filtrar. */
@@ -146,13 +147,12 @@ CSS = """
 .idx__buscar input::placeholder{color:var(--muted)}
 .idx__buscar input::-webkit-search-cancel-button{display:none}
 .idx__marcador{
-  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--accent-ink);white-space:nowrap;
+  font-size:.82rem;font-weight:600;color:var(--accent-ink);white-space:nowrap;
 }
 .idx__plegar{
-  font:inherit;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
-  text-transform:uppercase;cursor:pointer;color:var(--ink-2);white-space:nowrap;
-  background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.32rem .7rem;
+  font:inherit;font-size:.84rem;font-weight:500;cursor:pointer;color:var(--ink-2);
+  white-space:nowrap;background:var(--surface);border:1px solid var(--line);
+  border-radius:999px;padding:.38rem .9rem;box-shadow:var(--sombra-1);
 }
 .idx__plegar:hover{border-color:var(--ink-2);color:var(--ink)}
 .idx__plegar[aria-pressed="true"]{

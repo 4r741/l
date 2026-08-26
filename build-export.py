@@ -749,10 +749,13 @@ ESTILO_DOC = """<style>
   color:#7FD3C9;margin-left:.5rem;
 }
 .cabecera__docs{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
+/* Los nombres de los documentos iban en versalita monoespaciada muy espaciada:
+   ocho rótulos a grito pelado en lo primero que se ve. En caja normal se leen
+   igual de rápido y no compiten con el título de la página. */
 .cabecera__docs button{
-  font:inherit;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;
-  text-transform:uppercase;background:transparent;border:1px solid transparent;
-  color:rgba(247,248,245,.72);padding:.36rem .55rem;border-radius:999px;cursor:pointer;
+  font:inherit;font-size:.86rem;font-weight:500;letter-spacing:.005em;
+  background:transparent;border:1px solid transparent;
+  color:rgba(247,248,245,.74);padding:.34rem .66rem;border-radius:999px;cursor:pointer;
   white-space:nowrap;
   transition:color .16s ease,border-color .16s ease,background .16s ease;
 }
@@ -772,14 +775,13 @@ ESTILO_DOC = """<style>
 .cabecera__indice .strip{height:44px;align-items:center;padding:0}
 .cabecera__indice .strip a{padding:.3rem .58rem 0;border-top-width:2px}
 .strip--nota{
-  display:flex;gap:.4rem 1.5rem;flex-wrap:nowrap;align-items:center;overflow-x:auto;
+  display:flex;gap:.4rem 1.6rem;flex-wrap:nowrap;align-items:center;overflow-x:auto;
   white-space:nowrap;scrollbar-width:none;
-  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--muted);
+  font-size:.82rem;color:var(--muted);
 }
 .strip--nota::-webkit-scrollbar{display:none}
 .strip--nota>*{flex:0 0 auto}
-.strip--nota b{color:var(--accent-ink);font-weight:400;letter-spacing:.1em}
+.strip--nota b{color:var(--ink-2);font-weight:600}
 .strip--nota kbd{
   font:inherit;background:var(--surface);border:1px solid var(--line);
   border-radius:3px;padding:.05rem .3rem;color:var(--ink-2);
@@ -825,7 +827,7 @@ ESTILO_DOC = """<style>
    --------------------------------------------------------------------------- */
 .buscador{
   flex:0 0 auto;display:flex;align-items:center;gap:.45rem;font:inherit;cursor:pointer;
-  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;
+  font-size:.85rem;font-weight:500;
   background:rgba(247,248,245,.07);border:1px solid rgba(247,248,245,.22);
   color:rgba(247,248,245,.72);padding:.34rem .6rem;border-radius:999px;
   transition:border-color .16s ease,color .16s ease,background .16s ease;
