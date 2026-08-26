@@ -198,6 +198,87 @@ SCRIPT = """<script>
     document.addEventListener("click", function(){ setTimeout(function(){ tiras.forEach(estado); }, 60); }, true);
   })();
 
+
+  /* ---- saltar al contenido ---- */
+  (function(){
+    if(document.querySelector(".saltar")) return;
+    var a = document.createElement("a");
+    a.className = "saltar";
+    a.href = "#";
+    a.textContent = "Saltar al contenido";
+    function cuerpo(){
+      var todos = [].slice.call(document.querySelectorAll("main"));
+      for(var i = 0; i < todos.length; i++){
+        if(todos[i].getBoundingClientRect().height > 0) return todos[i];
+      }
+      return todos[0] || null;
+    }
+    /* El destino se calcula al enfocar y no al cargar: en el archivo único el
+       documento visible cambia, y con él el contenido al que hay que saltar. */
+    a.addEventListener("focus", function(){
+      var m = cuerpo();
+      /* Si el contenido no tiene identificador se le pone uno, para que el
+         enlace sea un enlace de verdad y no un «#» que solo funciona con
+         guion. */
+      if(m && !m.id) m.id = "contenido";
+      a.href = (m && m.id) ? "#" + m.id : "#";
+    });
+    a.addEventListener("click", function(e){
+      var m = cuerpo();
+      if(!m) return;
+      e.preventDefault();
+      m.setAttribute("tabindex", "-1");
+      m.focus();
+      m.scrollIntoView({behavior:"instant", block:"start"});
+    });
+    document.body.insertBefore(a, document.body.firstChild);
+  })();
+
+  /* ---- una tabla ancha se recorre también con el teclado ---- */
+  (function(){
+    if(window.__TABLAS__) return; window.__TABLAS__ = 1;
+    function limpio(el){
+      return el ? el.textContent.trim().replace(/\s+/g, " ").slice(0, 70) : "";
+    }
+    function titulo(t){
+      /* Lo más cercano por encima: primero los hermanos anteriores, que es donde
+         suele estar el titular de la tabla; si no, el titular del apartado que
+         la contiene. Una tabla anunciada solo como «tabla desplazable» no dice
+         de qué es, y en Otros documentos hay veintiuna. */
+      var n = t.previousElementSibling, saltos = 0;
+      while(n && saltos < 5){
+        if(/^H[2-5]$/.test(n.tagName)) return limpio(n);
+        var h = n.querySelector && n.querySelector("h2,h3,h4,h5");
+        if(h) return limpio(h);
+        n = n.previousElementSibling; saltos++;
+      }
+      var caja = t.closest("section,article,.phase,.section");
+      while(caja){
+        var d = caja.querySelector("h2,h3,h4");
+        if(d) return limpio(d);
+        caja = caja.parentElement && caja.parentElement.closest("section,article");
+      }
+      return "";
+    }
+    function repasar(){
+      [].slice.call(document.querySelectorAll(".tablewrap")).forEach(function(t){
+        var ancha = t.scrollWidth > t.clientWidth + 2;
+        if(ancha && !t.hasAttribute("tabindex")){
+          t.setAttribute("tabindex", "0");
+          t.setAttribute("role", "region");
+          var q = titulo(t);
+          t.setAttribute("aria-label", q ? "Tabla desplazable: " + q : "Tabla desplazable");
+        } else if(!ancha && t.hasAttribute("tabindex")){
+          t.removeAttribute("tabindex"); t.removeAttribute("role"); t.removeAttribute("aria-label");
+        }
+      });
+    }
+    repasar();
+    window.addEventListener("resize", repasar);
+    window.addEventListener("load", repasar);
+    document.addEventListener("click", function(){ setTimeout(repasar, 80); }, true);
+  })();
+
   /* ---- volver arriba ---- */
   (function(){
     if(document.querySelector(".volver")) return;
@@ -361,7 +442,12 @@ SCRIPT = """<script>
     for(var n = 0; n < trozos.length && i < 0; n++) i = donde(texto, trozos[n]);
     if(i < 0) return "";
     var crudo = crudoDe(ancla);
-    var desde = Math.max(0, i - 46), hasta = Math.min(crudo.length, i + 90);
+    /* Delante de la coincidencia va poco contexto y detrás bastante: la
+       línea se recorta por la derecha con puntos suspensivos, y con cuarenta y
+       seis caracteres de entradilla la palabra buscada se salía del recorte en
+       una pantalla estrecha. Lo que hay que ver siempre es la palabra. */
+    var margen = window.innerWidth < 720 ? 18 : 40;
+    var desde = Math.max(0, i - margen), hasta = Math.min(crudo.length, i + 96);
     var trozo = (desde ? "…" : "") + crudo.slice(desde, hasta).trim() +
                 (hasta < crudo.length ? "…" : "");
     return resaltar(trozo, trozos);
@@ -812,9 +898,25 @@ ESTILO_DOC = """<style>
   padding:0 .3rem;margin-right:.2rem;color:var(--ink-2);
 }
 .paleta__cuenta{margin-left:auto}
+.paleta__tacto{display:none}
 @media(max-width:700px){
   .buscador span{display:none}
   .paleta__caja{max-height:82vh}
+}
+/* Donde se toca con el dedo no hay Esc, ni flechas, ni intro. El pie dejaba de
+   explicar cómo se usa esto y pasaba a explicar teclas que no existen, y el
+   único botón para cerrar decía «esc», que en un teléfono no es un botón: es
+   una palabra. */
+@media(pointer:coarse){
+  .paleta__pie span:not(.paleta__tacto):not(.paleta__cuenta){display:none}
+  .paleta__tacto{display:inline;text-transform:none;letter-spacing:.02em;font-size:.68rem}
+  .paleta__cerrar{
+    font-size:0;min-width:44px;min-height:44px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .paleta__cerrar::before{
+    content:"\2715";font-size:.95rem;letter-spacing:0;line-height:1;
+  }
 }
 @media print{.paleta{display:none!important}}
 
@@ -1048,7 +1150,8 @@ PALETA = """
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> moverse</span>
       <span><kbd>&#8629;</kbd> abrir</span>
       <span><kbd>esc</kbd> cerrar</span>
-      <span class="paleta__cuenta" id="paleta-cuenta"></span>
+      <span class="paleta__tacto">Toque un resultado para abrirlo</span>
+      <span class="paleta__cuenta" id="paleta-cuenta" role="status" aria-live="polite" aria-atomic="true"></span>
     </div>
   </div>
 </div>

@@ -498,6 +498,87 @@ JS = ("""<script>
     document.addEventListener("click", function(){ setTimeout(function(){ tiras.forEach(estado); }, 60); }, true);
   })();
 
+
+  /* ---- saltar al contenido ---- */
+  (function(){
+    if(document.querySelector(".saltar")) return;
+    var a = document.createElement("a");
+    a.className = "saltar";
+    a.href = "#";
+    a.textContent = "Saltar al contenido";
+    function cuerpo(){
+      var todos = [].slice.call(document.querySelectorAll("main"));
+      for(var i = 0; i < todos.length; i++){
+        if(todos[i].getBoundingClientRect().height > 0) return todos[i];
+      }
+      return todos[0] || null;
+    }
+    /* El destino se calcula al enfocar y no al cargar: en el archivo único el
+       documento visible cambia, y con él el contenido al que hay que saltar. */
+    a.addEventListener("focus", function(){
+      var m = cuerpo();
+      /* Si el contenido no tiene identificador se le pone uno, para que el
+         enlace sea un enlace de verdad y no un «#» que solo funciona con
+         guion. */
+      if(m && !m.id) m.id = "contenido";
+      a.href = (m && m.id) ? "#" + m.id : "#";
+    });
+    a.addEventListener("click", function(e){
+      var m = cuerpo();
+      if(!m) return;
+      e.preventDefault();
+      m.setAttribute("tabindex", "-1");
+      m.focus();
+      m.scrollIntoView({behavior:"instant", block:"start"});
+    });
+    document.body.insertBefore(a, document.body.firstChild);
+  })();
+
+  /* ---- una tabla ancha se recorre también con el teclado ---- */
+  (function(){
+    if(window.__TABLAS__) return; window.__TABLAS__ = 1;
+    function limpio(el){
+      return el ? el.textContent.trim().replace(/\s+/g, " ").slice(0, 70) : "";
+    }
+    function titulo(t){
+      /* Lo más cercano por encima: primero los hermanos anteriores, que es donde
+         suele estar el titular de la tabla; si no, el titular del apartado que
+         la contiene. Una tabla anunciada solo como «tabla desplazable» no dice
+         de qué es, y en Otros documentos hay veintiuna. */
+      var n = t.previousElementSibling, saltos = 0;
+      while(n && saltos < 5){
+        if(/^H[2-5]$/.test(n.tagName)) return limpio(n);
+        var h = n.querySelector && n.querySelector("h2,h3,h4,h5");
+        if(h) return limpio(h);
+        n = n.previousElementSibling; saltos++;
+      }
+      var caja = t.closest("section,article,.phase,.section");
+      while(caja){
+        var d = caja.querySelector("h2,h3,h4");
+        if(d) return limpio(d);
+        caja = caja.parentElement && caja.parentElement.closest("section,article");
+      }
+      return "";
+    }
+    function repasar(){
+      [].slice.call(document.querySelectorAll(".tablewrap")).forEach(function(t){
+        var ancha = t.scrollWidth > t.clientWidth + 2;
+        if(ancha && !t.hasAttribute("tabindex")){
+          t.setAttribute("tabindex", "0");
+          t.setAttribute("role", "region");
+          var q = titulo(t);
+          t.setAttribute("aria-label", q ? "Tabla desplazable: " + q : "Tabla desplazable");
+        } else if(!ancha && t.hasAttribute("tabindex")){
+          t.removeAttribute("tabindex"); t.removeAttribute("role"); t.removeAttribute("aria-label");
+        }
+      });
+    }
+    repasar();
+    window.addEventListener("resize", repasar);
+    window.addEventListener("load", repasar);
+    document.addEventListener("click", function(){ setTimeout(repasar, 80); }, true);
+  })();
+
   /* ---- volver arriba ---- */
   (function(){
     if(document.querySelector(".volver")) return;

@@ -119,6 +119,21 @@ desaparecía justo cuando hace falta. Y en un teléfono la fila de documentos se
 plegaba en tres líneas y la cabecera se comía la quinta parte de la pantalla; en
 una sola fila que se desplaza, pasó de 188 a 123 píxeles.
 
+## Con teclado, con lector de pantalla y con el dedo
+
+| Pieza | Qué resuelve |
+|---|---|
+| Saltar al contenido | Primera parada del tabulador. Sin él había entre cuarenta y cincuenta paradas —marca, ocho documentos, hasta treinta y cinco secciones— antes de la primera línea de texto |
+| Tablas alcanzables | Una tabla más ancha que su caja solo se podía recorrer con ratón o con el dedo. Ahora se llega con el tabulador y se recorre con las flechas, anunciada con el titular de su apartado |
+| Recuentos anunciados | «4 líneas», «53 resultados»: un lector de pantalla los dice al cambiar |
+| Dianas del dedo | Cada línea del índice pasa de 22 a 29 píxeles donde se toca. Son 649 y hay que acertar |
+| Paleta táctil | En un teléfono no hay Esc ni flechas: el pie deja de explicar teclas que no existen y el botón de cerrar es un botón de 44 px, no la palabra «esc» |
+
+La hoja de captura ya tenía nombre accesible en sus sesenta y cinco campos. La
+impresión también estaba resuelta —cuarenta y siete reglas de papel, con control
+de salto de página y la dirección de los enlaces externos desplegada—; lo único
+que hubo que hacer fue que las piezas nuevas no salieran impresas.
+
 ## Una sola versión, en un solo sitio
 
 ```bash
