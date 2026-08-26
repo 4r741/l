@@ -1,4 +1,7 @@
-# Salida de build-export.py: se regenera con `python3 build-export.py`
+# Salida de build-export.py: se regenera con `python3 build-export.py`.
+# La entrega —el HTML y el PDF que contienen el sistema entero— sí se guarda,
+# en entrega/, porque una sesión de trabajo se borra y una entrega tiene que
+# poder descargarse mañana.
 export/
 
 # Bytecode: puede quedar obsoleto y confundir al verificador
