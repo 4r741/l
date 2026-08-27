@@ -198,6 +198,48 @@ main:focus{outline:none}
    la única manera de leerla entera sin ratón. */
 .tablewrap[tabindex]{outline-offset:2px}
 .tablewrap[tabindex]:focus-visible{outline:2px solid var(--accent)}
+/* ---------------------------------------------------------------------------
+   Mapa del documento. Estos textos tienen ochenta y seis pantallas de recorrido
+   y treinta y cuatro apartados: la tira de arriba dice en cuál se está, pero no
+   dice cuánto queda, ni cuánto ocupa cada cosa, ni permite ver el documento
+   entero de un vistazo. El mapa vive en el margen derecho, que estaba vacío,
+   con una marca por apartado de altura proporcional a lo que ocupa. Se ve la
+   forma del documento; se pulsa y se salta; al pasar por encima dice el nombre.
+   --------------------------------------------------------------------------- */
+.mapa{
+  position:fixed;right:max(1rem,calc((100vw - var(--wrap))/2 - 3.2rem));
+  top:50%;transform:translateY(-50%);z-index:80;
+  display:none;flex-direction:column;gap:2px;width:24px;
+  /* Altura propia y no la que resulte de las marcas: sin ella el reparto
+     proporcional se calculaba contra cero y todas salían del mínimo. */
+  height:min(64vh,620px);
+}
+@media(min-width:1240px){.mapa{display:flex}}
+.mapa__m{
+  position:relative;display:block;width:100%;padding:0;border:0;cursor:pointer;
+  background:transparent;
+}
+.mapa__m::before{
+  content:"";position:absolute;inset:0 6px;border-radius:2px;
+  background:var(--rule);opacity:.42;
+  transition:opacity .16s ease,background .16s ease,inset .16s ease;
+}
+.mapa__m:hover::before{opacity:.7;inset:0 3px}
+.mapa__m[aria-current="true"]::before{background:var(--accent);opacity:1;inset:0 2px}
+.mapa__m:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+/* El rótulo solo aparece cuando hace falta: al apuntar o al llegar con el
+   tabulador. Un mapa con treinta y cuatro nombres siempre encendidos sería otra
+   pared, que es justo lo que se quiere evitar. */
+.mapa__r{
+  position:absolute;right:calc(100% + .7rem);top:50%;transform:translateY(-50%);
+  white-space:nowrap;font-size:.8rem;font-weight:500;color:var(--surface);
+  background:var(--ink);padding:.3rem .6rem;border-radius:5px;
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .14s ease;
+  box-shadow:var(--sombra-2);
+}
+.mapa__m:hover .mapa__r,.mapa__m:focus-visible .mapa__r{opacity:1;visibility:visible}
+@media(prefers-reduced-motion:reduce){.mapa__m::before,.mapa__r{transition:none}}
+@media print{.mapa{display:none}}
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -2152,6 +2194,103 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     window.addEventListener("resize", repasar);
     window.addEventListener("load", repasar);
     document.addEventListener("click", function(){ setTimeout(repasar, 80); }, true);
+  })();
+
+
+  /* ---- mapa del documento ---- */
+  (function(){
+    if(window.__MAPA__) return; window.__MAPA__ = 1;
+
+    function construye(raiz, tira){
+      var enlaces = [].slice.call(tira.querySelectorAll("a[href^='#']"));
+      /* Con pocos apartados el mapa no aporta: la tira ya los enseña todos. */
+      if(enlaces.length < 6) return null;
+      var destinos = [];
+      enlaces.forEach(function(a){
+        var d = document.getElementById(a.getAttribute("href").slice(1));
+        if(d) destinos.push({a:a, d:d, r:a.textContent.trim()});
+      });
+      if(destinos.length < 6) return null;
+
+      var mapa = document.createElement("nav");
+      mapa.className = "mapa";
+      mapa.setAttribute("aria-label", "Mapa del documento");
+      destinos.forEach(function(x, i){
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "mapa__m";
+        b.dataset.i = String(i);
+        b.setAttribute("aria-label", "Ir a " + x.r);
+        var r = document.createElement("span");
+        r.className = "mapa__r";
+        r.textContent = x.r;
+        b.appendChild(r);
+        mapa.appendChild(b);
+        x.b = b;
+      });
+      document.body.appendChild(mapa);
+      return {mapa:mapa, destinos:destinos};
+    }
+
+    /* La altura de cada marca es la que ocupa su apartado, con un mínimo para
+       que los cortos sigan siendo pulsables. */
+    function reparte(m){
+      var alto = m.mapa.clientHeight - (m.destinos.length - 1) * 2;
+      var tramos = m.destinos.map(function(x, i){
+        var fin = (i + 1 < m.destinos.length)
+          ? m.destinos[i + 1].d.getBoundingClientRect().top + window.scrollY
+          : document.documentElement.scrollHeight;
+        return Math.max(1, fin - (x.d.getBoundingClientRect().top + window.scrollY));
+      });
+      var suma = tramos.reduce(function(a, b){ return a + b; }, 0) || 1;
+      m.destinos.forEach(function(x, i){
+        x.b.style.height = Math.max(9, Math.round(alto * tramos[i] / suma)) + "px";
+      });
+    }
+
+    var estado = null;
+    function arranca(){
+      /* Dentro del archivo único solo vale la tira del documento que está
+         abierto. Si ese documento no tiene tira —la portada y la presentación no
+         la tienen—, no hay mapa: cayendo al primer `.strip` que apareciera se
+         dibujaba el mapa de otro documento encima del que se está leyendo. */
+      var tira = document.querySelector(".cabecera")
+        ? document.querySelector(".cabecera .strip:not([hidden]):not(.strip--nota)")
+        : (document.querySelector("#strip") || document.querySelector(".strip:not(.strip--nota)"));
+      if(estado){ estado.mapa.remove(); estado = null; }
+      if(!tira) return;
+      estado = construye(document, tira);
+      if(!estado) return;
+      var m = estado;
+      m.mapa.addEventListener("click", function(e){
+        var b = e.target.closest(".mapa__m");
+        if(!b) return;
+        var x = m.destinos[+b.dataset.i];
+        if(x) x.d.scrollIntoView({behavior:"instant", block:"start"});
+      });
+      reparte(m);
+      window.addEventListener("resize", function(){ reparte(m); });
+      marca();
+    }
+
+    function marca(){
+      if(!estado) return;
+      var y = window.scrollY + window.innerHeight * 0.35, actual = 0;
+      estado.destinos.forEach(function(x, i){
+        if(x.d.getBoundingClientRect().top + window.scrollY <= y) actual = i;
+      });
+      estado.destinos.forEach(function(x, i){
+        x.b.setAttribute("aria-current", String(i === actual));
+      });
+    }
+    window.addEventListener("scroll", marca, {passive:true});
+
+    arranca();
+    window.addEventListener("load", function(){ if(estado) reparte(estado); });
+    /* En el archivo único el documento visible cambia y con él su mapa. */
+    document.addEventListener("click", function(e){
+      if(e.target.closest("[data-ir-a]")) setTimeout(arranca, 120);
+    }, true);
   })();
 
   /* ---- volver arriba ---- */

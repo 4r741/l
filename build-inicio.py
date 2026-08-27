@@ -509,6 +509,103 @@ JS_INDICE = """
     document.addEventListener("click", function(){ setTimeout(repasar, 80); }, true);
   })();
 
+
+  /* ---- mapa del documento ---- */
+  (function(){
+    if(window.__MAPA__) return; window.__MAPA__ = 1;
+
+    function construye(raiz, tira){
+      var enlaces = [].slice.call(tira.querySelectorAll("a[href^='#']"));
+      /* Con pocos apartados el mapa no aporta: la tira ya los enseña todos. */
+      if(enlaces.length < 6) return null;
+      var destinos = [];
+      enlaces.forEach(function(a){
+        var d = document.getElementById(a.getAttribute("href").slice(1));
+        if(d) destinos.push({a:a, d:d, r:a.textContent.trim()});
+      });
+      if(destinos.length < 6) return null;
+
+      var mapa = document.createElement("nav");
+      mapa.className = "mapa";
+      mapa.setAttribute("aria-label", "Mapa del documento");
+      destinos.forEach(function(x, i){
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "mapa__m";
+        b.dataset.i = String(i);
+        b.setAttribute("aria-label", "Ir a " + x.r);
+        var r = document.createElement("span");
+        r.className = "mapa__r";
+        r.textContent = x.r;
+        b.appendChild(r);
+        mapa.appendChild(b);
+        x.b = b;
+      });
+      document.body.appendChild(mapa);
+      return {mapa:mapa, destinos:destinos};
+    }
+
+    /* La altura de cada marca es la que ocupa su apartado, con un mínimo para
+       que los cortos sigan siendo pulsables. */
+    function reparte(m){
+      var alto = m.mapa.clientHeight - (m.destinos.length - 1) * 2;
+      var tramos = m.destinos.map(function(x, i){
+        var fin = (i + 1 < m.destinos.length)
+          ? m.destinos[i + 1].d.getBoundingClientRect().top + window.scrollY
+          : document.documentElement.scrollHeight;
+        return Math.max(1, fin - (x.d.getBoundingClientRect().top + window.scrollY));
+      });
+      var suma = tramos.reduce(function(a, b){ return a + b; }, 0) || 1;
+      m.destinos.forEach(function(x, i){
+        x.b.style.height = Math.max(9, Math.round(alto * tramos[i] / suma)) + "px";
+      });
+    }
+
+    var estado = null;
+    function arranca(){
+      /* Dentro del archivo único solo vale la tira del documento que está
+         abierto. Si ese documento no tiene tira —la portada y la presentación no
+         la tienen—, no hay mapa: cayendo al primer `.strip` que apareciera se
+         dibujaba el mapa de otro documento encima del que se está leyendo. */
+      var tira = document.querySelector(".cabecera")
+        ? document.querySelector(".cabecera .strip:not([hidden]):not(.strip--nota)")
+        : (document.querySelector("#strip") || document.querySelector(".strip:not(.strip--nota)"));
+      if(estado){ estado.mapa.remove(); estado = null; }
+      if(!tira) return;
+      estado = construye(document, tira);
+      if(!estado) return;
+      var m = estado;
+      m.mapa.addEventListener("click", function(e){
+        var b = e.target.closest(".mapa__m");
+        if(!b) return;
+        var x = m.destinos[+b.dataset.i];
+        if(x) x.d.scrollIntoView({behavior:"instant", block:"start"});
+      });
+      reparte(m);
+      window.addEventListener("resize", function(){ reparte(m); });
+      marca();
+    }
+
+    function marca(){
+      if(!estado) return;
+      var y = window.scrollY + window.innerHeight * 0.35, actual = 0;
+      estado.destinos.forEach(function(x, i){
+        if(x.d.getBoundingClientRect().top + window.scrollY <= y) actual = i;
+      });
+      estado.destinos.forEach(function(x, i){
+        x.b.setAttribute("aria-current", String(i === actual));
+      });
+    }
+    window.addEventListener("scroll", marca, {passive:true});
+
+    arranca();
+    window.addEventListener("load", function(){ if(estado) reparte(estado); });
+    /* En el archivo único el documento visible cambia y con él su mapa. */
+    document.addEventListener("click", function(e){
+      if(e.target.closest("[data-ir-a]")) setTimeout(arranca, 120);
+    }, true);
+  })();
+
   /* ---- volver arriba ---- */
   (function(){
     if(document.querySelector(".volver")) return;

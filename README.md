@@ -104,6 +104,7 @@ Siete documentos y seiscientas páginas de texto no se recorren solo con el
 |---|---|
 | Tira de secciones | Marca en qué apartado se está y se desplaza sola para tenerlo a la vista |
 | Desvanecido de los bordes | Toda fila que se desplaza en horizontal —tira, conmutador, tabla ancha— dice por qué lado sigue, y solo por ese lado |
+| Mapa del documento | Una marca por apartado en el margen derecho, de altura proporcional a lo que ocupa: se ve la forma del texto y cuánto queda. La marca del apartado en curso va en color; al apuntar dice el nombre; al pulsar salta. Desde 1240 px de ancho, y nunca en papel |
 | Volver arriba | Aparece cuando ya se ha bajado de verdad. En el archivo, con un segundo botón al índice general |
 | Buscador `/` | Texto completo de los siete documentos, con relevancia y fragmento |
 | Teclas `[` y `]` | Documento anterior y siguiente, dentro del archivo |
