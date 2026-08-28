@@ -14,6 +14,7 @@ de navegación de Word recorra el documento y el índice se genere solo—, tabl
 listas. No viaja la maquinaria de la pantalla —barras, mapas, botones,
 buscadores—, que en un procesador de textos no significa nada.
 """
+import json
 import pathlib
 import re
 import sys
@@ -44,10 +45,12 @@ PARTES = [
      "Los diez indicadores y los cinco números, mes a mes."),
 ]
 
-FUERA_ETIQUETA = {"script", "style", "svg", "button", "input", "select", "textarea",
-                  "nav", "header", "footer", "form", "noscript", "figure"}
+# El <svg> ya no se descarta: se anota por dónde pasaba, para poner ahí su
+# imagen. Lo que no puede transcribirse a texto tiene que viajar igualmente.
+FUERA_ETIQUETA = {"script", "style", "button", "input", "select", "textarea",
+                  "nav", "header", "footer", "form", "noscript"}
 FUERA_CLASE = ("strip", "ticks", "mapa", "volver", "saltar", "avance", "topbar",
-               "cabecera", "hud", "idx__mando", "paleta", "cap__barra", "t-fig",
+               "cabecera", "hud", "idx__mando", "paleta", "cap__barra",
                "edit", "puerta__flecha")
 
 
@@ -102,7 +105,14 @@ class Bloques(HTMLParser):
             self.saltando = 1
             return
 
-        if etiqueta in ("h1", "h2", "h3", "h4", "h5", "h6"):
+        if etiqueta == "svg":
+            self._cierra()
+            self.bloques.append(("figura", None))
+            self.saltando = 1          # el interior del svg no es texto
+            return
+        if etiqueta == "figcaption":
+            self._abre("pie")
+        elif etiqueta in ("h1", "h2", "h3", "h4", "h5", "h6"):
             self._abre("h%d" % min(int(etiqueta[1]) + 1, 5))
         elif etiqueta in ("p", "dd"):
             self._abre("p")
@@ -159,7 +169,7 @@ class Bloques(HTMLParser):
             if self.listas:
                 self.listas.pop()
         elif etiqueta in ("h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "dt", "dd",
-                          "blockquote"):
+                          "blockquote", "figcaption"):
             self._cierra()
 
     def handle_data(self, datos):
@@ -236,12 +246,31 @@ def main():
     doc.indice()
 
     # -------------------------------------------------------------- las partes
-    cuenta = {"h": 0, "p": 0, "li": 0, "tabla": 0}
+    censo = {}
+    carpeta = RAIZ / "export" / "figuras"
+    ficha = carpeta / "censo.json"
+    if ficha.exists():
+        censo = json.loads(ficha.read_text(encoding="utf-8"))
+    else:
+        print("  aviso: sin figuras rasterizadas; ejecute antes python3 figuras-png.py")
+
+    cuenta = {"h": 0, "p": 0, "li": 0, "tabla": 0, "figura": 0}
     for ruta, titulo, que in PARTES:
         doc.salto()
         doc.titular(1, [Trozo(titulo)])
         doc.parrafo([Trozo(que)], estilo="Sumario")
+        figuras, siguiente = censo.get(ruta, []), 0
         for tipo, dato in bloques_de(ruta):
+            if tipo == "figura":
+                if siguiente < len(figuras):
+                    f = figuras[siguiente]; siguiente += 1
+                    doc.imagen((carpeta / f["archivo"]).read_bytes(),
+                               f["ancho"], f["alto"], f.get("rotulo", ""))
+                    cuenta["figura"] += 1
+                continue
+            if tipo == "pie":
+                doc.pie(dato)
+                continue
             if tipo == "tabla":
                 doc.tabla(dato, anchos=anchos(dato))
                 cuenta["tabla"] += 1
@@ -260,9 +289,10 @@ def main():
 
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
     doc.guarda(SALIDA)
-    print("  → export/%s · %d KB · %d titulares · %d párrafos · %d puntos · %d tablas"
+    print("  → export/%s · %d KB · %d titulares · %d párrafos · %d puntos · "
+          "%d tablas · %d figuras"
           % (SALIDA.name, SALIDA.stat().st_size // 1024,
-             cuenta["h"], cuenta["p"], cuenta["li"], cuenta["tabla"]))
+             cuenta["h"], cuenta["p"], cuenta["li"], cuenta["tabla"], cuenta["figura"]))
 
 
 if __name__ == "__main__":

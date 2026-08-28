@@ -57,6 +57,7 @@ def _runs(trozos):
 class Documento:
     def __init__(self, titulo="", autor="", asunto=""):
         self.cuerpo = []
+        self.imagenes = []
         self.titulo, self.autor, self.asunto = titulo, autor, asunto
 
     # ---------------------------------------------------------------- bloques
@@ -94,6 +95,38 @@ class Documento:
             '<w:r><w:fldChar w:fldCharType="separate"/></w:r>'
             '<w:r><w:t>Actualice el índice: pulse aquí y luego F9.</w:t></w:r>'
             '<w:r><w:fldChar w:fldCharType="end"/></w:r></w:p>')
+
+    def imagen(self, datos, ancho_px, alto_px, rotulo="", ancho_max=9360):
+        """Incrusta un PNG. Las medidas van en EMU: 914.400 por pulgada.
+
+        Lo que no puede transcribirse a texto —una figura— se incrusta como
+        imagen, que es la única manera de que viaje. Se escala para que quepa en
+        la caja de escritura sin deformarse.
+        """
+        idx = len(self.imagenes) + 1
+        self.imagenes.append(datos)
+        # 9360 dxa de caja: 1 dxa = 635 EMU
+        ancho = min(int(ancho_px * 9525), int(ancho_max * 635))
+        alto = int(ancho * alto_px / max(1, ancho_px))
+        self.cuerpo.append(
+            '<w:p><w:pPr><w:spacing w:before="120" w:after="60"/>'
+            '<w:jc w:val="center"/></w:pPr><w:r><w:drawing>'
+            '<wp:inline distT="0" distB="0" distL="0" distR="0" '
+            'xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">'
+            '<wp:extent cx="%d" cy="%d"/><wp:docPr id="%d" name="Figura %d" descr="%s"/>'
+            '<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
+            '<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">'
+            '<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">'
+            '<pic:nvPicPr><pic:cNvPr id="%d" name="figura%d.png"/><pic:cNvPicPr/></pic:nvPicPr>'
+            '<pic:blipFill><a:blip r:embed="rIdImg%d"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+            '<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="%d" cy="%d"/></a:xfrm>'
+            '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr>'
+            '</pic:pic></a:graphicData></a:graphic></wp:inline>'
+            '</w:drawing></w:r></w:p>'
+            % (ancho, alto, idx, idx, escape(rotulo)[:400], idx, idx, idx, ancho, alto))
+
+    def pie(self, trozos):
+        self.parrafo(trozos, estilo="Pie")
 
     def tabla(self, filas, anchos=None, cabecera=True):
         """filas = lista de listas de listas de Trozo."""
@@ -147,7 +180,22 @@ class Documento:
                 'w:header="709" w:footer="709" w:gutter="0"/></w:sectPr>'
                 '</w:body></w:document>' % (NS, "".join(self.cuerpo))),
         }
+        if self.imagenes:
+            extra = "".join(
+                '<Relationship Id="rIdImg%d" Type="http://schemas.openxmlformats.org/'
+                'officeDocument/2006/relationships/image" Target="media/figura%d.png"/>'
+                % (i + 1, i + 1) for i in range(len(self.imagenes)))
+            piezas["word/_rels/document.xml.rels"] = piezas[
+                "word/_rels/document.xml.rels"].replace("</Relationships>", extra + "</Relationships>")
+            piezas["[Content_Types].xml"] = piezas["[Content_Types].xml"].replace(
+                "</Types>", '<Default Extension="png" ContentType="image/png"/></Types>')
+
         with zipfile.ZipFile(ruta, "w", zipfile.ZIP_DEFLATED) as z:
+            for i, datos in enumerate(self.imagenes):
+                info = zipfile.ZipInfo("word/media/figura%d.png" % (i + 1),
+                                       date_time=(2026, 1, 1, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                z.writestr(info, datos)
             for nombre, texto in piezas.items():
                 # fecha fija: construir dos veces tiene que dar el mismo archivo
                 info = zipfile.ZipInfo(nombre, date_time=(2026, 1, 1, 0, 0, 0))
@@ -233,6 +281,9 @@ ESTILOS = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
  + '<w:style w:type="paragraph" w:styleId="Sumario"><w:basedOn w:val="Normal"/>'
    '<w:pPr><w:spacing w:after="200"/></w:pPr>'
    '<w:rPr><w:color w:val="6B7873"/><w:sz w:val="20"/></w:rPr></w:style>'
+ + '<w:style w:type="paragraph" w:styleId="Pie"><w:basedOn w:val="Normal"/>'
+   '<w:pPr><w:jc w:val="center"/><w:spacing w:after="220"/></w:pPr>'
+   '<w:rPr><w:color w:val="6B7873"/><w:sz w:val="18"/></w:rPr></w:style>'
  + '<w:style w:type="paragraph" w:styleId="Celda"><w:basedOn w:val="Normal"/>'
    '<w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr>'
    '<w:rPr><w:sz w:val="18"/></w:rPr></w:style>'

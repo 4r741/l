@@ -46,6 +46,7 @@ EXTRAS = [
     (RAIZ / "build-export.py", "export/ · HTML autónomo y archivo único"),
     (RAIZ / "build-pdf.py", "export/pdf/ · los PDF por documento"),
     (RAIZ / "build-pdf-completo.py", "export/ · el sistema entero en un PDF"),
+    (RAIZ / "figuras-png.py", "export/figuras/ · las figuras, para el Word"),
     (RAIZ / "build-word.py", "export/ · el sistema entero en un .docx"),
     (RAIZ / "verifica-word.py", "verificación del documento de Word"),
 ]

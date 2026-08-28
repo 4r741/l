@@ -84,6 +84,8 @@ def main():
                 falla("falta la pieza %s" % pieza)
         arboles = {}
         for nombre in nombres:
+            if not nombre.endswith((".xml", ".rels")):
+                continue          # las imágenes no son XML
             try:
                 arboles[nombre] = ET.fromstring(z.read(nombre))
             except ET.ParseError as e:
@@ -155,7 +157,48 @@ def main():
     else:
         print("  Las %d tablas cuadran: filas completas y anchos sumando el ancho." % len(tablas))
 
-    # 6 · el índice automático está y pide actualizarse al abrir
+    # 6 · las figuras: cada dibujo con su imagen dentro del paquete, su relación
+    #     y su texto alternativo. Una imagen enlazada y ausente es un cuadro roto
+    #     en mitad de un documento de Junta.
+    with zipfile.ZipFile(DOCX) as z:
+        medios = {n for n in z.namelist() if n.startswith("word/media/")}
+        pesos = {n: z.getinfo(n).file_size for n in medios}
+    rels = arboles["word/_rels/document.xml.rels"]
+    RNS = "{http://schemas.openxmlformats.org/package/2006/relationships}"
+    destinos = {r.get("Id"): r.get("Target") for r in rels.iter(RNS + "Relationship")}
+    A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+    R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+    blips = [b.get(R + "embed") for b in doc.iter(A + "blip")]
+    rotas = [b for b in blips if "word/" + (destinos.get(b) or "") not in medios]
+    if not blips:
+        falla("no lleva ninguna figura")
+    elif rotas:
+        falla("%d figuras apuntan a una imagen que no está en el paquete" % len(rotas))
+    else:
+        vacias = [n for n, p in pesos.items() if p < 2000]
+        sobran = len(medios) - len(set(blips))
+        WP = "{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}"
+        sinalt = [d for d in doc.iter(WP + "docPr") if not (d.get("descr") or "").strip()]
+        sincaja = [e for e in doc.iter(WP + "extent")
+                   if int(e.get("cx") or 0) <= 0 or int(e.get("cy") or 0) <= 0]
+        if vacias:
+            falla("%d imágenes pesan menos de 2 KB: probablemente salieron en blanco" % len(vacias))
+        elif sobran:
+            falla("%d imágenes en el paquete que ningún dibujo usa" % sobran)
+        elif sincaja:
+            falla("%d figuras sin medidas" % len(sincaja))
+        else:
+            # A4 menos los márgenes: 11906 − 1191×2 = 9524 dxa, a 635 EMU cada uno
+            CAJA = 9524 * 635
+            grandes = sum(1 for e in doc.iter(WP + "extent")
+                          if int(e.get("cx")) > CAJA)
+            print("  Las %d figuras están incrustadas, con su imagen en el paquete "
+                  "(%d KB), medidas y texto alternativo en %d de ellas."
+                  % (len(blips), sum(pesos.values()) // 1024, len(blips) - len(sinalt)))
+            if grandes:
+                falla("%d figuras se salen del ancho de la caja de escritura" % grandes)
+
+    # 7 · el índice automático está y pide actualizarse al abrir
     campo = "".join(i.text or "" for i in doc.iter(W + "instrText"))
     if "TOC" not in campo:
         falla("no lleva campo de tabla de contenido")
@@ -164,7 +207,7 @@ def main():
     else:
         print("  Índice automático presente, y marcado para actualizarse al abrir.")
 
-    # 7 · nada perdido por el camino: el texto del Word contra el de los
+    # 8 · nada perdido por el camino: el texto del Word contra el de los
     #     documentos. Es la comprobación que de verdad importa.
     from importlib import util
     spec = util.spec_from_file_location("bw", RAIZ / "build-word.py")
@@ -178,7 +221,7 @@ def main():
         bloques = bw.bloques_de(ruta)
         frases = []
         for tipo, dato in bloques:
-            if tipo == "tabla":
+            if tipo == "tabla" or not dato:
                 continue
             t = re.sub(r"\s+", " ", "".join(x.texto for x in dato)).strip()
             if len(t) > 45:

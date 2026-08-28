@@ -181,8 +181,16 @@ El HTML y el PDF son para leer; el `.docx` es para trabajar encima: mandarlo a
 asesoría, comentar un apartado, llevarse una tabla a un acta. Sale de los mismos
 documentos, así que lo que dice el Word es lo que dice el sistema.
 
-Viaja el contenido —texto, titulares, tablas y listas—; no viaja la maquinaria
-de la pantalla, que en un procesador de textos no significa nada. Los titulares
+Viaja el contenido —texto, titulares, tablas, listas y **las veintitrés
+figuras**—; no viaja la maquinaria de la pantalla, que en un procesador de
+textos no significa nada.
+
+Las figuras son SVG escritos a mano que toman color y tipografía de la hoja de
+estilos de su página: sacadas del documento y dibujadas sueltas perderían las
+dos. `figuras-png.py` las fotografía **donde están**, en su propia página y al
+doble de resolución, y `docx.py` las incrusta con su medida y su texto
+alternativo. Lo que no puede transcribirse a texto tiene que viajar de todos
+modos. Los titulares
 llevan su **nivel de esquema**, de modo que el panel de navegación de Word
 recorra el documento y el índice se rellene solo al abrirlo.
 
