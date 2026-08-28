@@ -170,6 +170,38 @@ impresión también estaba resuelta —cuarenta y siete reglas de papel, con con
 de salto de página y la dirección de los enlaces externos desplegada—; lo único
 que hubo que hacer fue que las piezas nuevas no salieran impresas.
 
+## En Word
+
+```bash
+python3 build-word.py        # export/Sistema-Documental-Giraldo-v8.0.docx
+python3 verifica-word.py     # comprueba el paquete y que no falte contenido
+```
+
+El HTML y el PDF son para leer; el `.docx` es para trabajar encima: mandarlo a
+asesoría, comentar un apartado, llevarse una tabla a un acta. Sale de los mismos
+documentos, así que lo que dice el Word es lo que dice el sistema.
+
+Viaja el contenido —texto, titulares, tablas y listas—; no viaja la maquinaria
+de la pantalla, que en un procesador de textos no significa nada. Los titulares
+llevan su **nivel de esquema**, de modo que el panel de navegación de Word
+recorra el documento y el índice se rellene solo al abrirlo.
+
+Se escribe el formato a mano, en `docx.py`. No es capricho: en esta máquina no
+hay pandoc, ni las bibliotecas de Python que suelen usarse, y **LibreOffice viene
+solo con Calc**, sin Writer — no puede convertir a `.docx`, ni desde HTML ni
+desde un `.txt`. Un `.docx` es un zip con unos cuantos XML, así que se escriben.
+
+Y por lo mismo no puede abrirse aquí para mirarlo, de modo que `verifica-word.py`
+comprueba lo que sí se puede comprobar: que estén las nueve piezas del paquete,
+que cada XML esté bien formado, que **el orden de los elementos sea el que exige
+el esquema** —Word rechaza el archivo si no lo es—, que los estilos y las
+numeraciones que se usan existan, que las 329 tablas cuadren en columnas y
+anchos, y que un fragmento de cada veinte del original aparezca en el Word.
+
+Esa comprobación de orden ya pagó su coste: encontró dos elementos cambiados de
+sitio —`tblHeader` antes que `cantSplit`, `ind` antes que `spacing`— que se ven
+al abrir el archivo y no antes.
+
 ## Una sola versión, en un solo sitio
 
 ```bash
