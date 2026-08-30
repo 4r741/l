@@ -155,6 +155,33 @@ versión de `version.py` al construirse, y los tres escritos a mano la reciben e
 el primer paso de `build.py`. Subir de versión vuelve a ser lo que decía que
 era: **cambiar una línea**.
 
+## Sin JavaScript también
+
+El archivo se abre también donde no se ejecutan guiones: el visor de archivos de
+un teléfono, sin ir más lejos. Allí estaba **roto**, y de una manera que no se ve
+probándolo en un navegador de escritorio.
+
+Tres cosas dependían del guion para su **estado inicial**, que es justo lo que no
+debe depender de él:
+
+| Qué pasaba | Por qué |
+|---|---|
+| Las seis tiras de secciones se apilaban y se desbordaban encima del texto | Nacían visibles; el guion las ocultaba al cargar. Y la fila tiene 44 px de alto fijo, así que seis tiras se salen de la caja |
+| Media página en blanco | `.reveal{opacity:0}` esconde el contenido para animarlo. Sin guion no había quien lo enseñara |
+| Solo la portada, sin salida | El conmutador eran `<button>`. Un botón sin guion que lo escuche no hace nada |
+
+Arreglado en el sitio correcto, que es el HTML y no el guion:
+
+- Las tiras **nacen ocultas** todas menos la del documento que se abre primero.
+- Lo que se esconde para animarlo se esconde **solo si hay guion**, mediante una
+  marca que un `<script>` de una línea pone en la raíz antes de la hoja de
+  estilos. Sin él, se ve.
+- El conmutador son **enlaces**, y una regla de `:target` enseña el documento
+  señalado por la dirección y retira la portada. Con guion no llega a usarse,
+  porque el guion cambia el atributo antes.
+
+El resultado es un archivo que se recorre entero sin ejecutar una sola línea.
+
 ## La medida de lectura
 
 Un renglón de doscientos caracteres no se lee: al llegar al final se ha perdido

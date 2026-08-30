@@ -39,6 +39,10 @@ PAGINAS = {
     "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-v%s.html" % CORTA,
 }
 
+# El documento que se abre al entrar. Lo usan el conmutador y el estado
+# inicial de las tiras, que tiene que ser correcto ya en el HTML.
+PRIMERO = "doc-inicio"
+
 DOCUMENTOS = {
     "inicio.html": ("doc-inicio", "in-"),
     "memoria.html": ("doc-tesis", "tes-"),
@@ -820,6 +824,18 @@ ESTILO_DOC = """<style>
 /* Contenedor de cada documento dentro del archivo único */
 [hidden]{display:none!important}
 .doc{display:block}
+/* Sin guiones, manda la dirección: el documento al que apunta el enlace se
+   enseña aunque naciera oculto, la portada se retira, y con ella su fila de
+   identificación, que deja paso al índice de secciones del documento abierto.
+   Con guiones esto no llega a usarse, porque el guion cambia el atributo antes.
+
+   Lleva !important porque la hoja base declara [hidden]{display:none!important}
+   —para que nada de lo que se esconde reaparezca por accidente— y sin él esta
+   regla perdía la puja y la página se quedaba en blanco. */
+.doc[hidden]:target{display:block!important}
+html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
+@TIRAS_TARGET@
+.cabecera__docs a{text-decoration:none}
 
 /* ---------------------------------------------------------------------------
    Cabecera única. El archivo no depende de ningún enlace externo y no apila
@@ -849,15 +865,15 @@ ESTILO_DOC = """<style>
 /* Los nombres de los documentos iban en versalita monoespaciada muy espaciada:
    ocho rótulos a grito pelado en lo primero que se ve. En caja normal se leen
    igual de rápido y no compiten con el título de la página. */
-.cabecera__docs button{
+.cabecera__docs a{
   font:inherit;font-size:.86rem;font-weight:500;letter-spacing:.005em;
   background:transparent;border:1px solid transparent;
   color:rgba(247,248,245,.74);padding:.34rem .66rem;border-radius:999px;cursor:pointer;
   white-space:nowrap;
   transition:color .16s ease,border-color .16s ease,background .16s ease;
 }
-.cabecera__docs button:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
-.cabecera__docs button[aria-current="true"]{
+.cabecera__docs a:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
+.cabecera__docs a[aria-current="true"]{
   background:rgba(127,211,201,.16);border-color:#7FD3C9;color:#7FD3C9;
 }
 
@@ -1285,7 +1301,14 @@ def descabezar(html, ident):
                      cabecera.group(0) if cabecera else "", re.S)
     if tira:
         marcado = re.sub(r'\sid="[^"]*"', "", tira.group(0), count=1)
-        marcado = marcado.replace('<nav class="strip"', '<nav class="strip" data-de="%s"' % ident, 1)
+        # Nace oculta salvo la del documento que se abre primero. Antes esto lo
+        # hacía el guion al cargar, y en un visor que no ejecuta guiones —el de
+        # archivos de un teléfono— se apilaban las seis tiras dentro de una caja
+        # de 44 px de alto fija y se desbordaban encima del texto.
+        oculta = "" if ident == PRIMERO else " hidden"
+        marcado = marcado.replace(
+            '<nav class="strip"',
+            '<nav class="strip" data-de="%s"%s' % (ident, oculta), 1)
         entradas = [{"ancla": a, "rotulo": re.sub(r"\s+", " ", html_mod.unescape(r)).strip()}
                     for a, r in re.findall(r'<a href="#([^"]+)">(.*?)</a>', marcado, re.S)]
         return html, "      " + marcado, entradas
@@ -1295,7 +1318,9 @@ def descabezar(html, ident):
     suplente = SIN_INDICE.get(ident)
     if not suplente:
         return html, "", []
-    return html, ('      <nav class="strip strip--nota" data-de="%s">%s</nav>' % (ident, suplente)), []
+    oculta = "" if ident == PRIMERO else " hidden"
+    return html, ('      <nav class="strip strip--nota" data-de="%s"%s>%s</nav>'
+                  % (ident, oculta, suplente)), []
 
 
 def unificado(estilo_fuentes):
@@ -1326,6 +1351,18 @@ def unificado(estilo_fuentes):
     deck = re.sub(r"^\s*:root\{.*?\n\}", "", deck, count=1, flags=re.S)
     estilos += "\n<style>\n" + escopar(deck, "#doc-deck") + "</style>"
 
+    # Sin guiones, la tira que se enseña es la del documento señalado por la
+    # dirección. Una regla por documento, que son ocho.
+    reglas = []
+    for _n, (ident, _p) in DOCUMENTOS.items():
+        reglas.append('html:has(#%s:target) .cabecera .strip[data-de="%s"]'
+                      '{display:flex!important}' % (ident, ident))
+        if ident != PRIMERO:
+            reglas.append('html:has(#%s:target) .cabecera .strip[data-de="%s"]'
+                          '{display:none!important}' % (ident, PRIMERO))
+    estilo_doc = ESTILO_DOC.replace("@TIRAS_TARGET@", "\n".join(reglas))
+    assert "@TIRAS_TARGET@" not in estilo_doc
+
     bloques, tiras, indice = [], [], []
     for nombre, (ident, prefijo) in DOCUMENTOS.items():
         cuerpo_doc = cuerpo(fuentes[nombre])
@@ -1348,9 +1385,14 @@ def unificado(estilo_fuentes):
         oculto = "" if ident == "doc-inicio" else " hidden"
         bloques.append('<div class="doc" id="%s"%s>\n%s\n</div>' % (ident, oculto, cuerpo_doc))
 
+    # Enlaces y no botones. Un botón sin guion que lo escuche no hace nada, y
+    # este archivo se abre también en visores que no ejecutan guiones —el de
+    # archivos de un teléfono, sin ir más lejos—: allí quedaba la portada y
+    # ninguna manera de salir de ella. Un enlace lleva a su documento siempre;
+    # el guion, cuando lo hay, intercepta la pulsación y evita el salto.
     barra = "\n".join(
-        '        <button type="button" data-ir-a="%s"%s title="%s">%s</button>' % (
-            ident, ' aria-current="true"' if ident == "doc-inicio" else "",
+        '        <a href="#%s" data-ir-a="%s"%s title="%s">%s</a>' % (
+            ident, ident, ' aria-current="true"' if ident == PRIMERO else "",
             rotulo, CORTOS[ident])
         for ident, rotulo in ROTULOS)
     conmutador = (
@@ -1393,7 +1435,7 @@ def unificado(estilo_fuentes):
     return documento.format(
         fuentes=estilo_fuentes,
         estilos=estilos,
-        estilo_doc=ESTILO_DOC,
+        estilo_doc=estilo_doc,
         conmutador=conmutador,
         documentos="\n".join(bloques),
         script=('<script>window.__INDICE__ = ' + json.dumps(indice, ensure_ascii=False)

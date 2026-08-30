@@ -598,8 +598,9 @@ td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:n
   content:"";width:14px;height:14px;margin-top:.32em;border:1px solid var(--accent);border-radius:2px;
 }
 .checks li b{color:var(--ink);font-weight:600}
-.reveal{opacity:0;transform:translateY(14px)}
-.reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+/* Solo se esconde si hay quien lo enseñe: sin guiones, se ve. */
+.js .reveal{opacity:0;transform:translateY(14px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .reveal,.reveal.in{opacity:1;transform:none;transition:none}
@@ -1828,6 +1829,32 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
 /* Contenedor de cada documento dentro del archivo único */
 [hidden]{display:none!important}
 .doc{display:block}
+/* Sin guiones, manda la dirección: el documento al que apunta el enlace se
+   enseña aunque naciera oculto, la portada se retira, y con ella su fila de
+   identificación, que deja paso al índice de secciones del documento abierto.
+   Con guiones esto no llega a usarse, porque el guion cambia el atributo antes.
+
+   Lleva !important porque la hoja base declara [hidden]{display:none!important}
+   —para que nada de lo que se esconde reaparezca por accidente— y sin él esta
+   regla perdía la puja y la página se quedaba en blanco. */
+.doc[hidden]:target{display:block!important}
+html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
+html:has(#doc-inicio:target) .cabecera .strip[data-de="doc-inicio"]{display:flex!important}
+html:has(#doc-tesis:target) .cabecera .strip[data-de="doc-tesis"]{display:flex!important}
+html:has(#doc-tesis:target) .cabecera .strip[data-de="doc-inicio"]{display:none!important}
+html:has(#doc-deck:target) .cabecera .strip[data-de="doc-deck"]{display:flex!important}
+html:has(#doc-deck:target) .cabecera .strip[data-de="doc-inicio"]{display:none!important}
+html:has(#doc-marketing:target) .cabecera .strip[data-de="doc-marketing"]{display:flex!important}
+html:has(#doc-marketing:target) .cabecera .strip[data-de="doc-inicio"]{display:none!important}
+html:has(#doc-captura:target) .cabecera .strip[data-de="doc-captura"]{display:flex!important}
+html:has(#doc-captura:target) .cabecera .strip[data-de="doc-inicio"]{display:none!important}
+html:has(#doc-manual:target) .cabecera .strip[data-de="doc-manual"]{display:flex!important}
+html:has(#doc-manual:target) .cabecera .strip[data-de="doc-inicio"]{display:none!important}
+html:has(#doc-protocolo:target) .cabecera .strip[data-de="doc-protocolo"]{display:flex!important}
+html:has(#doc-protocolo:target) .cabecera .strip[data-de="doc-inicio"]{display:none!important}
+html:has(#doc-otros:target) .cabecera .strip[data-de="doc-otros"]{display:flex!important}
+html:has(#doc-otros:target) .cabecera .strip[data-de="doc-inicio"]{display:none!important}
+.cabecera__docs a{text-decoration:none}
 
 /* ---------------------------------------------------------------------------
    Cabecera única. El archivo no depende de ningún enlace externo y no apila
@@ -1857,15 +1884,15 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
 /* Los nombres de los documentos iban en versalita monoespaciada muy espaciada:
    ocho rótulos a grito pelado en lo primero que se ve. En caja normal se leen
    igual de rápido y no compiten con el título de la página. */
-.cabecera__docs button{
+.cabecera__docs a{
   font:inherit;font-size:.86rem;font-weight:500;letter-spacing:.005em;
   background:transparent;border:1px solid transparent;
   color:rgba(247,248,245,.74);padding:.34rem .66rem;border-radius:999px;cursor:pointer;
   white-space:nowrap;
   transition:color .16s ease,border-color .16s ease,background .16s ease;
 }
-.cabecera__docs button:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
-.cabecera__docs button[aria-current="true"]{
+.cabecera__docs a:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
+.cabecera__docs a[aria-current="true"]{
   background:rgba(127,211,201,.16);border-color:#7FD3C9;color:#7FD3C9;
 }
 
@@ -2041,14 +2068,14 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
     <div class="cabecera__in">
       <span class="cabecera__marca">Sistema documental <b>Giraldo</b><span>v8.0</span></span>
       <nav class="cabecera__docs" aria-label="Documentos del sistema">
-        <button type="button" data-ir-a="doc-inicio" aria-current="true" title="Inicio">Inicio</button>
-        <button type="button" data-ir-a="doc-tesis" title="Tesis de Dirección">Tesis</button>
-        <button type="button" data-ir-a="doc-deck" title="Presentación">Presentación</button>
-        <button type="button" data-ir-a="doc-marketing" title="Plan de Marketing">Marketing</button>
-        <button type="button" data-ir-a="doc-captura" title="Captura">Captura</button>
-        <button type="button" data-ir-a="doc-manual" title="Manual Maestro">Manual</button>
-        <button type="button" data-ir-a="doc-protocolo" title="Protocolo">Protocolo</button>
-        <button type="button" data-ir-a="doc-otros" title="Otros documentos">Otros</button>
+        <a href="#doc-inicio" data-ir-a="doc-inicio" aria-current="true" title="Inicio">Inicio</a>
+        <a href="#doc-tesis" data-ir-a="doc-tesis" title="Tesis de Dirección">Tesis</a>
+        <a href="#doc-deck" data-ir-a="doc-deck" title="Presentación">Presentación</a>
+        <a href="#doc-marketing" data-ir-a="doc-marketing" title="Plan de Marketing">Marketing</a>
+        <a href="#doc-captura" data-ir-a="doc-captura" title="Captura">Captura</a>
+        <a href="#doc-manual" data-ir-a="doc-manual" title="Manual Maestro">Manual</a>
+        <a href="#doc-protocolo" data-ir-a="doc-protocolo" title="Protocolo">Protocolo</a>
+        <a href="#doc-otros" data-ir-a="doc-otros" title="Otros documentos">Otros</a>
       </nav>
       <button type="button" class="buscador" id="abrir-buscador" aria-haspopup="dialog"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Buscar</span><kbd>/</kbd></button>
     </div>
@@ -2056,7 +2083,7 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
   <div class="cabecera__indice">
     <div class="cabecera__in">
       <nav class="strip strip--nota" data-de="doc-inicio"><b>Sistema documental del Centro de Excelencia Implantológica Giraldo</b><span>Rúa Bolivia nº 2 · Vigo</span><span>Uso interno y confidencial</span></nav>
-      <nav class="strip" data-de="doc-tesis" aria-label="Índice de la tesis">
+      <nav class="strip" data-de="doc-tesis" hidden aria-label="Índice de la tesis">
       <a href="#tes-manifiesto">Manifiesto</a>
       <a href="#tes-control">§0 Control</a>
       <a href="#tes-censo">§0.1 Censo</a>
@@ -2092,8 +2119,8 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
       <a href="#tes-acuerdos">Anexo A · Acuerdos</a>
       <a href="#tes-campanas">Anexo B · Campañas</a>
     </nav>
-      <nav class="strip strip--nota" data-de="doc-deck"><b>43 diapositivas · 16:9</b><span><kbd>←</kbd> <kbd>→</kbd> <kbd>espacio</kbd> pasar</span><span><kbd>N</kbd> guion del ponente</span><span><kbd>E</kbd> ruta corta de doce</span><span><kbd>Inicio</kbd> <kbd>Fin</kbd> primera y última</span></nav>
-      <nav class="strip" data-de="doc-marketing" aria-label="Índice del plan">
+      <nav class="strip strip--nota" data-de="doc-deck" hidden><b>43 diapositivas · 16:9</b><span><kbd>←</kbd> <kbd>→</kbd> <kbd>espacio</kbd> pasar</span><span><kbd>N</kbd> guion del ponente</span><span><kbd>E</kbd> ruta corta de doce</span><span><kbd>Inicio</kbd> <kbd>Fin</kbd> primera y última</span></nav>
+      <nav class="strip" data-de="doc-marketing" hidden aria-label="Índice del plan">
       <a href="#mk-portada">Portada</a>
       <a href="#mk-control">§0 Control</a>
       <a href="#mk-parte-1">I · Doctrina</a>
@@ -2126,14 +2153,14 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
       <a href="#mk-anexo-cartera">Anexo II · Cartera</a>
       <a href="#mk-anexo-trimestre">Anexo III · Este trimestre</a>
     </nav>
-      <nav class="strip" data-de="doc-captura" aria-label="Índice">
+      <nav class="strip" data-de="doc-captura" hidden aria-label="Índice">
       <a href="#cp-instrucciones">Instrucciones</a>
       <a href="#cp-definiciones">Definiciones</a>
       <a href="#cp-captura">Captura mensual</a>
       <a href="#cp-anual">Resumen anual</a>
       <a href="#cp-cinco">Los cinco números</a>
     </nav>
-      <nav class="strip" data-de="doc-manual" aria-label="Índice del manual">
+      <nav class="strip" data-de="doc-manual" hidden aria-label="Índice del manual">
       <a href="#presentacion">Presentación</a>
       <a href="#indice">Índice</a>
       <a href="#vanguardia">Marco de vanguardia</a>
@@ -2150,7 +2177,7 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
       <a href="#otros">Otros documentos</a>
       <a href="#notas">Puntos abiertos</a>
     </nav>
-      <nav class="strip" data-de="doc-protocolo" aria-label="Índice de fases">
+      <nav class="strip" data-de="doc-protocolo" hidden aria-label="Índice de fases">
       <a href="#pv-fundamentos">Fundamentos</a>
       <a href="#pv-mapa">Mapa 90′</a>
       <a href="#pv-flujo">Flujo</a>
@@ -2174,7 +2201,7 @@ body:has(.slide--stmt.is-on) #doc-deck .barra i{background:#7FD3C9}
       <a href="#pv-formacion">Formación</a>
       <a href="#pv-anexos">Anexos</a>
     </nav>
-      <nav class="strip" data-de="doc-otros" aria-label="Índice de los otros documentos">
+      <nav class="strip" data-de="doc-otros" hidden aria-label="Índice de los otros documentos">
       <a href="#ot-presentacion">Cómo leer</a>
       <a href="#ot-otros-mapa">Mapa del sistema</a>
       <a href="#ot-otros-compendio">1 · Compendio Maestro</a>
@@ -22988,6 +23015,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
   });
 })();
 </script>
+<script>document.documentElement.classList.add("js")</script>
 <script>
 (function(){
   "use strict";
@@ -23411,6 +23439,315 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 })();
 </script>
 <script>
+(function(){
+  "use strict";
+  /* ---- por dónde sigue una tira que se desplaza ---- */
+  (function(){
+    if(window.__TIRAS__) return; window.__TIRAS__ = 1;
+    var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));
+    if(!tiras.length) return;
+    function estado(t){
+      var mas = t.scrollWidth - t.clientWidth;
+      t.classList.toggle("hay-izq", mas > 2 && t.scrollLeft > 2);
+      t.classList.toggle("hay-der", mas > 2 && t.scrollLeft < mas - 2);
+    }
+    tiras.forEach(function(t){
+      estado(t);
+      t.addEventListener("scroll", function(){ estado(t); }, {passive:true});
+      if("ResizeObserver" in window) new ResizeObserver(function(){ estado(t); }).observe(t);
+    });
+    window.addEventListener("resize", function(){ tiras.forEach(estado); });
+    /* al conmutar de documento la tira cambia de contenido sin que nada haga
+       scroll: hay que volver a mirarla */
+    document.addEventListener("click", function(){ setTimeout(function(){ tiras.forEach(estado); }, 60); }, true);
+  })();
+
+
+  /* ---- saltar al contenido ---- */
+  (function(){
+    if(document.querySelector(".saltar")) return;
+    var a = document.createElement("a");
+    a.className = "saltar";
+    a.href = "#";
+    a.textContent = "Saltar al contenido";
+    function cuerpo(){
+      var todos = [].slice.call(document.querySelectorAll("main"));
+      for(var i = 0; i < todos.length; i++){
+        if(todos[i].getBoundingClientRect().height > 0) return todos[i];
+      }
+      return todos[0] || null;
+    }
+    /* El destino se calcula al enfocar y no al cargar: en el archivo único el
+       documento visible cambia, y con él el contenido al que hay que saltar. */
+    a.addEventListener("focus", function(){
+      var m = cuerpo();
+      /* Si el contenido no tiene identificador se le pone uno, para que el
+         enlace sea un enlace de verdad y no un «#» que solo funciona con
+         guion. */
+      if(m && !m.id) m.id = "contenido";
+      a.href = (m && m.id) ? "#" + m.id : "#";
+    });
+    a.addEventListener("click", function(e){
+      var m = cuerpo();
+      if(!m) return;
+      e.preventDefault();
+      m.setAttribute("tabindex", "-1");
+      m.focus();
+      m.scrollIntoView({behavior:"instant", block:"start"});
+    });
+    document.body.insertBefore(a, document.body.firstChild);
+  })();
+
+  /* ---- una tabla ancha se recorre también con el teclado ---- */
+  (function(){
+    if(window.__TABLAS__) return; window.__TABLAS__ = 1;
+    function limpio(el){
+      return el ? el.textContent.trim().replace(/\s+/g, " ").slice(0, 70) : "";
+    }
+    function titulo(t){
+      /* Lo más cercano por encima: primero los hermanos anteriores, que es donde
+         suele estar el titular de la tabla; si no, el titular del apartado que
+         la contiene. Una tabla anunciada solo como «tabla desplazable» no dice
+         de qué es, y en Otros documentos hay veintiuna. */
+      var n = t.previousElementSibling, saltos = 0;
+      while(n && saltos < 5){
+        if(/^H[2-5]$/.test(n.tagName)) return limpio(n);
+        var h = n.querySelector && n.querySelector("h2,h3,h4,h5");
+        if(h) return limpio(h);
+        n = n.previousElementSibling; saltos++;
+      }
+      var caja = t.closest("section,article,.phase,.section");
+      while(caja){
+        var d = caja.querySelector("h2,h3,h4");
+        if(d) return limpio(d);
+        caja = caja.parentElement && caja.parentElement.closest("section,article");
+      }
+      return "";
+    }
+    function repasar(){
+      [].slice.call(document.querySelectorAll(".tablewrap")).forEach(function(t){
+        var ancha = t.scrollWidth > t.clientWidth + 2;
+        if(ancha && !t.hasAttribute("tabindex")){
+          t.setAttribute("tabindex", "0");
+          t.setAttribute("role", "region");
+          var q = titulo(t);
+          t.setAttribute("aria-label", q ? "Tabla desplazable: " + q : "Tabla desplazable");
+        } else if(!ancha && t.hasAttribute("tabindex")){
+          t.removeAttribute("tabindex"); t.removeAttribute("role"); t.removeAttribute("aria-label");
+        }
+      });
+    }
+    repasar();
+    window.addEventListener("resize", repasar);
+    window.addEventListener("load", repasar);
+    document.addEventListener("click", function(){ setTimeout(repasar, 80); }, true);
+  })();
+
+
+  /* ---- mapa del documento ---- */
+  (function(){
+    if(window.__MAPA__) return; window.__MAPA__ = 1;
+
+    function construye(raiz, tira){
+      var enlaces = [].slice.call(tira.querySelectorAll("a[href^='#']"));
+      /* Con pocos apartados el mapa no aporta: la tira ya los enseña todos. */
+      if(enlaces.length < 6) return null;
+      var destinos = [];
+      enlaces.forEach(function(a){
+        var d = document.getElementById(a.getAttribute("href").slice(1));
+        if(d) destinos.push({a:a, d:d, r:a.textContent.trim()});
+      });
+      if(destinos.length < 6) return null;
+
+      var mapa = document.createElement("nav");
+      mapa.className = "mapa";
+      mapa.setAttribute("aria-label", "Mapa del documento");
+      destinos.forEach(function(x, i){
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "mapa__m";
+        b.dataset.i = String(i);
+        b.setAttribute("aria-label", "Ir a " + x.r);
+        var r = document.createElement("span");
+        r.className = "mapa__r";
+        r.textContent = x.r;
+        b.appendChild(r);
+        mapa.appendChild(b);
+        x.b = b;
+      });
+      document.body.appendChild(mapa);
+      return {mapa:mapa, destinos:destinos};
+    }
+
+    /* La altura de cada marca es la que ocupa su apartado, con un mínimo para
+       que los cortos sigan siendo pulsables. */
+    function reparte(m){
+      var alto = m.mapa.clientHeight - (m.destinos.length - 1) * 2;
+      var tramos = m.destinos.map(function(x, i){
+        var fin = (i + 1 < m.destinos.length)
+          ? m.destinos[i + 1].d.getBoundingClientRect().top + window.scrollY
+          : document.documentElement.scrollHeight;
+        return Math.max(1, fin - (x.d.getBoundingClientRect().top + window.scrollY));
+      });
+      var suma = tramos.reduce(function(a, b){ return a + b; }, 0) || 1;
+      m.destinos.forEach(function(x, i){
+        x.b.style.height = Math.max(9, Math.round(alto * tramos[i] / suma)) + "px";
+      });
+    }
+
+    var estado = null;
+    function arranca(){
+      /* Dentro del archivo único solo vale la tira del documento que está
+         abierto. Si ese documento no tiene tira —la portada y la presentación no
+         la tienen—, no hay mapa: cayendo al primer `.strip` que apareciera se
+         dibujaba el mapa de otro documento encima del que se está leyendo. */
+      var tira = document.querySelector(".cabecera")
+        ? document.querySelector(".cabecera .strip:not([hidden]):not(.strip--nota)")
+        : (document.querySelector("#strip") || document.querySelector(".strip:not(.strip--nota)"));
+      if(estado){ estado.mapa.remove(); estado = null; }
+      if(!tira) return;
+      estado = construye(document, tira);
+      if(!estado) return;
+      var m = estado;
+      m.mapa.addEventListener("click", function(e){
+        var b = e.target.closest(".mapa__m");
+        if(!b) return;
+        var x = m.destinos[+b.dataset.i];
+        if(x) x.d.scrollIntoView({behavior:"instant", block:"start"});
+      });
+      reparte(m);
+      window.addEventListener("resize", function(){ reparte(m); });
+      marca();
+    }
+
+    function marca(){
+      if(!estado) return;
+      var y = window.scrollY + window.innerHeight * 0.35, actual = 0;
+      estado.destinos.forEach(function(x, i){
+        if(x.d.getBoundingClientRect().top + window.scrollY <= y) actual = i;
+      });
+      estado.destinos.forEach(function(x, i){
+        x.b.setAttribute("aria-current", String(i === actual));
+      });
+    }
+    window.addEventListener("scroll", marca, {passive:true});
+
+    arranca();
+    window.addEventListener("load", function(){ if(estado) reparte(estado); });
+    /* En el archivo único el documento visible cambia y con él su mapa. */
+    document.addEventListener("click", function(e){
+      if(e.target.closest("[data-ir-a]")) setTimeout(arranca, 120);
+    }, true);
+  })();
+
+  /* ---- volver arriba ---- */
+  (function(){
+    if(document.querySelector(".volver")) return;
+    var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var caja = document.createElement("div");
+    caja.className = "volver";
+    function boton(rotulo, etiqueta, dibujo){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", etiqueta);
+      b.innerHTML = dibujo + "<span>" + rotulo + "</span>";
+      caja.appendChild(b);
+      return b;
+    }
+    var FLECHA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M6 10.5V2M6 2 2.2 5.8M6 2l3.8 3.8" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var LISTA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M1.6 2.5h8.8M1.6 6h8.8M1.6 9.5h5.6" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round"/></svg>';
+    boton("Arriba", "Volver al principio del documento", FLECHA)
+      .addEventListener("click", function(){
+        window.scrollTo({top:0, behavior: quieto ? "auto" : "smooth"});
+      });
+    document.body.appendChild(caja);
+    var visible = false;
+    function mirar(){
+      var debe = window.scrollY > window.innerHeight * 1.2;
+      if(debe !== visible){ visible = debe; caja.classList.toggle("se-ve", debe); }
+    }
+    mirar();
+    window.addEventListener("scroll", mirar, {passive:true});
+    window.addEventListener("resize", mirar);
+  })();
+
+  /* ---- alto real de la barra, para que ningún salto quede debajo ---- */
+  (function(){
+    var barra = document.querySelector(".topbar");
+    if(!barra) return;
+    function medir(){
+      document.documentElement.style.setProperty(
+        "--barra", Math.round(barra.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    if("ResizeObserver" in window) new ResizeObserver(medir).observe(barra);
+  })();
+
+  var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
+  var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
+
+  /* ---- filtro por puesto ---- */
+  var activeRole = null;
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-role]"));
+  function phaseMatches(ph){
+    if(!activeRole) return true;
+    return (" " + ph.dataset.roles + " ").indexOf(" " + activeRole + " ") > -1;
+  }
+  function applyFilter(){
+    phases.forEach(function(ph){ ph.classList.toggle("is-dimmed", !phaseMatches(ph)); });
+    chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.role === activeRole)); });
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){
+      activeRole = (activeRole === c.dataset.role) ? null : c.dataset.role;
+      applyFilter();
+    });
+  });
+  var clear = document.getElementById("clearfilter");
+  if(clear) clear.addEventListener("click", function(){ activeRole = null; applyFilter(); });
+
+  /* ---- sección activa en la tira superior ---- */
+  var strip = document.getElementById("strip");
+  var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function centrarEnTira(a){
+    var destino = a.offsetLeft - strip.clientWidth / 2 + a.offsetWidth / 2;
+    destino = Math.max(0, Math.min(destino, strip.scrollWidth - strip.clientWidth));
+    if(Math.abs(destino - strip.scrollLeft) < 24) return;
+    strip.scrollTo({left: destino, behavior: quieto ? "auto" : "smooth"});
+  }
+  var targets = Array.prototype.slice.call(document.querySelectorAll("main section[id], main article[id], main div.parthead[id]"));
+  if("IntersectionObserver" in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var activo = null;
+        stripLinks.forEach(function(a){
+          var on = a.getAttribute("href") === "#" + e.target.id;
+          a.setAttribute("aria-current", String(on));
+          if(on) activo = a;
+        });
+        if(activo) centrarEnTira(activo);
+      });
+    }, {rootMargin:"-130px 0px -70% 0px", threshold:0});
+    targets.forEach(function(t){ spy.observe(t); });
+
+    var reveal = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); reveal.unobserve(e.target); }
+      });
+    }, {rootMargin:"0px 0px -8% 0px", threshold:0});
+    document.querySelectorAll(".reveal").forEach(function(el){ reveal.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+})();
+</script>
+<script>
 /* Comprobación en directo del §8: mueve los tres supuestos que gobiernan la
    facturación y recalcula. Se localiza por clase y por data-calc, nunca por
    identificador, para seguir funcionando en el archivo único —donde los
@@ -23533,7 +23870,316 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 })();
 
 </script>
+<script>
+(function(){
+  "use strict";
+  /* ---- por dónde sigue una tira que se desplaza ---- */
+  (function(){
+    if(window.__TIRAS__) return; window.__TIRAS__ = 1;
+    var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));
+    if(!tiras.length) return;
+    function estado(t){
+      var mas = t.scrollWidth - t.clientWidth;
+      t.classList.toggle("hay-izq", mas > 2 && t.scrollLeft > 2);
+      t.classList.toggle("hay-der", mas > 2 && t.scrollLeft < mas - 2);
+    }
+    tiras.forEach(function(t){
+      estado(t);
+      t.addEventListener("scroll", function(){ estado(t); }, {passive:true});
+      if("ResizeObserver" in window) new ResizeObserver(function(){ estado(t); }).observe(t);
+    });
+    window.addEventListener("resize", function(){ tiras.forEach(estado); });
+    /* al conmutar de documento la tira cambia de contenido sin que nada haga
+       scroll: hay que volver a mirarla */
+    document.addEventListener("click", function(){ setTimeout(function(){ tiras.forEach(estado); }, 60); }, true);
+  })();
 
+
+  /* ---- saltar al contenido ---- */
+  (function(){
+    if(document.querySelector(".saltar")) return;
+    var a = document.createElement("a");
+    a.className = "saltar";
+    a.href = "#";
+    a.textContent = "Saltar al contenido";
+    function cuerpo(){
+      var todos = [].slice.call(document.querySelectorAll("main"));
+      for(var i = 0; i < todos.length; i++){
+        if(todos[i].getBoundingClientRect().height > 0) return todos[i];
+      }
+      return todos[0] || null;
+    }
+    /* El destino se calcula al enfocar y no al cargar: en el archivo único el
+       documento visible cambia, y con él el contenido al que hay que saltar. */
+    a.addEventListener("focus", function(){
+      var m = cuerpo();
+      /* Si el contenido no tiene identificador se le pone uno, para que el
+         enlace sea un enlace de verdad y no un «#» que solo funciona con
+         guion. */
+      if(m && !m.id) m.id = "contenido";
+      a.href = (m && m.id) ? "#" + m.id : "#";
+    });
+    a.addEventListener("click", function(e){
+      var m = cuerpo();
+      if(!m) return;
+      e.preventDefault();
+      m.setAttribute("tabindex", "-1");
+      m.focus();
+      m.scrollIntoView({behavior:"instant", block:"start"});
+    });
+    document.body.insertBefore(a, document.body.firstChild);
+  })();
+
+  /* ---- una tabla ancha se recorre también con el teclado ---- */
+  (function(){
+    if(window.__TABLAS__) return; window.__TABLAS__ = 1;
+    function limpio(el){
+      return el ? el.textContent.trim().replace(/\s+/g, " ").slice(0, 70) : "";
+    }
+    function titulo(t){
+      /* Lo más cercano por encima: primero los hermanos anteriores, que es donde
+         suele estar el titular de la tabla; si no, el titular del apartado que
+         la contiene. Una tabla anunciada solo como «tabla desplazable» no dice
+         de qué es, y en Otros documentos hay veintiuna. */
+      var n = t.previousElementSibling, saltos = 0;
+      while(n && saltos < 5){
+        if(/^H[2-5]$/.test(n.tagName)) return limpio(n);
+        var h = n.querySelector && n.querySelector("h2,h3,h4,h5");
+        if(h) return limpio(h);
+        n = n.previousElementSibling; saltos++;
+      }
+      var caja = t.closest("section,article,.phase,.section");
+      while(caja){
+        var d = caja.querySelector("h2,h3,h4");
+        if(d) return limpio(d);
+        caja = caja.parentElement && caja.parentElement.closest("section,article");
+      }
+      return "";
+    }
+    function repasar(){
+      [].slice.call(document.querySelectorAll(".tablewrap")).forEach(function(t){
+        var ancha = t.scrollWidth > t.clientWidth + 2;
+        if(ancha && !t.hasAttribute("tabindex")){
+          t.setAttribute("tabindex", "0");
+          t.setAttribute("role", "region");
+          var q = titulo(t);
+          t.setAttribute("aria-label", q ? "Tabla desplazable: " + q : "Tabla desplazable");
+        } else if(!ancha && t.hasAttribute("tabindex")){
+          t.removeAttribute("tabindex"); t.removeAttribute("role"); t.removeAttribute("aria-label");
+        }
+      });
+    }
+    repasar();
+    window.addEventListener("resize", repasar);
+    window.addEventListener("load", repasar);
+    document.addEventListener("click", function(){ setTimeout(repasar, 80); }, true);
+  })();
+
+
+  /* ---- mapa del documento ---- */
+  (function(){
+    if(window.__MAPA__) return; window.__MAPA__ = 1;
+
+    function construye(raiz, tira){
+      var enlaces = [].slice.call(tira.querySelectorAll("a[href^='#']"));
+      /* Con pocos apartados el mapa no aporta: la tira ya los enseña todos. */
+      if(enlaces.length < 6) return null;
+      var destinos = [];
+      enlaces.forEach(function(a){
+        var d = document.getElementById(a.getAttribute("href").slice(1));
+        if(d) destinos.push({a:a, d:d, r:a.textContent.trim()});
+      });
+      if(destinos.length < 6) return null;
+
+      var mapa = document.createElement("nav");
+      mapa.className = "mapa";
+      mapa.setAttribute("aria-label", "Mapa del documento");
+      destinos.forEach(function(x, i){
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "mapa__m";
+        b.dataset.i = String(i);
+        b.setAttribute("aria-label", "Ir a " + x.r);
+        var r = document.createElement("span");
+        r.className = "mapa__r";
+        r.textContent = x.r;
+        b.appendChild(r);
+        mapa.appendChild(b);
+        x.b = b;
+      });
+      document.body.appendChild(mapa);
+      return {mapa:mapa, destinos:destinos};
+    }
+
+    /* La altura de cada marca es la que ocupa su apartado, con un mínimo para
+       que los cortos sigan siendo pulsables. */
+    function reparte(m){
+      var alto = m.mapa.clientHeight - (m.destinos.length - 1) * 2;
+      var tramos = m.destinos.map(function(x, i){
+        var fin = (i + 1 < m.destinos.length)
+          ? m.destinos[i + 1].d.getBoundingClientRect().top + window.scrollY
+          : document.documentElement.scrollHeight;
+        return Math.max(1, fin - (x.d.getBoundingClientRect().top + window.scrollY));
+      });
+      var suma = tramos.reduce(function(a, b){ return a + b; }, 0) || 1;
+      m.destinos.forEach(function(x, i){
+        x.b.style.height = Math.max(9, Math.round(alto * tramos[i] / suma)) + "px";
+      });
+    }
+
+    var estado = null;
+    function arranca(){
+      /* Dentro del archivo único solo vale la tira del documento que está
+         abierto. Si ese documento no tiene tira —la portada y la presentación no
+         la tienen—, no hay mapa: cayendo al primer `.strip` que apareciera se
+         dibujaba el mapa de otro documento encima del que se está leyendo. */
+      var tira = document.querySelector(".cabecera")
+        ? document.querySelector(".cabecera .strip:not([hidden]):not(.strip--nota)")
+        : (document.querySelector("#strip") || document.querySelector(".strip:not(.strip--nota)"));
+      if(estado){ estado.mapa.remove(); estado = null; }
+      if(!tira) return;
+      estado = construye(document, tira);
+      if(!estado) return;
+      var m = estado;
+      m.mapa.addEventListener("click", function(e){
+        var b = e.target.closest(".mapa__m");
+        if(!b) return;
+        var x = m.destinos[+b.dataset.i];
+        if(x) x.d.scrollIntoView({behavior:"instant", block:"start"});
+      });
+      reparte(m);
+      window.addEventListener("resize", function(){ reparte(m); });
+      marca();
+    }
+
+    function marca(){
+      if(!estado) return;
+      var y = window.scrollY + window.innerHeight * 0.35, actual = 0;
+      estado.destinos.forEach(function(x, i){
+        if(x.d.getBoundingClientRect().top + window.scrollY <= y) actual = i;
+      });
+      estado.destinos.forEach(function(x, i){
+        x.b.setAttribute("aria-current", String(i === actual));
+      });
+    }
+    window.addEventListener("scroll", marca, {passive:true});
+
+    arranca();
+    window.addEventListener("load", function(){ if(estado) reparte(estado); });
+    /* En el archivo único el documento visible cambia y con él su mapa. */
+    document.addEventListener("click", function(e){
+      if(e.target.closest("[data-ir-a]")) setTimeout(arranca, 120);
+    }, true);
+  })();
+
+  /* ---- volver arriba ---- */
+  (function(){
+    if(document.querySelector(".volver")) return;
+    var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var caja = document.createElement("div");
+    caja.className = "volver";
+    function boton(rotulo, etiqueta, dibujo){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", etiqueta);
+      b.innerHTML = dibujo + "<span>" + rotulo + "</span>";
+      caja.appendChild(b);
+      return b;
+    }
+    var FLECHA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M6 10.5V2M6 2 2.2 5.8M6 2l3.8 3.8" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var LISTA = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path d="M1.6 2.5h8.8M1.6 6h8.8M1.6 9.5h5.6" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round"/></svg>';
+    boton("Arriba", "Volver al principio del documento", FLECHA)
+      .addEventListener("click", function(){
+        window.scrollTo({top:0, behavior: quieto ? "auto" : "smooth"});
+      });
+    document.body.appendChild(caja);
+    var visible = false;
+    function mirar(){
+      var debe = window.scrollY > window.innerHeight * 1.2;
+      if(debe !== visible){ visible = debe; caja.classList.toggle("se-ve", debe); }
+    }
+    mirar();
+    window.addEventListener("scroll", mirar, {passive:true});
+    window.addEventListener("resize", mirar);
+  })();
+
+  /* ---- alto real de la barra, para que ningún salto quede debajo ---- */
+  (function(){
+    var barra = document.querySelector(".topbar");
+    if(!barra) return;
+    function medir(){
+      document.documentElement.style.setProperty(
+        "--barra", Math.round(barra.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    window.addEventListener("resize", medir);
+    if("ResizeObserver" in window) new ResizeObserver(medir).observe(barra);
+  })();
+
+  var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
+  var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
+
+  /* ---- filtro por puesto ---- */
+  var activeRole = null;
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-role]"));
+  function phaseMatches(ph){
+    if(!activeRole) return true;
+    return (" " + ph.dataset.roles + " ").indexOf(" " + activeRole + " ") > -1;
+  }
+  function applyFilter(){
+    phases.forEach(function(ph){ ph.classList.toggle("is-dimmed", !phaseMatches(ph)); });
+    chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.role === activeRole)); });
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){
+      activeRole = (activeRole === c.dataset.role) ? null : c.dataset.role;
+      applyFilter();
+    });
+  });
+  var clear = document.getElementById("clearfilter");
+  if(clear) clear.addEventListener("click", function(){ activeRole = null; applyFilter(); });
+
+  /* ---- sección activa en la tira superior ---- */
+  var strip = document.getElementById("strip");
+  var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function centrarEnTira(a){
+    var destino = a.offsetLeft - strip.clientWidth / 2 + a.offsetWidth / 2;
+    destino = Math.max(0, Math.min(destino, strip.scrollWidth - strip.clientWidth));
+    if(Math.abs(destino - strip.scrollLeft) < 24) return;
+    strip.scrollTo({left: destino, behavior: quieto ? "auto" : "smooth"});
+  }
+  var targets = Array.prototype.slice.call(document.querySelectorAll("main section[id], main article[id], main div.parthead[id]"));
+  if("IntersectionObserver" in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var activo = null;
+        stripLinks.forEach(function(a){
+          var on = a.getAttribute("href") === "#" + e.target.id;
+          a.setAttribute("aria-current", String(on));
+          if(on) activo = a;
+        });
+        if(activo) centrarEnTira(activo);
+      });
+    }, {rootMargin:"-130px 0px -70% 0px", threshold:0});
+    targets.forEach(function(t){ spy.observe(t); });
+
+    var reveal = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); reveal.unobserve(e.target); }
+      });
+    }, {rootMargin:"0px 0px -8% 0px", threshold:0});
+    document.querySelectorAll(".reveal").forEach(function(el){ reveal.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+})();
+</script>
+<script>document.documentElement.classList.add("js")</script>
 <script>
 (function(){
   "use strict";
