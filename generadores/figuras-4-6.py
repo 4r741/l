@@ -2,7 +2,7 @@
 """Figuras F4 a F6: escenarios a 36 meses, sensibilidad y valor acumulado.
 
 Se ejecuta desde build.py; también se puede lanzar suelto. Escribe en
-fuentes/ los bloques que después ensambla el generador de la Tesis.
+fuentes/ los bloques que después ensambla el generador del Plan de Dirección.
 """
 import pathlib
 

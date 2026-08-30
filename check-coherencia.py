@@ -270,7 +270,7 @@ def comprueba_pies():
 def comprueba_censo():
     t = bruto("memoria.html")
     if 'id="censo"' not in t:
-        falla("memoria.html", "no incluye el censo documental (§0.1)")
+        falla("memoria.html", "no incluye el censo documental (apartado 0.1)")
 
     # la aritmética del censo tiene que aparecer y cuadrar
     censo = texto(bruto("memoria.html"), ya_limpio=True)
@@ -314,7 +314,7 @@ def comprueba_modelo():
     """Las cifras de la Parte VI tienen que ser las que devuelve el modelo.
 
     Es la comprobación que cierra el círculo: el documento no puede afirmar un
-    número que el modelo no produzca. Si alguien edita la Tesis a mano, esto lo
+    número que el modelo no produzca. Si alguien edital Plan de Dirección a mano, esto lo
     detecta; si alguien cambia un supuesto del modelo sin regenerar, también.
     """
     ruta = RAIZ / "modelo-campanas.py"
@@ -359,7 +359,7 @@ def comprueba_modelo():
 
 # ---------------------------------------------------------------- 8 · el libro de cálculo
 def comprueba_libro():
-    """El instrumento del §7 y del §13 es un documento más y se audita igual.
+    """El instrumento de los apartados 7 y 13 es un documento más y se audita igual.
 
     Un xlsx es un zip de XML, así que no hace falta abrirlo con una biblioteca:
     basta leer su tabla de textos. Se comprueba lo mismo que en los HTML —la
@@ -370,7 +370,7 @@ def comprueba_libro():
     ruta = RAIZ / "instrumentos" / "Captura-Linea-Base-Giraldo-2026.xlsx"
     nombre = "instrumentos/" + ruta.name
     if not ruta.exists():
-        falla(nombre, "no está en el repositorio: el §7 se queda sin instrumento")
+        falla(nombre, "no está en el repositorio: el apartado 7 se queda sin instrumento")
         return
     with zipfile.ZipFile(ruta) as z:
         piezas = z.namelist()

@@ -31,10 +31,10 @@ NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 # El orden es el del sistema, no el del tamaño: primero lo que gobierna, luego
 # lo que se presenta, después lo que se ejecuta y al final el instrumento.
 PARTES = [
-    ("Tesis-Direccion-Giraldo-v%s.pdf", "Tesis de Dirección",
+    ("Plan-Direccion-Giraldo-v%s.pdf", "Plan de Dirección",
      "Gobierno", "Qué creemos, qué apostamos y las quince decisiones que se someten a la Junta"),
     ("Presentacion-Junta-Giraldo-v%s.pdf", "Presentación de Junta",
-     "Derivado", "Cuarenta y tres diapositivas extraídas de la Tesis, para la sesión"),
+     "Derivado", "Cuarenta y tres diapositivas extraídas del Plan de Dirección, para la sesión"),
     ("Plan-Marketing-Giraldo-v%s.pdf", "Plan Maestro de Marketing",
      "Plan", "Setenta y seis acciones sobre los doce estados del paciente"),
     ("Manual-Maestro-Giraldo-v%s.pdf", "Manual Maestro de Operaciones",

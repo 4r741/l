@@ -99,7 +99,7 @@ cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
                             "<title>Sistema documental Giraldo</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Puerta de entrada al sistema documental del Centro '
-                  'de Excelencia Implantológica Giraldo: Tesis de Dirección, presentación de Junta, Manual '
+                  'de Excelencia Implantológica Giraldo: Plan de Dirección, presentación de Junta, Manual '
                   'Maestro, Protocolo de Primera Visita, otros documentos del sistema y la hoja de captura '
                   'de la línea base.">', cabecera, count=1)
 
@@ -241,14 +241,14 @@ k = cabecera.rindex("</style>")
 cabecera = cabecera[:k] + CSS + "\n" + cabecera[k:]
 
 FICHAS = [
- ("memoria.html", "Tesis de Dirección", "v@VERSION@ · 23 apartados · Anexos A y B",
+ ("memoria.html", "Plan de Dirección", "v@VERSION@ · 23 apartados · Anexos A y B",
   "El documento de gobierno. Posición competitiva y foso, sistema operativo y cartera de innovación, "
   "economía unitaria y creación de valor de empresa, riesgos y pre-mortem, el puente hasta el "
   "objetivo de 1,2 M€ con su cartera de nueve campañas, y las quince decisiones que se someten "
   "a la Junta. Incluye los dos cuadernillos: quince hojas de acta y nueve fichas de campaña.",
   "79 páginas en papel · lectura 55′", True),
  ("deck.html", "Presentación de Junta", "v@VERSION@ · %s diapositivas · 16:9" % DIAPOSITIVAS,
-  "La tesis para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, "
+  "La apuesta para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, "
   "<b>N</b> abre el guion del ponente con el minuto objetivo y la pregunta difícil, "
   "<b>E</b> filtra a la ruta corta de doce diapositivas para sesiones de veinte minutos.",
   "Proyección y guion del ponente", False),
@@ -259,7 +259,7 @@ FICHAS = [
   "ciudad; el mapa de la ría y la Campaña de Mar.",
   "Documento de dirección", False),
  ("instrumentos/captura.html", "Captura de la línea base", "v@VERSION@ · 10 indicadores",
-  "El instrumento del §7 y del §13: doce hojas mensuales, semáforo automático, resumen anual con "
+  "El instrumento del apartado 7 y del apartado 13: doce hojas mensuales, semáforo automático, resumen anual con "
   "tendencia y los cinco números. Se rellena aquí mismo y se guarda en este equipo.",
   "Se rellena en el navegador", False),
  ("manual.html", "Manual Maestro de Operaciones", "v@VERSION@ · 8 partes",
@@ -314,10 +314,10 @@ CUERPO = """
       <div>
         <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
         <h1>No medias<br><em>sonrisas</em></h1>
-        <p class="hero__lede">Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van de la tesis de dirección al minuto exacto en que se recibe a un paciente.</p>
+        <p class="hero__lede">Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van de la plan de dirección al minuto exacto en que se recibe a un paciente.</p>
       </div>
       <dl class="specs">
-        <div class="spec"><dt>Documentos operativos</dt><dd>17<small>Tres troncales y catorce de apoyo. El censo completo, en §0.1 de la Tesis</small></dd></div>
+        <div class="spec"><dt>Documentos operativos</dt><dd>17<small>Tres troncales y catorce de apoyo. El censo completo, en el apartado 0.1 del Plan de Dirección</small></dd></div>
         <div class="spec"><dt>Decisiones abiertas</dt><dd>15<small>Se someten a la Junta Directiva</small></dd></div>
         <div class="spec"><dt>Puntos de verificación</dt><dd>322<small>Físicos, documentales, de sistemas y de proceso</small></dd></div>
         <div class="spec"><dt>Objetivo</dt><dd>1,2 M€<small>Facturación anual en el ejercicio tercero, con nueve campañas</small></dd></div>
@@ -363,7 +363,7 @@ CUERPO = """
     <div class="section__head">
       <p class="eyebrow">El sistema</p>
       <h2>Qué es cada cosa</h2>
-      <p>El índice dice dónde está todo; esto dice para qué sirve cada pieza. La Tesis dirige, la presentación convence, el Plan de Marketing llena la agenda, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, todas las demás se apoyan en supuestos.</p>
+      <p>El índice dice dónde está todo; esto dice para qué sirve cada pieza. El Plan de Dirección dirige, la presentación convence, el Plan de Marketing llena la agenda, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, todas las demás se apoyan en supuestos.</p>
     </div>
     <div class="puerta">
       @@FICHAS@@
@@ -375,7 +375,7 @@ CUERPO = """
   <div class="wrap">
     <div class="callout" style="max-width:none">
       <p class="eyebrow">Sobre la naturaleza de las cifras</p>
-      <p>Las cifras económicas de la Tesis y de la presentación son <strong>modelos sobre rangos del sector, marcados como tales</strong> en cada figura y registrados en su §18. No son datos del centro y no deben citarse como tales hasta que exista la línea base. Levantarla es exactamente para lo que sirve la hoja de captura.</p>
+      <p>Las cifras económicas del Plan de Dirección y de la presentación son <strong>modelos sobre rangos del sector, marcados como tales</strong> en cada figura y registrados en su apartado 18. No son datos del centro y no deben citarse como tales hasta que exista la línea base. Levantarla es exactamente para lo que sirve la hoja de captura.</p>
     </div>
   </div>
 </section>

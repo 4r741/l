@@ -148,7 +148,7 @@ a{color:inherit}
 }
 
 /* ---------------------------------------------------------------------------
-   Volver arriba. Estos documentos son largos —la Tesis pasa de las sesenta
+   Volver arriba. Estos documentos son largos —el Plan de Dirección pasa de las sesenta
    pantallas— y hasta ahora la única manera de regresar al principio era
    arrastrar hacia arriba durante un rato o usar una tecla que en un teléfono no
    existe. Aparece cuando ya se ha bajado de verdad y no antes, y no sale en
@@ -270,6 +270,25 @@ main:focus{outline:none}
 /* Un párrafo que cuelga directamente del contenedor no tiene quien lo acote:
    ocupa los 1.180 px de la caja y sale a doscientos caracteres por renglón. */
 .wrap>p,.wrap>ul>li,.wrap>ol>li{max-width:74ch}
+
+/* ---------------------------------------------------------------------------
+   El número del apartado. Antes iba dentro del rótulo, en la misma letra
+   pequeña que su nombre: «§3 · Mapa competitivo», todo del mismo tamaño y con
+   un signo que hoy no dice nada a nadie. Ahora es un número grande delante del
+   titular, que es como se numera un apartado en un documento que quiere leerse
+   y no descifrarse. Sigue pudiéndose citar: «apartado 3».
+   --------------------------------------------------------------------------- */
+.section__head .eyebrow{
+  display:flex;align-items:baseline;gap:.75rem;
+  font-size:.82rem;font-weight:600;color:var(--muted);
+}
+.section__head .eyebrow .num{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(1.9rem,1.4rem + 1.5vw,2.6rem);line-height:.85;
+  letter-spacing:-.03em;color:var(--accent);
+  font-variation-settings:"opsz" 144;
+}
+@media print{.section__head .eyebrow .num{color:#0A5C56}}
 
 .topbar{
   position:sticky;top:0;z-index:60;
@@ -817,7 +836,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
         <span class="brand__mark">Captura de la <b>línea base</b></span>
         <span class="brand__tag">2026 · v8.0</span>
       </a>
-      <a class="crosslink" href="../memoria.html">Tesis de Dirección</a>
+      <a class="crosslink" href="../memoria.html">Plan de Dirección</a>
       <a class="crosslink" href="../manual.html">Manual Maestro</a>
       <a class="crosslink" href="../index.html">Protocolo</a>
     </div>
@@ -839,10 +858,10 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Instrumento del §7 y del §13 · Uso interno</p>
+        <p class="eyebrow">Instrumento del 07 y del 13 · Uso interno</p>
         <h1>Captura de la<br><em>línea base</em></h1>
-        <p class="hero__lede">La Tesis declara que el centro no tiene todavía sus cinco números ni serie propia en ninguno de los diez indicadores. Esta hoja es lo que hace que dejen de faltar.</p>
-        <p class="hero__note">Se rellena en el navegador y se guarda en este mismo equipo, sin enviar nada a ningún sitio. Un indicador sin dato aparece como <strong>SIN DATO</strong> y cuenta como rojo: es la regla de reporte del §13. Los resultados de los cinco números dicen <strong>pendiente</strong> mientras falte una entrada, en lugar de dar una cifra inventada.</p>
+        <p class="hero__lede">El Plan de Dirección declara que el centro no tiene todavía sus cinco números ni serie propia en ninguno de los diez indicadores. Esta hoja es lo que hace que dejen de faltar.</p>
+        <p class="hero__note">Se rellena en el navegador y se guarda en este mismo equipo, sin enviar nada a ningún sitio. Un indicador sin dato aparece como <strong>SIN DATO</strong> y cuenta como rojo: es la regla de reporte del apartado 13. Los resultados de los cinco números dicen <strong>pendiente</strong> mientras falte una entrada, en lugar de dar una cifra inventada.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Indicadores</dt><dd>10<small>Con definición operativa acordada</small></dd></div>
@@ -990,20 +1009,20 @@ table.anual td.vacio{color:var(--muted);text-align:center}
     </div>
     <div class="entradas">
         <div><label for="e-costes">Costes fijos mensuales <span style="color:var(--accent-ink)">€</span></label><input id="e-costes" type="number" step="any" data-entrada="costes" value=""><small>Nóminas, alquiler, suministros, seguros, cuotas y amortizaciones. Día 15.</small></div>
-        <div><label for="e-margen">Margen de contribución <span style="color:var(--accent-ink)">%</span></label><input id="e-margen" type="number" step="any" data-entrada="margen" value="40"><small>Supuesto de trabajo del §18 mientras no haya escandallo propio.</small></div>
-        <div><label for="e-ticket">Ticket medio del caso aceptado <span style="color:var(--accent-ink)">€</span></label><input id="e-ticket" type="number" step="any" data-entrada="ticket" value="1800"><small>Supuesto de trabajo del §18. Se sustituye por el real.</small></div>
+        <div><label for="e-margen">Margen de contribución <span style="color:var(--accent-ink)">%</span></label><input id="e-margen" type="number" step="any" data-entrada="margen" value="40"><small>Supuesto de trabajo del apartado 18 mientras no haya escandallo propio.</small></div>
+        <div><label for="e-ticket">Ticket medio del caso aceptado <span style="color:var(--accent-ink)">€</span></label><input id="e-ticket" type="number" step="any" data-entrada="ticket" value="1800"><small>Supuesto de trabajo del apartado 18. Se sustituye por el real.</small></div>
         <div><label for="e-conversion">Tasa de conversión <span style="color:var(--accent-ink)">%</span></label><input id="e-conversion" type="number" step="any" data-entrada="conversion" value="45"><small>Enlaza con el indicador 6 en cuanto haya tres meses de serie.</small></div>
         <div><label for="e-dias">Días laborables al mes <span style="color:var(--accent-ink)">d</span></label><input id="e-dias" type="number" step="any" data-entrada="dias" value="21"><small>Parámetro de capacidad.</small></div>
         <div><label for="e-tesoreria">Tesorería disponible <span style="color:var(--accent-ink)">€</span></label><input id="e-tesoreria" type="number" step="any" data-entrada="tesoreria" value=""><small>Saldo libre de compromisos a fecha de corte. Día 21.</small></div>
         <div><label for="e-pendiente">Producto pendiente heredado <span style="color:var(--accent-ink)">€</span></label><input id="e-pendiente" type="number" step="any" data-entrada="pendiente" value=""><small>Importe cobrado o comprometido y no ejecutado. Día 15.</small></div>
         <div style="background:var(--surface)"><label>Naturaleza de lo precargado</label>
-          <small style="margin-top:0">Margen, ticket, conversión y días vienen con los supuestos de trabajo del §18, que <strong>no son mediciones del centro</strong>. Sustitúyanse por los reales en cuanto existan; las otras tres casillas nacen vacías porque solo pueden salir de la contabilidad.</small></div>
+          <small style="margin-top:0">Margen, ticket, conversión y días vienen con los supuestos de trabajo del apartado 18, que <strong>no son mediciones del centro</strong>. Sustitúyanse por los reales en cuanto existan; las otras tres casillas nacen vacías porque solo pueden salir de la contabilidad.</small></div>
     </div>
     <div class="cinco">
       <div class="cinco__caja"><i>1 · Costes fijos mensuales</i><b data-cinco="costes">pendiente</b><p>El primero de los cinco. Sin él no hay ninguno de los demás.</p></div>
       <div class="cinco__caja"><i>2 · Punto de equilibrio mensual</i><b data-cinco="equilibrio">pendiente</b><p>Facturación mensual necesaria para cubrir los costes fijos, dado el margen de contribución.</p></div>
       <div class="cinco__caja"><i>3 · Primeras visitas al día</i><b data-cinco="pvdia">pendiente</b><p>Cuántas hacen falta para llegar al equilibrio con la conversión y el ticket actuales.</p></div>
-      <div class="cinco__caja"><i>4 · Producto pendiente heredado</i><b data-cinco="pendiente">pendiente</b><p>Caja ya cobrada que hay que convertir en producción. Es la palanca 1 del §14.</p></div>
+      <div class="cinco__caja"><i>4 · Producto pendiente heredado</i><b data-cinco="pendiente">pendiente</b><p>Caja ya cobrada que hay que convertir en producción. Es la palanca 1 del apartado 14.</p></div>
       <div class="cinco__caja"><i>5 · Meses de colchón</i><b data-cinco="colchon">pendiente</b><p>Cuánto aguanta el centro sin ingresar nada. Por debajo de tres, es riesgo de Junta.</p></div>
     </div>
     <div class="rulebox" style="max-width:none">
@@ -1023,8 +1042,8 @@ table.anual td.vacio{color:var(--muted);text-align:center}
         <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Captura de la línea base · Ejercicio 2026</p>
         <p style="margin-top:.8rem">Documento de uso interno. Los datos se guardan únicamente en este equipo.</p>
       </div>
-      <div><p class="eyebrow">Instrumento de</p><p>§7 · Línea base<br>§13 · Cuadro de mando</p></div>
-      <div><p class="eyebrow">Documentos de referencia</p><p>Tesis de Dirección v8.0<br>Manual Maestro v8.0<br>Protocolo de Primera Visita v8.0</p></div>
+      <div><p class="eyebrow">Instrumento de</p><p>apartado 7 · Línea base<br>apartado 13 · Cuadro de mando</p></div>
+      <div><p class="eyebrow">Documentos de referencia</p><p>Plan de Dirección v8.0<br>Manual Maestro v8.0<br>Protocolo de Primera Visita v8.0</p></div>
     </div>
   </div>
 </footer>

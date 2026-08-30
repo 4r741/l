@@ -2,7 +2,7 @@
 """Figuras F8 a F12, derivadas del modelo de campañas.
 
 Se ejecuta desde build.py; también se puede lanzar suelto. Escribe en
-fuentes/ los bloques que después ensambla el generador de la Tesis.
+fuentes/ los bloques que después ensambla el generador del Plan de Dirección.
 """
 import pathlib
 

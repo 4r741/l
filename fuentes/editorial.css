@@ -53,10 +53,13 @@
   display:grid;grid-template-columns:2.3rem minmax(0,1fr);gap:.9rem;align-items:baseline;
 }
 .t-manifiesto__list li:last-child{border-bottom:1px solid rgba(247,248,245,.18)}
-.t-manifiesto__list b{
-  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;
+/* La marca de la primera columna. Solo la de la primera: dentro del texto, una
+   negrita tiene que verse como una negrita y no como un número de orden. */
+.t-manifiesto__list>li>b{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;
   color:#7FD3C9;font-weight:400;
 }
+.t-manifiesto__list span b{color:var(--surface);font-weight:600}
 .t-manifiesto__list span{color:rgba(247,248,245,.9);font-size:.96rem;line-height:1.5}
 
 /* ---------- apertura de parte, registro de tesis ---------- */
@@ -225,9 +228,10 @@
 /* ---------- ajustes de impresión de la capa editorial ---------- */
 @media print{
   .t-manifiesto{background:#FFF;color:#000;border-top:2pt solid #000;padding:14pt 0}
-  .t-manifiesto h2,.t-manifiesto p,.t-manifiesto__list span{color:#000}
+  .t-manifiesto h2,.t-manifiesto p,.t-manifiesto__list span,
+.t-manifiesto__list span b{color:#000}
   .t-manifiesto h2 em,.t-manifiesto__cierre{color:#0A5C56}
-  .t-manifiesto .eyebrow,.t-manifiesto__list b{color:#444}
+  .t-manifiesto .eyebrow,.t-manifiesto__list>li>b{color:#444}
   .t-manifiesto__list li{border-color:#BBB}
   .t-part{break-before:page}
   .t-cover{padding-top:0}

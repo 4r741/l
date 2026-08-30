@@ -31,7 +31,7 @@ VERSION, FECHA = _v["VERSION"], _v["FECHA"]
 SALIDA = RAIZ / "export" / ("Sistema-Documental-Giraldo-v%s.docx" % VERSION)
 
 PARTES = [
-    ("memoria.html", "Tesis de Dirección",
+    ("memoria.html", "Plan de Dirección",
      "Qué creemos, qué apostamos y las quince decisiones que se someten a la Junta."),
     ("marketing.html", "Plan Maestro de Marketing",
      "Setenta y seis acciones sobre los doce estados del paciente, con dueño, coste y semáforo legal."),

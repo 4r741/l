@@ -4,9 +4,9 @@
 
     python3 build-libro.py
 
-Doce hojas mensuales con los diez indicadores del §13 ya definidos, umbrales
+Doce hojas mensuales con los diez indicadores del apartado 13 ya definidos, umbrales
 editables en un único sitio, semáforo automático, resumen anual con tendencia y
-la hoja de los cinco números del §7. Solo se teclean las casillas amarillas.
+la hoja de los cinco números del apartado 7. Solo se teclean las casillas amarillas.
 
 Al terminar recalcula con LibreOffice: openpyxl escribe las fórmulas sin
 resultado y el libro tiene que salir con sus valores en caché.
@@ -99,11 +99,11 @@ def linea(fila, rotulo, texto, fuente=NORMAL):
 
 h["B2"] = "Captura de la línea base · Centro de Excelencia Implantológica Giraldo"
 h["B2"].font = TITULO
-h["B3"] = ("Instrumento del §7 y del §13 de la Tesis de Dirección v%s · Ejercicio %s"
+h["B3"] = ("Instrumento del apartado 7 y del apartado 13 de la Plan de Dirección v%s · Ejercicio %s"
            % (VERSION, EJERCICIO))
 h["B3"].font = SUAVE
 
-linea(5, "Para qué sirve", "La Tesis declara que el centro no dispone todavía de sus cinco números ni de serie propia en ninguno "
+linea(5, "Para qué sirve", "El Plan de Dirección declara que el centro no dispone todavía de sus cinco números ni de serie propia en ninguno "
          "de los diez indicadores. Este libro es el instrumento para conseguirlos: se rellena una hoja al mes y el resumen "
          "anual y el semáforo se calculan solos.")
 linea(6, "Qué se teclea", "Solo las celdas con fondo amarillo y cifra azul. Todo lo demás son fórmulas: no se sobrescriben.")
@@ -300,7 +300,7 @@ r.freeze_panes = "C5"
 n5 = wb.create_sheet("Los cinco números")
 n5.sheet_view.showGridLines = False
 n5["A1"] = "Los cinco números que aún no tenemos"; n5["A1"].font = TITULO
-n5["A2"] = ("§7 de la Tesis. Rellénense las casillas amarillas; los cinco resultados se calculan solos. "
+n5["A2"] = ("apartado 7 del Plan de Dirección. Rellénense las casillas amarillas; los cinco resultados se calculan solos. "
             "Hasta que estén, cualquier objetivo comercial es una opinión.")
 n5["A2"].font = SUAVE
 n5.column_dimensions["A"].width = 4
@@ -311,8 +311,8 @@ n5.column_dimensions["E"].width = 58
 
 ENTRADAS = [
  ("Costes fijos mensuales", "", "#,##0 €", "Nóminas, alquiler, suministros, seguros, cuotas y amortizaciones. Día 15."),
- ("Margen de contribución sobre venta", 0.40, "0%", "Supuesto de trabajo del §18 mientras no haya escandallo propio."),
- ("Ticket medio del caso aceptado", 1800, "#,##0 €", "Supuesto de trabajo del §18. Se sustituye por el real."),
+ ("Margen de contribución sobre venta", 0.40, "0%", "Supuesto de trabajo del apartado 18 mientras no haya escandallo propio."),
+ ("Ticket medio del caso aceptado", 1800, "#,##0 €", "Supuesto de trabajo del apartado 18. Se sustituye por el real."),
  ("Tasa de conversión de la primera visita", 0.45, "0.0%", "Enlaza con el indicador 6 en cuanto haya tres meses de serie."),
  ("Días laborables al mes", 21, "0", "Parámetro de capacidad."),
  ("Tesorería disponible", "", "#,##0 €", "Saldo libre de compromisos a fecha de corte. Día 21."),
@@ -335,7 +335,7 @@ RES = [
  ("3 · Primeras visitas necesarias al día", '=IF(OR(C15="",C16="pendiente",C7=0,C8=0,C9=0),"pendiente",C16/(C8*C7)/C9)', "0.0",
   "Cuántas primeras visitas diarias hacen falta para llegar al equilibrio con la conversión y el ticket actuales."),
  ("4 · Producto pendiente heredado", '=IF(C11="","pendiente",C11)', "#,##0 €",
-  "Caja ya cobrada que hay que convertir en producción. Es la palanca 1 del §14."),
+  "Caja ya cobrada que hay que convertir en producción. Es la palanca 1 del apartado 14."),
  ("5 · Meses de colchón de tesorería", '=IF(OR(C10="",C5="",C5=0),"pendiente",C10/C5)', "0.0",
   "Cuántos meses aguanta el centro sin ingresar nada. Por debajo de tres, es un riesgo de Junta."),
 ]
@@ -357,9 +357,9 @@ n5.cell(21, 2, "Los resultados dicen «pendiente» mientras falte alguna entrada
 wb.properties.creator = "Centro de Excelencia Implantológica Giraldo"
 wb.properties.lastModifiedBy = "Centro de Excelencia Implantológica Giraldo"
 wb.properties.title = "Captura de la línea base · %s" % EJERCICIO
-wb.properties.subject = "Los diez indicadores del §13 de la Tesis de Dirección"
+wb.properties.subject = "Los diez indicadores del apartado 13 de la Plan de Dirección"
 wb.properties.description = (
-    "Instrumento del §7 y del §13. Uso interno. Una hoja por mes, resumen anual "
+    "Instrumento del apartado 7 y del apartado 13. Uso interno. Una hoja por mes, resumen anual "
     "y los cinco números. Versión v%s del sistema documental." % VERSION)
 wb.properties.category = "Uso interno y confidencial"
 wb.properties.language = "es-ES"

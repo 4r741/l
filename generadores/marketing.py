@@ -73,20 +73,20 @@ cabecera = cabecera[:k] + editorial + "\n" + cabecera[k:]
 script = manual[manual.index("<script>\n(function(){"):]
 
 # ---------------------------------------------------------------- barra
-TIRA = [("#portada", "Portada"), ("#control", "§0 Control"),
-        ("#parte-1", "I · Doctrina"), ("#doctrina", "§1 Por qué"), ("#regla", "§2 La regla"),
-        ("#nunca", "§3 Las ocho que no"), ("#legal", "§4 Marco legal"),
-        ("#parte-2", "II · El paciente"), ("#estados", "§5 Doce estados"),
-        ("#arquetipos", "§6 Seis de la ría"), ("#momentos", "§7 Momentos de verdad"),
-        ("#asimetria", "§8 La asimetría"),
-        ("#parte-3", "III · El catálogo"), ("#catalogo", "§9 Las 76 acciones"),
-        ("#parte-4", "IV · Las diez piezas"), ("#piezas", "§10 Las diez piezas"),
-        ("#parte-5", "V · El territorio"), ("#digital", "§11 Digital"),
-        ("#ria", "§12 El mapa de la ría"), ("#mar", "§13 Campaña de Mar"),
-        ("#parte-6", "VI · La prioridad"), ("#economia", "§14 Qué aporta cada grupo"),
-        ("#prioridad", "§15 Qué va primero"), ("#presupuesto", "§16 Presupuesto"),
-        ("#parte-7", "VII · El gobierno"), ("#indicadores", "§17 Las ocho medidas"),
-        ("#calendario", "§18 Calendario"), ("#parada", "§19 Reglas de parada"),
+TIRA = [("#portada", "Portada"), ("#control", "apartado 0 Control"),
+        ("#parte-1", "I · Doctrina"), ("#doctrina", "apartado 1 Por qué"), ("#regla", "apartado 2 La regla"),
+        ("#nunca", "apartado 3 Las ocho que no"), ("#legal", "apartado 4 Marco legal"),
+        ("#parte-2", "II · El paciente"), ("#estados", "apartado 5 Doce estados"),
+        ("#arquetipos", "apartado 6 Seis de la ría"), ("#momentos", "apartado 7 Momentos de verdad"),
+        ("#asimetria", "apartado 8 La asimetría"),
+        ("#parte-3", "III · El catálogo"), ("#catalogo", "apartado 9 Las 76 acciones"),
+        ("#parte-4", "IV · Las diez piezas"), ("#piezas", "apartado 10 Las diez piezas"),
+        ("#parte-5", "V · El territorio"), ("#digital", "apartado 11 Digital"),
+        ("#ria", "apartado 12 El mapa de la ría"), ("#mar", "apartado 13 Campaña de Mar"),
+        ("#parte-6", "VI · La prioridad"), ("#economia", "apartado 14 Qué aporta cada grupo"),
+        ("#prioridad", "apartado 15 Qué va primero"), ("#presupuesto", "apartado 16 Presupuesto"),
+        ("#parte-7", "VII · El gobierno"), ("#indicadores", "apartado 17 Las ocho medidas"),
+        ("#calendario", "apartado 18 Calendario"), ("#parada", "apartado 19 Reglas de parada"),
         ("#anexo-legal", "Anexo I · Legal"), ("#anexo-cartera", "Anexo II · Cartera"),
         ("#anexo-trimestre", "Anexo III · Este trimestre")]
 
@@ -98,7 +98,7 @@ barra = """
         <span class="brand__mark">Plan Maestro de <b>Marketing</b></span>
         <span class="brand__tag">Giraldo · v@VERSION@</span>
       </a>
-      <a class="crosslink" href="memoria.html">Tesis de Dirección</a>
+      <a class="crosslink" href="memoria.html">Plan de Dirección</a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
       <a class="crosslink" href="otros.html">Otros documentos</a>
     </div>
@@ -257,7 +257,7 @@ sobran = set(re.findall(r"@[A-Z_0-9]+@", cuerpo)) - {"@VERSION@", "@FECHA@", "@C
 assert not sobran, "quedan marcas sin sustituir: %s" % sorted(sobran)
 
 # ---------------------------------------------------------------- numeración de figuras
-# Igual que en la Tesis: el número lo pone el generador, en el orden en que el
+# Igual que en el Plan de Dirección: el número lo pone el generador, en el orden en que el
 # lector encuentra las figuras. Escribirlo a mano es lo que deja una figura 2
 # en sexto lugar en cuanto alguien reordena un apartado.
 def numera(texto):

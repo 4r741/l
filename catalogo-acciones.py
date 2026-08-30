@@ -7,7 +7,7 @@
 
 Las acciones son datos, no párrafos escritos a mano. Así se pueden contar,
 ordenar por coste o por plazo, cruzar con la cartera de campañas de la Parte VI
-de la Tesis y verificar. Un catálogo que vive en prosa no se puede auditar: se
+del Plan de Dirección y verificar. Un catálogo que vive en prosa no se puede auditar: se
 puede leer, que es otra cosa.
 
 REGLA DE ENTRADA. Una acción entra en este catálogo si —y solo si— puede
@@ -26,7 +26,7 @@ Campos
   efecto    1 a 5, efecto esperado sobre el objetivo del ejercicio
   indicador qué número se mueve si funciona
   sem       verde · amarillo · naranja, según el marco de publicidad sanitaria
-  campana   campaña de la cartera de la Tesis a la que pertenece, o «—»
+  campana   campaña de la cartera del Plan de Dirección a la que pertenece, o «—»
 """
 import json
 import sys
@@ -66,7 +66,7 @@ GRUPOS = [
      "Nadie decide en la silla el día del miedo. Lo que se hace aquí decide "
      "la conversión de verdad, no el anuncio."),
     ("G6", "E9 · E11 · E12", "El cuidado, el sueño y la pérdida",
-     "Donde está el dinero, según la aritmética de la propia Tesis: dos de "
+     "Donde está el dinero, según la aritmética de la propia Plan de Dirección: dos de "
      "estas campañas son el 63 % de lo que aporta la cartera."),
     ("G7", "E10", "Prescripción y alianzas",
      "Lo que otro dice de nosotros vale más que lo que digamos nosotros, y "

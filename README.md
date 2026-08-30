@@ -155,6 +155,41 @@ versión de `version.py` al construirse, y los tres escritos a mano la reciben e
 el primer paso de `build.py`. Subir de versión vuelve a ser lo que decía que
 era: **cambiar una línea**.
 
+## Cómo se nombran y se numeran las cosas
+
+El documento de gobierno se llamaba **Tesis de Dirección** y los apartados
+llevaban el signo **§**. Las dos cosas se cambiaron a la vez, y ninguna es un
+buscar-y-reemplazar:
+
+**El nombre pasa a Plan de Dirección.** El cuidado está en el género: «la Tesis»
+es femenino y «el Plan» es masculino, de modo que un reemplazo directo dejaría
+«de la Plan de Dirección» por todas partes. `renombra.py` cambia primero las
+formas con artículo y preposición y solo después el nombre suelto. También cae
+la palabra donde nombraba una idea y no el documento: el apartado «Tesis del
+proyecto» pasa a «La apuesta del proyecto», y la apertura «Una tesis, no un
+informe» a «Un plan, no un informe».
+
+**El § pasa a número, a dos cifras.** `renumera.py` distingue los dos trabajos
+que hacía el mismo signo:
+
+| Dónde | Antes | Después |
+|---|---|---|
+| Rótulo de apartado, barra de secciones, índice | `§3` | `03` |
+| Cita dentro de una frase | `declarado en su §18` | `declarado en su apartado 18` |
+
+Y el número se dibuja aparte del nombre: grande, en la letra de titular, delante
+del titular del apartado. `numera-rotulos.py` lo envuelve al construir, para que
+las fuentes se sigan escribiendo con el rótulo tal cual.
+
+**Lo que casi sale mal.** Los fragmentos de la Tesis se escribieron con una
+numeración y el documento final lleva otra —al integrarse con las partes nuevas,
+ocho apartados se desplazaron—, y el ensamblado los renumeraba al vuelo con un
+patrón que buscaba el `§`. Al retirar el signo, ese renumerado dejó de encontrar
+nada y los apartados se habrían quedado con su número de fragmento sin que nadie
+lo notara. Ahora vive en `renum_apartados.py`, en un solo sitio en vez de
+duplicado en dos generadores, y entiende las dos formas del número. Comprobado
+contra la numeración anterior: **24 apartados, cero diferencias**.
+
 ## Sin JavaScript también
 
 El archivo se abre también donde no se ejecutan guiones: el visor de archivos de

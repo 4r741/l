@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Parte VI de la Tesis y sus supuestos, con las cifras traídas del modelo.
+"""Parte VI del Plan de Dirección y sus supuestos, con las cifras traídas del modelo.
 """
 import pathlib
 
@@ -116,7 +116,7 @@ DATOS = dict(
     pv_final=mil((P["base"] + P["llenar"] + P["mezcla"]) / 1000),
 )
 
-# ---- §18 · los supuestos de la Parte VI, en el registro donde deben estar ----
+# ---- apartado 18 · los supuestos de la Parte VI, en el registro donde deben estar ----
 def fila_supuesto(cod):
     f = POR[cod]
     if f["tipo"] == "agenda":

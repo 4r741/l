@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Ensambla memoria.html, la Tesis de Dirección v@VERSION@.
+"""Ensambla memoria.html, la Plan de Dirección v@VERSION@.
 
 Conserva íntegros los diez apartados de la Memoria v1.0 —renumerados— y los
 reordena en seis partes, intercalando la capa estratégica y la Parte VI, cuyas
 cifras vienen del modelo. Los bloques de contenido están en fuentes/; el
 sistema de diseño y el guion de comportamiento se toman del Manual Maestro.
 """
+import pathlib
 import re
 from pathlib import Path
 
@@ -36,16 +37,16 @@ manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
 cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                            "<title>Tesis de Dirección Giraldo</title>")
+                            "<title>Plan de Dirección Giraldo</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
-                  '<meta name="description" content="Tesis de Dirección del Centro de '
+                  '<meta name="description" content="Plan de Dirección del Centro de '
                   'Excelencia Implantológica Giraldo: posición competitiva, foso, sistema '
                   'operativo, economía unitaria y escenarios, creación de valor de empresa, '
                   'escalado, pre-mortem, asignación de capital, el puente hasta el objetivo de 1,2 M€ '
                   'con su cartera de nueve campañas, y las quince decisiones que '
                   'se someten a la Junta Directiva.">',
                   cabecera, count=1)
-assert "Tesis de Dirección Giraldo" in cabecera
+assert "Plan de Dirección Giraldo" in cabecera
 
 editorial = (SP / "editorial.css").read_text(encoding="utf-8")
 k = cabecera.rindex("</style>")
@@ -84,11 +85,11 @@ cierre, pie = v1["CIERRE"].split("</main>", 1)
 pie = "</main>" + pie
 
 # ---------------------------------------------------------------- renumerado
-NUEVO = {"3": "5", "4": "7", "5": "11", "6": "13", "7": "14", "8": "16", "9": "17", "10": "18"}
-
-
-def renumerar(texto):
-    return re.sub(r"§(\d+)", lambda m: "§" + NUEVO.get(m.group(1), m.group(1)), texto)
+# Vive en renum_apartados.py, compartido con la presentación: estaba duplicado
+# en los dos, y con el signo § metido en el patrón.
+import sys as _sys
+_sys.path.insert(0, str(pathlib.Path(__file__).parent.parent))
+from renum_apartados import renumera as renumerar
 
 
 for clave in v1:
@@ -114,8 +115,8 @@ v1["9 · DECISIONES"] = v1["9 · DECISIONES"].replace(
     ancla, v2["BRIEFS"] + v2["D15"] + "\n" + ancla, 1)
 v1["9 · DECISIONES"] = (v1["9 · DECISIONES"]
                         .replace("<h2>Ocho acuerdos</h2>", "<h2>Quince acuerdos</h2>")
-                        .replace("§17 · Decisiones que se someten a la Junta",
-                                 "§17 · Decisiones que se someten a la Junta")
+                        .replace("apartado 17 · Decisiones que se someten a la Junta",
+                                 "apartado 17 · Decisiones que se someten a la Junta")
                         .replace("Ninguna requiere información adicional a la contenida en esta memoria.",
                                  "Las ocho primeras resuelven la operación; las siete últimas fijan las "
                                  "reglas con las que se decidirá lo que aún no está sobre la mesa, "
@@ -176,7 +177,7 @@ orden = [
 ]
 cuerpo = "\n\n".join(bloque.strip("\n") for bloque in orden)
 
-# El Plan Maestro de Marketing entra en la barra de la Tesis junto a los
+# El Plan Maestro de Marketing entra en la barra del Plan de Dirección junto a los
 # demás enlaces cruzados: un documento al que no se llega desde ningún
 # sitio es un documento que no existe.
 cruzado = '<a class="crosslink" href="otros.html">Otros documentos</a>'
@@ -187,7 +188,7 @@ cuerpo = cuerpo.replace(cruzado, cruzado + '\n      '
 # ---------------------------------------------------------------- numeración de figuras
 # Las figuras se numeran solas, en el orden en que el lector las encuentra. El
 # número escrito a mano se queda atrás en cuanto se reordena un apartado: así
-# es como esta Tesis llegó a tener doce figuras con tres numeradas y el orden
+# es como este Plan de Dirección llegó a tener doce figuras con tres numeradas y el orden
 # roto. Las ranuras F1…F12 son nombres internos del generador; lo que el lector
 # ve —«Figura 1 ·»— y lo que dice cualquier remisión salen los dos de aquí.
 def numera_figuras(texto):
@@ -226,9 +227,9 @@ assert "<!--FIG" not in cuerpo
 
 # el documento cambia de nombre y de versión en todas sus referencias internas
 cuerpo = (cuerpo
-          .replace("Memoria de Dirección v1.0", "Tesis de Dirección v@VERSION@")
+          .replace("Memoria de Dirección v1.0", "Plan de Dirección v@VERSION@")
           .replace("Memoria de Dirección para la Junta Directiva",
-                   "Tesis de Dirección para la Junta Directiva")
+                   "Plan de Dirección para la Junta Directiva")
           .replace("v1.0 · @FECHA@<br>Revisión trimestral",
                    "v@VERSION@ · @FECHA@<br>Revisión trimestral"))
 

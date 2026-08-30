@@ -18,11 +18,11 @@ RAIZ = pathlib.Path(__file__).parent
 
 # archivo, rótulo, qué es, para quién
 DOCUMENTOS = [
-    ("memoria.html", "Tesis de Dirección", "Gobierno",
+    ("memoria.html", "Plan de Dirección", "Gobierno",
      "Qué creemos, qué apostamos y las quince decisiones que se someten a la Junta",
      "Junta Directiva"),
     ("deck.html", "Presentación de Junta", "Derivado",
-     "La Tesis para proyectar, con guion del ponente y ruta corta",
+     "El Plan de Dirección para proyectar, con guion del ponente y ruta corta",
      "Quien presenta"),
     ("marketing.html", "Plan Maestro de Marketing", "Plan",
      "Las 76 acciones posibles sobre los 12 estados del paciente",

@@ -33,8 +33,8 @@ PONENTE = ("document.body.classList.add('modo-ponente');"
 # cada PDF anunciaba una versión que ya no era la del archivo. Sale de VERSION,
 # como todo lo demás.
 DOCUMENTOS = [
-    ("memoria.html", "Tesis-Direccion-Giraldo-v%s.pdf" % VERSION,
-     "Tesis de Dirección · v%s" % VERSION, False, ""),
+    ("memoria.html", "Plan-Direccion-Giraldo-v%s.pdf" % VERSION,
+     "Plan de Dirección · v%s" % VERSION, False, ""),
     ("manual.html", "Manual-Maestro-Giraldo-v%s.pdf" % VERSION,
      "Manual Maestro de Operaciones · v%s" % VERSION, False, ""),
     ("index.html", "Protocolo-Primera-Visita-Giraldo-v%s.pdf" % VERSION,

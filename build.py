@@ -6,7 +6,7 @@
     python3 build.py --todo       # además exportaciones, PDF y libro de cálculo
 
 El orden importa: las figuras salen del modelo, la Parte VI sale de las
-figuras y del modelo, la Tesis ensambla todo eso, y la presentación toma sus
+figuras y del modelo, el Plan de Dirección ensambla todo eso, y la presentación toma sus
 figuras de las mismas fuentes. Al final se ejecuta el guion de coherencia, que
 comprueba que ningún documento contradiga a otro ni al modelo. Si algo falla,
 este guion se detiene ahí: un sistema a medio construir no se publica.
@@ -32,11 +32,12 @@ DOCUMENTOS = [
     (GEN / "parte6.py", "Parte VI y sus supuestos, con las cifras del modelo"),
     (GEN / "actas.py", "Anexo A · hojas de acta"),
     (GEN / "campanas.py", "Anexo B · fichas de campaña"),
-    (GEN / "tesis.py", "memoria.html · Tesis de Dirección"),
+    (GEN / "tesis.py", "memoria.html · Plan de Dirección"),
     (GEN / "deck.py", "deck.html · presentación de Junta"),
     (GEN / "marketing-figuras.py", "Figuras del Plan Maestro de Marketing"),
     (GEN / "marketing.py", "marketing.html · Plan Maestro de Marketing"),
     (RAIZ / "build-captura.py", "instrumentos/captura.html · hoja de captura"),
+    (RAIZ / "numera-rotulos.py", "el número de cada apartado, para dibujarlo aparte"),
     (RAIZ / "anclas.py", "anclas de todos los titulares"),
     (RAIZ / "build-inicio.py", "inicio.html · portada del sistema"),
 ]

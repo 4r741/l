@@ -3,7 +3,7 @@
 """Ensambla deck.html, la presentación de Junta en 16:9.
 
 Conserva las quince diapositivas de la versión anterior —renumeradas— y les
-añade la capa de tesis y la Parte VI. Cada diapositiva lleva su nota de ponente
+añade la capa del plan y la Parte VI. Cada diapositiva lleva su nota de ponente
 con el minuto objetivo y la pregunta difícil; doce están marcadas como ruta
 corta. El sistema de diseño y las figuras vienen de fuentes/.
 """
@@ -332,14 +332,14 @@ A('''<section class="slide slide--portada">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§2 · La tesis</p>
+  <p class="eyebrow">02 · La apuesta</p>
   <h2>Un centro que resuelve lo que otros rechazan y no termina la relación cuando cobra</h2>
   <div class="quote"><p>«Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.»</p></div>
   <p class="lede">La primera mitad es el resultado: ningún tratamiento se deja a medias. La segunda es la relación, y tiene instrumento propio: el programa de cuidado anual. La ventaja competitiva no es el equipamiento —lo reivindican todos— sino la ejecución sistemática.</p>
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§3 · Qué se ha construido</p>
+  <p class="eyebrow">03 · Qué se ha construido</p>
   <h2>Un sistema operativo, no un plan</h2>
   <div class="cols">
     <div class="tile"><p class="k">Recorrido del paciente</p><p class="v">14</p><p>Fases, de la primera llamada al mantenimiento</p></div>
@@ -351,7 +351,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§3 · Los tres documentos troncales</p>
+  <p class="eyebrow">03 · Los tres documentos troncales</p>
   <h2>Qué garantiza tenerlo por escrito</h2>
   <ul class="bul">
     <li><b>Manual Maestro de Operaciones</b> — la norma: catorce fases, manuales de puesto, responsabilidades, indicadores e incentivos</li>
@@ -362,7 +362,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§2 · Dónde está la oportunidad</p>
+  <p class="eyebrow">02 · Dónde está la oportunidad</p>
   <h2>Tres segmentos que casi nadie atiende</h2>
   <table>
     <thead><tr><th>Segmento</th><th>Por qué está desatendido</th><th>Barrera de entrada</th></tr></thead>
@@ -376,7 +376,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§4 · Dónde estamos</p>
+  <p class="eyebrow">04 · Dónde estamos</p>
   <h2>Los cinco números que <em>aún no tenemos</em></h2>
   <ul class="bul">
     <li><b>Costes fijos mensuales</b> — día 15</li>
@@ -389,7 +389,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§5 · Riesgos</p>
+  <p class="eyebrow">05 · Riesgos</p>
   <h2>Cinco riesgos críticos, con dueño</h2>
   <table>
     <thead><tr><th>#</th><th>Riesgo</th><th>Mitigación</th><th>Propietario</th></tr></thead>
@@ -405,7 +405,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§6 · Cuadro de mando</p>
+  <p class="eyebrow">06 · Cuadro de mando</p>
   <h2>Diez indicadores, ninguno con serie propia todavía</h2>
   <div class="cols">
     <div class="tile"><p class="k">Integridad del sistema</p><p class="v">4</p><p>Verificaciones cerradas · bajas voluntarias · reclamaciones heredadas · documentación en el día</p></div>
@@ -417,7 +417,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§6 · Política de precios <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">06 · Política de precios <span class="sem sem--ambar">Modelo</span></p>
   <h2>Lo que cuesta de verdad un descuento</h2>
   <figure class="fig">%s
     <figcaption>Los costes del caso no bajan cuando baja el precio: el descuento sale íntegramente del beneficio. Un 10 %% de descuento cuesta el 25 %% del beneficio del caso; compensarlo exige vender un 33 %% más. Margen del 40 %% como supuesto de trabajo.</figcaption>
@@ -425,7 +425,7 @@ A('''<section class="slide">
 </section>''' % figura("F1"))
 
 A('''<section class="slide">
-  <p class="eyebrow">§4 · La palanca más barata <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">04 · La palanca más barata <span class="sem sem--ambar">Modelo</span></p>
   <h2>Cada diez puntos de conversión valen una visita diaria</h2>
   <figure class="fig">%s
     <figcaption>Primeras visitas necesarias al día para alcanzar el equilibrio, según la tasa de conversión. Supuestos: 60.000 € de punto de equilibrio mensual, 1.800 € de ticket medio aceptado y 21 días laborables. Mejorar la conversión no requiere captar a nadie más.</figcaption>
@@ -433,7 +433,7 @@ A('''<section class="slide">
 </section>''' % figura("F2"))
 
 A('''<section class="slide">
-  <p class="eyebrow">§6 · Relación frente a transacción <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">06 · Relación frente a transacción <span class="sem sem--ambar">Modelo</span></p>
   <h2>La relación vale del orden del doble</h2>
   <figure class="fig">%s
     <figcaption>Valor estimado de un paciente a cinco años. El programa de cuidado no se justifica por su cuota, que es marginal, sino por lo que arrastra: revisiones que detectan a tiempo, tratamientos que se hacen cuando aún son sencillos y familiares que entran por la puerta.</figcaption>
@@ -441,7 +441,7 @@ A('''<section class="slide">
 </section>''' % figura("F3"))
 
 A('''<section class="slide">
-  <p class="eyebrow">§7 · Palancas de valor</p>
+  <p class="eyebrow">07 · Palancas de valor</p>
   <h2>Por dónde se crece, <em>y en qué orden</em></h2>
   <table>
     <thead><tr><th>Orden</th><th>Palanca</th><th>Coste de activación</th><th>Horizonte</th></tr></thead>
@@ -457,7 +457,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§8 · Hoja de ruta</p>
+  <p class="eyebrow">08 · Hoja de ruta</p>
   <h2>Tres horizontes, tres puertas</h2>
   <div class="cols">
     <div class="tile"><p class="k">Horizonte 1 · 100 días</p><p class="v">Estabilizar</p><p>Riesgo neutralizado, equipo retenido, continuidad asegurada, línea base establecida</p></div>
@@ -468,7 +468,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§9 · Lo que se pide hoy</p>
+  <p class="eyebrow">09 · Lo que se pide hoy</p>
   <h2>Ocho decisiones</h2>
   <table>
     <thead><tr><th>Cód.</th><th>Materia</th><th>Plazo</th></tr></thead>
@@ -496,21 +496,21 @@ A('''<section class="slide slide--cierre">
   <p class="lede">Lo que se pide hoy no es respaldo genérico: es resolver las ocho decisiones y fijar la fecha de la próxima revisión.</p>
 </section>''')
 
-# ---------------------------------------------------------------- capa de tesis
-import re as _re
+# --------------------------------------------------------------- capa del plan
+import pathlib as _pl
+import sys as _sys
+_sys.path.insert(0, str(_pl.Path(__file__).parent.parent))
+from renum_apartados import renumera as _renumera
 
-ORIGINALES = DIAPOSITIVAS[:]
-_MAPA = {"3": "5", "4": "7", "5": "11", "6": "13", "7": "14", "8": "16", "9": "17", "10": "18"}
-ORIGINALES = [_re.sub(r"§(\d+)", lambda m: "§" + _MAPA.get(m.group(1), m.group(1)), s)
-              for s in ORIGINALES]
+ORIGINALES = [_renumera(s) for s in DIAPOSITIVAS]
 # tres rótulos que la renumeración deja en el apartado equivocado
-ORIGINALES[8] = ORIGINALES[8].replace("§13 · Política de precios", "§14 · Política de precios")
-ORIGINALES[9] = ORIGINALES[9].replace("§7 · La palanca más barata", "§8 · La palanca más barata")
-ORIGINALES[10] = ORIGINALES[10].replace("§13 · Relación frente a transacción",
-                                        "§9 · Relación frente a transacción")
+ORIGINALES[8] = ORIGINALES[8].replace("apartado 13 · Política de precios", "apartado 14 · Política de precios")
+ORIGINALES[9] = ORIGINALES[9].replace("apartado 7 · La palanca más barata", "apartado 8 · La palanca más barata")
+ORIGINALES[10] = ORIGINALES[10].replace("apartado 13 · Relación frente a transacción",
+                                        "apartado 9 · Relación frente a transacción")
 ORIGINALES[13] = (ORIGINALES[13].replace("<h2>Ocho decisiones</h2>",
                                          "<h2>Las ocho de la operación</h2>")
-                  .replace("§17 · Lo que se pide hoy", "§17 · Lo que se pide hoy · 1 de 2"))
+                  .replace("apartado 17 · Lo que se pide hoy", "apartado 17 · Lo que se pide hoy · 1 de 2"))
 ORIGINALES[14] = ORIGINALES[14].replace("resolver las ocho decisiones",
                                         "resolver las quince decisiones")
 
@@ -531,30 +531,30 @@ def parte(numero, rotulo, titulo, lede):
 A('''<section class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · @FECHA@ · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Tesis de Dirección v@VERSION@ · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v@VERSION@ · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 </section>''')
 
 # 2 · la pregunta de la sesión
 A('''<section class="slide">
   <p class="eyebrow">El planteamiento</p>
-  <h2>Una tesis, no <em>un informe</em></h2>
+  <h2>Un plan, no <em>un informe</em></h2>
   <div class="cols">
     <div class="tile"><p class="k">Pregunta 1</p><p class="v">¿Qué?</p><p>Qué creemos que es cierto sobre este mercado y por qué la posición que ocupamos está libre</p></div>
     <div class="tile"><p class="k">Pregunta 2</p><p class="v">¿Cuánto?</p><p>Qué vale cada palanca, en euros y con los supuestos declarados sobre la mesa</p></div>
     <div class="tile"><p class="k">Pregunta 3</p><p class="v">¿Y si no?</p><p>Bajo qué condiciones estaríamos equivocados, y qué señal lo avisaría a tiempo</p></div>
   </div>
-  <p class="lede">Un informe cuenta lo que ha pasado. Una tesis afirma, apuesta y se expone a ser refutada. Cada cifra de esta presentación lleva marcada su naturaleza: <b>hecho</b>, <b>modelo</b> o <b>pendiente</b>.</p>
+  <p class="lede">Un informe cuenta lo que ha pasado. Un plan afirma, apuesta y se expone a ser refutada. Cada cifra de esta presentación lleva marcada su naturaleza: <b>hecho</b>, <b>modelo</b> o <b>pendiente</b>.</p>
 </section>''')
 
 parte("I", "La posición", "Dónde estamos parados y <em>por qué ahí</em>",
-      "La tesis del proyecto, los segmentos desatendidos, el mapa competitivo de Vigo y el foso: qué tendría que hacer un competidor para quitarnos el sitio y cuánto tardaría.")
+      "La apuesta del proyecto, los segmentos desatendidos, el mapa competitivo de Vigo y el foso: qué tendría que hacer un competidor para quitarnos el sitio y cuánto tardaría.")
 
-A(ORIGINALES[1])   # §2 · la tesis
-A(ORIGINALES[4])   # §2 · tres segmentos desatendidos
+A(ORIGINALES[1])   # apartado 2 · la apuesta
+A(ORIGINALES[4])   # apartado 2 · tres segmentos desatendidos
 
 # mapa competitivo
 A('''<section class="slide">
-  <p class="eyebrow">§3 · El mapa competitivo</p>
+  <p class="eyebrow">03 · El mapa competitivo</p>
   <h2>Cuatro formas de vender implantes en Vigo, y la que dejamos libre</h2>
   <table>
     <thead><tr><th>Posición</th><th>Cómo compite</th><th>Dónde se rompe</th></tr></thead>
@@ -570,7 +570,7 @@ A('''<section class="slide">
 
 # el foso
 A('''<section class="slide">
-  <p class="eyebrow">§4 · El foso</p>
+  <p class="eyebrow">04 · El foso</p>
   <h2>Lo que un competidor <em>no puede comprar</em></h2>
   <table>
     <thead><tr><th>Activo</th><th>¿Se compra?</th><th>Réplica</th></tr></thead>
@@ -596,12 +596,12 @@ A('''<section class="slide slide--stmt">
 parte("II", "El sistema", "El activo se llama <em>sistema operativo</em>, no clínica",
       "Una clínica es un local con pacientes. Un sistema operativo es un conjunto de decisiones ya tomadas que hacen que el resultado no dependa de quién esté ese martes. Lo primero se vende al peso; lo segundo, por múltiplo.")
 
-A(ORIGINALES[2])   # §5 · un sistema operativo, no un plan
-A(ORIGINALES[3])   # §5 · los tres documentos troncales
+A(ORIGINALES[2])   # apartado 5 · un sistema operativo, no un plan
+A(ORIGINALES[3])   # apartado 5 · los tres documentos troncales
 
 # cartera de innovación
 A('''<section class="slide">
-  <p class="eyebrow">§6 · Cartera de innovación</p>
+  <p class="eyebrow">06 · Cartera de innovación</p>
   <h2>Tres horizontes, <em>tres criterios distintos</em></h2>
   <div class="hz">
     <div class="hz--a"><b>H1</b><span>0-12 meses · Explotar · ~70 %</span>
@@ -617,10 +617,10 @@ A('''<section class="slide">
 parte("III", "La economía", "De dónde sale el dinero y <em>qué lo destruye</em>",
       "Cuánto vale cada primera visita según cómo la trabajemos, qué le pasa a la facturación si movemos las dos únicas palancas que la gobiernan, y por qué un paciente en seguimiento vale más del doble que un paciente atendido.")
 
-A(ORIGINALES[5])   # §7 · los cinco números que aún no tenemos
+A(ORIGINALES[5])   # apartado 7 · los cinco números que aún no tenemos
 
 A('''<section class="slide">
-  <p class="eyebrow">§8 · Escenarios <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">08 · Escenarios <span class="sem sem--ambar">Modelo</span></p>
   <h2>Tres trayectorias a treinta y seis meses</h2>
   <figure class="fig">%s
     <figcaption>Base: el centro sostiene lo heredado sin cambio de sistema. Objetivo: el sistema operativo en marcha con las palancas activas. Ambición: además, segunda unidad y líneas nuevas del H2. La distancia entre base y objetivo —del orden de 380 k€ anuales en el mes 36— es lo que está en juego en esta sesión.</figcaption>
@@ -628,19 +628,19 @@ A('''<section class="slide">
 </section>''' % figura("F4"))
 
 A('''<section class="slide">
-  <p class="eyebrow">§8 · Sensibilidad <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">08 · Sensibilidad <span class="sem sem--ambar">Modelo</span></p>
   <h2>Dos variables gobiernan el resultado; <em>el resto son consecuencias</em></h2>
   <figure class="fig">%s
     <figcaption>Facturación anual con capacidad fija de cuatro primeras visitas al día. Pasar del 30 %% al 50 %% de conversión multiplica por 1,67 sin tocar el precio. Subir el ticket de 1.400 € a 2.200 € multiplica por 1,57. Hacer las dos cosas multiplica por 2,6: las palancas no se suman, se multiplican.</figcaption>
   </figure>
 </section>''' % figura("F5"))
 
-A(ORIGINALES[8])   # §14 · lo que cuesta de verdad un descuento (F1)
-A(ORIGINALES[9])   # §8 · cada diez puntos de conversión (F2)
-A(ORIGINALES[10])  # §9 · la relación vale el doble (F3)
+A(ORIGINALES[8])   # apartado 14 · lo que cuesta de verdad un descuento (F1)
+A(ORIGINALES[9])   # apartado 8 · cada diez puntos de conversión (F2)
+A(ORIGINALES[10])  # apartado 9 · la relación vale el doble (F3)
 
 A('''<section class="slide">
-  <p class="eyebrow">§9 · El activo <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">09 · El activo <span class="sem sem--ambar">Modelo</span></p>
   <h2>Lo que hoy se deja <em>sobre la mesa</em></h2>
   <figure class="fig">%s
     <figcaption>Valor acumulado por paciente a cinco años, con y sin programa de seguimiento. El área sombreada no se pierde por competencia: se pierde por no volver a llamar. Es también la parte del ingreso que un comprador valora con múltiplo superior, porque es previsible.</figcaption>
@@ -648,7 +648,7 @@ A('''<section class="slide">
 </section>''' % figura("F6"))
 
 A('''<section class="slide">
-  <p class="eyebrow">§9 · Creación de valor de empresa</p>
+  <p class="eyebrow">09 · Creación de valor de empresa</p>
   <h2>Por qué esto vale más que <em>la suma de sus sillones</em></h2>
   <ol class="pasos">
     <li><b>Beneficio</b> — lo que el centro gana este año. Es lo único que existe si no hay sistema.</li>
@@ -661,7 +661,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§10 · Tesis de escalado</p>
+  <p class="eyebrow">10 · La apuesta de escalado</p>
   <h2>De un centro a una red: <em>el orden es innegociable</em></h2>
   <ol class="pasos">
     <li><b>Estándar escrito</b> <span class="sem sem--verde">Hecho</span> — 12 fases, 322 puntos, manual por puesto</li>
@@ -676,10 +676,10 @@ A('''<section class="slide">
 parte("IV", "El riesgo", "Cómo fracasa esto, contado <em>antes</em> de que ocurra",
       "Un registro de riesgos enumera lo que puede salir mal. Un pre-mortem se sitúa tres años en el futuro, da por hecho el fracaso y pide explicar la causa. Cambia la pregunta, y con ella el nivel de honestidad de las respuestas.")
 
-A(ORIGINALES[6])   # §11 · cinco riesgos críticos con dueño
+A(ORIGINALES[6])   # apartado 11 · cinco riesgos críticos con dueño
 
 A('''<section class="slide">
-  <p class="eyebrow">§12 · Pre-mortem</p>
+  <p class="eyebrow">12 · Pre-mortem</p>
   <h2>Agosto de 2029: el proyecto ha fracasado. <em>¿Qué pasó?</em></h2>
   <table>
     <thead><tr><th>Causa</th><th>Señal temprana</th></tr></thead>
@@ -696,7 +696,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide slide--stmt">
-  <p class="eyebrow">§12 · Decisión D13</p>
+  <p class="eyebrow">12 · Decisión D13</p>
   <h2>Cinco disparadores que obligan a convocar <em>sin valorar la gravedad</em></h2>
   <ul class="bul">
     <li>Dos auditorías aplazadas</li>
@@ -708,15 +708,15 @@ A('''<section class="slide slide--stmt">
   <p class="lede">Los seis modos de fallo son lentos y cómodos: nunca parecen suficientemente graves el día en que aún son baratos de corregir. Un disparador automático protege a la Junta de la propia Dirección en ese momento exacto.</p>
 </section>''')
 
-A(ORIGINALES[7])   # §13 · cuadro de mando
+A(ORIGINALES[7])   # apartado 13 · cuadro de mando
 
 parte("V", "La decisión", "Qué se pide hoy, y <em>qué cuesta no pedirlo</em>",
       "Las palancas de valor, el orden en que se asigna el capital, la hoja de ruta a treinta y seis meses y las quince decisiones que solo puede tomar este órgano.")
 
-A(ORIGINALES[11])  # §14 · palancas de valor
+A(ORIGINALES[11])  # apartado 14 · palancas de valor
 
 A('''<section class="slide">
-  <p class="eyebrow">§15 · Asignación de capital</p>
+  <p class="eyebrow">15 · Asignación de capital</p>
   <h2>Un orden de prelación, <em>no una lista de deseos</em></h2>
   <ol class="pasos">
     <li><b>Continuidad</b> — nóminas, obligaciones, mantenimiento y colchón de tesorería. No se discute.</li>
@@ -728,11 +728,11 @@ A('''<section class="slide">
   <p class="lede">Excepción legítima, una sola: cuando una prioridad inferior es condición técnica de una superior. Se documenta y se presenta en la Junta siguiente. <b>Decisión D10.</b></p>
 </section>''')
 
-A(ORIGINALES[12])  # §16 · hoja de ruta
-A(ORIGINALES[13])  # §17 · las ocho de la operación
+A(ORIGINALES[12])  # apartado 16 · hoja de ruta
+A(ORIGINALES[13])  # apartado 17 · las ocho de la operación
 
 A('''<section class="slide">
-  <p class="eyebrow">§17 · Lo que se pide hoy · 2 de 2</p>
+  <p class="eyebrow">17 · Lo que se pide hoy · 2 de 2</p>
   <h2>Las siete de <em>la estrategia</em></h2>
   <table>
     <thead><tr><th>Cód.</th><th>Materia</th><th>Alternativa descartada</th><th>Plazo</th></tr></thead>
@@ -753,7 +753,7 @@ parte("VI", "La cifra", "Cómo se llega a <em>1,2 M€</em>",
       "El objetivo, descompuesto hasta el último euro: de dónde sale cada bloque, si cabe en la agenda que tenemos y qué nueve campañas lo sostienen.")
 
 A('''<section class="slide">
-  <p class="eyebrow">§20 · El puente <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">20 · El puente <span class="sem sem--ambar">Modelo</span></p>
   <h2>De 720 k€ a 1,2 M€, <em>bloque a bloque</em></h2>
   <figure class="fig">%s
     <figcaption>Se planifican 1.440 k€ para comprometer 1.200. Un plan que suma exactamente el objetivo es un plan que lo falla: de nueve campañas, dos no arrancarán a tiempo y una rendirá la mitad. El colchón no es holgura, es lo que hace creíble la cifra.</figcaption>
@@ -761,7 +761,7 @@ A('''<section class="slide">
 </section>''' % figura("F8"))
 
 A('''<section class="slide">
-  <p class="eyebrow">§20 · La pregunta previa</p>
+  <p class="eyebrow">20 · La pregunta previa</p>
   <h2>¿Cabe 1,2 M€ en <em>la agenda que tenemos</em>?</h2>
   <div class="cols">
     <div class="tile"><p class="k">Capacidad instalada</p><p class="v">1.008</p><p>Primeras visitas al año: 4 al día × 21 días × 12 meses</p></div>
@@ -773,7 +773,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§20 · Composición <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">20 · Composición <span class="sem sem--ambar">Modelo</span></p>
   <h2>Dos tercios del salto <em>no son implantes</em></h2>
   <figure class="fig">%s
     <figcaption>El bloque de primera visita crece un 42 %%. El de seguimiento parte de cero: son 343 k€ que no existen hoy y que no dependen de ver a un solo paciente nuevo.</figcaption>
@@ -781,7 +781,7 @@ A('''<section class="slide">
 </section>''' % figura("F10"))
 
 A('''<section class="slide">
-  <p class="eyebrow">§21 · La cartera <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">21 · La cartera <span class="sem sem--ambar">Modelo</span></p>
   <h2>Nueve campañas, <em>ordenadas por lo que aportan</em></h2>
   <table>
     <thead><tr><th>Cód.</th><th>Campaña</th><th>Visitas</th><th>Aporta</th><th>Retorno</th></tr></thead>
@@ -801,7 +801,7 @@ A('''<section class="slide">
 </section>''')
 
 A('''<section class="slide slide--stmt">
-  <p class="eyebrow">§21 · Lo que devuelve el modelo</p>
+  <p class="eyebrow">21 · Lo que devuelve el modelo</p>
   <h2>D14 no es un detalle del programa de cuidado.<br><em>Es el 63 % del objetivo.</em></h2>
   <ul class="bul">
     <li><b>C6 · 172 k€ y C1 · 171 k€</b> — el 63 % de todo lo que aportan las nueve campañas</li>
@@ -812,7 +812,7 @@ A('''<section class="slide slide--stmt">
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§22 · Calendario <span class="sem sem--ambar">Modelo</span></p>
+  <p class="eyebrow">22 · Calendario <span class="sem sem--ambar">Modelo</span></p>
   <h2>Cuándo se enciende cada una</h2>
   <figure class="fig">%s
     <figcaption>En oscuro el arranque, en claro el sostenimiento. Nunca más de dos arranques a la vez: el equipo no sostiene más, y una campaña mal atendida hace más daño que ninguna. Enero y septiembre son los meses en que la gente decide; en julio y agosto no se enciende nada caro.</figcaption>
@@ -820,18 +820,18 @@ A('''<section class="slide">
 </section>''' % figura("F9"))
 
 A('''<section class="slide slide--stmt">
-  <p class="eyebrow">§22 · La senda</p>
+  <p class="eyebrow">22 · La senda</p>
   <h2>1,2 M€ es un objetivo de <em>año tres</em></h2>
   <ul class="bul">
     <li><b>Año 1 · 890 k€</b> — C1, C3, C8 y C9. Protocolo completo y línea base levantada</li>
     <li><b>Año 2 · 1.060 k€</b> — entran C2, C6 y C7. El ticket sube por composición de casos</li>
     <li><b>Año 3 · 1.200 k€</b> — cartera completa con C4 y C5, sin abrir una segunda unidad</li>
   </ul>
-  <p class="lede">Comprimirlo a dieciocho meses no se consigue acelerando campañas —maduran a su ritmo— sino ampliando capacidad, y eso anticipa la prioridad 5 del §15. Es legítimo, tiene precio, y debe constar en el acta. Es la decisión <b>D15</b>.</p>
+  <p class="lede">Comprimirlo a dieciocho meses no se consigue acelerando campañas —maduran a su ritmo— sino ampliando capacidad, y eso anticipa la prioridad 5 del apartado 15. Es legítimo, tiene precio, y debe constar en el acta. Es la decisión <b>D15</b>.</p>
 </section>''')
 
 A('''<section class="slide">
-  <p class="eyebrow">§23 · Condiciones</p>
+  <p class="eyebrow">23 · Condiciones</p>
   <h2>Qué tiene que ser cierto</h2>
   <table>
     <thead><tr><th>Condición</th><th>Qué se cae si falla</th><th>Cómo se comprueba</th></tr></thead>
@@ -857,11 +857,11 @@ NOTAS = [
  ("0:00", "Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.",
   "¿Esto es un eslogan de marketing?",
   "Es el criterio de aceptación clínico. Está escrito como punto verificable en doce fases del protocolo; el marketing vino después."),
- ("0:45", "Marcar la diferencia entre informe y tesis. Insistir en que cada cifra lleva su naturaleza marcada y que no hay ni un dato propio disfrazado.",
+ ("0:45", "Marcar la diferencia entre informe y plan. Insistir en que cada cifra lleva su naturaleza marcada y que no hay ni un dato propio disfrazado.",
   "¿Entonces las cifras no son reales?",
-  "Los rangos son del sector y están marcados como modelo. Los datos propios llegan cuando exista la línea base: es la primera tarea de los cien días y está en el §7."),
+  "Los rangos son del sector y están marcados como modelo. Los datos propios llegan cuando exista la línea base: es la primera tarea de los cien días y está en el apartado 7."),
  ("2:00", "Transición. No detenerse: quince segundos.", "", ""),
- ("2:15", "La tesis en una frase, y la segunda mitad —«le cuidamos para siempre»— como el compromiso que tiene instrumento contractual, no como una promesa amable.",
+ ("2:15", "La apuesta en una frase, y la segunda mitad —«le cuidamos para siempre»— como el compromiso que tiene instrumento contractual, no como una promesa amable.",
   "¿No dicen todos lo mismo?",
   "Todos dicen la primera mitad. Pida a un competidor el documento donde figure por escrito quién responde a los cinco años. Ahí se acaba el parecido."),
  ("3:15", "Tres segmentos, y el matiz que importa: ninguno compra precio. Es el terreno donde la guerra de tarifas no llega.",
@@ -879,7 +879,7 @@ NOTAS = [
  ("8:15", "Transición.", "", ""),
  ("8:30", "Los cuatro números del sistema construido. No leerlos: señalarlos y decir que están disponibles para auditar hoy mismo.",
   "¿Quién ha verificado que eso existe de verdad?",
-  "Está en los tres documentos que acompañan a esta tesis y los 322 puntos son comprobables en un recorrido físico de una mañana. La invitación está abierta."),
+  "Está en los tres documentos que acompañan a este plan y los 322 puntos son comprobables en un recorrido físico de una mañana. La invitación está abierta."),
  ("9:30", "Los tres troncales y, sobre todo, la frase final: la diferencia entre un negocio dependiente de personas y uno con activos transferibles.",
   "¿No es demasiada documentación para una clínica?",
   "La cantidad no es el objetivo: la verificabilidad sí. Un estándar que no se puede comprobar en una lista es una intención."),
@@ -892,7 +892,7 @@ NOTAS = [
   "No se puede, y por eso el mes 1 es línea base y no objetivo comercial. La hoja de captura acompaña a este documento y las cinco cifras tienen fecha: días 15, 21 y 30."),
  ("13:45", "Los tres escenarios. Señalar la distancia entre base y objetivo en el mes 36 y decir en voz alta: esto es lo que está en juego hoy.",
   "¿Qué probabilidad tiene el escenario objetivo?",
-  "No le asignamos probabilidad porque sería inventarla. Le asignamos condiciones: son las palancas del §14 y las decisiones de esta sesión. Sin ellas, el escenario base."),
+  "No le asignamos probabilidad porque sería inventarla. Le asignamos condiciones: son las palancas del apartado 14 y las decisiones de esta sesión. Sin ellas, el escenario base."),
  ("15:30", "La matriz. Es la diapositiva más importante de la sesión: las dos palancas se multiplican, no se suman. Si hay tiempo, abrir la comprobación en directo del documento.",
   "¿Y si la conversión se queda en el 35 %?",
   "Se ve en la matriz y podemos moverlo en directo: con 35 % y ticket de 1.800 € son 544 k€. Por eso el protocolo de primera visita es el documento económico central, no un documento de calidad."),
@@ -964,7 +964,7 @@ NOTAS = [
   "Se para. Cada ficha del anexo B lleva su umbral: si a los sesenta días no llega a la mitad de su ritmo, se detiene y se revisa. Sin umbral escrito, una campaña que no funciona no se cancela nunca."),
  ("52:00", "La senda a tres años. Es el momento de ser explícito: 1,2 M€ es objetivo de año tres, y si la Junta lo quiere en dieciocho meses eso tiene precio y nombre.",
   "¿Por qué no puede ser en el primer año?",
-  "Porque haría falta un rendimiento de 1.190 € por primera visita, un 47 % por encima del actual, y las campañas no maduran en doce meses. Se puede comprimir ampliando capacidad, pero entonces se anticipa la prioridad 5 del §15 y debe constar en el acta."),
+  "Porque haría falta un rendimiento de 1.190 € por primera visita, un 47 % por encima del actual, y las campañas no maduran en doce meses. Se puede comprimir ampliando capacidad, pero entonces se anticipa la prioridad 5 del apartado 15 y debe constar en el acta."),
  ("53:30", "Las cinco condiciones. Terminar la parte recordando que ninguna es una campaña: son condiciones, y si falla una se cae el bloque entero.",
   "¿Cuál le preocupa más?",
   "La segunda. Tres campañas y 232 k€ se apoyan en una cartera propia que nadie ha contado todavía. Es lo más barato de comprobar y está sin hacer: dos semanas de inventario."),
@@ -1000,8 +1000,8 @@ documento = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Presentación de la Tesis de Dirección del Centro de Excelencia Implantológica Giraldo ante la Junta Directiva: posición competitiva, foso, sistema operativo, economía unitaria, valor de empresa, escalado, pre-mortem, asignación de capital, el puente hasta el objetivo de 1,2 M€ y las quince decisiones que se someten a aprobación.">
-<title>Tesis de Dirección · Junta Giraldo</title>
+<meta name="description" content="Presentación de la Plan de Dirección del Centro de Excelencia Implantológica Giraldo ante la Junta Directiva: posición competitiva, foso, sistema operativo, economía unitaria, valor de empresa, escalado, pre-mortem, asignación de capital, el puente hasta el objetivo de 1,2 M€ y las quince decisiones que se someten a aprobación.">
+<title>Plan de Dirección · Junta Giraldo</title>
 %s
 <style>
 %s

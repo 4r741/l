@@ -2,7 +2,7 @@
 """Figura F7: valor de empresa por peldaño de la escalera.
 
 Se ejecuta desde build.py; también se puede lanzar suelto. Escribe en
-fuentes/ los bloques que después ensambla el generador de la Tesis.
+fuentes/ los bloques que después ensambla el generador del Plan de Dirección.
 """
 import pathlib
 

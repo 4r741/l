@@ -67,7 +67,7 @@ def fm1():
 
     No es un embudo. Un embudo va en un sentido y termina en la venta; una
     persona va y viene, se apaga y a veces vuelve. Los trazos gruesos son los
-    tres pasos que el modelo de la Tesis señala como los que mueven el dinero,
+    tres pasos que el modelo del Plan de Dirección señala como los que mueven el dinero,
     y ninguno de los tres consiste en captar a nadie nuevo.
     """
     W, H = 1120, 760

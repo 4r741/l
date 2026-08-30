@@ -30,7 +30,7 @@ DESTINO = RAIZ / "export"
 # único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
     "inicio.html": "Giraldo-INICIO-AQUI.html",
-    "memoria.html": "Tesis-Direccion-Giraldo-v%s.html" % CORTA,
+    "memoria.html": "Plan-Direccion-Giraldo-v%s.html" % CORTA,
     "deck.html": "Presentacion-Junta-Giraldo-v%s.html" % CORTA,
     "marketing.html": "Plan-Marketing-Giraldo-v%s.html" % CORTA,
     "manual.html": "Manual-Maestro-Giraldo-v%s.html" % CORTA,
@@ -57,7 +57,7 @@ DOCUMENTOS = {
 # Rótulo de cada documento en el conmutador permanente del archivo único.
 ROTULOS = [
     ("doc-inicio", "Inicio"),
-    ("doc-tesis", "Tesis de Dirección"),
+    ("doc-tesis", "Plan de Dirección"),
     ("doc-deck", "Presentación"),
     ("doc-marketing", "Plan de Marketing"),
     ("doc-captura", "Captura"),
@@ -68,7 +68,10 @@ ROTULOS = [
 
 CORTOS = {
     "doc-inicio": "Inicio",
-    "doc-tesis": "Tesis",
+    # La barra necesita una palabra, no el nombre entero: al lado de
+    # «Marketing» y «Manual», «Plan» sería ambiguo —el de marketing también
+    # es un plan— y «Dirección» no lo es.
+    "doc-tesis": "Dirección",
     "doc-deck": "Presentación",
     "doc-marketing": "Marketing",
     "doc-captura": "Captura",
@@ -443,7 +446,7 @@ SCRIPT = """<script>
   });
 
   /* ------------------------------------------------------------------------
-     Buscador. La tira de secciones se corta por la derecha —la Tesis tiene
+     Buscador. La tira de secciones se corta por la derecha —el Plan de Dirección tiene
      treinta y cinco entradas y en pantalla caben doce—, así que llegar a un
      apartado concreto obligaba a rascar hasta encontrarlo. Aquí se escriben dos
      letras y se llega, sin salir del teclado y sin saber en qué documento está.
@@ -1136,7 +1139,7 @@ def estilos_propios(html, marca):
 def cuerpo(html):
     """Devuelve el contenido de <body> sin los guiones del final.
 
-    Se corta en el PRIMER <script>, no en el último: la Tesis lleva dos —el de
+    Se corta en el PRIMER <script>, no en el último: el Plan de Dirección lleva dos —el de
     comportamiento común y el de la comprobación en directo— y cortar por el
     último dejaba el primero duplicado dentro del archivo único.
     """
@@ -1149,7 +1152,7 @@ def cuerpo(html):
 
 # Guiones que cada documento aporta al archivo único. El de comportamiento
 # común (filtro por puesto, tira de secciones, revelado) lo sustituye SCRIPT;
-# el resto —calculadora de la Tesis, hoja de captura, presentación— viaja tal
+# el resto —calculadora del Plan de Dirección, hoja de captura, presentación— viaja tal
 # cual porque cada uno se ancla ya a su propio contenedor.
 GUIONES = {
     # la portada solo aporta el del índice, y ahí es donde más falta hace: sin
@@ -1219,7 +1222,7 @@ SIN_INDICE = {
 
 # ---------------------------------------------------------------------------
 # El índice completo, buscable. La tira de secciones se corta por la derecha —la
-# Tesis tiene treinta y cinco entradas y en pantalla caben doce—, así que ir a un
+# Plan de Dirección tiene treinta y cinco entradas y en pantalla caben doce—, así que ir a un
 # apartado concreto obligaba a rascar horizontalmente hasta encontrarlo. Esto lo
 # sustituye por lo que uno espera: escribir dos letras y llegar.
 # ---------------------------------------------------------------------------
@@ -1328,9 +1331,9 @@ def unificado(estilo_fuentes):
 
     # la hoja de estilos del manual es un superconjunto de la de las otras páginas
     estilos = "\n".join(re.findall(r"<style>.*?</style>", fuentes["manual.html"], re.S))
-    # la capa editorial de la tesis no existe en el manual: se añade aparte
+    # la capa editorial de la apuesta no existe en el manual: se añade aparte
     capa = re.search(r"(/\* =+\n   CAPA EDITORIAL.*?)</style>", fuentes["memoria.html"], re.S)
-    assert capa, "no se encuentra la capa editorial de la tesis"
+    assert capa, "no se encuentra la capa editorial de la apuesta"
     estilos += "\n<style>\n" + capa.group(1) + "</style>"
 
     # La portada trae los suyos —la rejilla de fichas y el índice general— y no
@@ -1419,7 +1422,7 @@ def unificado(estilo_fuentes):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Documentación completa del Centro de Excelencia Implantológica Giraldo: Tesis de Dirección, Manual Maestro de Operaciones, Protocolo de Experiencia Clínica de la Primera Visita y Otros documentos del sistema, en un solo archivo.">
+<meta name="description" content="Documentación completa del Centro de Excelencia Implantológica Giraldo: Plan de Dirección, Manual Maestro de Operaciones, Protocolo de Experiencia Clínica de la Primera Visita y Otros documentos del sistema, en un solo archivo.">
 <title>Documentación Giraldo</title>
 {fuentes}
 {estilos}

@@ -213,8 +213,8 @@ IND = [
 
 ENTRADAS = [
  ("costes", "Costes fijos mensuales", "€", "Nóminas, alquiler, suministros, seguros, cuotas y amortizaciones. Día 15.", ""),
- ("margen", "Margen de contribución", "%", "Supuesto de trabajo del §18 mientras no haya escandallo propio.", "40"),
- ("ticket", "Ticket medio del caso aceptado", "€", "Supuesto de trabajo del §18. Se sustituye por el real.", "1800"),
+ ("margen", "Margen de contribución", "%", "Supuesto de trabajo del apartado 18 mientras no haya escandallo propio.", "40"),
+ ("ticket", "Ticket medio del caso aceptado", "€", "Supuesto de trabajo del apartado 18. Se sustituye por el real.", "1800"),
  ("conversion", "Tasa de conversión", "%", "Enlaza con el indicador 6 en cuanto haya tres meses de serie.", "45"),
  ("dias", "Días laborables al mes", "d", "Parámetro de capacidad.", "21"),
  ("tesoreria", "Tesorería disponible", "€", "Saldo libre de compromisos a fecha de corte. Día 21.", ""),
@@ -299,7 +299,7 @@ CUERPO = ("""
         <span class="brand__mark">Captura de la <b>línea base</b></span>
         <span class="brand__tag">2026 · v@VERSION@</span>
       </a>
-      <a class="crosslink" href="../memoria.html">Tesis de Dirección</a>
+      <a class="crosslink" href="../memoria.html">Plan de Dirección</a>
       <a class="crosslink" href="../manual.html">Manual Maestro</a>
       <a class="crosslink" href="../index.html">Protocolo</a>
     </div>
@@ -321,10 +321,10 @@ CUERPO = ("""
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Instrumento del §7 y del §13 · Uso interno</p>
+        <p class="eyebrow">Instrumento del 07 y del 13 · Uso interno</p>
         <h1>Captura de la<br><em>línea base</em></h1>
-        <p class="hero__lede">La Tesis declara que el centro no tiene todavía sus cinco números ni serie propia en ninguno de los diez indicadores. Esta hoja es lo que hace que dejen de faltar.</p>
-        <p class="hero__note">Se rellena en el navegador y se guarda en este mismo equipo, sin enviar nada a ningún sitio. Un indicador sin dato aparece como <strong>SIN DATO</strong> y cuenta como rojo: es la regla de reporte del §13. Los resultados de los cinco números dicen <strong>pendiente</strong> mientras falte una entrada, en lugar de dar una cifra inventada.</p>
+        <p class="hero__lede">El Plan de Dirección declara que el centro no tiene todavía sus cinco números ni serie propia en ninguno de los diez indicadores. Esta hoja es lo que hace que dejen de faltar.</p>
+        <p class="hero__note">Se rellena en el navegador y se guarda en este mismo equipo, sin enviar nada a ningún sitio. Un indicador sin dato aparece como <strong>SIN DATO</strong> y cuenta como rojo: es la regla de reporte del apartado 13. Los resultados de los cinco números dicen <strong>pendiente</strong> mientras falte una entrada, en lugar de dar una cifra inventada.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Indicadores</dt><dd>10<small>Con definición operativa acordada</small></dd></div>
@@ -435,13 +435,13 @@ CUERPO = ("""
     <div class="entradas">
         @@ENTRADAS@@
         <div style="background:var(--surface)"><label>Naturaleza de lo precargado</label>
-          <small style="margin-top:0">Margen, ticket, conversión y días vienen con los supuestos de trabajo del §18, que <strong>no son mediciones del centro</strong>. Sustitúyanse por los reales en cuanto existan; las otras tres casillas nacen vacías porque solo pueden salir de la contabilidad.</small></div>
+          <small style="margin-top:0">Margen, ticket, conversión y días vienen con los supuestos de trabajo del apartado 18, que <strong>no son mediciones del centro</strong>. Sustitúyanse por los reales en cuanto existan; las otras tres casillas nacen vacías porque solo pueden salir de la contabilidad.</small></div>
     </div>
     <div class="cinco">
       <div class="cinco__caja"><i>1 · Costes fijos mensuales</i><b data-cinco="costes">pendiente</b><p>El primero de los cinco. Sin él no hay ninguno de los demás.</p></div>
       <div class="cinco__caja"><i>2 · Punto de equilibrio mensual</i><b data-cinco="equilibrio">pendiente</b><p>Facturación mensual necesaria para cubrir los costes fijos, dado el margen de contribución.</p></div>
       <div class="cinco__caja"><i>3 · Primeras visitas al día</i><b data-cinco="pvdia">pendiente</b><p>Cuántas hacen falta para llegar al equilibrio con la conversión y el ticket actuales.</p></div>
-      <div class="cinco__caja"><i>4 · Producto pendiente heredado</i><b data-cinco="pendiente">pendiente</b><p>Caja ya cobrada que hay que convertir en producción. Es la palanca 1 del §14.</p></div>
+      <div class="cinco__caja"><i>4 · Producto pendiente heredado</i><b data-cinco="pendiente">pendiente</b><p>Caja ya cobrada que hay que convertir en producción. Es la palanca 1 del apartado 14.</p></div>
       <div class="cinco__caja"><i>5 · Meses de colchón</i><b data-cinco="colchon">pendiente</b><p>Cuánto aguanta el centro sin ingresar nada. Por debajo de tres, es riesgo de Junta.</p></div>
     </div>
     <div class="rulebox" style="max-width:none">
@@ -461,8 +461,8 @@ CUERPO = ("""
         <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Captura de la línea base · Ejercicio 2026</p>
         <p style="margin-top:.8rem">Documento de uso interno. Los datos se guardan únicamente en este equipo.</p>
       </div>
-      <div><p class="eyebrow">Instrumento de</p><p>§7 · Línea base<br>§13 · Cuadro de mando</p></div>
-      <div><p class="eyebrow">Documentos de referencia</p><p>Tesis de Dirección v@VERSION@<br>Manual Maestro v@VERSION@<br>Protocolo de Primera Visita v@VERSION@</p></div>
+      <div><p class="eyebrow">Instrumento de</p><p>apartado 7 · Línea base<br>apartado 13 · Cuadro de mando</p></div>
+      <div><p class="eyebrow">Documentos de referencia</p><p>Plan de Dirección v@VERSION@<br>Manual Maestro v@VERSION@<br>Protocolo de Primera Visita v@VERSION@</p></div>
     </div>
   </div>
 </footer>

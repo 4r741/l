@@ -5,7 +5,7 @@
     python3 modelo-campanas.py            # tabla en pantalla
     python3 modelo-campanas.py --json     # datos para figuras y documento
 
-Ninguna cifra de la Parte VI de la Tesis se escribe a mano: todas salen de
+Ninguna cifra de la Parte VI del Plan de Dirección se escribe a mano: todas salen de
 aquí. Cada campaña declara su universo, la parte de la agenda que ocupa, su
 tasa de conversión y su ticket, y de ahí se deriva lo que aporta. Si un
 supuesto cambia, se cambia en este archivo y el documento se regenera.
@@ -22,12 +22,12 @@ PV_DIA, DIAS, MESES = 4, 21, 12
 PV_ANO = PV_DIA * DIAS * MESES                 # 1.008 primeras visitas al año
 
 # ---------------------------------------------------------------- línea base
-CONVERSION_BASE = 0.45                          # §18, supuesto de trabajo
-TICKET_BASE = 1800                              # §18, supuesto de trabajo
+CONVERSION_BASE = 0.45                          # apartado 18, supuesto de trabajo
+TICKET_BASE = 1800                              # apartado 18, supuesto de trabajo
 VALOR_BASE = CONVERSION_BASE * TICKET_BASE      # 810 € por primera visita
-MARGEN = 0.40                                   # margen de contribución, §18
+MARGEN = 0.40                                   # margen de contribución, apartado 18
 
-FACTURACION_HEREDADA = 720_000                  # punto de partida, §7
+FACTURACION_HEREDADA = 720_000                  # punto de partida, apartado 7
 PV_HEREDADAS = FACTURACION_HEREDADA / VALOR_BASE
 
 # ---------------------------------------------------------------- campañas

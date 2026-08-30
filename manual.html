@@ -148,7 +148,7 @@ a{color:inherit}
 }
 
 /* ---------------------------------------------------------------------------
-   Volver arriba. Estos documentos son largos —la Tesis pasa de las sesenta
+   Volver arriba. Estos documentos son largos —el Plan de Dirección pasa de las sesenta
    pantallas— y hasta ahora la única manera de regresar al principio era
    arrastrar hacia arriba durante un rato o usar una tecla que en un teléfono no
    existe. Aparece cuando ya se ha bajado de verdad y no antes, y no sale en
@@ -270,6 +270,25 @@ main:focus{outline:none}
 /* Un párrafo que cuelga directamente del contenedor no tiene quien lo acote:
    ocupa los 1.180 px de la caja y sale a doscientos caracteres por renglón. */
 .wrap>p,.wrap>ul>li,.wrap>ol>li{max-width:74ch}
+
+/* ---------------------------------------------------------------------------
+   El número del apartado. Antes iba dentro del rótulo, en la misma letra
+   pequeña que su nombre: «§3 · Mapa competitivo», todo del mismo tamaño y con
+   un signo que hoy no dice nada a nadie. Ahora es un número grande delante del
+   titular, que es como se numera un apartado en un documento que quiere leerse
+   y no descifrarse. Sigue pudiéndose citar: «apartado 3».
+   --------------------------------------------------------------------------- */
+.section__head .eyebrow{
+  display:flex;align-items:baseline;gap:.75rem;
+  font-size:.82rem;font-weight:600;color:var(--muted);
+}
+.section__head .eyebrow .num{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(1.9rem,1.4rem + 1.5vw,2.6rem);line-height:.85;
+  letter-spacing:-.03em;color:var(--accent);
+  font-variation-settings:"opsz" 144;
+}
+@media print{.section__head .eyebrow .num{color:#0A5C56}}
 
 .topbar{
   position:sticky;top:0;z-index:60;
