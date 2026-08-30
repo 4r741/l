@@ -124,7 +124,7 @@ a{color:inherit}
    parece una tira rota, y el lector no la arrastra porque no sabe que puede.
    El desvanecido aparece solo del lado por el que queda contenido.
    --------------------------------------------------------------------------- */
-.strip,.strip--nota{
+.strip--nota{
   --vel-izq:0px;--vel-der:0px;
   -webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--vel-izq),
                      #000 calc(100% - var(--vel-der)),transparent 100%);
@@ -132,9 +132,9 @@ a{color:inherit}
              #000 calc(100% - var(--vel-der)),transparent 100%);
   scroll-behavior:smooth;
 }
-.strip.hay-izq,.strip--nota.hay-izq{--vel-izq:38px}
-.strip.hay-der,.strip--nota.hay-der{--vel-der:38px}
-@media(prefers-reduced-motion:reduce){.strip,.strip--nota{scroll-behavior:auto}}
+.strip--nota.hay-izq{--vel-izq:38px}
+.strip--nota.hay-der{--vel-der:38px}
+@media(prefers-reduced-motion:reduce){.strip--nota{scroll-behavior:auto}}
 
 /* Las tablas anchas lo dicen solas, sin guion: los dos primeros degradados van
    con el contenido y tapan la sombra al llegar al borde; los dos últimos se
@@ -195,9 +195,9 @@ a{color:inherit}
 main:focus{outline:none}
 @media print{.saltar{display:none}}
 
-/* Una tira que se desplaza no puede dejar el foco debajo del desvanecido: el
-   apartado al que se acaba de llegar con el tabulador tiene que verse entero. */
-.strip a,.cabecera__docs button{scroll-margin-inline:44px}
+/* Una fila que se desplaza no puede dejar el foco debajo del desvanecido: el
+   destino al que se acaba de llegar con el tabulador tiene que verse entero. */
+.cabecera__docs button{scroll-margin-inline:44px}
 
 /* Una tabla más ancha que su caja solo se podía desplazar con ratón o con el
    dedo. Con el tabulador se llega a ella y con las flechas se recorre, que es
@@ -304,21 +304,131 @@ main:focus{outline:none}
 .brand__mark b{font-weight:600}
 .brand__tag{font-size:.78rem;font-weight:500;letter-spacing:.005em;color:var(--muted)}
 
-/* tira de fases */
+/* ---------------------------------------------------------------------------
+   EL MENÚ DE SECCIONES
+
+   Antes era una fila de apartados que se desplazaba a lo ancho. Con treinta y
+   cuatro apartados y mil doscientos píxeles de barra, dos tercios del
+   documento quedaban fuera de la pantalla, y la única manera de llegar a ellos
+   era arrastrar una fila que no parecía arrastrable —ni rueda de ratón, que en
+   horizontal no mueve nada, ni barra visible, que estaba oculta a propósito.
+
+   Ahora es un botón y un panel. El panel enseña el documento entero de una
+   vez, en columnas y por partes, y si algún día no cupiera se desplazaría
+   hacia abajo, que es la dirección en la que todo el mundo sabe desplazarse.
+
+   Está hecho con <details>: se abre y se cierra sin una línea de guion, lleva
+   teclado de fábrica y nace cerrado en el propio marcado. En un visor que no
+   ejecuta guiones —el de archivos de un teléfono— sigue funcionando entero.
+   --------------------------------------------------------------------------- */
 .strip{
-  display:flex;gap:2px;overflow-x:auto;padding:0 0 .65rem;scrollbar-width:none;
+  display:flex;align-items:center;gap:.7rem;
+  padding:0 0 .55rem;position:relative;min-width:0;
 }
-.strip::-webkit-scrollbar{display:none}
-.strip a{
-  flex:0 0 auto;text-decoration:none;
-  font-family:var(--f-mono);font-size:.7rem;
-  color:var(--muted);border-top:2px solid var(--line);
-  padding:.42rem .62rem 0;white-space:nowrap;
-  transition:color .18s ease,border-color .18s ease;
+.menu{position:static}
+.menu__b{
+  display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--ink-2);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;
+  padding:.34rem .8rem .34rem .62rem;white-space:nowrap;
+  transition:border-color .16s ease,color .16s ease,background .16s ease;
+  list-style:none;
 }
-.strip a:hover{color:var(--ink);border-color:var(--ink-2)}
-.strip a[aria-current="true"]{color:var(--accent-ink);border-color:var(--accent);font-weight:500}
-.strip a.is-off{opacity:.3}
+.menu__b::-webkit-details-marker{display:none}
+.menu__b::marker{content:""}
+.menu__b:hover{border-color:var(--ink-2);color:var(--ink)}
+.menu__b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.menu[open] .menu__b{
+  background:var(--accent);border-color:var(--accent);color:#fff;
+}
+
+/* Tres barras dibujadas con degradados: sin imagen, sin tipografía de iconos y
+   sin un carácter que cada sistema pinta a su manera. */
+.menu__rejilla{
+  width:14px;height:10px;flex:0 0 auto;
+  background:linear-gradient(currentColor,currentColor) 0 0/100% 2px no-repeat,
+             linear-gradient(currentColor,currentColor) 0 4px/100% 2px no-repeat,
+             linear-gradient(currentColor,currentColor) 0 8px/100% 2px no-repeat;
+}
+.menu__b__n{
+  font-size:.66rem;color:var(--muted);border-left:1px solid var(--line);
+  padding-left:.5rem;
+}
+.menu[open] .menu__b__n{color:rgba(255,255,255,.7);border-left-color:rgba(255,255,255,.3)}
+
+/* Dónde estás. Se rellena solo al desplazar; sin guion dice el documento. */
+.menu__aqui{
+  font-family:var(--f-mono);font-size:.72rem;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+  margin:0;
+}
+.menu__aqui b{color:var(--accent-ink);font-weight:600;margin-right:.4rem}
+
+/* Los pasos atrás y adelante los pone el guion: sin él no serían nada. */
+.menu__paso{
+  margin-left:auto;display:none;gap:2px;flex:0 0 auto;
+}
+.js .menu__paso{display:flex}
+.menu__paso button{
+  font:inherit;font-family:var(--f-mono);font-size:.8rem;line-height:1;
+  width:26px;height:26px;display:grid;place-items:center;cursor:pointer;
+  background:var(--surface);border:1px solid var(--line);color:var(--ink-2);
+  border-radius:6px;transition:border-color .16s ease,color .16s ease;
+}
+.menu__paso button:hover:not(:disabled){border-color:var(--ink-2);color:var(--ink)}
+.menu__paso button:disabled{opacity:.35;cursor:default}
+
+/* El protocolo y «otros documentos» vienen de una paleta anterior y no tienen
+   ni radio ni sombra declarados: sin respaldo, el panel salía como una caja
+   plana casi del color del papel y no parecía estar por encima de nada. */
+.menu__panel{
+  position:absolute;left:0;right:0;top:calc(100% - .1rem);z-index:60;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radio,10px);
+  box-shadow:var(--sombra-2,0 1px 2px rgba(20,31,29,.05),0 12px 30px -14px rgba(20,31,29,.34));
+  padding:1.15rem 1.25rem 1.35rem;
+  max-height:min(72vh,600px);overflow-y:auto;overscroll-behavior:contain;
+}
+.menu__cols{
+  display:grid;gap:1.25rem 2rem;
+  grid-template-columns:repeat(auto-fill,minmax(215px,1fr));
+  align-items:start;
+}
+.menu__g{break-inside:avoid;min-width:0}
+.menu__gt{
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);
+  margin:0 0 .45rem;padding-bottom:.3rem;border-bottom:1px solid var(--line);
+}
+.menu__gt a{color:inherit;text-decoration:none}
+.menu__gt a:hover{color:var(--accent-ink)}
+.menu__g a:not(.menu__gt a){
+  display:grid;grid-template-columns:2.1rem minmax(0,1fr);align-items:baseline;
+  text-decoration:none;color:var(--ink-2);font-size:.88rem;line-height:1.32;
+  padding:.28rem .4rem .28rem .1rem;border-radius:6px;
+  transition:background .13s ease,color .13s ease;
+}
+.menu__g a:not(.menu__gt a):hover{background:var(--accent-soft);color:var(--accent-ink)}
+.menu__g a b{
+  font-family:var(--f-mono);font-size:.7rem;font-weight:500;color:var(--muted);
+}
+.menu__g a:hover b{color:var(--accent)}
+.menu__g a[aria-current="true"]{background:var(--accent-soft);color:var(--accent-ink);font-weight:500}
+.menu__g a[aria-current="true"] b{color:var(--accent)}
+.menu__g a.is-off{opacity:.35}
+
+/* La salida hacia los demás documentos: dentro del panel, separada de los
+   apartados y con su propio tono, para que no se confunda con el índice. */
+.menu__g--docs{
+  grid-column:1/-1;border-top:1px solid var(--line);padding-top:.9rem;margin-top:.2rem;
+}
+.menu__g--docs>a:not(.menu__gt a){display:inline-grid;margin-right:.4rem}
+.menu__g--docs .menu__gt{border-bottom:0;padding-bottom:0;margin-bottom:.3rem}
+.menu__g--docs a b{display:none}
+.menu__g--docs a:not(.menu__gt a){grid-template-columns:minmax(0,1fr)}
+
+@media print{.strip{display:none}}
 
 /* ============================================================
    PORTADA
@@ -503,7 +613,14 @@ td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:n
   .brand__tag{display:none}
   .brand__mark{font-size:.98rem}
   .topbar__in{padding:.55rem 0}
-  .strip a{font-size:.68rem;padding:.38rem .5rem 0}
+  /* Cuatro pastillas de documento no caben en una línea de 390 px: se
+     apilaban en cuatro filas y la barra medía 430 px antes del primer
+     renglón de texto. Abajo, en el panel, caben en cuatro renglones. */
+  .topbar__in .crosslink{display:none}
+  .menu__b__n,.menu__aqui{display:none}
+  .menu__panel{padding:.9rem .9rem 1.1rem;max-height:min(76vh,520px)}
+  .menu__cols{grid-template-columns:1fr;gap:1rem}
+  .menu__g a:not(.menu__gt a){padding:.42rem .4rem .42rem .1rem}
 }
 footer.foot{border-top:1px solid var(--line);padding:3rem 0 4rem;color:var(--muted);font-size:.85rem}
 footer.foot strong{color:var(--ink)}
@@ -1116,38 +1233,18 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
       <a class="crosslink" href="manual.html">Manual Maestro</a>
       <a class="crosslink" href="otros.html">Otros documentos</a>
     </div>
-    <nav class="strip" id="strip" aria-label="Índice del plan">
-      <a href="#portada">Portada</a>
-      <a href="#control">apartado 0 Control</a>
-      <a href="#parte-1">I · Doctrina</a>
-      <a href="#doctrina">apartado 1 Por qué</a>
-      <a href="#regla">apartado 2 La regla</a>
-      <a href="#nunca">apartado 3 Las ocho que no</a>
-      <a href="#legal">apartado 4 Marco legal</a>
-      <a href="#parte-2">II · El paciente</a>
-      <a href="#estados">apartado 5 Doce estados</a>
-      <a href="#arquetipos">apartado 6 Seis de la ría</a>
-      <a href="#momentos">apartado 7 Momentos de verdad</a>
-      <a href="#asimetria">apartado 8 La asimetría</a>
-      <a href="#parte-3">III · El catálogo</a>
-      <a href="#catalogo">apartado 9 Las 76 acciones</a>
-      <a href="#parte-4">IV · Las diez piezas</a>
-      <a href="#piezas">apartado 10 Las diez piezas</a>
-      <a href="#parte-5">V · El territorio</a>
-      <a href="#digital">apartado 11 Digital</a>
-      <a href="#ria">apartado 12 El mapa de la ría</a>
-      <a href="#mar">apartado 13 Campaña de Mar</a>
-      <a href="#parte-6">VI · La prioridad</a>
-      <a href="#economia">apartado 14 Qué aporta cada grupo</a>
-      <a href="#prioridad">apartado 15 Qué va primero</a>
-      <a href="#presupuesto">apartado 16 Presupuesto</a>
-      <a href="#parte-7">VII · El gobierno</a>
-      <a href="#indicadores">apartado 17 Las ocho medidas</a>
-      <a href="#calendario">apartado 18 Calendario</a>
-      <a href="#parada">apartado 19 Reglas de parada</a>
-      <a href="#anexo-legal">Anexo I · Legal</a>
-      <a href="#anexo-cartera">Anexo II · Cartera</a>
-      <a href="#anexo-trimestre">Anexo III · Este trimestre</a>
+    <nav class="strip" id="strip" aria-label="Secciones del Plan de Marketing">
+      <details class="menu">
+        <summary class="menu__b">
+          <span class="menu__rejilla" aria-hidden="true"></span>
+          <span class="menu__b__txt">Índice</span>
+          <span class="menu__b__n">31</span>
+        </summary>
+        <div class="menu__panel">
+          <div class="menu__cols"><div class="menu__g"><p class="menu__gt"><span>Apertura</span></p><a href="#portada"><b></b><span>Portada</span></a><a href="#control"><b>00</b><span>Ficha de control</span></a></div><div class="menu__g"><p class="menu__gt"><a href="#parte-1">Parte I · La doctrina</a></p><a href="#doctrina"><b>01</b><span>Por qué</span></a><a href="#regla"><b>02</b><span>La regla</span></a><a href="#nunca"><b>03</b><span>Las ocho que no haremos</span></a><a href="#legal"><b>04</b><span>Marco legal</span></a></div><div class="menu__g"><p class="menu__gt"><a href="#parte-2">Parte II · El paciente</a></p><a href="#estados"><b>05</b><span>Doce estados</span></a><a href="#arquetipos"><b>06</b><span>Seis de la ría</span></a><a href="#momentos"><b>07</b><span>Momentos de verdad</span></a><a href="#asimetria"><b>08</b><span>La asimetría</span></a></div><div class="menu__g"><p class="menu__gt"><a href="#parte-3">Parte III · El catálogo</a></p><a href="#catalogo"><b>09</b><span>Las 76 acciones</span></a></div><div class="menu__g"><p class="menu__gt"><a href="#parte-4">Parte IV · Las diez piezas</a></p><a href="#piezas"><b>10</b><span>Las diez piezas</span></a></div><div class="menu__g"><p class="menu__gt"><a href="#parte-5">Parte V · El territorio</a></p><a href="#digital"><b>11</b><span>Digital</span></a><a href="#ria"><b>12</b><span>El mapa de la ría</span></a><a href="#mar"><b>13</b><span>Campaña de Mar</span></a></div><div class="menu__g"><p class="menu__gt"><a href="#parte-6">Parte VI · La prioridad</a></p><a href="#economia"><b>14</b><span>Qué aporta cada grupo</span></a><a href="#prioridad"><b>15</b><span>Qué va primero</span></a><a href="#presupuesto"><b>16</b><span>Presupuesto</span></a></div><div class="menu__g"><p class="menu__gt"><a href="#parte-7">Parte VII · El gobierno</a></p><a href="#indicadores"><b>17</b><span>Las ocho medidas</span></a><a href="#calendario"><b>18</b><span>Calendario</span></a><a href="#parada"><b>19</b><span>Reglas de parada</span></a></div><div class="menu__g"><p class="menu__gt"><span>Anexos</span></p><a href="#anexo-legal"><b>A</b><span>Semáforo legal por acción</span></a><a href="#anexo-cartera"><b>B</b><span>Correspondencia con la cartera</span></a><a href="#anexo-trimestre"><b>C</b><span>Activo este trimestre</span></a></div><div class="menu__g menu__g--docs"><p class="menu__gt"><span>El sistema documental</span></p><a href="inicio.html"><b></b><span>Portada del sistema</span></a><a href="memoria.html"><b></b><span>Plan de Dirección</span></a><a href="deck.html"><b></b><span>Presentación de Junta</span></a><a href="manual.html"><b></b><span>Manual Maestro</span></a><a href="index.html"><b></b><span>Protocolo de Primera Visita</span></a><a href="otros.html"><b></b><span>Otros documentos</span></a><a href="instrumentos/captura.html"><b></b><span>Línea base</span></a></div></div>
+        </div>
+      </details>
+      <p class="menu__aqui" data-aqui>Plan Maestro de Marketing</p>
     </nav>
   </div>
 </header>
@@ -1331,7 +1428,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
     <div class="rulebox" style="max-width:none">
       <p class="eyebrow">Cómo se traduce a semáforo</p>
       <p><span class="sem sem--verde">Verde</span> · no toca el régimen de publicidad sanitaria. Se ejecuta y punto: <strong>36 de las 76 acciones</strong> están aquí, y entre ellas están las que más aportan. <span class="sem sem--amarillo">Amarillo</span> · el texto se revisa antes de publicar, porque una frase de más lo convierte en promesa de resultado. Revisión de veinte minutos, no de veinte días. <span class="sem sem--naranja">Naranja</span> · exige consentimiento expreso del paciente, criterio jurídico, o ambos. Once acciones.</p>
-      <p>El reparto completo está en el <a href="#anexo-legal">Anexo I</a>, y la regla de gobierno cabe en una línea: <strong>una acción naranja se activa cuando conste por escrito quién la revisó y cuándo.</strong> No antes, y no más tarde de lo que tarde esa firma.</p>
+      <p>El reparto completo está en el <a href="#anexo-legal">Anexo A</a>, y la regla de gobierno cabe en una línea: <strong>una acción naranja se activa cuando conste por escrito quién la revisó y cuándo.</strong> No antes, y no más tarde de lo que tarde esa firma.</p>
     </div>
   </div>
 </section>
@@ -2048,7 +2145,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <section class="section" id="anexo-legal">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">Anexo I</p>
+      <p class="eyebrow">Anexo A</p>
       <h2 id="k-semaforo-legal-accion">Semáforo legal por acción</h2>
     </div>
 
@@ -2069,7 +2166,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <section class="section" id="anexo-cartera">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">Anexo II</p>
+      <p class="eyebrow">Anexo B</p>
       <h2 id="k-correspondencia-cartera-campanas">Correspondencia con la cartera de campañas</h2>
     </div>
 
@@ -2087,7 +2184,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <section class="section" id="anexo-trimestre">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">Anexo III</p>
+      <p class="eyebrow">Anexo C</p>
       <h2 id="k-activa-este-trimestre">Lo que se activa este trimestre</h2>
     </div>
 
@@ -2157,7 +2254,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   /* ---- por dónde sigue una tira que se desplaza ---- */
   (function(){
     if(window.__TIRAS__) return; window.__TIRAS__ = 1;
-    var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));
+    var tiras = [].slice.call(document.querySelectorAll(".strip--nota,.cabecera__docs"));
     if(!tiras.length) return;
     function estado(t){
       var mas = t.scrollWidth - t.clientWidth;
@@ -2263,12 +2360,19 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 
     function construye(raiz, tira){
       var enlaces = [].slice.call(tira.querySelectorAll("a[href^='#']"));
+      /* En el menú el número y el rótulo son dos cajas: pegados sin espacio
+         darían «02La apuesta». */
+      function rotulo(a){
+        var n = a.querySelector("b"), r = a.querySelector("span");
+        if(n && r) return (n.textContent.trim() + " " + r.textContent.trim()).trim();
+        return a.textContent.trim();
+      }
       /* Con pocos apartados el mapa no aporta: la tira ya los enseña todos. */
       if(enlaces.length < 6) return null;
       var destinos = [];
       enlaces.forEach(function(a){
         var d = document.getElementById(a.getAttribute("href").slice(1));
-        if(d) destinos.push({a:a, d:d, r:a.textContent.trim()});
+        if(d) destinos.push({a:a, d:d, r:rotulo(a)});
       });
       if(destinos.length < 6) return null;
 
@@ -2402,7 +2506,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   })();
 
   var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
-  var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));
+  var stripLinks = Array.prototype.slice.call(document.querySelectorAll("nav.strip .menu__g:not(.menu__g--docs) a"));
 
   /* ---- filtro por puesto ---- */
   var activeRole = null;
@@ -2424,14 +2528,79 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
   var clear = document.getElementById("clearfilter");
   if(clear) clear.addEventListener("click", function(){ activeRole = null; applyFilter(); });
 
-  /* ---- sección activa en la tira superior ---- */
-  var strip = document.getElementById("strip");
+  /* ---- el menú de secciones ----------------------------------------------
+     El panel se abre y se cierra solo con <details>; el guion añade lo que el
+     marcado no puede dar: cerrarlo al elegir, cerrarlo al pinchar fuera o con
+     Escape, decir en qué apartado estás y ofrecer el anterior y el siguiente.
+     Todo va colgado del <nav>, no de un identificador, porque en el archivo
+     único los identificadores se renombran para que no choquen. */
   var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function centrarEnTira(a){
-    var destino = a.offsetLeft - strip.clientWidth / 2 + a.offsetWidth / 2;
-    destino = Math.max(0, Math.min(destino, strip.scrollWidth - strip.clientWidth));
-    if(Math.abs(destino - strip.scrollLeft) < 24) return;
-    strip.scrollTo({left: destino, behavior: quieto ? "auto" : "smooth"});
+  var menus = [];
+  Array.prototype.slice.call(document.querySelectorAll("nav.strip")).forEach(function(nav){
+    var det = nav.querySelector("details.menu");
+    /* En el archivo único conviven varias copias de este guion —una por
+       documento— y todas ven todos los menús. El primero que llega se queda
+       con el menú; los demás lo dejan en paz y no le cuelgan otro juego de
+       flechas encima. */
+    if(!det || nav.__menu) return;
+    nav.__menu = 1;
+    var boton = det.querySelector("summary");
+    var enlaces = Array.prototype.slice.call(nav.querySelectorAll(".menu__g:not(.menu__g--docs) a"));
+    var aqui = nav.querySelector("[data-aqui]");
+
+    var pasos = document.createElement("div");
+    pasos.className = "menu__paso";
+    pasos.innerHTML = '<button type="button" data-ir="-1" aria-label="Apartado anterior">&#8593;</button>' +
+                      '<button type="button" data-ir="1" aria-label="Apartado siguiente">&#8595;</button>';
+    nav.appendChild(pasos);
+
+    var m = {nav:nav, det:det, boton:boton, enlaces:enlaces, aqui:aqui,
+             pasos:pasos.querySelectorAll("button"), i:-1};
+    menus.push(m);
+
+    nav.addEventListener("click", function(e){
+      var a = e.target.closest ? e.target.closest(".menu__g a") : null;
+      if(a) det.open = false;
+      var b = e.target.closest ? e.target.closest(".menu__paso button") : null;
+      if(b){
+        var j = m.i + (+b.dataset.ir);
+        if(j >= 0 && j < enlaces.length) enlaces[j].click();
+      }
+    });
+    det.addEventListener("toggle", function(){
+      if(det.open) menus.forEach(function(o){ if(o !== m) o.det.open = false; });
+    });
+  });
+  if(menus.length){
+    document.addEventListener("click", function(e){
+      menus.forEach(function(m){
+        if(m.det.open && !m.nav.contains(e.target)) m.det.open = false;
+      });
+    });
+    document.addEventListener("keydown", function(e){
+      if(e.key !== "Escape") return;
+      menus.forEach(function(m){
+        if(m.det.open){ m.det.open = false; m.boton.focus(); }
+      });
+    });
+  }
+  function situa(a){
+    menus.forEach(function(m){
+      var i = m.enlaces.indexOf(a);
+      if(i < 0) return;
+      m.i = i;
+      if(m.aqui){
+        var n = a.querySelector("b"), r = a.querySelector("span");
+        m.aqui.innerHTML = (n && n.textContent ? "<b>" + n.textContent + "</b> " : "") +
+                           (r ? r.textContent : a.textContent);
+      }
+      m.pasos[0].disabled = i <= 0;
+      m.pasos[1].disabled = i >= m.enlaces.length - 1;
+      /* Que el apartado activo se vea al abrir el panel, aunque esté abajo. */
+      if(m.det.open && a.scrollIntoView){
+        a.scrollIntoView({block:"nearest", behavior: quieto ? "auto" : "smooth"});
+      }
+    });
   }
   var targets = Array.prototype.slice.call(document.querySelectorAll("main section[id], main article[id], main div.parthead[id]"));
   if("IntersectionObserver" in window){
@@ -2444,7 +2613,7 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
           a.setAttribute("aria-current", String(on));
           if(on) activo = a;
         });
-        if(activo) centrarEnTira(activo);
+        if(activo) situa(activo);
       });
     }, {rootMargin:"-130px 0px -70% 0px", threshold:0});
     targets.forEach(function(t){ spy.observe(t); });

@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Pone el menú nuevo en los seis documentos y unifica la cuenta.
+
+    python3 build-menu.py
+
+Dos cosas, y las dos vienen del mismo sitio. La primera: el índice de secciones
+deja de ser una fila que se arrastra a lo ancho y pasa a ser un panel que se
+abre. Treinta y cuatro apartados no caben en una línea de mil doscientos
+píxeles, y la fila no lo decía: se cortaba y ya. La segunda: una sola cuenta.
+La memoria numeraba «00, 0.1, 01» mezclando las partes en romano con los
+apartados; el marketing arrastraba un «apartado 3» que se coló al quitar el
+símbolo de sección; otros documentos escribía «1 ·» y el manual, nada. Ahora
+los apartados llevan dos cifras, las partes son encabezados del panel y los
+anexos van con letra.
+
+El guion es idempotente: si se pasa dos veces, la segunda no cambia nada.
+"""
+import pathlib
+import re
+import sys
+
+RAIZ = pathlib.Path(__file__).parent
+sys.path.insert(0, str(RAIZ))
+import menu  # noqa: E402
+
+# Retoques del cuerpo para que el texto diga lo mismo que el menú. Cada uno es
+# una pareja (lo que hay, lo que debe haber) y se exige que aparezca: si un
+# retoque deja de encontrar su objetivo es que el documento cambió debajo y hay
+# que mirarlo, no seguir en silencio.
+CUERPO = {
+    "memoria.html": [
+        # El censo no es un apartado: es la lista de lo que existe. Numerarlo
+        # «0.1» obligaba a inventar una cuenta decimal para una sola línea.
+        ("0.1 · Censo documental", "Censo documental"),
+        ("censados en el apartado 0.1—", "censados en el censo documental—"),
+    ],
+    "marketing.html": [
+        # Los anexos en romano chocaban con las partes en romano: «Anexo III» y
+        # «Parte III» a dos dedos en la misma pantalla. Las letras no chocan.
+        ('<p class="eyebrow">Anexo III</p>', '<p class="eyebrow">Anexo C</p>'),
+        ('<p class="eyebrow">Anexo II</p>', '<p class="eyebrow">Anexo B</p>'),
+        ('<p class="eyebrow">Anexo I</p>', '<p class="eyebrow">Anexo A</p>'),
+        ('<a href="#anexo-legal">Anexo I</a>', '<a href="#anexo-legal">Anexo A</a>'),
+    ],
+}
+
+# «Documento 1» a «Documento 01»: dos cifras como en todos los demás.
+CUERPO["otros.html"] = [("Documento %d<" % n, "Documento %02d<" % n)
+                        for n in range(9, 0, -1)]
+
+
+def retoca(texto, archivo):
+    cambios = 0
+    for viejo, nuevo in CUERPO.get(archivo, []):
+        if nuevo in texto and viejo not in texto:
+            continue  # ya estaba hecho
+        assert viejo in texto, "%s: no aparece %r" % (archivo, viejo)
+        texto = texto.replace(viejo, nuevo)
+        cambios += 1
+    return texto, cambios
+
+
+# --------------------------------------------------------------------------
+#  Los tres documentos escritos a mano llevan copia de la hoja del manual
+# --------------------------------------------------------------------------
+# El protocolo y «otros documentos» no se generan: se escriben. Cada uno lleva
+# su copia de la hoja de estilos y del guion, y por eso se quedaron con la tira
+# antigua cuando el manual ya tenía el panel. Aquí se les trae la parte del
+# menú desde el manual, que es la que manda, en cada construcción.
+COPIAS = ["index.html", "otros.html"]
+
+
+def _region(texto, desde, hasta, incluir=True):
+    """El trozo entre dos marcas, con la de cierre dentro o fuera."""
+    i = texto.index(desde)
+    j = texto.index(hasta, i + len(desde))
+    return texto[i:j + (len(hasta) if incluir else 0)]
+
+
+def _sustituye(texto, reemplazo, marcas, incluir=True):
+    """Cambia el primer trozo que aparezca de una lista de parejas de marcas.
+
+    La lista va de la versión nueva a la vieja: la primera vez que corre, el
+    documento aún tiene el código antiguo; a partir de la segunda tiene ya el
+    del manual, y hay que poder volver a pisarlo cuando el manual cambie.
+    """
+    for desde, hasta in marcas:
+        if desde in texto and hasta in texto[texto.index(desde):]:
+            return texto.replace(_region(texto, desde, hasta, incluir), reemplazo, 1)
+    return texto
+
+
+CSS_MENU = ("/* ---------------------------------------------------------------------------\n"
+            "   EL MENÚ DE SECCIONES", "@media print{.strip{display:none}}")
+CSS_MOVIL = ("  /* Cuatro pastillas de documento",
+             "  .menu__g a:not(.menu__gt a){padding:.42rem .4rem .42rem .1rem}")
+CSS_VELA = (".strip--nota{\n  --vel-izq:0px",
+            "@media(prefers-reduced-motion:reduce){.strip--nota{scroll-behavior:auto}}")
+JS_MENU = ("  /* ---- el menú de secciones ---",
+           '\n  var targets = Array.prototype.slice.call(document.querySelectorAll("main section[id]')
+JS_ROTULO = ("      var enlaces = [].slice.call(tira.querySelectorAll(\"a[href^='#']\"));",
+             "      }")
+
+# Lo que había antes en los documentos escritos a mano, para la primera pasada.
+CSS_MENU_VIEJO = ("/* tira de fases */", ".strip a.is-off{opacity:.3}")
+CSS_MOVIL_VIEJO = ("  .strip a{font-size:.68rem;padding:.38rem .5rem 0}",
+                   "  .strip a{font-size:.68rem;padding:.38rem .5rem 0}")
+CSS_VELA_VIEJO = (".strip,.strip--nota{",
+                  "@media(prefers-reduced-motion:reduce){.strip,.strip--nota{scroll-behavior:auto}}")
+JS_MENU_VIEJO = ("  /* ---- sección activa en la tira superior ---- */", JS_MENU[1])
+
+
+def sincroniza():
+    fuente = (RAIZ / "manual.html").read_text(encoding="utf-8")
+    css_menu = _region(fuente, *CSS_MENU)
+    css_movil = _region(fuente, *CSS_MOVIL)
+    css_vela = _region(fuente, *CSS_VELA)
+    js_menu = _region(fuente, *JS_MENU, incluir=False)
+    js_rotulo = _region(fuente, *JS_ROTULO)
+
+    cambiados = 0
+    for archivo in COPIAS:
+        ruta = RAIZ / archivo
+        texto = antes = ruta.read_text(encoding="utf-8")
+
+        texto = _sustituye(texto, css_menu, [CSS_MENU, CSS_MENU_VIEJO])
+        texto = _sustituye(texto, css_movil, [CSS_MOVIL, CSS_MOVIL_VIEJO])
+        texto = _sustituye(texto, css_vela, [CSS_VELA, CSS_VELA_VIEJO])
+        texto = texto.replace(".strip a,.cabecera__docs button{scroll-margin-inline:44px}",
+                              ".cabecera__docs button{scroll-margin-inline:44px}", 1)
+
+        texto = texto.replace(
+            'var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));',
+            'var tiras = [].slice.call(document.querySelectorAll(".strip--nota,.cabecera__docs"));', 1)
+        texto = _sustituye(texto, js_rotulo, [JS_ROTULO])
+        texto = texto.replace("if(d) destinos.push({a:a, d:d, r:a.textContent.trim()});",
+                              "if(d) destinos.push({a:a, d:d, r:rotulo(a)});", 1)
+        texto = texto.replace(
+            'var stripLinks = Array.prototype.slice.call(document.querySelectorAll("#strip a"));',
+            'var stripLinks = Array.prototype.slice.call('
+            'document.querySelectorAll("nav.strip .menu__g:not(.menu__g--docs) a"));', 1)
+        texto = _sustituye(texto, js_menu, [JS_MENU, JS_MENU_VIEJO], incluir=False)
+        texto = texto.replace("if(activo) centrarEnTira(activo);", "if(activo) situa(activo);", 1)
+
+        if texto != antes:
+            ruta.write_text(texto, encoding="utf-8")
+            cambiados += 1
+        print("  %-28s hoja y guion del menú al día" % archivo)
+    return cambiados
+
+
+def main():
+    total = 0
+    for archivo in menu.MENUS:
+        ruta = RAIZ / archivo
+        texto = ruta.read_text(encoding="utf-8")
+
+        m = re.search(r'( *)<nav class="strip"[^>]*>.*?</nav>', texto, re.S)
+        assert m, "%s: no tiene tira de secciones" % archivo
+        nuevo = menu.dibuja(archivo, m.group(1))
+        texto2 = texto[:m.start()] + m.group(1) + nuevo + texto[m.end():]
+
+        texto2, cambios = retoca(texto2, archivo)
+        if texto2 != texto:
+            ruta.write_text(texto2, encoding="utf-8")
+            total += 1
+        print("  %-28s %2d destinos · %d retoques de texto"
+              % (archivo, menu.cuantas(archivo), cambios))
+    total += sincroniza()
+    print("documentos con menú nuevo: %d" % total)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

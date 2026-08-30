@@ -60,7 +60,7 @@ ROTULOS = [
     ("doc-tesis", "Plan de Dirección"),
     ("doc-deck", "Presentación"),
     ("doc-marketing", "Plan de Marketing"),
-    ("doc-captura", "Captura"),
+    ("doc-captura", "Línea base"),
     ("doc-manual", "Manual Maestro"),
     ("doc-protocolo", "Protocolo"),
     ("doc-otros", "Otros documentos"),
@@ -74,7 +74,7 @@ CORTOS = {
     "doc-tesis": "Dirección",
     "doc-deck": "Presentación",
     "doc-marketing": "Marketing",
-    "doc-captura": "Captura",
+    "doc-captura": "Línea base",
     "doc-manual": "Manual",
     "doc-protocolo": "Protocolo",
     "doc-otros": "Otros",
@@ -187,7 +187,7 @@ SCRIPT = """<script>
   /* ---- por dónde sigue una tira que se desplaza ---- */
   (function(){
     if(window.__TIRAS__) return; window.__TIRAS__ = 1;
-    var tiras = [].slice.call(document.querySelectorAll(".strip,.strip--nota,.cabecera__docs"));
+    var tiras = [].slice.call(document.querySelectorAll(".strip--nota,.cabecera__docs"));
     if(!tiras.length) return;
     function estado(t){
       var mas = t.scrollWidth - t.clientWidth;
@@ -293,12 +293,19 @@ SCRIPT = """<script>
 
     function construye(raiz, tira){
       var enlaces = [].slice.call(tira.querySelectorAll("a[href^='#']"));
+      /* En el menú el número y el rótulo son dos cajas: pegados sin espacio
+         darían «02La apuesta». */
+      function rotulo(a){
+        var n = a.querySelector("b"), r = a.querySelector("span");
+        if(n && r) return (n.textContent.trim() + " " + r.textContent.trim()).trim();
+        return a.textContent.trim();
+      }
       /* Con pocos apartados el mapa no aporta: la tira ya los enseña todos. */
       if(enlaces.length < 6) return null;
       var destinos = [];
       enlaces.forEach(function(a){
         var d = document.getElementById(a.getAttribute("href").slice(1));
-        if(d) destinos.push({a:a, d:d, r:a.textContent.trim()});
+        if(d) destinos.push({a:a, d:d, r:rotulo(a)});
       });
       if(destinos.length < 6) return null;
 
@@ -732,7 +739,7 @@ SCRIPT = """<script>
   docs.forEach(function(doc){
     var fases = Array.prototype.slice.call(doc.querySelectorAll(".phase"));
     var tira = document.querySelector('.cabecera .strip[data-de="' + doc.id + '"]');
-    var enlaces = tira ? Array.prototype.slice.call(tira.querySelectorAll("a")) : [];
+    var enlaces = tira ? Array.prototype.slice.call(tira.querySelectorAll(".menu__g:not(.menu__g--docs) a")) : [];
     var chips = Array.prototype.slice.call(doc.querySelectorAll(".chip[data-role]"));
     var limpiar = doc.querySelector(".legend .chip:not([data-role])");
     var rolActivo = null;
@@ -786,12 +793,48 @@ SCRIPT = """<script>
       });
     }
 
+    /* Dónde estás, dicho en la barra, y los pasos atrás y adelante activos o
+       no según haya apartado antes y después. El panel se cierra al elegir. */
+    var det = tira ? tira.querySelector("details.menu") : null;
+    var aqui = tira ? tira.querySelector("[data-aqui]") : null;
+    var pasos = null;
+    if(tira && det && !tira.__menu){
+      tira.__menu = 1;
+      var caja = document.createElement("div");
+      caja.className = "menu__paso";
+      caja.innerHTML = '<button type="button" data-ir="-1" aria-label="Apartado anterior">&#8593;</button>' +
+                       '<button type="button" data-ir="1" aria-label="Apartado siguiente">&#8595;</button>';
+      tira.appendChild(caja);
+      pasos = caja.querySelectorAll("button");
+      var iAhora = -1;
+      tira.addEventListener("click", function(e){
+        if(e.target.closest && e.target.closest(".menu__g a")) det.open = false;
+        var b = e.target.closest && e.target.closest(".menu__paso button");
+        if(b){
+          var j = iAhora + (+b.dataset.ir);
+          if(j >= 0 && j < enlaces.length) enlaces[j].click();
+        }
+      });
+      document.addEventListener("click", function(e){
+        if(det.open && !tira.contains(e.target)) det.open = false;
+      });
+      document.addEventListener("keydown", function(e){
+        if(e.key === "Escape" && det.open){ det.open = false; det.querySelector("summary").focus(); }
+      });
+      tira.__pon = function(i, a){
+        iAhora = i;
+        if(aqui){
+          var n = a.querySelector("b"), r = a.querySelector("span");
+          aqui.innerHTML = (n && n.textContent ? "<b>" + n.textContent + "</b> " : "") +
+                           (r ? r.textContent : a.textContent);
+        }
+        pasos[0].disabled = i <= 0;
+        pasos[1].disabled = i >= enlaces.length - 1;
+        if(det.open && a.scrollIntoView) a.scrollIntoView({block:"nearest", behavior: quieto ? "auto" : "smooth"});
+      };
+    }
     function centrarEnTira(a){
-      if(!tira) return;
-      var destino = a.offsetLeft - tira.clientWidth / 2 + a.offsetWidth / 2;
-      destino = Math.max(0, Math.min(destino, tira.scrollWidth - tira.clientWidth));
-      if(Math.abs(destino - tira.scrollLeft) < 24) return;
-      tira.scrollTo({left: destino, behavior: quieto ? "auto" : "smooth"});
+      if(tira && tira.__pon) tira.__pon(enlaces.indexOf(a), a);
     }
 
     var objetivos = Array.prototype.slice.call(doc.querySelectorAll("main section[id], main article[id], main div.parthead[id]"));
@@ -887,9 +930,14 @@ html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
 }
 /* Altura fija: si la fila cambia de alto al conmutar, el texto pega un salto y
    se nota la costura. Todos los índices ocupan lo mismo, tengan lo que tengan. */
-.cabecera__indice .cabecera__in{display:block;height:44px}
+.cabecera__indice .cabecera__in{display:block;height:44px;overflow:visible}
 .cabecera__indice .strip{height:44px;align-items:center;padding:0}
-.cabecera__indice .strip a{padding:.3rem .58rem 0;border-top-width:2px}
+/* El panel se sale de una fila de 44 px: tiene que poder. */
+.cabecera__indice,.cabecera{overflow:visible}
+/* El panel lleva la salida hacia los demás documentos porque en los archivos
+   sueltos no hay otra. Aquí sí la hay, arriba y siempre visible: repetirla
+   dentro del panel solo sería una lista de más. */
+.cabecera .menu__g--docs{display:none}
 .strip--nota{
   display:flex;gap:.4rem 1.6rem;flex-wrap:nowrap;align-items:center;overflow-x:auto;
   white-space:nowrap;scrollbar-width:none;
@@ -923,18 +971,18 @@ html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
   .cabecera__fila .cabecera__in{flex-wrap:wrap;gap:.3rem .6rem;padding:.44rem 0}
   .cabecera__marca{font-size:.86rem;margin:0}
   .buscador{margin-left:auto}
+  /* Los ocho documentos en una sola fila que se desplaza dejaban tres fuera
+     de la pantalla, y una fila que se desplaza a lo ancho no se arrastra: se
+     mira, se cree que eso es todo y se sigue. Envueltos en dos o tres
+     renglones ocupan cuarenta píxeles más y están los ocho a un toque. */
   .cabecera__docs{
     order:3;width:100%;margin-left:0;justify-content:flex-start;
-    flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
-    --vel-izq:0px;--vel-der:0px;
-    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--vel-izq),
-                       #000 calc(100% - var(--vel-der)),transparent 100%);
-    mask-image:linear-gradient(to right,transparent 0,#000 var(--vel-izq),
-               #000 calc(100% - var(--vel-der)),transparent 100%);
+    flex-wrap:wrap;gap:2px 4px;overflow:visible;
   }
-  .cabecera__docs::-webkit-scrollbar{display:none}
-  .cabecera__docs.hay-izq{--vel-izq:26px}
-  .cabecera__docs.hay-der{--vel-der:26px}
+  .cabecera__docs a{padding:.3rem .55rem;font-size:.82rem}
+  /* Sin guiones nadie mide la cabecera: se reserva de sobra, que pasarse deja
+     el destino un poco más abajo y quedarse corto lo deja tapado. */
+  :root{--barra:210px}
 }
 
 
@@ -1199,7 +1247,9 @@ def conmutadores(html, propio):
             ancla = prefijo + ancla
             return 'href="#%s" data-ir-a="%s" data-ancla="%s"' % (ancla, destino, ancla)
 
-        html = re.sub(r'href="%s(#([^"]+))?"' % re.escape(nombre), sustituir, html)
+        # La hoja de línea base vive en instrumentos/ y enlaza con «../»: sin
+        # contemplarlo, sus enlaces al resto del sistema morían en el archivo.
+        html = re.sub(r'href="(?:\.\./)?%s(#([^"]+))?"' % re.escape(nombre), sustituir, html)
     return html
 
 

@@ -1,0 +1,314 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""El menú de secciones: un solo modelo para los seis documentos.
+
+Hasta ahora cada documento llevaba su índice escrito a mano en la cabecera, y
+se notaba: la memoria numeraba «00, 0.1, 01», el marketing decía «apartado 3»,
+otros documentos usaba «1 ·» y el manual solo romanos. Cuatro cuentas distintas
+en un sistema que se presenta como uno. Peor aún, las treinta y cuatro entradas
+de la memoria vivían en una fila que se desplazaba a lo ancho: en un ratón sin
+rueda horizontal —o en un móvil que no adivina que aquello se arrastra— la
+mitad del documento no existía.
+
+Aquí está el modelo entero y el que lo dibuja. Una cuenta sola: las partes son
+encabezados de grupo, los apartados llevan su número de dos cifras y los anexos
+van con letra. Y el menú deja de ser una fila: es un panel que se abre y enseña
+todo de golpe, en columnas, sin nada que arrastrar.
+
+    grupos = [(rótulo del grupo, ancla del grupo o None, [(ancla, nº, rótulo)])]
+
+El número puede ir vacío: hay entradas que no son apartados —la portada, el
+manifiesto, el censo— y forzarles un número era justamente el problema.
+"""
+
+import posixpath
+
+# --------------------------------------------------------------------------
+#  El modelo
+# --------------------------------------------------------------------------
+
+MENUS = {
+    "memoria.html": {
+        "rotulo": "Plan de Dirección",
+        "aria": "Secciones del Plan de Dirección",
+        "grupos": [
+            ("Apertura", None, [
+                ("manifiesto", "", "Manifiesto"),
+                ("control", "00", "Control del documento"),
+                ("censo", "", "Censo documental"),
+                ("resumen", "01", "Resumen ejecutivo"),
+            ]),
+            ("Parte I · La posición", "parte-1", [
+                ("tesis", "02", "La apuesta del proyecto"),
+                ("mapa", "03", "Mapa competitivo"),
+                ("foso", "04", "El foso"),
+            ]),
+            ("Parte II · El sistema", "parte-2", [
+                ("sistema", "05", "Sistema operativo"),
+                ("innovacion", "06", "Innovación"),
+            ]),
+            ("Parte III · La economía", "parte-3", [
+                ("linea-base", "07", "Línea base"),
+                ("unidad", "08", "Economía unitaria"),
+                ("activo", "09", "El activo"),
+                ("escalado", "10", "La apuesta de escalado"),
+            ]),
+            ("Parte IV · El riesgo", "parte-4", [
+                ("riesgos", "11", "Riesgos"),
+                ("premortem", "12", "Pre-mortem"),
+                ("mando", "13", "Cuadro de mando"),
+            ]),
+            ("Parte V · La decisión", "parte-5", [
+                ("palancas", "14", "Palancas de valor"),
+                ("capital", "15", "Asignación de capital"),
+                ("ruta", "16", "Hoja de ruta"),
+                ("decisiones", "17", "Decisiones"),
+                ("supuestos", "18", "Supuestos"),
+                ("trazabilidad", "19", "Trazabilidad de los acuerdos"),
+            ]),
+            ("Parte VI · La cifra", "parte-6", [
+                ("puente", "20", "El puente"),
+                ("cartera", "21", "La cartera de campañas"),
+                ("calendario", "22", "Calendario y capacidad"),
+                ("cierto", "23", "Qué tiene que ser cierto"),
+            ]),
+            ("Anexos", None, [
+                ("acuerdos", "A", "Cuadernillo de acuerdos"),
+                ("campanas", "B", "Fichas de campaña"),
+            ]),
+        ],
+    },
+
+    "marketing.html": {
+        "rotulo": "Plan Maestro de Marketing",
+        "aria": "Secciones del Plan de Marketing",
+        "grupos": [
+            ("Apertura", None, [
+                ("portada", "", "Portada"),
+                ("control", "00", "Ficha de control"),
+            ]),
+            ("Parte I · La doctrina", "parte-1", [
+                ("doctrina", "01", "Por qué"),
+                ("regla", "02", "La regla"),
+                ("nunca", "03", "Las ocho que no haremos"),
+                ("legal", "04", "Marco legal"),
+            ]),
+            ("Parte II · El paciente", "parte-2", [
+                ("estados", "05", "Doce estados"),
+                ("arquetipos", "06", "Seis de la ría"),
+                ("momentos", "07", "Momentos de verdad"),
+                ("asimetria", "08", "La asimetría"),
+            ]),
+            ("Parte III · El catálogo", "parte-3", [
+                ("catalogo", "09", "Las 76 acciones"),
+            ]),
+            ("Parte IV · Las diez piezas", "parte-4", [
+                ("piezas", "10", "Las diez piezas"),
+            ]),
+            ("Parte V · El territorio", "parte-5", [
+                ("digital", "11", "Digital"),
+                ("ria", "12", "El mapa de la ría"),
+                ("mar", "13", "Campaña de Mar"),
+            ]),
+            ("Parte VI · La prioridad", "parte-6", [
+                ("economia", "14", "Qué aporta cada grupo"),
+                ("prioridad", "15", "Qué va primero"),
+                ("presupuesto", "16", "Presupuesto"),
+            ]),
+            ("Parte VII · El gobierno", "parte-7", [
+                ("indicadores", "17", "Las ocho medidas"),
+                ("calendario", "18", "Calendario"),
+                ("parada", "19", "Reglas de parada"),
+            ]),
+            ("Anexos", None, [
+                ("anexo-legal", "A", "Semáforo legal por acción"),
+                ("anexo-cartera", "B", "Correspondencia con la cartera"),
+                ("anexo-trimestre", "C", "Activo este trimestre"),
+            ]),
+        ],
+    },
+
+    "manual.html": {
+        "rotulo": "Manual Maestro",
+        "aria": "Secciones del Manual Maestro",
+        "grupos": [
+            ("Apertura", None, [
+                ("presentacion", "", "Presentación"),
+                ("indice", "", "Índice"),
+                ("vanguardia", "", "Marco de vanguardia"),
+            ]),
+            ("Parte I · Fundamentos", "p1", [
+                ("estandares", "", "Estándares transversales"),
+            ]),
+            ("Parte II · Recorrido", "p2", []),
+            ("Parte III · RACI", "p3", []),
+            ("Parte IV · Puestos", "p4", []),
+            ("Parte V · Funciones de vanguardia", "p5", []),
+            ("Parte VI · Indicadores", "p6", []),
+            ("Parte VII · Incentivos", "p7", []),
+            ("Parte VIII · Puesta en marcha", "p8", []),
+            ("Cierre", None, [
+                ("anexos", "", "Anexos"),
+                ("otros", "", "Otros documentos"),
+                ("notas", "", "Puntos abiertos"),
+            ]),
+        ],
+    },
+
+    "index.html": {
+        "rotulo": "Protocolo de Primera Visita",
+        "aria": "Secciones del Protocolo",
+        "grupos": [
+            ("Apertura", None, [
+                ("fundamentos", "", "Fundamentos"),
+                ("mapa", "", "Mapa de los 90 minutos"),
+                ("flujo", "", "Flujo"),
+            ]),
+            ("Las doce fases de la visita", None, [
+                ("f01", "01", "Preparación"),
+                ("f02", "02", "Acogida"),
+                ("f03", "03", "Alta y RGPD"),
+                ("f04", "04", "Historia clínica"),
+                ("f05", "05", "Diagnóstico"),
+                ("f06", "06", "Briefing"),
+                ("f07", "07", "Expectativas"),
+                ("f08", "08", "IAC"),
+                ("f09", "09", "Presentación 3D"),
+                ("f10", "10", "Propuesta"),
+                ("f11", "11", "Cierre administrativo"),
+                ("f12", "12", "Seguimiento"),
+            ]),
+            ("Cierre", None, [
+                ("estandares", "", "Estándares"),
+                ("casos", "", "Casos especiales"),
+                ("continua", "", "Fases 13 y 14"),
+                ("trazabilidad", "", "Trazabilidad"),
+                ("indicadores", "", "Indicadores"),
+                ("formacion", "", "Formación"),
+                ("anexos", "", "Anexos"),
+            ]),
+        ],
+    },
+
+    "otros.html": {
+        "rotulo": "Otros documentos",
+        "aria": "Secciones de Otros documentos",
+        "grupos": [
+            ("Apertura", None, [
+                ("presentacion", "", "Cómo leer"),
+                ("otros-mapa", "", "Mapa del sistema"),
+            ]),
+            ("Los catorce documentos", None, [
+                ("otros-compendio", "01", "Compendio Maestro"),
+                ("otros-verificacion", "02", "Verificación · 322 puntos"),
+                ("otros-auditoria", "03", "Auditoría integral"),
+                ("otros-decisiones", "04", "Decisiones de Gerencia"),
+                ("otros-100dias", "05", "Programa de 100 días"),
+                ("otros-30dias", "06", "Dosier de 30 días"),
+                ("otros-perfiles", "07", "Protocolos por perfil"),
+                ("otros-innovacion", "08", "Innovación · 18 fichas"),
+                ("otros-marca", "09", "Marca y captación"),
+                ("otros-cuaderno", "10", "Cuaderno de campo"),
+                ("otros-transicion-perfiles", "11", "Puesta en marcha por perfil"),
+                ("otros-continuidad", "12", "Continuidad legal y financiera"),
+                ("otros-posicionamiento", "13", "No medias sonrisas"),
+                ("otros-gtc", "14", "GTC · Giraldo Te Cuida"),
+            ]),
+            ("Cierre", None, [
+                ("otros-cierre", "", "Cierre"),
+            ]),
+        ],
+    },
+
+    "instrumentos/captura.html": {
+        "rotulo": "Línea base",
+        "aria": "Secciones de la hoja de línea base",
+        "grupos": [
+            ("La hoja", None, [
+                ("instrucciones", "", "Instrucciones"),
+                ("definiciones", "", "Definiciones"),
+                ("captura", "", "Captura mensual"),
+                ("anual", "", "Resumen anual"),
+                ("cinco", "", "Los cinco números"),
+            ]),
+        ],
+    },
+}
+
+
+# Los ocho documentos del sistema, para que el panel lleve también la salida
+# hacia los demás. En un teléfono los enlaces entre documentos ocupaban cuatro
+# filas de la barra —cuatrocientos treinta píxeles antes de la primera línea de
+# texto—; aquí caben en cuatro renglones y la barra vuelve a ser una barra.
+DOCS = [
+    ("inicio.html", "Portada del sistema"),
+    ("memoria.html", "Plan de Dirección"),
+    ("deck.html", "Presentación de Junta"),
+    ("manual.html", "Manual Maestro"),
+    ("index.html", "Protocolo de Primera Visita"),
+    ("otros.html", "Otros documentos"),
+    ("marketing.html", "Plan de Marketing"),
+    ("instrumentos/captura.html", "Línea base"),
+]
+
+
+def _hacia(desde, hasta):
+    """La ruta relativa entre dos documentos del sistema."""
+    return posixpath.relpath(hasta, posixpath.dirname(desde) or ".")
+
+
+def _otros(archivo):
+    filas = "".join('<a href="%s"><b></b><span>%s</span></a>' % (_hacia(archivo, f), r)
+                    for f, r in DOCS if f != archivo)
+    return ('<div class="menu__g menu__g--docs">'
+            '<p class="menu__gt"><span>El sistema documental</span></p>%s</div>' % filas)
+
+
+# --------------------------------------------------------------------------
+#  El dibujo
+# --------------------------------------------------------------------------
+
+def _entrada(ancla, numero, rotulo):
+    """Una línea del panel.
+
+    El ancla va pegada a `<a href=` y sin más atributos a propósito: el índice
+    de la portada y el archivo único leen el menú con `<a href="#x">`, y ese
+    contrato vale más que la comodidad de poner aquí una clase.
+    """
+    return ('<a href="#%s"><b>%s</b><span>%s</span></a>'
+            % (ancla, numero, rotulo))
+
+
+def _grupo(rotulo, ancla, entradas):
+    cab = ('<p class="menu__gt"><a href="#%s">%s</a></p>' % (ancla, rotulo)
+           if ancla else '<p class="menu__gt"><span>%s</span></p>' % rotulo)
+    return ('<div class="menu__g">%s%s</div>'
+            % (cab, "".join(_entrada(*e) for e in entradas)))
+
+
+def dibuja(archivo, sangria="      "):
+    """El `<nav>` completo de un documento, listo para pegar en la cabecera."""
+    m = MENUS[archivo]
+    grupos = "".join(_grupo(*g) for g in m["grupos"]) + _otros(archivo)
+    n = sum(len(g[2]) + (1 if g[1] else 0) for g in m["grupos"])
+    partes = [
+        '<nav class="strip" id="strip" aria-label="%s">' % m["aria"],
+        '  <details class="menu">',
+        '    <summary class="menu__b">',
+        '      <span class="menu__rejilla" aria-hidden="true"></span>',
+        '      <span class="menu__b__txt">Índice</span>',
+        '      <span class="menu__b__n">%d</span>' % n,
+        '    </summary>',
+        '    <div class="menu__panel">',
+        '      <div class="menu__cols">%s</div>' % grupos,
+        '    </div>',
+        '  </details>',
+        '  <p class="menu__aqui" data-aqui>%s</p>' % m["rotulo"],
+        '</nav>',
+    ]
+    return ("\n" + sangria).join(partes)
+
+
+def cuantas(archivo):
+    """Cuántos destinos ofrece el menú de un documento."""
+    return sum(len(g[2]) + (1 if g[1] else 0) for g in MENUS[archivo]["grupos"])

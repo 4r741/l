@@ -37,6 +37,7 @@ DOCUMENTOS = [
     (GEN / "marketing-figuras.py", "Figuras del Plan Maestro de Marketing"),
     (GEN / "marketing.py", "marketing.html · Plan Maestro de Marketing"),
     (RAIZ / "build-captura.py", "instrumentos/captura.html · hoja de captura"),
+    (RAIZ / "build-menu.py", "el menú de secciones de los seis documentos"),
     (RAIZ / "numera-rotulos.py", "el número de cada apartado, para dibujarlo aparte"),
     (RAIZ / "anclas.py", "anclas de todos los titulares"),
     (RAIZ / "build-inicio.py", "inicio.html · portada del sistema"),

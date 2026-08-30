@@ -497,6 +497,59 @@ def comprueba_catalogo():
 
 
 
+def comprueba_menu():
+    """El menú tiene que llevar a sitios que existan y contar como cuenta el texto.
+
+    De aquí venía el lío: la memoria numeraba «00, 0.1, 01» mientras el cuerpo
+    decía otra cosa, el marketing arrastraba un «apartado 3» que se coló al
+    quitar el símbolo de sección, y otros documentos usaba «1 ·» donde el resto
+    del sistema usa dos cifras. Nada de eso lo veía nadie hasta abrir el
+    documento y mirarlo. Ahora se ve aquí.
+    """
+    ruta = RAIZ / "menu.py"
+    if not ruta.exists():
+        falla("menu.py", "no está en el repositorio: el menú queda sin modelo")
+        return
+    entorno = {"__name__": "menu_auditado", "__file__": str(ruta)}
+    exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
+
+    for archivo, m in entorno["MENUS"].items():
+        doc = (RAIZ / archivo).read_text(encoding="utf-8")
+        cuerpo = doc[doc.index("<main"):] if "<main" in doc else doc
+
+        # el menú del documento tiene que ser el que dice el modelo
+        tira = re.search(r'<nav class="strip"[^>]*>.*?</nav>', doc, re.S)
+        if not tira:
+            falla(archivo, "no tiene menú de secciones")
+            continue
+        for grupo, ancla_grupo, entradas in m["grupos"]:
+            for ancla in ([ancla_grupo] if ancla_grupo else []) + [e[0] for e in entradas]:
+                if 'id="%s"' % ancla not in cuerpo:
+                    falla(archivo, "el menú lleva a «%s» y ese destino no existe" % ancla)
+            for ancla, numero, rotulo in entradas:
+                if not numero.isdigit():
+                    continue
+                i = cuerpo.find('id="%s"' % ancla)
+                if i < 0:
+                    continue
+                # El número que el cuerpo enseña junto al titular. Va troceado
+                # en varias etiquetas —el rótulo grande lo dibuja aparte— así
+                # que se limpian marcas y se pegan las cifras sueltas.
+                cerca = re.sub(r"<[^>]+>", " ", cuerpo[i:i + 260])
+                cerca = re.sub(r"\s+", " ", cerca)
+                cerca = re.sub(r"(?<=\d) (?=\d)", "", cerca)
+                # los atributos del propio titular no cuentan: se mira lo escrito
+                cabeza = cerca.split(">", 1)[-1]
+                if not re.search(r"(?<!\d)%s(?!\d)" % re.escape(numero), cabeza[:90]):
+                    falla(archivo, "el menú numera «%s %s» y el texto de ese apartado no lo dice"
+                          % (numero, rotulo))
+
+        # una sola cuenta: ni «apartado N» ni decimales en los rótulos del menú
+        for rotulo in re.findall(r"<span>([^<]*)</span>", tira.group(0)):
+            if re.search(r"\bapartado\s+\d", rotulo) or re.search(r"\b\d+\.\d", rotulo):
+                falla(archivo, "el menú numera a su manera en «%s»" % rotulo)
+
+
 def main():
     comprueba_version()
     comprueba_cifras()
@@ -511,6 +564,7 @@ def main():
     comprueba_libro()
     comprueba_figuras()
     comprueba_catalogo()
+    comprueba_menu()
     print("Coherencia del sistema documental · versión canónica v%s · %s\n" % (VERSION, FECHA))
     for a in avisos:
         print("  aviso   " + a)
