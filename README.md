@@ -155,6 +155,31 @@ versión de `version.py` al construirse, y los tres escritos a mano la reciben e
 el primer paso de `build.py`. Subir de versión vuelve a ser lo que decía que
 era: **cambiar una línea**.
 
+## La medida de lectura
+
+Un renglón de doscientos caracteres no se lee: al llegar al final se ha perdido
+el principio. Midiendo el sistema aparecieron **240 bloques por encima de los 90
+caracteres por línea**, con un peor caso de **217**.
+
+La causa: doscientos cincuenta y tres recuadros —regla, aviso, puerta— llevan
+escrito a mano un «ancho máximo: ninguno» para que la caja ocupe la columna
+entera. Ninguno de los 253 contiene una tabla ni una figura que lo justifique:
+son texto. Así que el panel se estiraba, y el renglón con él.
+
+Dos cambios, y los dos medidos:
+
+| | Antes | Después |
+|---|---|---|
+| Bloques por encima de 90 cpl | 240 | **15** |
+| Peor renglón | 217 cpl | **96 cpl** |
+| Recuadros con más de 120 px vacíos | 184 | **3** |
+| Vacío medio a la derecha | 366 px | — |
+
+El texto se acota a 74 caracteres y **la caja se ciñe al texto**. Esto último se
+hace con `!important`, que no es elegante y aquí es lo correcto: el ancho
+anulado vive en el atributo de cada uno de los 253, y la alternativa sería
+editarlos uno a uno para siempre.
+
 ## Con teclado, con lector de pantalla y con el dedo
 
 | Pieza | Qué resuelve |

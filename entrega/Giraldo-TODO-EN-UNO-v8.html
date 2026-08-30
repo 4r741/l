@@ -374,6 +374,31 @@ main:focus{outline:none}
 .mapa__m:hover .mapa__r,.mapa__m:focus-visible .mapa__r{opacity:1;visibility:visible}
 @media(prefers-reduced-motion:reduce){.mapa__m::before,.mapa__r{transition:none}}
 @media print{.mapa{display:none}}
+/* ---------------------------------------------------------------------------
+   Medida de lectura. Los recuadros —regla, aviso, puerta— llevan muchos un
+   ancho máximo anulado a mano para que la caja ocupe la columna entera, y eso
+   está bien para la caja; el problema es que se lo llevaba también el texto de
+   dentro, que acababa corriendo a más de doscientos caracteres por línea. Una
+   línea así no se lee: al llegar al final se ha perdido el principio.
+
+   La caja sigue siendo ancha. Lo que se acota es el renglón.
+   --------------------------------------------------------------------------- */
+.rulebox p,.callout p,.gate p,.card p,.edit p,
+.rulebox li,.callout li,.gate li,.list li,.checks li{max-width:74ch}
+/* Y la caja se ciñe al texto. Doscientos cincuenta y tres de estos recuadros
+   llevan escrito a mano un «ancho máximo: ninguno» para ocupar la columna
+   entera, y ninguno contiene una tabla ni una figura que lo justifique: son
+   texto. El resultado era un panel de color con la letra en la mitad izquierda
+   y trescientos sesenta píxeles de vacío a la derecha.
+
+   Se corrige con !important, que no es elegante, y aquí es lo correcto: el
+   ancho anulado está en el atributo de cada uno de los doscientos cincuenta y
+   tres, y la alternativa sería editarlos uno a uno para siempre. */
+.rulebox,.callout,.gate{max-width:80ch!important}
+/* Un párrafo que cuelga directamente del contenedor no tiene quien lo acote:
+   ocupa los 1.180 px de la caja y sale a doscientos caracteres por renglón. */
+.wrap>p,.wrap>ul>li,.wrap>ol>li{max-width:74ch}
+
 .topbar{
   position:sticky;top:0;z-index:60;
   background:color-mix(in srgb,var(--paper) 88%,transparent);
@@ -1175,6 +1200,11 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 @media print{.campana__cuenta{background:#fff}}
 /* la glosa de una celda va debajo del nombre, no pegada a él */
 td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line-height:1.4}
+
+/* la misma medida, para las piezas propias de la capa editorial */
+.t-ladder li,.acta__pide,.t-brief__rec p,.t-fig__note,.t-pm__anti p,
+.t-note p,.campana p,.t-manifiesto__list li,.calc__pie,.t-cover__meta,
+.timemap p{max-width:74ch}
 
 </style>
 <style>

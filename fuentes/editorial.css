@@ -372,3 +372,8 @@
 @media print{.campana__cuenta{background:#fff}}
 /* la glosa de una celda va debajo del nombre, no pegada a él */
 td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line-height:1.4}
+
+/* la misma medida, para las piezas propias de la capa editorial */
+.t-ladder li,.acta__pide,.t-brief__rec p,.t-fig__note,.t-pm__anti p,
+.t-note p,.campana p,.t-manifiesto__list li,.calc__pie,.t-cover__meta,
+.timemap p{max-width:74ch}
