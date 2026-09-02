@@ -271,10 +271,9 @@ main:focus{outline:none}
 .menu{position:static}
 .menu__b{
   display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;
-  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;
-  text-transform:uppercase;color:var(--ink-2);
-  background:var(--surface);border:1px solid var(--line);border-radius:999px;
-  padding:.34rem .8rem .34rem .62rem;white-space:nowrap;
+  font-size:.85rem;font-weight:500;letter-spacing:-.005em;color:var(--ink-2);
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:.42rem .8rem .42rem .68rem;white-space:nowrap;box-shadow:var(--sombra-1);
   transition:border-color .16s ease,color .16s ease,background .16s ease;
   list-style:none;
 }
@@ -295,14 +294,14 @@ main:focus{outline:none}
              linear-gradient(currentColor,currentColor) 0 8px/100% 2px no-repeat;
 }
 .menu__b__n{
-  font-size:.66rem;color:var(--muted);border-left:1px solid var(--line);
-  padding-left:.5rem;
+  font-family:var(--f-mono);font-size:.7rem;color:var(--muted);
+  background:var(--surface-2);border-radius:5px;padding:.05rem .34rem;
 }
-.menu[open] .menu__b__n{color:rgba(255,255,255,.7);border-left-color:rgba(255,255,255,.3)}
+.menu[open] .menu__b__n{color:#fff;background:rgba(255,255,255,.18)}
 
 /* Dónde estás. Se rellena solo al desplazar; sin guion dice el documento. */
 .menu__aqui{
-  font-family:var(--f-mono);font-size:.72rem;color:var(--muted);
+  font-size:.85rem;color:var(--muted);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
   margin:0;
 }
@@ -376,6 +375,119 @@ main:focus{outline:none}
 @media print{.strip{display:none}}
 
 /* ===========================================================================
+   EL TABLERO DE MANDO
+
+   La entrada de cada documento. Primero las cifras que ese documento gobierna,
+   grandes y en una fila; debajo, una tarjeta por parte con sus apartados
+   dentro, el número de cada uno a la izquierda y cuántos titulares tiene a la
+   derecha. Se ve de un vistazo qué hay, cuánto hay y por dónde entrar, y el
+   texto se abre al pulsar. Nada de esto se dibuja con guiones: está en el HTML,
+   así que también existe sin ellos y al imprimir.
+   =========================================================================== */
+.tb{display:block;margin:2.2rem 0 3.2rem}
+.tb__cab{max-width:62ch;margin-bottom:1.8rem}
+.tb__k{
+  font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent-ink);margin:0 0 .55rem;
+}
+.tb__t{font-size:var(--step-3);letter-spacing:-.03em;margin:0 0 .6rem}
+.tb__q{font-size:var(--step-1);line-height:1.45;color:var(--ink-2);margin:0}
+.tb__pie{
+  margin:1.4rem 0 0;font-size:.82rem;color:var(--muted);
+}
+/* La portada del documento pasa a ser el pie del tablero: se lee después de
+   ver qué hay, no antes. */
+.aps .ap[data-ap="portada-doc"] .hero{padding-top:1rem;border-top:1px solid var(--line)}
+
+/* Cada dato es su propia caja. Con el truco de la rejilla de un píxel sobre
+   fondo, la celda que sobraba al final de la fila se quedaba pintada de gris:
+   un hueco que parecía un dato que falta. */
+.tb__cifras{
+  display:grid;gap:.7rem;
+  grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));
+  margin-bottom:2rem;
+}
+.tb__d{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
+  box-shadow:var(--sombra-1);padding:1.05rem 1.15rem 1.15rem;min-width:0;
+}
+.tb__d b{
+  display:block;font-size:clamp(1.5rem,2.1vw,1.95rem);font-weight:600;
+  letter-spacing:-.03em;line-height:1.05;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.tb__d span{
+  display:block;margin-top:.45rem;font-size:.76rem;font-weight:600;
+  letter-spacing:.02em;color:var(--accent-ink);
+}
+.tb__d small{
+  display:block;margin-top:.25rem;font-size:.76rem;line-height:1.4;color:var(--muted);
+}
+
+.tb__rejilla{
+  display:grid;gap:1rem;
+  grid-template-columns:repeat(auto-fill,minmax(min(310px,100%),1fr));
+  align-items:start;
+}
+.tb__g{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radio);overflow:hidden;box-shadow:var(--sombra-1);
+  transition:box-shadow .18s ease,border-color .18s ease;min-width:0;
+}
+.tb__g:hover{box-shadow:var(--sombra-2);border-color:rgba(14,143,132,.3)}
+.tb__gh{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.85rem 1.1rem;border-bottom:1px solid var(--line-soft);
+  background:linear-gradient(var(--accent-soft),var(--accent-soft));
+}
+.tb__gh h3{
+  flex:1;min-width:0;font-size:.86rem;font-weight:600;letter-spacing:-.005em;
+  color:var(--accent-fuerte);line-height:1.25;
+}
+.tb__gh h3 a{color:inherit;text-decoration:none}
+.tb__gh h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.tb__gh span{
+  flex:0 0 auto;font-family:var(--f-mono);font-size:.68rem;color:var(--accent-ink);
+  background:var(--surface);border:1px solid rgba(14,143,132,.25);
+  border-radius:999px;padding:.1rem .5rem;
+}
+.tb__l{padding:.4rem}
+.tb__e{
+  display:grid;grid-template-columns:2.15rem minmax(0,1fr) auto;
+  align-items:baseline;gap:.15rem;
+  padding:.5rem .6rem;border-radius:var(--radio-s);
+  text-decoration:none;color:var(--ink);
+  transition:background .13s ease,color .13s ease;
+}
+.tb__e + .tb__e{box-shadow:0 -1px 0 var(--line-soft)}
+.tb__e:hover{background:var(--accent-soft);color:var(--accent-fuerte)}
+.tb__n{
+  font-family:var(--f-mono);font-size:.72rem;font-weight:500;color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.tb__e:hover .tb__n{color:var(--accent)}
+.tb__r{font-size:.885rem;line-height:1.35;min-width:0}
+.tb__c{
+  font-family:var(--f-mono);font-size:.66rem;color:var(--muted);
+  opacity:.75;padding-left:.5rem;
+}
+.tb__e:hover .tb__c{opacity:1}
+/* En un teléfono, seis datos a tamaño de tablero son mil doscientos píxeles
+   antes de la primera tarjeta. Dos columnas y letra más chica. */
+@media(max-width:640px){
+  .tb{margin:1.4rem 0 2.4rem}
+  .tb__cab{margin-bottom:1.3rem}
+  .tb__cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-bottom:1.5rem}
+  .tb__d{padding:.8rem .85rem .9rem}
+  .tb__d b{font-size:1.3rem}
+  .tb__d span{font-size:.72rem;margin-top:.3rem}
+  .tb__d small{font-size:.7rem;line-height:1.35}
+  .tb__e{grid-template-columns:2rem minmax(0,1fr) auto;padding:.6rem .55rem}
+  .tb__r{font-size:.87rem}
+}
+@media print{.tb{display:none}}
+
+/* ===========================================================================
    EL DOCUMENTO COMO APARTADOS, NO COMO RÍO
 
    Un documento de este sistema mide entre doscientos y cuatrocientos cincuenta
@@ -397,72 +509,36 @@ main:focus{outline:none}
 @media(prefers-reduced-motion:reduce){.aps .ap.is-on{animation:none}}
 @media print{.ap{display:block!important}}
 
-/* --- el índice lateral, fijo mientras se lee --------------------------- */
-.lateral{
-  position:fixed;top:var(--barra);left:0;bottom:0;width:19rem;z-index:40;
-  background:var(--surface);border-right:1px solid var(--line);
-  overflow-y:auto;overscroll-behavior:contain;padding:0 .4rem 2rem 1.1rem;
-  display:none;
-}
-.con-lateral .lateral{display:block}
-/* La caja de medida se pega al lateral en vez de centrarse en la pantalla:
-   con el índice a la izquierda, centrar el texto en el ancho total lo empuja
-   al borde derecho. Solo donde hay lateral: en un móvil esta regla dejaba el
-   texto pegado al canto izquierdo, sin margen ninguno. */
-@media(min-width:1100px){
-  .con-lateral main>.wrap,.con-lateral main .wrap{margin-left:0}
-  .con-lateral main{padding-left:19rem}
-  .con-lateral footer.foot{padding-left:19rem}
-}
-/* El apartado abierto empieza con aire: pegado a la barra, el rastro que dice
-   en qué parte estás se lee por debajo del cristal de la cabecera. */
-.aps>.ap.is-on{padding-top:1.5rem}
-.lateral__g{margin:0 0 1.15rem}
-.lateral__gt{
-  font-family:var(--f-mono);font-size:.62rem;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--muted);margin:0 0 .35rem;
-  padding:0 .5rem .3rem 0;border-bottom:1px solid var(--line);
-}
-.lateral__gt a{color:inherit;text-decoration:none}
-.lateral__gt a:hover{color:var(--accent-ink)}
-.lateral a.lateral__e{
-  display:grid;grid-template-columns:1.9rem minmax(0,1fr);align-items:baseline;
-  gap:0;text-decoration:none;color:var(--ink-2);
-  font-size:.82rem;line-height:1.28;padding:.32rem .5rem .32rem .1rem;
-  border-radius:6px;border-left:2px solid transparent;
-  transition:background .13s ease,color .13s ease,border-color .13s ease;
-}
-.lateral a.lateral__e:hover{background:var(--accent-soft);color:var(--accent-ink)}
-.lateral a.lateral__e b{font-family:var(--f-mono);font-size:.66rem;font-weight:500;color:var(--muted)}
-.lateral a.lateral__e[aria-current="true"]{
-  background:var(--accent-soft);color:var(--accent-ink);font-weight:500;
-  border-left-color:var(--accent);
-}
-.lateral a.lateral__e[aria-current="true"] b{color:var(--accent)}
-.lateral__e[hidden]{display:none!important}
-.lateral__g[hidden]{display:none!important}
-.lateral mark{background:rgba(14,143,132,.2);color:inherit;border-radius:2px;padding:0 .05em}
-
-/* --- el buscador del lateral ------------------------------------------ */
-.lateral__buscar{
-  position:sticky;top:0;z-index:2;background:var(--surface);
-  margin:0 -.4rem .9rem -1.1rem;padding:.85rem 1rem;
-  border-bottom:1px solid var(--line);
-  display:flex;align-items:center;gap:.5rem;color:var(--muted);
-}
-.lateral__buscar input{
-  flex:1;min-width:0;font:inherit;font-size:.85rem;color:var(--ink);
-  background:transparent;border:0;outline:none;padding:.15rem 0;
-}
-.lateral__buscar input::placeholder{color:var(--muted)}
-.lateral__buscar input::-webkit-search-cancel-button{display:none}
-.lateral__buscar kbd{
-  font-family:var(--f-mono);font-size:.62rem;color:var(--muted);
-  border:1px solid var(--line);border-radius:4px;padding:.05rem .3rem;
-}
-.lateral__nada{font-size:.82rem;color:var(--muted);padding:.4rem .5rem}
+/* El índice lateral fijo se retiró cuando la entrada de cada documento pasó a
+   ser un tablero: decía lo mismo que el tablero, peor y robando cinco pulgadas
+   de pantalla al texto. Para volver al índice se vuelve al tablero. */
 
 /* --- anterior y siguiente, al pie del apartado ------------------------- */
+/* El buscador, dentro del panel del menú */
+.buscap{
+  grid-column:1/-1;display:flex;align-items:center;gap:.55rem;
+  margin:-.2rem 0 1rem;padding:.6rem .85rem;
+  border:1px solid var(--line);border-radius:999px;background:var(--paper);
+  color:var(--muted);
+}
+.buscap input{
+  flex:1;min-width:0;font:inherit;font-size:.9rem;color:var(--ink);
+  background:transparent;border:0;outline:none;padding:.1rem 0;
+}
+.buscap input::placeholder{color:var(--muted)}
+.buscap input::-webkit-search-cancel-button{display:none}
+.buscap kbd{
+  font-family:var(--f-mono);font-size:.64rem;color:var(--muted);
+  border:1px solid var(--line);border-radius:5px;padding:.05rem .32rem;background:var(--surface);
+}
+.buscap__nada{grid-column:1/-1;font-size:.86rem;color:var(--muted);margin:.2rem 0 0}
+.menu__cols>.buscap{margin-bottom:.4rem}
+.rastro__tb{
+  text-decoration:none;color:var(--accent-ink);font-weight:500;
+}
+.rastro__tb:hover{text-decoration:underline;text-underline-offset:3px}
+.rastro__tb i{font-style:normal;margin-right:.25rem}
+
 .pasos{
   display:grid;gap:1px;background:var(--line);
   border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
@@ -487,15 +563,14 @@ main:focus{outline:none}
 .pasos__a--sig{text-align:right}
 .pasos__a--sig i{margin:0 0 0 .4rem}
 .pasos__a--vacio{background:var(--paper);pointer-events:none;opacity:.45}
-@media print{.pasos,.lateral{display:none!important}}
+@media print{.pasos{display:none!important}}
 
 /* --- el rastro: dónde estás, sobre el titular -------------------------- */
 .rastro{
-  display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;
-  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--muted);margin:0 0 1.4rem;
+  display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;
+  font-size:.82rem;color:var(--muted);margin:0 0 1.6rem;
 }
-.rastro b{color:var(--accent-ink);font-weight:500}
+.rastro b{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-2);font-weight:500;background:var(--surface-2);border-radius:5px;padding:.1rem .4rem}
 .rastro em{font-style:normal;color:var(--line)}
 @media print{.rastro{display:none}}
 
@@ -931,6 +1006,25 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 
 <main>
 <article class="ap" data-ap="portada-doc" data-n="" data-rotulo="Portada" data-grupo="">
+<div class="wrap">
+  <nav class="tb" aria-label="Tablero del documento">
+    <header class="tb__cab">
+      <p class="tb__k">Documento troncal</p>
+      <h1 class="tb__t">Otros documentos del sistema</h1>
+      <p class="tb__q">Los 14 documentos de apoyo, del compendio maestro a la continuidad legal.</p>
+    </header>
+    <div class="tb__cifras"><div class="tb__d"><b>14</b><span>Documentos</span><small>Del posicionamiento del centro al programa de cuidado GTC</small></div><div class="tb__d"><b>322</b><span>Puntos de verificación</span><small>Recorrido físico, documental, de sistemas y de procesos</small></div><div class="tb__d"><b>20</b><span>Decisiones de Gerencia</span><small>Más once verificaciones externas</small></div><div class="tb__d"><b>18</b><span>Fichas de innovación</span><small>Con protocolo, guion, contingencia e indicador</small></div><div class="tb__d"><b>6</b><span>Perfiles operativos</span><small>Parte asistencial y parte comercial de cada puesto</small></div><div class="tb__d"><b>100 días</b><span>Horizonte</span><small>Programa de integración tras la adquisición</small></div></div>
+    <div class="tb__rejilla"><section class="tb__g"><header class="tb__gh"><h3>Apertura</h3><span>2</span></header><div class="tb__l"><a class="tb__e" href="#presentacion"><b class="tb__n">·</b><span class="tb__r">Qué es cada cosa y cuándo se abre</span><span class="tb__c">2</span></a><a class="tb__e" href="#otros-mapa"><b class="tb__n">·</b><span class="tb__r">El sistema en cuatro niveles</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Los catorce documentos</h3><span>14</span></header><div class="tb__l"><a class="tb__e" href="#otros-compendio"><b class="tb__n">01</b><span class="tb__r">Compendio Maestro del sistema de gestión</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-verificacion"><b class="tb__n">02</b><span class="tb__r">Verificación del centro · 322 puntos</span><span class="tb__c">5</span></a><a class="tb__e" href="#otros-auditoria"><b class="tb__n">03</b><span class="tb__r">Auditoría integral de la clínica adquirida</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-decisiones"><b class="tb__n">04</b><span class="tb__r">Decisiones de Gerencia y verificaciones</span><span class="tb__c">3</span></a><a class="tb__e" href="#otros-100dias"><b class="tb__n">05</b><span class="tb__r">Plan Director de los primeros 100 días</span><span class="tb__c">19</span></a><a class="tb__e" href="#otros-30dias"><b class="tb__n">06</b><span class="tb__r">Dosier de ejecución de los 30 días</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-perfiles"><b class="tb__n">07</b><span class="tb__r">Protocolos operativos por perfil</span><span class="tb__c">12</span></a><a class="tb__e" href="#otros-innovacion"><b class="tb__n">08</b><span class="tb__r">Innovación aplicada · 18 fichas</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-marca"><b class="tb__n">09</b><span class="tb__r">Plan Director de marca y captación</span><span class="tb__c">15</span></a><a class="tb__e" href="#otros-cuaderno"><b class="tb__n">10</b><span class="tb__r">Cuaderno de campo del día 1</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-transicion-perfiles"><b class="tb__n">11</b><span class="tb__r">Manual de puesta en marcha por perfil</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-continuidad"><b class="tb__n">12</b><span class="tb__r">Continuidad legal, financiera y de sistemas</span><span class="tb__c">13</span></a><a class="tb__e" href="#otros-posicionamiento"><b class="tb__n">13</b><span class="tb__r">«No medias sonrisas» · posicionamiento</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-gtc"><b class="tb__n">14</b><span class="tb__r">GTC · vive en el Plan de Marketing</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Cierre</h3><span>1</span></header><div class="tb__l"><a class="tb__e" href="#otros-cierre"><b class="tb__n">·</b><span class="tb__r">Cómo encajan los catorce documentos</span><span class="tb__c">1</span></a></div></section></div>
+    <p class="tb__pie">Pulse cualquier apartado para abrirlo. El documento entero, seguido, está debajo de este tablero.</p>
+  </nav>
+</div>
+
+
+
+
+
+
+
 <div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v8.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
@@ -5086,50 +5180,15 @@ LTV              = Valor inicial
     raiz.__aps = 1;
     raiz.classList.add("aps");
 
-    /* ---- el índice lateral: el mismo modelo que el panel, siempre a la vista */
-    var lateral = document.createElement("nav");
-    lateral.className = "lateral";
-    lateral.setAttribute("aria-label", "Índice del documento");
-    var buscar = document.createElement("label");
-    buscar.className = "lateral__buscar";
-    buscar.innerHTML =
-      '<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">' +
-      '<circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
-      '<path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
-      '</svg><input type="search" autocomplete="off" spellcheck="false" ' +
-      'placeholder="Buscar en este documento"><kbd>/</kbd>';
-    lateral.appendChild(buscar);
-
+    /* Ya no hay índice lateral: el índice de este documento es su tablero, que
+       está en el HTML y se abre con el primer apartado. Lo que sí hace falta es
+       una vuelta rápida, porque de un apartado se sale al tablero. */
     var porAncla = {};
     if(nav){
-      [].slice.call(nav.querySelectorAll(".menu__g:not(.menu__g--docs)")).forEach(function(g){
-        var caja = document.createElement("div");
-        caja.className = "lateral__g";
-        var gt = g.querySelector(".menu__gt");
-        if(gt){
-          var p = document.createElement("p");
-          p.className = "lateral__gt";
-          p.innerHTML = gt.innerHTML;
-          caja.appendChild(p);
-        }
-        [].slice.call(g.querySelectorAll("a")).forEach(function(a){
-          if(a.closest(".menu__gt")) return;
-          var c = a.cloneNode(true);
-          c.className = "lateral__e";
-          caja.appendChild(c);
-          porAncla[a.getAttribute("href").slice(1)] = c;
-        });
-        lateral.appendChild(caja);
+      [].slice.call(nav.querySelectorAll(".menu__g:not(.menu__g--docs) a")).forEach(function(a){
+        porAncla[a.getAttribute("href").slice(1)] = a;
       });
     }
-    var nada = document.createElement("p");
-    nada.className = "lateral__nada";
-    nada.hidden = true;
-    nada.textContent = "Nada con ese texto en este documento.";
-    lateral.appendChild(nada);
-    if(marca) lateral.dataset.de = marca;
-    document.body.appendChild(lateral);
-    document.documentElement.classList.add("con-lateral");
 
     /* ---- qué apartado contiene cada identificador del documento ---- */
     var dueno = {};
@@ -5180,8 +5239,9 @@ LTV              = Valor inicial
       if(!ap.dataset.grupo && !ap.dataset.n) return;
       var r = document.createElement("p");
       r.className = "rastro";
-      var trozos = [];
-      if(ap.dataset.grupo) trozos.push(ap.dataset.grupo);
+      var trozos = ['<a class="rastro__tb" href="#' + aps[0].dataset.ap +
+                    '"><i>&#8592;</i> Tablero</a>'];
+      if(ap.dataset.grupo) trozos.push("<span>" + ap.dataset.grupo + "</span>");
       trozos.push("<b>" + (aps.indexOf(ap) + 1) + " de " + aps.length + "</b>");
       r.innerHTML = trozos.join(' <em>/</em> ');
       var caja = document.createElement("div");
@@ -5201,8 +5261,6 @@ LTV              = Valor inicial
       Object.keys(porAncla).forEach(function(k){
         porAncla[k].setAttribute("aria-current", String(dueno[k] === ap));
       });
-      var vivo = porAncla[ap.dataset.ap];
-      if(vivo && vivo.scrollIntoView) vivo.scrollIntoView({block:"nearest"});
       if(mover) window.scrollTo({top:0, behavior: quieto2 ? "auto" : "smooth"});
       document.title = document.title.split(" · ")[0];
     }
@@ -5253,50 +5311,76 @@ LTV              = Valor inicial
       }
     });
 
-    /* ---- el buscador del lateral ---- */
-    var campo = buscar.querySelector("input");
-    /* Sin tildes, sin guiones y sin comillas: quien busca «premortem» tiene que
-       encontrar «Pre-mortem», y quien busca «RACI» no debe tropezar con «·». */
-    function llano(s){
-      return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-              .replace(/[-\u2010-\u2015'\u2019\u00b7]/g, "");
+    /* ---- buscar dentro del documento, desde el menú de la barra ----
+       Escribe y el panel se queda solo con los apartados que llevan esa
+       palabra, mirando también dentro de sus titulares: «raci» encuentra el
+       apartado que la menciona aunque no la lleve en el nombre. */
+    var campo = null;
+    if(nav && !nav.querySelector(".buscap")){
+      var caja = document.createElement("label");
+      caja.className = "buscap";
+      caja.innerHTML =
+        '<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">' +
+        '<circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.7"/>' +
+        '<path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
+        '</svg><input type="search" autocomplete="off" spellcheck="false" ' +
+        'placeholder="Buscar en este documento"><kbd>/</kbd>';
+      var panel = nav.querySelector(".menu__panel");
+      if(panel){ panel.insertBefore(caja, panel.firstChild); campo = caja.querySelector("input"); }
     }
-    var indice = [].slice.call(lateral.querySelectorAll(".lateral__e")).map(function(a){
-      var ap = dueno[a.getAttribute("href").slice(1)];
-      var texto = a.textContent;
-      if(ap) texto += " " + [].map.call(ap.querySelectorAll("h2,h3,h4"),
-                                       function(h){ return h.textContent; }).join(" ");
-      return {a:a, t:llano(texto), r:a.textContent};
-    });
-    function filtra(){
-      var q = llano(campo.value).trim();
-      var vistos = 0;
-      indice.forEach(function(x){
-        var ok = !q || x.t.indexOf(q) > -1;
-        x.a.hidden = !ok;
-        if(ok) vistos++;
-      });
-      [].slice.call(lateral.querySelectorAll(".lateral__g")).forEach(function(g){
-        g.hidden = ![].some.call(g.querySelectorAll(".lateral__e"), function(a){ return !a.hidden; });
-      });
-      nada.hidden = vistos > 0;
-    }
-    campo.addEventListener("input", filtra);
-    campo.addEventListener("keydown", function(e){
-      if(e.key === "Escape"){ campo.value = ""; filtra(); campo.blur(); }
-      if(e.key === "Enter"){
-        var vivo = indice.filter(function(x){ return !x.a.hidden; })[0];
-        if(vivo){ e.preventDefault(); vivo.a.click(); }
+    if(campo){
+      var nada = document.createElement("p");
+      nada.className = "buscap__nada";
+      nada.hidden = true;
+      nada.textContent = "Nada con ese texto en este documento.";
+      campo.closest(".menu__panel").appendChild(nada);
+
+      function llano(s){
+        return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[-\u2010-\u2015'\u2019\u00b7]/g, "");
       }
-    });
-    document.addEventListener("keydown", function(e){
-      var d = e.target;
-      if(d && (d.tagName === "INPUT" || d.tagName === "TEXTAREA" || d.isContentEditable)) return;
-      if(e.key === "/" && !e.ctrlKey && !e.metaKey){ e.preventDefault(); campo.focus(); }
-    });
+      var indice = Object.keys(porAncla).map(function(k){
+        var a = porAncla[k], ap = dueno[k], texto = a.textContent;
+        if(ap) texto += " " + [].map.call(ap.querySelectorAll("h2,h3,h4"),
+                                         function(h){ return h.textContent; }).join(" ");
+        return {a:a, t:llano(texto)};
+      });
+      var filtra = function(){
+        var q = llano(campo.value).trim(), vistos = 0;
+        indice.forEach(function(x){
+          var ok = !q || x.t.indexOf(q) > -1;
+          x.a.hidden = !ok;
+          if(ok) vistos++;
+        });
+        [].slice.call(nav.querySelectorAll(".menu__g:not(.menu__g--docs)")).forEach(function(g){
+          g.hidden = ![].some.call(g.querySelectorAll("a"), function(a){
+            return !a.hidden && !a.closest(".menu__gt");
+          });
+        });
+        nada.hidden = vistos > 0;
+      };
+      campo.addEventListener("input", filtra);
+      campo.addEventListener("keydown", function(e){
+        if(e.key === "Escape"){ campo.value = ""; filtra(); }
+        if(e.key === "Enter"){
+          var vivo = indice.filter(function(x){ return !x.a.hidden; })[0];
+          if(vivo){ e.preventDefault(); vivo.a.click(); }
+        }
+      });
+      document.addEventListener("keydown", function(e){
+        var d = e.target;
+        if(d && (d.tagName === "INPUT" || d.tagName === "TEXTAREA" || d.isContentEditable)) return;
+        if(e.key === "/" && !e.ctrlKey && !e.metaKey){
+          e.preventDefault();
+          var det = nav.querySelector("details.menu");
+          if(det) det.open = true;
+          campo.focus();
+        }
+      });
+    }
 
     if(!porHash(false)) muestra(aps[0], false);
-    return {aps: aps, lateral: lateral, muestra: muestra, porHash: porHash, dueno: dueno};
+    return {aps: aps, muestra: muestra, porHash: porHash, dueno: dueno};
   };
 
   (function(){

@@ -7,45 +7,53 @@
 <title>Plan de Dirección · Junta Giraldo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  /* El papel era un gris verdoso apagado y todo —tablas, fichas, avisos— vivía
-     encima con el mismo tono y un filo de un píxel: sin figura ni fondo, la
-     página entera parecía un boceto. Ahora el fondo se retira y las piezas se
-     levantan sobre blanco. */
-  --paper:#F2F1EC;
+  /* ---------------------------------------------------------------------------
+     La paleta era de papel: beige, titulares en serif, etiquetas en
+     monoespaciada. Leía como un informe encuadernado, que es exactamente lo que
+     este sistema no quiere ser. Ahora es una superficie de producto: gris muy
+     claro casi blanco, tarjetas blancas levantadas, un solo verde de marca con
+     su escala, y una sola familia sin remates para todo. La monoespaciada se
+     queda para lo único que la necesita: las cifras alineadas en columna.
+     --------------------------------------------------------------------------- */
+  --paper:#F4F6F7;
   --surface:#FFFFFF;
-  --surface-2:#E9E8E1;
-  --ink:#141F1D;
-  --ink-2:#3A4A46;
-  --muted:#6B7873;
-  --line:rgba(20,31,29,.13);
-  --line-soft:rgba(20,31,29,.07);
-  --accent:#0D6E66;
-  --accent-ink:#0A554F;
-  --accent-soft:rgba(13,110,102,.09);
-  --signal:#9C5B16;
-  --signal-soft:rgba(156,91,22,.10);
-  --sombra-1:0 1px 2px rgba(20,31,29,.04), 0 1px 1px rgba(20,31,29,.03);
-  --sombra-2:0 1px 2px rgba(20,31,29,.04), 0 8px 24px -14px rgba(20,31,29,.30);
+  --surface-2:#EDF1F2;
+  --ink:#0E1C21;
+  --ink-2:#3B525B;
+  --muted:#6E838C;
+  --line:rgba(14,28,33,.10);
+  --line-soft:rgba(14,28,33,.055);
+  --accent:#0E8F84;
+  --accent-ink:#0A6F66;
+  --accent-soft:rgba(14,143,132,.10);
+  --accent-fuerte:#075C55;
+  --signal:#B4661C;
+  --signal-soft:rgba(180,102,28,.10);
+  --alerta:#B3402F;
+  --alerta-soft:rgba(179,64,47,.10);
+  --sombra-1:0 1px 2px rgba(14,28,33,.05);
+  --sombra-2:0 1px 3px rgba(14,28,33,.06), 0 12px 28px -18px rgba(14,28,33,.35);
+  --sombra-3:0 2px 6px rgba(14,28,33,.07), 0 22px 48px -24px rgba(14,28,33,.40);
   --shadow:var(--sombra-2);
-  --rule:rgba(20,31,29,.24);
-  --radio:10px;
+  --rule:rgba(14,28,33,.20);
+  --radio:14px;
+  --radio-s:10px;
 
-  --f-display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 
-  --wrap:1180px;
-  --step--1:clamp(.78rem,.76rem + .1vw,.84rem);
-  --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
-  --step-1:clamp(1.18rem,1.1rem + .35vw,1.35rem);
-  --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
-  --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
-  --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
+  --wrap:1240px;
+  --step--1:clamp(.79rem,.77rem + .1vw,.85rem);
+  --step-0:clamp(1rem,.97rem + .14vw,1.05rem);
+  --step-1:clamp(1.15rem,1.08rem + .3vw,1.3rem);
+  --step-2:clamp(1.4rem,1.25rem + .62vw,1.78rem);
+  --step-3:clamp(1.8rem,1.5rem + 1.3vw,2.6rem);
+  --step-4:clamp(2.3rem,1.7rem + 2.7vw,4rem);
 
-  /* documento de lectura e impresión: solo modo claro */
   color-scheme:light;
 }
 

@@ -134,49 +134,51 @@ CSS = """
    fichas con borde compitiendo con el titular, y ninguna llevaba a ningún
    sitio: son contexto, no navegación, y deben pesar como contexto. */
 .cifras{
-  list-style:none;margin:2.2rem 0 0;padding:1.3rem 0 0;
-  border-top:1px solid var(--line);
-  display:grid;gap:1.3rem 2rem;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  list-style:none;margin:1.8rem 0 0;padding:0;
+  display:grid;gap:.7rem;
+  grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));
 }
-.cifras li{min-width:0}
+.cifras li{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
+  box-shadow:var(--sombra-1);padding:1.05rem 1.15rem 1.15rem;min-width:0;
+}
 .cifras b{
-  display:block;font-family:var(--f-display);font-weight:400;
-  font-size:clamp(1.5rem,2.4vw,1.95rem);line-height:1.1;letter-spacing:-.02em;
-  color:var(--ink);
+  display:block;font-size:clamp(1.5rem,2.1vw,1.95rem);font-weight:600;
+  letter-spacing:-.03em;line-height:1.05;color:var(--ink);
+  font-variant-numeric:tabular-nums;
 }
 .cifras span{
-  display:block;margin-top:.3rem;font-size:.8rem;line-height:1.45;color:var(--muted);
+  display:block;margin-top:.45rem;font-size:.78rem;line-height:1.45;color:var(--muted);
 }
-/* En un teléfono, seis cifras a tamaño de portada son novecientos píxeles
-   antes de la primera puerta: dos columnas y letra más chica. */
+.cifras i{
+  display:block;font-style:normal;font-size:.76rem;font-weight:600;
+  letter-spacing:.02em;color:var(--accent-ink);margin-bottom:.2rem;
+}
 @media(max-width:640px){
-  .cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem 1.2rem;margin-top:1.6rem}
-  .cifras b{font-size:1.35rem}
-  .cifras span{font-size:.74rem;margin-top:.15rem}
+  .cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+  .cifras li{padding:.8rem .85rem .9rem}
+  .cifras b{font-size:1.3rem}
+  .cifras span{font-size:.72rem}
 }
 
 /* Las siete puertas, todas iguales. La del Plan de Dirección ocupaba dos
    columnas y su texto se quedaba en la izquierda: novecientos píxeles de verde
    vacío al lado. Una rejilla de puertas se lee comparando, y para comparar
    tienen que medir lo mismo. */
-.puerta{
-  display:grid;gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
-  margin-top:1.8rem;
-}
+.puerta{display:grid;gap:.8rem;margin-top:1.8rem}
 @media(min-width:760px){.puerta{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:1180px){.puerta{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .puerta__ficha{
-  background:var(--surface);padding:1.35rem 1.4rem 1.15rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
+  box-shadow:var(--sombra-1);padding:1.35rem 1.4rem 1.2rem;
   display:grid;gap:.45rem;align-content:start;grid-template-rows:auto auto 1fr auto;
-  text-decoration:none;color:inherit;transition:background .16s ease;min-width:0;
+  text-decoration:none;color:inherit;min-width:0;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
 }
-.puerta__ficha:hover{background:var(--accent-soft)}
+.puerta__ficha:hover{border-color:rgba(14,143,132,.35);box-shadow:var(--sombra-2);transform:translateY(-1px)}
 .puerta__ficha:hover h3,.puerta__ficha:hover .puerta__flecha{color:var(--accent-ink)}
 .puerta__para{
-  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);margin:0;
+  font-size:.74rem;font-weight:600;letter-spacing:.02em;
+  color:var(--accent-ink);margin:0;
 }
 .puerta__ficha h3{
   font-size:1.18rem;line-height:1.22;letter-spacing:-.015em;margin:0;
@@ -184,15 +186,15 @@ CSS = """
 }
 .puerta__que{color:var(--ink-2);font-size:.9rem;line-height:1.5;margin:0}
 .puerta__pie{
-  margin:.7rem 0 0;padding-top:.7rem;border-top:1px solid var(--line);
+  margin:.85rem 0 0;padding-top:.75rem;border-top:1px solid var(--line-soft);
   display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:baseline;
-  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.06em;color:var(--muted);
+  font-size:.76rem;color:var(--muted);
 }
 .puerta__flecha{margin-left:auto;color:var(--ink-2);transition:color .16s ease}
 
 /* La portada no necesita ocupar seiscientos píxeles antes de la primera
    puerta: dice quién es y sigue. */
-.hero{padding:clamp(2.2rem,5vw,3.8rem) 0 2.4rem}
+.hero{padding:clamp(1.6rem,3.5vw,2.6rem) 0 2rem}
 .hero h1{margin:.3rem 0 0}
 .hero__lede{margin-top:1rem;max-width:58ch;font-size:var(--step-1);color:var(--ink-2)}
 .section--puertas{padding-top:0}
@@ -421,12 +423,12 @@ CUERPO = """
     <h1>No medias <em>sonrisas</em></h1>
     <p class="hero__lede">Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
     <ul class="cifras">
-      <li><b>17</b><span>normativa interna vigente<br>tres troncales y catorce de apoyo</span></li>
-      <li><b>15</b><span>decisiones abiertas<br>se someten a la Junta Directiva</span></li>
-      <li><b>1,2 M€</b><span>objetivo<br>facturación del ejercicio tercero</span></li>
-      <li><b>322</b><span>puntos de verificación<br>físicos, documentales y de proceso</span></li>
-      <li><b>@ACCIONES@</b><span>acciones de marketing<br>@SINCOSTE@ de ellas no cuestan dinero</span></li>
-      <li><b>14</b><span>fases del recorrido<br>de la primera llamada al mantenimiento</span></li>
+      <li><b>17</b><span><i>Normativa interna vigente</i>tres troncales y catorce de apoyo</span></li>
+      <li><b>15</b><span><i>Decisiones abiertas</i>se someten a la Junta Directiva</span></li>
+      <li><b>1,2 M€</b><span><i>Objetivo</i>facturación del ejercicio tercero</span></li>
+      <li><b>322</b><span><i>Puntos de verificación</i>físicos, documentales y de proceso</span></li>
+      <li><b>@ACCIONES@</b><span><i>Acciones de marketing</i>@SINCOSTE@ de ellas no cuestan dinero</span></li>
+      <li><b>14</b><span><i>Fases del recorrido</i>de la primera llamada al mantenimiento</span></li>
     </ul>
   </div>
 </section>

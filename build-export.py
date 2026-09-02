@@ -149,12 +149,7 @@ SCRIPT = """<script>
     var tira = document.querySelector('.cabecera .strip[data-de="' + id + '"]');
     capas[id] = window.APARTADOS(cuerpo, tira, id);
   }
-  function lateralDe(id){
-    instalaCapa(id);
-    document.querySelectorAll(".lateral").forEach(function(l){
-      l.hidden = (l.dataset.de !== id);
-    });
-  }
+  function lateralDe(id){ instalaCapa(id); }
   /* Se instala al abrir cada documento, no los siete de golpe: es más rápido.
      Y se espera a «load» porque este guion va antes en la página que los de los
      documentos, que son los que definen la capa: antes de eso no existe. */
@@ -186,7 +181,7 @@ SCRIPT = """<script>
     document.querySelectorAll(".cabecera .strip").forEach(function(s){
       s.hidden = (s.dataset.de !== id);
     });
-    /* y su índice lateral, que es el mismo principio una fila más abajo */
+    /* y la capa de apartados de ese documento, si aún no estaba puesta */
     lateralDe(id);
     /* nada puede quedar sin revelar al cambiar de documento */
     activo.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });

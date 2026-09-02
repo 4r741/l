@@ -42,6 +42,7 @@ DOCUMENTOS = [
     (RAIZ / "anclas.py", "anclas de todos los titulares"),
     (RAIZ / "build-inicio.py", "inicio.html · portada del sistema"),
     (RAIZ / "paginar.py", "cada documento partido en apartados navegables"),
+    (RAIZ / "tablero.py", "el tablero de mando de cada documento"),
 ]
 
 EXTRAS = [
