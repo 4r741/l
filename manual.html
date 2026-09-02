@@ -388,11 +388,13 @@ main:focus{outline:none}
   border-radius:var(--radio,10px);
   box-shadow:var(--sombra-2,0 1px 2px rgba(20,31,29,.05),0 12px 30px -14px rgba(20,31,29,.34));
   padding:1.15rem 1.25rem 1.35rem;
-  max-height:min(72vh,600px);overflow-y:auto;overscroll-behavior:contain;
+  max-height:min(80vh,700px);overflow-y:auto;overscroll-behavior:contain;
 }
 .menu__cols{
-  display:grid;gap:1.25rem 2rem;
-  grid-template-columns:repeat(auto-fill,minmax(215px,1fr));
+  display:grid;gap:1.15rem 1.9rem;
+  /* Los rótulos son frases, no etiquetas: «El foso: lo que un competidor no
+     puede comprar» necesita columna, no una línea cortada por la mitad. */
+  grid-template-columns:repeat(auto-fill,minmax(248px,1fr));
   align-items:start;
 }
 .menu__g{break-inside:avoid;min-width:0}
@@ -405,8 +407,8 @@ main:focus{outline:none}
 .menu__gt a:hover{color:var(--accent-ink)}
 .menu__g a:not(.menu__gt a){
   display:grid;grid-template-columns:2.1rem minmax(0,1fr);align-items:baseline;
-  text-decoration:none;color:var(--ink-2);font-size:.88rem;line-height:1.32;
-  padding:.28rem .4rem .28rem .1rem;border-radius:6px;
+  text-decoration:none;color:var(--ink-2);font-size:.86rem;line-height:1.3;
+  padding:.24rem .4rem .24rem .1rem;border-radius:6px;
   transition:background .13s ease,color .13s ease;
 }
 .menu__g a:not(.menu__gt a):hover{background:var(--accent-soft);color:var(--accent-ink)}
@@ -857,7 +859,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
           <span class="menu__b__n">15</span>
         </summary>
         <div class="menu__panel">
-          <div class="menu__cols"><div class="menu__g"><p class="menu__gt"><span>Apertura</span></p><a href="#presentacion"><b></b><span>Un documento, tres usos</span></a><a href="#indice"><b></b><span>Dónde está cada cosa</span></a><a href="#vanguardia"><b></b><span>Marco de vanguardia</span></a></div><div class="menu__g"><p class="menu__gt"><span>Las ocho partes</span></p><a href="#p1"><b>I</b><span>Fundamentos y principios</span></a><a href="#estandares"><b></b><span>Estándares transversales</span></a><a href="#p2"><b>II</b><span>Las catorce fases</span></a><a href="#p3"><b>III</b><span>Matriz RACI</span></a><a href="#p4"><b>IV</b><span>Manuales por puesto</span></a><a href="#p5"><b>V</b><span>Funciones de vanguardia</span></a><a href="#p6"><b>VI</b><span>Indicadores e interdependencias</span></a><a href="#p7"><b>VII</b><span>Plan de incentivos</span></a><a href="#p8"><b>VIII</b><span>Puesta en marcha</span></a></div><div class="menu__g"><p class="menu__gt"><span>Cierre</span></p><a href="#anexos"><b></b><span>Anexos</span></a><a href="#otros"><b></b><span>Otros documentos del sistema</span></a><a href="#notas"><b></b><span>Lo que sigue abierto</span></a></div><div class="menu__g menu__g--docs"><p class="menu__gt"><span>El sistema documental</span></p><a href="inicio.html"><b></b><span>Portada del sistema</span></a><a href="memoria.html"><b></b><span>Plan de Dirección</span></a><a href="deck.html"><b></b><span>Presentación de Junta</span></a><a href="index.html"><b></b><span>Protocolo de Primera Visita</span></a><a href="otros.html"><b></b><span>Otros documentos</span></a><a href="marketing.html"><b></b><span>Plan de Marketing</span></a><a href="instrumentos/captura.html"><b></b><span>Línea base</span></a></div></div>
+          <div class="menu__cols"><div class="menu__g"><p class="menu__gt"><span>Apertura</span></p><a href="#presentacion"><b></b><span>Un documento, tres usos</span></a><a href="#indice"><b></b><span>Índice: dónde está cada cosa</span></a><a href="#vanguardia"><b></b><span>Marco de vanguardia y los cinco pilares</span></a></div><div class="menu__g"><p class="menu__gt"><span>Las ocho partes</span></p><a href="#p1"><b>I</b><span>Fundamentos y principios rectores</span></a><a href="#estandares"><b></b><span>Estándares transversales del centro</span></a><a href="#p2"><b>II</b><span>Las catorce fases del recorrido</span></a><a href="#p3"><b>III</b><span>Matriz RACI: quién hace qué en cada fase</span></a><a href="#p4"><b>IV</b><span>Manuales de los seis puestos</span></a><a href="#p5"><b>V</b><span>Funciones de vanguardia por perfil</span></a><a href="#p6"><b>VI</b><span>Indicadores e interdependencias</span></a><a href="#p7"><b>VII</b><span>Plan de incentivos y retribución variable</span></a><a href="#p8"><b>VIII</b><span>Puesta en marcha del centro</span></a></div><div class="menu__g"><p class="menu__gt"><span>Cierre</span></p><a href="#anexos"><b></b><span>Anexos: plantillas y checklists</span></a><a href="#otros"><b></b><span>Otros documentos del sistema</span></a><a href="#notas"><b></b><span>Puntos que siguen abiertos</span></a></div><div class="menu__g menu__g--docs"><p class="menu__gt"><span>El sistema documental</span></p><a href="inicio.html"><b></b><span>Portada del sistema</span></a><a href="memoria.html"><b></b><span>Plan de Dirección</span></a><a href="deck.html"><b></b><span>Presentación de Junta</span></a><a href="index.html"><b></b><span>Protocolo de Primera Visita</span></a><a href="otros.html"><b></b><span>Otros documentos</span></a><a href="marketing.html"><b></b><span>Plan de Marketing</span></a><a href="instrumentos/captura.html"><b></b><span>Los números del centro</span></a></div></div>
         </div>
       </details>
       <p class="menu__aqui" data-aqui>Manual Maestro</p>

@@ -221,8 +221,12 @@ def anexo_trimestre():
 
 
 # ---------------------------------------------------------------- montaje
-cuerpo = "\n\n".join((SP / ("marketing-0%d.html" % n)).read_text(encoding="utf-8").strip("\n")
-                     for n in range(1, 6))
+# El orden es explícito porque no es el del nombre: el GTC —marketing-06— va
+# dentro del cuerpo, en su Parte VIII, y los anexos —marketing-05— cierran.
+PIEZAS = ["marketing-01", "marketing-02", "marketing-03", "marketing-04",
+          "marketing-06", "marketing-05"]
+cuerpo = "\n\n".join((SP / (n + ".html")).read_text(encoding="utf-8").strip("\n")
+                     for n in PIEZAS)
 
 figuras = (SP / "figuras-marketing.html").read_text(encoding="utf-8")
 

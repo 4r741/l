@@ -29,9 +29,14 @@ def main():
         if not ruta.exists():
             continue
         t = ruta.read_text(encoding="utf-8")
-        # solo el rótulo que empieza por número, y solo si no lleva ya su marca
+        # Solo el rótulo que empieza por número, y el número entero. La guarda
+        # de antes —«y que no acabe ahí»— hacía justo lo contrario de lo que
+        # parecía: ante «<p class="eyebrow">00</p>» el motor retrocedía a una
+        # sola cifra para que la guarda pasara, y el Plan de Marketing salía con
+        # veintiún apartados titulados «0 0», «0 1», «0 2». Lo que hay que
+        # exigir no es que siga texto, sino que el número esté completo.
         patron = re.compile(
-            r'(<p class="eyebrow"[^>]*>)\s*(\d{1,2}(?:\.\d+)?)\s*(?:·\s*)?(?!</p>)')
+            r'(<p class="eyebrow"[^>]*>)\s*(\d{1,2}(?:\.\d+)?)(?![\d.])\s*(?:·\s*)?')
 
         def cambia(m):
             return '%s<b class="num">%s</b> ' % (m.group(1), m.group(2))

@@ -99,7 +99,7 @@ def linea(fila, rotulo, texto, fuente=NORMAL):
 
 h["B2"] = "Captura de la línea base · Centro de Excelencia Implantológica Giraldo"
 h["B2"].font = TITULO
-h["B3"] = ("Instrumento del apartado 7 y del apartado 13 de la Plan de Dirección v%s · Ejercicio %s"
+h["B3"] = ("Instrumento del apartado 7 y del apartado 13 del Plan de Dirección v%s · Ejercicio %s"
            % (VERSION, EJERCICIO))
 h["B3"].font = SUAVE
 
@@ -357,7 +357,7 @@ n5.cell(21, 2, "Los resultados dicen «pendiente» mientras falte alguna entrada
 wb.properties.creator = "Centro de Excelencia Implantológica Giraldo"
 wb.properties.lastModifiedBy = "Centro de Excelencia Implantológica Giraldo"
 wb.properties.title = "Captura de la línea base · %s" % EJERCICIO
-wb.properties.subject = "Los diez indicadores del apartado 13 de la Plan de Dirección"
+wb.properties.subject = "Los diez indicadores del apartado 13 del Plan de Dirección"
 wb.properties.description = (
     "Instrumento del apartado 7 y del apartado 13. Uso interno. Una hoja por mes, resumen anual "
     "y los cinco números. Versión v%s del sistema documental." % VERSION)

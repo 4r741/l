@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Ensambla memoria.html, la Plan de Dirección v@VERSION@.
+"""Ensambla memoria.html, el Plan de Dirección v@VERSION@.
 
 Conserva íntegros los diez apartados de la Memoria v1.0 —renumerados— y los
 reordena en seis partes, intercalando la capa estratégica y la Parte VI, cuyas

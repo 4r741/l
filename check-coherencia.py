@@ -497,6 +497,22 @@ def comprueba_catalogo():
 
 
 
+# Concordancias que rompió el renombrado de «Tesis» a «Plan de Dirección»: la
+# palabra cambió de género y quedaron sueltas «de la Plan de Dirección» y «van
+# de la plan de dirección al minuto exacto». Se leen mal y no las ve nadie.
+CONCORDANCIA = ["la Plan de Dirección", "la plan de dirección", "una Plan de Dirección",
+                "esta Plan de Dirección", "la Tesis", "de la tesis"]
+
+
+def comprueba_concordancia():
+    """Ninguna frase puede decir «la Plan de Dirección»."""
+    for nombre in list(DOCUMENTOS) + ["inicio.html", "deck.html"]:
+        doc = bruto(nombre)
+        for mala in CONCORDANCIA:
+            if mala in doc:
+                falla(nombre, "dice «%s»: el renombrado dejó el género sin cambiar" % mala)
+
+
 def comprueba_menu():
     """El menú tiene que llevar a sitios que existan y contar como cuenta el texto.
 
@@ -574,6 +590,7 @@ def main():
     comprueba_figuras()
     comprueba_catalogo()
     comprueba_menu()
+    comprueba_concordancia()
     print("Coherencia del sistema documental · versión canónica v%s · %s\n" % (VERSION, FECHA))
     for a in avisos:
         print("  aviso   " + a)

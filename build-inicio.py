@@ -116,7 +116,7 @@ cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Puerta de entrada al sistema documental del Centro '
                   'de Excelencia Implantológica Giraldo: Plan de Dirección, presentación de Junta, Manual '
                   'Maestro, Protocolo de Primera Visita, otros documentos del sistema y la hoja '
-                  'de línea base.">', cabecera, count=1)
+                  'mensual de los números del centro.">', cabecera, count=1)
 
 CSS = """
 /* ---------------------------------------------------------------------------
@@ -364,13 +364,13 @@ FICHAS = [
   "12 fases · 90 páginas"),
  ("marketing.html", "Plan Maestro de Marketing", "Cómo llega el paciente",
   "Las @ACCIONES@ acciones ordenadas por el estado de la relación del paciente con su "
-  "propia boca, con dueño, coste, plazo y semáforo legal.",
+  "propia boca, y el programa Giraldo Te Cuida, que es lo que hace que se quede.",
   "@ACCIONES@ acciones · @ESTADOS@ estados"),
  ("otros.html", "Otros documentos del sistema", "Los catorce de apoyo",
   "Compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, "
-  "100 días, protocolos por perfil, innovación, marca y GTC.",
+  "100 días, protocolos por perfil, innovación, marca y continuidad legal.",
   "14 documentos · 135 páginas"),
- ("instrumentos/captura.html", "Hoja de línea base", "El instrumento que mide",
+ ("instrumentos/captura.html", "Los números del centro", "El instrumento que mide",
   "Doce hojas mensuales con semáforo automático, resumen anual y los cinco números. "
   "Se rellena aquí mismo y se guarda en este equipo.",
   "10 indicadores · se rellena en el navegador"),
@@ -436,7 +436,7 @@ CUERPO = """
     <div class="section__head">
       <p class="eyebrow">Por dónde se empieza</p>
       <h2>@CUANTOS@ documentos</h2>
-      <p>El Plan de Dirección dirige, la presentación convence, el Manual y el Protocolo ejecutan, el Plan de Marketing llena la agenda, Otros documentos sostiene y la hoja de línea base mide. Sin la última, todas las demás se apoyan en supuestos.</p>
+      <p>El Plan de Dirección dirige, la presentación convence, el Manual y el Protocolo ejecutan, el Plan de Marketing llena la agenda, Otros documentos sostiene y los números del centro miden. Sin la última, todas las demás se apoyan en supuestos.</p>
     </div>
     <div class="puerta">
       @@FICHAS@@
@@ -480,7 +480,7 @@ CUERPO = """
   <div class="wrap">
     <div class="callout" style="max-width:none">
       <p class="eyebrow">Sobre la naturaleza de las cifras</p>
-      <p>Las cifras económicas del Plan de Dirección y de la presentación son <strong>modelos sobre rangos del sector, marcados como tales</strong> en cada figura y registrados en su apartado 18. No son datos del centro y no deben citarse como tales hasta que exista la línea base. Levantarla es exactamente para lo que sirve la hoja de línea base.</p>
+      <p>Las cifras económicas del Plan de Dirección y de la presentación son <strong>modelos sobre rangos del sector, marcados como tales</strong> en cada figura y registrados en su apartado 18. No son datos del centro y no deben citarse como tales hasta que exista la línea base. Levantarla es exactamente para lo que sirve la hoja de los números del centro.</p>
     </div>
   </div>
 </section>
