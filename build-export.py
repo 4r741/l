@@ -1273,6 +1273,33 @@ def prefijar(html, prefijo):
     return html
 
 
+# El sitio por áreas no viaja dentro del archivo único: trae literatura de los
+# ocho documentos que ya están aquí, y meterlo otra vez sería la misma prosa dos
+# veces en el mismo archivo. Lo que no puede quedarse es su enlace, que dentro
+# de un archivo suelto no lleva a ninguna parte.
+SIN_SITIO = re.compile(r'<a href="(?:\.\./)?centro\.html"><b></b><span>[^<]*</span></a>')
+
+
+# La portada invita a entrar por áreas con un bloque grande y un enlace. Aquí
+# el enlace no lleva a ninguna parte —el sitio por áreas es otro archivo—, así
+# que el bloque se queda, que es literatura, y deja de ser un enlace: dice
+# dónde está en vez de prometer una puerta que en este archivo no existe.
+CTA_SITIO = re.compile(r'<a class="sitio__cta" href="centro\.html">(.*?)</a>', re.S)
+
+
+def sin_sitio(html):
+    html = SIN_SITIO.sub("", html)
+
+    def nota(m):
+        dentro = re.sub(
+            r'<p class="sitio__cta__ir">.*?</p>',
+            '<p class="sitio__cta__ir"><span>En el archivo '
+            '<b>centro.html</b> de la entrega</span></p>', m.group(1), flags=re.S)
+        return '<div class="sitio__cta sitio__cta--nota">%s</div>' % dentro
+
+    return CTA_SITIO.sub(nota, html)
+
+
 def conmutadores(html, propio):
     """Convierte los enlaces entre archivos en conmutadores internos.
 
@@ -1468,7 +1495,7 @@ def unificado(estilo_fuentes):
         cuerpo_doc = cuerpo(fuentes[nombre])
         if prefijo:
             cuerpo_doc = prefijar(cuerpo_doc, prefijo)
-        cuerpo_doc = conmutadores(cuerpo_doc, nombre)
+        cuerpo_doc = conmutadores(sin_sitio(cuerpo_doc), nombre)
         # Aquí se cierra la fisura: cada documento traía su propia cabecera con
         # su marca y sus enlaces cruzados, de modo que el archivo único
         # apilaba tres barras y repetía la navegación dos veces. Se le quita la

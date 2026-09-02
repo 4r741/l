@@ -36,6 +36,7 @@ MENUS = {
         "aria": "Secciones de la portada",
         "grupos": [
             ("Esta página", None, [
+                ("por-areas", "", "El centro, contado por áreas"),
                 ("documentos", "", "Los ocho documentos del sistema"),
                 ("indice", "", "Buscar en todo el sistema"),
                 ("cifras", "", "Sobre la naturaleza de las cifras"),
@@ -275,6 +276,7 @@ MENUS = {
 # texto—; aquí caben en cuatro renglones y la barra vuelve a ser una barra.
 DOCS = [
     ("inicio.html", "Inicio"),
+    ("centro.html", "El centro, por áreas"),
     ("memoria.html", "Dirección"),
     ("deck.html", "Presentación de Junta"),
     ("protocolos.html", "Protocolos por puesto"),
@@ -284,6 +286,12 @@ DOCS = [
     ("otros.html", "Otros documentos"),
     ("instrumentos/captura.html", "Los números del centro"),
 ]
+
+
+# Dos de las entradas de arriba no son documentos: son puertas. La portada
+# reparte y el sitio por áreas trae literatura de los ocho, pero ninguno añade
+# uno nuevo. Quien cuente documentos tiene que descontarlos.
+NO_SON_DOCUMENTOS = {"inicio.html", "centro.html"}
 
 
 def _hacia(desde, hasta):

@@ -196,6 +196,36 @@ CSS = """
 
 /* Las siete puertas. Tarjetas de borde fino que se invierten al pasar por
    encima: negro pleno y la flecha en ácido. */
+/* La otra puerta: un solo bloque, ancho, antes de la rejilla de documentos.
+   Quien sabe qué documento quiere baja a la rejilla; quien no lo sabe —que es
+   casi todo el mundo la primera vez— entra por aquí. */
+.sitio__cta{
+  display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-end;justify-content:space-between;
+  text-decoration:none;padding:2.6rem 2.8rem;border-radius:var(--radio);
+  background:var(--tinta);color:#fff;transition:background .16s ease;
+}
+.sitio__cta .eyebrow{color:var(--acido)}
+.sitio__cta h2{margin:.9rem 0 0;color:#fff;font-size:clamp(1.8rem,3.6vw,2.6rem)}
+.sitio__cta > div{max-width:64ch}
+.sitio__cta p:not(.eyebrow):not(.sitio__cta__ir){
+  margin:1.1rem 0 0;color:rgba(255,255,255,.76);line-height:1.62;
+}
+.sitio__cta__ir{
+  margin:0;display:inline-flex;align-items:center;gap:.7rem;white-space:nowrap;
+  font-family:var(--f-mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acido);border:1px solid rgba(255,255,255,.24);border-radius:999px;
+  padding:.7rem 1.2rem;
+}
+.sitio__cta:hover{background:#0A1B22}
+/* En el archivo único el bloque se queda pero deja de ser un enlace: allí el
+   sitio por áreas es otro archivo y una puerta que no abre es peor que ninguna. */
+.sitio__cta--nota{cursor:default}
+.sitio__cta--nota:hover{background:var(--tinta)}
+.sitio__cta--nota .sitio__cta__ir{color:rgba(255,255,255,.6);letter-spacing:.06em;text-transform:none}
+.sitio__cta--nota .sitio__cta__ir b{font-family:var(--f-mono);color:var(--acido)}
+.sitio__cta:hover .sitio__cta__ir{border-color:var(--acido)}
+@media(max-width:700px){.sitio__cta{padding:1.9rem 1.6rem}}
+
 .puerta{
   display:grid;gap:.6rem;margin-top:1.8rem;
   grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));
@@ -493,6 +523,21 @@ CUERPO = """
     </div>
   </div>
 </section>
+
+<section class="section section--sitio" id="por-areas">
+  <div class="wrap">
+    <a class="sitio__cta" href="centro.html">
+      <div>
+        <p class="eyebrow">La otra puerta</p>
+        <h2>El centro, contado por áreas</h2>
+        <p>Para encontrar algo aquí hay que saber en qué documento está. En la otra puerta no: doce áreas, una pregunta cada una —quiénes somos, en qué creemos, cuál es el método, quién es el equipo, qué vive un paciente el primer día, con qué se mide— y debajo la literatura que la contesta, entera y traída aquí. No hay que saltar a ninguna parte.</p>
+      </div>
+      <p class="sitio__cta__ir"><span>Entrar por áreas</span> <b>&#8594;</b></p>
+    </a>
+  </div>
+</section>
+
+<div class="wrap"><div class="ticks" aria-hidden="true"></div></div>
 
 <section class="section section--puertas" id="documentos">
   <div class="wrap">

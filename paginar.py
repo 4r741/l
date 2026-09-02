@@ -41,7 +41,7 @@ PORTADA = "portada-doc"
 # scroll —quién es esto, qué documento abro, dónde busco— y trocearla en cuatro
 # pantallas sería inventar un recorrido donde no hay ninguno. Y la hoja de los
 # números es un instrumento que se rellena, no un texto que se recorre.
-ENTERAS = {"inicio.html", "instrumentos/captura.html", "protocolos.html"}
+ENTERAS = {"inicio.html", "instrumentos/captura.html", "protocolos.html", "centro.html"}
 
 VACIOS = {"br", "img", "meta", "link", "input", "hr", "source", "col", "area",
           "base", "path", "circle", "rect", "line", "use", "stop", "polygon",

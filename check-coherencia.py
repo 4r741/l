@@ -532,8 +532,10 @@ def comprueba_cuenta_de_documentos():
         return
     entorno = {"__name__": "menu_contado", "__file__": str(ruta)}
     exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
-    # DOCS lleva también la portada, que es la puerta y no un documento
-    cuantos = len([f for f, _r in entorno["DOCS"] if f != "inicio.html"])
+    # DOCS lleva también las puertas —la portada y el sitio por áreas—, que
+    # reparten literatura de los demás pero no añaden ninguno.
+    puertas = entorno.get("NO_SON_DOCUMENTOS", {"inicio.html"})
+    cuantos = len([f for f, _r in entorno["DOCS"] if f not in puertas])
     buena = LETRA_DOCS.get(cuantos, str(cuantos))
     malas = [p for n, p in LETRA_DOCS.items() if n != cuantos]
 
@@ -626,6 +628,46 @@ def comprueba_menu():
                 falla(archivo, "el menú numera a su manera en «%s»" % rotulo)
 
 
+def comprueba_sitio():
+    """El sitio por áreas trae literatura de verdad y no deja enlaces muertos.
+
+    centro.html no se escribe: se arma trayendo secciones enteras de los ocho
+    documentos. Si una de ellas cambia de identificador y nadie vuelve a armar
+    el sitio, aquí quedan enlaces que no llevan a ninguna parte y áreas vacías,
+    y eso no se ve abriendo la página por arriba.
+    """
+    ruta = RAIZ / "sitio.py"
+    pagina = RAIZ / "centro.html"
+    if not ruta.exists() or not pagina.exists():
+        falla("centro.html", "falta el sitio por áreas o su modelo (sitio.py)")
+        return
+    entorno = {"__name__": "sitio_auditado", "__file__": str(ruta)}
+    exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
+
+    # cada pieza que el modelo promete tiene que existir en su documento
+    for _area, doc, ancla, rotulo in entorno["enlaces"]():
+        if ('id="%s"' % ancla) not in bruto(doc):
+            falla("sitio.py", "promete «%s» en %s y ese destino no existe" % (ancla, doc))
+
+    html = pagina.read_text(encoding="utf-8")
+    cuerpo = html[html.index("<main"):]
+    for area in entorno["AREAS"]:
+        if ('id="%s"' % area["id"]) not in cuerpo:
+            falla("centro.html", "no tiene el área «%s»" % area["rotulo"])
+
+    muertas = [a for a in set(re.findall(r'href="#([^"]+)"', cuerpo))
+               if ('id="%s"' % a) not in html]
+    for a in sorted(muertas)[:6]:
+        falla("centro.html", "el enlace «#%s» no lleva a ninguna parte" % a)
+
+    # y la literatura tiene que haber viajado: un área vacía es un área rota
+    piezas = cuerpo.count('class="pz"')
+    esperadas = sum(len(a["enlaces"]) for a in entorno["AREAS"])
+    if piezas != esperadas:
+        falla("centro.html", "trae %d piezas y el modelo dice %d: vuelva a pasar build-sitio.py"
+              % (piezas, esperadas))
+
+
 def main():
     comprueba_version()
     comprueba_cifras()
@@ -642,6 +684,7 @@ def main():
     comprueba_catalogo()
     comprueba_menu()
     comprueba_cuenta_de_documentos()
+    comprueba_sitio()
     comprueba_concordancia()
     print("Coherencia del sistema documental · versión canónica v%s · %s\n" % (VERSION, FECHA))
     for a in avisos:

@@ -44,6 +44,10 @@ DOCUMENTOS = [
     (RAIZ / "build-inicio.py", "inicio.html · portada del sistema"),
     (RAIZ / "paginar.py", "cada documento partido en apartados navegables"),
     (RAIZ / "tablero.py", "el tablero de mando de cada documento"),
+    # El último de la lista: trae literatura de los ocho documentos ya
+    # terminados —con sus anclas, sus números y sus tableros— así que tiene
+    # que ir después de todos ellos.
+    (RAIZ / "build-sitio.py", "centro.html · el centro contado por áreas"),
 ]
 
 EXTRAS = [
