@@ -97,7 +97,7 @@ def linea(fila, rotulo, texto, fuente=NORMAL):
     c = h.cell(fila, 3, texto); c.font = fuente; c.alignment = Alignment(wrap_text=True, vertical="top")
     h.row_dimensions[fila].height = 30
 
-h["B2"] = "Captura de la línea base · Centro de Excelencia Implantológica Giraldo"
+h["B2"] = "Los números del centro · Centro de Excelencia Implantológica Giraldo"
 h["B2"].font = TITULO
 h["B3"] = ("Instrumento del apartado 7 y del apartado 13 del Plan de Dirección v%s · Ejercicio %s"
            % (VERSION, EJERCICIO))
@@ -356,7 +356,7 @@ n5.cell(21, 2, "Los resultados dicen «pendiente» mientras falte alguna entrada
 # una. Se fijan aquí, con la fecha de la versión y no la del reloj.
 wb.properties.creator = "Centro de Excelencia Implantológica Giraldo"
 wb.properties.lastModifiedBy = "Centro de Excelencia Implantológica Giraldo"
-wb.properties.title = "Captura de la línea base · %s" % EJERCICIO
+wb.properties.title = "Los números del centro · %s" % EJERCICIO
 wb.properties.subject = "Los diez indicadores del apartado 13 del Plan de Dirección"
 wb.properties.description = (
     "Instrumento del apartado 7 y del apartado 13. Uso interno. Una hoja por mes, resumen anual "

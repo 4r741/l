@@ -41,7 +41,7 @@ PARTES = [
      "Las doce fases de la primera visita, minuto a minuto."),
     ("otros.html", "Otros documentos del sistema",
      "Los catorce documentos de apoyo, del compendio maestro al programa de cuidado."),
-    ("instrumentos/captura.html", "Captura de la línea base",
+    ("instrumentos/captura.html", "Los números del centro",
      "Los diez indicadores y los cinco números, mes a mes."),
 ]
 

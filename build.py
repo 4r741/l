@@ -41,6 +41,7 @@ DOCUMENTOS = [
     (RAIZ / "numera-rotulos.py", "el número de cada apartado, para dibujarlo aparte"),
     (RAIZ / "anclas.py", "anclas de todos los titulares"),
     (RAIZ / "build-inicio.py", "inicio.html · portada del sistema"),
+    (RAIZ / "paginar.py", "cada documento partido en apartados navegables"),
 ]
 
 EXTRAS = [

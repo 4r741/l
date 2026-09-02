@@ -34,6 +34,38 @@ def sello(t):
 
 
 CSS = """
+/* ---------------------------------------------------------------------------
+   La portada del instrumento. Antes decía «el Plan de Dirección declara que el
+   centro no tiene todavía sus cinco números ni serie propia en ninguno de los
+   diez indicadores»: cierto, y sin embargo ilegible para quien no se sepa ya
+   de memoria qué son esos cinco números y esos diez indicadores. Ahora lo
+   primero que se lee es qué es esto, quién lo rellena, cuándo, qué hay que
+   teclear y qué sale.
+   --------------------------------------------------------------------------- */
+.quees{
+  display:grid;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
+  margin-top:2rem;
+}
+@media(min-width:720px){.quees{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1120px){.quees{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.quees__c{background:var(--surface);padding:1.25rem 1.35rem 1.35rem;min-width:0}
+.quees__c .eyebrow{margin:0 0 .5rem}
+.quees__c p{margin:0;font-size:.92rem;line-height:1.55;color:var(--ink-2)}
+
+.ruta{margin-top:2rem;border-top:1px solid var(--line);padding-top:1.4rem}
+.ruta>.eyebrow{margin:0 0 1rem}
+.ruta ol{list-style:none;margin:0;padding:0;display:grid;gap:.85rem}
+@media(min-width:900px){.ruta ol{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem}}
+.ruta li{display:grid;grid-template-columns:2rem minmax(0,1fr);align-items:start;gap:.2rem}
+.ruta b{
+  font-family:var(--f-mono);font-size:.78rem;font-weight:500;color:#fff;
+  background:var(--accent);width:1.5rem;height:1.5rem;border-radius:999px;
+  display:grid;place-items:center;
+}
+.ruta span{font-size:.9rem;line-height:1.5;color:var(--ink-2)}
+.ruta a{color:var(--accent-ink)}
+
 /* ============================================================
    HOJA DE CAPTURA — mismo sistema de diseño, con celdas que se
    rellenan en el navegador y se guardan en el propio equipo.
@@ -146,7 +178,7 @@ manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
 cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                            "<title>Captura de la línea base · Giraldo</title>")
+                            "<title>Los números del centro · Giraldo</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Hoja de captura de la línea base del Centro de '
                   'Excelencia Implantológica Giraldo: doce meses, diez indicadores con definición '
@@ -296,42 +328,62 @@ CUERPO = ("""
   <div class="wrap">
     <div class="topbar__in">
       <a class="brand" href="#portada">
-        <span class="brand__mark">Captura de la <b>línea base</b></span>
+        <span class="brand__mark">Los números del <b>centro</b></span>
         <span class="brand__tag">2026 · v@VERSION@</span>
       </a>
       <a class="crosslink" href="../memoria.html">Plan de Dirección</a>
       <a class="crosslink" href="../manual.html">Manual Maestro</a>
       <a class="crosslink" href="../index.html">Protocolo</a>
     </div>
-    <nav class="strip" aria-label="Índice">
-      <a href="#instrucciones">Instrucciones</a>
-      <a href="#definiciones">Definiciones</a>
-      <a href="#captura">Captura mensual</a>
-      <a href="#anual">Resumen anual</a>
-      <a href="#cinco">Los cinco números</a>
-    </nav>
+    <nav class="strip" aria-label="Índice"></nav>
   </div>
 </header>
 
 <main class="captura-raiz">
 
-<div class="printhead" aria-hidden="true"><b>Captura de la línea base · 2026 · v@VERSION@</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Los números del centro · 2026 · v@VERSION@</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <section class="hero" id="portada">
   <div class="wrap">
-    <div class="hero__grid">
-      <div>
-        <p class="eyebrow">Instrumento del 07 y del 13 · Uso interno</p>
-        <h1>Captura de la<br><em>línea base</em></h1>
-        <p class="hero__lede">El Plan de Dirección declara que el centro no tiene todavía sus cinco números ni serie propia en ninguno de los diez indicadores. Esta hoja es lo que hace que dejen de faltar.</p>
-        <p class="hero__note">Se rellena en el navegador y se guarda en este mismo equipo, sin enviar nada a ningún sitio. Un indicador sin dato aparece como <strong>SIN DATO</strong> y cuenta como rojo: es la regla de reporte del apartado 13. Los resultados de los cinco números dicen <strong>pendiente</strong> mientras falte una entrada, en lugar de dar una cifra inventada.</p>
+    <p class="eyebrow">Instrumento de medición · Ejercicio 2026 · Uso interno</p>
+    <h1>Los números del <em>centro</em></h1>
+    <p class="hero__lede">Un cuaderno donde se apunta, mes a mes, lo que de verdad pasa en la clínica. Diez cosas que se cuentan y siete datos de contabilidad. Con eso, la hoja calcula sola los cinco números que la Junta necesita para decidir con hechos en vez de con impresiones.</p>
+
+    <div class="quees">
+      <div class="quees__c">
+        <p class="eyebrow">Por qué existe</p>
+        <p>Hoy el centro no tiene ni un solo mes medido. Todas las cifras económicas del Plan de Dirección son <strong>modelos sobre rangos del sector</strong>, no datos propios. Mientras siga así, cualquier objetivo comercial es una opinión bien argumentada. Esta hoja es la que convierte la opinión en dato.</p>
       </div>
-      <dl class="specs">
-        <div class="spec"><dt>Indicadores</dt><dd>10<small>Con definición operativa acordada</small></dd></div>
-        <div class="spec"><dt>Meses</dt><dd>12<small>Una hoja de captura por mes</small></dd></div>
-        <div class="spec"><dt>Los cinco números</dt><dd>7<small>Entradas que hacen falta para calcularlos</small></dd></div>
-        <div class="spec"><dt>Dónde se guarda</dt><dd>Aquí<small>En el navegador de este equipo, en local</small></dd></div>
-      </dl>
+      <div class="quees__c">
+        <p class="eyebrow">Quién la rellena y cuándo</p>
+        <p>Gerencia, <strong>una vez al mes</strong>, entre el día 15 y el 21. Se tarda unos veinte minutos: casi todo sale del gestor de clínica y de la contabilidad del mes. Hay doce hojas, una por mes del año.</p>
+      </div>
+      <div class="quees__c">
+        <p class="eyebrow">Qué hay que teclear</p>
+        <p>Solo las casillas amarillas. <strong>Diez indicadores</strong> —cuántos, sobre cuántos— y <strong>siete entradas</strong> de dinero y capacidad. El resultado, el semáforo de color, el resumen del año y la tendencia se calculan solos.</p>
+      </div>
+      <div class="quees__c">
+        <p class="eyebrow">Qué sale de aquí</p>
+        <p>Los <strong>cinco números</strong>: lo que cuesta tener el centro abierto, cuánto hay que facturar para no perder dinero, cuántas primeras visitas al día hacen falta para llegar ahí, cuánto trabajo cobrado queda por hacer y cuántos meses aguanta el centro sin ingresar nada.</p>
+      </div>
+      <div class="quees__c">
+        <p class="eyebrow">Dónde se guarda</p>
+        <p>En este mismo ordenador, dentro del navegador. <strong>No se envía nada a ningún sitio</strong> y no lo ve nadie más. Tampoco se sincroniza: para llevárselo a otro equipo hay que usar «Guardar copia» y «Cargar copia».</p>
+      </div>
+      <div class="quees__c">
+        <p class="eyebrow">La regla que no se salta</p>
+        <p>Un hueco se declara. Si un mes falta un dato, la casilla dice <strong>SIN DATO</strong> y cuenta como roja; los cinco números dicen <strong>pendiente</strong> en vez de dar una cifra inventada. Un número inventado es peor que un hueco reconocido.</p>
+      </div>
+    </div>
+
+    <div class="ruta">
+      <p class="eyebrow">De arriba abajo, este es el recorrido</p>
+      <ol>
+        <li><b>1</b><span>Se leen las <a href="#definiciones">definiciones</a>: qué cuenta y qué no cuenta en cada indicador, para que un mes se mida igual que el siguiente.</span></li>
+        <li><b>2</b><span>Cada mes se rellena su <a href="#captura">hoja</a>: diez numeradores, diez denominadores y una nota de estado.</span></li>
+        <li><b>3</b><span>El <a href="#anual">resumen anual</a> junta los doce meses en una rejilla y enseña la tendencia sin que nadie la calcule.</span></li>
+        <li><b>4</b><span>Con las siete entradas de contabilidad salen <a href="#cinco">los cinco números</a>, que son los que van a la Junta.</span></li>
+      </ol>
     </div>
   </div>
 </section>
@@ -458,7 +510,7 @@ CUERPO = ("""
     <div class="ticks" aria-hidden="true" style="margin-bottom:2rem"></div>
     <div class="foot__grid">
       <div>
-        <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Captura de la línea base · Ejercicio 2026</p>
+        <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Los números del centro · Ejercicio 2026</p>
         <p style="margin-top:.8rem">Documento de uso interno. Los datos se guardan únicamente en este equipo.</p>
       </div>
       <div><p class="eyebrow">Instrumento de</p><p>apartado 7 · Línea base<br>apartado 13 · Cuadro de mando</p></div>

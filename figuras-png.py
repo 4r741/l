@@ -46,6 +46,9 @@ def main():
             pg.wait_for_timeout(900)
             # todo lo diferido a la vista: si no, se fotografía una figura en blanco
             pg.evaluate("document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'))")
+            # y el documento entero desplegado: con la lectura por apartados solo
+            # uno está visible, y los SVG de los demás no tienen tamaño que medir
+            pg.evaluate("document.querySelectorAll('main').forEach(m=>m.classList.remove('aps'))")
             pg.wait_for_timeout(300)
             svgs = pg.query_selector_all("main svg")
             fichas = []

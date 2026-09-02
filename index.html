@@ -381,6 +381,135 @@ main:focus{outline:none}
 
 @media print{.strip{display:none}}
 
+/* ===========================================================================
+   EL DOCUMENTO COMO APARTADOS, NO COMO RÍO
+
+   Un documento de este sistema mide entre doscientos y cuatrocientos cincuenta
+   kilobytes en una sola columna. El menú llevaba a un ancla, sí, pero uno caía
+   en mitad de la corriente: sin saber dónde estaba, sin ver cuánto quedaba del
+   apartado y sin más manera de seguir que arrastrar. Cuarenta mil píxeles de
+   arrastre por documento.
+
+   Ahora se lee un apartado cada vez, con el índice del documento siempre a la
+   vista a la izquierda y con el anterior y el siguiente al pie, con su nombre.
+   Sin guiones —y al imprimir— se ven todos seguidos, que es lo que había.
+   =========================================================================== */
+/* La marca la pone el instalador, no la hoja: si por lo que sea la capa de
+   apartados no llega a instalarse, se ven todos seguidos —que es el documento
+   de siempre— en vez de quedarse la página en blanco. */
+.aps .ap{display:none}
+.aps .ap.is-on{display:block;animation:entra .18s ease}
+@keyframes entra{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.aps .ap.is-on{animation:none}}
+@media print{.ap{display:block!important}}
+
+/* --- el índice lateral, fijo mientras se lee --------------------------- */
+.lateral{
+  position:fixed;top:var(--barra);left:0;bottom:0;width:19rem;z-index:40;
+  background:var(--surface);border-right:1px solid var(--line);
+  overflow-y:auto;overscroll-behavior:contain;padding:0 .4rem 2rem 1.1rem;
+  display:none;
+}
+.con-lateral .lateral{display:block}
+/* La caja de medida se pega al lateral en vez de centrarse en la pantalla:
+   con el índice a la izquierda, centrar el texto en el ancho total lo empuja
+   al borde derecho. Solo donde hay lateral: en un móvil esta regla dejaba el
+   texto pegado al canto izquierdo, sin margen ninguno. */
+@media(min-width:1100px){
+  .con-lateral main>.wrap,.con-lateral main .wrap{margin-left:0}
+  .con-lateral main{padding-left:19rem}
+  .con-lateral footer.foot{padding-left:19rem}
+}
+/* El apartado abierto empieza con aire: pegado a la barra, el rastro que dice
+   en qué parte estás se lee por debajo del cristal de la cabecera. */
+.aps>.ap.is-on{padding-top:1.5rem}
+.lateral__g{margin:0 0 1.15rem}
+.lateral__gt{
+  font-family:var(--f-mono);font-size:.62rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 .35rem;
+  padding:0 .5rem .3rem 0;border-bottom:1px solid var(--line);
+}
+.lateral__gt a{color:inherit;text-decoration:none}
+.lateral__gt a:hover{color:var(--accent-ink)}
+.lateral a.lateral__e{
+  display:grid;grid-template-columns:1.9rem minmax(0,1fr);align-items:baseline;
+  gap:0;text-decoration:none;color:var(--ink-2);
+  font-size:.82rem;line-height:1.28;padding:.32rem .5rem .32rem .1rem;
+  border-radius:6px;border-left:2px solid transparent;
+  transition:background .13s ease,color .13s ease,border-color .13s ease;
+}
+.lateral a.lateral__e:hover{background:var(--accent-soft);color:var(--accent-ink)}
+.lateral a.lateral__e b{font-family:var(--f-mono);font-size:.66rem;font-weight:500;color:var(--muted)}
+.lateral a.lateral__e[aria-current="true"]{
+  background:var(--accent-soft);color:var(--accent-ink);font-weight:500;
+  border-left-color:var(--accent);
+}
+.lateral a.lateral__e[aria-current="true"] b{color:var(--accent)}
+.lateral__e[hidden]{display:none!important}
+.lateral__g[hidden]{display:none!important}
+.lateral mark{background:rgba(14,143,132,.2);color:inherit;border-radius:2px;padding:0 .05em}
+
+/* --- el buscador del lateral ------------------------------------------ */
+.lateral__buscar{
+  position:sticky;top:0;z-index:2;background:var(--surface);
+  margin:0 -.4rem .9rem -1.1rem;padding:.85rem 1rem;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:.5rem;color:var(--muted);
+}
+.lateral__buscar input{
+  flex:1;min-width:0;font:inherit;font-size:.85rem;color:var(--ink);
+  background:transparent;border:0;outline:none;padding:.15rem 0;
+}
+.lateral__buscar input::placeholder{color:var(--muted)}
+.lateral__buscar input::-webkit-search-cancel-button{display:none}
+.lateral__buscar kbd{
+  font-family:var(--f-mono);font-size:.62rem;color:var(--muted);
+  border:1px solid var(--line);border-radius:4px;padding:.05rem .3rem;
+}
+.lateral__nada{font-size:.82rem;color:var(--muted);padding:.4rem .5rem}
+
+/* --- anterior y siguiente, al pie del apartado ------------------------- */
+.pasos{
+  display:grid;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
+  margin:3.5rem 0 1rem;
+}
+@media(min-width:700px){.pasos{grid-template-columns:1fr 1fr}}
+.pasos__a{
+  background:var(--surface);padding:1rem 1.2rem;text-decoration:none;color:inherit;
+  display:grid;gap:.25rem;transition:background .15s ease;min-width:0;
+}
+.pasos__a:hover{background:var(--accent-soft)}
+.pasos__a:hover b{color:var(--accent-ink)}
+.pasos__a span{
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.pasos__a b{
+  font-weight:500;font-size:.98rem;line-height:1.25;color:var(--ink);
+  transition:color .15s ease;
+}
+.pasos__a i{font-style:normal;font-family:var(--f-mono);color:var(--muted);margin-right:.4rem}
+.pasos__a--sig{text-align:right}
+.pasos__a--sig i{margin:0 0 0 .4rem}
+.pasos__a--vacio{background:var(--paper);pointer-events:none;opacity:.45}
+@media print{.pasos,.lateral{display:none!important}}
+
+/* --- el rastro: dónde estás, sobre el titular -------------------------- */
+.rastro{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 1.4rem;
+}
+.rastro b{color:var(--accent-ink);font-weight:500}
+.rastro em{font-style:normal;color:var(--line)}
+@media print{.rastro{display:none}}
+
+@media(max-width:1099px){
+  .con-lateral main,.con-lateral footer.foot{padding-left:0}
+  .lateral{display:none!important}
+}
+
 /* ============================================================
    PORTADA
    ============================================================ */
@@ -723,7 +852,7 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 </header>
 
 <main>
-
+<article class="ap" data-ap="portada-doc" data-n="" data-rotulo="Portada" data-grupo="">
 <div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v8.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
@@ -752,6 +881,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 <div class="wrap"><div class="ticks ticks--tall" aria-hidden="true"></div></div>
 
 <!-- ===================== FUNDAMENTOS ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="fundamentos" data-n="" data-rotulo="Los cinco principios de la visita" data-grupo="Apertura">
 <section class="section" id="fundamentos">
   <div class="wrap">
     <div class="section__head">
@@ -808,6 +940,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 </section>
 
 <!-- ===================== MAPA ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="mapa" data-n="" data-rotulo="La visita entera, minuto a minuto" data-grupo="Apertura">
 <section class="section" id="mapa">
   <div class="wrap">
     <div class="section__head">
@@ -857,6 +992,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 </section>
 
 <!-- ===================== FLUJO ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="flujo" data-n="" data-rotulo="Quién tiene al paciente en cada momento" data-grupo="Apertura">
 <section class="section" id="flujo">
   <div class="wrap">
     <div class="section__head">
@@ -1014,6 +1152,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 </section>
 
 <!-- FASE 1 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f01" data-n="01" data-rotulo="Preparación previa y primera llamada" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f01" data-roles="recepcion" data-min="6" data-label="Preparación" data-time="Pre-visita">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -1280,6 +1421,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 </article>
 
 <!-- FASE 2 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f02" data-n="02" data-rotulo="Acogida y recorrido por la tecnología" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f02" data-roles="recepcion director" data-min="5" data-label="Acogida">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -1476,6 +1620,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 </article>
 
 <!-- FASE 3 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f03" data-n="03" data-rotulo="Alta, RGPD y protección de datos" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f03" data-roles="director recepcion" data-min="15" data-label="Alta y RGPD">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -1661,6 +1808,9 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
 </article>
 
 <!-- FASE 4 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f04" data-n="04" data-rotulo="Historia clínica y consentimiento" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f04" data-roles="doctor" data-min="10" data-label="Historia clínica">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -1863,6 +2013,9 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
 </article>
 
 <!-- FASE 5 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f05" data-n="05" data-rotulo="Pruebas diagnósticas y fotografía" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f05" data-roles="auxiliar doctor" data-min="15" data-label="Diagnóstico">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -2068,6 +2221,9 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
 </article>
 
 <!-- FASE 6 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f06" data-n="06" data-rotulo="Briefing entre Doctor y Director" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f06" data-roles="doctor director" data-min="5" data-label="Briefing">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -2206,6 +2362,9 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
 </article>
 
 <!-- FASE 7 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f07" data-n="07" data-rotulo="Expectativas y exploración clínica" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f07" data-roles="doctor" data-min="15" data-label="Expectativas">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -2434,6 +2593,9 @@ PROYECCIÓN A 5 AÑOS SIN INTERVENCIÓN: ........................</div>
 </article>
 
 <!-- FASE 8 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f08" data-n="08" data-rotulo="Informe de Análisis Clínico (IAC)" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f08" data-roles="director doctor" data-min="10" data-label="IAC">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -2608,6 +2770,9 @@ Firma del Doctor: ..............  N.º de colegiado: ..............  Fecha: ....
 </article>
 
 <!-- FASE 9 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f09" data-n="09" data-rotulo="Presentación del diagnóstico en 3D" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f09" data-roles="doctor director" data-min="15" data-label="Presentación 3D">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -2837,6 +3002,9 @@ explicado bien?»</div>
 </article>
 
 <!-- FASE 10 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f10" data-n="10" data-rotulo="Propuesta económica y cierre" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f10" data-roles="director" data-min="20" data-label="Propuesta">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -3219,6 +3387,9 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
 </article>
 
 <!-- FASE 11 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f11" data-n="11" data-rotulo="Cierre administrativo y digitalización" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f11" data-roles="recepcion director" data-min="5" data-label="Cierre admin.">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -3385,6 +3556,9 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
 </article>
 
 <!-- FASE 12 -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="f12" data-n="12" data-rotulo="Despedida y seguimiento estratégico" data-grupo="Las doce fases de la visita">
 <article class="phase reveal" id="f12" data-roles="director recepcion" data-min="2" data-label="Seguimiento">
   <div class="wrap"><div class="phase__grid">
     <aside class="phase__meta">
@@ -3669,6 +3843,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 </article>
 
 <!-- ===================== ESTÁNDARES ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="estandares" data-n="" data-rotulo="Estándares comunes a las doce fases" data-grupo="Cierre">
 <section class="section" id="estandares">
   <div class="wrap">
     <div class="section__head">
@@ -3831,6 +4008,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 </section>
 
 <!-- ===================== CASOS ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="casos" data-n="" data-rotulo="Casos especiales: cuando no encaja" data-grupo="Cierre">
 <section class="section" id="casos">
   <div class="wrap">
     <div class="section__head">
@@ -3865,6 +4045,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 </section>
 
 <!-- ===================== CONTINÚA EN EL MANUAL ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="continua" data-n="" data-rotulo="Fases 13 y 14: producción y mantenimiento" data-grupo="Cierre">
 <section class="section" id="continua">
   <div class="wrap">
     <div class="section__head">
@@ -3896,6 +4079,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 </section>
 
 <!-- ===================== TRAZABILIDAD ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="trazabilidad" data-n="" data-rotulo="Qué queda registrado y quién responde" data-grupo="Cierre">
 <section class="section" id="trazabilidad">
   <div class="wrap">
     <div class="section__head">
@@ -3927,6 +4113,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 </section>
 
 <!-- ===================== INDICADORES ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="indicadores" data-n="" data-rotulo="Cómo se mide si el protocolo funciona" data-grupo="Cierre">
 <section class="section" id="indicadores">
   <div class="wrap">
     <div class="section__head">
@@ -3994,6 +4183,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 </section>
 
 <!-- ===================== FORMACIÓN ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="formacion" data-n="" data-rotulo="Formación y certificación por rol" data-grupo="Cierre">
 <section class="section" id="formacion">
   <div class="wrap">
     <div class="section__head">
@@ -4057,6 +4249,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 </section>
 
 <!-- ===================== ANEXOS ===================== -->
+</article><!--/ap-->
+
+<article class="ap" data-ap="anexos" data-n="" data-rotulo="Anexos: guiones y preguntas frecuentes" data-grupo="Cierre">
 <section class="section" id="anexos">
   <div class="wrap">
     <div class="section__head">
@@ -4297,7 +4492,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
   </div>
 </section>
-
+</article><!--/ap-->
 </main>
 
 <footer class="foot">
@@ -4707,6 +4902,242 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       }
     });
   }
+  /* ---- el documento como apartados -------------------------------------
+     Un apartado a la vez, con el índice del documento fijo a la izquierda y el
+     anterior y el siguiente al pie. Todo cuelga del contenedor, no de
+     identificadores, porque en el archivo único los identificadores se
+     renombran para que no choquen entre documentos. */
+  /* En el archivo único conviven siete documentos en una misma página, cada
+     uno con su cuerpo y su menú. Por eso esto es una función que se instala
+     sobre un cuerpo concreto, y no un guion que da por hecho que solo hay uno. */
+  window.APARTADOS = function(raiz, nav, marca){
+    if(!raiz || raiz.__aps) return null;
+    var aps = [].slice.call(raiz.querySelectorAll(".ap"));
+    if(aps.length < 3) return null;
+    raiz.__aps = 1;
+    raiz.classList.add("aps");
+
+    /* ---- el índice lateral: el mismo modelo que el panel, siempre a la vista */
+    var lateral = document.createElement("nav");
+    lateral.className = "lateral";
+    lateral.setAttribute("aria-label", "Índice del documento");
+    var buscar = document.createElement("label");
+    buscar.className = "lateral__buscar";
+    buscar.innerHTML =
+      '<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">' +
+      '<circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+      '<path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+      '</svg><input type="search" autocomplete="off" spellcheck="false" ' +
+      'placeholder="Buscar en este documento"><kbd>/</kbd>';
+    lateral.appendChild(buscar);
+
+    var porAncla = {};
+    if(nav){
+      [].slice.call(nav.querySelectorAll(".menu__g:not(.menu__g--docs)")).forEach(function(g){
+        var caja = document.createElement("div");
+        caja.className = "lateral__g";
+        var gt = g.querySelector(".menu__gt");
+        if(gt){
+          var p = document.createElement("p");
+          p.className = "lateral__gt";
+          p.innerHTML = gt.innerHTML;
+          caja.appendChild(p);
+        }
+        [].slice.call(g.querySelectorAll("a")).forEach(function(a){
+          if(a.closest(".menu__gt")) return;
+          var c = a.cloneNode(true);
+          c.className = "lateral__e";
+          caja.appendChild(c);
+          porAncla[a.getAttribute("href").slice(1)] = c;
+        });
+        lateral.appendChild(caja);
+      });
+    }
+    var nada = document.createElement("p");
+    nada.className = "lateral__nada";
+    nada.hidden = true;
+    nada.textContent = "Nada con ese texto en este documento.";
+    lateral.appendChild(nada);
+    if(marca) lateral.dataset.de = marca;
+    document.body.appendChild(lateral);
+    document.documentElement.classList.add("con-lateral");
+
+    /* ---- qué apartado contiene cada identificador del documento ---- */
+    var dueno = {};
+    aps.forEach(function(ap){
+      dueno[ap.dataset.ap] = ap;
+      [].slice.call(ap.querySelectorAll("[id]")).forEach(function(el){ dueno[el.id] = ap; });
+    });
+
+    var quieto2 = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var actual = null;
+
+    function rotulo(ap){
+      var n = ap.dataset.n ? ap.dataset.n + " " : "";
+      return n + (ap.dataset.rotulo || "");
+    }
+
+    /* ---- el pie de pasos, uno por apartado ---- */
+    function pasos(ap, i){
+      var vieja = ap.querySelector(":scope > .wrap > .pasos");
+      if(vieja) vieja.parentNode.remove();
+      var p = document.createElement("nav");
+      p.className = "pasos";
+      p.setAttribute("aria-label", "Apartado anterior y siguiente");
+      function lado(j, clase, etiqueta, flecha, derecha){
+        if(j < 0 || j >= aps.length){
+          return '<span class="pasos__a pasos__a--vacio ' + clase + '"><span>' + etiqueta +
+                 '</span><b>' + (derecha ? "Fin del documento" : "Principio") + '</b></span>';
+        }
+        var d = aps[j];
+        var txt = rotulo(d).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+        return '<a class="pasos__a ' + clase + '" href="#' + d.dataset.ap + '"><span>' + etiqueta +
+               '</span><b>' + (derecha ? txt + '<i>&#8594;</i>' : '<i>&#8592;</i>' + txt) + '</b></a>';
+      }
+      p.innerHTML = lado(i - 1, "pasos__a--ant", "Anterior", "", false) +
+                    lado(i + 1, "pasos__a--sig", "Siguiente", "", true);
+      /* Dentro de la caja de medida, como el texto: a todo lo ancho de la
+         pantalla el pie de un apartado parece de la página, no del apartado. */
+      var caja = document.createElement("div");
+      caja.className = "wrap";
+      caja.appendChild(p);
+      ap.appendChild(caja);
+    }
+
+    /* ---- el rastro: en qué parte del documento estás ---- */
+    function rastro(ap){
+      var vieja = ap.querySelector(":scope > .wrap > .rastro");
+      if(vieja) vieja.parentNode.remove();
+      if(!ap.dataset.grupo && !ap.dataset.n) return;
+      var r = document.createElement("p");
+      r.className = "rastro";
+      var trozos = [];
+      if(ap.dataset.grupo) trozos.push(ap.dataset.grupo);
+      trozos.push("<b>" + (aps.indexOf(ap) + 1) + " de " + aps.length + "</b>");
+      r.innerHTML = trozos.join(' <em>/</em> ');
+      var caja = document.createElement("div");
+      caja.className = "wrap";
+      caja.appendChild(r);
+      ap.insertBefore(caja, ap.firstChild);
+    }
+
+    function muestra(ap, mover){
+      if(!ap || ap === actual) { if(ap && mover) window.scrollTo(0, 0); return; }
+      var i = aps.indexOf(ap);
+      aps.forEach(function(x){ x.classList.toggle("is-on", x === ap); });
+      actual = ap;
+      rastro(ap);
+      pasos(ap, i);
+      ap.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+      Object.keys(porAncla).forEach(function(k){
+        porAncla[k].setAttribute("aria-current", String(dueno[k] === ap));
+      });
+      var vivo = porAncla[ap.dataset.ap];
+      if(vivo && vivo.scrollIntoView) vivo.scrollIntoView({block:"nearest"});
+      if(mover) window.scrollTo({top:0, behavior: quieto2 ? "auto" : "smooth"});
+      document.title = document.title.split(" · ")[0];
+    }
+
+    function porHash(mover){
+      var id = location.hash.slice(1);
+      var ap = id && dueno[id];
+      if(!ap) return false;
+      muestra(ap, false);
+      if(id !== ap.dataset.ap){
+        var d = document.getElementById(id);
+        if(d) d.scrollIntoView({behavior:"instant", block:"start"});
+      } else if(mover) window.scrollTo(0, 0);
+      return true;
+    }
+
+    /* ---- los enlaces internos abren su apartado ---- */
+    document.addEventListener("click", function(e){
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if(!a || a.dataset.irA) return;
+      var id = a.getAttribute("href").slice(1);
+      var ap = dueno[id];
+      if(!ap) return;
+      e.preventDefault();
+      muestra(ap, id === ap.dataset.ap);
+      if(id !== ap.dataset.ap){
+        var d = document.getElementById(id);
+        if(d) d.scrollIntoView({behavior:"instant", block:"start"});
+      }
+      try { history.replaceState(null, "", "#" + id); } catch(err){}
+      var det = nav && nav.querySelector("details.menu");
+      if(det) det.open = false;
+    });
+    window.addEventListener("hashchange", function(){ porHash(true); });
+
+    /* ---- teclado: página anterior y siguiente ---- */
+    document.addEventListener("keydown", function(e){
+      var d = e.target;
+      if(d && (d.tagName === "INPUT" || d.tagName === "TEXTAREA" || d.isContentEditable)) return;
+      if(e.ctrlKey || e.metaKey || e.altKey) return;
+      var i = aps.indexOf(actual);
+      if(e.key === "ArrowRight" && i > -1 && i + 1 < aps.length){
+        e.preventDefault(); muestra(aps[i + 1], true);
+        try { history.replaceState(null, "", "#" + aps[i + 1].dataset.ap); } catch(err){}
+      } else if(e.key === "ArrowLeft" && i > 0){
+        e.preventDefault(); muestra(aps[i - 1], true);
+        try { history.replaceState(null, "", "#" + aps[i - 1].dataset.ap); } catch(err){}
+      }
+    });
+
+    /* ---- el buscador del lateral ---- */
+    var campo = buscar.querySelector("input");
+    /* Sin tildes, sin guiones y sin comillas: quien busca «premortem» tiene que
+       encontrar «Pre-mortem», y quien busca «RACI» no debe tropezar con «·». */
+    function llano(s){
+      return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+              .replace(/[-\u2010-\u2015'\u2019\u00b7]/g, "");
+    }
+    var indice = [].slice.call(lateral.querySelectorAll(".lateral__e")).map(function(a){
+      var ap = dueno[a.getAttribute("href").slice(1)];
+      var texto = a.textContent;
+      if(ap) texto += " " + [].map.call(ap.querySelectorAll("h2,h3,h4"),
+                                       function(h){ return h.textContent; }).join(" ");
+      return {a:a, t:llano(texto), r:a.textContent};
+    });
+    function filtra(){
+      var q = llano(campo.value).trim();
+      var vistos = 0;
+      indice.forEach(function(x){
+        var ok = !q || x.t.indexOf(q) > -1;
+        x.a.hidden = !ok;
+        if(ok) vistos++;
+      });
+      [].slice.call(lateral.querySelectorAll(".lateral__g")).forEach(function(g){
+        g.hidden = ![].some.call(g.querySelectorAll(".lateral__e"), function(a){ return !a.hidden; });
+      });
+      nada.hidden = vistos > 0;
+    }
+    campo.addEventListener("input", filtra);
+    campo.addEventListener("keydown", function(e){
+      if(e.key === "Escape"){ campo.value = ""; filtra(); campo.blur(); }
+      if(e.key === "Enter"){
+        var vivo = indice.filter(function(x){ return !x.a.hidden; })[0];
+        if(vivo){ e.preventDefault(); vivo.a.click(); }
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      var d = e.target;
+      if(d && (d.tagName === "INPUT" || d.tagName === "TEXTAREA" || d.isContentEditable)) return;
+      if(e.key === "/" && !e.ctrlKey && !e.metaKey){ e.preventDefault(); campo.focus(); }
+    });
+
+    if(!porHash(false)) muestra(aps[0], false);
+    return {aps: aps, lateral: lateral, muestra: muestra, porHash: porHash, dueno: dueno};
+  };
+
+  (function(){
+    /* En un documento suelto solo hay un cuerpo y se instala aquí. En el
+       archivo único lo hace su propio guion, documento a documento. */
+    if(window.__APS__ || document.querySelector(".cabecera")) return;
+    window.__APS__ = 1;
+    window.APARTADOS(document.querySelector("main"), document.querySelector("nav.strip"), "");
+  })();
+
   var targets = Array.prototype.slice.call(document.querySelectorAll("main section[id], main article[id]"));
   if("IntersectionObserver" in window){
     var spy = new IntersectionObserver(function(entries){

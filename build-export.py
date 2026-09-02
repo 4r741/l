@@ -140,6 +140,39 @@ SCRIPT = """<script>
   var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var docs = Array.prototype.slice.call(document.querySelectorAll(".doc"));
 
+  var capas = {};
+  function instalaCapa(id){
+    if(capas[id] !== undefined || !window.APARTADOS) return;
+    var doc = document.getElementById(id);
+    if(!doc) return;
+    var cuerpo = doc.querySelector("main") || doc;
+    var tira = document.querySelector('.cabecera .strip[data-de="' + id + '"]');
+    capas[id] = window.APARTADOS(cuerpo, tira, id);
+  }
+  function lateralDe(id){
+    instalaCapa(id);
+    document.querySelectorAll(".lateral").forEach(function(l){
+      l.hidden = (l.dataset.de !== id);
+    });
+  }
+  /* Se instala al abrir cada documento, no los siete de golpe: es más rápido.
+     Y se espera a «load» porque este guion va antes en la página que los de los
+     documentos, que son los que definen la capa: antes de eso no existe. */
+  /* El conmutador reescribe la dirección con el documento antes de que la capa
+     exista, así que el ancla con la que se entró hay que guardarla ahora. */
+  var anclaInicial = location.hash.slice(1);
+  window.addEventListener("load", function(){
+    var vivo = document.querySelector(".doc:not([hidden])");
+    if(!vivo) return;
+    lateralDe(vivo.id);
+    var capa = capas[vivo.id];
+    if(capa && anclaInicial && capa.dueno[anclaInicial]){
+      capa.muestra(capa.dueno[anclaInicial], false);
+      var d = document.getElementById(anclaInicial);
+      if(d) d.scrollIntoView({behavior:"instant", block:"start"});
+    }
+  });
+
   /* ---- conmutador entre documentos ---- */
   function mostrar(id, moverScroll){
     var existe = docs.some(function(d){ return d.id === id; });
@@ -153,6 +186,8 @@ SCRIPT = """<script>
     document.querySelectorAll(".cabecera .strip").forEach(function(s){
       s.hidden = (s.dataset.de !== id);
     });
+    /* y su índice lateral, que es el mismo principio una fila más abajo */
+    lateralDe(id);
     /* nada puede quedar sin revelar al cambiar de documento */
     activo.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
     avanzar();
@@ -290,6 +325,10 @@ SCRIPT = """<script>
   /* ---- mapa del documento ---- */
   (function(){
     if(window.__MAPA__) return; window.__MAPA__ = 1;
+    /* El mapa era una regla vertical con el documento entero a un lado. Donde
+       el documento se lee por apartados y el índice está fijo a la izquierda,
+       dice lo mismo dos veces y peor: en cuadrícula y sin rótulos. */
+    if(document.querySelector("main .ap")) return;
 
     function construye(raiz, tira){
       var enlaces = [].slice.call(tira.querySelectorAll("a[href^='#']"));
@@ -735,6 +774,10 @@ SCRIPT = """<script>
     }
   }
 
+  /* ---- los apartados, documento a documento ----------------------------
+     El archivo une siete cuerpos en una misma página. La capa de apartados se
+     instala sobre cada uno con su propio menú, y solo se enseña el lateral del
+     documento que está abierto. */
   /* ---- por documento: filtro por puesto, sección activa y revelado ---- */
   docs.forEach(function(doc){
     var fases = Array.prototype.slice.call(doc.querySelectorAll(".phase"));

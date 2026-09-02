@@ -44,7 +44,7 @@ DOCUMENTOS = [
     ("marketing.html", "Plan-Marketing-Giraldo-v%s.pdf" % VERSION,
      "Plan Maestro de Marketing · v%s" % VERSION, False, ""),
     ("instrumentos/captura.html", "Captura-Linea-Base-Giraldo-v%s.pdf" % VERSION,
-     "Captura de la línea base · v%s" % VERSION, False, ""),
+     "Los números del centro · v%s" % VERSION, False, ""),
     ("deck.html", "Presentacion-Junta-Giraldo-v%s.pdf" % VERSION, "", True, ""),
     ("deck.html", "Guion-del-Ponente-Giraldo-v%s.pdf" % VERSION, "", "guion", PONENTE),
 ]

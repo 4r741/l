@@ -432,6 +432,135 @@ main:focus{outline:none}
 
 @media print{.strip{display:none}}
 
+/* ===========================================================================
+   EL DOCUMENTO COMO APARTADOS, NO COMO RÍO
+
+   Un documento de este sistema mide entre doscientos y cuatrocientos cincuenta
+   kilobytes en una sola columna. El menú llevaba a un ancla, sí, pero uno caía
+   en mitad de la corriente: sin saber dónde estaba, sin ver cuánto quedaba del
+   apartado y sin más manera de seguir que arrastrar. Cuarenta mil píxeles de
+   arrastre por documento.
+
+   Ahora se lee un apartado cada vez, con el índice del documento siempre a la
+   vista a la izquierda y con el anterior y el siguiente al pie, con su nombre.
+   Sin guiones —y al imprimir— se ven todos seguidos, que es lo que había.
+   =========================================================================== */
+/* La marca la pone el instalador, no la hoja: si por lo que sea la capa de
+   apartados no llega a instalarse, se ven todos seguidos —que es el documento
+   de siempre— en vez de quedarse la página en blanco. */
+.aps .ap{display:none}
+.aps .ap.is-on{display:block;animation:entra .18s ease}
+@keyframes entra{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.aps .ap.is-on{animation:none}}
+@media print{.ap{display:block!important}}
+
+/* --- el índice lateral, fijo mientras se lee --------------------------- */
+.lateral{
+  position:fixed;top:var(--barra);left:0;bottom:0;width:19rem;z-index:40;
+  background:var(--surface);border-right:1px solid var(--line);
+  overflow-y:auto;overscroll-behavior:contain;padding:0 .4rem 2rem 1.1rem;
+  display:none;
+}
+.con-lateral .lateral{display:block}
+/* La caja de medida se pega al lateral en vez de centrarse en la pantalla:
+   con el índice a la izquierda, centrar el texto en el ancho total lo empuja
+   al borde derecho. Solo donde hay lateral: en un móvil esta regla dejaba el
+   texto pegado al canto izquierdo, sin margen ninguno. */
+@media(min-width:1100px){
+  .con-lateral main>.wrap,.con-lateral main .wrap{margin-left:0}
+  .con-lateral main{padding-left:19rem}
+  .con-lateral footer.foot{padding-left:19rem}
+}
+/* El apartado abierto empieza con aire: pegado a la barra, el rastro que dice
+   en qué parte estás se lee por debajo del cristal de la cabecera. */
+.aps>.ap.is-on{padding-top:1.5rem}
+.lateral__g{margin:0 0 1.15rem}
+.lateral__gt{
+  font-family:var(--f-mono);font-size:.62rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 .35rem;
+  padding:0 .5rem .3rem 0;border-bottom:1px solid var(--line);
+}
+.lateral__gt a{color:inherit;text-decoration:none}
+.lateral__gt a:hover{color:var(--accent-ink)}
+.lateral a.lateral__e{
+  display:grid;grid-template-columns:1.9rem minmax(0,1fr);align-items:baseline;
+  gap:0;text-decoration:none;color:var(--ink-2);
+  font-size:.82rem;line-height:1.28;padding:.32rem .5rem .32rem .1rem;
+  border-radius:6px;border-left:2px solid transparent;
+  transition:background .13s ease,color .13s ease,border-color .13s ease;
+}
+.lateral a.lateral__e:hover{background:var(--accent-soft);color:var(--accent-ink)}
+.lateral a.lateral__e b{font-family:var(--f-mono);font-size:.66rem;font-weight:500;color:var(--muted)}
+.lateral a.lateral__e[aria-current="true"]{
+  background:var(--accent-soft);color:var(--accent-ink);font-weight:500;
+  border-left-color:var(--accent);
+}
+.lateral a.lateral__e[aria-current="true"] b{color:var(--accent)}
+.lateral__e[hidden]{display:none!important}
+.lateral__g[hidden]{display:none!important}
+.lateral mark{background:rgba(14,143,132,.2);color:inherit;border-radius:2px;padding:0 .05em}
+
+/* --- el buscador del lateral ------------------------------------------ */
+.lateral__buscar{
+  position:sticky;top:0;z-index:2;background:var(--surface);
+  margin:0 -.4rem .9rem -1.1rem;padding:.85rem 1rem;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:.5rem;color:var(--muted);
+}
+.lateral__buscar input{
+  flex:1;min-width:0;font:inherit;font-size:.85rem;color:var(--ink);
+  background:transparent;border:0;outline:none;padding:.15rem 0;
+}
+.lateral__buscar input::placeholder{color:var(--muted)}
+.lateral__buscar input::-webkit-search-cancel-button{display:none}
+.lateral__buscar kbd{
+  font-family:var(--f-mono);font-size:.62rem;color:var(--muted);
+  border:1px solid var(--line);border-radius:4px;padding:.05rem .3rem;
+}
+.lateral__nada{font-size:.82rem;color:var(--muted);padding:.4rem .5rem}
+
+/* --- anterior y siguiente, al pie del apartado ------------------------- */
+.pasos{
+  display:grid;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
+  margin:3.5rem 0 1rem;
+}
+@media(min-width:700px){.pasos{grid-template-columns:1fr 1fr}}
+.pasos__a{
+  background:var(--surface);padding:1rem 1.2rem;text-decoration:none;color:inherit;
+  display:grid;gap:.25rem;transition:background .15s ease;min-width:0;
+}
+.pasos__a:hover{background:var(--accent-soft)}
+.pasos__a:hover b{color:var(--accent-ink)}
+.pasos__a span{
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.pasos__a b{
+  font-weight:500;font-size:.98rem;line-height:1.25;color:var(--ink);
+  transition:color .15s ease;
+}
+.pasos__a i{font-style:normal;font-family:var(--f-mono);color:var(--muted);margin-right:.4rem}
+.pasos__a--sig{text-align:right}
+.pasos__a--sig i{margin:0 0 0 .4rem}
+.pasos__a--vacio{background:var(--paper);pointer-events:none;opacity:.45}
+@media print{.pasos,.lateral{display:none!important}}
+
+/* --- el rastro: dónde estás, sobre el titular -------------------------- */
+.rastro{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 1.4rem;
+}
+.rastro b{color:var(--accent-ink);font-weight:500}
+.rastro em{font-style:normal;color:var(--line)}
+@media print{.rastro{display:none}}
+
+@media(max-width:1099px){
+  .con-lateral main,.con-lateral footer.foot{padding-left:0}
+  .lateral{display:none!important}
+}
+
 /* ============================================================
    PORTADA
    ============================================================ */

@@ -43,7 +43,7 @@ PARTES = [
      "Troncal", "Las doce fases de la primera visita, minuto a minuto"),
     ("Otros-Documentos-Giraldo-v%s.pdf", "Otros documentos del sistema",
      "Troncal", "Los catorce documentos de apoyo, del compendio maestro al programa de cuidado"),
-    ("Captura-Linea-Base-Giraldo-v%s.pdf", "Captura de la línea base",
+    ("Captura-Linea-Base-Giraldo-v%s.pdf", "Los números del centro",
      "Instrumento", "Los diez indicadores y los cinco números, mes a mes"),
 ]
 

@@ -202,8 +202,12 @@ def comprueba_higiene():
                 falla(doc, "contiene «%s», que no puede aparecer en ningún sitio" % palabra)
         if "prefers-color-scheme" in t or 'data-theme' in t:
             falla(doc, "reintroduce el modo oscuro")
-        anclas = set(re.findall(r'\sid="([^"]+)"', t))
-        rotas = sorted({h for h in re.findall(r'href="#([^"]+)"', t) if h not in anclas})
+        # El guion construye enlaces con trozos de cadena —href="#' + x + '"—
+        # que no son anclas de nada: si se leen como marcado, salen rotas.
+        sin_guiones = re.sub(r"<script>.*?</script>", " ", t, flags=re.S)
+        anclas = set(re.findall(r'\sid="([^"]+)"', sin_guiones))
+        rotas = sorted({h for h in re.findall(r'href="#([^"]+)"', sin_guiones)
+                        if h not in anclas})
         if rotas:
             falla(doc, "tiene anclas rotas: %s" % rotas[:5])
 

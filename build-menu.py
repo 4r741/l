@@ -100,8 +100,16 @@ def _sustituye(texto, reemplazo, marcas, incluir=True):
     return texto
 
 
-CSS_MENU = ("/* ---------------------------------------------------------------------------\n"
-            "   EL MENÚ DE SECCIONES", "@media print{.strip{display:none}}")
+# La región de estilos que se copia desde el manual va del menú al final de la
+# capa de apartados: son la misma cosa —cómo se recorre un documento— y separar
+# una de otra dejaba a los dos documentos escritos a mano con el menú nuevo y
+# el cuerpo antiguo, que es peor que no tener ninguno de los dos.
+CSS_INI = ("/* ---------------------------------------------------------------------------\n"
+           "   EL MENÚ DE SECCIONES")
+CSS_FIN = "  .lateral{display:none!important}\n}"
+CSS_MENU = (CSS_INI, CSS_FIN)
+# Antes de que existiera la capa de apartados, la región terminaba aquí.
+CSS_MENU_MEDIO = (CSS_INI, "@media print{.strip{display:none}}")
 CSS_MOVIL = ("  /* Cuatro pastillas de documento",
              "  .menu__g a:not(.menu__gt a){padding:.42rem .4rem .42rem .1rem}")
 CSS_VELA = (".strip--nota{\n  --vel-izq:0px",
@@ -133,7 +141,7 @@ def sincroniza():
         ruta = RAIZ / archivo
         texto = antes = ruta.read_text(encoding="utf-8")
 
-        texto = _sustituye(texto, css_menu, [CSS_MENU, CSS_MENU_VIEJO])
+        texto = _sustituye(texto, css_menu, [CSS_MENU, CSS_MENU_MEDIO, CSS_MENU_VIEJO])
         texto = _sustituye(texto, css_movil, [CSS_MOVIL, CSS_MOVIL_VIEJO])
         texto = _sustituye(texto, css_vela, [CSS_VELA, CSS_VELA_VIEJO])
         texto = texto.replace(".strip a,.cabecera__docs button{scroll-margin-inline:44px}",
