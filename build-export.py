@@ -1256,12 +1256,9 @@ def conmutadores(html, propio):
 # Fila de índice para los dos documentos que no tienen secciones. No es relleno:
 # dice lo que a esa altura le hace falta saber a quien está mirando.
 SIN_INDICE = {
-    # La portada llevaba aquí una fila de instrucciones —qué barra hace qué, qué
-    # tecla pulsar— que en un documento de gobierno no pinta nada. En su lugar,
-    # lo que identifica al documento: qué es y para quién.
-    "doc-inicio": ("<b>Sistema documental del Centro de Excelencia Implantológica Giraldo</b>"
-                   "<span>Rúa Bolivia nº 2 · Vigo</span>"
-                   "<span>Uso interno y confidencial</span>"),
+    # La portada ya no está aquí: tiene menú propio desde que se rehízo, y el
+    # menú manda sobre la fila de nota. Queda la presentación, que es un pase de
+    # diapositivas y no tiene apartados que indexar.
     "doc-deck": ("<b>43 diapositivas · 16:9</b>"
                  "<span><kbd>←</kbd> <kbd>→</kbd> <kbd>espacio</kbd> pasar</span>"
                  "<span><kbd>N</kbd> guion del ponente</span>"

@@ -39,6 +39,10 @@ _ns = {"__name__": "catalogo_portada", "__file__": "catalogo-acciones.py"}
 exec(compile(_cat, "catalogo-acciones.py", "exec"), _ns)
 SINCOSTE = str(_ns["calcula"]()["sin_coste"])
 
+_menu = {"__name__": "menu_portada", "__file__": "menu.py"}
+exec(compile((RAIZ / "menu.py").read_text(encoding="utf-8"), "menu.py", "exec"), _menu)
+BARRA_MENU = _menu["dibuja"]("inicio.html", "    ")
+
 _idx = {"__name__": "indice_portada", "__file__": "indice.py"}
 exec(compile((RAIZ / "indice.py").read_text(encoding="utf-8"), "indice.py", "exec"), _idx)
 INDICE = _idx["calcula"]()
@@ -71,15 +75,26 @@ def bloque_indice(x, n):
             % (x["archivo"], e["ancla"], llano(e["rotulo"]), e["rotulo"], abre,
                ('<ol class="idx__dos" hidden>%s</ol>' % hijos) if hijos else ""))
     lista = "".join(filas) or '<li class="idx__sin">Se recorre entera, diapositiva a diapositiva.</li>'
+    cuenta = ("%d apartados" % len(x["entradas"])) if x["entradas"] else "sin apartados"
+    # Cada documento nace plegado, y con <details>, que se abre y se cierra sin
+    # una línea de guion. Desplegados los siete a la vez eran tres mil
+    # ochocientos píxeles de lista: un índice que no se recorre no es un índice.
     return (
-        '<section class="idx__doc" data-doc="%d" data-buscable="%s">\n'
-        '        <div class="idx__cab">\n'
-        '          <h3><a href="%s">%s</a></h3>\n'
-        '          <p class="idx__que">%s</p>\n'
+        '<details class="idx__doc" data-doc="%d" data-buscable="%s">\n'
+        '        <summary class="idx__sum">\n'
+        '          <span class="idx__sum__t">\n'
+        '            <h3>%s</h3>\n'
+        '            <p class="idx__que">%s</p>\n'
+        '          </span>\n'
+        '          <span class="idx__sum__n">%s</span>\n'
+        '        </summary>\n'
+        '        <div class="idx__cuerpo">\n'
+        '          <ol class="idx__lista">%s</ol>\n'
+        '          <p class="idx__ir"><a href="%s">Abrir %s &#8594;</a></p>\n'
         '        </div>\n'
-        '        <ol class="idx__lista">%s</ol>\n'
-        '      </section>' % (n, llano(x["rotulo"] + " " + x["que"]),
-                             x["archivo"], x["rotulo"], x["que"], lista))
+        '      </details>' % (n, llano(x["rotulo"] + " " + x["que"]),
+                             x["rotulo"], x["que"], cuenta, lista,
+                             x["archivo"], x["rotulo"]))
 
 
 def llano(s):
@@ -100,35 +115,93 @@ cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Puerta de entrada al sistema documental del Centro '
                   'de Excelencia Implantológica Giraldo: Plan de Dirección, presentación de Junta, Manual '
-                  'Maestro, Protocolo de Primera Visita, otros documentos del sistema y la hoja de captura '
-                  'de la línea base.">', cabecera, count=1)
+                  'Maestro, Protocolo de Primera Visita, otros documentos del sistema y la hoja '
+                  'de línea base.">', cabecera, count=1)
 
 CSS = """
-.puerta{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1.6rem}
-@media(min-width:820px){.puerta{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ---------------------------------------------------------------------------
+   LA PORTADA
+
+   Estaba del revés. Lo primero era un índice de ciento veinticuatro apartados
+   con seiscientos cuarenta y seis titulares debajo, y las siete puertas —lo
+   único que uno viene a hacer aquí, que es abrir un documento— quedaban a
+   cuatro mil cuatrocientos píxeles de scroll. Se entraba a la portada por el
+   índice analítico. Ahora: quién es esto, qué documento abro, y sólo después,
+   para el que busca algo concreto, el índice de todo el sistema.
+   --------------------------------------------------------------------------- */
+
+/* La franja de cifras: seis datos en un renglón, sin cajas. Antes eran seis
+   fichas con borde compitiendo con el titular, y ninguna llevaba a ningún
+   sitio: son contexto, no navegación, y deben pesar como contexto. */
+.cifras{
+  list-style:none;margin:2.2rem 0 0;padding:1.3rem 0 0;
+  border-top:1px solid var(--line);
+  display:grid;gap:1.3rem 2rem;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+}
+.cifras li{min-width:0}
+.cifras b{
+  display:block;font-family:var(--f-display);font-weight:400;
+  font-size:clamp(1.5rem,2.4vw,1.95rem);line-height:1.1;letter-spacing:-.02em;
+  color:var(--ink);
+}
+.cifras span{
+  display:block;margin-top:.3rem;font-size:.8rem;line-height:1.45;color:var(--muted);
+}
+/* En un teléfono, seis cifras a tamaño de portada son novecientos píxeles
+   antes de la primera puerta: dos columnas y letra más chica. */
+@media(max-width:640px){
+  .cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem 1.2rem;margin-top:1.6rem}
+  .cifras b{font-size:1.35rem}
+  .cifras span{font-size:.74rem;margin-top:.15rem}
+}
+
+/* Las siete puertas, todas iguales. La del Plan de Dirección ocupaba dos
+   columnas y su texto se quedaba en la izquierda: novecientos píxeles de verde
+   vacío al lado. Una rejilla de puertas se lee comparando, y para comparar
+   tienen que medir lo mismo. */
+.puerta{
+  display:grid;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
+  margin-top:1.8rem;
+}
+@media(min-width:760px){.puerta{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1180px){.puerta{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .puerta__ficha{
-  background:var(--paper);padding:1.6rem;display:grid;gap:.6rem;align-content:start;
+  background:var(--surface);padding:1.35rem 1.4rem 1.15rem;
+  display:grid;gap:.45rem;align-content:start;grid-template-rows:auto auto 1fr auto;
   text-decoration:none;color:inherit;transition:background .16s ease;min-width:0;
 }
-.puerta__ficha:hover{background:var(--surface)}
-.puerta__ficha:hover h3{color:var(--accent-ink)}
-.puerta__ficha--ancha{grid-column:1/-1;background:var(--accent-soft)}
-.puerta__ficha--ancha:hover{background:rgba(14,124,116,.16)}
-.puerta__ficha h3{font-size:var(--step-2);letter-spacing:-.015em}
-.puerta__ficha p{color:var(--ink-2);font-size:.94rem;max-width:60ch}
-.puerta__pie{
-  margin-top:.4rem;display:flex;flex-wrap:wrap;gap:.4rem .9rem;
-  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--muted);
+.puerta__ficha:hover{background:var(--accent-soft)}
+.puerta__ficha:hover h3,.puerta__ficha:hover .puerta__flecha{color:var(--accent-ink)}
+.puerta__para{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin:0;
 }
-.puerta__pie b{color:var(--accent-ink);font-weight:400}
-.puerta__flecha{font-family:var(--f-mono);color:var(--accent-ink);margin-left:auto}
+.puerta__ficha h3{
+  font-size:1.18rem;line-height:1.22;letter-spacing:-.015em;margin:0;
+  transition:color .16s ease;
+}
+.puerta__que{color:var(--ink-2);font-size:.9rem;line-height:1.5;margin:0}
+.puerta__pie{
+  margin:.7rem 0 0;padding-top:.7rem;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:baseline;
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.06em;color:var(--muted);
+}
+.puerta__flecha{margin-left:auto;color:var(--ink-2);transition:color .16s ease}
+
+/* La portada no necesita ocupar seiscientos píxeles antes de la primera
+   puerta: dice quién es y sigue. */
+.hero{padding:clamp(2.2rem,5vw,3.8rem) 0 2.4rem}
+.hero h1{margin:.3rem 0 0}
+.hero__lede{margin-top:1rem;max-width:58ch;font-size:var(--step-1);color:var(--ink-2)}
+.section--puertas{padding-top:0}
 
 /* ---------------------------------------------------------------------------
-   Índice general. Va delante de todo lo demás porque es lo primero que uno
-   quiere de un sistema de siete documentos: ver qué hay, entero, sin abrir nada.
-   Dos niveles —apartado y subapartado— y un filtro, porque seiscientas líneas
-   sin filtro no son un índice: son una pared.
+   Índice general. Ya no abre la página: la cierra. Cada documento nace
+   plegado, porque ciento veinticuatro apartados desplegados de golpe son tres
+   mil ochocientos píxeles de lista que nadie recorre. Se abre el que interese,
+   o se escribe una palabra y el filtro abre los que la llevan.
    --------------------------------------------------------------------------- */
 .idx__mando{
   display:flex;align-items:center;gap:.7rem 1rem;flex-wrap:wrap;margin-top:1.6rem;
@@ -159,14 +232,46 @@ CSS = """
   background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink);
 }
 
-.idx{display:grid;gap:2.6rem;margin-top:2.2rem}
-.idx__doc{background:var(--paper);min-width:0;padding-top:1.6rem;border-top:1px solid var(--line)}
+.idx{
+  display:grid;gap:1px;margin-top:1.6rem;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
+}
+.idx__doc{background:var(--surface);min-width:0}
 .idx__doc[hidden]{display:none}
-.idx__cab{max-width:62ch;margin-bottom:1.5rem}
-.idx__cab h3{font-size:var(--step-2);letter-spacing:-.018em;margin:0 0 .35rem}
-.idx__cab h3 a{color:inherit;text-decoration:none}
-.idx__cab h3 a:hover{color:var(--accent-ink)}
-.idx__que{color:var(--ink-2);font-size:.95rem;line-height:1.55}
+.idx__sum{
+  display:flex;align-items:baseline;gap:1rem;cursor:pointer;list-style:none;
+  padding:1.05rem 1.3rem;transition:background .14s ease;
+}
+.idx__sum::-webkit-details-marker{display:none}
+.idx__sum::marker{content:""}
+.idx__sum:hover{background:var(--accent-soft)}
+.idx__sum:hover h3{color:var(--accent-ink)}
+.idx__sum:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.idx__sum__t{min-width:0;flex:1}
+.idx__sum h3{
+  font-size:1.16rem;letter-spacing:-.015em;margin:0;transition:color .14s ease;
+}
+.idx__que{color:var(--muted);font-size:.88rem;line-height:1.5;margin:.2rem 0 0}
+.idx__sum__n{
+  flex:0 0 auto;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;
+  color:var(--muted);white-space:nowrap;
+}
+/* El triángulo lo dibujamos: el nativo cambia de forma en cada navegador. */
+.idx__sum__n::after{
+  content:"";display:inline-block;margin-left:.7rem;vertical-align:.06em;
+  border:4px solid transparent;border-top-color:var(--muted);
+  transform-origin:50% 25%;transition:transform .16s ease;
+}
+.idx__doc[open] .idx__sum__n::after{transform:rotate(180deg)}
+.idx__doc[open] .idx__sum{background:var(--accent-soft)}
+.idx__doc[open] .idx__sum h3{color:var(--accent-ink)}
+.idx__cuerpo{padding:.2rem 1.3rem 1.3rem;border-top:1px solid var(--line)}
+.idx__ir{margin:1rem 0 0}
+.idx__ir a{
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;
+  color:var(--accent-ink);text-decoration:none;
+}
+.idx__ir a:hover{text-decoration:underline}
 
 /* Los apartados en columnas, con aire. Antes cada línea llevaba una barra
    vertical a la izquierda: setecientas barras no ordenan nada, solo ensucian. */
@@ -241,41 +346,34 @@ k = cabecera.rindex("</style>")
 cabecera = cabecera[:k] + CSS + "\n" + cabecera[k:]
 
 FICHAS = [
- ("memoria.html", "Plan de Dirección", "v@VERSION@ · 23 apartados · Anexos A y B",
-  "El documento de gobierno. Posición competitiva y foso, sistema operativo y cartera de innovación, "
-  "economía unitaria y creación de valor de empresa, riesgos y pre-mortem, el puente hasta el "
-  "objetivo de 1,2 M€ con su cartera de nueve campañas, y las quince decisiones que se someten "
-  "a la Junta. Incluye los dos cuadernillos: quince hojas de acta y nueve fichas de campaña.",
-  "79 páginas en papel · lectura 55′", True),
- ("deck.html", "Presentación de Junta", "v@VERSION@ · %s diapositivas · 16:9" % DIAPOSITIVAS,
-  "La apuesta para proyectar. Se conduce con el teclado: <b>←</b> y <b>→</b> para pasar, "
-  "<b>N</b> abre el guion del ponente con el minuto objetivo y la pregunta difícil, "
-  "<b>E</b> filtra a la ruta corta de doce diapositivas para sesiones de veinte minutos.",
-  "Proyección y guion del ponente", False),
- ("marketing.html", "Plan Maestro de Marketing", "v@VERSION@ · %s acciones · %s estados" % (ACCIONES, ESTADOS),
-  "Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, "
-  "organizado por el estado de su relación con su propia boca y no por canales. Catálogo completo "
-  "con dueño, coste, plazo y semáforo legal; las diez piezas que nadie está haciendo en esta "
-  "ciudad; el mapa de la ría y la Campaña de Mar.",
-  "Documento de dirección", False),
- ("instrumentos/captura.html", "Captura de la línea base", "v@VERSION@ · 10 indicadores",
-  "El instrumento del apartado 7 y del apartado 13: doce hojas mensuales, semáforo automático, resumen anual con "
-  "tendencia y los cinco números. Se rellena aquí mismo y se guarda en este equipo.",
-  "Se rellena en el navegador", False),
- ("manual.html", "Manual Maestro de Operaciones", "v@VERSION@ · 8 partes",
-  "El documento troncal. Las catorce fases del recorrido del paciente, los manuales por puesto, la "
-  "matriz RACI, los indicadores, el plan de incentivos y la puesta en marcha. Ocho partes "
-  "numeradas, más el marco de vanguardia y los estándares transversales.",
-  "204 páginas en papel", False),
- ("index.html", "Protocolo de Primera Visita", "v@VERSION@ · 12 fases de la primera visita",
-  "El detalle minuto a minuto de la visita que decide la conversión, con estándares transversales, "
-  "casos especiales, guiones contrastados y anexos.",
-  "90 páginas en papel", False),
- ("otros.html", "Otros documentos del sistema", "v@VERSION@ · 14 documentos de apoyo",
-  "Compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de "
-  "Gerencia, programa de 100 días, protocolos por perfil, innovación, marca, «No medias sonrisas» y "
-  "el programa Giraldo Te Cuida.",
-  "135 páginas en papel", False),
+ ("memoria.html", "Plan de Dirección", "El documento de gobierno",
+  "Posición, sistema, economía y riesgo, el puente hasta 1,2 M€ y las quince "
+  "decisiones que se someten a la Junta.",
+  "23 apartados · 79 páginas · lectura 55′"),
+ ("deck.html", "Presentación de Junta", "Para proyectar en la sesión",
+  "La apuesta en @DIAPOS@ diapositivas. Se conduce con el teclado: <b>←</b> y <b>→</b> pasan, "
+  "<b>N</b> abre el guion del ponente, <b>E</b> deja la ruta corta de veinte minutos.",
+  "@DIAPOS@ diapositivas · 16:9"),
+ ("manual.html", "Manual Maestro de Operaciones", "El documento troncal",
+  "Las catorce fases del recorrido, los manuales por puesto, la matriz RACI, "
+  "los indicadores, los incentivos y la puesta en marcha.",
+  "8 partes · 204 páginas"),
+ ("index.html", "Protocolo de Primera Visita", "La visita que decide",
+  "Las doce fases minuto a minuto, con estándares, casos especiales, guiones "
+  "contrastados y anexos.",
+  "12 fases · 90 páginas"),
+ ("marketing.html", "Plan Maestro de Marketing", "Cómo llega el paciente",
+  "Las @ACCIONES@ acciones ordenadas por el estado de la relación del paciente con su "
+  "propia boca, con dueño, coste, plazo y semáforo legal.",
+  "@ACCIONES@ acciones · @ESTADOS@ estados"),
+ ("otros.html", "Otros documentos del sistema", "Los catorce de apoyo",
+  "Compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, "
+  "100 días, protocolos por perfil, innovación, marca y GTC.",
+  "14 documentos · 135 páginas"),
+ ("instrumentos/captura.html", "Hoja de línea base", "El instrumento que mide",
+  "Doce hojas mensuales con semáforo automático, resumen anual y los cinco números. "
+  "Se rellena aquí mismo y se guarda en este equipo.",
+  "10 indicadores · se rellena en el navegador"),
 ]
 
 
@@ -285,13 +383,21 @@ LETRA = {5: "Cinco", 6: "Seis", 7: "Siete", 8: "Ocho", 9: "Nueve", 10: "Diez"}
 CUANTOS = LETRA[len(FICHAS)]
 
 
-def ficha(destino, titulo, etiqueta, texto, pie, ancha):
-    return ('<a class="puerta__ficha%s" href="%s">\n'
-            '        <p class="eyebrow">%s</p>\n'
+def ficha(destino, titulo, para, texto, medida):
+    """Una puerta. Las siete iguales.
+
+    La del Plan de Dirección ocupaba dos columnas y su texto se quedaba en la
+    mitad izquierda: novecientos píxeles de verde vacío a la derecha. Y el
+    texto de cada una tenía seis renglones, que en una rejilla de puertas nadie
+    lee: lo que hace falta ahí es saber cuál abrir.
+    """
+    return ('<a class="puerta__ficha" href="%s">\n'
+            '        <p class="puerta__para">%s</p>\n'
             '        <h3>%s</h3>\n'
-            '        <p>%s</p>\n'
-            '        <p class="puerta__pie"><span>%s</span><span class="puerta__flecha">Abrir →</span></p>\n'
-            '      </a>' % (" puerta__ficha--ancha" if ancha else "", destino, etiqueta, titulo, texto, pie))
+            '        <p class="puerta__que">%s</p>\n'
+            '        <p class="puerta__pie"><span>%s</span>'
+            '<span class="puerta__flecha">Abrir &#8594;</span></p>\n'
+            '      </a>' % (destino, para, titulo, texto, medida))
 
 
 CUERPO = """
@@ -303,6 +409,7 @@ CUERPO = """
         <span class="brand__tag">v@VERSION@ · Uso interno</span>
       </a>
     </div>
+@@BARRA@@
   </div>
 </header>
 
@@ -310,30 +417,41 @@ CUERPO = """
 
 <section class="hero" id="portada">
   <div class="wrap">
-    <div class="hero__grid">
-      <div>
-        <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
-        <h1>No medias<br><em>sonrisas</em></h1>
-        <p class="hero__lede">Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van de la plan de dirección al minuto exacto en que se recibe a un paciente.</p>
-      </div>
-      <dl class="specs">
-        <div class="spec"><dt>Documentos operativos</dt><dd>17<small>Tres troncales y catorce de apoyo. El censo completo, en el apartado 0.1 del Plan de Dirección</small></dd></div>
-        <div class="spec"><dt>Decisiones abiertas</dt><dd>15<small>Se someten a la Junta Directiva</small></dd></div>
-        <div class="spec"><dt>Puntos de verificación</dt><dd>322<small>Físicos, documentales, de sistemas y de proceso</small></dd></div>
-        <div class="spec"><dt>Objetivo</dt><dd>1,2 M€<small>Facturación anual en el ejercicio tercero, con nueve campañas</small></dd></div>
-        <div class="spec"><dt>Acciones de marketing</dt><dd>@ACCIONES@<small>Sobre @ESTADOS@ estados del paciente. @SINCOSTE@ de ellas no cuestan dinero</small></dd></div>
-        <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
-      </dl>
+    <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+    <h1>No medias <em>sonrisas</em></h1>
+    <p class="hero__lede">Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
+    <ul class="cifras">
+      <li><b>17</b><span>normativa interna vigente<br>tres troncales y catorce de apoyo</span></li>
+      <li><b>15</b><span>decisiones abiertas<br>se someten a la Junta Directiva</span></li>
+      <li><b>1,2 M€</b><span>objetivo<br>facturación del ejercicio tercero</span></li>
+      <li><b>322</b><span>puntos de verificación<br>físicos, documentales y de proceso</span></li>
+      <li><b>@ACCIONES@</b><span>acciones de marketing<br>@SINCOSTE@ de ellas no cuestan dinero</span></li>
+      <li><b>14</b><span>fases del recorrido<br>de la primera llamada al mantenimiento</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section--puertas" id="documentos">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Por dónde se empieza</p>
+      <h2>@CUANTOS@ documentos</h2>
+      <p>El Plan de Dirección dirige, la presentación convence, el Manual y el Protocolo ejecutan, el Plan de Marketing llena la agenda, Otros documentos sostiene y la hoja de línea base mide. Sin la última, todas las demás se apoyan en supuestos.</p>
+    </div>
+    <div class="puerta">
+      @@FICHAS@@
     </div>
   </div>
 </section>
-<div class="wrap"><div class="ticks ticks--tall" aria-hidden="true"></div></div>
+
+<div class="wrap"><div class="ticks" aria-hidden="true"></div></div>
 
 <section class="section" id="indice">
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">Índice general</p>
-      <h2>Todo lo que hay</h2>
+      <h2>Buscar en todo el sistema</h2>
+      <p>@APARTADOS@ apartados y @SUBAPARTADOS@ titulares, de los @cuantos@ documentos a la vez. Escriba una palabra y el índice se queda con lo que la lleva; o abra el documento que le interese.</p>
     </div>
 
     <div class="idx__mando">
@@ -343,7 +461,7 @@ CUERPO = """
           <path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
         <input type="search" id="idx-filtro" autocomplete="off" spellcheck="false"
-               placeholder="Filtrar el índice: escriba una palabra">
+               placeholder="Escriba una palabra: «RACI», «pre-mortem», «consentimiento»…">
       </label>
       <p class="idx__marcador" id="idx-marcador" role="status" aria-live="polite" aria-atomic="true">@APARTADOS@ apartados</p>
       <button type="button" class="idx__plegar" id="idx-plegar" aria-pressed="false">Abrir todo el detalle</button>
@@ -358,24 +476,11 @@ CUERPO = """
 
 <div class="wrap"><div class="ticks" aria-hidden="true"></div></div>
 
-<section class="section">
-  <div class="wrap">
-    <div class="section__head">
-      <p class="eyebrow">El sistema</p>
-      <h2>Qué es cada cosa</h2>
-      <p>El índice dice dónde está todo; esto dice para qué sirve cada pieza. El Plan de Dirección dirige, la presentación convence, el Plan de Marketing llena la agenda, el Manual y el Protocolo ejecutan, Otros documentos sostiene y la hoja de captura mide. Sin la última, todas las demás se apoyan en supuestos.</p>
-    </div>
-    <div class="puerta">
-      @@FICHAS@@
-    </div>
-  </div>
-</section>
-
-<section class="section">
+<section class="section" id="cifras">
   <div class="wrap">
     <div class="callout" style="max-width:none">
       <p class="eyebrow">Sobre la naturaleza de las cifras</p>
-      <p>Las cifras económicas del Plan de Dirección y de la presentación son <strong>modelos sobre rangos del sector, marcados como tales</strong> en cada figura y registrados en su apartado 18. No son datos del centro y no deben citarse como tales hasta que exista la línea base. Levantarla es exactamente para lo que sirve la hoja de captura.</p>
+      <p>Las cifras económicas del Plan de Dirección y de la presentación son <strong>modelos sobre rangos del sector, marcados como tales</strong> en cada figura y registrados en su apartado 18. No son datos del centro y no deben citarse como tales hasta que exista la línea base. Levantarla es exactamente para lo que sirve la hoja de línea base.</p>
     </div>
   </div>
 </section>
@@ -394,7 +499,8 @@ CUERPO = """
     </div>
   </div>
 </footer>
-""".replace("@@FICHAS@@", "\n      ".join(ficha(*f) for f in FICHAS))
+""".replace("@@FICHAS@@", "\n      ".join(ficha(*f) for f in FICHAS)) \
+         .replace("@@BARRA@@", BARRA_MENU)
 
 
 # ---------------------------------------------------------------------------
@@ -786,6 +892,10 @@ JS_INDICE = """
       var propio = !trozos.length || casan(doc.dataset.buscable || "", trozos);
       doc.hidden = !suyas && !propio;
       if(propio && !suyas) apartados++;
+      /* Buscando, el documento que tiene algo se abre solo; con el campo vacío
+         se vuelve al reposo, que es cerrado. */
+      if(trozos.length) doc.open = !doc.hidden;
+      else doc.open = false;
     });
     if(vacio) vacio.hidden = apartados > 0;
     if(marcador){
@@ -809,6 +919,7 @@ JS_INDICE = """
       }).length;
       var todo = abiertas === conDetalle.length && conDetalle.length > 0;
       conDetalle.forEach(function(r){ abre(r, !todo); });
+      docs.forEach(function(d){ d.open = !todo; });
       sincroniza();
     });
   }
@@ -834,7 +945,8 @@ CUERPO = (CUERPO.replace("@INDICE@", INDICE_HTML)
           .replace("@LINEAS@", str(APARTADOS + SUBAPARTADOS))
           .replace("@CUANTOS@", CUANTOS).replace("@cuantos@", CUANTOS.lower())
           .replace("@ACCIONES@", ACCIONES).replace("@ESTADOS@", ESTADOS)
-          .replace("@SINCOSTE@", SINCOSTE))
+          .replace("@SINCOSTE@", SINCOSTE)
+          .replace("@DIAPOS@", str(DIAPOSITIVAS)))
 assert "@CUANTOS@" not in CUERPO and "@cuantos@" not in CUERPO, "queda alguna marca"
 
 (RAIZ / "inicio.html").write_text(

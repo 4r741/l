@@ -28,6 +28,21 @@ import posixpath
 # --------------------------------------------------------------------------
 
 MENUS = {
+    # La portada también lleva menú. Antes era el único documento sin barra
+    # útil: se entraba y no había forma de saltar a ninguna parte, ni de esta
+    # página ni del sistema, más que bajando seis pantallas.
+    "inicio.html": {
+        "rotulo": "Portada del sistema",
+        "aria": "Secciones de la portada",
+        "grupos": [
+            ("Esta página", None, [
+                ("documentos", "", "Los siete documentos"),
+                ("indice", "", "Índice general del sistema"),
+                ("cifras", "", "Sobre la naturaleza de las cifras"),
+            ]),
+        ],
+    },
+
     "memoria.html": {
         "rotulo": "Plan de Dirección",
         "aria": "Secciones del Plan de Dirección",

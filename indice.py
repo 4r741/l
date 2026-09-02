@@ -36,7 +36,7 @@ DOCUMENTOS = [
     ("otros.html", "Otros documentos del sistema", "Troncal",
      "Los 14 documentos de apoyo, del compendio maestro al programa de cuidado",
      "Según el documento"),
-    ("instrumentos/captura.html", "Captura de la línea base", "Instrumento",
+    ("instrumentos/captura.html", "Hoja de línea base", "Instrumento",
      "Los 10 indicadores y los 5 números, mes a mes",
      "Gerencia"),
 ]
