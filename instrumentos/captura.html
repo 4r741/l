@@ -22,66 +22,61 @@
   /* ---------------------------------------------------------------------------
      SISTEMA VISUAL
 
-     Nada de papel y nada de tarjeta corporativa. Blanco de verdad, negro de
-     verdad y un verde que es el de la marca llevado a su versión saturada, más
-     un ácido que solo aparece donde hay que mirar. La familia es Archivo en su
-     versión variable: el eje de anchura da titulares muy anchos para las cifras
-     y muy estrechos para los rótulos, que es lo que hace que dos tamaños de
-     letra parezcan dos voces distintas y no la misma letra más grande.
+     El registro es el de un sitio institucional de clínica: claro, sobrio y sin
+     estridencias. Blanco y un gris azulado muy claro de fondo; la tinta es un
+     azul pizarra, no negro puro, que a este tamaño cansa menos; y un solo verde
+     de marca que aparece donde hay que mirar y en ningún otro sitio. Ni bloques
+     negros ni colores flúor: el contraste lo dan el espacio y la jerarquía.
      --------------------------------------------------------------------------- */
-  --paper:#FFFFFF;
+  --paper:#F6F8F9;
   --surface:#FFFFFF;
-  --surface-2:#F2F4F3;
-  --tinta:#080B0A;
-  --ink:#080B0A;
-  --ink-2:#37423F;
-  --muted:#7A8783;
-  --line:rgba(8,11,10,.12);
-  --line-soft:rgba(8,11,10,.06);
-  --accent:#00857A;
-  --accent-ink:#00655D;
-  --accent-fuerte:#004A44;
-  --accent-soft:rgba(0,133,122,.08);
-  --acido:#C8F04A;
-  --acido-ink:#3D4A08;
-  --signal:#C25A12;
-  --signal-soft:rgba(194,90,18,.10);
-  --alerta:#C0392B;
-  --alerta-soft:rgba(192,57,43,.10);
-  --sombra-1:none;
-  --sombra-2:0 18px 40px -28px rgba(8,11,10,.55);
-  --sombra-3:0 30px 60px -30px rgba(8,11,10,.5);
+  --surface-2:#EDF1F3;
+  --tinta:#12232B;
+  --ink:#12232B;
+  --ink-2:#3E5661;
+  --muted:#70858F;
+  --line:rgba(18,35,43,.13);
+  --line-soft:rgba(18,35,43,.07);
+  --accent:#0F7A6E;
+  --accent-ink:#0B5C53;
+  --accent-fuerte:#084840;
+  --accent-soft:rgba(15,122,110,.08);
+  --acido:#DCEEEA;
+  --acido-ink:#0B5C53;
+  --signal:#B0641C;
+  --signal-soft:rgba(176,100,28,.10);
+  --alerta:#B23B2C;
+  --alerta-soft:rgba(178,59,44,.10);
+  --sombra-1:0 1px 2px rgba(18,35,43,.05);
+  --sombra-2:0 1px 3px rgba(18,35,43,.06), 0 10px 24px -18px rgba(18,35,43,.35);
+  --sombra-3:0 2px 6px rgba(18,35,43,.07), 0 20px 40px -24px rgba(18,35,43,.35);
   --shadow:var(--sombra-2);
-  --rule:rgba(8,11,10,.22);
-  --radio:22px;
-  --radio-s:14px;
+  --rule:rgba(18,35,43,.20);
+  --radio:12px;
+  --radio-s:8px;
 
-  /* Los seis puestos y el semáforo, dentro del sistema. Antes eran un azul y
-     un violeta de otra paleta: en una página de negro, verde y ácido cantaban
-     como dos invitados que no conocen a nadie. Ahora son una escala del mismo
-     verde hacia el negro, más el gris. */
-  --rol-recepcion:#00857A;
-  --rol-doctor:#0B3B45;
-  --rol-higienista:#5C7F26;
-  --rol-auxiliar:#7A8783;
-  --rol-rac:#00655D;
-  --rol-direccion:#080B0A;
-  --sem-rojo:#B8332A;
-  --sem-naranja:#C25A12;
-  --sem-amarillo:#98860F;
-  --sem-verde:#00857A;
+  --rol-recepcion:#0F7A6E;
+  --rol-doctor:#1D5A73;
+  --rol-higienista:#5E7A2C;
+  --rol-auxiliar:#70858F;
+  --rol-rac:#0B5C53;
+  --rol-direccion:#12232B;
+  --sem-rojo:#B23B2C;
+  --sem-naranja:#B0641C;
+  --sem-amarillo:#8E7F12;
+  --sem-verde:#0F7A6E;
 
   --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 
-  --wrap:1320px;
+  --wrap:1220px;
   --step--1:clamp(.79rem,.77rem + .1vw,.85rem);
-  --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
-  --step-1:clamp(1.16rem,1.08rem + .34vw,1.34rem);
-  --step-2:clamp(1.45rem,1.24rem + .85vw,2rem);
-  --step-3:clamp(2rem,1.5rem + 2.1vw,3.4rem);
-  --step-4:clamp(2.6rem,1.6rem + 4.2vw,5.4rem);
+  --step-0:clamp(1rem,.97rem + .14vw,1.05rem);
+  --step-1:clamp(1.13rem,1.06rem + .3vw,1.28rem);
+  --step-2:clamp(1.36rem,1.22rem + .6vw,1.7rem);
+  --step-3:clamp(1.7rem,1.42rem + 1.2vw,2.4rem);
+  --step-4:clamp(2.1rem,1.6rem + 2.2vw,3.3rem);
 
   color-scheme:light;
 }
@@ -101,11 +96,11 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 h1,h2,h3,h4{
-  font-family:var(--f-display);font-weight:700;
-  font-variation-settings:"wdth" 108;
-  letter-spacing:-.035em;text-wrap:balance;margin:0;line-height:1.06;
+  font-family:var(--f-display);font-weight:600;
+  font-variation-settings:"wdth" 100;
+  letter-spacing:-.021em;text-wrap:balance;margin:0;line-height:1.16;
 }
-h3,h4{font-variation-settings:"wdth" 100;letter-spacing:-.02em;line-height:1.18}
+h3,h4{font-weight:600;letter-spacing:-.014em;line-height:1.24}
 p{margin:0}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
@@ -323,7 +318,7 @@ main:focus{outline:none}
   font-size:clamp(2.4rem,5vw,4rem);letter-spacing:-.05em;line-height:.8;
   color:var(--accent);
 }
-@media print{.section__head .eyebrow .num{color:#00655D}}
+@media print{.section__head .eyebrow .num{color:#0B5C53}}
 
 /* La barra es negra y no se disimula: es el borde del sistema, no un adorno
    translúcido sobre el texto. */
@@ -636,61 +631,6 @@ main:focus{outline:none}
    ser un tablero: decía lo mismo que el tablero, peor y robando cinco pulgadas
    de pantalla al texto. Para volver al índice se vuelve al tablero. */
 
-/* --- anterior y siguiente, al pie del apartado ------------------------- */
-/* El buscador, dentro del panel del menú */
-.buscap{
-  grid-column:1/-1;display:flex;align-items:center;gap:.55rem;
-  margin:-.2rem 0 1rem;padding:.6rem .85rem;
-  border:1px solid var(--line);border-radius:999px;background:var(--paper);
-  color:var(--muted);
-}
-.buscap input{
-  flex:1;min-width:0;font:inherit;font-size:.9rem;color:var(--ink);
-  background:transparent;border:0;outline:none;padding:.1rem 0;
-}
-.buscap input::placeholder{color:var(--muted)}
-.buscap input::-webkit-search-cancel-button{display:none}
-.buscap kbd{
-  font-family:var(--f-mono);font-size:.64rem;color:var(--muted);
-  border:1px solid var(--line);border-radius:5px;padding:.05rem .32rem;background:var(--surface);
-}
-.buscap__nada{grid-column:1/-1;font-size:.86rem;color:var(--muted);margin:.2rem 0 0}
-.menu__cols>.buscap{margin-bottom:.4rem}
-.rastro__tb{
-  text-decoration:none;color:#fff;background:var(--tinta);font-weight:600;
-  font-size:.74rem;letter-spacing:.02em;border-radius:999px;padding:.34rem .8rem;
-  transition:background .16s ease,color .16s ease;
-}
-.rastro__tb:hover{background:var(--accent);color:#fff;text-decoration:none}
-.rastro__tb:hover{text-decoration:underline;text-underline-offset:3px}
-.rastro__tb i{font-style:normal;margin-right:.25rem}
-
-.pasos{
-  display:grid;gap:.6rem;margin:4rem 0 1rem;
-}
-@media(min-width:700px){.pasos{grid-template-columns:1fr 1fr}}
-.pasos__a{
-  background:var(--surface-2);border-radius:var(--radio-s);
-  padding:1.15rem 1.3rem 1.25rem;text-decoration:none;color:inherit;
-  display:grid;gap:.4rem;min-width:0;
-  transition:background .16s ease,color .16s ease;
-}
-.pasos__a:hover{background:var(--tinta);color:#fff}
-.pasos__a:hover b,.pasos__a:hover span,.pasos__a:hover i{color:#fff}
-.pasos__a span{
-  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--muted);
-}
-.pasos__a b{
-  font-weight:600;font-size:1.05rem;line-height:1.22;color:var(--ink);
-  letter-spacing:-.015em;transition:color .15s ease;
-}
-.pasos__a i{font-style:normal;font-family:var(--f-mono);color:var(--muted);margin-right:.4rem}
-.pasos__a--sig{text-align:right}
-.pasos__a--sig i{margin:0 0 0 .4rem}
-.pasos__a--vacio{background:transparent;border:1px dashed var(--line);pointer-events:none;opacity:.5}
-@media print{.pasos{display:none!important}}
-
 /* --- el rastro: dónde estás, sobre el titular -------------------------- */
 .rastro{
   display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;
@@ -701,6 +641,41 @@ main:focus{outline:none}
 .rastro b{font-family:var(--f-mono);font-size:.7rem;color:var(--tinta);font-weight:500;background:var(--acido);border-radius:999px;padding:.15rem .5rem;margin-left:auto}
 .rastro em{font-style:normal;color:var(--line)}
 @media print{.rastro{display:none}}
+
+/* --- el buscador del panel: lo pone el guion, lo viste la hoja ---------
+   Lo dibujaba el guion y no lo vestía nadie: salía el campo de texto crudo del
+   navegador —borde gris de sistema, esquinas rectas, tipografía ajena— en
+   mitad de un panel que por lo demás es del centro. Aquí queda como el resto
+   de los mandos: pastilla, tipografía del sistema y la tecla a la derecha. */
+.buscap{
+  display:flex;align-items:center;gap:.6rem;
+  margin:0 0 1.1rem;padding:.62rem .9rem;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:999px;
+  color:var(--muted);transition:border-color .15s,background .15s;
+}
+.buscap:focus-within{border-color:var(--accent);background:var(--surface);
+  box-shadow:0 0 0 3px var(--accent-soft)}
+.buscap svg{flex:none;color:var(--muted)}
+.buscap:focus-within svg{color:var(--accent-ink)}
+.buscap input{
+  flex:1;min-width:0;border:0;background:none;outline:none;padding:0;
+  font-family:inherit;font-size:.92rem;color:var(--ink);
+}
+.buscap input::placeholder{color:var(--muted)}
+.buscap input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.buscap kbd{
+  flex:none;font-family:var(--f-mono);font-size:.68rem;line-height:1;
+  color:var(--muted);background:var(--surface);border:1px solid var(--line);
+  border-radius:5px;padding:.24rem .4rem;
+}
+.buscap:focus-within kbd{opacity:0}
+.buscap__nada{
+  margin:.2rem 0 0;padding:.9rem 1rem;border-radius:var(--radio-s);
+  background:var(--surface-2);color:var(--muted);font-size:.86rem;
+}
+@media(max-width:760px){.buscap kbd{display:none}}
+@media print{.buscap,.buscap__nada{display:none}}
+
 
 
 
@@ -1185,7 +1160,7 @@ table.cap tbody td:nth-child(2) small{max-width:34ch}
 table.anual{min-width:1180px}
 table.cap input,table.cap select{
   font:inherit;font-family:var(--f-mono);font-size:.82rem;width:100%;
-  border:1px solid var(--line);background:#FBFDF0;color:var(--ink);
+  border:1px solid var(--line);background:#FAFCF6;color:var(--ink);
   padding:.32rem .4rem;border-radius:2px;min-width:0;
 }
 table.cap input:focus,table.cap select:focus{outline:2px solid var(--accent);outline-offset:1px}
@@ -1202,8 +1177,8 @@ table.cap td.est{text-align:center;white-space:nowrap}
   text-transform:uppercase;padding:.16rem .48rem;border-radius:3px;border:1px solid transparent;
 }
 .luz--verde{background:rgba(14,124,116,.14);color:var(--accent-ink);border-color:rgba(14,124,116,.3)}
-.luz--ambar{background:rgba(168,99,27,.16);color:#A34C0F;border-color:rgba(168,99,27,.34)}
-.luz--rojo{background:rgba(168,27,27,.14);color:#B8332A;border-color:rgba(168,27,27,.32)}
+.luz--ambar{background:rgba(168,99,27,.16);color:#8E5116;border-color:rgba(168,99,27,.34)}
+.luz--rojo{background:rgba(168,27,27,.14);color:#B23B2C;border-color:rgba(168,27,27,.32)}
 .luz--gris{background:var(--surface-2);color:var(--muted);border-color:var(--line)}
 
 .cap__barra{
@@ -1217,7 +1192,7 @@ table.cap td.est{text-align:center;white-space:nowrap}
   color:var(--ink-2);padding:.42rem .85rem;border-radius:999px;cursor:pointer;
 }
 .boton:hover{border-color:var(--accent);color:var(--accent-ink)}
-.boton--riesgo:hover{border-color:#B8332A;color:#B8332A}
+.boton--riesgo:hover{border-color:#B23B2C;color:#B23B2C}
 
 /* resumen anual */
 table.anual{font-size:.8rem}
@@ -1227,7 +1202,7 @@ table.anual td.v{
 table.anual td.vacio{color:var(--muted);text-align:center}
 .tend{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase}
 .tend--sube{color:var(--accent-ink)}
-.tend--baja{color:#B8332A}
+.tend--baja{color:#B23B2C}
 .tend--igual{color:var(--muted)}
 
 /* los cinco números */
@@ -1254,7 +1229,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
 .entradas input{
   font:inherit;font-family:var(--f-mono);font-size:.9rem;width:100%;text-align:right;
-  border:1px solid var(--line);background:#FBFDF0;padding:.35rem .5rem;border-radius:2px;
+  border:1px solid var(--line);background:#FAFCF6;padding:.35rem .5rem;border-radius:2px;
   font-variant-numeric:tabular-nums;
 }
 .entradas small{display:block;margin-top:.4rem;font-size:.74rem;color:var(--muted);line-height:1.4}
@@ -1290,7 +1265,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
           <span class="menu__b__n">5</span>
         </summary>
         <div class="menu__panel">
-          <div class="menu__cols"><div class="menu__g"><p class="menu__gt"><span>La hoja de cada mes</span></p><a href="#instrucciones"><b></b><span>Tres reglas y ninguna más</span></a><a href="#definiciones"><b></b><span>Qué se cuenta y cómo se cuenta</span></a><a href="#captura"><b></b><span>Una hoja por cada mes del año</span></a><a href="#anual"><b></b><span>Los doce meses en una rejilla</span></a><a href="#cinco"><b></b><span>Los cinco números que resumen el año</span></a></div><div class="menu__g menu__g--docs"><p class="menu__gt"><span>El sistema documental</span></p><a href="../inicio.html"><b></b><span>Portada del sistema</span></a><a href="../memoria.html"><b></b><span>Plan de Dirección</span></a><a href="../deck.html"><b></b><span>Presentación de Junta</span></a><a href="../manual.html"><b></b><span>Manual Maestro</span></a><a href="../index.html"><b></b><span>Protocolo de Primera Visita</span></a><a href="../otros.html"><b></b><span>Otros documentos</span></a><a href="../marketing.html"><b></b><span>Plan de Marketing</span></a></div></div>
+          <div class="menu__cols"><div class="menu__g"><p class="menu__gt"><span>La hoja de cada mes</span></p><a href="#instrucciones"><b></b><span>Tres reglas y ninguna más</span></a><a href="#definiciones"><b></b><span>Qué se cuenta y cómo se cuenta</span></a><a href="#captura"><b></b><span>Una hoja por cada mes del año</span></a><a href="#anual"><b></b><span>Los doce meses en una rejilla</span></a><a href="#cinco"><b></b><span>Los cinco números que resumen el año</span></a></div><div class="menu__g menu__g--docs"><p class="menu__gt"><span>El sistema documental</span></p><a href="../inicio.html"><b></b><span>Inicio</span></a><a href="../memoria.html"><b></b><span>Dirección</span></a><a href="../deck.html"><b></b><span>Presentación de Junta</span></a><a href="../protocolos.html"><b></b><span>Protocolos por puesto</span></a><a href="../index.html"><b></b><span>Primera Visita</span></a><a href="../manual.html"><b></b><span>Operaciones</span></a><a href="../marketing.html"><b></b><span>Marketing</span></a><a href="../otros.html"><b></b><span>Otros documentos</span></a></div></div>
         </div>
       </details>
       <p class="menu__aqui" data-aqui>Los números del centro</p>

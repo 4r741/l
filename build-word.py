@@ -37,6 +37,9 @@ PARTES = [
      "Setenta y seis acciones sobre los doce estados del paciente, con dueño, coste y semáforo legal."),
     ("manual.html", "Manual Maestro de Operaciones",
      "Las catorce fases del recorrido del paciente, los seis puestos y la puesta en marcha."),
+    ("protocolos.html", "Protocolos por puesto",
+     "El protocolo del centro visto desde cada uno de los seis puestos, con su papel "
+     "en las catorce fases y sus procedimientos."),
     ("index.html", "Protocolo de Primera Visita",
      "Las doce fases de la primera visita, minuto a minuto."),
     ("otros.html", "Otros documentos del sistema",

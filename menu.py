@@ -36,9 +36,23 @@ MENUS = {
         "aria": "Secciones de la portada",
         "grupos": [
             ("Esta página", None, [
-                ("documentos", "", "Los siete documentos del sistema"),
+                ("documentos", "", "Los ocho documentos del sistema"),
                 ("indice", "", "Buscar en todo el sistema"),
                 ("cifras", "", "Sobre la naturaleza de las cifras"),
+            ]),
+        ],
+    },
+
+    # La vista operativa: el protocolo del centro desde cada puesto. No es un
+    # documento más, es una entrada distinta a los que ya hay.
+    "protocolos.html": {
+        "rotulo": "Protocolos por puesto",
+        "aria": "Secciones de Protocolos por puesto",
+        "grupos": [
+            ("Esta página", None, [
+                ("portada", "", "Para qué sirve esta vista"),
+                ("puestos", "", "Los seis puestos: elija el suyo"),
+                ("comun", "", "Lo que se cumple en todos los puestos"),
             ]),
         ],
     },
@@ -260,13 +274,14 @@ MENUS = {
 # filas de la barra —cuatrocientos treinta píxeles antes de la primera línea de
 # texto—; aquí caben en cuatro renglones y la barra vuelve a ser una barra.
 DOCS = [
-    ("inicio.html", "Portada del sistema"),
-    ("memoria.html", "Plan de Dirección"),
+    ("inicio.html", "Inicio"),
+    ("memoria.html", "Dirección"),
     ("deck.html", "Presentación de Junta"),
-    ("manual.html", "Manual Maestro"),
-    ("index.html", "Protocolo de Primera Visita"),
+    ("protocolos.html", "Protocolos por puesto"),
+    ("index.html", "Primera Visita"),
+    ("manual.html", "Operaciones"),
+    ("marketing.html", "Marketing"),
     ("otros.html", "Otros documentos"),
-    ("marketing.html", "Plan de Marketing"),
     ("instrumentos/captura.html", "Los números del centro"),
 ]
 

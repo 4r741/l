@@ -37,6 +37,8 @@ DOCUMENTOS = [
      "Plan de Dirección · v%s" % VERSION, False, ""),
     ("manual.html", "Manual-Maestro-Giraldo-v%s.pdf" % VERSION,
      "Manual Maestro de Operaciones · v%s" % VERSION, False, ""),
+    ("protocolos.html", "Protocolos-Por-Puesto-Giraldo-v%s.pdf" % VERSION,
+     "Protocolos por puesto · v%s" % VERSION, False, ""),
     ("index.html", "Protocolo-Primera-Visita-Giraldo-v%s.pdf" % VERSION,
      "Protocolo de Primera Visita · v%s" % VERSION, False, ""),
     ("otros.html", "Otros-Documentos-Giraldo-v%s.pdf" % VERSION,

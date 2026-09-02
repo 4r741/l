@@ -27,6 +27,7 @@ DOCUMENTOS = {
     "manual.html": "m",
     "index.html": "p",
     "otros.html": "o",
+    "protocolos.html": "s",
     "instrumentos/captura.html": "c",
 }
 

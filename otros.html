@@ -22,66 +22,61 @@
   /* ---------------------------------------------------------------------------
      SISTEMA VISUAL
 
-     Nada de papel y nada de tarjeta corporativa. Blanco de verdad, negro de
-     verdad y un verde que es el de la marca llevado a su versión saturada, más
-     un ácido que solo aparece donde hay que mirar. La familia es Archivo en su
-     versión variable: el eje de anchura da titulares muy anchos para las cifras
-     y muy estrechos para los rótulos, que es lo que hace que dos tamaños de
-     letra parezcan dos voces distintas y no la misma letra más grande.
+     El registro es el de un sitio institucional de clínica: claro, sobrio y sin
+     estridencias. Blanco y un gris azulado muy claro de fondo; la tinta es un
+     azul pizarra, no negro puro, que a este tamaño cansa menos; y un solo verde
+     de marca que aparece donde hay que mirar y en ningún otro sitio. Ni bloques
+     negros ni colores flúor: el contraste lo dan el espacio y la jerarquía.
      --------------------------------------------------------------------------- */
-  --paper:#FFFFFF;
+  --paper:#F6F8F9;
   --surface:#FFFFFF;
-  --surface-2:#F2F4F3;
-  --tinta:#080B0A;
-  --ink:#080B0A;
-  --ink-2:#37423F;
-  --muted:#7A8783;
-  --line:rgba(8,11,10,.12);
-  --line-soft:rgba(8,11,10,.06);
-  --accent:#00857A;
-  --accent-ink:#00655D;
-  --accent-fuerte:#004A44;
-  --accent-soft:rgba(0,133,122,.08);
-  --acido:#C8F04A;
-  --acido-ink:#3D4A08;
-  --signal:#C25A12;
-  --signal-soft:rgba(194,90,18,.10);
-  --alerta:#C0392B;
-  --alerta-soft:rgba(192,57,43,.10);
-  --sombra-1:none;
-  --sombra-2:0 18px 40px -28px rgba(8,11,10,.55);
-  --sombra-3:0 30px 60px -30px rgba(8,11,10,.5);
+  --surface-2:#EDF1F3;
+  --tinta:#12232B;
+  --ink:#12232B;
+  --ink-2:#3E5661;
+  --muted:#70858F;
+  --line:rgba(18,35,43,.13);
+  --line-soft:rgba(18,35,43,.07);
+  --accent:#0F7A6E;
+  --accent-ink:#0B5C53;
+  --accent-fuerte:#084840;
+  --accent-soft:rgba(15,122,110,.08);
+  --acido:#DCEEEA;
+  --acido-ink:#0B5C53;
+  --signal:#B0641C;
+  --signal-soft:rgba(176,100,28,.10);
+  --alerta:#B23B2C;
+  --alerta-soft:rgba(178,59,44,.10);
+  --sombra-1:0 1px 2px rgba(18,35,43,.05);
+  --sombra-2:0 1px 3px rgba(18,35,43,.06), 0 10px 24px -18px rgba(18,35,43,.35);
+  --sombra-3:0 2px 6px rgba(18,35,43,.07), 0 20px 40px -24px rgba(18,35,43,.35);
   --shadow:var(--sombra-2);
-  --rule:rgba(8,11,10,.22);
-  --radio:22px;
-  --radio-s:14px;
+  --rule:rgba(18,35,43,.20);
+  --radio:12px;
+  --radio-s:8px;
 
-  /* Los seis puestos y el semáforo, dentro del sistema. Antes eran un azul y
-     un violeta de otra paleta: en una página de negro, verde y ácido cantaban
-     como dos invitados que no conocen a nadie. Ahora son una escala del mismo
-     verde hacia el negro, más el gris. */
-  --rol-recepcion:#00857A;
-  --rol-doctor:#0B3B45;
-  --rol-higienista:#5C7F26;
-  --rol-auxiliar:#7A8783;
-  --rol-rac:#00655D;
-  --rol-direccion:#080B0A;
-  --sem-rojo:#B8332A;
-  --sem-naranja:#C25A12;
-  --sem-amarillo:#98860F;
-  --sem-verde:#00857A;
+  --rol-recepcion:#0F7A6E;
+  --rol-doctor:#1D5A73;
+  --rol-higienista:#5E7A2C;
+  --rol-auxiliar:#70858F;
+  --rol-rac:#0B5C53;
+  --rol-direccion:#12232B;
+  --sem-rojo:#B23B2C;
+  --sem-naranja:#B0641C;
+  --sem-amarillo:#8E7F12;
+  --sem-verde:#0F7A6E;
 
   --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 
-  --wrap:1320px;
+  --wrap:1220px;
   --step--1:clamp(.79rem,.77rem + .1vw,.85rem);
-  --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
-  --step-1:clamp(1.16rem,1.08rem + .34vw,1.34rem);
-  --step-2:clamp(1.45rem,1.24rem + .85vw,2rem);
-  --step-3:clamp(2rem,1.5rem + 2.1vw,3.4rem);
-  --step-4:clamp(2.6rem,1.6rem + 4.2vw,5.4rem);
+  --step-0:clamp(1rem,.97rem + .14vw,1.05rem);
+  --step-1:clamp(1.13rem,1.06rem + .3vw,1.28rem);
+  --step-2:clamp(1.36rem,1.22rem + .6vw,1.7rem);
+  --step-3:clamp(1.7rem,1.42rem + 1.2vw,2.4rem);
+  --step-4:clamp(2.1rem,1.6rem + 2.2vw,3.3rem);
 
   color-scheme:light;
 }
@@ -101,11 +96,11 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 h1,h2,h3,h4{
-  font-family:var(--f-display);font-weight:700;
-  font-variation-settings:"wdth" 108;
-  letter-spacing:-.035em;text-wrap:balance;margin:0;line-height:1.06;
+  font-family:var(--f-display);font-weight:600;
+  font-variation-settings:"wdth" 100;
+  letter-spacing:-.021em;text-wrap:balance;margin:0;line-height:1.16;
 }
-h3,h4{font-variation-settings:"wdth" 100;letter-spacing:-.02em;line-height:1.18}
+h3,h4{font-weight:600;letter-spacing:-.014em;line-height:1.24}
 p{margin:0}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
@@ -311,7 +306,7 @@ main:focus{outline:none}
   font-family:var(--f-display);font-size:1.06rem;letter-spacing:-.01em;
 }
 .brand__mark b{font-weight:600}
-.brand__tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.brand__tag{font-size:.78rem;font-weight:500;letter-spacing:.005em;color:var(--muted)}
 
 /* ---------------------------------------------------------------------------
    EL MENÚ DE SECCIONES
@@ -584,61 +579,6 @@ main:focus{outline:none}
    ser un tablero: decía lo mismo que el tablero, peor y robando cinco pulgadas
    de pantalla al texto. Para volver al índice se vuelve al tablero. */
 
-/* --- anterior y siguiente, al pie del apartado ------------------------- */
-/* El buscador, dentro del panel del menú */
-.buscap{
-  grid-column:1/-1;display:flex;align-items:center;gap:.55rem;
-  margin:-.2rem 0 1rem;padding:.6rem .85rem;
-  border:1px solid var(--line);border-radius:999px;background:var(--paper);
-  color:var(--muted);
-}
-.buscap input{
-  flex:1;min-width:0;font:inherit;font-size:.9rem;color:var(--ink);
-  background:transparent;border:0;outline:none;padding:.1rem 0;
-}
-.buscap input::placeholder{color:var(--muted)}
-.buscap input::-webkit-search-cancel-button{display:none}
-.buscap kbd{
-  font-family:var(--f-mono);font-size:.64rem;color:var(--muted);
-  border:1px solid var(--line);border-radius:5px;padding:.05rem .32rem;background:var(--surface);
-}
-.buscap__nada{grid-column:1/-1;font-size:.86rem;color:var(--muted);margin:.2rem 0 0}
-.menu__cols>.buscap{margin-bottom:.4rem}
-.rastro__tb{
-  text-decoration:none;color:#fff;background:var(--tinta);font-weight:600;
-  font-size:.74rem;letter-spacing:.02em;border-radius:999px;padding:.34rem .8rem;
-  transition:background .16s ease,color .16s ease;
-}
-.rastro__tb:hover{background:var(--accent);color:#fff;text-decoration:none}
-.rastro__tb:hover{text-decoration:underline;text-underline-offset:3px}
-.rastro__tb i{font-style:normal;margin-right:.25rem}
-
-.pasos{
-  display:grid;gap:.6rem;margin:4rem 0 1rem;
-}
-@media(min-width:700px){.pasos{grid-template-columns:1fr 1fr}}
-.pasos__a{
-  background:var(--surface-2);border-radius:var(--radio-s);
-  padding:1.15rem 1.3rem 1.25rem;text-decoration:none;color:inherit;
-  display:grid;gap:.4rem;min-width:0;
-  transition:background .16s ease,color .16s ease;
-}
-.pasos__a:hover{background:var(--tinta);color:#fff}
-.pasos__a:hover b,.pasos__a:hover span,.pasos__a:hover i{color:#fff}
-.pasos__a span{
-  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--muted);
-}
-.pasos__a b{
-  font-weight:600;font-size:1.05rem;line-height:1.22;color:var(--ink);
-  letter-spacing:-.015em;transition:color .15s ease;
-}
-.pasos__a i{font-style:normal;font-family:var(--f-mono);color:var(--muted);margin-right:.4rem}
-.pasos__a--sig{text-align:right}
-.pasos__a--sig i{margin:0 0 0 .4rem}
-.pasos__a--vacio{background:transparent;border:1px dashed var(--line);pointer-events:none;opacity:.5}
-@media print{.pasos{display:none!important}}
-
 /* --- el rastro: dónde estás, sobre el titular -------------------------- */
 .rastro{
   display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;
@@ -649,6 +589,40 @@ main:focus{outline:none}
 .rastro b{font-family:var(--f-mono);font-size:.7rem;color:var(--tinta);font-weight:500;background:var(--acido);border-radius:999px;padding:.15rem .5rem;margin-left:auto}
 .rastro em{font-style:normal;color:var(--line)}
 @media print{.rastro{display:none}}
+
+/* --- el buscador del panel: lo pone el guion, lo viste la hoja ---------
+   Lo dibujaba el guion y no lo vestía nadie: salía el campo de texto crudo del
+   navegador —borde gris de sistema, esquinas rectas, tipografía ajena— en
+   mitad de un panel que por lo demás es del centro. Aquí queda como el resto
+   de los mandos: pastilla, tipografía del sistema y la tecla a la derecha. */
+.buscap{
+  display:flex;align-items:center;gap:.6rem;
+  margin:0 0 1.1rem;padding:.62rem .9rem;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:999px;
+  color:var(--muted);transition:border-color .15s,background .15s;
+}
+.buscap:focus-within{border-color:var(--accent);background:var(--surface);
+  box-shadow:0 0 0 3px var(--accent-soft)}
+.buscap svg{flex:none;color:var(--muted)}
+.buscap:focus-within svg{color:var(--accent-ink)}
+.buscap input{
+  flex:1;min-width:0;border:0;background:none;outline:none;padding:0;
+  font-family:inherit;font-size:.92rem;color:var(--ink);
+}
+.buscap input::placeholder{color:var(--muted)}
+.buscap input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.buscap kbd{
+  flex:none;font-family:var(--f-mono);font-size:.68rem;line-height:1;
+  color:var(--muted);background:var(--surface);border:1px solid var(--line);
+  border-radius:5px;padding:.24rem .4rem;
+}
+.buscap:focus-within kbd{opacity:0}
+.buscap__nada{
+  margin:.2rem 0 0;padding:.9rem 1rem;border-radius:var(--radio-s);
+  background:var(--surface-2);color:var(--muted);font-size:.86rem;
+}
+@media(max-width:760px){.buscap kbd{display:none}}
+@media print{.buscap,.buscap__nada{display:none}}
 
 @media(max-width:1099px){
   .con-lateral main,.con-lateral footer.foot{padding-left:0}
@@ -708,9 +682,9 @@ main:focus{outline:none}
 .timemap__seg span{
   font-family:var(--f-mono);font-size:.62rem;color:var(--muted);padding-bottom:.3rem;
 }
-.timemap__seg[data-role="recepcion"]{border-bottom-color:#0B3B45}
+.timemap__seg[data-role="recepcion"]{border-bottom-color:#1D5A73}
 .timemap__seg[data-role="director"]{border-bottom-color:var(--accent)}
-.timemap__seg[data-role="doctor"]{border-bottom-color:#5C7F26}
+.timemap__seg[data-role="doctor"]{border-bottom-color:#5E7A2C}
 .timemap__seg[data-role="auxiliar"]{border-bottom-color:var(--signal)}
 .legend{display:flex;flex-wrap:wrap;gap:.4rem}
 .chip{
@@ -722,9 +696,9 @@ main:focus{outline:none}
 .chip::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--dot,var(--muted))}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .chip--static{cursor:default}
-.chip[data-role="recepcion"]{--dot:#0B3B45}
+.chip[data-role="recepcion"]{--dot:#1D5A73}
 .chip[data-role="director"]{--dot:var(--accent)}
-.chip[data-role="doctor"]{--dot:#5C7F26}
+.chip[data-role="doctor"]{--dot:#5E7A2C}
 .chip[data-role="auxiliar"]{--dot:var(--signal)}
 
 /* ============================================================
@@ -917,9 +891,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   text-transform:uppercase;border:1px solid var(--line);padding:.1rem .4rem;border-radius:3px;
   color:var(--muted);vertical-align:.15em;margin-left:.5rem;
 }
-.tag--rec{color:#0B3B45;border-color:#0B3B45}
+.tag--rec{color:#1D5A73;border-color:#1D5A73}
 .tag--dir{color:var(--accent-ink);border-color:var(--accent)}
-.tag--doc{color:#5C7F26;border-color:#5C7F26}
+.tag--doc{color:#5E7A2C;border-color:#5E7A2C}
 .tag--aux{color:var(--signal);border-color:var(--signal)}
 
 /* nota al pie de bloque */
@@ -1016,10 +990,10 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 /* semáforo de riesgo */
 .sem{display:inline-flex;align-items:center;gap:.42rem;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .sem::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--sem,var(--muted))}
-.sem--rojo{--sem:#B8332A}
-.sem--naranja{--sem:#C25A12}
-.sem--amarillo{--sem:#98860F}
-.sem--verde{--sem:#00857A}
+.sem--rojo{--sem:#B23B2C}
+.sem--naranja{--sem:#B0641C}
+.sem--amarillo{--sem:#8E7F12}
+.sem--verde{--sem:#0F7A6E}
 
 /* matriz RACI */
 table.raci td{text-align:center;font-family:var(--f-mono);font-size:.78rem}
@@ -1045,8 +1019,9 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 /* enlace entre documentos */
 .crosslink{
   display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;
-  border:1px solid var(--line);padding:.5rem .9rem;border-radius:999px;
-  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+  border:1px solid var(--line);padding:.52rem 1rem;border-radius:999px;
+  background:var(--surface);box-shadow:var(--sombra-1);
+  font-size:.86rem;font-weight:500;color:var(--ink-2);
 }
 .crosslink:hover{border-color:var(--accent);color:var(--accent-ink)}
 </style>
@@ -1072,7 +1047,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
           <span class="menu__b__n">17</span>
         </summary>
         <div class="menu__panel">
-          <div class="menu__cols"><div class="menu__g"><p class="menu__gt"><span>Apertura</span></p><a href="#presentacion"><b></b><span>Qué es cada cosa y cuándo se abre</span></a><a href="#otros-mapa"><b></b><span>El sistema en cuatro niveles</span></a></div><div class="menu__g"><p class="menu__gt"><span>Los catorce documentos</span></p><a href="#otros-compendio"><b>01</b><span>Compendio Maestro del sistema de gestión</span></a><a href="#otros-verificacion"><b>02</b><span>Verificación del centro · 322 puntos</span></a><a href="#otros-auditoria"><b>03</b><span>Auditoría integral de la clínica adquirida</span></a><a href="#otros-decisiones"><b>04</b><span>Decisiones de Gerencia y verificaciones</span></a><a href="#otros-100dias"><b>05</b><span>Plan Director de los primeros 100 días</span></a><a href="#otros-30dias"><b>06</b><span>Dosier de ejecución de los 30 días</span></a><a href="#otros-perfiles"><b>07</b><span>Protocolos operativos por perfil</span></a><a href="#otros-innovacion"><b>08</b><span>Innovación aplicada · 18 fichas</span></a><a href="#otros-marca"><b>09</b><span>Plan Director de marca y captación</span></a><a href="#otros-cuaderno"><b>10</b><span>Cuaderno de campo del día 1</span></a><a href="#otros-transicion-perfiles"><b>11</b><span>Manual de puesta en marcha por perfil</span></a><a href="#otros-continuidad"><b>12</b><span>Continuidad legal, financiera y de sistemas</span></a><a href="#otros-posicionamiento"><b>13</b><span>«No medias sonrisas» · posicionamiento</span></a><a href="#otros-gtc"><b>14</b><span>GTC · vive en el Plan de Marketing</span></a></div><div class="menu__g"><p class="menu__gt"><span>Cierre</span></p><a href="#otros-cierre"><b></b><span>Cómo encajan los catorce documentos</span></a></div><div class="menu__g menu__g--docs"><p class="menu__gt"><span>El sistema documental</span></p><a href="inicio.html"><b></b><span>Portada del sistema</span></a><a href="memoria.html"><b></b><span>Plan de Dirección</span></a><a href="deck.html"><b></b><span>Presentación de Junta</span></a><a href="manual.html"><b></b><span>Manual Maestro</span></a><a href="index.html"><b></b><span>Protocolo de Primera Visita</span></a><a href="marketing.html"><b></b><span>Plan de Marketing</span></a><a href="instrumentos/captura.html"><b></b><span>Los números del centro</span></a></div></div>
+          <div class="menu__cols"><div class="menu__g"><p class="menu__gt"><span>Apertura</span></p><a href="#presentacion"><b></b><span>Qué es cada cosa y cuándo se abre</span></a><a href="#otros-mapa"><b></b><span>El sistema en cuatro niveles</span></a></div><div class="menu__g"><p class="menu__gt"><span>Los catorce documentos</span></p><a href="#otros-compendio"><b>01</b><span>Compendio Maestro del sistema de gestión</span></a><a href="#otros-verificacion"><b>02</b><span>Verificación del centro · 322 puntos</span></a><a href="#otros-auditoria"><b>03</b><span>Auditoría integral de la clínica adquirida</span></a><a href="#otros-decisiones"><b>04</b><span>Decisiones de Gerencia y verificaciones</span></a><a href="#otros-100dias"><b>05</b><span>Plan Director de los primeros 100 días</span></a><a href="#otros-30dias"><b>06</b><span>Dosier de ejecución de los 30 días</span></a><a href="#otros-perfiles"><b>07</b><span>Protocolos operativos por perfil</span></a><a href="#otros-innovacion"><b>08</b><span>Innovación aplicada · 18 fichas</span></a><a href="#otros-marca"><b>09</b><span>Plan Director de marca y captación</span></a><a href="#otros-cuaderno"><b>10</b><span>Cuaderno de campo del día 1</span></a><a href="#otros-transicion-perfiles"><b>11</b><span>Manual de puesta en marcha por perfil</span></a><a href="#otros-continuidad"><b>12</b><span>Continuidad legal, financiera y de sistemas</span></a><a href="#otros-posicionamiento"><b>13</b><span>«No medias sonrisas» · posicionamiento</span></a><a href="#otros-gtc"><b>14</b><span>GTC · vive en el Plan de Marketing</span></a></div><div class="menu__g"><p class="menu__gt"><span>Cierre</span></p><a href="#otros-cierre"><b></b><span>Cómo encajan los catorce documentos</span></a></div><div class="menu__g menu__g--docs"><p class="menu__gt"><span>El sistema documental</span></p><a href="inicio.html"><b></b><span>Inicio</span></a><a href="memoria.html"><b></b><span>Dirección</span></a><a href="deck.html"><b></b><span>Presentación de Junta</span></a><a href="protocolos.html"><b></b><span>Protocolos por puesto</span></a><a href="index.html"><b></b><span>Primera Visita</span></a><a href="manual.html"><b></b><span>Operaciones</span></a><a href="marketing.html"><b></b><span>Marketing</span></a><a href="instrumentos/captura.html"><b></b><span>Los números del centro</span></a></div></div>
         </div>
       </details>
       <p class="menu__aqui" data-aqui>Otros documentos</p>
@@ -1100,6 +1075,16 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     <div class="tb__rejilla"><section class="tb__g"><header class="tb__gh"><h3>Apertura</h3><span>2</span></header><div class="tb__l"><a class="tb__e" href="#presentacion"><b class="tb__n">·</b><span class="tb__r">Qué es cada cosa y cuándo se abre</span><span class="tb__c">2</span></a><a class="tb__e" href="#otros-mapa"><b class="tb__n">·</b><span class="tb__r">El sistema en cuatro niveles</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Los catorce documentos</h3><span>14</span></header><div class="tb__l"><a class="tb__e" href="#otros-compendio"><b class="tb__n">01</b><span class="tb__r">Compendio Maestro del sistema de gestión</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-verificacion"><b class="tb__n">02</b><span class="tb__r">Verificación del centro · 322 puntos</span><span class="tb__c">5</span></a><a class="tb__e" href="#otros-auditoria"><b class="tb__n">03</b><span class="tb__r">Auditoría integral de la clínica adquirida</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-decisiones"><b class="tb__n">04</b><span class="tb__r">Decisiones de Gerencia y verificaciones</span><span class="tb__c">3</span></a><a class="tb__e" href="#otros-100dias"><b class="tb__n">05</b><span class="tb__r">Plan Director de los primeros 100 días</span><span class="tb__c">19</span></a><a class="tb__e" href="#otros-30dias"><b class="tb__n">06</b><span class="tb__r">Dosier de ejecución de los 30 días</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-perfiles"><b class="tb__n">07</b><span class="tb__r">Protocolos operativos por perfil</span><span class="tb__c">12</span></a><a class="tb__e" href="#otros-innovacion"><b class="tb__n">08</b><span class="tb__r">Innovación aplicada · 18 fichas</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-marca"><b class="tb__n">09</b><span class="tb__r">Plan Director de marca y captación</span><span class="tb__c">15</span></a><a class="tb__e" href="#otros-cuaderno"><b class="tb__n">10</b><span class="tb__r">Cuaderno de campo del día 1</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-transicion-perfiles"><b class="tb__n">11</b><span class="tb__r">Manual de puesta en marcha por perfil</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-continuidad"><b class="tb__n">12</b><span class="tb__r">Continuidad legal, financiera y de sistemas</span><span class="tb__c">13</span></a><a class="tb__e" href="#otros-posicionamiento"><b class="tb__n">13</b><span class="tb__r">«No medias sonrisas» · posicionamiento</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-gtc"><b class="tb__n">14</b><span class="tb__r">GTC · vive en el Plan de Marketing</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Cierre</h3><span>1</span></header><div class="tb__l"><a class="tb__e" href="#otros-cierre"><b class="tb__n">·</b><span class="tb__r">Cómo encajan los catorce documentos</span><span class="tb__c">1</span></a></div></section></div>
   </nav>
 </div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5269,7 +5254,7 @@ LTV              = Valor inicial
      anterior y el siguiente al pie. Todo cuelga del contenedor, no de
      identificadores, porque en el archivo único los identificadores se
      renombran para que no choquen entre documentos. */
-  /* En el archivo único conviven siete documentos en una misma página, cada
+  /* En el archivo único conviven los ocho documentos en una misma página, cada
      uno con su cuerpo y su menú. Por eso esto es una función que se instala
      sobre un cuerpo concreto, y no un guion que da por hecho que solo hay uno. */
   window.APARTADOS = function(raiz, nav, marca){
@@ -5304,32 +5289,10 @@ LTV              = Valor inicial
       return n + (ap.dataset.rotulo || "");
     }
 
-    /* ---- el pie de pasos, uno por apartado ---- */
-    function pasos(ap, i){
-      var vieja = ap.querySelector(":scope > .wrap > .pasos");
-      if(vieja) vieja.parentNode.remove();
-      var p = document.createElement("nav");
-      p.className = "pasos";
-      p.setAttribute("aria-label", "Apartado anterior y siguiente");
-      function lado(j, clase, etiqueta, flecha, derecha){
-        if(j < 0 || j >= aps.length){
-          return '<span class="pasos__a pasos__a--vacio ' + clase + '"><span>' + etiqueta +
-                 '</span><b>' + (derecha ? "Fin del documento" : "Principio") + '</b></span>';
-        }
-        var d = aps[j];
-        var txt = rotulo(d).replace(/&/g, "&amp;").replace(/</g, "&lt;");
-        return '<a class="pasos__a ' + clase + '" href="#' + d.dataset.ap + '"><span>' + etiqueta +
-               '</span><b>' + (derecha ? txt + '<i>&#8594;</i>' : '<i>&#8592;</i>' + txt) + '</b></a>';
-      }
-      p.innerHTML = lado(i - 1, "pasos__a--ant", "Anterior", "", false) +
-                    lado(i + 1, "pasos__a--sig", "Siguiente", "", true);
-      /* Dentro de la caja de medida, como el texto: a todo lo ancho de la
-         pantalla el pie de un apartado parece de la página, no del apartado. */
-      var caja = document.createElement("div");
-      caja.className = "wrap";
-      caja.appendChild(p);
-      ap.appendChild(caja);
-    }
+    /* El pie de «anterior / siguiente» se retiró: un apartado corto lo dejaba
+       flotando en mitad de la pantalla, y con el tablero delante ya hay por
+       dónde seguir. La continuidad la lleva la barra: el paso a paso vive
+       arriba, junto al nombre del apartado, donde no interrumpe la lectura. */
 
     /* ---- el rastro: en qué parte del documento estás ---- */
     function rastro(ap){
@@ -5355,7 +5318,6 @@ LTV              = Valor inicial
       aps.forEach(function(x){ x.classList.toggle("is-on", x === ap); });
       actual = ap;
       rastro(ap);
-      pasos(ap, i);
       ap.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
       Object.keys(porAncla).forEach(function(k){
         porAncla[k].setAttribute("aria-current", String(dueno[k] === ap));

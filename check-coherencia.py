@@ -53,7 +53,8 @@ CIFRAS = {
 }
 
 DOCUMENTOS = ["memoria.html", "deck.html", "marketing.html", "manual.html", "index.html",
-              "otros.html", "otros.html", "inicio.html", "instrumentos/captura.html"]
+              "otros.html", "inicio.html", "protocolos.html",
+              "instrumentos/captura.html"]
 DOCUMENTOS = list(dict.fromkeys(DOCUMENTOS))
 
 # Versiones que sí pueden aparecer: son referencias históricas explícitas, no
@@ -517,6 +518,52 @@ def comprueba_concordancia():
                 falla(nombre, "dice «%s»: el renombrado dejó el género sin cambiar" % mala)
 
 
+# Cuántos documentos son. La portada decía «ocho», la portada del PDF decía
+# «siete» y el buscador del archivo único decía «los siete documentos»: tres
+# cuentas distintas de la misma cosa, escritas a mano en tres sitios y ninguna
+# revisada al añadir un documento. La cuenta buena es la del modelo del menú.
+LETRA_DOCS = {5: "cinco", 6: "seis", 7: "siete", 8: "ocho", 9: "nueve", 10: "diez"}
+
+
+def comprueba_cuenta_de_documentos():
+    """Nadie puede decir un número de documentos distinto del que hay."""
+    ruta = RAIZ / "menu.py"
+    if not ruta.exists():
+        return
+    entorno = {"__name__": "menu_contado", "__file__": str(ruta)}
+    exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
+    # DOCS lleva también la portada, que es la puerta y no un documento
+    cuantos = len([f for f, _r in entorno["DOCS"] if f != "inicio.html"])
+    buena = LETRA_DOCS.get(cuantos, str(cuantos))
+    malas = [p for n, p in LETRA_DOCS.items() if n != cuantos]
+
+    # Solo se miran las frases que hablan del sistema entero. «Los cinco
+    # documentos firmados que genera el circuito» son otra cosa, y «diecinueve»
+    # lleva «nueve» dentro: por eso la comparación va anclada y con contexto.
+    FRASES = ["%s documentos del sistema", "%s documentos que gobiernan",
+              "%s documentos comparten", "%s documentos en una misma página",
+              "%s documentos en una página", "en los %s documentos",
+              "%s documentos enteros", "%s documentos que van del plan",
+              "%s documentos encuadernados", "%s documentos, en un solo",
+              "%s documentos que van de"]
+
+    def revisa(quien, crudo):
+        for mala in malas:
+            for frase in FRASES:
+                m = re.search(r"\b" + re.escape(frase % mala), crudo, re.I)
+                if m:
+                    falla(quien, "dice «%s» y son %s documentos" % (m.group(0), buena))
+
+    for nombre in list(DOCUMENTOS) + ["inicio.html"]:
+        revisa(nombre, bruto(nombre))
+    # y los generadores, que es donde se teclea
+    for gen in ("build-inicio.py", "build-pdf-completo.py", "build-export.py",
+                "menu.py", "build-menu.py"):
+        f = RAIZ / gen
+        if f.exists():
+            revisa(gen, f.read_text(encoding="utf-8"))
+
+
 def comprueba_menu():
     """El menú tiene que llevar a sitios que existan y contar como cuenta el texto.
 
@@ -594,6 +641,7 @@ def main():
     comprueba_figuras()
     comprueba_catalogo()
     comprueba_menu()
+    comprueba_cuenta_de_documentos()
     comprueba_concordancia()
     print("Coherencia del sistema documental · versión canónica v%s · %s\n" % (VERSION, FECHA))
     for a in avisos:

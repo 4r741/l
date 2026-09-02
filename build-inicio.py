@@ -409,6 +409,10 @@ FICHAS = [
   "La apuesta en @DIAPOS@ diapositivas. Se conduce con el teclado: <b>←</b> y <b>→</b> pasan, "
   "<b>N</b> abre el guion del ponente, <b>E</b> deja la ruta corta de veinte minutos.",
   "@DIAPOS@ diapositivas · 16:9"),
+ ("protocolos.html", "Protocolos por puesto", "Qué se espera de cada uno",
+  "Elija Dirección, Doctor, Recepción, RAC, Auxiliar o Higienista y vea en qué fases "
+  "interviene, con qué papel y qué procedimientos tiene escritos.",
+  "6 puestos · 14 fases"),
  ("manual.html", "Manual Maestro de Operaciones", "El documento troncal",
   "Las catorce fases del recorrido, los manuales por puesto, la matriz RACI, "
   "los indicadores, los incentivos y la puesta en marcha.",
@@ -495,7 +499,7 @@ CUERPO = """
     <div class="section__head">
       <p class="eyebrow">Por dónde se empieza</p>
       <h2>@CUANTOS@ documentos</h2>
-      <p>El Plan de Dirección dirige, la presentación convence, el Manual y el Protocolo ejecutan, el Plan de Marketing llena la agenda, Otros documentos sostiene y los números del centro miden. Sin la última, todas las demás se apoyan en supuestos.</p>
+      <p>El Plan de Dirección dirige, la presentación convence, el Manual y el Protocolo ejecutan, los Protocolos por puesto dicen a cada uno qué le toca, el Plan de Marketing llena la agenda, Otros documentos sostiene y los números del centro miden. Sin la última, todas las demás se apoyan en supuestos.</p>
     </div>
     <div class="puerta">
       @@FICHAS@@
@@ -840,7 +844,7 @@ JS_INDICE = """
   var mas = document.querySelector(".idx__vacio-mas");
   if(mas){
     mas.innerHTML = document.querySelector(".paleta")
-      ? "Puede estar en el cuerpo del texto: pulse <kbd>/</kbd> para buscar en los siete documentos enteros."
+      ? "Puede estar en el cuerpo del texto: pulse <kbd>/</kbd> para buscar en los ocho documentos enteros."
       : "El índice recorre titulares, no el cuerpo del texto. Pruebe con menos palabras o abra el documento.";
   }
   var docs = [].slice.call(caja.querySelectorAll(".idx__doc"));

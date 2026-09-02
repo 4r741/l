@@ -7,9 +7,9 @@
    claro, sobre los mismos tokens del sistema.
    ============================================================ */
 :root{
-  --serie-a:#00857A;   /* series de gráfico validadas para daltonismo */
-  --serie-b:#C25A12;
-  --serie-c:#0B3B45;
+  --serie-a:#0F7A6E;   /* series de gráfico validadas para daltonismo */
+  --serie-b:#B0641C;
+  --serie-c:#1D5A73;
 }
 
 /* ---------- portada de declaración ---------- */
@@ -44,9 +44,9 @@
   font-weight:400;letter-spacing:-.028em;line-height:1.04;color:var(--surface);
   margin:1.1rem 0 0;font-variation-settings:"opsz" 144;
 }
-.t-manifiesto h2 em{font-style:normal;color:#C8F04A}
+.t-manifiesto h2 em{font-style:normal;color:#DCEEEA}
 .t-manifiesto p{color:rgba(247,248,245,.82);margin-top:1.1rem;max-width:56ch}
-.t-manifiesto__cierre{font-family:var(--f-display);font-style:normal;font-weight:600;font-size:1.15rem;color:#C8F04A}
+.t-manifiesto__cierre{font-family:var(--f-display);font-style:normal;font-weight:600;font-size:1.15rem;color:#DCEEEA}
 .t-manifiesto__list{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .t-manifiesto__list li{
   border-top:1px solid rgba(247,248,245,.18);padding:.95rem 0;
@@ -57,7 +57,7 @@
    negrita tiene que verse como una negrita y no como un número de orden. */
 .t-manifiesto__list>li>b{
   font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;
-  color:#C8F04A;font-weight:400;
+  color:#DCEEEA;font-weight:400;
 }
 .t-manifiesto__list span b{color:var(--surface);font-weight:600}
 .t-manifiesto__list span{color:rgba(247,248,245,.9);font-size:.96rem;line-height:1.5}
@@ -230,7 +230,7 @@
   .t-manifiesto{background:#FFF;color:#000;border-top:2pt solid #000;padding:14pt 0}
   .t-manifiesto h2,.t-manifiesto p,.t-manifiesto__list span,
 .t-manifiesto__list span b{color:#000}
-  .t-manifiesto h2 em,.t-manifiesto__cierre{color:#00655D}
+  .t-manifiesto h2 em,.t-manifiesto__cierre{color:#0B5C53}
   .t-manifiesto .eyebrow,.t-manifiesto__list>li>b{color:#444}
   .t-manifiesto__list li{border-color:#BBB}
   .t-part{break-before:page}

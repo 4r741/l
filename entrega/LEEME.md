@@ -4,9 +4,16 @@ Los tres archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
-| `Giraldo-TODO-EN-UNO-v8.html` | Los siete documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v8.0.pdf` | Los mismos siete documentos encuadernados en 614 páginas, con portada, índice paginado y un marcador por documento. |
-| `Sistema-Documental-Giraldo-v8.0.docx` | El sistema entero en Word, con índice automático, 329 tablas y las 23 figuras incrustadas. |
+| `Giraldo-TODO-EN-UNO-v8.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v8.0.pdf` | Los mismos ocho documentos encuadernados en 630 páginas, con portada, índice paginado y un marcador por documento. |
+| `Sistema-Documental-Giraldo-v8.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. |
+
+Dentro de los tres está **Protocolos por puesto**: se elige Dirección, Doctor,
+Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
+del recorrido interviene ese puesto y con qué papel, qué procedimientos tiene
+escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
+espera de él los primeros treinta días. Cada línea lleva al documento donde
+está el detalle: la vista señala, no sustituye.
 
 Para descargarlos desde GitHub: entre en el archivo y pulse **Download raw file**
 (el icono de la flecha hacia abajo, arriba a la derecha). No use «Raw» a secas en

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Pone el menú nuevo en los seis documentos y unifica la cuenta.
+"""Pone el menú nuevo en los ocho documentos y unifica la cuenta.
 
     python3 build-menu.py
 
@@ -110,13 +110,19 @@ def _sustituye(texto, reemplazo, marcas, incluir=True):
 RAIZ_INI = ":root{"
 RAIZ_FIN = "  color-scheme:light;\n}"
 TITULARES_INI = "h1,h2,h3,h4{"
-TITULARES_FIN = 'h3,h4{font-variation-settings:"wdth" 100;letter-spacing:-.02em;line-height:1.18}'
+TITULARES_FIN = "h3,h4{font-weight:600;letter-spacing:-.014em;line-height:1.24}"
 
 # La barra superior: negra y con el acento ácido. Vive fuera de la región del
 # menú, así que se copia aparte.
 BARRA_INI = ("/* La barra es negra y no se disimula: es el borde del sistema, no un adorno\n"
              "   translúcido sobre el texto. */")
-BARRA_FIN = ".topbar .menu__panel .menu__gt{color:var(--muted)}"
+# El cierre llega hasta la marca: «otros documentos» y el protocolo se quedaron
+# con el rótulo de versión en versalitas monoespaciadas —«SISTEMA · V8.0»—
+# mientras el resto del sistema ya lo escribía en la tipografía del texto.
+BARRA_FIN = ".brand__tag{font-size:.78rem;font-weight:500;letter-spacing:.005em;color:var(--muted)}"
+BARRA_ANTES = [
+    (BARRA_INI, ".topbar .menu__panel .menu__gt{color:var(--muted)}"),
+]
 BARRA_VIEJA = (".topbar{", "}")
 
 # Retoques sueltos de puesta al día del sistema visual.
@@ -125,6 +131,18 @@ PARCHES = [
      ".hero h1 em{font-style:normal;color:var(--accent)}"),
     ("font-family:var(--f-display);font-style:italic;font-size:1.08rem;",
      "font-family:var(--f-display);font-style:normal;font-weight:500;font-size:1.08rem;"),
+    # Los enlaces a los demás documentos: en el protocolo y en «otros» eran
+    # versalitas monoespaciadas de siete puntos, del sistema visual anterior.
+    ('.crosslink{\n'
+     '  display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;\n'
+     '  border:1px solid var(--line);padding:.5rem .9rem;border-radius:999px;\n'
+     '  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;'
+     'text-transform:uppercase;color:var(--ink-2);\n}',
+     '.crosslink{\n'
+     '  display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;\n'
+     '  border:1px solid var(--line);padding:.52rem 1rem;border-radius:999px;\n'
+     '  background:var(--surface);box-shadow:var(--sombra-1);\n'
+     '  font-size:.86rem;font-weight:500;color:var(--ink-2);\n}'),
     ('.script{\n  border:1px solid var(--line);background:var(--surface);\n'
      '  padding:1.15rem 1.3rem;margin-top:1rem;max-width:68ch;\n}',
      '.script{\n  border:1px solid var(--line);border-radius:var(--radio-s);'
@@ -134,11 +152,12 @@ PARCHES = [
 
 CSS_INI = ("/* ---------------------------------------------------------------------------\n"
            "   EL MENÚ DE SECCIONES")
-CSS_FIN = "@media print{.rastro{display:none}}"
+CSS_FIN = "@media print{.buscap,.buscap__nada{display:none}}"
 CSS_MENU = (CSS_INI, CSS_FIN)
 # Los finales que tuvo esta región en ediciones anteriores, para que un
 # documento que se quedó atrás pueda ponerse al día de una sola pasada.
 CSS_MENU_ANTES = [
+    (CSS_INI, "@media print{.rastro{display:none}}"),
     (CSS_INI, "  .lateral{display:none!important}\n}"),
     (CSS_INI, "@media print{.strip{display:none}}"),
 ]
@@ -177,9 +196,12 @@ def sincroniza():
         texto = antes = ruta.read_text(encoding="utf-8")
 
         texto = _sustituye(texto, raiz, [(RAIZ_INI, RAIZ_FIN)])
-        texto = _sustituye(texto, titulares, [(TITULARES_INI, TITULARES_FIN),
-                                              (TITULARES_INI, "line-height:1.12}")])
-        texto = _sustituye(texto, barra, [(BARRA_INI, BARRA_FIN), BARRA_VIEJA])
+        texto = _sustituye(texto, titulares,
+                           [(TITULARES_INI, TITULARES_FIN),
+                            (TITULARES_INI, 'h3,h4{font-variation-settings:"wdth" 100;'
+                                            'letter-spacing:-.02em;line-height:1.18}'),
+                            (TITULARES_INI, "line-height:1.12}")])
+        texto = _sustituye(texto, barra, [(BARRA_INI, BARRA_FIN)] + BARRA_ANTES + [BARRA_VIEJA])
         for viejo_p, nuevo_p in PARCHES:
             texto = texto.replace(viejo_p, nuevo_p)
         texto = _sustituye(texto, css_menu,

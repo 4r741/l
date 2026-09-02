@@ -34,6 +34,7 @@ PAGINAS = {
     "deck.html": "Presentacion-Junta-Giraldo-v%s.html" % CORTA,
     "marketing.html": "Plan-Marketing-Giraldo-v%s.html" % CORTA,
     "manual.html": "Manual-Maestro-Giraldo-v%s.html" % CORTA,
+    "protocolos.html": "Protocolos-Por-Puesto-Giraldo-v%s.html" % CORTA,
     "index.html": "Protocolo-Primera-Visita-Giraldo-v%s.html" % CORTA,
     "otros.html": "Otros-Documentos-Giraldo-v%s.html" % CORTA,
     "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-v%s.html" % CORTA,
@@ -47,11 +48,12 @@ DOCUMENTOS = {
     "inicio.html": ("doc-inicio", "in-"),
     "memoria.html": ("doc-tesis", "tes-"),
     "deck.html": ("doc-deck", "dk-"),
-    "marketing.html": ("doc-marketing", "mk-"),
-    "instrumentos/captura.html": ("doc-captura", "cp-"),
-    "manual.html": ("doc-manual", ""),
+    "protocolos.html": ("doc-puestos", "ps-"),
     "index.html": ("doc-protocolo", "pv-"),
+    "manual.html": ("doc-manual", ""),
+    "marketing.html": ("doc-marketing", "mk-"),
     "otros.html": ("doc-otros", "ot-"),
+    "instrumentos/captura.html": ("doc-captura", "cp-"),
 }
 
 # Rótulo de cada documento en el conmutador permanente del archivo único.
@@ -59,25 +61,27 @@ ROTULOS = [
     ("doc-inicio", "Inicio"),
     ("doc-tesis", "Plan de Dirección"),
     ("doc-deck", "Presentación"),
-    ("doc-marketing", "Plan de Marketing"),
-    ("doc-captura", "Los números"),
-    ("doc-manual", "Manual Maestro"),
-    ("doc-protocolo", "Protocolo"),
+    ("doc-puestos", "Protocolos por puesto"),
+    ("doc-protocolo", "Primera Visita"),
+    ("doc-manual", "Operaciones"),
+    ("doc-marketing", "Marketing"),
     ("doc-otros", "Otros documentos"),
+    ("doc-captura", "Los números"),
 ]
 
 CORTOS = {
     "doc-inicio": "Inicio",
+    "doc-puestos": "Protocolos",
     # La barra necesita una palabra, no el nombre entero: al lado de
     # «Marketing» y «Manual», «Plan» sería ambiguo —el de marketing también
     # es un plan— y «Dirección» no lo es.
     "doc-tesis": "Dirección",
     "doc-deck": "Presentación",
+    "doc-protocolo": "Primera Visita",
+    "doc-manual": "Operaciones",
     "doc-marketing": "Marketing",
-    "doc-captura": "Los números",
-    "doc-manual": "Manual",
-    "doc-protocolo": "Protocolo",
     "doc-otros": "Otros",
+    "doc-captura": "Los números",
 }
 
 # Solo se incrustan estos subconjuntos: el resto (cirílico, vietnamita) no se usa
@@ -943,7 +947,7 @@ html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
 .cabecera__marca b{font-weight:600}
 .cabecera__marca span{
   font-family:var(--f-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
-  color:#C8F04A;margin-left:.5rem;
+  color:#DCEEEA;margin-left:.5rem;
 }
 .cabecera__docs{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
 /* Los nombres de los documentos iban en versalita monoespaciada muy espaciada:
@@ -1034,7 +1038,7 @@ html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
   color:rgba(247,248,245,.72);padding:.34rem .6rem;border-radius:999px;
   transition:border-color .16s ease,color .16s ease,background .16s ease;
 }
-.buscador:hover{color:#C8F04A;border-color:rgba(127,211,201,.55);background:rgba(127,211,201,.1)}
+.buscador:hover{color:#DCEEEA;border-color:rgba(127,211,201,.55);background:rgba(127,211,201,.1)}
 .buscador kbd{
   font:inherit;border:1px solid rgba(247,248,245,.28);border-radius:3px;
   padding:0 .28rem;line-height:1.35;
@@ -1248,6 +1252,8 @@ GUIONES = {
     "marketing.html": slice(1, None),
     "deck.html": slice(0, None),
     "instrumentos/captura.html": slice(0, None),
+    # el selector de puesto: sin él, los protocolos salen todos abiertos
+    "protocolos.html": slice(1, None),
 }
 
 
@@ -1314,7 +1320,7 @@ SIN_INDICE = {
 PALETA = """
 <div class="paleta" id="paleta" hidden>
   <div class="paleta__velo" data-cerrar></div>
-  <div class="paleta__caja" role="dialog" aria-modal="true" aria-label="Buscar en los siete documentos">
+  <div class="paleta__caja" role="dialog" aria-modal="true" aria-label="Buscar en los ocho documentos">
     <div class="paleta__campo">
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
         <circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
@@ -1432,6 +1438,12 @@ def unificado(estilo_fuentes):
     hoja = estilos_propios(fuentes["instrumentos/captura.html"], "HOJA DE CAPTURA")
     assert hoja, "no se encuentran los estilos de la hoja de captura"
     estilos += "\n<style>\n" + hoja + "</style>"
+
+    # los protocolos por puesto traen el selector de profesión y las fichas de
+    # cada puesto; sin ellos el selector salía como botones nativos del sistema
+    puestos = estilos_propios(fuentes["protocolos.html"], "PROTOCOLOS POR PUESTO")
+    assert puestos, "no se encuentran los estilos de protocolos por puesto"
+    estilos += "\n<style>\n" + puestos + "</style>"
 
     # la presentación sí colisiona —redefine body, table, .eyebrow— y se acota
     deck = estilos_propios(fuentes["deck.html"], ".slide{")

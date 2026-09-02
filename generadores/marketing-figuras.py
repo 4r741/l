@@ -24,10 +24,10 @@ D = carga("modelo", "modelo-campanas.py").calcula()
 CAT = carga("catalogo", "catalogo-acciones.py").calcula()
 
 SALIDA = FUENTES / "figuras-marketing.html"
-TEAL, OCRE, MORA, TINTA = "#00857A", "#C25A12", "#0B3B45", "#080B0A"
+TEAL, OCRE, MORA, TINTA = "#0F7A6E", "#B0641C", "#1D5A73", "#12232B"
 # Rampa secuencial de un solo tono, monótona en claridad. Para recuentos, no
 # para identidad: el color dice «cuántos», nunca «cuál».
-RAMPA = ["#F0F9F7", "#D1ECE8", "#A5D9D3", "#6FC1B8", "#33A497", "#00857A", "#00655D"]
+RAMPA = ["#F1F9F7", "#D3EBE7", "#A8D5CE", "#71B8AE", "#37988B", "#0F7A6E", "#0B5C53"]
 
 
 def txt(x, y, s, anchor="start", size=12, weight=400, color="var(--ink-2)"):
@@ -75,7 +75,7 @@ def fm1():
     p = ['<rect width="%d" height="%d" fill="var(--paper)"/>' % (W, H)]
 
     BANDAS = [
-        (62, "Fuera · todavía no nos busca", ["E1 Ajeno", "E2 Latente", "E3 Despierto"], "#7A8783", False),
+        (62, "Fuera · todavía no nos busca", ["E1 Ajeno", "E2 Latente", "E3 Despierto"], "#70858F", False),
         (202, "Buscando · nos compara", ["E4 En busca", "E5 En consideración"], MORA, False),
         (342, "Dentro · es nuestro paciente", ["E6 En la puerta", "E7 En decisión", "E8 En tratamiento"], TEAL, False),
         (482, "Después · decide seguir", ["E9 En cuidado", "E10 Prescriptor"], TEAL, False),
@@ -94,7 +94,7 @@ def fm1():
             cod, nombre = n.split(" ", 1)
             p.append('<rect x="%d" y="%d" width="%d" height="%d" rx="3" fill="%s" stroke="%s" '
                      'stroke-width="1.5"%s/>'
-                     % (x, y, CAJA_W, CAJA_H, "var(--surface)" if punteado or color == "#7A8783" else "var(--paper)",
+                     % (x, y, CAJA_W, CAJA_H, "var(--surface)" if punteado or color == "#70858F" else "var(--paper)",
                         color, ' stroke-dasharray="5 3"' if punteado else ""))
             p.append(mono(x + 14, y + 22, cod, size=10, color=color))
             p.append(txt(x + 14, y + 43, nombre, size=14, weight=600, color="var(--ink)"))
@@ -108,15 +108,15 @@ def fm1():
              '<path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker>'
              '<marker id="pm-o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">'
              '<path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker>'
-             '</defs>' % (TEAL, "#7A8783", OCRE))
+             '</defs>' % (TEAL, "#70858F", OCRE))
 
-    def horizontal(a, b, color="#7A8783", grosor=1.4, marca="pm-g", guion=""):
+    def horizontal(a, b, color="#70858F", grosor=1.4, marca="pm-g", guion=""):
         A, B = pos[a], pos[b]
         return ('<path d="M%s %s H%s" fill="none" stroke="%s" stroke-width="%s"%s '
                 'marker-end="url(#%s)"/>'
                 % (A["x2"] + 3, A["y"] + CAJA_H / 2, B["x"] - 9, color, grosor, guion, marca))
 
-    def codo(a, b, color="#7A8783", grosor=1.4, marca="pm-g", guion="", desvio=0, entrada=0):
+    def codo(a, b, color="#70858F", grosor=1.4, marca="pm-g", guion="", desvio=0, entrada=0):
         """Baja de A, gira por el pasillo entre bandas y entra por arriba de B."""
         A, B = pos[a], pos[b]
         pasillo = B["y"] - 20 + desvio
