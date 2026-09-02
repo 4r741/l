@@ -517,11 +517,20 @@ def comprueba_menu():
         doc = (RAIZ / archivo).read_text(encoding="utf-8")
         cuerpo = doc[doc.index("<main"):] if "<main" in doc else doc
 
-        # el menú del documento tiene que ser el que dice el modelo
+        # El menú dibujado tiene que ser exactamente el que dice el modelo. No
+        # basta con comprobar el modelo: una vez se publicó un menú construido
+        # con una versión anterior del modelo —bytecode viejo en la caché— y
+        # decía «05 Mapa competitivo» donde el modelo decía 03. Comparar lo que
+        # se publica con lo que se declara es lo único que ve eso.
         tira = re.search(r'<nav class="strip"[^>]*>.*?</nav>', doc, re.S)
         if not tira:
             falla(archivo, "no tiene menú de secciones")
             continue
+        def sin_sangria(s):
+            return "\n".join(l.strip() for l in s.splitlines())
+        if sin_sangria(tira.group(0)) != sin_sangria(entorno["dibuja"](archivo)):
+            falla(archivo, "el menú publicado no es el que dice menu.py: "
+                           "vuelve a pasar build-menu.py")
         for grupo, ancla_grupo, entradas in m["grupos"]:
             for ancla in ([ancla_grupo] if ancla_grupo else []) + [e[0] for e in entradas]:
                 if 'id="%s"' % ancla not in cuerpo:

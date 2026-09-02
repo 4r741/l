@@ -19,10 +19,19 @@ El guion es idempotente: si se pasa dos veces, la segunda no cambia nada.
 import pathlib
 import re
 import sys
+import types
 
 RAIZ = pathlib.Path(__file__).parent
-sys.path.insert(0, str(RAIZ))
-import menu  # noqa: E402
+
+# El modelo se lee y se ejecuta, no se importa. Con `import` Python guarda el
+# resultado compilado en __pycache__ y lo reutiliza si el archivo le parece el
+# mismo; una edición del mismo tamaño dentro del mismo segundo se lo parece, y
+# entonces el menú se dibuja con un modelo viejo sin que nada avise. Pasó: la
+# entrega salió con «05 Mapa competitivo» donde el modelo decía 03.
+menu = types.ModuleType("menu")
+menu.__file__ = str(RAIZ / "menu.py")
+exec(compile((RAIZ / "menu.py").read_text(encoding="utf-8"), menu.__file__, "exec"),
+     menu.__dict__)
 
 # Retoques del cuerpo para que el texto diga lo mismo que el menú. Cada uno es
 # una pareja (lo que hay, lo que debe haber) y se exige que aparezca: si un
