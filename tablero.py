@@ -54,6 +54,13 @@ def limpio(s):
     return re.sub(r"([«(\[¿¡])\s+", r"\1", s)
 
 
+# La celda grande no puede ser la primera que aparezca en la ficha: tiene que
+# ser la que importa. En un documento de gobierno es la cifra de resultado, no
+# el tiempo de lectura.
+PRIMERO = ["objetivo", "decisiones", "acciones", "puntos de verificación",
+           "documentos", "fases", "indicadores", "partes"]
+
+
 def cifras(portada):
     """Las cifras de la ficha de la portada, tal y como las declara el documento."""
     fuera = []
@@ -64,7 +71,15 @@ def cifras(portada):
         chico = re.search(r"<small>(.*?)</small>", cuerpo, re.S)
         valor = limpio(re.sub(r"<small>.*?</small>", "", cuerpo, flags=re.S))
         fuera.append((valor, rotulo, limpio(chico.group(1)) if chico else ""))
-    return fuera
+
+    def peso(x):
+        r = x[1].lower()
+        for i, clave in enumerate(PRIMERO):
+            if clave in r:
+                return i
+        return len(PRIMERO)
+
+    return sorted(fuera, key=peso)
 
 
 def apartados(html):
@@ -128,31 +143,36 @@ def dibuja(html, archivo):
         tarjetas.append(tarjeta(grupo, [a for a in aps if a[3] == grupo], html,
                                 del_grupo.get(grupo)))
 
+    # Las cifras son celdas del bento, y la primera manda: va a doble ancho y
+    # en color pleno, porque en un documento de gobierno siempre hay un número
+    # que es el número y los demás son su contexto.
     datos = cifras(portada)
     fila = ""
     if datos:
-        fila = ('<div class="tb__cifras">%s</div>'
-                % "".join('<div class="tb__d"><b>%s</b><span>%s</span>%s</div>'
-                          % (H.escape(v), H.escape(r),
-                             '<small>%s</small>' % H.escape(c) if c else "")
-                          for v, r, c in datos))
+        piezas = []
+        for i, (v, r, c) in enumerate(datos):
+            clase = "tb__d" + (" tb__d--fuerte" if i == 0 else "")
+            piezas.append('      <div class="%s"><b>%s</b><span>%s</span>%s</div>\n'
+                          % (clase, H.escape(v), H.escape(r),
+                             "<small>%s</small>" % H.escape(c) if c else ""))
+        fila = "".join(piezas)
 
-    ficha = FICHAS.get(archivo, ("", ""))
+    ficha = FICHAS.get(archivo, ("", "", ""))
     return ('\n<div class="wrap">\n'
             '  <nav class="tb" aria-label="Tablero del documento">\n'
-            '    <header class="tb__cab">\n'
-            '      <p class="tb__k">%s</p>\n'
-            '      <h1 class="tb__t">%s</h1>\n'
-            '      <p class="tb__q">%s</p>\n'
-            '    </header>\n'
-            '    %s\n'
+            '    <div class="tb__bento">\n'
+            '      <div class="tb__hero">\n'
+            '        <p class="tb__k">%s</p>\n'
+            '        <h1 class="tb__t">%s</h1>\n'
+            '        <p class="tb__q">%s</p>\n'
+            '      </div>\n'
+            '%s'
+            '    </div>\n'
             '    <div class="tb__rejilla">%s</div>\n'
-            '    <p class="tb__pie">Pulse cualquier apartado para abrirlo. '
-            'El documento entero, seguido, está debajo de este tablero.</p>\n'
             '  </nav>\n'
-            '</div>\n' % (H.escape(ficha[1]), H.escape(ficha[0]),
-                          H.escape(ficha[2] if len(ficha) > 2 else ""),
-                          fila, "".join(tarjetas)))
+            '</div>\n'
+            % (H.escape(ficha[1]), H.escape(ficha[0]), H.escape(ficha[2]),
+               fila, "".join(tarjetas)))
 
 
 def quita(html):

@@ -375,115 +375,120 @@ main:focus{outline:none}
 @media print{.strip{display:none}}
 
 /* ===========================================================================
-   EL TABLERO DE MANDO
+   EL TABLERO
 
-   La entrada de cada documento. Primero las cifras que ese documento gobierna,
-   grandes y en una fila; debajo, una tarjeta por parte con sus apartados
-   dentro, el número de cada uno a la izquierda y cuántos titulares tiene a la
-   derecha. Se ve de un vistazo qué hay, cuánto hay y por dónde entrar, y el
-   texto se abre al pulsar. Nada de esto se dibuja con guiones: está en el HTML,
-   así que también existe sin ellos y al imprimir.
+   Una rejilla bento: celdas de tamaños distintos que se leen en zigzag y no en
+   renglones. La primera celda es el documento —quién es y de qué va—; la
+   segunda, la cifra que ese documento gobierna, a tamaño de cartel y en color
+   pleno; las demás, su contexto. Debajo, una tarjeta por parte con sus
+   apartados. Todo en el HTML: existe sin guiones y al imprimir se aparta.
    =========================================================================== */
-.tb{display:block;margin:2.2rem 0 3.2rem}
-.tb__cab{max-width:62ch;margin-bottom:1.8rem}
-.tb__k{
-  font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--accent-ink);margin:0 0 .55rem;
-}
-.tb__t{font-size:var(--step-3);letter-spacing:-.03em;margin:0 0 .6rem}
-.tb__q{font-size:var(--step-1);line-height:1.45;color:var(--ink-2);margin:0}
-.tb__pie{
-  margin:1.4rem 0 0;font-size:.82rem;color:var(--muted);
-}
-/* La portada del documento pasa a ser el pie del tablero: se lee después de
-   ver qué hay, no antes. */
-.aps .ap[data-ap="portada-doc"] .hero{padding-top:1rem;border-top:1px solid var(--line)}
+.tb{display:block;margin:1.6rem 0 3.4rem}
 
-/* Cada dato es su propia caja. Con el truco de la rejilla de un píxel sobre
-   fondo, la celda que sobraba al final de la fila se quedaba pintada de gris:
-   un hueco que parecía un dato que falta. */
-.tb__cifras{
-  display:grid;gap:.7rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));
-  margin-bottom:2rem;
+.tb__bento{
+  display:grid;gap:.6rem;margin-bottom:.6rem;
+  grid-template-columns:repeat(2,minmax(0,1fr));
 }
+@media(min-width:820px){.tb__bento{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:1180px){.tb__bento{grid-template-columns:repeat(6,minmax(0,1fr))}}
+
+.tb__hero{
+  grid-column:1/-1;background:var(--tinta);color:#fff;
+  border-radius:var(--radio);padding:2.2rem 2rem 2.1rem;
+  display:flex;flex-direction:column;justify-content:flex-end;min-height:15rem;
+}
+@media(min-width:820px){.tb__hero{grid-column:span 4;grid-row:span 2}}
+@media(min-width:1180px){.tb__hero{grid-column:span 4;grid-row:span 2}}
+.tb__k{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--acido);margin:0 0 1rem;
+}
+.tb__t{
+  font-size:var(--step-4);font-weight:800;font-variation-settings:"wdth" 112;
+  letter-spacing:-.045em;line-height:.92;margin:0;color:#fff;
+}
+.tb__q{
+  margin:1rem 0 0;max-width:44ch;font-size:var(--step-0);line-height:1.5;
+  color:rgba(255,255,255,.72);
+}
+
 .tb__d{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
-  box-shadow:var(--sombra-1);padding:1.05rem 1.15rem 1.15rem;min-width:0;
+  background:var(--surface-2);border-radius:var(--radio-s);
+  padding:1.15rem 1.2rem 1.2rem;min-width:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
 }
+@media(min-width:820px){.tb__d{grid-column:span 2}}
 .tb__d b{
-  display:block;font-size:clamp(1.5rem,2.1vw,1.95rem);font-weight:600;
-  letter-spacing:-.03em;line-height:1.05;color:var(--ink);
-  font-variant-numeric:tabular-nums;
+  display:block;font-weight:700;font-variation-settings:"wdth" 112;
+  font-size:clamp(1.9rem,3.4vw,2.9rem);letter-spacing:-.045em;line-height:.9;
+  color:var(--tinta);font-variant-numeric:tabular-nums;
 }
 .tb__d span{
-  display:block;margin-top:.45rem;font-size:.76rem;font-weight:600;
-  letter-spacing:.02em;color:var(--accent-ink);
+  display:block;margin-top:.7rem;font-size:.74rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);
 }
 .tb__d small{
-  display:block;margin-top:.25rem;font-size:.76rem;line-height:1.4;color:var(--muted);
+  display:block;margin-top:.3rem;font-size:.78rem;line-height:1.4;color:var(--muted);
 }
+/* La cifra que manda: color pleno y el doble de sitio. */
+.tb__d--fuerte{background:var(--accent);color:#fff}
+@media(min-width:1180px){.tb__d--fuerte{grid-column:span 2;grid-row:span 2}}
+.tb__d--fuerte b{color:#fff;font-size:clamp(2.4rem,4.6vw,4rem)}
+.tb__d--fuerte span{color:var(--acido)}
+.tb__d--fuerte small{color:rgba(255,255,255,.75)}
 
 .tb__rejilla{
-  display:grid;gap:1rem;
-  grid-template-columns:repeat(auto-fill,minmax(min(310px,100%),1fr));
+  display:grid;gap:.6rem;
+  grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));
   align-items:start;
 }
 .tb__g{
   background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radio);overflow:hidden;box-shadow:var(--sombra-1);
-  transition:box-shadow .18s ease,border-color .18s ease;min-width:0;
+  border-radius:var(--radio);overflow:hidden;min-width:0;
+  transition:border-color .2s ease,transform .2s ease;
 }
-.tb__g:hover{box-shadow:var(--sombra-2);border-color:rgba(14,143,132,.3)}
+.tb__g:hover{border-color:var(--tinta);transform:translateY(-2px)}
 .tb__gh{
   display:flex;align-items:center;gap:.7rem;
-  padding:.85rem 1.1rem;border-bottom:1px solid var(--line-soft);
-  background:linear-gradient(var(--accent-soft),var(--accent-soft));
+  padding:1rem 1.15rem .8rem;
 }
 .tb__gh h3{
-  flex:1;min-width:0;font-size:.86rem;font-weight:600;letter-spacing:-.005em;
-  color:var(--accent-fuerte);line-height:1.25;
+  flex:1;min-width:0;font-size:.82rem;font-weight:700;
+  font-variation-settings:"wdth" 88;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--tinta);line-height:1.25;
 }
 .tb__gh h3 a{color:inherit;text-decoration:none}
-.tb__gh h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.tb__gh h3 a:hover{color:var(--accent-ink)}
 .tb__gh span{
-  flex:0 0 auto;font-family:var(--f-mono);font-size:.68rem;color:var(--accent-ink);
-  background:var(--surface);border:1px solid rgba(14,143,132,.25);
-  border-radius:999px;padding:.1rem .5rem;
+  flex:0 0 auto;font-family:var(--f-mono);font-size:.66rem;color:var(--tinta);
+  background:var(--acido);border-radius:999px;padding:.12rem .5rem;
 }
-.tb__l{padding:.4rem}
+.tb__l{padding:0 .5rem .5rem}
 .tb__e{
-  display:grid;grid-template-columns:2.15rem minmax(0,1fr) auto;
+  display:grid;grid-template-columns:2.3rem minmax(0,1fr) auto;
   align-items:baseline;gap:.15rem;
-  padding:.5rem .6rem;border-radius:var(--radio-s);
-  text-decoration:none;color:var(--ink);
-  transition:background .13s ease,color .13s ease;
+  padding:.62rem .65rem;border-radius:var(--radio-s);
+  text-decoration:none;color:var(--ink-2);
+  transition:background .15s ease,color .15s ease;
 }
-.tb__e + .tb__e{box-shadow:0 -1px 0 var(--line-soft)}
-.tb__e:hover{background:var(--accent-soft);color:var(--accent-fuerte)}
+.tb__e:hover{background:var(--tinta);color:#fff}
 .tb__n{
   font-family:var(--f-mono);font-size:.72rem;font-weight:500;color:var(--muted);
   font-variant-numeric:tabular-nums;
 }
-.tb__e:hover .tb__n{color:var(--accent)}
-.tb__r{font-size:.885rem;line-height:1.35;min-width:0}
-.tb__c{
-  font-family:var(--f-mono);font-size:.66rem;color:var(--muted);
-  opacity:.75;padding-left:.5rem;
-}
-.tb__e:hover .tb__c{opacity:1}
-/* En un teléfono, seis datos a tamaño de tablero son mil doscientos píxeles
-   antes de la primera tarjeta. Dos columnas y letra más chica. */
+.tb__e:hover .tb__n{color:var(--acido)}
+.tb__r{font-size:.92rem;line-height:1.35;min-width:0;font-weight:500}
+.tb__c{font-family:var(--f-mono);font-size:.66rem;color:var(--muted);padding-left:.5rem}
+.tb__e:hover .tb__c{color:rgba(255,255,255,.6)}
+
 @media(max-width:640px){
-  .tb{margin:1.4rem 0 2.4rem}
-  .tb__cab{margin-bottom:1.3rem}
-  .tb__cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-bottom:1.5rem}
-  .tb__d{padding:.8rem .85rem .9rem}
-  .tb__d b{font-size:1.3rem}
-  .tb__d span{font-size:.72rem;margin-top:.3rem}
-  .tb__d small{font-size:.7rem;line-height:1.35}
-  .tb__e{grid-template-columns:2rem minmax(0,1fr) auto;padding:.6rem .55rem}
-  .tb__r{font-size:.87rem}
+  .tb{margin:1rem 0 2.4rem}
+  .tb__hero{min-height:0;padding:1.6rem 1.3rem 1.5rem}
+  .tb__d{padding:.9rem .95rem 1rem}
+  .tb__d b{font-size:1.7rem}
+  .tb__d span{font-size:.68rem;margin-top:.5rem}
+  .tb__d small{display:none}
+  .tb__d--fuerte small{display:block;font-size:.72rem}
 }
 @media print{.tb{display:none}}
 
@@ -534,43 +539,48 @@ main:focus{outline:none}
 .buscap__nada{grid-column:1/-1;font-size:.86rem;color:var(--muted);margin:.2rem 0 0}
 .menu__cols>.buscap{margin-bottom:.4rem}
 .rastro__tb{
-  text-decoration:none;color:var(--accent-ink);font-weight:500;
+  text-decoration:none;color:#fff;background:var(--tinta);font-weight:600;
+  font-size:.74rem;letter-spacing:.02em;border-radius:999px;padding:.34rem .8rem;
+  transition:background .16s ease,color .16s ease;
 }
+.rastro__tb:hover{background:var(--accent);color:#fff;text-decoration:none}
 .rastro__tb:hover{text-decoration:underline;text-underline-offset:3px}
 .rastro__tb i{font-style:normal;margin-right:.25rem}
 
 .pasos{
-  display:grid;gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
-  margin:3.5rem 0 1rem;
+  display:grid;gap:.6rem;margin:4rem 0 1rem;
 }
 @media(min-width:700px){.pasos{grid-template-columns:1fr 1fr}}
 .pasos__a{
-  background:var(--surface);padding:1rem 1.2rem;text-decoration:none;color:inherit;
-  display:grid;gap:.25rem;transition:background .15s ease;min-width:0;
+  background:var(--surface-2);border-radius:var(--radio-s);
+  padding:1.15rem 1.3rem 1.25rem;text-decoration:none;color:inherit;
+  display:grid;gap:.4rem;min-width:0;
+  transition:background .16s ease,color .16s ease;
 }
-.pasos__a:hover{background:var(--accent-soft)}
-.pasos__a:hover b{color:var(--accent-ink)}
+.pasos__a:hover{background:var(--tinta);color:#fff}
+.pasos__a:hover b,.pasos__a:hover span,.pasos__a:hover i{color:#fff}
 .pasos__a span{
-  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;
   text-transform:uppercase;color:var(--muted);
 }
 .pasos__a b{
-  font-weight:500;font-size:.98rem;line-height:1.25;color:var(--ink);
-  transition:color .15s ease;
+  font-weight:600;font-size:1.05rem;line-height:1.22;color:var(--ink);
+  letter-spacing:-.015em;transition:color .15s ease;
 }
 .pasos__a i{font-style:normal;font-family:var(--f-mono);color:var(--muted);margin-right:.4rem}
 .pasos__a--sig{text-align:right}
 .pasos__a--sig i{margin:0 0 0 .4rem}
-.pasos__a--vacio{background:var(--paper);pointer-events:none;opacity:.45}
+.pasos__a--vacio{background:transparent;border:1px dashed var(--line);pointer-events:none;opacity:.5}
 @media print{.pasos{display:none!important}}
 
 /* --- el rastro: dónde estás, sobre el titular -------------------------- */
 .rastro{
-  display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;
-  font-size:.82rem;color:var(--muted);margin:0 0 1.6rem;
+  display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;
+  font-size:.8rem;color:var(--muted);margin:0 0 2.6rem;
+  padding:.55rem .3rem .55rem 0;border-bottom:1px solid var(--line-soft);
 }
-.rastro b{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-2);font-weight:500;background:var(--surface-2);border-radius:5px;padding:.1rem .4rem}
+.rastro span{font-weight:500;color:var(--ink-2)}
+.rastro b{font-family:var(--f-mono);font-size:.7rem;color:var(--tinta);font-weight:500;background:var(--acido);border-radius:999px;padding:.15rem .5rem;margin-left:auto}
 .rastro em{font-style:normal;color:var(--line)}
 @media print{.rastro{display:none}}
 
@@ -1008,16 +1018,30 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 <article class="ap" data-ap="portada-doc" data-n="" data-rotulo="Portada" data-grupo="">
 <div class="wrap">
   <nav class="tb" aria-label="Tablero del documento">
-    <header class="tb__cab">
-      <p class="tb__k">Documento troncal</p>
-      <h1 class="tb__t">Otros documentos del sistema</h1>
-      <p class="tb__q">Los 14 documentos de apoyo, del compendio maestro a la continuidad legal.</p>
-    </header>
-    <div class="tb__cifras"><div class="tb__d"><b>14</b><span>Documentos</span><small>Del posicionamiento del centro al programa de cuidado GTC</small></div><div class="tb__d"><b>322</b><span>Puntos de verificación</span><small>Recorrido físico, documental, de sistemas y de procesos</small></div><div class="tb__d"><b>20</b><span>Decisiones de Gerencia</span><small>Más once verificaciones externas</small></div><div class="tb__d"><b>18</b><span>Fichas de innovación</span><small>Con protocolo, guion, contingencia e indicador</small></div><div class="tb__d"><b>6</b><span>Perfiles operativos</span><small>Parte asistencial y parte comercial de cada puesto</small></div><div class="tb__d"><b>100 días</b><span>Horizonte</span><small>Programa de integración tras la adquisición</small></div></div>
+    <div class="tb__bento">
+      <div class="tb__hero">
+        <p class="tb__k">Documento troncal</p>
+        <h1 class="tb__t">Otros documentos del sistema</h1>
+        <p class="tb__q">Los 14 documentos de apoyo, del compendio maestro a la continuidad legal.</p>
+      </div>
+      <div class="tb__d tb__d--fuerte"><b>20</b><span>Decisiones de Gerencia</span><small>Más once verificaciones externas</small></div>
+      <div class="tb__d"><b>322</b><span>Puntos de verificación</span><small>Recorrido físico, documental, de sistemas y de procesos</small></div>
+      <div class="tb__d"><b>14</b><span>Documentos</span><small>Del posicionamiento del centro al programa de cuidado GTC</small></div>
+      <div class="tb__d"><b>18</b><span>Fichas de innovación</span><small>Con protocolo, guion, contingencia e indicador</small></div>
+      <div class="tb__d"><b>6</b><span>Perfiles operativos</span><small>Parte asistencial y parte comercial de cada puesto</small></div>
+      <div class="tb__d"><b>100 días</b><span>Horizonte</span><small>Programa de integración tras la adquisición</small></div>
+    </div>
     <div class="tb__rejilla"><section class="tb__g"><header class="tb__gh"><h3>Apertura</h3><span>2</span></header><div class="tb__l"><a class="tb__e" href="#presentacion"><b class="tb__n">·</b><span class="tb__r">Qué es cada cosa y cuándo se abre</span><span class="tb__c">2</span></a><a class="tb__e" href="#otros-mapa"><b class="tb__n">·</b><span class="tb__r">El sistema en cuatro niveles</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Los catorce documentos</h3><span>14</span></header><div class="tb__l"><a class="tb__e" href="#otros-compendio"><b class="tb__n">01</b><span class="tb__r">Compendio Maestro del sistema de gestión</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-verificacion"><b class="tb__n">02</b><span class="tb__r">Verificación del centro · 322 puntos</span><span class="tb__c">5</span></a><a class="tb__e" href="#otros-auditoria"><b class="tb__n">03</b><span class="tb__r">Auditoría integral de la clínica adquirida</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-decisiones"><b class="tb__n">04</b><span class="tb__r">Decisiones de Gerencia y verificaciones</span><span class="tb__c">3</span></a><a class="tb__e" href="#otros-100dias"><b class="tb__n">05</b><span class="tb__r">Plan Director de los primeros 100 días</span><span class="tb__c">19</span></a><a class="tb__e" href="#otros-30dias"><b class="tb__n">06</b><span class="tb__r">Dosier de ejecución de los 30 días</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-perfiles"><b class="tb__n">07</b><span class="tb__r">Protocolos operativos por perfil</span><span class="tb__c">12</span></a><a class="tb__e" href="#otros-innovacion"><b class="tb__n">08</b><span class="tb__r">Innovación aplicada · 18 fichas</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-marca"><b class="tb__n">09</b><span class="tb__r">Plan Director de marca y captación</span><span class="tb__c">15</span></a><a class="tb__e" href="#otros-cuaderno"><b class="tb__n">10</b><span class="tb__r">Cuaderno de campo del día 1</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-transicion-perfiles"><b class="tb__n">11</b><span class="tb__r">Manual de puesta en marcha por perfil</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-continuidad"><b class="tb__n">12</b><span class="tb__r">Continuidad legal, financiera y de sistemas</span><span class="tb__c">13</span></a><a class="tb__e" href="#otros-posicionamiento"><b class="tb__n">13</b><span class="tb__r">«No medias sonrisas» · posicionamiento</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-gtc"><b class="tb__n">14</b><span class="tb__r">GTC · vive en el Plan de Marketing</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Cierre</h3><span>1</span></header><div class="tb__l"><a class="tb__e" href="#otros-cierre"><b class="tb__n">·</b><span class="tb__r">Cómo encajan los catorce documentos</span><span class="tb__c">1</span></a></div></section></div>
-    <p class="tb__pie">Pulse cualquier apartado para abrirlo. El documento entero, seguido, está debajo de este tablero.</p>
   </nav>
 </div>
+
+
+
+
+
+
+
+
 
 
 

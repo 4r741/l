@@ -7,7 +7,7 @@
 <title>Sistema documental Giraldo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <script>document.documentElement.classList.add("js")</script>
 <!-- La marca de que hay JavaScript. Va aquí arriba, antes de la hoja de
      estilos, para que nada parpadee: lo que se esconde para animarlo solo
@@ -20,48 +20,53 @@
    ============================================================ */
 :root{
   /* ---------------------------------------------------------------------------
-     La paleta era de papel: beige, titulares en serif, etiquetas en
-     monoespaciada. Leía como un informe encuadernado, que es exactamente lo que
-     este sistema no quiere ser. Ahora es una superficie de producto: gris muy
-     claro casi blanco, tarjetas blancas levantadas, un solo verde de marca con
-     su escala, y una sola familia sin remates para todo. La monoespaciada se
-     queda para lo único que la necesita: las cifras alineadas en columna.
+     SISTEMA VISUAL
+
+     Nada de papel y nada de tarjeta corporativa. Blanco de verdad, negro de
+     verdad y un verde que es el de la marca llevado a su versión saturada, más
+     un ácido que solo aparece donde hay que mirar. La familia es Archivo en su
+     versión variable: el eje de anchura da titulares muy anchos para las cifras
+     y muy estrechos para los rótulos, que es lo que hace que dos tamaños de
+     letra parezcan dos voces distintas y no la misma letra más grande.
      --------------------------------------------------------------------------- */
-  --paper:#F4F6F7;
+  --paper:#FFFFFF;
   --surface:#FFFFFF;
-  --surface-2:#EDF1F2;
-  --ink:#0E1C21;
-  --ink-2:#3B525B;
-  --muted:#6E838C;
-  --line:rgba(14,28,33,.10);
-  --line-soft:rgba(14,28,33,.055);
-  --accent:#0E8F84;
-  --accent-ink:#0A6F66;
-  --accent-soft:rgba(14,143,132,.10);
-  --accent-fuerte:#075C55;
-  --signal:#B4661C;
-  --signal-soft:rgba(180,102,28,.10);
-  --alerta:#B3402F;
-  --alerta-soft:rgba(179,64,47,.10);
-  --sombra-1:0 1px 2px rgba(14,28,33,.05);
-  --sombra-2:0 1px 3px rgba(14,28,33,.06), 0 12px 28px -18px rgba(14,28,33,.35);
-  --sombra-3:0 2px 6px rgba(14,28,33,.07), 0 22px 48px -24px rgba(14,28,33,.40);
+  --surface-2:#F2F4F3;
+  --tinta:#080B0A;
+  --ink:#080B0A;
+  --ink-2:#37423F;
+  --muted:#7A8783;
+  --line:rgba(8,11,10,.12);
+  --line-soft:rgba(8,11,10,.06);
+  --accent:#00857A;
+  --accent-ink:#00655D;
+  --accent-fuerte:#004A44;
+  --accent-soft:rgba(0,133,122,.08);
+  --acido:#C8F04A;
+  --acido-ink:#3D4A08;
+  --signal:#C25A12;
+  --signal-soft:rgba(194,90,18,.10);
+  --alerta:#C0392B;
+  --alerta-soft:rgba(192,57,43,.10);
+  --sombra-1:none;
+  --sombra-2:0 18px 40px -28px rgba(8,11,10,.55);
+  --sombra-3:0 30px 60px -30px rgba(8,11,10,.5);
   --shadow:var(--sombra-2);
-  --rule:rgba(14,28,33,.20);
-  --radio:14px;
-  --radio-s:10px;
+  --rule:rgba(8,11,10,.22);
+  --radio:22px;
+  --radio-s:14px;
 
   --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 
-  --wrap:1240px;
+  --wrap:1320px;
   --step--1:clamp(.79rem,.77rem + .1vw,.85rem);
-  --step-0:clamp(1rem,.97rem + .14vw,1.05rem);
-  --step-1:clamp(1.15rem,1.08rem + .3vw,1.3rem);
-  --step-2:clamp(1.4rem,1.25rem + .62vw,1.78rem);
-  --step-3:clamp(1.8rem,1.5rem + 1.3vw,2.6rem);
-  --step-4:clamp(2.3rem,1.7rem + 2.7vw,4rem);
+  --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
+  --step-1:clamp(1.16rem,1.08rem + .34vw,1.34rem);
+  --step-2:clamp(1.45rem,1.24rem + .85vw,2rem);
+  --step-3:clamp(2rem,1.5rem + 2.1vw,3.4rem);
+  --step-4:clamp(2.6rem,1.6rem + 4.2vw,5.4rem);
 
   color-scheme:light;
 }
@@ -80,7 +85,12 @@ body{
   line-height:1.62;
   -webkit-font-smoothing:antialiased;
 }
-h1,h2,h3,h4{font-family:var(--f-display);font-weight:600;letter-spacing:-.022em;text-wrap:balance;margin:0;line-height:1.14}
+h1,h2,h3,h4{
+  font-family:var(--f-display);font-weight:700;
+  font-variation-settings:"wdth" 108;
+  letter-spacing:-.035em;text-wrap:balance;margin:0;line-height:1.06;
+}
+h3,h4{font-variation-settings:"wdth" 100;letter-spacing:-.02em;line-height:1.18}
 p{margin:0}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
@@ -286,27 +296,52 @@ main:focus{outline:none}
    titular, que es como se numera un apartado en un documento que quiere leerse
    y no descifrarse. Sigue pudiéndose citar: «apartado 3».
    --------------------------------------------------------------------------- */
+/* El apartado se abre con su número a tamaño de cartel y el rótulo debajo, en
+   estrecha y en versalita: dos voces, no la misma letra en dos tamaños. */
 .section__head .eyebrow{
-  display:flex;align-items:center;gap:.6rem;
-  font-size:.78rem;font-weight:600;letter-spacing:.02em;color:var(--muted);
-  text-transform:uppercase;
+  display:flex;align-items:center;gap:.8rem;
+  font-size:.74rem;font-weight:700;letter-spacing:.1em;color:var(--muted);
+  text-transform:uppercase;font-variation-settings:"wdth" 86;
 }
-/* El número del apartado era un numeral de imprenta de dos centímetros al lado
-   de una línea de texto de ocho puntos: dos cuerpos que no se hablaban. Ahora
-   es una pastilla del tamaño de su rótulo. */
 .section__head .eyebrow .num{
-  font-family:var(--f-mono);font-weight:500;font-size:.74rem;letter-spacing:.02em;
-  color:#fff;background:var(--accent);border-radius:6px;
-  padding:.2rem .42rem;line-height:1.2;
+  font-family:var(--f-display);font-weight:800;font-variation-settings:"wdth" 112;
+  font-size:clamp(2.4rem,5vw,4rem);letter-spacing:-.05em;line-height:.8;
+  color:var(--accent);
 }
-@media print{.section__head .eyebrow .num{background:#0A5C56}}
+@media print{.section__head .eyebrow .num{color:#00655D}}
 
+/* La barra es negra y no se disimula: es el borde del sistema, no un adorno
+   translúcido sobre el texto. */
 .topbar{
   position:sticky;top:0;z-index:60;
-  background:color-mix(in srgb,var(--paper) 88%,transparent);
-  backdrop-filter:blur(14px) saturate(1.2);
-  border-bottom:1px solid var(--line);
+  background:var(--tinta);color:#fff;
+  border-bottom:0;
 }
+.topbar a{color:#fff}
+.topbar .brand__mark{color:#fff}
+.topbar .brand__tag{color:rgba(255,255,255,.55)}
+.topbar .crosslink{
+  background:transparent;border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.78);
+}
+.topbar .crosslink:hover{border-color:var(--acido);color:var(--acido);background:transparent}
+.topbar .menu__b{
+  background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff;
+  box-shadow:none;
+}
+.topbar .menu__b:hover{border-color:var(--acido);color:var(--acido)}
+.topbar .menu[open] .menu__b{background:var(--acido);border-color:var(--acido);color:var(--tinta)}
+.topbar .menu__b__n{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+.topbar .menu[open] .menu__b__n{background:rgba(8,11,10,.14);color:var(--tinta)}
+.topbar .menu__aqui{color:rgba(255,255,255,.6)}
+.topbar .menu__aqui b{color:var(--acido);font-family:var(--f-mono);font-size:.72rem}
+.topbar .menu__paso button{
+  background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff;
+}
+.topbar .menu__paso button:hover:not(:disabled){border-color:var(--acido);color:var(--acido)}
+.topbar .strip{border-top:1px solid rgba(255,255,255,.1)}
+.topbar .menu__panel{color:var(--ink)}
+.topbar .menu__panel a{color:var(--ink-2)}
+.topbar .menu__panel .menu__gt{color:var(--muted)}
 .topbar__in{display:flex;align-items:center;gap:1.2rem;padding:.7rem 0;flex-wrap:wrap}
 .brand{display:flex;align-items:baseline;gap:.55rem;margin-right:auto;text-decoration:none}
 .brand__mark{
@@ -443,115 +478,120 @@ main:focus{outline:none}
 @media print{.strip{display:none}}
 
 /* ===========================================================================
-   EL TABLERO DE MANDO
+   EL TABLERO
 
-   La entrada de cada documento. Primero las cifras que ese documento gobierna,
-   grandes y en una fila; debajo, una tarjeta por parte con sus apartados
-   dentro, el número de cada uno a la izquierda y cuántos titulares tiene a la
-   derecha. Se ve de un vistazo qué hay, cuánto hay y por dónde entrar, y el
-   texto se abre al pulsar. Nada de esto se dibuja con guiones: está en el HTML,
-   así que también existe sin ellos y al imprimir.
+   Una rejilla bento: celdas de tamaños distintos que se leen en zigzag y no en
+   renglones. La primera celda es el documento —quién es y de qué va—; la
+   segunda, la cifra que ese documento gobierna, a tamaño de cartel y en color
+   pleno; las demás, su contexto. Debajo, una tarjeta por parte con sus
+   apartados. Todo en el HTML: existe sin guiones y al imprimir se aparta.
    =========================================================================== */
-.tb{display:block;margin:2.2rem 0 3.2rem}
-.tb__cab{max-width:62ch;margin-bottom:1.8rem}
-.tb__k{
-  font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--accent-ink);margin:0 0 .55rem;
-}
-.tb__t{font-size:var(--step-3);letter-spacing:-.03em;margin:0 0 .6rem}
-.tb__q{font-size:var(--step-1);line-height:1.45;color:var(--ink-2);margin:0}
-.tb__pie{
-  margin:1.4rem 0 0;font-size:.82rem;color:var(--muted);
-}
-/* La portada del documento pasa a ser el pie del tablero: se lee después de
-   ver qué hay, no antes. */
-.aps .ap[data-ap="portada-doc"] .hero{padding-top:1rem;border-top:1px solid var(--line)}
+.tb{display:block;margin:1.6rem 0 3.4rem}
 
-/* Cada dato es su propia caja. Con el truco de la rejilla de un píxel sobre
-   fondo, la celda que sobraba al final de la fila se quedaba pintada de gris:
-   un hueco que parecía un dato que falta. */
-.tb__cifras{
-  display:grid;gap:.7rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));
-  margin-bottom:2rem;
+.tb__bento{
+  display:grid;gap:.6rem;margin-bottom:.6rem;
+  grid-template-columns:repeat(2,minmax(0,1fr));
 }
+@media(min-width:820px){.tb__bento{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:1180px){.tb__bento{grid-template-columns:repeat(6,minmax(0,1fr))}}
+
+.tb__hero{
+  grid-column:1/-1;background:var(--tinta);color:#fff;
+  border-radius:var(--radio);padding:2.2rem 2rem 2.1rem;
+  display:flex;flex-direction:column;justify-content:flex-end;min-height:15rem;
+}
+@media(min-width:820px){.tb__hero{grid-column:span 4;grid-row:span 2}}
+@media(min-width:1180px){.tb__hero{grid-column:span 4;grid-row:span 2}}
+.tb__k{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--acido);margin:0 0 1rem;
+}
+.tb__t{
+  font-size:var(--step-4);font-weight:800;font-variation-settings:"wdth" 112;
+  letter-spacing:-.045em;line-height:.92;margin:0;color:#fff;
+}
+.tb__q{
+  margin:1rem 0 0;max-width:44ch;font-size:var(--step-0);line-height:1.5;
+  color:rgba(255,255,255,.72);
+}
+
 .tb__d{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
-  box-shadow:var(--sombra-1);padding:1.05rem 1.15rem 1.15rem;min-width:0;
+  background:var(--surface-2);border-radius:var(--radio-s);
+  padding:1.15rem 1.2rem 1.2rem;min-width:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
 }
+@media(min-width:820px){.tb__d{grid-column:span 2}}
 .tb__d b{
-  display:block;font-size:clamp(1.5rem,2.1vw,1.95rem);font-weight:600;
-  letter-spacing:-.03em;line-height:1.05;color:var(--ink);
-  font-variant-numeric:tabular-nums;
+  display:block;font-weight:700;font-variation-settings:"wdth" 112;
+  font-size:clamp(1.9rem,3.4vw,2.9rem);letter-spacing:-.045em;line-height:.9;
+  color:var(--tinta);font-variant-numeric:tabular-nums;
 }
 .tb__d span{
-  display:block;margin-top:.45rem;font-size:.76rem;font-weight:600;
-  letter-spacing:.02em;color:var(--accent-ink);
+  display:block;margin-top:.7rem;font-size:.74rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);
 }
 .tb__d small{
-  display:block;margin-top:.25rem;font-size:.76rem;line-height:1.4;color:var(--muted);
+  display:block;margin-top:.3rem;font-size:.78rem;line-height:1.4;color:var(--muted);
 }
+/* La cifra que manda: color pleno y el doble de sitio. */
+.tb__d--fuerte{background:var(--accent);color:#fff}
+@media(min-width:1180px){.tb__d--fuerte{grid-column:span 2;grid-row:span 2}}
+.tb__d--fuerte b{color:#fff;font-size:clamp(2.4rem,4.6vw,4rem)}
+.tb__d--fuerte span{color:var(--acido)}
+.tb__d--fuerte small{color:rgba(255,255,255,.75)}
 
 .tb__rejilla{
-  display:grid;gap:1rem;
-  grid-template-columns:repeat(auto-fill,minmax(min(310px,100%),1fr));
+  display:grid;gap:.6rem;
+  grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));
   align-items:start;
 }
 .tb__g{
   background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radio);overflow:hidden;box-shadow:var(--sombra-1);
-  transition:box-shadow .18s ease,border-color .18s ease;min-width:0;
+  border-radius:var(--radio);overflow:hidden;min-width:0;
+  transition:border-color .2s ease,transform .2s ease;
 }
-.tb__g:hover{box-shadow:var(--sombra-2);border-color:rgba(14,143,132,.3)}
+.tb__g:hover{border-color:var(--tinta);transform:translateY(-2px)}
 .tb__gh{
   display:flex;align-items:center;gap:.7rem;
-  padding:.85rem 1.1rem;border-bottom:1px solid var(--line-soft);
-  background:linear-gradient(var(--accent-soft),var(--accent-soft));
+  padding:1rem 1.15rem .8rem;
 }
 .tb__gh h3{
-  flex:1;min-width:0;font-size:.86rem;font-weight:600;letter-spacing:-.005em;
-  color:var(--accent-fuerte);line-height:1.25;
+  flex:1;min-width:0;font-size:.82rem;font-weight:700;
+  font-variation-settings:"wdth" 88;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--tinta);line-height:1.25;
 }
 .tb__gh h3 a{color:inherit;text-decoration:none}
-.tb__gh h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.tb__gh h3 a:hover{color:var(--accent-ink)}
 .tb__gh span{
-  flex:0 0 auto;font-family:var(--f-mono);font-size:.68rem;color:var(--accent-ink);
-  background:var(--surface);border:1px solid rgba(14,143,132,.25);
-  border-radius:999px;padding:.1rem .5rem;
+  flex:0 0 auto;font-family:var(--f-mono);font-size:.66rem;color:var(--tinta);
+  background:var(--acido);border-radius:999px;padding:.12rem .5rem;
 }
-.tb__l{padding:.4rem}
+.tb__l{padding:0 .5rem .5rem}
 .tb__e{
-  display:grid;grid-template-columns:2.15rem minmax(0,1fr) auto;
+  display:grid;grid-template-columns:2.3rem minmax(0,1fr) auto;
   align-items:baseline;gap:.15rem;
-  padding:.5rem .6rem;border-radius:var(--radio-s);
-  text-decoration:none;color:var(--ink);
-  transition:background .13s ease,color .13s ease;
+  padding:.62rem .65rem;border-radius:var(--radio-s);
+  text-decoration:none;color:var(--ink-2);
+  transition:background .15s ease,color .15s ease;
 }
-.tb__e + .tb__e{box-shadow:0 -1px 0 var(--line-soft)}
-.tb__e:hover{background:var(--accent-soft);color:var(--accent-fuerte)}
+.tb__e:hover{background:var(--tinta);color:#fff}
 .tb__n{
   font-family:var(--f-mono);font-size:.72rem;font-weight:500;color:var(--muted);
   font-variant-numeric:tabular-nums;
 }
-.tb__e:hover .tb__n{color:var(--accent)}
-.tb__r{font-size:.885rem;line-height:1.35;min-width:0}
-.tb__c{
-  font-family:var(--f-mono);font-size:.66rem;color:var(--muted);
-  opacity:.75;padding-left:.5rem;
-}
-.tb__e:hover .tb__c{opacity:1}
-/* En un teléfono, seis datos a tamaño de tablero son mil doscientos píxeles
-   antes de la primera tarjeta. Dos columnas y letra más chica. */
+.tb__e:hover .tb__n{color:var(--acido)}
+.tb__r{font-size:.92rem;line-height:1.35;min-width:0;font-weight:500}
+.tb__c{font-family:var(--f-mono);font-size:.66rem;color:var(--muted);padding-left:.5rem}
+.tb__e:hover .tb__c{color:rgba(255,255,255,.6)}
+
 @media(max-width:640px){
-  .tb{margin:1.4rem 0 2.4rem}
-  .tb__cab{margin-bottom:1.3rem}
-  .tb__cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-bottom:1.5rem}
-  .tb__d{padding:.8rem .85rem .9rem}
-  .tb__d b{font-size:1.3rem}
-  .tb__d span{font-size:.72rem;margin-top:.3rem}
-  .tb__d small{font-size:.7rem;line-height:1.35}
-  .tb__e{grid-template-columns:2rem minmax(0,1fr) auto;padding:.6rem .55rem}
-  .tb__r{font-size:.87rem}
+  .tb{margin:1rem 0 2.4rem}
+  .tb__hero{min-height:0;padding:1.6rem 1.3rem 1.5rem}
+  .tb__d{padding:.9rem .95rem 1rem}
+  .tb__d b{font-size:1.7rem}
+  .tb__d span{font-size:.68rem;margin-top:.5rem}
+  .tb__d small{display:none}
+  .tb__d--fuerte small{display:block;font-size:.72rem}
 }
 @media print{.tb{display:none}}
 
@@ -602,43 +642,48 @@ main:focus{outline:none}
 .buscap__nada{grid-column:1/-1;font-size:.86rem;color:var(--muted);margin:.2rem 0 0}
 .menu__cols>.buscap{margin-bottom:.4rem}
 .rastro__tb{
-  text-decoration:none;color:var(--accent-ink);font-weight:500;
+  text-decoration:none;color:#fff;background:var(--tinta);font-weight:600;
+  font-size:.74rem;letter-spacing:.02em;border-radius:999px;padding:.34rem .8rem;
+  transition:background .16s ease,color .16s ease;
 }
+.rastro__tb:hover{background:var(--accent);color:#fff;text-decoration:none}
 .rastro__tb:hover{text-decoration:underline;text-underline-offset:3px}
 .rastro__tb i{font-style:normal;margin-right:.25rem}
 
 .pasos{
-  display:grid;gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:var(--radio);overflow:hidden;
-  margin:3.5rem 0 1rem;
+  display:grid;gap:.6rem;margin:4rem 0 1rem;
 }
 @media(min-width:700px){.pasos{grid-template-columns:1fr 1fr}}
 .pasos__a{
-  background:var(--surface);padding:1rem 1.2rem;text-decoration:none;color:inherit;
-  display:grid;gap:.25rem;transition:background .15s ease;min-width:0;
+  background:var(--surface-2);border-radius:var(--radio-s);
+  padding:1.15rem 1.3rem 1.25rem;text-decoration:none;color:inherit;
+  display:grid;gap:.4rem;min-width:0;
+  transition:background .16s ease,color .16s ease;
 }
-.pasos__a:hover{background:var(--accent-soft)}
-.pasos__a:hover b{color:var(--accent-ink)}
+.pasos__a:hover{background:var(--tinta);color:#fff}
+.pasos__a:hover b,.pasos__a:hover span,.pasos__a:hover i{color:#fff}
 .pasos__a span{
-  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;
   text-transform:uppercase;color:var(--muted);
 }
 .pasos__a b{
-  font-weight:500;font-size:.98rem;line-height:1.25;color:var(--ink);
-  transition:color .15s ease;
+  font-weight:600;font-size:1.05rem;line-height:1.22;color:var(--ink);
+  letter-spacing:-.015em;transition:color .15s ease;
 }
 .pasos__a i{font-style:normal;font-family:var(--f-mono);color:var(--muted);margin-right:.4rem}
 .pasos__a--sig{text-align:right}
 .pasos__a--sig i{margin:0 0 0 .4rem}
-.pasos__a--vacio{background:var(--paper);pointer-events:none;opacity:.45}
+.pasos__a--vacio{background:transparent;border:1px dashed var(--line);pointer-events:none;opacity:.5}
 @media print{.pasos{display:none!important}}
 
 /* --- el rastro: dónde estás, sobre el titular -------------------------- */
 .rastro{
-  display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;
-  font-size:.82rem;color:var(--muted);margin:0 0 1.6rem;
+  display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;
+  font-size:.8rem;color:var(--muted);margin:0 0 2.6rem;
+  padding:.55rem .3rem .55rem 0;border-bottom:1px solid var(--line-soft);
 }
-.rastro b{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-2);font-weight:500;background:var(--surface-2);border-radius:5px;padding:.1rem .4rem}
+.rastro span{font-weight:500;color:var(--ink-2)}
+.rastro b{font-family:var(--f-mono);font-size:.7rem;color:var(--tinta);font-weight:500;background:var(--acido);border-radius:999px;padding:.15rem .5rem;margin-left:auto}
 .rastro em{font-style:normal;color:var(--line)}
 @media print{.rastro{display:none}}
 
@@ -1063,49 +1108,101 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 /* La franja de cifras: seis datos en un renglón, sin cajas. Antes eran seis
    fichas con borde compitiendo con el titular, y ninguna llevaba a ningún
    sitio: son contexto, no navegación, y deben pesar como contexto. */
+/* La portada del sistema, en el mismo lenguaje que el tablero de cada
+   documento: una rejilla bento con el lema en negro, la cifra que manda en
+   verde pleno y el resto en gris. */
+.bento{
+  display:grid;gap:.6rem;margin:0 0 .6rem;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+@media(min-width:820px){.bento{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:1180px){.bento{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.bento__lema{
+  grid-column:1/-1;background:var(--tinta);color:#fff;border-radius:var(--radio);
+  padding:2.4rem 2rem 2.2rem;display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:16rem;
+}
+@media(min-width:820px){.bento__lema{grid-column:span 4;grid-row:span 2}}
+.bento__lema .eyebrow{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--acido);margin:0 0 1rem;
+}
+.bento__lema h1{
+  font-size:var(--step-4);font-weight:800;font-variation-settings:"wdth" 112;
+  letter-spacing:-.045em;line-height:.9;color:#fff;margin:0;
+}
+.bento__lema h1 em{font-style:normal;color:var(--acido)}
+.bento__lema p{
+  margin:1.1rem 0 0;max-width:48ch;font-size:var(--step-0);line-height:1.5;
+  color:rgba(255,255,255,.7);
+}
 .cifras{
-  list-style:none;margin:1.8rem 0 0;padding:0;
-  display:grid;gap:.7rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));
+  display:contents;list-style:none;margin:0;padding:0;
 }
 .cifras li{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
-  box-shadow:var(--sombra-1);padding:1.05rem 1.15rem 1.15rem;min-width:0;
+  background:var(--surface-2);border-radius:var(--radio-s);
+  padding:1.15rem 1.2rem 1.2rem;min-width:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
 }
+@media(min-width:820px){.cifras li{grid-column:span 2}}
 .cifras b{
-  display:block;font-size:clamp(1.5rem,2.1vw,1.95rem);font-weight:600;
-  letter-spacing:-.03em;line-height:1.05;color:var(--ink);
-  font-variant-numeric:tabular-nums;
-}
-.cifras span{
-  display:block;margin-top:.45rem;font-size:.78rem;line-height:1.45;color:var(--muted);
+  display:block;font-weight:700;font-variation-settings:"wdth" 112;
+  font-size:clamp(1.9rem,3.4vw,2.9rem);letter-spacing:-.045em;line-height:.9;
+  color:var(--tinta);font-variant-numeric:tabular-nums;
 }
 .cifras i{
-  display:block;font-style:normal;font-size:.76rem;font-weight:600;
-  letter-spacing:.02em;color:var(--accent-ink);margin-bottom:.2rem;
+  display:block;font-style:normal;margin-top:.7rem;font-size:.74rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);
 }
+.cifras span{display:block;font-size:.78rem;line-height:1.4;color:var(--muted);margin-top:.3rem}
+.cifras li:first-child{background:var(--accent);color:#fff}
+@media(min-width:1180px){.cifras li:first-child{grid-column:span 2;grid-row:span 2}}
+.cifras li:first-child b{color:#fff;font-size:clamp(2.4rem,4.6vw,4rem)}
+.cifras li:first-child i{color:var(--acido)}
+.cifras li:first-child span{color:rgba(255,255,255,.75)}
 @media(max-width:640px){
-  .cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
-  .cifras li{padding:.8rem .85rem .9rem}
-  .cifras b{font-size:1.3rem}
-  .cifras span{font-size:.72rem}
+  .bento__lema{min-height:0;padding:1.6rem 1.3rem 1.5rem}
+  .cifras li{padding:.9rem .95rem 1rem}
+  .cifras b{font-size:1.7rem}
+  .cifras i{font-size:.68rem;margin-top:.5rem}
+  .cifras span{display:none}
+  .cifras li:first-child span{display:block;font-size:.72rem}
 }
 
-/* Las siete puertas, todas iguales. La del Plan de Dirección ocupaba dos
-   columnas y su texto se quedaba en la izquierda: novecientos píxeles de verde
-   vacío al lado. Una rejilla de puertas se lee comparando, y para comparar
-   tienen que medir lo mismo. */
-.puerta{display:grid;gap:.8rem;margin-top:1.8rem}
-@media(min-width:760px){.puerta{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(min-width:1180px){.puerta{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Las siete puertas. Tarjetas de borde fino que se invierten al pasar por
+   encima: negro pleno y la flecha en ácido. */
+.puerta{
+  display:grid;gap:.6rem;margin-top:1.8rem;
+  grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));
+}
 .puerta__ficha{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
-  box-shadow:var(--sombra-1);padding:1.35rem 1.4rem 1.2rem;
-  display:grid;gap:.45rem;align-content:start;grid-template-rows:auto auto 1fr auto;
-  text-decoration:none;color:inherit;min-width:0;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+  padding:1.5rem 1.5rem 1.3rem;
+  display:grid;gap:.5rem;align-content:start;grid-template-rows:auto auto 1fr auto;
+  text-decoration:none;color:inherit;min-width:0;
+  transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
 }
-.puerta__ficha:hover{border-color:rgba(14,143,132,.35);box-shadow:var(--sombra-2);transform:translateY(-1px)}
-.puerta__ficha:hover h3,.puerta__ficha:hover .puerta__flecha{color:var(--accent-ink)}
+.puerta__ficha:hover{
+  background:var(--tinta);border-color:var(--tinta);color:#fff;transform:translateY(-3px);
+}
+.puerta__para{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-ink);margin:0;
+}
+.puerta__ficha:hover .puerta__para{color:var(--acido)}
+.puerta__ficha h3{
+  font-size:1.35rem;font-weight:700;font-variation-settings:"wdth" 104;
+  letter-spacing:-.028em;line-height:1.1;margin:0;
+}
+.puerta__que{color:var(--ink-2);font-size:.92rem;line-height:1.5;margin:0}
+.puerta__ficha:hover .puerta__que{color:rgba(255,255,255,.72)}
+.puerta__pie{
+  margin:1rem 0 0;padding-top:.85rem;border-top:1px solid var(--line-soft);
+  display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:baseline;
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.03em;color:var(--muted);
+}
+.puerta__ficha:hover .puerta__pie{border-top-color:rgba(255,255,255,.18);color:rgba(255,255,255,.6)}
+.puerta__flecha{color:var(--accent-ink)}
 .puerta__para{
   font-size:.74rem;font-weight:600;letter-spacing:.02em;
   color:var(--accent-ink);margin:0;
@@ -1120,7 +1217,8 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:baseline;
   font-size:.76rem;color:var(--muted);
 }
-.puerta__flecha{margin-left:auto;color:var(--ink-2);transition:color .16s ease}
+.puerta__flecha{margin-left:auto;color:var(--accent-ink);font-weight:500}
+.puerta__ficha:hover .puerta__flecha{color:var(--acido)}
 
 /* La portada no necesita ocupar seiscientos píxeles antes de la primera
    puerta: dice quién es y sigue. */
@@ -1306,17 +1404,21 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
 
 <section class="hero" id="portada">
   <div class="wrap">
-    <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
-    <h1>No medias <em>sonrisas</em></h1>
-    <p class="hero__lede">Lo que el centro cree, lo que decide y cómo lo ejecuta: siete documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
+    <div class="bento">
+      <div class="bento__lema">
+        <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+        <h1>No medias <em>sonrisas</em></h1>
+        <p>Lo que el centro cree, lo que decide y cómo lo ejecuta: siete documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
+      </div>
     <ul class="cifras">
-      <li><b>17</b><span><i>Normativa interna vigente</i>tres troncales y catorce de apoyo</span></li>
-      <li><b>15</b><span><i>Decisiones abiertas</i>se someten a la Junta Directiva</span></li>
-      <li><b>1,2 M€</b><span><i>Objetivo</i>facturación del ejercicio tercero</span></li>
-      <li><b>322</b><span><i>Puntos de verificación</i>físicos, documentales y de proceso</span></li>
-      <li><b>76</b><span><i>Acciones de marketing</i>32 de ellas no cuestan dinero</span></li>
-      <li><b>14</b><span><i>Fases del recorrido</i>de la primera llamada al mantenimiento</span></li>
+      <li><b>1,2 M€</b><i>Objetivo</i><span>facturación anual del ejercicio tercero</span></li>
+      <li><b>15</b><i>Decisiones abiertas</i><span>se someten a la Junta Directiva</span></li>
+      <li><b>17</b><i>Normativa interna</i><span>tres troncales y catorce de apoyo</span></li>
+      <li><b>322</b><i>Puntos de verificación</i><span>físicos, documentales y de proceso</span></li>
+      <li><b>76</b><i>Acciones de marketing</i><span>32 de ellas no cuestan dinero</span></li>
+      <li><b>14</b><i>Fases del recorrido</i><span>de la primera llamada al mantenimiento</span></li>
     </ul>
+    </div>
   </div>
 </section>
 

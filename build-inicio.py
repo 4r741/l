@@ -133,49 +133,101 @@ CSS = """
 /* La franja de cifras: seis datos en un renglón, sin cajas. Antes eran seis
    fichas con borde compitiendo con el titular, y ninguna llevaba a ningún
    sitio: son contexto, no navegación, y deben pesar como contexto. */
+/* La portada del sistema, en el mismo lenguaje que el tablero de cada
+   documento: una rejilla bento con el lema en negro, la cifra que manda en
+   verde pleno y el resto en gris. */
+.bento{
+  display:grid;gap:.6rem;margin:0 0 .6rem;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+@media(min-width:820px){.bento{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:1180px){.bento{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.bento__lema{
+  grid-column:1/-1;background:var(--tinta);color:#fff;border-radius:var(--radio);
+  padding:2.4rem 2rem 2.2rem;display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:16rem;
+}
+@media(min-width:820px){.bento__lema{grid-column:span 4;grid-row:span 2}}
+.bento__lema .eyebrow{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--acido);margin:0 0 1rem;
+}
+.bento__lema h1{
+  font-size:var(--step-4);font-weight:800;font-variation-settings:"wdth" 112;
+  letter-spacing:-.045em;line-height:.9;color:#fff;margin:0;
+}
+.bento__lema h1 em{font-style:normal;color:var(--acido)}
+.bento__lema p{
+  margin:1.1rem 0 0;max-width:48ch;font-size:var(--step-0);line-height:1.5;
+  color:rgba(255,255,255,.7);
+}
 .cifras{
-  list-style:none;margin:1.8rem 0 0;padding:0;
-  display:grid;gap:.7rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));
+  display:contents;list-style:none;margin:0;padding:0;
 }
 .cifras li{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
-  box-shadow:var(--sombra-1);padding:1.05rem 1.15rem 1.15rem;min-width:0;
+  background:var(--surface-2);border-radius:var(--radio-s);
+  padding:1.15rem 1.2rem 1.2rem;min-width:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
 }
+@media(min-width:820px){.cifras li{grid-column:span 2}}
 .cifras b{
-  display:block;font-size:clamp(1.5rem,2.1vw,1.95rem);font-weight:600;
-  letter-spacing:-.03em;line-height:1.05;color:var(--ink);
-  font-variant-numeric:tabular-nums;
-}
-.cifras span{
-  display:block;margin-top:.45rem;font-size:.78rem;line-height:1.45;color:var(--muted);
+  display:block;font-weight:700;font-variation-settings:"wdth" 112;
+  font-size:clamp(1.9rem,3.4vw,2.9rem);letter-spacing:-.045em;line-height:.9;
+  color:var(--tinta);font-variant-numeric:tabular-nums;
 }
 .cifras i{
-  display:block;font-style:normal;font-size:.76rem;font-weight:600;
-  letter-spacing:.02em;color:var(--accent-ink);margin-bottom:.2rem;
+  display:block;font-style:normal;margin-top:.7rem;font-size:.74rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);
 }
+.cifras span{display:block;font-size:.78rem;line-height:1.4;color:var(--muted);margin-top:.3rem}
+.cifras li:first-child{background:var(--accent);color:#fff}
+@media(min-width:1180px){.cifras li:first-child{grid-column:span 2;grid-row:span 2}}
+.cifras li:first-child b{color:#fff;font-size:clamp(2.4rem,4.6vw,4rem)}
+.cifras li:first-child i{color:var(--acido)}
+.cifras li:first-child span{color:rgba(255,255,255,.75)}
 @media(max-width:640px){
-  .cifras{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
-  .cifras li{padding:.8rem .85rem .9rem}
-  .cifras b{font-size:1.3rem}
-  .cifras span{font-size:.72rem}
+  .bento__lema{min-height:0;padding:1.6rem 1.3rem 1.5rem}
+  .cifras li{padding:.9rem .95rem 1rem}
+  .cifras b{font-size:1.7rem}
+  .cifras i{font-size:.68rem;margin-top:.5rem}
+  .cifras span{display:none}
+  .cifras li:first-child span{display:block;font-size:.72rem}
 }
 
-/* Las siete puertas, todas iguales. La del Plan de Dirección ocupaba dos
-   columnas y su texto se quedaba en la izquierda: novecientos píxeles de verde
-   vacío al lado. Una rejilla de puertas se lee comparando, y para comparar
-   tienen que medir lo mismo. */
-.puerta{display:grid;gap:.8rem;margin-top:1.8rem}
-@media(min-width:760px){.puerta{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(min-width:1180px){.puerta{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Las siete puertas. Tarjetas de borde fino que se invierten al pasar por
+   encima: negro pleno y la flecha en ácido. */
+.puerta{
+  display:grid;gap:.6rem;margin-top:1.8rem;
+  grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));
+}
 .puerta__ficha{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radio);
-  box-shadow:var(--sombra-1);padding:1.35rem 1.4rem 1.2rem;
-  display:grid;gap:.45rem;align-content:start;grid-template-rows:auto auto 1fr auto;
-  text-decoration:none;color:inherit;min-width:0;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+  padding:1.5rem 1.5rem 1.3rem;
+  display:grid;gap:.5rem;align-content:start;grid-template-rows:auto auto 1fr auto;
+  text-decoration:none;color:inherit;min-width:0;
+  transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
 }
-.puerta__ficha:hover{border-color:rgba(14,143,132,.35);box-shadow:var(--sombra-2);transform:translateY(-1px)}
-.puerta__ficha:hover h3,.puerta__ficha:hover .puerta__flecha{color:var(--accent-ink)}
+.puerta__ficha:hover{
+  background:var(--tinta);border-color:var(--tinta);color:#fff;transform:translateY(-3px);
+}
+.puerta__para{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-ink);margin:0;
+}
+.puerta__ficha:hover .puerta__para{color:var(--acido)}
+.puerta__ficha h3{
+  font-size:1.35rem;font-weight:700;font-variation-settings:"wdth" 104;
+  letter-spacing:-.028em;line-height:1.1;margin:0;
+}
+.puerta__que{color:var(--ink-2);font-size:.92rem;line-height:1.5;margin:0}
+.puerta__ficha:hover .puerta__que{color:rgba(255,255,255,.72)}
+.puerta__pie{
+  margin:1rem 0 0;padding-top:.85rem;border-top:1px solid var(--line-soft);
+  display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:baseline;
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.03em;color:var(--muted);
+}
+.puerta__ficha:hover .puerta__pie{border-top-color:rgba(255,255,255,.18);color:rgba(255,255,255,.6)}
+.puerta__flecha{color:var(--accent-ink)}
 .puerta__para{
   font-size:.74rem;font-weight:600;letter-spacing:.02em;
   color:var(--accent-ink);margin:0;
@@ -190,7 +242,8 @@ CSS = """
   display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:baseline;
   font-size:.76rem;color:var(--muted);
 }
-.puerta__flecha{margin-left:auto;color:var(--ink-2);transition:color .16s ease}
+.puerta__flecha{margin-left:auto;color:var(--accent-ink);font-weight:500}
+.puerta__ficha:hover .puerta__flecha{color:var(--acido)}
 
 /* La portada no necesita ocupar seiscientos píxeles antes de la primera
    puerta: dice quién es y sigue. */
@@ -419,17 +472,21 @@ CUERPO = """
 
 <section class="hero" id="portada">
   <div class="wrap">
-    <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
-    <h1>No medias <em>sonrisas</em></h1>
-    <p class="hero__lede">Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
+    <div class="bento">
+      <div class="bento__lema">
+        <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+        <h1>No medias <em>sonrisas</em></h1>
+        <p>Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
+      </div>
     <ul class="cifras">
-      <li><b>17</b><span><i>Normativa interna vigente</i>tres troncales y catorce de apoyo</span></li>
-      <li><b>15</b><span><i>Decisiones abiertas</i>se someten a la Junta Directiva</span></li>
-      <li><b>1,2 M€</b><span><i>Objetivo</i>facturación del ejercicio tercero</span></li>
-      <li><b>322</b><span><i>Puntos de verificación</i>físicos, documentales y de proceso</span></li>
-      <li><b>@ACCIONES@</b><span><i>Acciones de marketing</i>@SINCOSTE@ de ellas no cuestan dinero</span></li>
-      <li><b>14</b><span><i>Fases del recorrido</i>de la primera llamada al mantenimiento</span></li>
+      <li><b>1,2 M€</b><i>Objetivo</i><span>facturación anual del ejercicio tercero</span></li>
+      <li><b>15</b><i>Decisiones abiertas</i><span>se someten a la Junta Directiva</span></li>
+      <li><b>17</b><i>Normativa interna</i><span>tres troncales y catorce de apoyo</span></li>
+      <li><b>322</b><i>Puntos de verificación</i><span>físicos, documentales y de proceso</span></li>
+      <li><b>@ACCIONES@</b><i>Acciones de marketing</i><span>@SINCOSTE@ de ellas no cuestan dinero</span></li>
+      <li><b>14</b><i>Fases del recorrido</i><span>de la primera llamada al mantenimiento</span></li>
     </ul>
+    </div>
   </div>
 </section>
 

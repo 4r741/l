@@ -956,9 +956,9 @@ html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
   white-space:nowrap;
   transition:color .16s ease,border-color .16s ease,background .16s ease;
 }
-.cabecera__docs a:hover{color:#7FD3C9;border-color:rgba(127,211,201,.4)}
+.cabecera__docs a:hover{color:var(--acido);border-color:rgba(200,240,74,.5)}
 .cabecera__docs a[aria-current="true"]{
-  background:rgba(127,211,201,.16);border-color:#7FD3C9;color:#7FD3C9;
+  background:var(--acido);border-color:var(--acido);color:var(--tinta);font-weight:600;
 }
 
 /* Segunda fila: el índice del documento activo. Si el documento no tiene
