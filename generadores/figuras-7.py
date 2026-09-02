@@ -11,7 +11,7 @@ FUENTES = RAIZ / "fuentes"
 
 SALIDA = FUENTES / "figuras-7.html"
 # rampa secuencial: la misma familia del mapa de calor, lightness monótona
-RAMPA = ["#C9E7E3", "#A7D9D3", "#6FC0B7", "#2FA398", "#0E8F84"]
+RAMPA = ["#C6E9E4", "#A3D8D1", "#66BDB3", "#2A9C91", "#00857A"]
 
 
 def txt(x, y, s, anchor="start", size=12, weight=400, color="var(--ink-2)"):

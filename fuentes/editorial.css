@@ -7,9 +7,9 @@
    claro, sobre los mismos tokens del sistema.
    ============================================================ */
 :root{
-  --serie-a:#0E8F84;   /* series de gráfico validadas para daltonismo */
-  --serie-b:#A8631B;
-  --serie-c:#7A4FA3;
+  --serie-a:#00857A;   /* series de gráfico validadas para daltonismo */
+  --serie-b:#C25A12;
+  --serie-c:#0B3B45;
 }
 
 /* ---------- portada de declaración ---------- */
@@ -18,7 +18,7 @@
   position:relative;overflow:hidden;
 }
 .t-cover__claim{
-  font-family:var(--f-display);font-weight:400;font-style:italic;
+  font-family:var(--f-display);font-weight:600;font-style:normal;
   font-size:clamp(2.9rem,2rem + 4.6vw,6.4rem);line-height:.94;
   letter-spacing:-.035em;color:var(--ink);margin:0;
   font-variation-settings:"opsz" 144;text-wrap:balance;
@@ -44,9 +44,9 @@
   font-weight:400;letter-spacing:-.028em;line-height:1.04;color:var(--surface);
   margin:1.1rem 0 0;font-variation-settings:"opsz" 144;
 }
-.t-manifiesto h2 em{font-style:italic;color:#7FD3C9}
+.t-manifiesto h2 em{font-style:normal;color:#C8F04A}
 .t-manifiesto p{color:rgba(247,248,245,.82);margin-top:1.1rem;max-width:56ch}
-.t-manifiesto__cierre{font-family:var(--f-display);font-style:italic;font-size:1.15rem;color:#7FD3C9}
+.t-manifiesto__cierre{font-family:var(--f-display);font-style:normal;font-weight:600;font-size:1.15rem;color:#C8F04A}
 .t-manifiesto__list{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .t-manifiesto__list li{
   border-top:1px solid rgba(247,248,245,.18);padding:.95rem 0;
@@ -57,7 +57,7 @@
    negrita tiene que verse como una negrita y no como un número de orden. */
 .t-manifiesto__list>li>b{
   font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;
-  color:#7FD3C9;font-weight:400;
+  color:#C8F04A;font-weight:400;
 }
 .t-manifiesto__list span b{color:var(--surface);font-weight:600}
 .t-manifiesto__list span{color:rgba(247,248,245,.9);font-size:.96rem;line-height:1.5}
@@ -79,7 +79,7 @@
   margin-top:.4rem;font-variation-settings:"opsz" 144;
 }
 .t-part h2{font-size:clamp(1.9rem,1.4rem + 2vw,3rem);letter-spacing:-.025em;line-height:1.06}
-.t-part h2 em{font-style:italic;color:var(--accent-ink)}
+.t-part h2 em{font-style:normal;color:var(--accent)}
 .t-part__lede{margin-top:1.1rem;color:var(--ink-2);max-width:62ch;font-size:var(--step-1);line-height:1.5}
 
 /* ---------- entradilla con capitular ---------- */
@@ -96,7 +96,7 @@
   padding:1.5rem 0;max-width:72ch;
 }
 .t-quote p{
-  font-family:var(--f-display);font-style:italic;font-weight:400;
+  font-family:var(--f-display);font-style:normal;font-weight:600;
   font-size:clamp(1.25rem,1.05rem + .9vw,1.9rem);line-height:1.28;
   letter-spacing:-.015em;color:var(--ink);text-wrap:balance;
 }
@@ -230,7 +230,7 @@
   .t-manifiesto{background:#FFF;color:#000;border-top:2pt solid #000;padding:14pt 0}
   .t-manifiesto h2,.t-manifiesto p,.t-manifiesto__list span,
 .t-manifiesto__list span b{color:#000}
-  .t-manifiesto h2 em,.t-manifiesto__cierre{color:#0A5C56}
+  .t-manifiesto h2 em,.t-manifiesto__cierre{color:#00655D}
   .t-manifiesto .eyebrow,.t-manifiesto__list>li>b{color:#444}
   .t-manifiesto__list li{border-color:#BBB}
   .t-part{break-before:page}
@@ -350,7 +350,7 @@
    con la promesa arriba y el umbral de parada abajo.
    ============================================================ */
 .campana__promesa{
-  font-family:var(--f-display);font-style:italic;font-size:1.18rem;line-height:1.4;
+  font-family:var(--f-display);font-style:normal;font-weight:600;font-size:1.18rem;line-height:1.4;
   color:var(--accent-ink);max-width:60ch;
 }
 .campana__campos{margin:1.1rem 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}

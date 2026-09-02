@@ -9,8 +9,8 @@ import pathlib
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 FUENTES = RAIZ / "fuentes"
 
-TEAL = "#0E8F84"      # validado: paleta categórica de 2 series sobre #F7F8F5
-OCRE = "#A8631B"
+TEAL = "#00857A"      # validado: paleta categórica de 2 series sobre #FFFFFF
+OCRE = "#C25A12"
 SALIDA = FUENTES / "figuras-1-3.html"
 
 def txt(x, y, s, anchor="start", size=12, weight=400, color="var(--ink-2)"):

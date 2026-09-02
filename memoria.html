@@ -56,6 +56,21 @@
   --radio:22px;
   --radio-s:14px;
 
+  /* Los seis puestos y el semáforo, dentro del sistema. Antes eran un azul y
+     un violeta de otra paleta: en una página de negro, verde y ácido cantaban
+     como dos invitados que no conocen a nadie. Ahora son una escala del mismo
+     verde hacia el negro, más el gris. */
+  --rol-recepcion:#00857A;
+  --rol-doctor:#0B3B45;
+  --rol-higienista:#5C7F26;
+  --rol-auxiliar:#7A8783;
+  --rol-rac:#00655D;
+  --rol-direccion:#080B0A;
+  --sem-rojo:#B8332A;
+  --sem-naranja:#C25A12;
+  --sem-amarillo:#98860F;
+  --sem-verde:#00857A;
+
   --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
@@ -159,8 +174,8 @@ a{color:inherit}
    quedan quietos en la caja. Si no hay nada que desplazar, no se ve nada. */
 .tablewrap{
   background:
-    linear-gradient(to right,var(--paper) 42%,rgba(247,248,245,0)) left center/38px 100% no-repeat local,
-    linear-gradient(to left,var(--paper) 42%,rgba(247,248,245,0)) right center/38px 100% no-repeat local,
+    linear-gradient(to right,var(--paper) 42%,rgba(255,255,255,0)) left center/38px 100% no-repeat local,
+    linear-gradient(to left,var(--paper) 42%,rgba(255,255,255,0)) right center/38px 100% no-repeat local,
     radial-gradient(farthest-side at 0 50%,rgba(23,32,30,.13),rgba(23,32,30,0)) left center/13px 100% no-repeat scroll,
     radial-gradient(farthest-side at 100% 50%,rgba(23,32,30,.13),rgba(23,32,30,0)) right center/13px 100% no-repeat scroll;
 }
@@ -375,7 +390,7 @@ main:focus{outline:none}
 .menu__b{
   display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;
   font-size:.85rem;font-weight:500;letter-spacing:-.005em;color:var(--ink-2);
-  background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio-s);
   padding:.42rem .8rem .42rem .68rem;white-space:nowrap;box-shadow:var(--sombra-1);
   transition:border-color .16s ease,color .16s ease,background .16s ease;
   list-style:none;
@@ -419,7 +434,7 @@ main:focus{outline:none}
   font:inherit;font-family:var(--f-mono);font-size:.8rem;line-height:1;
   width:26px;height:26px;display:grid;place-items:center;cursor:pointer;
   background:var(--surface);border:1px solid var(--line);color:var(--ink-2);
-  border-radius:6px;transition:border-color .16s ease,color .16s ease;
+  border-radius:7px;transition:border-color .16s ease,color .16s ease;
 }
 .menu__paso button:hover:not(:disabled){border-color:var(--ink-2);color:var(--ink)}
 .menu__paso button:disabled{opacity:.35;cursor:default}
@@ -453,7 +468,7 @@ main:focus{outline:none}
 .menu__g a:not(.menu__gt a){
   display:grid;grid-template-columns:2.1rem minmax(0,1fr);align-items:baseline;
   text-decoration:none;color:var(--ink-2);font-size:.86rem;line-height:1.3;
-  padding:.24rem .4rem .24rem .1rem;border-radius:6px;
+  padding:.24rem .4rem .24rem .1rem;border-radius:7px;
   transition:background .13s ease,color .13s ease;
 }
 .menu__g a:not(.menu__gt a):hover{background:var(--accent-soft);color:var(--accent-ink)}
@@ -700,7 +715,10 @@ main:focus{outline:none}
   font-size:var(--step-4);font-weight:400;letter-spacing:-.025em;
   font-variation-settings:"opsz" 144;
 }
-.hero h1 em{font-style:italic;color:var(--accent-ink)}
+/* La cursiva venía de la serif variable, que tenía una itálica de verdad. En
+   una sans sin itálica el navegador la inclina él, y se nota. El énfasis lo da
+   el color, que además es el del sistema. */
+.hero h1 em{font-style:normal;color:var(--accent)}
 .hero__lede{margin-top:1.5rem;font-size:var(--step-1);color:var(--ink-2);max-width:34ch;line-height:1.45}
 .hero__note{margin-top:1.3rem;color:var(--muted);max-width:58ch;font-size:var(--step--1)}
 .specs{
@@ -726,7 +744,10 @@ main:focus{outline:none}
 .cards>*{min-width:0}
 @media(min-width:760px){.cards--3{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:760px){.cards--2{grid-template-columns:repeat(2,1fr)}}
-.card{background:var(--surface);padding:1.5rem}
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radio-s);padding:1.4rem 1.45rem 1.5rem;
+}
 .card h3{font-size:var(--step-1);margin-bottom:.55rem}
 .card p{color:var(--ink-2);font-size:.95rem}
 .card .eyebrow{display:block;margin-bottom:.9rem}
@@ -747,9 +768,9 @@ main:focus{outline:none}
 .timemap__seg span{
   font-family:var(--f-mono);font-size:.62rem;color:var(--muted);padding-bottom:.3rem;
 }
-.timemap__seg[data-role="recepcion"]{border-bottom-color:#2E6F9E}
+.timemap__seg[data-role="recepcion"]{border-bottom-color:var(--rol-recepcion)}
 .timemap__seg[data-role="director"]{border-bottom-color:var(--accent)}
-.timemap__seg[data-role="doctor"]{border-bottom-color:#8B5CB8}
+.timemap__seg[data-role="doctor"]{border-bottom-color:var(--rol-doctor)}
 .timemap__seg[data-role="auxiliar"]{border-bottom-color:var(--signal)}
 .legend{display:flex;flex-wrap:wrap;gap:.4rem}
 .chip{
@@ -761,9 +782,9 @@ main:focus{outline:none}
 .chip::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--dot,var(--muted))}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .chip--static{cursor:default}
-.chip[data-role="recepcion"]{--dot:#2E6F9E}
+.chip[data-role="recepcion"]{--dot:var(--rol-recepcion)}
 .chip[data-role="director"]{--dot:var(--accent)}
-.chip[data-role="doctor"]{--dot:#8B5CB8}
+.chip[data-role="doctor"]{--dot:var(--rol-doctor)}
 .chip[data-role="auxiliar"]{--dot:var(--signal)}
 
 /* ============================================================
@@ -815,38 +836,47 @@ ol.steps>li::before{
   font-family:var(--f-mono);font-size:.72rem;color:var(--accent-ink);
   border:1px solid var(--line);padding:.1rem .32rem;border-radius:3px;
 }
+/* Las cajas del cuerpo hablan el idioma del tablero: caja entera, radio del
+   sistema y el rótulo en versalita. Nada de filos de tres píxeles a un lado. */
 .callout{
-  border-left:3px solid var(--signal);background:var(--signal-soft);
-  border-radius:0 var(--radio) var(--radio) 0;
-  padding:1.05rem 1.25rem;margin-top:1.2rem;max-width:68ch;
+  background:var(--signal-soft);border:1px solid rgba(194,90,18,.22);
+  border-radius:var(--radio-s);
+  padding:1.15rem 1.35rem 1.25rem;margin-top:1.3rem;max-width:68ch;
 }
+.callout>.eyebrow{color:var(--signal)}
 .callout .eyebrow{color:var(--signal)}
 .callout p,.callout li{color:var(--ink-2)}
 .callout ul.list li::before{background:var(--signal)}
 .script{
-  border:1px solid var(--line);background:var(--surface);
-  padding:1.15rem 1.3rem;margin-top:1rem;max-width:68ch;
+  border:1px solid var(--line);border-radius:var(--radio-s);background:var(--surface);
+  padding:1.2rem 1.35rem 1.3rem;margin-top:1.2rem;max-width:68ch;
 }
 .script q{
-  font-family:var(--f-display);font-style:italic;font-size:1.08rem;
+  font-family:var(--f-display);font-style:normal;font-weight:500;font-size:1.08rem;
   color:var(--ink);quotes:"«" "»" "\201C" "\201D";display:block;line-height:1.5;
 }
 .script .eyebrow{display:block;margin-bottom:.6rem}
 .gate{
-  margin-top:1.4rem;border:1px solid rgba(13,110,102,.22);border-radius:var(--radio);
-  padding:1.05rem 1.25rem;max-width:68ch;background:var(--accent-soft);
+  margin-top:1.4rem;border:1px solid rgba(0,133,122,.22);border-radius:var(--radio-s);
+  padding:1.15rem 1.35rem 1.25rem;max-width:68ch;background:var(--accent-soft);
 }
 .gate .eyebrow{color:var(--accent-ink)}
 .gate p{color:var(--ink-2);margin-top:.35rem}
-.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radio);
-  background:var(--surface);box-shadow:var(--sombra-1);
-  margin-top:1.2rem;max-width:100%;-webkit-overflow-scrolling:touch}
-table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+.tablewrap{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--radio-s);
+  background:var(--surface);margin-top:1.4rem;max-width:100%;
+  -webkit-overflow-scrolling:touch;
+}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem;font-variant-numeric:tabular-nums}
 th,td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
 thead th{
-  font-size:.78rem;font-weight:600;letter-spacing:.01em;
-  color:var(--ink-2);background:var(--surface-2);border-bottom:1px solid var(--line);white-space:nowrap;
+  font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  font-variation-settings:"wdth" 88;
+  color:#fff;background:var(--tinta);border-bottom:0;white-space:nowrap;
 }
+@media print{thead th{color:#000;background:#EDEDED}}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--surface-2)}
 tbody tr:last-child td{border-bottom:0}
 td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
 .checks{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.55rem;max-width:70ch}
@@ -943,11 +973,14 @@ details.faq .a p+p{margin-top:.6rem}
 
 /* rúbrica de auditoría */
 .score{display:inline-block;font-family:var(--f-mono);font-size:.7rem;padding:.12rem .45rem;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
-.bar{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;min-width:90px}
+.bar{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden;min-width:90px}
 .bar i{display:block;height:100%;background:var(--accent)}
 
 /* figura / diagrama */
-figure.fig{margin:1.6rem 0 0;border:1px solid var(--line);background:var(--surface);padding:1.4rem}
+figure.fig{
+  margin:1.8rem 0 0;border:1px solid var(--line);border-radius:var(--radio-s);
+  background:var(--surface);padding:1.5rem 1.6rem 1.6rem;
+}
 figure.fig svg{width:100%;height:auto;display:block;color:var(--ink)}
 figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-width:70ch}
 .figscroll{overflow-x:auto}
@@ -959,9 +992,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   text-transform:uppercase;border:1px solid var(--line);padding:.1rem .4rem;border-radius:3px;
   color:var(--muted);vertical-align:.15em;margin-left:.5rem;
 }
-.tag--rec{color:#2E6F9E;border-color:#2E6F9E}
+.tag--rec{color:var(--rol-recepcion);border-color:var(--rol-recepcion)}
 .tag--dir{color:var(--accent-ink);border-color:var(--accent)}
-.tag--doc{color:#8B5CB8;border-color:#8B5CB8}
+.tag--doc{color:var(--rol-doctor);border-color:var(--rol-doctor)}
 .tag--aux{color:var(--signal);border-color:var(--signal)}
 
 /* nota al pie de bloque */
@@ -1041,10 +1074,11 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 
 /* regla nuclear */
 .rulebox{
-  border:1px solid rgba(13,110,102,.28);background:var(--accent-soft);
-  border-radius:var(--radio);
-  padding:1.15rem 1.3rem;margin-top:1.1rem;max-width:70ch;
+  border:1px solid rgba(0,133,122,.25);background:var(--accent-soft);
+  border-radius:var(--radio-s);
+  padding:1.15rem 1.35rem 1.25rem;margin-top:1.2rem;max-width:70ch;
 }
+.rulebox>.eyebrow{color:var(--accent-ink)}
 .rulebox .eyebrow{color:var(--accent-ink);display:block;margin-bottom:.4rem}
 .rulebox p{color:var(--ink);font-family:var(--f-display);font-size:1.1rem;line-height:1.45}
 .rulebox p+p{margin-top:.5rem;font-family:var(--f-body);font-size:.92rem;color:var(--ink-2)}
@@ -1059,10 +1093,10 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 /* semáforo de riesgo */
 .sem{display:inline-flex;align-items:center;gap:.42rem;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .sem::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--sem,var(--muted))}
-.sem--rojo{--sem:#C0442E}
-.sem--naranja{--sem:#C97A1E}
-.sem--amarillo{--sem:#B79417}
-.sem--verde{--sem:#3D8A5F}
+.sem--rojo{--sem:var(--sem-rojo)}
+.sem--naranja{--sem:var(--sem-naranja)}
+.sem--amarillo{--sem:var(--sem-amarillo)}
+.sem--verde{--sem:var(--sem-verde)}
 
 /* matriz RACI */
 table.raci td{text-align:center;font-family:var(--f-mono);font-size:.78rem}
@@ -1102,9 +1136,9 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
    claro, sobre los mismos tokens del sistema.
    ============================================================ */
 :root{
-  --serie-a:#0E8F84;   /* series de gráfico validadas para daltonismo */
-  --serie-b:#A8631B;
-  --serie-c:#7A4FA3;
+  --serie-a:#00857A;   /* series de gráfico validadas para daltonismo */
+  --serie-b:#C25A12;
+  --serie-c:#0B3B45;
 }
 
 /* ---------- portada de declaración ---------- */
@@ -1113,7 +1147,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   position:relative;overflow:hidden;
 }
 .t-cover__claim{
-  font-family:var(--f-display);font-weight:400;font-style:italic;
+  font-family:var(--f-display);font-weight:600;font-style:normal;
   font-size:clamp(2.9rem,2rem + 4.6vw,6.4rem);line-height:.94;
   letter-spacing:-.035em;color:var(--ink);margin:0;
   font-variation-settings:"opsz" 144;text-wrap:balance;
@@ -1139,9 +1173,9 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   font-weight:400;letter-spacing:-.028em;line-height:1.04;color:var(--surface);
   margin:1.1rem 0 0;font-variation-settings:"opsz" 144;
 }
-.t-manifiesto h2 em{font-style:italic;color:#7FD3C9}
+.t-manifiesto h2 em{font-style:normal;color:#C8F04A}
 .t-manifiesto p{color:rgba(247,248,245,.82);margin-top:1.1rem;max-width:56ch}
-.t-manifiesto__cierre{font-family:var(--f-display);font-style:italic;font-size:1.15rem;color:#7FD3C9}
+.t-manifiesto__cierre{font-family:var(--f-display);font-style:normal;font-weight:600;font-size:1.15rem;color:#C8F04A}
 .t-manifiesto__list{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .t-manifiesto__list li{
   border-top:1px solid rgba(247,248,245,.18);padding:.95rem 0;
@@ -1152,7 +1186,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
    negrita tiene que verse como una negrita y no como un número de orden. */
 .t-manifiesto__list>li>b{
   font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;
-  color:#7FD3C9;font-weight:400;
+  color:#C8F04A;font-weight:400;
 }
 .t-manifiesto__list span b{color:var(--surface);font-weight:600}
 .t-manifiesto__list span{color:rgba(247,248,245,.9);font-size:.96rem;line-height:1.5}
@@ -1174,7 +1208,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   margin-top:.4rem;font-variation-settings:"opsz" 144;
 }
 .t-part h2{font-size:clamp(1.9rem,1.4rem + 2vw,3rem);letter-spacing:-.025em;line-height:1.06}
-.t-part h2 em{font-style:italic;color:var(--accent-ink)}
+.t-part h2 em{font-style:normal;color:var(--accent)}
 .t-part__lede{margin-top:1.1rem;color:var(--ink-2);max-width:62ch;font-size:var(--step-1);line-height:1.5}
 
 /* ---------- entradilla con capitular ---------- */
@@ -1191,7 +1225,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   padding:1.5rem 0;max-width:72ch;
 }
 .t-quote p{
-  font-family:var(--f-display);font-style:italic;font-weight:400;
+  font-family:var(--f-display);font-style:normal;font-weight:600;
   font-size:clamp(1.25rem,1.05rem + .9vw,1.9rem);line-height:1.28;
   letter-spacing:-.015em;color:var(--ink);text-wrap:balance;
 }
@@ -1325,7 +1359,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
   .t-manifiesto{background:#FFF;color:#000;border-top:2pt solid #000;padding:14pt 0}
   .t-manifiesto h2,.t-manifiesto p,.t-manifiesto__list span,
 .t-manifiesto__list span b{color:#000}
-  .t-manifiesto h2 em,.t-manifiesto__cierre{color:#0A5C56}
+  .t-manifiesto h2 em,.t-manifiesto__cierre{color:#00655D}
   .t-manifiesto .eyebrow,.t-manifiesto__list>li>b{color:#444}
   .t-manifiesto__list li{border-color:#BBB}
   .t-part{break-before:page}
@@ -1445,7 +1479,7 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
    con la promesa arriba y el umbral de parada abajo.
    ============================================================ */
 .campana__promesa{
-  font-family:var(--f-display);font-style:italic;font-size:1.18rem;line-height:1.4;
+  font-family:var(--f-display);font-style:normal;font-weight:600;font-size:1.18rem;line-height:1.4;
   color:var(--accent-ink);max-width:60ch;
 }
 .campana__campos{margin:1.1rem 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
@@ -2070,16 +2104,16 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <text x="60" y="113.33333333333333" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">4</text>
 <line x1="70" y1="46.0" x2="830" y2="46.0" stroke="var(--line-soft)" stroke-width="1"/>
 <text x="60" y="50.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">6</text>
-<rect x="110" y="68.2" width="96" height="167.8" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="110" y="68.2" width="96" height="167.8" fill="#00857A" rx="4" ry="4"/>
 <text x="158.0" y="59.16666666666666" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">5,3</text>
 <text x="158.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">30 %</text>
-<rect x="276" y="109.3" width="96" height="126.7" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="276" y="109.3" width="96" height="126.7" fill="#00857A" rx="4" ry="4"/>
 <text x="324.0" y="100.33333333333333" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">4,0</text>
 <text x="324.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">40 %</text>
-<rect x="442" y="134.7" width="96" height="101.3" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="442" y="134.7" width="96" height="101.3" fill="#00857A" rx="4" ry="4"/>
 <text x="490.0" y="125.66666666666669" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">3,2</text>
 <text x="490.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">50 %</text>
-<rect x="608" y="153.7" width="96" height="82.3" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="608" y="153.7" width="96" height="82.3" fill="#00857A" rx="4" ry="4"/>
 <text x="656.0" y="144.66666666666669" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">2,6</text>
 <text x="656.0" y="258" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">60 %</text>
 <line x1="70" y1="236" x2="830" y2="236" stroke="var(--line)" stroke-width="1"/>
@@ -2127,34 +2161,34 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <text x="66" y="97.33333333333334" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.500</text>
 <line x1="78" y1="54.0" x2="838" y2="54.0" stroke="var(--line-soft)" stroke-width="1"/>
 <text x="66" y="58.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.800</text>
-<rect x="102.7" y="195.6" width="62" height="94.4" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="102.7" y="195.6" width="62" height="94.4" fill="#00857A" rx="4" ry="4"/>
 <text x="133.66666666666669" y="187.6" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">720</text>
-<rect x="170.7" y="186.4" width="62" height="103.6" fill="#A8631B" rx="4" ry="4"/>
+<rect x="170.7" y="186.4" width="62" height="103.6" fill="#C25A12" rx="4" ry="4"/>
 <text x="201.66666666666669" y="178.42222222222222" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">790</text>
-<rect x="238.7" y="179.9" width="62" height="110.1" fill="#7A4FA3" rx="4" ry="4"/>
+<rect x="238.7" y="179.9" width="62" height="110.1" fill="#0B3B45" rx="4" ry="4"/>
 <text x="269.6666666666667" y="171.86666666666667" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">840</text>
 <text x="204.66666666666669" y="314" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Mes 12</text>
-<rect x="356.0" y="192.3" width="62" height="97.7" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="356.0" y="192.3" width="62" height="97.7" fill="#00857A" rx="4" ry="4"/>
 <text x="387.00000000000006" y="184.32222222222222" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">745</text>
-<rect x="424.0" y="161.5" width="62" height="128.5" fill="#A8631B" rx="4" ry="4"/>
+<rect x="424.0" y="161.5" width="62" height="128.5" fill="#C25A12" rx="4" ry="4"/>
 <text x="455.00000000000006" y="153.51111111111112" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">980</text>
-<rect x="492.0" y="135.3" width="62" height="154.7" fill="#7A4FA3" rx="4" ry="4"/>
+<rect x="492.0" y="135.3" width="62" height="154.7" fill="#0B3B45" rx="4" ry="4"/>
 <text x="523.0" y="127.28888888888889" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.180</text>
 <text x="458.00000000000006" y="314" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Mes 24</text>
-<rect x="609.3" y="189.0" width="62" height="101.0" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="609.3" y="189.0" width="62" height="101.0" fill="#00857A" rx="4" ry="4"/>
 <text x="640.3333333333334" y="181.04444444444445" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">770</text>
-<rect x="677.3" y="139.2" width="62" height="150.8" fill="#A8631B" rx="4" ry="4"/>
+<rect x="677.3" y="139.2" width="62" height="150.8" fill="#C25A12" rx="4" ry="4"/>
 <text x="708.3333333333334" y="131.22222222222223" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.150</text>
-<rect x="745.3" y="73.7" width="62" height="216.3" fill="#7A4FA3" rx="4" ry="4"/>
+<rect x="745.3" y="73.7" width="62" height="216.3" fill="#0B3B45" rx="4" ry="4"/>
 <text x="776.3333333333334" y="65.66666666666666" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.650</text>
 <text x="711.3333333333334" y="314" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Mes 36</text>
 <line x1="78" y1="290" x2="838" y2="290" stroke="var(--line)" stroke-width="1"/>
 <text x="66" y="22" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">facturación anual · miles de €</text>
-<rect x="78" y="352" width="12" height="12" rx="3" fill="#0E8F84"/>
+<rect x="78" y="352" width="12" height="12" rx="3" fill="#00857A"/>
 <text x="97" y="362" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Base · solo sostener</text>
-<rect x="242" y="352" width="12" height="12" rx="3" fill="#A8631B"/>
+<rect x="242" y="352" width="12" height="12" rx="3" fill="#C25A12"/>
 <text x="261.0" y="362" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Objetivo · sistema en marcha</text>
-<rect x="458" y="352" width="12" height="12" rx="3" fill="#7A4FA3"/>
+<rect x="458" y="352" width="12" height="12" rx="3" fill="#0B3B45"/>
 <text x="477.0" y="362" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Ambición · red y líneas nuevas</text>
 </svg></div>
       <p class="t-fig__note">La distancia entre base y objetivo —del orden de 380 k€ anuales en el mes 36— es lo que está en juego en las decisiones de esta sesión.</p>
@@ -2190,32 +2224,32 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <text x="708.0" y="60" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">60 %</text>
 <text x="486.0" y="34" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">tasa de conversión de la primera visita</text>
 <text x="174" y="104.0" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">1.400 €</text>
-<rect x="190" y="74" width="148" height="52" fill="#E6F3F1" stroke="var(--surface)" stroke-width="2"/>
-<text x="264.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">423 k€</text>
-<rect x="338" y="74" width="148" height="52" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
-<text x="412.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">564 k€</text>
-<rect x="486" y="74" width="148" height="52" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2"/>
-<text x="560.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">706 k€</text>
-<rect x="634" y="74" width="148" height="52" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2"/>
-<text x="708.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">847 k€</text>
+<rect x="190" y="74" width="148" height="52" fill="#E3F4F1" stroke="var(--surface)" stroke-width="2"/>
+<text x="264.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">423 k€</text>
+<rect x="338" y="74" width="148" height="52" fill="#C6E9E4" stroke="var(--surface)" stroke-width="2"/>
+<text x="412.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">564 k€</text>
+<rect x="486" y="74" width="148" height="52" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2"/>
+<text x="560.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">706 k€</text>
+<rect x="634" y="74" width="148" height="52" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2"/>
+<text x="708.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">847 k€</text>
 <text x="174" y="156.0" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">1.800 €</text>
-<rect x="190" y="126" width="148" height="52" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
-<text x="264.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">544 k€</text>
-<rect x="338" y="126" width="148" height="52" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2"/>
-<text x="412.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">726 k€</text>
-<rect x="486" y="126" width="148" height="52" fill="#82C8C0" stroke="var(--surface)" stroke-width="2"/>
-<text x="560.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">907 k€</text>
-<rect x="634" y="126" width="148" height="52" fill="#57B3A9" stroke="var(--surface)" stroke-width="2"/>
-<text x="708.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">1.089 k€</text>
+<rect x="190" y="126" width="148" height="52" fill="#C6E9E4" stroke="var(--surface)" stroke-width="2"/>
+<text x="264.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">544 k€</text>
+<rect x="338" y="126" width="148" height="52" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2"/>
+<text x="412.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">726 k€</text>
+<rect x="486" y="126" width="148" height="52" fill="#7CC6BD" stroke="var(--surface)" stroke-width="2"/>
+<text x="560.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">907 k€</text>
+<rect x="634" y="126" width="148" height="52" fill="#52B0A5" stroke="var(--surface)" stroke-width="2"/>
+<text x="708.0" y="157.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">1.089 k€</text>
 <text x="174" y="208.0" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">2.200 €</text>
-<rect x="190" y="178" width="148" height="52" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
-<text x="264.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">665 k€</text>
-<rect x="338" y="178" width="148" height="52" fill="#82C8C0" stroke="var(--surface)" stroke-width="2"/>
-<text x="412.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">887 k€</text>
-<rect x="486" y="178" width="148" height="52" fill="#57B3A9" stroke="var(--surface)" stroke-width="2"/>
-<text x="560.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">1.109 k€</text>
-<rect x="634" y="178" width="148" height="52" fill="#2FA398" stroke="var(--surface)" stroke-width="2"/>
-<text x="708.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1A20" font-family="var(--f-body)">1.331 k€</text>
+<rect x="190" y="178" width="148" height="52" fill="#C6E9E4" stroke="var(--surface)" stroke-width="2"/>
+<text x="264.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">665 k€</text>
+<rect x="338" y="178" width="148" height="52" fill="#7CC6BD" stroke="var(--surface)" stroke-width="2"/>
+<text x="412.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">887 k€</text>
+<rect x="486" y="178" width="148" height="52" fill="#52B0A5" stroke="var(--surface)" stroke-width="2"/>
+<text x="560.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">1.109 k€</text>
+<rect x="634" y="178" width="148" height="52" fill="#2A9C91" stroke="var(--surface)" stroke-width="2"/>
+<text x="708.0" y="209.0" text-anchor="middle" font-size="13" font-weight="600" fill="#080B0A" font-family="var(--f-body)">1.331 k€</text>
 <text x="24" y="152.0" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">ticket</text>
 <text x="24" y="168.0" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">medio</text>
 <text x="190" y="260" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">Capacidad fija: 4 primeras visitas al día · 21 días · 12 meses</text>
@@ -2306,28 +2340,28 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <text x="522.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 3</text>
 <text x="670.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 4</text>
 <text x="818.0" y="300" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">año 5</text>
-<polygon points="78.0,184.0 226.0,160.4 374.0,136.7 522.0,113.1 670.0,89.4 818.0,64.8 818.0,177.6 670.0,177.6 522.0,180.8 374.0,180.8 226.0,184.0 78.0,184.0" fill="#0E8F84" opacity=".10"/>
-<path d="M78.0 184.0 L226.0 184.0 L374.0 180.8 L522.0 180.8 L670.0 177.6 L818.0 177.6" fill="none" stroke="#A8631B" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="78.0" cy="184.0" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="226.0" cy="184.0" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="374.0" cy="180.8" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="522.0" cy="180.8" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="670.0" cy="177.6" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="818.0" cy="177.6" r="4" fill="#A8631B" stroke="var(--surface)" stroke-width="2"/>
+<polygon points="78.0,184.0 226.0,160.4 374.0,136.7 522.0,113.1 670.0,89.4 818.0,64.8 818.0,177.6 670.0,177.6 522.0,180.8 374.0,180.8 226.0,184.0 78.0,184.0" fill="#00857A" opacity=".10"/>
+<path d="M78.0 184.0 L226.0 184.0 L374.0 180.8 L522.0 180.8 L670.0 177.6 L818.0 177.6" fill="none" stroke="#C25A12" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="78.0" cy="184.0" r="4" fill="#C25A12" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="226.0" cy="184.0" r="4" fill="#C25A12" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="374.0" cy="180.8" r="4" fill="#C25A12" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="522.0" cy="180.8" r="4" fill="#C25A12" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="670.0" cy="177.6" r="4" fill="#C25A12" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="818.0" cy="177.6" r="4" fill="#C25A12" stroke="var(--surface)" stroke-width="2"/>
 <text x="830.0" y="182.61111111111111" text-anchor="start" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">770 €</text>
-<path d="M78.0 184.0 L226.0 160.4 L374.0 136.7 L522.0 113.1 L670.0 89.4 L818.0 64.8" fill="none" stroke="#0E8F84" stroke-width="2" stroke-linejoin="round"/>
-<circle cx="78.0" cy="184.0" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="226.0" cy="160.4" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="374.0" cy="136.7" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="522.0" cy="113.1" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="670.0" cy="89.4" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
-<circle cx="818.0" cy="64.8" r="4" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<path d="M78.0 184.0 L226.0 160.4 L374.0 136.7 L522.0 113.1 L670.0 89.4 L818.0 64.8" fill="none" stroke="#00857A" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="78.0" cy="184.0" r="4" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="226.0" cy="160.4" r="4" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="374.0" cy="136.7" r="4" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="522.0" cy="113.1" r="4" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="670.0" cy="89.4" r="4" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
+<circle cx="818.0" cy="64.8" r="4" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
 <text x="830.0" y="69.78333333333333" text-anchor="start" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.653 €</text>
 <line x1="78" y1="276" x2="818" y2="276" stroke="var(--line)" stroke-width="1"/>
 <text x="66" y="20" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">valor acumulado por paciente · €</text>
-<rect x="78" y="334" width="12" height="12" rx="3" fill="#0E8F84"/>
+<rect x="78" y="334" width="12" height="12" rx="3" fill="#00857A"/>
 <text x="97" y="344" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Con programa de cuidado</text>
-<rect x="264" y="334" width="12" height="12" rx="3" fill="#A8631B"/>
+<rect x="264" y="334" width="12" height="12" rx="3" fill="#C25A12"/>
 <text x="282.79999999999995" y="344" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Sin programa de cuidado</text>
 </svg></div>
       <p class="t-fig__note">El área sombreada es el valor que hoy se deja sobre la mesa: no se pierde por competencia, se pierde por no volver a llamar.</p>
@@ -2367,31 +2401,31 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <text x="752.0" y="44" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.800</text>
 <text x="132" y="24" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">valor de empresa · miles de € · EBITDA constante de 180 k€</text>
 <text x="118" y="72" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 1</text>
-<rect x="318.0" y="62.0" width="62.0" height="20" fill="#C9E7E3" rx="3"/>
+<rect x="318.0" y="62.0" width="62.0" height="20" fill="#C6E9E4" rx="3"/>
 <line x1="318.0" y1="59.0" x2="318.0" y2="85.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <line x1="380.0" y1="59.0" x2="380.0" y2="85.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <text x="392.0" y="77" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">540 – 720</text>
 <text x="138" y="102" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Beneficio, dependiente del titular  ·  múltiplo 3,0–4,0×</text>
 <text x="118" y="130" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 2</text>
-<rect x="411.0" y="120.0" width="62.0" height="20" fill="#A7D9D3" rx="3"/>
+<rect x="411.0" y="120.0" width="62.0" height="20" fill="#A3D8D1" rx="3"/>
 <line x1="411.0" y1="117.0" x2="411.0" y2="143.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <line x1="473.0" y1="117.0" x2="473.0" y2="143.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <text x="485.0" y="135" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">810 – 990</text>
 <text x="138" y="160" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Beneficio sin dependencia  ·  múltiplo 4,5–5,5×</text>
 <text x="118" y="188" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 3</text>
-<rect x="473.0" y="178.0" width="62.0" height="20" fill="#6FC0B7" rx="3"/>
+<rect x="473.0" y="178.0" width="62.0" height="20" fill="#66BDB3" rx="3"/>
 <line x1="473.0" y1="175.0" x2="473.0" y2="201.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <line x1="535.0" y1="175.0" x2="535.0" y2="201.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <text x="547.0" y="193" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">990 – 1.170</text>
 <text x="138" y="218" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Con ingreso recurrente contratado  ·  múltiplo 5,5–6,5×</text>
 <text x="118" y="246" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 4</text>
-<rect x="535.0" y="236.0" width="93.0" height="20" fill="#2FA398" rx="3"/>
+<rect x="535.0" y="236.0" width="93.0" height="20" fill="#2A9C91" rx="3"/>
 <line x1="535.0" y1="233.0" x2="535.0" y2="259.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <line x1="628.0" y1="233.0" x2="628.0" y2="259.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <text x="640.0" y="251" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.170 – 1.440</text>
 <text x="138" y="276" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Sistema replicable demostrado  ·  múltiplo 6,5–8,0×</text>
 <text x="118" y="304" text-anchor="end" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Nivel 5</text>
-<rect x="628.0" y="294.0" width="124.0" height="20" fill="#0E8F84" rx="3"/>
+<rect x="628.0" y="294.0" width="124.0" height="20" fill="#00857A" rx="3"/>
 <line x1="628.0" y1="291.0" x2="628.0" y2="317.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <line x1="752.0" y1="291.0" x2="752.0" y2="317.0" stroke="var(--ink)" stroke-width="1" opacity=".35"/>
 <text x="764.0" y="309" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.440 – 1.800</text>
@@ -2715,36 +2749,36 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <text x="60" y="104.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">80</text>
 <line x1="70" y1="58.0" x2="830" y2="58.0" stroke="var(--line-soft)" stroke-width="1"/>
 <text x="60" y="62.0" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">100</text>
-<rect x="94" y="142.0" width="78" height="126.0" fill="#A8631B"/>
-<rect x="94" y="56.0" width="78" height="84.0" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="94" y="142.0" width="78" height="126.0" fill="#C25A12"/>
+<rect x="94" y="56.0" width="78" height="84.0" fill="#00857A" rx="4" ry="4"/>
 <text x="133.0" y="48.0" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">40 €</text>
 <text x="133.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">sin descuento</text>
-<rect x="212" y="142.0" width="78" height="126.0" fill="#A8631B"/>
-<rect x="212" y="66.5" width="78" height="73.5" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="212" y="142.0" width="78" height="126.0" fill="#C25A12"/>
+<rect x="212" y="66.5" width="78" height="73.5" fill="#00857A" rx="4" ry="4"/>
 <text x="251.0" y="58.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">35 €</text>
 <text x="251.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−5 %</text>
 <text x="251.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−12,5 %</text>
-<rect x="330" y="142.0" width="78" height="126.0" fill="#A8631B"/>
-<rect x="330" y="77.0" width="78" height="63.0" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="330" y="142.0" width="78" height="126.0" fill="#C25A12"/>
+<rect x="330" y="77.0" width="78" height="63.0" fill="#00857A" rx="4" ry="4"/>
 <text x="369.0" y="69.0" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">30 €</text>
 <text x="369.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−10 %</text>
 <text x="369.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−25 %</text>
-<rect x="448" y="142.0" width="78" height="126.0" fill="#A8631B"/>
-<rect x="448" y="87.5" width="78" height="52.5" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="448" y="142.0" width="78" height="126.0" fill="#C25A12"/>
+<rect x="448" y="87.5" width="78" height="52.5" fill="#00857A" rx="4" ry="4"/>
 <text x="487.0" y="79.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">25 €</text>
 <text x="487.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−15 %</text>
 <text x="487.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−37,5 %</text>
-<rect x="566" y="142.0" width="78" height="126.0" fill="#A8631B"/>
-<rect x="566" y="98.0" width="78" height="42.0" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="566" y="142.0" width="78" height="126.0" fill="#C25A12"/>
+<rect x="566" y="98.0" width="78" height="42.0" fill="#00857A" rx="4" ry="4"/>
 <text x="605.0" y="90.0" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">20 €</text>
 <text x="605.0" y="290" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">−20 %</text>
 <text x="605.0" y="308" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−50 %</text>
 <line x1="70" y1="268" x2="830" y2="268" stroke="var(--line)" stroke-width="1"/>
 <text x="830" y="308" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">beneficio perdido</text>
 <text x="60" y="22" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">€ por cada 100 facturados</text>
-<rect x="70" y="320" width="12" height="12" rx="3" fill="#0E8F84"/>
+<rect x="70" y="320" width="12" height="12" rx="3" fill="#00857A"/>
 <text x="90" y="330" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Beneficio</text>
-<rect x="190" y="320" width="12" height="12" rx="3" fill="#A8631B"/>
+<rect x="190" y="320" width="12" height="12" rx="3" fill="#C25A12"/>
 <text x="210" y="330" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Costes del caso</text>
 </svg>
       </div>
@@ -2764,23 +2798,23 @@ td small{display:block;margin-top:.2rem;color:var(--muted);font-size:.78rem;line
 <text x="576.6666666666667" y="210" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.200 €</text>
 <line x1="830.0" y1="34" x2="830.0" y2="194" stroke="var(--line-soft)" stroke-width="1"/>
 <text x="830.0" y="210" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.800 €</text>
-<rect x="70.0" y="60" width="302.0" height="62" fill="#0E8F84" rx="4" ry="4"/>
+<rect x="70.0" y="60" width="302.0" height="62" fill="#00857A" rx="4" ry="4"/>
 <text x="221.0" y="96.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">720 €</text>
 <text x="70" y="50" text-anchor="start" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">SIN PROGRAMA DE CUIDADO</text>
 <text x="386.0" y="97.0" text-anchor="start" font-size="17" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">720 €</text>
-<rect x="70.0" y="176" width="302.0" height="62" fill="#0E8F84"/>
+<rect x="70.0" y="176" width="302.0" height="62" fill="#00857A"/>
 <text x="221.0" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">720 €</text>
-<rect x="374.0" y="176" width="118.3" height="62" fill="#A8631B"/>
+<rect x="374.0" y="176" width="118.3" height="62" fill="#C25A12"/>
 <text x="433.1666666666667" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">285 €</text>
-<rect x="494.3" y="176" width="150.0" height="62" fill="#0E8F84"/>
+<rect x="494.3" y="176" width="150.0" height="62" fill="#00857A"/>
 <text x="569.3333333333333" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">360 €</text>
-<rect x="646.3" y="176" width="119.6" height="62" fill="#A8631B" rx="4" ry="4"/>
+<rect x="646.3" y="176" width="119.6" height="62" fill="#C25A12" rx="4" ry="4"/>
 <text x="706.1333333333332" y="212.0" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">288 €</text>
 <text x="70" y="166" text-anchor="start" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">CON PROGRAMA DE CUIDADO</text>
 <text x="779.9333333333333" y="213.0" text-anchor="start" font-size="17" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.653 €</text>
-<rect x="70" y="294" width="12" height="12" rx="3" fill="#0E8F84"/>
+<rect x="70" y="294" width="12" height="12" rx="3" fill="#00857A"/>
 <text x="90" y="304" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Margen de tratamiento</text>
-<rect x="234.6" y="294" width="12" height="12" rx="3" fill="#A8631B"/>
+<rect x="234.6" y="294" width="12" height="12" rx="3" fill="#C25A12"/>
 <text x="254.6" y="304" text-anchor="start" font-size="12" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Margen del programa y del referido</text>
 </svg>
       </div>
@@ -3258,35 +3292,35 @@ REVISIÓN PREVISTA:</div>
 <line x1="68" y1="62.0" x2="874" y2="62.0" stroke="var(--line-soft)" stroke-width="1"/>
 <text x="56" y="66.0" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.500</text>
 <text x="56" y="22" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">facturación anual · miles de €</text>
-<rect x="79.0" y="192.0" width="112.3" height="120.0" fill="#0B1A20" rx="3"/>
+<rect x="79.0" y="192.0" width="112.3" height="120.0" fill="#080B0A" rx="3"/>
 <text x="135.16666666666669" y="183.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">720</text>
 <text x="135.16666666666669" y="334" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Heredado</text>
 <text x="135.16666666666669" y="352" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">3,5 primeras visitas</text>
 <text x="135.16666666666669" y="365" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">al día</text>
 <line x1="191.3" y1="192.0" x2="224.3" y2="192.0" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 3" opacity=".55"/>
-<rect x="213.3" y="175.9" width="112.3" height="16.1" fill="#0E8F84" rx="3"/>
+<rect x="213.3" y="175.9" width="112.3" height="16.1" fill="#00857A" rx="3"/>
 <text x="269.5" y="166.92" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+96</text>
 <text x="269.5" y="334" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Llenar la agenda</text>
 <text x="269.5" y="352" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Hasta las 4 que caben</text>
 <line x1="325.7" y1="175.9" x2="358.7" y2="175.9" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 3" opacity=".55"/>
-<rect x="347.7" y="142.0" width="112.3" height="34.0" fill="#0E8F84" rx="3"/>
+<rect x="347.7" y="142.0" width="112.3" height="34.0" fill="#00857A" rx="3"/>
 <text x="403.83333333333337" y="132.96999999999997" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+204</text>
 <text x="403.83333333333337" y="334" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Mejor mezcla</text>
 <text x="403.83333333333337" y="352" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Siete campañas de</text>
 <text x="403.83333333333337" y="365" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">agenda</text>
 <line x1="460.0" y1="142.0" x2="493.0" y2="142.0" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 3" opacity=".55"/>
-<rect x="482.0" y="84.8" width="112.3" height="57.2" fill="#0E8F84" rx="3"/>
+<rect x="482.0" y="84.8" width="112.3" height="57.2" fill="#00857A" rx="3"/>
 <text x="538.1666666666666" y="75.80333333333334" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">+343</text>
 <text x="538.1666666666666" y="334" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Seguimiento</text>
 <text x="538.1666666666666" y="352" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Las dos de fuera del</text>
 <text x="538.1666666666666" y="365" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">embudo</text>
 <line x1="594.3" y1="84.8" x2="627.3" y2="84.8" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 3" opacity=".55"/>
-<rect x="616.3" y="84.8" width="112.3" height="27.2" fill="#A8631B" rx="3"/>
+<rect x="616.3" y="84.8" width="112.3" height="27.2" fill="#C25A12" rx="3"/>
 <text x="672.5" y="75.80333333333334" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">−163</text>
 <text x="672.5" y="334" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Colchón</text>
 <text x="672.5" y="352" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">No ejecución (12 %)</text>
 <line x1="728.7" y1="112.0" x2="761.7" y2="112.0" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 3" opacity=".55"/>
-<rect x="750.7" y="112.0" width="112.3" height="200.0" fill="#0B1A20" rx="3"/>
+<rect x="750.7" y="112.0" width="112.3" height="200.0" fill="#080B0A" rx="3"/>
 <text x="806.8333333333334" y="103.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.200</text>
 <text x="806.8333333333334" y="334" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Objetivo</text>
 <text x="806.8333333333334" y="352" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--muted)" font-family="var(--f-body)">Facturación anual</text>
@@ -3335,19 +3369,19 @@ REVISIÓN PREVISTA:</div>
 <line x1="120" y1="52.0" x2="550" y2="52.0" stroke="var(--line-soft)" stroke-width="1"/>
 <text x="108" y="56.0" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">1.500</text>
 <text x="108" y="20" text-anchor="start" font-size="11" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">facturación anual · miles de €</text>
-<rect x="150" y="153.9" width="128" height="94.1" fill="#0E8F84" rx="3"/>
+<rect x="150" y="153.9" width="128" height="94.1" fill="#00857A" rx="3"/>
 <text x="214.0" y="205.96" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">720</text>
 <text x="214.0" y="141.92000000000002" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">720 k€</text>
 <text x="214.0" y="272" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Hoy</text>
-<rect x="390" y="114.7" width="128" height="133.3" fill="#0E8F84" rx="3"/>
+<rect x="390" y="114.7" width="128" height="133.3" fill="#00857A" rx="3"/>
 <text x="454.0" y="186.34824" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">1.020</text>
-<rect x="390" y="69.9" width="128" height="44.8" fill="#A8631B" rx="3"/>
+<rect x="390" y="69.9" width="128" height="44.8" fill="#C25A12" rx="3"/>
 <text x="454.0" y="97.2871466666667" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">343</text>
 <text x="454.0" y="57.877813333333364" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">1.363 k€</text>
 <text x="454.0" y="272" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="var(--f-mono)" letter-spacing=".04em">Planificado</text>
-<rect x="570" y="64" width="12" height="12" rx="3" fill="#0E8F84"/>
+<rect x="570" y="64" width="12" height="12" rx="3" fill="#00857A"/>
 <text x="589" y="74" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Primera visita</text>
-<rect x="570" y="88" width="12" height="12" rx="3" fill="#A8631B"/>
+<rect x="570" y="88" width="12" height="12" rx="3" fill="#C25A12"/>
 <text x="589" y="98" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Seguimiento y recurrente</text>
 <text x="570" y="134" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">El bloque de primera visita crece un 42 %,</text>
 <text x="570" y="152" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">y de ese crecimiento dos tercios son mezcla,</text>
@@ -3413,40 +3447,40 @@ REVISIÓN PREVISTA:</div>
 <line x1="680.0" y1="52" x2="680.0" y2="360" stroke="var(--line-soft)" stroke-width="1"/>
 <text x="680.0" y="46" text-anchor="middle" font-size="9" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">40×</text>
 <text x="284" y="80" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C8 · Prescripción de pacientes</text>
-<rect x="300" y="66" width="330.6" height="18" fill="#0E8F84" rx="3"/>
+<rect x="300" y="66" width="330.6" height="18" fill="#00857A" rx="3"/>
 <text x="640.5999999999999" y="80" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">34.8×</text>
 <text x="756" y="80" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">35 k€ / 1 k€</text>
 <text x="284" y="114" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C6 · «La revisión que evita la cirugía»</text>
-<rect x="300" y="100" width="326.8" height="18" fill="#0E8F84" rx="3"/>
+<rect x="300" y="100" width="326.8" height="18" fill="#00857A" rx="3"/>
 <text x="636.8" y="114" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">34.4×</text>
 <text x="756" y="114" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">172 k€ / 5 k€</text>
 <text x="284" y="148" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C1 · Giraldo Te Cuida</text>
-<rect x="300" y="134" width="270.8" height="18" fill="#0E8F84" rx="3"/>
+<rect x="300" y="134" width="270.8" height="18" fill="#00857A" rx="3"/>
 <text x="580.75" y="148" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">28.5×</text>
 <text x="756" y="148" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">171 k€ / 6 k€</text>
 <text x="284" y="182" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C2 · «Su caso no es imposible»</text>
-<rect x="300" y="168" width="48.3" height="18" fill="#0E8F84" rx="3"/>
+<rect x="300" y="168" width="48.3" height="18" fill="#00857A" rx="3"/>
 <text x="358.3142857142857" y="182" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">5.1×</text>
 <text x="756" y="182" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">71 k€ / 14 k€</text>
 <text x="284" y="216" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C7 · «Segunda opinión, sin compromiso»</text>
-<rect x="300" y="202" width="46.9" height="18" fill="#A7D9D3" rx="3"/>
+<rect x="300" y="202" width="46.9" height="18" fill="#A3D8D1" rx="3"/>
 <text x="356.8825" y="216" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">4.9×</text>
 <text x="756" y="216" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">20 k€ / 4 k€</text>
 <text x="284" y="250" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C3 · «Volvemos a llamarle»</text>
-<rect x="300" y="236" width="42.0" height="18" fill="#A7D9D3" rx="3"/>
+<rect x="300" y="236" width="42.0" height="18" fill="#A3D8D1" rx="3"/>
 <text x="351.99" y="250" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">4.4×</text>
 <text x="756" y="250" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">13 k€ / 3 k€</text>
 <text x="284" y="284" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C4 · Red de derivación</text>
-<rect x="300" y="270" width="38.1" height="18" fill="#A7D9D3" rx="3"/>
+<rect x="300" y="270" width="38.1" height="18" fill="#A3D8D1" rx="3"/>
 <text x="348.0863636363636" y="284" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">4.0×</text>
 <text x="756" y="284" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">44 k€ / 11 k€</text>
 <text x="284" y="318" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C5 · «Sin miedo»</text>
-<rect x="300" y="304" width="26.1" height="18" fill="#A7D9D3" rx="3"/>
+<rect x="300" y="304" width="26.1" height="18" fill="#A3D8D1" rx="3"/>
 <text x="336.125" y="318" text-anchor="start" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">2.8×</text>
 <text x="756" y="318" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">25 k€ / 9 k€</text>
 <text x="284" y="352" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C9 · Presencia digital y reseñas</text>
-<rect x="300" y="338" width="46" height="18" fill="#A8631B" rx="3"/>
-<text x="356" y="352" text-anchor="start" font-size="11.5" font-weight="600" fill="#A8631B" font-family="var(--f-body)">retorno directo negativo</text>
+<rect x="300" y="338" width="46" height="18" fill="#C25A12" rx="3"/>
+<text x="356" y="352" text-anchor="start" font-size="11.5" font-weight="600" fill="#C25A12" font-family="var(--f-body)">retorno directo negativo</text>
 <text x="756" y="352" text-anchor="start" font-size="9.5" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">−4 k€ / 34 k€</text>
 <text x="16" y="418" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">Umbral de la cartera: ningún gasto puede superar el 40 % de lo que la campaña aporta. C5 lo roza; C9 lo incumple y se aprueba como habilitador, no como campaña.</text>
 </svg></div>
@@ -3477,22 +3511,22 @@ REVISIÓN PREVISTA:</div>
       </figcaption>
       <div class="t-fig__scroll"><svg viewBox="0 0 900 190" width="900" height="190" role="img" style="max-width:100%;height:auto" aria-label="Concentración de la cartera: dos campañas de nueve aportan el 63 por ciento de lo que suman todas.">
 <text x="40" y="30" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">peso de cada campaña sobre lo que aporta la cartera</text>
-<rect x="40.0" y="74" width="258.0" height="46" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<rect x="40.0" y="74" width="258.0" height="46" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
 <text x="168.99213462593744" y="94" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">C6</text>
 <text x="168.99213462593744" y="110" text-anchor="middle" font-size="10.5" font-weight="400" fill="#FFFFFF" font-family="var(--f-body)">31 %</text>
-<rect x="298.0" y="74" width="256.5" height="46" fill="#0E8F84" stroke="var(--surface)" stroke-width="2"/>
+<rect x="298.0" y="74" width="256.5" height="46" fill="#00857A" stroke="var(--surface)" stroke-width="2"/>
 <text x="426.2264496067313" y="94" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">C1</text>
 <text x="426.2264496067313" y="110" text-anchor="middle" font-size="10.5" font-weight="400" fill="#FFFFFF" font-family="var(--f-body)">31 %</text>
-<rect x="554.5" y="74" width="106.8" height="46" fill="#6FC0B7" stroke="var(--surface)" stroke-width="2"/>
+<rect x="554.5" y="74" width="106.8" height="46" fill="#66BDB3" stroke="var(--surface)" stroke-width="2"/>
 <text x="607.8653740625572" y="94" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">C2</text>
 <text x="607.8653740625572" y="110" text-anchor="middle" font-size="10.5" font-weight="400" fill="#FFFFFF" font-family="var(--f-body)">13 %</text>
-<rect x="661.3" y="74" width="66.1" height="46" fill="#6FC0B7" stroke="var(--surface)" stroke-width="2"/>
+<rect x="661.3" y="74" width="66.1" height="46" fill="#66BDB3" stroke="var(--surface)" stroke-width="2"/>
 <text x="694.3351015182001" y="94" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF" font-family="var(--f-body)">C4</text>
 <text x="694.3351015182001" y="110" text-anchor="middle" font-size="10.5" font-weight="400" fill="#FFFFFF" font-family="var(--f-body)">8 %</text>
-<rect x="727.4" y="74" width="52.2" height="46" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
-<rect x="779.6" y="74" width="37.1" height="46" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
-<rect x="816.7" y="74" width="29.6" height="46" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
-<rect x="846.3" y="74" width="19.9" height="46" fill="#C9E7E3" stroke="var(--surface)" stroke-width="2"/>
+<rect x="727.4" y="74" width="52.2" height="46" fill="#C6E9E4" stroke="var(--surface)" stroke-width="2"/>
+<rect x="779.6" y="74" width="37.1" height="46" fill="#C6E9E4" stroke="var(--surface)" stroke-width="2"/>
+<rect x="816.7" y="74" width="29.6" height="46" fill="#C6E9E4" stroke="var(--surface)" stroke-width="2"/>
+<rect x="846.3" y="74" width="19.9" height="46" fill="#C6E9E4" stroke="var(--surface)" stroke-width="2"/>
 <line x1="40" y1="64" x2="554.5" y2="64" stroke="var(--ink)" stroke-width="1.5"/>
 <text x="297.23431498079384" y="56" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">C6 y C1 · 63 % de la cartera</text>
 <text x="40" y="146" text-anchor="start" font-size="11.5" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Las dos campañas más baratas de la cartera son las dos que más aportan. Si falla cualquiera de ellas, no se pierde un bloque: se pierde el objetivo.</text>
@@ -3556,139 +3590,139 @@ REVISIÓN PREVISTA:</div>
 <text x="292" y="28" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">meses del ejercicio</text>
 <text x="836" y="48" text-anchor="start" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">k€/año</text>
 <text x="276" y="81.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C1 · Giraldo Te Cuida</text>
-<rect x="292" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="64" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="64" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="81.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">171</text>
 <text x="276" y="111.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C2 · «Su caso no es imposible»</text>
-<rect x="292" y="94" width="44" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="94" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="94" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="94" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="94" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="94" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="94" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="94" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="94" width="44" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="94" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="94" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="94" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="94" width="44" height="26" fill="#00857A" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="94" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="94" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="94" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="94" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="94" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="94" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="94" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="94" width="44" height="26" fill="#00857A" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="94" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="94" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="94" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="111.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">71</text>
 <text x="276" y="141.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C3 · «Volvemos a llamarle»</text>
-<rect x="292" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="124" width="44" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="124" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="124" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="124" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="124" width="44" height="26" fill="#00857A" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="124" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="124" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="124" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="141.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">13</text>
 <text x="276" y="171.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C4 · Red de derivación</text>
-<rect x="292" y="154" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="154" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="154" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="154" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="154" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="154" width="44" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="154" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="154" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="154" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="154" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="154" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="154" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="154" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="154" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="154" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="154" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="154" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="154" width="44" height="26" fill="#00857A" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="154" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="154" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="154" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="154" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="154" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="154" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="171.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">44</text>
 <text x="276" y="201.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C5 · «Sin miedo»</text>
-<rect x="292" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="184" width="44" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="184" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="184" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="184" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="184" width="44" height="26" fill="#00857A" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="184" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="184" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="184" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="201.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">25</text>
 <text x="276" y="231.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C6 · «La revisión que evita la cirugía»</text>
-<rect x="292" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="214" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="214" width="44" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="214" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="214" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="214" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="214" width="44" height="26" fill="#00857A" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="214" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="214" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="231.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">172</text>
 <text x="276" y="261.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C7 · «Segunda opinión, sin compromiso»</text>
-<rect x="292" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="244" width="44" height="26" fill="#0E8F84" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="244" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="244" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="244" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="244" width="44" height="26" fill="#00857A" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="244" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="244" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="244" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="261.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">20</text>
 <text x="276" y="291.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C8 · Prescripción de pacientes</text>
-<rect x="292" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="274" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="292" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="274" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
 <text x="836" y="291.0" text-anchor="start" font-size="12" font-weight="600" fill="var(--ink)" font-family="var(--f-body)">35</text>
 <text x="276" y="321.0" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink)" font-family="var(--f-body)">C9 · Presencia digital y reseñas</text>
-<rect x="292" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="336" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="380" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="424" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="468" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="512" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="556" y="304" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="600" y="304" width="44" height="26" fill="#EDF0EC" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="644" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="688" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="732" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<rect x="776" y="304" width="44" height="26" fill="#A7D9D3" stroke="var(--surface)" stroke-width="2" rx="2"/>
-<text x="836" y="321.0" text-anchor="start" font-size="12" font-weight="600" fill="#A8631B" font-family="var(--f-body)">−4</text>
+<rect x="292" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="336" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="380" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="424" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="468" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="512" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="556" y="304" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="600" y="304" width="44" height="26" fill="#F2F4F3" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="644" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="688" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="732" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<rect x="776" y="304" width="44" height="26" fill="#A3D8D1" stroke="var(--surface)" stroke-width="2" rx="2"/>
+<text x="836" y="321.0" text-anchor="start" font-size="12" font-weight="600" fill="#C25A12" font-family="var(--f-body)">−4</text>
 <line x1="836" y1="338" x2="884" y2="338" stroke="var(--line)" stroke-width="1"/>
-<text x="836" y="358" text-anchor="start" font-size="13" font-weight="600" fill="#0E8F84" font-family="var(--f-body)">547</text>
+<text x="836" y="358" text-anchor="start" font-size="13" font-weight="600" fill="#00857A" font-family="var(--f-body)">547</text>
 <text x="276" y="358" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">Cartera completa, antes del colchón</text>
-<rect x="292" y="383" width="14" height="14" fill="#0E8F84" rx="2" stroke="var(--line)"/>
+<rect x="292" y="383" width="14" height="14" fill="#00857A" rx="2" stroke="var(--line)"/>
 <text x="312" y="394" text-anchor="start" font-size="11" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Arranque</text>
-<rect x="442" y="383" width="14" height="14" fill="#A7D9D3" rx="2" stroke="var(--line)"/>
+<rect x="442" y="383" width="14" height="14" fill="#A3D8D1" rx="2" stroke="var(--line)"/>
 <text x="462" y="394" text-anchor="start" font-size="11" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Sostenimiento</text>
-<rect x="592" y="383" width="14" height="14" fill="#EDF0EC" rx="2" stroke="var(--line)"/>
+<rect x="592" y="383" width="14" height="14" fill="#F2F4F3" rx="2" stroke="var(--line)"/>
 <text x="612" y="394" text-anchor="start" font-size="11" font-weight="400" fill="var(--ink-2)" font-family="var(--f-body)">Inactiva</text>
 <text x="276" y="394" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)" letter-spacing=".04em">Nunca más de dos arranques a la vez</text>
 </svg></div>

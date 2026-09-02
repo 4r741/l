@@ -19,35 +19,70 @@
    TOKENS — paleta clara por defecto; la oscura solo redefine
    ============================================================ */
 :root{
-  --paper:#ECEEEA;
-  --surface:#F7F8F5;
-  --surface-2:#E3E6E1;
-  --ink:#0B1A20;
-  --ink-2:#263D45;
-  --muted:#5D7178;
-  --line:rgba(11,26,32,.16);
-  --line-soft:rgba(11,26,32,.08);
-  --accent:#0E7C74;
-  --accent-ink:#0A5C56;
-  --accent-soft:rgba(14,124,116,.10);
-  --signal:#A8631B;
-  --signal-soft:rgba(168,99,27,.12);
-  --shadow:0 1px 0 rgba(11,26,32,.05), 0 18px 40px -32px rgba(11,26,32,.55);
-  --rule:rgba(11,26,32,.28);
+  /* ---------------------------------------------------------------------------
+     SISTEMA VISUAL
 
-  --f-display:"Fraunces","Iowan Old Style",Georgia,serif;
+     Nada de papel y nada de tarjeta corporativa. Blanco de verdad, negro de
+     verdad y un verde que es el de la marca llevado a su versión saturada, más
+     un ácido que solo aparece donde hay que mirar. La familia es Archivo en su
+     versión variable: el eje de anchura da titulares muy anchos para las cifras
+     y muy estrechos para los rótulos, que es lo que hace que dos tamaños de
+     letra parezcan dos voces distintas y no la misma letra más grande.
+     --------------------------------------------------------------------------- */
+  --paper:#FFFFFF;
+  --surface:#FFFFFF;
+  --surface-2:#F2F4F3;
+  --tinta:#080B0A;
+  --ink:#080B0A;
+  --ink-2:#37423F;
+  --muted:#7A8783;
+  --line:rgba(8,11,10,.12);
+  --line-soft:rgba(8,11,10,.06);
+  --accent:#00857A;
+  --accent-ink:#00655D;
+  --accent-fuerte:#004A44;
+  --accent-soft:rgba(0,133,122,.08);
+  --acido:#C8F04A;
+  --acido-ink:#3D4A08;
+  --signal:#C25A12;
+  --signal-soft:rgba(194,90,18,.10);
+  --alerta:#C0392B;
+  --alerta-soft:rgba(192,57,43,.10);
+  --sombra-1:none;
+  --sombra-2:0 18px 40px -28px rgba(8,11,10,.55);
+  --sombra-3:0 30px 60px -30px rgba(8,11,10,.5);
+  --shadow:var(--sombra-2);
+  --rule:rgba(8,11,10,.22);
+  --radio:22px;
+  --radio-s:14px;
+
+  /* Los seis puestos y el semáforo, dentro del sistema. Antes eran un azul y
+     un violeta de otra paleta: en una página de negro, verde y ácido cantaban
+     como dos invitados que no conocen a nadie. Ahora son una escala del mismo
+     verde hacia el negro, más el gris. */
+  --rol-recepcion:#00857A;
+  --rol-doctor:#0B3B45;
+  --rol-higienista:#5C7F26;
+  --rol-auxiliar:#7A8783;
+  --rol-rac:#00655D;
+  --rol-direccion:#080B0A;
+  --sem-rojo:#B8332A;
+  --sem-naranja:#C25A12;
+  --sem-amarillo:#98860F;
+  --sem-verde:#00857A;
+
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 
-  --wrap:1180px;
-  --step--1:clamp(.78rem,.76rem + .1vw,.84rem);
+  --wrap:1320px;
+  --step--1:clamp(.79rem,.77rem + .1vw,.85rem);
   --step-0:clamp(1rem,.97rem + .14vw,1.06rem);
-  --step-1:clamp(1.18rem,1.1rem + .35vw,1.35rem);
-  --step-2:clamp(1.45rem,1.3rem + .7vw,1.9rem);
-  --step-3:clamp(1.9rem,1.6rem + 1.4vw,2.9rem);
-  --step-4:clamp(2.6rem,1.9rem + 3.2vw,5rem);
+  --step-1:clamp(1.16rem,1.08rem + .34vw,1.34rem);
+  --step-2:clamp(1.45rem,1.24rem + .85vw,2rem);
+  --step-3:clamp(2rem,1.5rem + 2.1vw,3.4rem);
+  --step-4:clamp(2.6rem,1.6rem + 4.2vw,5.4rem);
 
-  /* documento de lectura e impresión: solo modo claro */
   color-scheme:light;
 }
 
@@ -65,7 +100,12 @@ body{
   line-height:1.62;
   -webkit-font-smoothing:antialiased;
 }
-h1,h2,h3,h4{font-family:var(--f-display);font-weight:500;text-wrap:balance;margin:0;line-height:1.12}
+h1,h2,h3,h4{
+  font-family:var(--f-display);font-weight:700;
+  font-variation-settings:"wdth" 108;
+  letter-spacing:-.035em;text-wrap:balance;margin:0;line-height:1.06;
+}
+h3,h4{font-variation-settings:"wdth" 100;letter-spacing:-.02em;line-height:1.18}
 p{margin:0}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
@@ -233,12 +273,38 @@ main:focus{outline:none}
 .mapa__m:hover .mapa__r,.mapa__m:focus-visible .mapa__r{opacity:1;visibility:visible}
 @media(prefers-reduced-motion:reduce){.mapa__m::before,.mapa__r{transition:none}}
 @media print{.mapa{display:none}}
+/* La barra es negra y no se disimula: es el borde del sistema, no un adorno
+   translúcido sobre el texto. */
 .topbar{
   position:sticky;top:0;z-index:60;
-  background:color-mix(in srgb,var(--paper) 88%,transparent);
-  backdrop-filter:blur(14px) saturate(1.2);
-  border-bottom:1px solid var(--line);
+  background:var(--tinta);color:#fff;
+  border-bottom:0;
 }
+.topbar a{color:#fff}
+.topbar .brand__mark{color:#fff}
+.topbar .brand__tag{color:rgba(255,255,255,.55)}
+.topbar .crosslink{
+  background:transparent;border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.78);
+}
+.topbar .crosslink:hover{border-color:var(--acido);color:var(--acido);background:transparent}
+.topbar .menu__b{
+  background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff;
+  box-shadow:none;
+}
+.topbar .menu__b:hover{border-color:var(--acido);color:var(--acido)}
+.topbar .menu[open] .menu__b{background:var(--acido);border-color:var(--acido);color:var(--tinta)}
+.topbar .menu__b__n{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+.topbar .menu[open] .menu__b__n{background:rgba(8,11,10,.14);color:var(--tinta)}
+.topbar .menu__aqui{color:rgba(255,255,255,.6)}
+.topbar .menu__aqui b{color:var(--acido);font-family:var(--f-mono);font-size:.72rem}
+.topbar .menu__paso button{
+  background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff;
+}
+.topbar .menu__paso button:hover:not(:disabled){border-color:var(--acido);color:var(--acido)}
+.topbar .strip{border-top:1px solid rgba(255,255,255,.1)}
+.topbar .menu__panel{color:var(--ink)}
+.topbar .menu__panel a{color:var(--ink-2)}
+.topbar .menu__panel .menu__gt{color:var(--muted)}
 .topbar__in{display:flex;align-items:center;gap:1.2rem;padding:.7rem 0;flex-wrap:wrap}
 .brand{display:flex;align-items:baseline;gap:.55rem;margin-right:auto;text-decoration:none}
 .brand__mark{
@@ -272,7 +338,7 @@ main:focus{outline:none}
 .menu__b{
   display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;
   font-size:.85rem;font-weight:500;letter-spacing:-.005em;color:var(--ink-2);
-  background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radio-s);
   padding:.42rem .8rem .42rem .68rem;white-space:nowrap;box-shadow:var(--sombra-1);
   transition:border-color .16s ease,color .16s ease,background .16s ease;
   list-style:none;
@@ -316,7 +382,7 @@ main:focus{outline:none}
   font:inherit;font-family:var(--f-mono);font-size:.8rem;line-height:1;
   width:26px;height:26px;display:grid;place-items:center;cursor:pointer;
   background:var(--surface);border:1px solid var(--line);color:var(--ink-2);
-  border-radius:6px;transition:border-color .16s ease,color .16s ease;
+  border-radius:7px;transition:border-color .16s ease,color .16s ease;
 }
 .menu__paso button:hover:not(:disabled){border-color:var(--ink-2);color:var(--ink)}
 .menu__paso button:disabled{opacity:.35;cursor:default}
@@ -350,7 +416,7 @@ main:focus{outline:none}
 .menu__g a:not(.menu__gt a){
   display:grid;grid-template-columns:2.1rem minmax(0,1fr);align-items:baseline;
   text-decoration:none;color:var(--ink-2);font-size:.86rem;line-height:1.3;
-  padding:.24rem .4rem .24rem .1rem;border-radius:6px;
+  padding:.24rem .4rem .24rem .1rem;border-radius:7px;
   transition:background .13s ease,color .13s ease;
 }
 .menu__g a:not(.menu__gt a):hover{background:var(--accent-soft);color:var(--accent-ink)}
@@ -600,7 +666,7 @@ main:focus{outline:none}
   font-size:var(--step-4);font-weight:400;letter-spacing:-.025em;
   font-variation-settings:"opsz" 144;
 }
-.hero h1 em{font-style:italic;color:var(--accent-ink)}
+.hero h1 em{font-style:normal;color:var(--accent)}
 .hero__lede{margin-top:1.5rem;font-size:var(--step-1);color:var(--ink-2);max-width:34ch;line-height:1.45}
 .hero__note{margin-top:1.3rem;color:var(--muted);max-width:58ch;font-size:var(--step--1)}
 .specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);align-self:start}
@@ -642,9 +708,9 @@ main:focus{outline:none}
 .timemap__seg span{
   font-family:var(--f-mono);font-size:.62rem;color:var(--muted);padding-bottom:.3rem;
 }
-.timemap__seg[data-role="recepcion"]{border-bottom-color:#2E6F9E}
+.timemap__seg[data-role="recepcion"]{border-bottom-color:#0B3B45}
 .timemap__seg[data-role="director"]{border-bottom-color:var(--accent)}
-.timemap__seg[data-role="doctor"]{border-bottom-color:#8B5CB8}
+.timemap__seg[data-role="doctor"]{border-bottom-color:#5C7F26}
 .timemap__seg[data-role="auxiliar"]{border-bottom-color:var(--signal)}
 .legend{display:flex;flex-wrap:wrap;gap:.4rem}
 .chip{
@@ -656,9 +722,9 @@ main:focus{outline:none}
 .chip::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--dot,var(--muted))}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .chip--static{cursor:default}
-.chip[data-role="recepcion"]{--dot:#2E6F9E}
+.chip[data-role="recepcion"]{--dot:#0B3B45}
 .chip[data-role="director"]{--dot:var(--accent)}
-.chip[data-role="doctor"]{--dot:#8B5CB8}
+.chip[data-role="doctor"]{--dot:#5C7F26}
 .chip[data-role="auxiliar"]{--dot:var(--signal)}
 
 /* ============================================================
@@ -718,11 +784,11 @@ ol.steps>li::before{
 .callout p,.callout li{color:var(--ink-2)}
 .callout ul.list li::before{background:var(--signal)}
 .script{
-  border:1px solid var(--line);background:var(--surface);
-  padding:1.15rem 1.3rem;margin-top:1rem;max-width:68ch;
+  border:1px solid var(--line);border-radius:var(--radio-s);background:var(--surface);
+  padding:1.2rem 1.35rem 1.3rem;margin-top:1.2rem;max-width:68ch;
 }
 .script q{
-  font-family:var(--f-display);font-style:italic;font-size:1.08rem;
+  font-family:var(--f-display);font-style:normal;font-weight:500;font-size:1.08rem;
   color:var(--ink);quotes:"«" "»" "\201C" "\201D";display:block;line-height:1.5;
 }
 .script .eyebrow{display:block;margin-bottom:.6rem}
@@ -851,9 +917,9 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
   text-transform:uppercase;border:1px solid var(--line);padding:.1rem .4rem;border-radius:3px;
   color:var(--muted);vertical-align:.15em;margin-left:.5rem;
 }
-.tag--rec{color:#2E6F9E;border-color:#2E6F9E}
+.tag--rec{color:#0B3B45;border-color:#0B3B45}
 .tag--dir{color:var(--accent-ink);border-color:var(--accent)}
-.tag--doc{color:#8B5CB8;border-color:#8B5CB8}
+.tag--doc{color:#5C7F26;border-color:#5C7F26}
 .tag--aux{color:var(--signal);border-color:var(--signal)}
 
 /* nota al pie de bloque */
@@ -950,10 +1016,10 @@ figure.fig figcaption{margin-top:1rem;font-size:.84rem;color:var(--muted);max-wi
 /* semáforo de riesgo */
 .sem{display:inline-flex;align-items:center;gap:.42rem;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .sem::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--sem,var(--muted))}
-.sem--rojo{--sem:#C0442E}
-.sem--naranja{--sem:#C97A1E}
-.sem--amarillo{--sem:#B79417}
-.sem--verde{--sem:#3D8A5F}
+.sem--rojo{--sem:#B8332A}
+.sem--naranja{--sem:#C25A12}
+.sem--amarillo{--sem:#98860F}
+.sem--verde{--sem:#00857A}
 
 /* matriz RACI */
 table.raci td{text-align:center;font-family:var(--f-mono);font-size:.78rem}
@@ -1034,6 +1100,15 @@ figure.flow figcaption{margin-top:.9rem;font-size:.83rem;color:var(--muted);max-
     <div class="tb__rejilla"><section class="tb__g"><header class="tb__gh"><h3>Apertura</h3><span>2</span></header><div class="tb__l"><a class="tb__e" href="#presentacion"><b class="tb__n">·</b><span class="tb__r">Qué es cada cosa y cuándo se abre</span><span class="tb__c">2</span></a><a class="tb__e" href="#otros-mapa"><b class="tb__n">·</b><span class="tb__r">El sistema en cuatro niveles</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Los catorce documentos</h3><span>14</span></header><div class="tb__l"><a class="tb__e" href="#otros-compendio"><b class="tb__n">01</b><span class="tb__r">Compendio Maestro del sistema de gestión</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-verificacion"><b class="tb__n">02</b><span class="tb__r">Verificación del centro · 322 puntos</span><span class="tb__c">5</span></a><a class="tb__e" href="#otros-auditoria"><b class="tb__n">03</b><span class="tb__r">Auditoría integral de la clínica adquirida</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-decisiones"><b class="tb__n">04</b><span class="tb__r">Decisiones de Gerencia y verificaciones</span><span class="tb__c">3</span></a><a class="tb__e" href="#otros-100dias"><b class="tb__n">05</b><span class="tb__r">Plan Director de los primeros 100 días</span><span class="tb__c">19</span></a><a class="tb__e" href="#otros-30dias"><b class="tb__n">06</b><span class="tb__r">Dosier de ejecución de los 30 días</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-perfiles"><b class="tb__n">07</b><span class="tb__r">Protocolos operativos por perfil</span><span class="tb__c">12</span></a><a class="tb__e" href="#otros-innovacion"><b class="tb__n">08</b><span class="tb__r">Innovación aplicada · 18 fichas</span><span class="tb__c">9</span></a><a class="tb__e" href="#otros-marca"><b class="tb__n">09</b><span class="tb__r">Plan Director de marca y captación</span><span class="tb__c">15</span></a><a class="tb__e" href="#otros-cuaderno"><b class="tb__n">10</b><span class="tb__r">Cuaderno de campo del día 1</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-transicion-perfiles"><b class="tb__n">11</b><span class="tb__r">Manual de puesta en marcha por perfil</span><span class="tb__c">8</span></a><a class="tb__e" href="#otros-continuidad"><b class="tb__n">12</b><span class="tb__r">Continuidad legal, financiera y de sistemas</span><span class="tb__c">13</span></a><a class="tb__e" href="#otros-posicionamiento"><b class="tb__n">13</b><span class="tb__r">«No medias sonrisas» · posicionamiento</span><span class="tb__c">6</span></a><a class="tb__e" href="#otros-gtc"><b class="tb__n">14</b><span class="tb__r">GTC · vive en el Plan de Marketing</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Cierre</h3><span>1</span></header><div class="tb__l"><a class="tb__e" href="#otros-cierre"><b class="tb__n">·</b><span class="tb__r">Cómo encajan los catorce documentos</span><span class="tb__c">1</span></a></div></section></div>
   </nav>
 </div>
+
+
+
+
+
+
+
+
+
 
 
 

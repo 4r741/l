@@ -16,7 +16,7 @@ spec.loader.exec_module(modelo)
 D = modelo.calcula()
 
 SALIDA = FUENTES / "figuras-8-12.html"
-TEAL, OCRE, MORA, TINTA = "#0E8F84", "#A8631B", "#7A4FA3", "#0B1A20"
+TEAL, OCRE, MORA, TINTA = "#00857A", "#C25A12", "#0B3B45", "#080B0A"
 
 
 def txt(x, y, s, anchor="start", size=12, weight=400, color="var(--ink-2)"):
@@ -121,7 +121,7 @@ def calendario():
         "C8": [1] * 12,
         "C9": [1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
     }
-    COLORES = {0: "#EDF0EC", 1: "#A7D9D3", 2: "#0E8F84"}
+    COLORES = {0: "#F2F4F3", 1: "#A3D8D1", 2: "#00857A"}
     campanas = sorted(D["campanas"], key=lambda f: f["cod"])
     W = 900
     ox, oy, cw, ch = 292, 62, 44, 30
@@ -237,7 +237,7 @@ def retorno():
         if r > 0:
             largo = aw * min(r, 40) / 40
             p.append('<rect x="%d" y="%d" width="%.1f" height="18" fill="%s" rx="3"/>'
-                     % (ox, y + 6, largo, TEAL if r >= 5 else "#A7D9D3"))
+                     % (ox, y + 6, largo, TEAL if r >= 5 else "#A3D8D1"))
             p.append(txt(ox + largo + 10, y + 20, "%.1f×" % r, size=11.5, weight=600, color="var(--ink)"))
         else:
             p.append('<rect x="%d" y="%d" width="46" height="18" fill="%s" rx="3"/>' % (ox, y + 6, OCRE))
@@ -266,7 +266,7 @@ def concentracion():
         if f["aporte"] <= 0:
             continue
         ancho = aw * f["aporte"] / total
-        color = TEAL if i < 2 else ("#6FC0B7" if i < 4 else "#C9E7E3")
+        color = TEAL if i < 2 else ("#66BDB3" if i < 4 else "#C6E9E4")
         p.append('<rect x="%.1f" y="%d" width="%.1f" height="%d" fill="%s" stroke="var(--surface)" '
                  'stroke-width="2"/>' % (x, oy, ancho, ah, color))
         if ancho > 54:

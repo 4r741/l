@@ -104,6 +104,34 @@ def _sustituye(texto, reemplazo, marcas, incluir=True):
 # capa de apartados: son la misma cosa —cómo se recorre un documento— y separar
 # una de otra dejaba a los dos documentos escritos a mano con el menú nuevo y
 # el cuerpo antiguo, que es peor que no tener ninguno de los dos.
+# El sistema visual entero: los tokens y los titulares. Sin esto, el protocolo
+# y «otros documentos» —que llevan copia propia de la hoja— se quedaban con la
+# paleta de dos ediciones atrás mientras el resto ya era otro sistema.
+RAIZ_INI = ":root{"
+RAIZ_FIN = "  color-scheme:light;\n}"
+TITULARES_INI = "h1,h2,h3,h4{"
+TITULARES_FIN = 'h3,h4{font-variation-settings:"wdth" 100;letter-spacing:-.02em;line-height:1.18}'
+
+# La barra superior: negra y con el acento ácido. Vive fuera de la región del
+# menú, así que se copia aparte.
+BARRA_INI = ("/* La barra es negra y no se disimula: es el borde del sistema, no un adorno\n"
+             "   translúcido sobre el texto. */")
+BARRA_FIN = ".topbar .menu__panel .menu__gt{color:var(--muted)}"
+BARRA_VIEJA = (".topbar{", "}")
+
+# Retoques sueltos de puesta al día del sistema visual.
+PARCHES = [
+    (".hero h1 em{font-style:italic;color:var(--accent-ink)}",
+     ".hero h1 em{font-style:normal;color:var(--accent)}"),
+    ("font-family:var(--f-display);font-style:italic;font-size:1.08rem;",
+     "font-family:var(--f-display);font-style:normal;font-weight:500;font-size:1.08rem;"),
+    ('.script{\n  border:1px solid var(--line);background:var(--surface);\n'
+     '  padding:1.15rem 1.3rem;margin-top:1rem;max-width:68ch;\n}',
+     '.script{\n  border:1px solid var(--line);border-radius:var(--radio-s);'
+     'background:var(--surface);\n  padding:1.2rem 1.35rem 1.3rem;margin-top:1.2rem;'
+     'max-width:68ch;\n}'),
+]
+
 CSS_INI = ("/* ---------------------------------------------------------------------------\n"
            "   EL MENÚ DE SECCIONES")
 CSS_FIN = "@media print{.rastro{display:none}}"
@@ -139,12 +167,21 @@ def sincroniza():
     css_vela = _region(fuente, *CSS_VELA)
     js_menu = _region(fuente, *JS_MENU, incluir=False)
     js_rotulo = _region(fuente, *JS_ROTULO)
+    raiz = _region(fuente, RAIZ_INI, RAIZ_FIN)
+    barra = _region(fuente, BARRA_INI, BARRA_FIN)
+    titulares = _region(fuente, TITULARES_INI, TITULARES_FIN)
 
     cambiados = 0
     for archivo in COPIAS:
         ruta = RAIZ / archivo
         texto = antes = ruta.read_text(encoding="utf-8")
 
+        texto = _sustituye(texto, raiz, [(RAIZ_INI, RAIZ_FIN)])
+        texto = _sustituye(texto, titulares, [(TITULARES_INI, TITULARES_FIN),
+                                              (TITULARES_INI, "line-height:1.12}")])
+        texto = _sustituye(texto, barra, [(BARRA_INI, BARRA_FIN), BARRA_VIEJA])
+        for viejo_p, nuevo_p in PARCHES:
+            texto = texto.replace(viejo_p, nuevo_p)
         texto = _sustituye(texto, css_menu,
                            [CSS_MENU] + CSS_MENU_ANTES + [CSS_MENU_VIEJO])
         texto = _sustituye(texto, css_movil, [CSS_MOVIL, CSS_MOVIL_VIEJO])

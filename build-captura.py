@@ -91,7 +91,7 @@ table.cap tbody td:nth-child(2) small{max-width:34ch}
 table.anual{min-width:1180px}
 table.cap input,table.cap select{
   font:inherit;font-family:var(--f-mono);font-size:.82rem;width:100%;
-  border:1px solid var(--line);background:#FFFDE7;color:var(--ink);
+  border:1px solid var(--line);background:#FBFDF0;color:var(--ink);
   padding:.32rem .4rem;border-radius:2px;min-width:0;
 }
 table.cap input:focus,table.cap select:focus{outline:2px solid var(--accent);outline-offset:1px}
@@ -108,8 +108,8 @@ table.cap td.est{text-align:center;white-space:nowrap}
   text-transform:uppercase;padding:.16rem .48rem;border-radius:3px;border:1px solid transparent;
 }
 .luz--verde{background:rgba(14,124,116,.14);color:var(--accent-ink);border-color:rgba(14,124,116,.3)}
-.luz--ambar{background:rgba(168,99,27,.16);color:#8A5015;border-color:rgba(168,99,27,.34)}
-.luz--rojo{background:rgba(168,27,27,.14);color:#8E1B1B;border-color:rgba(168,27,27,.32)}
+.luz--ambar{background:rgba(168,99,27,.16);color:#A34C0F;border-color:rgba(168,99,27,.34)}
+.luz--rojo{background:rgba(168,27,27,.14);color:#B8332A;border-color:rgba(168,27,27,.32)}
 .luz--gris{background:var(--surface-2);color:var(--muted);border-color:var(--line)}
 
 .cap__barra{
@@ -123,7 +123,7 @@ table.cap td.est{text-align:center;white-space:nowrap}
   color:var(--ink-2);padding:.42rem .85rem;border-radius:999px;cursor:pointer;
 }
 .boton:hover{border-color:var(--accent);color:var(--accent-ink)}
-.boton--riesgo:hover{border-color:#8E1B1B;color:#8E1B1B}
+.boton--riesgo:hover{border-color:#B8332A;color:#B8332A}
 
 /* resumen anual */
 table.anual{font-size:.8rem}
@@ -133,7 +133,7 @@ table.anual td.v{
 table.anual td.vacio{color:var(--muted);text-align:center}
 .tend{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase}
 .tend--sube{color:var(--accent-ink)}
-.tend--baja{color:#8E1B1B}
+.tend--baja{color:#B8332A}
 .tend--igual{color:var(--muted)}
 
 /* los cinco números */
@@ -160,7 +160,7 @@ table.anual td.vacio{color:var(--muted);text-align:center}
   text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
 .entradas input{
   font:inherit;font-family:var(--f-mono);font-size:.9rem;width:100%;text-align:right;
-  border:1px solid var(--line);background:#FFFDE7;padding:.35rem .5rem;border-radius:2px;
+  border:1px solid var(--line);background:#FBFDF0;padding:.35rem .5rem;border-radius:2px;
   font-variant-numeric:tabular-nums;
 }
 .entradas small{display:block;margin-top:.4rem;font-size:.74rem;color:var(--muted);line-height:1.4}

@@ -68,10 +68,10 @@ p{margin:0}
   color:var(--muted);margin:0;
 }
 .slide h2{font-size:clamp(1.9rem,3.5vw,3.2rem);letter-spacing:-.02em;max-width:22ch}
-.slide h2 em{font-style:italic;color:var(--accent-ink)}
+.slide h2 em{font-style:normal;color:var(--accent)}
 .lede{font-size:clamp(1rem,1.4vw,1.35rem);color:var(--ink-2);max-width:58ch}
 .slide--portada h1{font-size:clamp(2.6rem,6vw,5.2rem);letter-spacing:-.03em;font-variation-settings:"opsz" 144}
-.slide--portada h1 em{font-style:italic;color:var(--accent-ink)}
+.slide--portada h1 em{font-style:normal;color:var(--accent)}
 .slide--cierre{background:var(--surface)}
 .cols{display:grid;gap:clamp(1rem,2vw,2.4rem);grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))}
 .cols>*{min-width:0}
@@ -88,30 +88,30 @@ th,td{text-align:left;padding:.42rem .7rem;border-bottom:1px solid var(--line-so
 thead th{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
 .quote{border-left:3px solid var(--accent);padding:.4rem 0 .4rem 1.2rem;max-width:52ch}
-.quote p{font-family:var(--f-display);font-style:italic;font-size:clamp(1.2rem,2vw,1.8rem);line-height:1.3}
+.quote p{font-family:var(--f-display);font-style:normal;font-weight:500;font-size:clamp(1.2rem,2vw,1.8rem);line-height:1.3}
 .fig{margin:0;background:var(--surface);border:1px solid var(--line);padding:clamp(.8rem,1.4vw,1.4rem);overflow-x:auto;min-height:0}
 .fig svg{width:100%;height:auto;max-height:min(46vh,440px);display:block}
 .fig figcaption{margin-top:.7rem;font-size:.78rem;color:var(--muted);max-width:80ch}
 .sem{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .4rem;border-radius:3px;white-space:nowrap}
-.sem--rojo{background:rgba(168,27,27,.12);color:#8E1B1B}
-.sem--ambar{background:rgba(168,99,27,.14);color:#8A5015}
+.sem--rojo{background:rgba(168,27,27,.12);color:#B8332A}
+.sem--ambar{background:rgba(168,99,27,.14);color:#A34C0F}
 .sem--verde{background:rgba(14,124,116,.12);color:var(--accent-ink)}
 /* --- diapositiva de declaración: la que se recuerda al salir --- */
 .slide--stmt{background:var(--ink);color:var(--surface);justify-content:center}
 .slide--stmt .eyebrow{color:rgba(247,248,245,.5)}
 .slide--stmt h2{
   font-size:clamp(2rem,4.4vw,4rem);max-width:20ch;color:var(--surface);
-  font-style:italic;font-weight:400;letter-spacing:-.03em;line-height:1.06;
+  font-style:normal;font-weight:700;letter-spacing:-.04em;line-height:1.06;
 }
-.slide--stmt h2 em{font-style:normal;color:#7FD3C9}
+.slide--stmt h2 em{font-style:normal;color:#C8F04A}
 .slide--stmt .lede{color:rgba(247,248,245,.72);max-width:52ch}
 .slide--stmt ul.bul li{color:rgba(247,248,245,.88)}
 .slide--stmt ul.bul li b,.slide--stmt ul.bul li strong{color:var(--surface)}
-.slide--stmt ul.bul li::before{background:#7FD3C9}
+.slide--stmt ul.bul li::before{background:#C8F04A}
 .slide--stmt table{color:rgba(247,248,245,.88)}
 .slide--stmt th,.slide--stmt td{border-color:rgba(247,248,245,.18)}
 .slide--stmt thead th{color:rgba(247,248,245,.5)}
-.slide--stmt td.c{color:#7FD3C9}
+.slide--stmt td.c{color:#C8F04A}
 
 /* --- separador de parte --- */
 .slide--div{background:var(--surface);justify-content:center}
@@ -130,7 +130,7 @@ td.c{font-family:var(--f-mono);white-space:nowrap;color:var(--accent-ink)}
 .hz ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
 .hz li{font-size:.84rem;color:var(--ink-2);padding-left:.9rem;position:relative}
 .hz li::before{content:"";position:absolute;left:0;top:.6em;width:4px;height:4px;background:currentColor;opacity:.5}
-.hz--a b{color:#0E8F84}.hz--b b{color:#A8631B}.hz--c b{color:#7A4FA3}
+.hz--a b{color:#00857A}.hz--b b{color:#C25A12}.hz--c b{color:#0B3B45}
 
 /* --- pasos numerados --- */
 ol.pasos{list-style:none;margin:0;padding:0;display:grid;gap:.55rem;counter-reset:p}
@@ -164,17 +164,17 @@ body.modo-ponente .nota{
   display:grid;gap:1rem;position:fixed;left:0;right:0;bottom:0;z-index:40;
   background:var(--ink);color:rgba(247,248,245,.9);
   padding:1rem clamp(1.2rem,3vw,2.4rem) 2.6rem;
-  border-top:2px solid #7FD3C9;max-height:42vh;overflow:auto;
+  border-top:2px solid #C8F04A;max-height:42vh;overflow:auto;
   font-size:clamp(13px,1vw,15px);line-height:1.5;
 }
 @media(min-width:900px){body.modo-ponente .nota{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:2.4rem}}
 body.modo-ponente .nota b{
   display:block;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.14em;
-  text-transform:uppercase;color:#7FD3C9;margin-bottom:.35rem;font-weight:500;
+  text-transform:uppercase;color:#C8F04A;margin-bottom:.35rem;font-weight:500;
 }
 body.modo-ponente .nota__dura{border-left:2px solid rgba(247,248,245,.28);padding-left:1rem}
 body.modo-ponente .nota__q{
-  font-family:var(--f-display);font-style:italic;font-size:1.05rem;
+  font-family:var(--f-display);font-style:normal;font-weight:500;font-size:1.05rem;
   color:var(--surface);margin-bottom:.4rem;
 }
 body.modo-ponente .slide{padding-bottom:clamp(12rem,44vh,26rem)}
@@ -185,7 +185,7 @@ body.modo-ponente .slide{gap:clamp(.7rem,1.1vw,1.2rem)}
 body.modo-ponente .hud{color:rgba(247,248,245,.6);z-index:41}
 body.modo-ponente .hud button{border-color:rgba(247,248,245,.28);color:rgba(247,248,245,.82)}
 body.modo-ponente .barra{z-index:41;background:rgba(247,248,245,.16)}
-body.modo-ponente .barra i{background:#7FD3C9}
+body.modo-ponente .barra i{background:#C8F04A}
 .hud__modo{
   font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
   color:var(--accent-ink);border:1px solid var(--accent);border-radius:999px;
@@ -196,9 +196,9 @@ body.modo-ponente .barra i{background:#7FD3C9}
 /* la barra de estado se aclara sobre las diapositivas de tinta */
 body:has(.slide--stmt.is-on) .hud{color:rgba(247,248,245,.6)}
 body:has(.slide--stmt.is-on) .hud button{border-color:rgba(247,248,245,.28);color:rgba(247,248,245,.82)}
-body:has(.slide--stmt.is-on) .hud button:hover{border-color:#7FD3C9;color:#7FD3C9}
+body:has(.slide--stmt.is-on) .hud button:hover{border-color:#C8F04A;color:#C8F04A}
 body:has(.slide--stmt.is-on) .barra{background:rgba(247,248,245,.16)}
-body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
+body:has(.slide--stmt.is-on) .barra i{background:#C8F04A}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media print{
   @page{size:297mm 167mm;margin:0}
@@ -210,15 +210,15 @@ body:has(.slide--stmt.is-on) .barra i{background:#7FD3C9}
   .tile,.fig{background:#fff}
   .slide--stmt{background:#fff;color:#000}
   .slide--stmt h2,.slide--stmt .lede,.slide--stmt ul.bul li{color:#000}
-  .slide--stmt ul.bul li::before{background:#0A5C56}
-  .slide--stmt h2 em{color:#0A5C56}
+  .slide--stmt ul.bul li::before{background:#00655D}
+  .slide--stmt h2 em{color:#00655D}
   .slide--stmt .eyebrow{color:#555}
   .slide--div{background:#fff}
   body.modo-ponente .nota{
     display:block;position:static;background:#fff;color:#000;max-height:none;
     border-top:1pt solid #000;padding:6pt 0 0;margin-top:8pt;font-size:8.5pt;
   }
-  body.modo-ponente .nota b{color:#0A5C56}
+  body.modo-ponente .nota b{color:#00655D}
   body.modo-ponente .nota__q{color:#000}
   body.modo-ponente .nota__dura{border-color:#BBB;margin-top:5pt}
   /* el guion impreso no es una proyección: usa hoja A4 apaisada, más alta,

@@ -943,7 +943,7 @@ html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
 .cabecera__marca b{font-weight:600}
 .cabecera__marca span{
   font-family:var(--f-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
-  color:#7FD3C9;margin-left:.5rem;
+  color:#C8F04A;margin-left:.5rem;
 }
 .cabecera__docs{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
 /* Los nombres de los documentos iban en versalita monoespaciada muy espaciada:
@@ -1034,7 +1034,7 @@ html:has(.doc[hidden]:target) #doc-inicio{display:none!important}
   color:rgba(247,248,245,.72);padding:.34rem .6rem;border-radius:999px;
   transition:border-color .16s ease,color .16s ease,background .16s ease;
 }
-.buscador:hover{color:#7FD3C9;border-color:rgba(127,211,201,.55);background:rgba(127,211,201,.1)}
+.buscador:hover{color:#C8F04A;border-color:rgba(127,211,201,.55);background:rgba(127,211,201,.1)}
 .buscador kbd{
   font:inherit;border:1px solid rgba(247,248,245,.28);border-radius:3px;
   padding:0 .28rem;line-height:1.35;

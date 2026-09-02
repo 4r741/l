@@ -9,9 +9,9 @@ import pathlib
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 FUENTES = RAIZ / "fuentes"
 
-TEAL = "#0E8F84"
-OCRE = "#A8631B"
-MORA = "#7A4FA3"
+TEAL = "#00857A"
+OCRE = "#C25A12"
+MORA = "#0B3B45"
 SALIDA = FUENTES / "figuras-4-6.html"
 
 
@@ -82,7 +82,7 @@ def sensibilidad():
     # rampa secuencial teal: claro → oscuro, lightness monótona
     # rampa clara: la lightness sube de forma monótona y el texto se lee
     # siempre en tinta oscura, sin cambio de color a mitad de escala
-    rampa = ["#E6F3F1", "#C9E7E3", "#A7D9D3", "#82C8C0", "#57B3A9", "#2FA398"]
+    rampa = ["#E3F4F1", "#C6E9E4", "#A3D8D1", "#7CC6BD", "#52B0A5", "#2A9C91"]
     p = ['<svg viewBox="0 0 %d %d" width="%d" height="%d" role="img" style="max-width:100%%;height:auto" '
          'aria-label="Facturación anual estimada según tasa de conversión y ticket medio, de 353 mil a 1,3 millones de euros.">' % (W, H, W, H)]
     valores = []
@@ -105,7 +105,7 @@ def sensibilidad():
             x = ox + cw * j
             p.append('<rect x="%d" y="%d" width="%d" height="%d" fill="%s" stroke="var(--surface)" stroke-width="2"/>'
                      % (x, y, cw, ch, rampa[paso]))
-            p.append(txt(x + cw / 2, y + ch / 2 + 5, mil(round(v)) + " k€", anchor="middle", size=13, weight=600, color="#0B1A20"))
+            p.append(txt(x + cw / 2, y + ch / 2 + 5, mil(round(v)) + " k€", anchor="middle", size=13, weight=600, color="#080B0A"))
     p.append(mono(24, oy + ch * len(tickets) / 2, "ticket", anchor="start", size=11))
     p.append(mono(24, oy + ch * len(tickets) / 2 + 16, "medio", anchor="start", size=11))
     p.append(mono(ox, oy + ch * len(tickets) + 30, "Capacidad fija: 4 primeras visitas al día · 21 días · 12 meses", anchor="start", size=10))
