@@ -629,43 +629,52 @@ def comprueba_menu():
 
 
 def comprueba_sitio():
-    """El sitio por áreas trae literatura de verdad y no deja enlaces muertos.
+    """centro.html trae el sistema COMPLETO: ningún apartado puede faltar.
 
-    centro.html no se escribe: se arma trayendo secciones enteras de los ocho
-    documentos. Si una de ellas cambia de identificador y nadie vuelve a armar
-    el sitio, aquí quedan enlaces que no llevan a ninguna parte y áreas vacías,
-    y eso no se ve abriendo la página por arriba.
+    El sitio no se escribe, se recoge: cada apartado de cada documento viaja
+    entero. Si un documento gana o pierde apartados y nadie vuelve a armar el
+    sitio, el índice miente —dice que están los ciento treinta y cinco y hay
+    otros tantos— y eso no se ve abriendo la página por arriba.
     """
-    ruta = RAIZ / "sitio.py"
+    ruta = RAIZ / "build-sitio.py"
     pagina = RAIZ / "centro.html"
     if not ruta.exists() or not pagina.exists():
-        falla("centro.html", "falta el sitio por áreas o su modelo (sitio.py)")
+        falla("centro.html", "falta el sitio completo o su constructor")
         return
-    entorno = {"__name__": "sitio_auditado", "__file__": str(ruta)}
-    exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
 
-    # cada pieza que el modelo promete tiene que existir en su documento
-    for _area, doc, ancla, rotulo in entorno["enlaces"]():
-        if ('id="%s"' % ancla) not in bruto(doc):
-            falla("sitio.py", "promete «%s» en %s y ese destino no existe" % (ancla, doc))
+    entorno = {"__name__": "sitio_auditado", "__file__": str(ruta)}
+    try:
+        exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
+    except SystemExit as e:
+        falla("build-sitio.py", "no se puede armar el sitio: %s" % e)
+        return
 
     html = pagina.read_text(encoding="utf-8")
-    cuerpo = html[html.index("<main"):]
-    for area in entorno["AREAS"]:
-        if ('id="%s"' % area["id"]) not in cuerpo:
-            falla("centro.html", "no tiene el área «%s»" % area["rotulo"])
+    hojas = re.findall(r'<article class="hoja"[^>]*data-hoja="([^"]+)"', html)
 
+    # uno por uno: lo que el documento tiene y lo que el sitio trae
+    esperados = 0
+    for doc, rotulo, _c, _q, marca in entorno["DOCUMENTOS"]:
+        cuantos = len(entorno["recoge"](doc))
+        esperados += cuantos
+        traidos = len([h for h in hojas if h.startswith(marca + "-")])
+        if traidos != cuantos:
+            falla("centro.html", "de %s trae %d apartados y el documento tiene %d: "
+                                 "vuelva a pasar build-sitio.py" % (doc, traidos, cuantos))
+
+    if len(hojas) != esperados:
+        falla("centro.html", "trae %d apartados y el sistema tiene %d" % (len(hojas), esperados))
+
+    # el índice de la portada nombra todos, y ninguno lleva a la nada
+    for clave in hojas:
+        if ('data-ir="%s"' % clave) not in html:
+            falla("centro.html", "el apartado «%s» no está en el índice" % clave)
+    # los enlaces del cuerpo, no los que el guion arma con trozos de cadena
+    cuerpo = re.sub(r"<script\b.*?</script>", "", html, flags=re.S)
     muertas = [a for a in set(re.findall(r'href="#([^"]+)"', cuerpo))
                if ('id="%s"' % a) not in html]
     for a in sorted(muertas)[:6]:
         falla("centro.html", "el enlace «#%s» no lleva a ninguna parte" % a)
-
-    # y la literatura tiene que haber viajado: un área vacía es un área rota
-    piezas = cuerpo.count('class="pz"')
-    esperadas = sum(len(a["enlaces"]) for a in entorno["AREAS"])
-    if piezas != esperadas:
-        falla("centro.html", "trae %d piezas y el modelo dice %d: vuelva a pasar build-sitio.py"
-              % (piezas, esperadas))
 
 
 def main():
