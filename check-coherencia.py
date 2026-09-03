@@ -629,52 +629,64 @@ def comprueba_menu():
 
 
 def comprueba_sitio():
-    """centro.html trae el sistema COMPLETO: ningún apartado puede faltar.
+    """La web trae el sistema completo y ningún enlace se sale de su sección.
 
-    El sitio no se escribe, se recoge: cada apartado de cada documento viaja
-    entero. Si un documento gana o pierde apartados y nadie vuelve a armar el
-    sitio, el índice miente —dice que están los ciento treinta y cinco y hay
-    otros tantos— y eso no se ve abriendo la página por arriba.
+    Dos cosas que no se ven abriendo la página por arriba. La primera: que de
+    cada documento estén TODOS sus apartados, porque el sitio no se escribe,
+    se recoge, y si un documento gana uno y nadie vuelve a armar la web, el
+    índice miente. La segunda: que dentro de una sección no quede ni un enlace
+    que lleve fuera —ese era el defecto que hacía aparecer al lector en mitad
+    de otro documento, o peor, en un sitio que no tenía nada que ver.
     """
     ruta = RAIZ / "build-sitio.py"
     pagina = RAIZ / "centro.html"
     if not ruta.exists() or not pagina.exists():
-        falla("centro.html", "falta el sitio completo o su constructor")
+        falla("centro.html", "falta la web o su constructor")
         return
 
     entorno = {"__name__": "sitio_auditado", "__file__": str(ruta)}
     try:
         exec(compile(ruta.read_text(encoding="utf-8"), str(ruta), "exec"), entorno)
     except SystemExit as e:
-        falla("build-sitio.py", "no se puede armar el sitio: %s" % e)
+        falla("build-sitio.py", "no se puede armar la web: %s" % e)
         return
 
     html = pagina.read_text(encoding="utf-8")
-    hojas = re.findall(r'<article class="hoja"[^>]*data-hoja="([^"]+)"', html)
+    cuerpo = re.sub(r"<script\b.*?</script>", "", html[html.index('<div id="sitio">'):], flags=re.S)
+    hojas = re.findall(r'<article class="hoja" id="([^"]+)"', cuerpo)
 
-    # uno por uno: lo que el documento tiene y lo que el sitio trae
     esperados = 0
-    for doc, rotulo, _c, _q, marca in entorno["DOCUMENTOS"]:
+    for ident, _rot, doc, letra, _nombre in entorno["SECCIONES"]:
+        if not doc:
+            continue
         cuantos = len(entorno["recoge"](doc))
         esperados += cuantos
-        traidos = len([h for h in hojas if h.startswith(marca + "-")])
+        traidos = len([h for h in hojas if h.startswith(letra + "-")])
         if traidos != cuantos:
             falla("centro.html", "de %s trae %d apartados y el documento tiene %d: "
                                  "vuelva a pasar build-sitio.py" % (doc, traidos, cuantos))
+        if ('id="%s"' % ident) not in cuerpo:
+            falla("centro.html", "no tiene la sección «%s»" % ident)
 
     if len(hojas) != esperados:
         falla("centro.html", "trae %d apartados y el sistema tiene %d" % (len(hojas), esperados))
 
-    # el índice de la portada nombra todos, y ninguno lleva a la nada
-    for clave in hojas:
-        if ('data-ir="%s"' % clave) not in html:
-            falla("centro.html", "el apartado «%s» no está en el índice" % clave)
-    # los enlaces del cuerpo, no los que el guion arma con trozos de cadena
-    cuerpo = re.sub(r"<script\b.*?</script>", "", html, flags=re.S)
-    muertas = [a for a in set(re.findall(r'href="#([^"]+)"', cuerpo))
-               if ('id="%s"' % a) not in html]
-    for a in sorted(muertas)[:6]:
+    # ni un enlace muerto
+    ids = set(re.findall(r'id="([^"]+)"', html))
+    muertos = sorted({h for h in re.findall(r'href="#([^"]+)"', cuerpo) if h not in ids})
+    for a in muertos[:6]:
         falla("centro.html", "el enlace «#%s» no lleva a ninguna parte" % a)
+
+    # ni un enlace que se salga de su sección
+    for m in re.finditer(r'<section class="sec" id="([^"]+)"', cuerpo):
+        ini_s = m.start()
+        sig = cuerpo.find('<section class="sec" id="', ini_s + 10)
+        trozo = cuerpo[ini_s:sig if sig > 0 else len(cuerpo)]
+        propios = set(re.findall(r'id="([^"]+)"', trozo))
+        fuera = [h for h in re.findall(r'href="#([^"]+)"', trozo) if h not in propios]
+        if fuera:
+            falla("centro.html", "en la sección «%s» hay %d enlaces que se salen de ella (%s)"
+                  % (m.group(1), len(fuera), ", ".join(sorted(set(fuera))[:3])))
 
 
 def main():
