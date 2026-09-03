@@ -842,7 +842,7 @@ def bloque_protocolos(pre):
                        for r, a in p["vanguardia"])
         fichas.append(
             '<article class="puesto" data-puesto="%s"%s>\n'
-            '  <p class="puesto__k">Puesto %d de 6 · columna %s de la matriz</p>\n'
+            '  <p class="puesto__k">Puesto %d de 6 · %s</p>\n'
             '  <h3>%s</h3>\n  <p class="puesto__q">%s</p>\n'
             '  %s\n'
             '  <p class="rotulillo">Su papel en las catorce fases del recorrido</p>\n'
@@ -854,7 +854,9 @@ def bloque_protocolos(pre):
             '  </div>\n'
             '  <p class="puesto__ir"><a href="manual.html#%s">Su manual de puesto, completo</a></p>\n'
             '</article>'
-            % (p["id"], "" if n == 0 else " hidden", n + 1, p.get("wraci") or "—",
+            % (p["id"], "" if n == 0 else " hidden", n + 1,
+               ("columna %s de la matriz" % p["raci"]) if p.get("raci")
+               else "sin columna propia en la matriz: la nota lo sitúa en el mantenimiento",
                H.escape(p["nombre"]), H.escape(p["que"]),
                cifras([(str(activas), "fases en las que interviene"),
                        (str(len(p["bloques"])), "procedimientos escritos"),
@@ -1126,655 +1128,1026 @@ def monta():
                H.escape(texto), propio, H.escape(rotulo.lower()), len(piezas),
                "".join(filas), "\n".join(hojas)))
 
-    return secciones, menus, indice, orden, voces
+    return secciones, menus, indice, orden, voces, mapa
 
 
-def sec_inicio(indice, total, voces):
+# ===========================================================================
+#  LOS RECORRIDOS
+#  Nadie entra en un sistema documental a leerlo entero. Se entra con una
+#  pregunta —«¿qué me pasa a mí?», «¿qué me toca a mí?», «¿qué se decide?»— y
+#  se sale con la respuesta. Un recorrido es esa pregunta convertida en camino:
+#  cinco a nueve paradas, en orden, cada una con lo que hay que mirar y por qué.
+#  Se abre, se avanza, se vuelve. Y el sitio recuerda por dónde iba.
+# ===========================================================================
+def paradas_de_puesto(p):
+    """El recorrido de un puesto sale de su propio modelo, no de una lista."""
+    P = PERFILES
+    raci = P.raci_de(p)
+    suyas = [(i + 1, f) for i, (f, papel) in enumerate(raci) if papel in ("R", "R/A", "A")]
+    paradas = [
+        ("Quién es y de qué responde", p["manual"],
+         "Empiece por su manual de puesto: qué hace, de qué responde y qué puede decidir."),
+    ]
+    if suyas:
+        n, _f = suyas[0]
+        if n <= 12:
+            paradas.append(("Su primera fase con el paciente", "f%02d" % n,
+                            "La primera vez que el paciente pasa por sus manos, minuto a minuto."))
+    for rot, anc in p["bloques"][:3]:
+        paradas.append((rot, anc, "Uno de sus procedimientos escritos, entero."))
+    if p["vanguardia"]:
+        rot, anc = p["vanguardia"][0]
+        paradas.append((rot, anc,
+                        "Una función de vanguardia: lo que este puesto hace y en otros centros "
+                        "no se hace."))
+    paradas.append(("Con qué se le mide", "m-indicadores-perfil",
+                    "Los indicadores por perfil. Un puesto sin número es una opinión."))
+    paradas.append(("Qué pasa si no se cumple", "m-pasa-exactamente-cuando-puesto-no-cumple",
+                    "La matriz de obligaciones. No es una conversación: es un procedimiento."))
+    paradas.append(("Sus primeros treinta días", "m-puesta-marcha",
+                    "Qué se espera de usted el primer mes, semana a semana."))
+    return paradas
+
+
+RECORRIDOS_FIJOS = [
+    {
+        "id": "paciente",
+        "quien": "Soy paciente",
+        "titulo": "Lo que le pasa a usted, de la llamada al mantenimiento",
+        "que": "El recorrido tal y como lo vive quien entra por la puerta: la llamada, la "
+               "acogida, las pruebas, el diagnóstico explicado, el presupuesto que se lleva a "
+               "casa y lo que ocurre después del alta.",
+        "paradas": [
+            ("La llamada", "f01", "Todo empieza aquí, y aquí se decide con qué expectativa viene."),
+            ("La acogida y el recorrido por la tecnología", "f02",
+             "Los primeros minutos en el centro. Nadie espera de pie sin saber qué va a pasar."),
+            ("Las pruebas", "f05",
+             "CBCT, escaneado intraoral y fotografía clínica. Sin diagnóstico completo no hay plan."),
+            ("El diagnóstico, explicado", "f09",
+             "En tres dimensiones y en sus palabras. Si no lo entiende, no ha habido diagnóstico."),
+            ("El presupuesto", "f10",
+             "No es una oferta que caduca: es la consecuencia de un diagnóstico que ya ha aceptado."),
+            ("La despedida y el seguimiento", "f12",
+             "Qué se lleva, quién le llama y cuándo."),
+            ("El mantenimiento", "m14",
+             "El alta no es una despedida: es el paso al programa que sostiene el resultado."),
+            ("Giraldo Te Cuida", "otros-gtc",
+             "El instrumento que convierte «le cuidamos para siempre» en revisiones reales."),
+        ],
+    },
+    {
+        "id": "junta",
+        "quien": "Soy de la Junta",
+        "titulo": "Qué se somete a votación y con qué se sostiene",
+        "que": "Una sesión de una hora, en el orden en que conviene leerla: qué se pide, dónde "
+               "está parado el centro, de dónde sale el dinero, qué puede salir mal y las "
+               "quince decisiones con formato de acuerdo.",
+        "paradas": [
+            ("Dos minutos", "resumen", "De qué va todo esto, antes de entrar en nada."),
+            ("Dónde estamos parados", "posicion", "La posición que se ocupa y por qué esa."),
+            ("Qué se ha construido", "sistema",
+             "El activo no es la clínica: es el sistema operativo que la hace repetible."),
+            ("De dónde sale el dinero", "economia",
+             "La economía por paciente y lo que la destruye."),
+            ("Qué puede salir mal", "riesgo", "El registro de riesgos, con dueño y con fecha."),
+            ("El puente hasta 1,2 M€", "puente",
+             "Bloque a bloque, con cada bloque auditable por separado."),
+            ("Las quince decisiones", "decisiones",
+             "Con formato de acuerdo: qué se aprueba, quién ejecuta y en qué plazo."),
+        ],
+    },
+    {
+        "id": "lunes",
+        "quien": "Entro a trabajar",
+        "titulo": "Lo primero que hay que saber, en este orden",
+        "que": "Para quien empieza el lunes. Qué es este sistema, qué se cumple siempre —lo "
+               "haga quien lo haga—, cómo se reparte el trabajo y qué se espera de usted los "
+               "primeros treinta días.",
+        "paradas": [
+            ("Qué es este sistema", "m-documento-tres-usos",
+             "Un documento con tres usos: formación, operación y auditoría."),
+            ("Lo que se cumple siempre", "m-estandares-transversales-ampliacion",
+             "Los estándares transversales. Valen para todos y en todo momento."),
+            ("El recorrido completo", "m-recorrido-paciente",
+             "Las catorce fases. Ninguna se salta «por falta de tiempo»."),
+            ("Quién hace qué", "m-matriz-raci",
+             "La matriz RACI. Ninguna fase se queda sin alguien que responda."),
+            ("Su puesto", "m-manuales-puesto", "Los seis manuales. Busque el suyo."),
+            ("Sus primeros treinta días", "m-puesta-marcha", "Semana a semana."),
+        ],
+    },
+    {
+        "id": "marketing",
+        "quien": "Llevo la captación",
+        "titulo": "Cómo llega un paciente, y qué no haremos nunca para que llegue",
+        "que": "El plan completo en siete paradas: en qué creemos, qué nos prohibimos, los doce "
+               "estados por los que pasa una persona, las setenta y seis acciones con dueño y "
+               "la cartera de campañas con sus cifras.",
+        "paradas": [
+            ("Qué creemos y qué nos prohibimos", "k-creemos-nos-prohibimos-consecuencia",
+             "El filtro de todo lo que viene después."),
+            ("Las ocho que no haremos nunca", "k-ocho-no-haremos-nunca",
+             "Un centro se reconoce antes por sus prohibiciones."),
+            ("El marco de la publicidad sanitaria", "k-marco-publicidad-sanitaria",
+             "Lo que la ley permite decir, y lo que no."),
+            ("Los doce estados", "k-doce-estados",
+             "El paciente no recorre un embudo: recorre estados, y en los dos sentidos."),
+            ("Las setenta y seis acciones", "k-setenta-seis-acciones",
+             "Con dueño, coste, plazo y el número que se mueve si funciona."),
+            ("Qué va primero, y con qué dinero", "k-va-primero",
+             "El orden de prelación y el techo de gasto."),
+            ("Cómo se mide y cuándo se para", "k-como-mide-regla",
+             "Las ocho medidas del plan y la regla para retirar una acción."),
+        ],
+    },
+]
+
+
+def recorridos():
+    """Los recorridos: cuatro escritos y seis derivados de los puestos."""
+    fuera = list(RECORRIDOS_FIJOS)
+    for p in PERFILES.PERFILES:
+        # El título de cada recorrido de puesto es lo que ese puesto hace: diez
+        # tarjetas que dijeran «todo lo suyo, en orden» no distinguen nada.
+        titulo = p["que"].split(". ")[0].rstrip(".")
+        fuera.append({
+            "id": "puesto-" + p["id"],
+            "quien": "Soy " + p["corto"],
+            "titulo": titulo,
+            "que": "Su recorrido completo: dónde entra en las catorce fases y con qué papel, "
+                   "qué procedimientos tiene escritos, qué funciones de vanguardia le tocan, "
+                   "con qué se le mide y qué se espera de usted los primeros treinta días.",
+            "paradas": paradas_de_puesto(p),
+        })
+    return fuera
+
+
+# ===========================================================================
+#  EL MAPA Y LOS RECORRIDOS, DIBUJADOS
+# ===========================================================================
+def mapa_interactivo(mapa):
+    """Las catorce fases, en una rejilla que se recorre con el dedo.
+
+    Estuvo dibujado en SVG, con los rótulos colgando de cada nodo, y a catorce
+    nodos los rótulos se montaban unos encima de otros. Aquí es marcado
+    corriente: el texto se ajusta solo, cada fase es un botón de verdad —se
+    llega con el tabulador y se abre con la barra— y en un teléfono la rejilla
+    se reordena sola. Pulsar una abre su fase entera en el lector, y del lector
+    se vuelve al mapa sin perder el sitio.
+    """
+    fs = fases("index.html")
+    mfs = fases("manual.html")
+
+    def nodo(f, clave, n_total):
+        destino = mapa.get("@" + clave)
+        ident = destino[0][0] if destino else ""
+        return ('<button type="button" class="nodo" data-abre-fase="%s"%s>'
+                '<span class="nodo__n">%02d</span>'
+                '<b class="nodo__r">%s</b>'
+                '<span class="nodo__m">%s</span></button>'
+                % (ident, "" if ident else " disabled", f["n"],
+                   H.escape(f["label"] or f["titulo"]),
+                   ("%d min" % f["min"]) if f["min"] else "&nbsp;"))
+
+    pv = "".join(nodo(f, "f%02d" % f["n"], 12) for f in fs)
+    post = "".join(nodo(f, "m%02d" % f["n"], 2) for f in mfs[12:])
+
+    return ("""
+<div class="mapa14">
+  <div class="mapa14__g">
+    <p class="letra mapa14__t">La primera visita · doce fases · @MIN@ minutos</p>
+    <div class="nodos">@@PV@@</div>
+  </div>
+  <div class="mapa14__g mapa14__g--post">
+    <p class="letra mapa14__t">Después de la visita · dos fases</p>
+    <div class="nodos nodos--post">@@POST@@</div>
+  </div>
+</div>
+""".replace("@@PV@@", pv).replace("@@POST@@", post)
+   .replace("@MIN@", str(sum(f["min"] for f in fs))))
+
+
+def dibuja_recorridos(mapa):
+    """Los diez recorridos, con sus paradas resueltas contra todo lo que hay."""
+    fuera, tarjetas = [], []
+    for r in recorridos():
+        paradas, n = [], 0
+        for rot, anc, por in r["paradas"]:
+            destino = mapa.get("@" + anc)
+            if not destino:
+                continue
+            n += 1
+            ident, sec = destino[0]
+            paradas.append(
+                '<li class="parada"><button type="button" class="parada__b" data-lee="%s" '
+                'data-ruta="%s" data-paso="%d">'
+                '<span class="parada__n">%02d</span>'
+                '<span class="parada__t"><b>%s</b><span>%s</span></span>'
+                '<span class="parada__i letra">%s</span></button></li>'
+                % (ident, r["id"], n - 1, n, H.escape(rot), H.escape(por),
+                   H.escape(SEC_ROTULO.get(sec, sec))))
+        if not paradas:
+            continue
+        fuera.append(
+            '<article class="wruta" id="ruta-%s" data-ruta="%s">\n'
+            '  <header class="wruta__cab">\n'
+            '    <p class="letra">%s · %d paradas</p>\n'
+            '    <h3>%s</h3>\n    <p class="wruta__q">%s</p>\n'
+            '    <button type="button" class="bt bt--fuerte" data-empieza="%s">'
+            'Empezar el recorrido</button>\n'
+            '  </header>\n  <ol class="paradas">%s</ol>\n</article>'
+            % (r["id"], r["id"], H.escape(r["quien"]), n, H.escape(r["titulo"]),
+               H.escape(r["que"]), r["id"], "".join(paradas)))
+        tarjetas.append(
+            '<button type="button" class="rutacard" data-ve-ruta="%s">'
+            '<span class="letra">%s</span><b>%s</b>'
+            '<span class="rutacard__m letra">%d paradas</span></button>'
+            % (r["id"], H.escape(r["quien"]), H.escape(r["titulo"]), n))
+    return "\n".join(fuera), "".join(tarjetas)
+
+
+SEC_ROTULO = {}
+
+
+def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
     hechos = "".join(
-        '<div class="hecho"><b>%s</b><p class="hecho__r">%s</p><p class="hecho__q">%s</p></div>'
+        '<div class="hecho"><b>%s</b><span class="letra">%s</span><p>%s</p></div>'
         % (n.replace("@TOTAL@", str(total)).replace("@ACC@", str(CATALOGO["total"])),
            H.escape(r), H.escape(q))
         for n, r, q in HECHOS)
-
-    bloques = "".join(
-        '<article class="idea"><p class="idea__k">%s</p><h3>%s</h3><p class="idea__q">%s</p>%s</article>'
+    ideas = "".join(
+        '<article class="idea"><p class="letra">%s</p><h3>%s</h3><p class="idea__q">%s</p>%s</article>'
         % (H.escape(k), H.escape(t), H.escape(q), cifras(c))
         for k, t, q, c in INICIO_BLOQUES)
-
     puertas = "".join(
         '<button type="button" class="puerta" data-ir-sec="%s">'
-        '<span class="puerta__n">%02d</span><b>%s</b>'
-        '<span class="puerta__q">%s</span>'
-        '<span class="puerta__m">%d apartados</span></button>'
+        '<span class="letra">%02d</span><b>%s</b><span class="puerta__q">%s</span>'
+        '<span class="puerta__m letra">%d apartados</span></button>'
         % (i, n + 1, H.escape(nombre), H.escape(INTROS[i][0]), cuantos)
         for n, (i, _rot, nombre, cuantos) in enumerate(indice))
 
     return """
 <section class="sec" id="inicio" data-sec="inicio">
-  <div class="whero">
-    <p class="whero__k">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+
+  <div class="portada">
+    <p class="letra portada__k">Centro de Excelencia Implantológica Giraldo</p>
     <h1>No medias<br><em>sonrisas</em></h1>
-    <p class="whero__lema">«Le devolvemos su sonrisa completa, en el menor tiempo posible,
-      y le cuidamos para siempre.»</p>
-    <div class="whero__b">
-      <button type="button" class="bt bt--fuerte" data-ir-sec="primera-visita">La primera visita</button>
-      <button type="button" class="bt" data-abre="paleta">Buscar en todo el sistema</button>
+    <p class="portada__l">Le devolvemos su sonrisa completa, en el menor tiempo posible,
+      y le cuidamos para siempre.</p>
+    <div class="portada__b">
+      <button type="button" class="bt bt--fuerte" data-ir-sec="recorridos">Elegir un recorrido</button>
+      <button type="button" class="bt" data-ir-sec="mapa">Ver el mapa</button>
     </div>
+    <p class="portada__pie letra">Rúa Bolivia nº 2 · Vigo · Uso interno y confidencial</p>
   </div>
 
-  <div class="lienzo">
-    <div class="lienzo__cab">
-      <h2>Qué es esto</h2>
-      <p>La promesa de arriba tiene dos mitades. La primera es el resultado y la fija el
-        posicionamiento: ningún tratamiento se deja a medias. La segunda es la relación, y tiene
-        instrumento propio. Debajo de esas dos frases hay ocho documentos, @TOTAL@ apartados y un
-        sistema que se puede describir, enseñar, auditar y repetir. Están aquí enteros: esta
-        página no resume nada.</p>
+  <div class="banda">
+    <div class="banda__c">
+      <p class="letra">Por dónde empezar</p>
+      <h2>Nadie lee un sistema entero.<br>Se entra con una pregunta.</h2>
+      <p class="banda__q">Diez recorridos, cada uno con sus paradas en orden. Se abre uno, se
+        avanza parada a parada y se vuelve donde estaba. Nada se pierde de vista.</p>
+    </div>
+    <div class="rutas">@@TARJETAS@@</div>
+  </div>
+
+  <div class="banda banda--mapa">
+    <div class="banda__c">
+      <p class="letra">El recorrido del paciente</p>
+      <h2>Catorce fases, y ninguna se salta</h2>
+      <p class="banda__q">Pulse cualquier fase y se abre entera, con sus minutos, su responsable
+        y lo que produce. Del lector se vuelve al mapa sin perder el sitio.</p>
+    </div>
+    @@MAPA@@
+  </div>
+
+  <div class="banda">
+    <div class="banda__c">
+      <p class="letra">Los hechos</p>
+      <h2>Lo que hay debajo de esas dos frases</h2>
     </div>
     <div class="hechos">@@HECHOS@@</div>
   </div>
 
-  <div class="lienzo">
-    <div class="lienzo__cab">
-      <h2>Cuatro cosas que conviene saber antes de entrar</h2>
-      <p>No están en ningún documento porque en un documento no hacen falta. En un sitio son lo
-        primero que se busca.</p>
+  <div class="banda">
+    <div class="banda__c">
+      <p class="letra">Cuatro cosas antes de entrar</p>
+      <h2>El método, el equipo, la tecnología y el cuidado</h2>
+      <p class="banda__q">No están en ningún documento porque en un documento no hacen falta.
+        En un sitio son lo primero que se busca.</p>
     </div>
     <div class="ideas">@@IDEAS@@</div>
   </div>
 
-  <div class="lienzo">
-    <div class="lienzo__cab">
-      <h2>Los ocho documentos</h2>
-      <p>Cada uno es una sección, con su documento entero dentro. En el índice de arriba se
-        despliegan sus apartados.</p>
-    </div>
-    <div class="puertas">@@PUERTAS@@</div>
-  </div>
-
-  <div class="lienzo">
-    <div class="lienzo__cab">
-      <h2>Lo que no haremos nunca</h2>
-      <p>Un centro se reconoce antes por sus prohibiciones que por su catálogo. Estas seis están
-        escritas y son las que se auditan primero cuando algo va mal.</p>
+  <div class="banda">
+    <div class="banda__c">
+      <p class="letra">Lo que no haremos nunca</p>
+      <h2>Un centro se reconoce antes por sus prohibiciones</h2>
+      <p class="banda__q">Estas seis están escritas y son las que se auditan primero cuando algo
+        va mal.</p>
     </div>
     <ol class="prohibido">@@PRINCIPIOS@@</ol>
   </div>
 
-  <div class="lienzo">
-    <div class="lienzo__cab">
-      <h2>Preguntas que nos hacen</h2>
-      <p>Contestadas con lo que el sistema dice, no con lo que suena bien.</p>
+  <div class="banda">
+    <div class="banda__c">
+      <p class="letra">Preguntas</p>
+      <h2>Contestadas con lo que el sistema dice</h2>
     </div>
     <div class="faq">@@PREGUNTAS@@</div>
   </div>
 
-  <div class="lienzo lienzo--contacto">
+  <div class="banda">
+    <div class="banda__c">
+      <p class="letra">Los ocho documentos</p>
+      <h2>Cada uno es una sección, con su documento entero dentro</h2>
+    </div>
+    <div class="puertas">@@PUERTAS@@</div>
+  </div>
+
+  <div class="banda banda--pie">
     <div class="contacto">
-      <div>
-        <p class="rotulillo">El centro</p>
-        <p class="contacto__d">Centro de Excelencia Implantológica Giraldo<br>
-          Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p>
-      </div>
-      <div>
-        <p class="rotulillo">Esta edición</p>
-        <p class="contacto__d">Versión @VERSION@ · @FECHA@<br>
-          Los ocho documentos comparten número y fecha</p>
-      </div>
-      <div>
-        <p class="rotulillo">Uso</p>
-        <p class="contacto__d">Interno y confidencial. Contiene información económica, laboral y
-          estratégica; no se difunde fuera de la organización sin autorización expresa de la
-          Dirección General.</p>
-      </div>
+      <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
+        Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
+      <div><p class="letra">Esta edición</p><p>Versión @VERSION@ · @FECHA@<br>
+        Los ocho documentos comparten número y fecha</p></div>
+      <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
+        laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
+        de la Dirección General.</p></div>
     </div>
   </div>
+
 </section>
-""".replace("@@HECHOS@@", hechos).replace("@@IDEAS@@", bloques) \
+""".replace("@@TARJETAS@@", tarjetas).replace("@@MAPA@@", mapa_svg) \
+   .replace("@@HECHOS@@", hechos).replace("@@IDEAS@@", ideas) \
+   .replace("@@PUERTAS@@", puertas) \
    .replace("@@PRINCIPIOS@@", "".join(
        '<li><b>%s</b><p>%s</p></li>' % (H.escape(k), H.escape(q)) for k, q in PRINCIPIOS)) \
    .replace("@@PREGUNTAS@@", "".join(
        '<details class="faq__p"><summary>%s</summary><p>%s</p></details>'
        % (H.escape(k), H.escape(q)) for k, q in PREGUNTAS)) \
-   .replace("@@PUERTAS@@", puertas).replace("@TOTAL@", str(total))
+   .replace("@TOTAL@", str(total))
+
+
+def sec_recorridos(rutas):
+    return """
+<section class="sec" id="recorridos" data-sec="recorridos">
+  <header class="cab">
+    <span class="cab__n" aria-hidden="true">10</span>
+    <p class="cab__k letra">Diez maneras de entrar</p>
+    <h1>Elija por dónde<em>quiere empezar</em></h1>
+    <p class="cab__p">Un recorrido es una pregunta convertida en camino. Cinco a nueve paradas,
+      en orden, cada una con lo que hay que mirar y por qué. Se abre una parada, se lee entera,
+      se pasa a la siguiente y se vuelve cuando se quiere: el recorrido no se pierde.</p>
+  </header>
+  <div class="rutas rutas--todas">@@RUTAS@@</div>
+</section>
+""".replace("@@RUTAS@@", rutas)
+
+
+def sec_mapa(mapa_svg):
+    return """
+<section class="sec" id="mapa" data-sec="mapa">
+  <header class="cab">
+    <span class="cab__n" aria-hidden="true">14</span>
+    <p class="cab__k letra">El recorrido del paciente</p>
+    <h1>Catorce fases,<em>de la llamada al mantenimiento</em></h1>
+    <p class="cab__p">Cada fase construye sobre la anterior: la información recogida en la
+      llamada personaliza la recepción, la anamnesis alimenta la presentación y el cierre abre el
+      circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso ninguna
+      fase se salta «por falta de tiempo». Pulse una y se abre entera; del lector se vuelve aquí.</p>
+  </header>
+  @@MAPA@@
+</section>
+""".replace("@@MAPA@@", mapa_svg)
 
 
 CSS = """
 /* ===========================================================================
    EL CENTRO GIRALDO · LA WEB
 
-   Negro, gris y blanco. Un solo color, y solo para lo que importa: el azul de
-   trabajo señala lo que se puede pulsar, lo que está abierto y lo que manda en
-   un dato. Todo lo demás es tipografía, aire y una regla de un píxel.
+   Blanco, mucho blanco. Una tipografía ligera, la letra espaciada en los
+   rótulos pequeños y el aire suficiente entre bloques para que ninguno tenga
+   que competir con el de al lado. Un solo color, y solo para lo que se puede
+   pulsar. Ni sombras, ni esquinas redondeadas, ni cajas dentro de cajas: si
+   hay que separar dos cosas, se separan con espacio.
 
-   La paleta del sistema visual anterior se reescribe entera aquí —incluidos
-   los colores de puesto y los del semáforo, que la literatura trae dentro—
-   para que ni un documento se salga del acuerdo.
+   La paleta del sistema visual de los documentos se reescribe entera aquí
+   —incluidos los colores de puesto y los del semáforo, que la literatura trae
+   dentro— para que ni un documento se salga del acuerdo.
    =========================================================================== */
 :root{
-  --negro:#0B0B0C; --tinta:#111113; --ink:#111113; --ink-2:#4A4A52;
-  --muted:#8A8A93; --linea:#E2E2E5; --linea-2:#EFEFF1;
-  --papel:#FAFAFA; --blanco:#FFFFFF; --gris:#F3F3F4;
-  --azul:#1F45FF; --azul-o:#0A2ED6; --azul-s:rgba(31,69,255,.08); --azul-p:#E8ECFF;
+  --negro:#111112; --tinta:#111112; --ink:#1A1A1D; --ink-2:#55555E;
+  --muted:#8E8E97; --linea:#E6E6E9; --linea-2:#F1F1F3;
+  --papel:#FFFFFF; --blanco:#FFFFFF; --gris:#FAFAFB;
+  --azul:#1F45FF; --azul-o:#0A2ED6; --azul-p:#EDF0FF;
 
-  /* el sistema anterior, remapeado: la literatura viaja con estos nombres */
   --paper:var(--papel); --surface:var(--blanco); --surface-2:var(--gris);
   --line:var(--linea); --line-soft:var(--linea-2);
   --accent:var(--azul); --accent-ink:var(--azul-o); --accent-fuerte:var(--azul-o);
-  --accent-soft:var(--azul-s); --acido:var(--azul-p); --acido-ink:var(--azul-o);
+  --accent-soft:var(--azul-p); --acido:var(--azul-p); --acido-ink:var(--azul-o);
   --signal:var(--tinta); --alerta:var(--negro);
   --rol-recepcion:var(--muted); --rol-doctor:var(--ink-2); --rol-higienista:var(--muted);
   --rol-auxiliar:var(--muted); --rol-rac:var(--ink-2); --rol-direccion:var(--tinta);
   --sem-verde:var(--azul); --sem-amarillo:var(--muted); --sem-naranja:var(--ink-2);
   --sem-rojo:var(--negro);
-  --radio:0px; --radio-s:0px;
-  --sombra-1:none; --sombra-2:none;
-  --nav:3.6rem; --texto:70ch; --ancho:80rem;
-  --e:cubic-bezier(.2,.7,.3,1);
+  --radio:0px; --radio-s:0px; --sombra-1:none; --sombra-2:none;
+
+  --nav:4.2rem; --texto:66ch; --ancho:78rem; --aire:clamp(5rem,10vw,10rem);
+  --e:cubic-bezier(.16,.84,.44,1);
 }
-body{background:var(--papel);color:var(--tinta)}
-*:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--blanco);color:var(--tinta);font-weight:400}
+*:focus-visible{outline:1px solid var(--azul);outline-offset:3px}
 ::selection{background:var(--azul);color:#fff}
-.avance{position:fixed;inset:0 auto auto 0;height:2px;width:0;background:var(--azul);z-index:70;
+
+/* La letra espaciada: el único gesto tipográfico de la casa. Va en los
+   rótulos pequeños, nunca en el texto largo, que se leería peor. */
+.letra{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--muted);display:block}
+
+h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
+.avance{position:fixed;inset:0 auto auto 0;height:1px;width:0;background:var(--azul);z-index:70;
   transition:width .12s linear}
 
-/* --- la barra: nueve entradas y su panel --------------------------------- */
-.nav{position:sticky;top:0;z-index:60;background:var(--blanco);
-  border-bottom:1px solid var(--linea)}
-.nav__f{display:flex;align-items:center;gap:1.2rem;height:var(--nav);padding:0 1.6rem;
-  max-width:var(--ancho);margin:0 auto}
-/* La marca se queda en el nombre: el descriptor largo se comía las dos últimas
-   entradas del índice, y el nombre del centro ya está en la portada, en el pie
-   y en cada documento. */
-/* y si aun así no caben las nueve, la fila se desplaza sola y se avisa con un
-   desvanecido en el borde, que es la única manera honesta de decir «hay más» */
-.nav__l{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 1.4rem),transparent 100%);
-  mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 1.4rem),transparent 100%)}
+/* --- la barra ------------------------------------------------------------- */
+.nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--linea-2)}
+/* La barra ocupa el ancho de la pantalla, no el de la columna de lectura: con
+   el tope de setenta y ocho unidades, nueve entradas y dos botones no cabían
+   ni en una pantalla de mil novecientos. */
+.nav__f{display:flex;align-items:center;gap:1.2rem;height:var(--nav);padding:0 2.4rem}
 .nav__m{display:flex;align-items:baseline;gap:.5rem;text-decoration:none;color:var(--negro);
-  font-size:.95rem;font-weight:600;letter-spacing:-.01em;flex:none;cursor:pointer;
-  background:none;border:0;font-family:inherit}
-.nav__m i{font-style:normal;font-weight:400;color:var(--muted)}
-.nav__m em{font-style:normal;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.12em;
+  font-size:.88rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;flex:none;
+  cursor:pointer;background:none;border:0;font-family:inherit}
+.nav__m em{font-style:normal;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.16em;
   color:var(--muted)}
 .nav__l{display:flex;gap:0;flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;
-  height:100%;justify-content:flex-start}
+  height:100%;justify-content:center}
 .nav__l::-webkit-scrollbar{display:none}
-.nav__l button{
-  font:inherit;font-size:.83rem;cursor:pointer;border:0;background:none;color:var(--ink-2);
-  padding:0 .7rem;white-space:nowrap;position:relative;height:100%;
-}
-.nav__l button::after{content:"";position:absolute;inset:auto .7rem 0 .7rem;height:2px;
-  background:var(--azul);transform:scaleX(0);transition:transform .18s var(--e)}
+.nav__l button{font:inherit;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;border:0;background:none;color:var(--ink-2);padding:0 .55rem;white-space:nowrap;
+  position:relative;height:100%;transition:color .2s var(--e)}
+.nav__l button::after{content:"";position:absolute;inset:auto .55rem 1.2rem .55rem;height:1px;
+  background:var(--azul);transform:scaleX(0);transform-origin:left;
+  transition:transform .28s var(--e)}
 .nav__l button:hover{color:var(--negro)}
-.nav__l button.es-on{color:var(--negro);font-weight:600}
+.nav__l button.es-on{color:var(--negro)}
 .nav__l button.es-on::after,.nav__l button.es-abierto::after{transform:scaleX(1)}
-.nav__b{display:flex;gap:.3rem;flex:none;align-items:center}
-.abrepal{display:flex;align-items:center;gap:.5rem;padding:.36rem .55rem .36rem .7rem;
-  background:var(--gris);border:1px solid var(--linea);color:var(--muted);font:inherit;
-  font-size:.8rem;cursor:pointer}
-.abrepal:hover{border-color:var(--negro);color:var(--negro)}
-.abrepal kbd{font-family:var(--f-mono);font-size:.58rem;background:var(--blanco);
-  border:1px solid var(--linea);padding:.1rem .28rem;line-height:1}
+.nav__b{display:flex;gap:.2rem;flex:none;align-items:center}
+/* Las dos maneras nuevas de entrar, siempre a mano y fuera del índice: el
+   índice es el de los documentos y no se toca. */
+.nav__ruta{font:inherit;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;background:none;border:0;color:var(--negro);padding:.5rem .55rem;
+  transition:color .2s var(--e)}
+.nav__ruta:hover{color:var(--azul)}
+.nav__ruta:first-child{color:var(--azul)}
+.nav__sep{width:1px;height:1.1rem;background:var(--linea);margin:0 .5rem}
+.abrepal{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;background:none;
+  border:0;color:var(--muted);font:inherit;font-size:.62rem;letter-spacing:.16em;
+  text-transform:uppercase;cursor:pointer}
+.abrepal:hover{color:var(--negro)}
 .icono{font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
-  width:1.9rem;height:1.9rem;border:1px solid transparent;background:none;color:var(--muted);
-  line-height:1}
-.icono:hover:not(:disabled){border-color:var(--linea);color:var(--negro)}
-.icono:disabled{opacity:.3;cursor:default}
-
-/* El panel del índice: al pulsar una sección se despliegan sus apartados. */
+  width:2rem;height:2rem;border:0;background:none;color:var(--muted);line-height:1}
+.icono:hover:not(:disabled){color:var(--negro)}
+.icono:disabled{opacity:.25;cursor:default}
 .paneles{border-top:1px solid var(--linea-2);background:var(--blanco);
-  max-height:min(62vh,34rem);overflow-y:auto}
+  max-height:min(62vh,32rem);overflow-y:auto}
 .paneles[hidden]{display:none}
-.sub{max-width:var(--ancho);margin:0 auto;padding:1.6rem 1.6rem 2rem;columns:3;column-gap:2.6rem}
-.sub__g{break-inside:avoid;margin:1.1rem 0 .4rem;font-family:var(--f-mono);font-size:.6rem;
-  letter-spacing:.15em;text-transform:uppercase;color:var(--azul)}
+.sub{max-width:var(--ancho);margin:0 auto;padding:2.4rem 2rem 3rem;columns:3;column-gap:3rem}
+.sub__g{break-inside:avoid;margin:1.4rem 0 .6rem;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--azul)}
 .sub__g:first-child{margin-top:0}
-.sub a{break-inside:avoid;display:flex;gap:.7rem;align-items:baseline;text-decoration:none;
-  color:var(--ink-2);font-size:.86rem;line-height:1.45;padding:.28rem 0}
-.sub a span{font-family:var(--f-mono);font-size:.62rem;color:var(--muted);flex:none;min-width:1.4rem}
+.sub a{break-inside:avoid;display:flex;gap:.9rem;align-items:baseline;text-decoration:none;
+  color:var(--ink-2);font-size:.88rem;line-height:1.5;padding:.32rem 0}
+.sub a span{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);flex:none;min-width:1.5rem}
 .sub a:hover{color:var(--azul)}
 
 /* --- las secciones -------------------------------------------------------- */
-.sec{max-width:var(--ancho);margin:0 auto;padding:4rem 1.6rem 8rem}
+.sec{max-width:var(--ancho);margin:0 auto;padding:var(--aire) 2rem calc(var(--aire) * 1.2)}
 .sitio--vivo .sec{display:none}
-.sitio--vivo .sec.es-on{display:block;animation:entra .2s var(--e)}
+.sitio--vivo .sec.es-on{display:block;animation:entra .3s var(--e)}
 @keyframes entra{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.sitio--vivo .sec.es-on{animation:none}}
 
-.cab{max-width:56rem;padding-bottom:3rem;margin-bottom:4rem;border-bottom:1px solid var(--negro)}
-.cab__k{margin:0;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.18em;
+.cab{position:relative;max-width:54rem;padding-bottom:var(--aire);margin-bottom:0}
+.cab__n{position:absolute;top:-2.4rem;right:0;font-size:clamp(7rem,16vw,14rem);line-height:.75;
+  font-weight:300;letter-spacing:-.06em;color:var(--linea-2);pointer-events:none;user-select:none}
+.cab > *{position:relative;z-index:1}
+.cab h1{font-size:clamp(2.6rem,6vw,4.6rem);line-height:1.06;letter-spacing:-.035em;
+  margin:1.8rem 0 0;font-weight:300;max-width:17ch}
+.cab h1 em{font-style:normal;color:var(--azul);display:block}
+.cab__p{margin:2.4rem 0 0;font-size:1.02rem;line-height:1.85;color:var(--ink-2);max-width:60ch;
+  font-weight:400}
+.cab__p b{color:var(--negro);font-weight:500}
+
+.banda{padding:var(--aire) 0;border-top:1px solid var(--linea-2)}
+.banda:first-child{border-top:0}
+.banda__c{max-width:52rem;margin:0 auto calc(var(--aire) * .55);text-align:center}
+.banda__c h2{font-size:clamp(1.7rem,3.6vw,2.7rem);line-height:1.18;letter-spacing:-.028em;
+  margin:1.2rem 0 0;font-weight:300}
+.banda__q{margin:1.6rem 0 0;color:var(--ink-2);line-height:1.85;max-width:52ch;
+  margin-left:auto;margin-right:auto}
+.lienzo{margin-bottom:calc(var(--aire) * .9)}
+.lienzo__cab{margin-bottom:2.6rem;max-width:54rem}
+.lienzo__cab h2{font-size:clamp(1.3rem,2.4vw,1.8rem);letter-spacing:-.024em;margin:0;
+  font-weight:400}
+.lienzo__cab p{margin:.9rem 0 0;color:var(--ink-2);line-height:1.8;max-width:58ch}
+.rotulillo{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 1.2rem}
+.cifras{display:flex;flex-wrap:wrap;gap:2.6rem;margin:2rem 0 0}
+.cifras b{display:block;font-size:1.5rem;font-weight:300;letter-spacing:-.02em;color:var(--negro)}
+.cifras span{display:block;margin-top:.4rem;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+/* --- portada -------------------------------------------------------------- */
+.portada{text-align:center;padding:calc(var(--aire) * .9) 0 var(--aire)}
+.portada__k{margin:0 0 3rem}
+.portada h1{font-size:clamp(3.4rem,11vw,8rem);line-height:.96;letter-spacing:-.05em;
+  font-weight:300;margin:0}
+.portada h1 em{font-style:normal;color:var(--azul)}
+.portada__l{margin:3rem auto 0;max-width:34ch;font-size:clamp(1rem,1.9vw,1.28rem);
+  line-height:1.75;color:var(--ink-2);font-weight:300}
+.portada__b{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:3.4rem}
+.portada__pie{margin-top:4rem}
+.bt{font:inherit;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;
+  padding:1rem 2rem;border:1px solid var(--linea);background:none;color:var(--negro);
+  transition:border-color .24s var(--e),background .24s var(--e),color .24s var(--e)}
+.bt:hover{border-color:var(--negro)}
+.bt--fuerte{background:var(--negro);border-color:var(--negro);color:#fff}
+.bt--fuerte:hover{background:var(--azul);border-color:var(--azul)}
+
+/* --- los recorridos -------------------------------------------------------- */
+/* Sin rejilla de fondo: con diez tarjetas en cuatro columnas quedaban dos
+   huecos grises al final que parecían un error. Cada tarjeta lleva su raya. */
+.rutas{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:2.4rem 2.6rem}
+.rutacard{font:inherit;text-align:left;cursor:pointer;border:0;background:none;
+  padding:1.6rem 0 1.8rem;display:flex;flex-direction:column;gap:.9rem;
+  border-top:1px solid var(--negro);transition:opacity .26s var(--e)}
+.rutacard::after{content:"";display:block;height:1px;background:var(--azul);width:0;margin-top:.9rem;
+  transition:width .3s var(--e)}
+.rutacard:hover::after{width:100%}
+.rutacard b{font-size:1.06rem;font-weight:400;line-height:1.4;color:var(--negro)}
+.rutacard__m{padding-top:1.4rem;margin-top:auto}
+.rutacard:hover b{color:var(--azul)}
+.rutas--todas{display:block;background:none;border:0}
+.wruta{padding:var(--aire) 0;border-top:1px solid var(--linea-2)}
+.wruta:first-child{border-top:0;padding-top:calc(var(--aire) * .6)}
+.wruta__cab{max-width:52rem;margin-bottom:3rem}
+.wruta__cab h3{font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.16;letter-spacing:-.028em;
+  margin:1.2rem 0 0;font-weight:300}
+.wruta__q{margin:1.4rem 0 2.2rem;color:var(--ink-2);line-height:1.85;max-width:56ch}
+.paradas{list-style:none;margin:0;padding:0;border-top:1px solid var(--linea-2)}
+.parada__b{display:flex;align-items:baseline;gap:1.6rem;width:100%;text-align:left;font:inherit;
+  cursor:pointer;background:none;border:0;border-bottom:1px solid var(--linea-2);
+  padding:1.5rem .4rem;transition:padding .26s var(--e),background .26s var(--e)}
+.parada__b:hover{background:var(--gris);padding-left:1rem}
+.parada__n{font-family:var(--f-mono);font-size:.62rem;color:var(--azul);flex:none;min-width:2rem}
+.parada__t{flex:1;min-width:0}
+.parada__t b{display:block;font-size:1.05rem;font-weight:400;color:var(--negro);line-height:1.4}
+.parada__t span{display:block;margin-top:.5rem;font-size:.88rem;line-height:1.7;color:var(--ink-2);
+  max-width:62ch}
+.parada__i{flex:none;text-align:right}
+
+/* --- el mapa de las catorce fases ------------------------------------------ */
+.mapa14{display:flex;flex-direction:column;gap:calc(var(--aire) * .5)}
+.mapa14__t{margin:0 0 1.8rem;text-align:center}
+.nodos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;
+  background:var(--linea);border-top:1px solid var(--linea);border-left:1px solid var(--linea)}
+.nodos--post{grid-template-columns:repeat(2,minmax(0,1fr));max-width:34rem;margin:0 auto}
+.nodo{font:inherit;text-align:left;cursor:pointer;background:var(--blanco);border:0;
+  border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);margin:0 -1px -1px 0;
+  padding:1.6rem 1.3rem 1.7rem;display:flex;flex-direction:column;gap:.6rem;min-height:8.5rem;
+  transition:background .26s var(--e)}
+.nodo:hover:not(:disabled),.nodo:focus-visible{background:var(--negro)}
+.nodo:hover:not(:disabled) .nodo__r,.nodo:focus-visible .nodo__r{color:#fff}
+.nodo:hover:not(:disabled) .nodo__m,.nodo:focus-visible .nodo__m{color:rgba(255,255,255,.5)}
+.nodo:disabled{cursor:default;opacity:.5}
+.nodo__n{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;color:var(--azul)}
+.nodo__r{font-size:.9rem;font-weight:400;color:var(--negro);line-height:1.4}
+.nodo__m{margin-top:auto;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted)}
-.cab h1{font-size:clamp(2.4rem,5.6vw,4.4rem);line-height:1.02;letter-spacing:-.035em;
-  margin:1.4rem 0 0;font-weight:600;max-width:18ch}
-.cab__p{margin:1.8rem 0 0;font-size:1.05rem;line-height:1.7;color:var(--ink-2);max-width:64ch}
 
-.lienzo{margin-bottom:5.5rem}
-.lienzo__cab{margin-bottom:2rem;max-width:58rem}
-.lienzo__cab h2{font-size:clamp(1.35rem,2.4vw,1.8rem);letter-spacing:-.022em;margin:0;
-  font-weight:600}
-.lienzo__cab p{margin:.7rem 0 0;color:var(--ink-2);line-height:1.65;max-width:62ch}
-.rotulillo{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--muted);margin:0 0 .9rem}
-.cifras{display:flex;flex-wrap:wrap;gap:2.2rem;margin:1.8rem 0 0}
-.cifras b{display:block;font-size:1.6rem;font-weight:600;letter-spacing:-.02em;color:var(--negro)}
-.cifras span{display:block;margin-top:.2rem;font-family:var(--f-mono);font-size:.6rem;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-
-/* --- inicio --------------------------------------------------------------- */
-.whero{padding:3.4rem 0 4rem;border-bottom:1px solid var(--negro);margin-bottom:5rem}
-.whero__k{margin:0;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--muted)}
-.whero h1{font-size:clamp(3.4rem,11vw,8.5rem);line-height:.92;letter-spacing:-.045em;
-  margin:1.6rem 0 0;font-weight:600}
-.whero h1 em{font-style:normal;color:var(--azul)}
-.whero__lema{margin:2.4rem 0 0;font-size:clamp(1.05rem,2.1vw,1.4rem);line-height:1.45;
-  color:var(--ink-2);max-width:38ch}
-.whero__b{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.6rem}
-.bt{font:inherit;font-size:.88rem;cursor:pointer;padding:.7rem 1.4rem;border:1px solid var(--negro);
-  background:none;color:var(--negro);transition:background .16s var(--e),color .16s var(--e)}
-.bt:hover{background:var(--negro);color:#fff}
-.bt--fuerte{background:var(--azul);border-color:var(--azul);color:#fff}
-.bt--fuerte:hover{background:var(--azul-o);border-color:var(--azul-o)}
-
-.hechos{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));
-  gap:1px;background:var(--linea);border:1px solid var(--linea)}
-.hecho{background:var(--blanco);padding:1.6rem 1.5rem 1.7rem}
-.hecho b{display:block;font-size:2.1rem;font-weight:600;letter-spacing:-.03em;color:var(--negro)}
-.hecho__r{margin:.2rem 0 0;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--azul)}
-.hecho__q{margin:.9rem 0 0;font-size:.84rem;line-height:1.55;color:var(--ink-2)}
-
-.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr));gap:3rem 3.4rem}
-.idea__k{margin:0;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--azul)}
-.idea h3{margin:.7rem 0 0;font-size:1.5rem;letter-spacing:-.022em;font-weight:600;max-width:20ch}
-.idea__q{margin:1rem 0 0;color:var(--ink-2);line-height:1.68}
-.idea .cifras{gap:1.6rem;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--linea)}
-.idea .cifras b{font-size:1.15rem}
-
+/* --- hechos, ideas, prohibiciones, preguntas, puertas ---------------------- */
+.hechos{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:3rem 2.6rem}
+.hecho b{display:block;font-size:2.4rem;font-weight:300;letter-spacing:-.035em;color:var(--negro);
+  line-height:1}
+.hecho .letra{margin-top:.9rem;color:var(--azul)}
+.hecho p{margin:1rem 0 0;font-size:.86rem;line-height:1.75;color:var(--ink-2)}
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr));gap:4rem 3.6rem}
+.idea h3{margin:1.2rem 0 0;font-size:1.4rem;letter-spacing:-.022em;font-weight:400;max-width:20ch}
+.idea__q{margin:1.3rem 0 0;color:var(--ink-2);line-height:1.85}
+.idea .cifras{gap:1.8rem;margin-top:2rem;padding-top:1.6rem;border-top:1px solid var(--linea-2)}
+.idea .cifras b{font-size:1.05rem}
+.prohibido{list-style:none;margin:0;padding:0;counter-reset:p;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(20rem,1fr));gap:3.4rem 3rem}
+.prohibido li{counter-increment:p}
+.prohibido li::before{content:counter(p,decimal-leading-zero);font-family:var(--f-mono);
+  font-size:.58rem;letter-spacing:.24em;color:var(--azul);display:block;margin-bottom:1rem}
+.prohibido b{display:block;font-size:1.06rem;font-weight:400;color:var(--negro);line-height:1.4}
+.prohibido p{margin:.9rem 0 0;font-size:.88rem;line-height:1.8;color:var(--ink-2)}
+.faq{max-width:52rem;margin:0 auto;border-top:1px solid var(--linea)}
+.faq__p{border-bottom:1px solid var(--linea-2)}
+.faq__p summary{cursor:pointer;list-style:none;padding:1.6rem 2.6rem 1.6rem 0;position:relative;
+  font-size:1.05rem;font-weight:400;color:var(--negro)}
+.faq__p summary::-webkit-details-marker{display:none}
+.faq__p summary::after{content:"";position:absolute;right:.5rem;top:2.1rem;width:11px;height:1px;
+  background:var(--azul)}
+.faq__p summary::before{content:"";position:absolute;right:1rem;top:1.6rem;width:1px;height:11px;
+  background:var(--azul);transition:transform .24s var(--e)}
+.faq__p[open] summary::before{transform:scaleY(0)}
+.faq__p summary:hover{color:var(--azul)}
+.faq__p p{margin:0 0 1.8rem;font-size:.95rem;line-height:1.85;color:var(--ink-2);max-width:58ch}
 .puertas{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1px;
-  background:var(--linea);border:1px solid var(--linea)}
+  background:var(--linea);border-top:1px solid var(--linea);border-left:1px solid var(--linea)}
 .puerta{font:inherit;text-align:left;cursor:pointer;border:0;background:var(--blanco);
-  padding:1.5rem 1.5rem 1.6rem;display:flex;flex-direction:column;gap:.2rem;
-  transition:background .16s var(--e)}
+  padding:2rem 1.7rem 2.2rem;display:flex;flex-direction:column;gap:.8rem;
+  border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);margin:0 -1px -1px 0;
+  transition:background .26s var(--e)}
+.puerta b{font-size:1.05rem;font-weight:400;color:var(--negro);line-height:1.4}
+.puerta__q{font-size:.85rem;line-height:1.7;color:var(--ink-2)}
+.puerta__m{margin-top:auto;padding-top:1.4rem}
 .puerta:hover{background:var(--negro)}
 .puerta:hover b,.puerta:hover .puerta__q{color:#fff}
-.puerta:hover .puerta__n,.puerta:hover .puerta__m{color:var(--azul-p)}
-.puerta__n{font-family:var(--f-mono);font-size:.62rem;color:var(--azul)}
-.puerta b{font-size:1.1rem;font-weight:600;letter-spacing:-.014em;color:var(--negro);margin-top:.4rem}
-.puerta__q{margin-top:.5rem;font-size:.83rem;line-height:1.5;color:var(--ink-2)}
-.puerta__m{margin-top:1.2rem;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.1em;
-  color:var(--muted)}
+.puerta:hover .letra{color:rgba(255,255,255,.55)}
+.banda--pie{border-top:1px solid var(--negro)}
+.contacto{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:3rem}
+.contacto p:not(.letra){margin:1rem 0 0;font-size:.88rem;line-height:1.85;color:var(--ink-2)}
 
-/* Lo que no se hará nunca: una lista numerada, en negativo. */
-/* Seis en tres columnas: dos filas exactas. Con cuatro columnas quedaban dos
-   huecos grises al final, que parecían un error y no un final. */
-.prohibido{list-style:none;margin:0;padding:0;counter-reset:p;
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:1px;
-  background:var(--linea);border:1px solid var(--linea)}
-.prohibido li{counter-increment:p;background:var(--blanco);padding:1.5rem 1.5rem 1.6rem;
-  position:relative}
-.prohibido li::before{content:counter(p,decimal-leading-zero);font-family:var(--f-mono);
-  font-size:.6rem;color:var(--azul);display:block;margin-bottom:.7rem}
-.prohibido b{display:block;font-size:1.02rem;font-weight:600;color:var(--negro);line-height:1.35}
-.prohibido p{margin:.6rem 0 0;font-size:.86rem;line-height:1.6;color:var(--ink-2)}
-
-/* Las preguntas: se abren de una en una y sin guion. */
-.faq{border-top:1px solid var(--negro);max-width:58rem}
-.faq__p{border-bottom:1px solid var(--linea)}
-.faq__p summary{cursor:pointer;list-style:none;padding:1.1rem 2.4rem 1.1rem 0;position:relative;
-  font-size:1.02rem;font-weight:600;color:var(--negro)}
-.faq__p summary::-webkit-details-marker{display:none}
-.faq__p summary::after{content:"+";position:absolute;right:.4rem;top:1rem;font-family:var(--f-mono);
-  color:var(--azul);font-size:1.1rem;line-height:1}
-.faq__p[open] summary::after{content:"−"}
-.faq__p summary:hover{color:var(--azul)}
-.faq__p p{margin:0 0 1.3rem;font-size:.95rem;line-height:1.68;color:var(--ink-2);max-width:60ch}
-
-.lienzo--contacto{border-top:1px solid var(--negro);padding-top:2.6rem}
-.contacto{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2.4rem}
-.contacto__d{margin:0;font-size:.88rem;line-height:1.65;color:var(--ink-2)}
-
-/* --- el reloj y los carriles ---------------------------------------------- */
-.reloj__barra{display:flex;height:5.4rem;border:1px solid var(--negro)}
+/* --- los bloques de datos de cada sección --------------------------------- */
+.reloj__barra{display:flex;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  height:5rem}
 .reloj__t{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;
-  padding:.6rem .55rem;text-decoration:none;color:var(--ink-2);border-right:1px solid var(--linea);
+  padding:.7rem .6rem;text-decoration:none;color:var(--ink-2);border-right:1px solid var(--linea-2);
   overflow:hidden;min-width:0;box-sizing:border-box;flex-shrink:1;
-  transition:background .16s var(--e),color .16s var(--e)}
+  transition:background .24s var(--e),color .24s var(--e)}
 .reloj__t:last-child{border-right:0}
-.reloj__t:hover{background:var(--azul);color:#fff}
-.reloj__t:hover .reloj__n,.reloj__t:hover .reloj__m{color:rgba(255,255,255,.75)}
-.reloj__n{font-family:var(--f-mono);font-size:.6rem;color:var(--azul);font-weight:600}
-.reloj__r{font-size:.72rem;line-height:1.2;font-weight:500;overflow:hidden;text-overflow:ellipsis;
+.reloj__t:hover{background:var(--negro);color:#fff}
+.reloj__t:hover .reloj__n{color:var(--azul-p)}
+.reloj__t:hover .reloj__m{color:rgba(255,255,255,.6)}
+.reloj__n{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.14em;color:var(--azul)}
+.reloj__r{font-size:.72rem;line-height:1.25;overflow:hidden;text-overflow:ellipsis;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal}
-.reloj__m{font-family:var(--f-mono);font-size:.58rem;color:var(--muted)}
-.reloj__eje{position:relative;height:1.3rem;margin-top:.45rem}
+.reloj__m{font-family:var(--f-mono);font-size:.56rem;color:var(--muted)}
+.reloj__eje{position:relative;height:1.4rem;margin-top:.6rem}
 .reloj__eje span{position:absolute;transform:translateX(-50%);font-family:var(--f-mono);
-  font-size:.58rem;color:var(--muted)}
+  font-size:.56rem;letter-spacing:.14em;color:var(--muted)}
 .reloj__eje span:first-child{transform:none}
 .reloj__eje span:last-child{transform:translateX(-100%)}
-.carriles{display:flex;flex-direction:column;gap:.35rem}
-.carril{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1rem;align-items:center}
-.carril__q{margin:0;font-size:.8rem;color:var(--ink-2);text-align:right}
-.carril__p{position:relative;height:2rem;border:1px solid var(--linea)}
-.carril__b{position:absolute;top:.2rem;bottom:.2rem;background:var(--gris);
-  border:1px solid var(--linea);font-family:var(--f-mono);font-size:.58rem;color:var(--muted);
-  display:flex;align-items:center;justify-content:center;text-decoration:none}
-.carril__b.es-jefe{background:var(--azul);border-color:var(--azul);color:#fff}
-.carril__b:hover{outline:2px solid var(--negro);outline-offset:1px;z-index:2}
-
-/* --- puestos --------------------------------------------------------------- */
-.puestosel{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--negro);margin-bottom:3rem}
+.carriles{display:flex;flex-direction:column;gap:.5rem}
+.carril{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1.4rem;align-items:center}
+.carril__q{margin:0;font-size:.78rem;color:var(--ink-2);text-align:right}
+.carril__p{position:relative;height:1.9rem;border-bottom:1px solid var(--linea-2)}
+.carril__b{position:absolute;top:.25rem;bottom:.25rem;background:var(--linea-2);border:0;
+  font-family:var(--f-mono);font-size:.56rem;color:var(--muted);display:flex;align-items:center;
+  justify-content:center;text-decoration:none;transition:background .24s var(--e)}
+.carril__b.es-jefe{background:var(--negro);color:#fff}
+.carril__b:hover{background:var(--azul);color:#fff}
+.puestosel{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--linea);
+  margin-bottom:3.6rem}
 .puestobt{font:inherit;cursor:pointer;text-align:left;background:none;border:0;
-  border-right:1px solid var(--linea);padding:.85rem 1.3rem;flex:1 1 auto;
-  transition:background .16s var(--e)}
-.puestobt:last-child{border-right:0}
-.puestobt b{display:block;font-size:.92rem;font-weight:600;color:var(--negro)}
-.puestobt span{display:block;margin-top:.15rem;font-family:var(--f-mono);font-size:.58rem;
-  color:var(--muted)}
-.puestobt:hover{background:var(--gris)}
-.puestobt.es-on{background:var(--negro)}
-.puestobt.es-on b{color:#fff}
-.puestobt.es-on span{color:var(--azul-p)}
-.puesto__k{margin:0;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--azul)}
-.puesto h3{margin:.7rem 0 0;font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.024em;font-weight:600}
-.puesto__q{margin:1rem 0 0;font-size:1rem;line-height:1.65;color:var(--ink-2);max-width:56ch}
-.puesto .cifras{margin:2rem 0 2.6rem;padding:1.4rem 0;border-top:1px solid var(--linea);
-  border-bottom:1px solid var(--linea)}
-.wraci{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:2px}
-.wraci__c{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:var(--gris);cursor:help}
-.wraci__f{font-family:var(--f-mono);font-size:.52rem;color:var(--muted)}
-.wraci__p{font-family:var(--f-mono);font-size:.7rem;font-weight:600;color:var(--muted)}
-.wraci__c.wes-ra{background:var(--azul)}
-.wraci__c.wes-r{background:var(--azul);opacity:.72}
-.wraci__c.wes-a{background:var(--negro)}
+  padding:1.1rem 1.5rem 1.2rem;flex:1 1 auto;position:relative;
+  transition:color .24s var(--e)}
+.puestobt::after{content:"";position:absolute;inset:auto 0 -1px 0;height:1px;background:var(--negro);
+  transform:scaleX(0);transition:transform .28s var(--e)}
+.puestobt b{display:block;font-size:.92rem;font-weight:400;color:var(--ink-2)}
+.puestobt span{display:block;margin-top:.4rem;font-family:var(--f-mono);font-size:.55rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.puestobt:hover b{color:var(--negro)}
+.puestobt.es-on::after{transform:scaleX(1)}
+.puestobt.es-on b{color:var(--negro)}
+.puesto h3{margin:1.2rem 0 0;font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.026em;
+  font-weight:300}
+.puesto__q{margin:1.4rem 0 0;font-size:1rem;line-height:1.85;color:var(--ink-2);max-width:54ch}
+.puesto .cifras{margin:2.6rem 0 3.4rem;padding:1.8rem 0;border-top:1px solid var(--linea-2);
+  border-bottom:1px solid var(--linea-2)}
+.wraci{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px}
+.wraci__c{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;background:var(--gris);cursor:help}
+.wraci__f{font-family:var(--f-mono);font-size:.5rem;color:var(--muted)}
+.wraci__p{font-family:var(--f-mono);font-size:.68rem;color:var(--muted)}
+.wraci__c.wes-ra{background:var(--negro)}
+.wraci__c.wes-r{background:var(--azul)}
+.wraci__c.wes-a{background:var(--ink-2)}
 .wraci__c.wes-ra .wraci__p,.wraci__c.wes-r .wraci__p,.wraci__c.wes-a .wraci__p,
 .wraci__c.wes-ra .wraci__f,.wraci__c.wes-r .wraci__f,.wraci__c.wes-a .wraci__f{color:#fff}
 .wraci__c.wes-c{background:var(--azul-p)}
 .wraci__c.wes-c .wraci__p{color:var(--azul-o)}
 .wraci__c.wes-i{background:var(--blanco);border:1px solid var(--linea)}
-.wraci__c.wes-no{background:none;border:1px dashed var(--linea)}
+.wraci__c.wes-no{background:none;border:1px dashed var(--linea-2)}
 .wraci__c.wes-no .wraci__p{color:var(--linea)}
-.leyenda{margin:1rem 0 0;font-size:.76rem;color:var(--muted);line-height:1.6}
+.leyenda{margin:1.4rem 0 0;font-size:.76rem;color:var(--muted);line-height:1.8}
 .leyenda b{font-family:var(--f-mono);color:var(--negro)}
-.puesto__cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(19rem,1fr));gap:2.6rem;
-  margin-top:3rem}
-.lista2{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.lista2 li{font-size:.88rem;line-height:1.5;color:var(--ink-2);padding:.42rem 0;
+.puesto__cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(19rem,1fr));gap:3.4rem;
+  margin-top:3.6rem}
+.lista2{list-style:none;margin:0;padding:0}
+.lista2 li{font-size:.88rem;line-height:1.6;color:var(--ink-2);padding:.7rem 0;
   border-bottom:1px solid var(--linea-2)}
 .lista2 li:last-child{border-bottom:0}
 .lista2 .es-vacio{color:var(--muted)}
-
-/* --- mapa de fases ---------------------------------------------------------- */
+.puesto__ir{margin:3rem 0 0}
 .wmapa{display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:1px;
-  background:var(--linea);border:1px solid var(--linea)}
-.mfase{background:var(--blanco);padding:.9rem 1rem 1rem;text-decoration:none;display:flex;
-  flex-direction:column;gap:.15rem;transition:background .16s var(--e)}
+  background:var(--linea);border-top:1px solid var(--linea);border-left:1px solid var(--linea)}
+.mfase{background:var(--blanco);padding:1.2rem 1.2rem 1.4rem;text-decoration:none;display:flex;
+  flex-direction:column;gap:.3rem;border-right:1px solid var(--linea);
+  border-bottom:1px solid var(--linea);margin:0 -1px -1px 0;transition:background .24s var(--e)}
 .mfase:hover{background:var(--negro)}
 .mfase:hover b{color:#fff}
-.mfase:hover .mfase__r{color:var(--azul-p)}
-.mfase__n{font-family:var(--f-mono);font-size:.6rem;color:var(--azul)}
-.mfase b{font-size:.88rem;font-weight:600;color:var(--negro);line-height:1.3;margin-top:.3rem}
-.mfase__r{font-family:var(--f-mono);font-size:.56rem;color:var(--muted);margin-top:.4rem}
-
-/* --- marketing --------------------------------------------------------------- */
+.mfase:hover .mfase__r{color:rgba(255,255,255,.5)}
+.mfase__n{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;color:var(--azul)}
+.mfase b{font-size:.88rem;font-weight:400;color:var(--negro);line-height:1.4;margin-top:.4rem}
+.mfase__r{font-family:var(--f-mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-top:.6rem}
 .estados{display:grid;grid-template-columns:repeat(auto-fill,minmax(13rem,1fr));gap:1px;
-  background:var(--linea);border:1px solid var(--linea)}
+  background:var(--linea);border-top:1px solid var(--linea);border-left:1px solid var(--linea)}
 .estado{font:inherit;text-align:left;cursor:pointer;background:var(--blanco);border:0;
-  padding:1rem 1.1rem 1.2rem;transition:background .16s var(--e)}
+  padding:1.3rem 1.3rem 1.5rem;border-right:1px solid var(--linea);
+  border-bottom:1px solid var(--linea);margin:0 -1px -1px 0;transition:background .24s var(--e)}
 .estado:hover{background:var(--gris)}
-.estado.es-on{background:var(--azul)}
+.estado.es-on{background:var(--negro)}
 .estado.es-on b,.estado.es-on p{color:#fff}
-.estado.es-on .estado__n{color:rgba(255,255,255,.7)}
-.estado__n{font-family:var(--f-mono);font-size:.58rem;color:var(--azul)}
-.estado b{display:block;margin-top:.25rem;font-size:.95rem;color:var(--negro)}
-.estado p{margin:.4rem 0 0;font-size:.79rem;line-height:1.45;color:var(--ink-2)}
-.filtros{display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-end;margin-bottom:1.4rem}
-.filtro{display:flex;flex-direction:column;gap:.3rem}
-.filtro span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.14em;
+.estado.es-on .estado__n{color:var(--azul-p)}
+.estado__n{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.18em;color:var(--azul)}
+.estado b{display:block;margin-top:.5rem;font-size:.95rem;font-weight:400;color:var(--negro)}
+.estado p{margin:.6rem 0 0;font-size:.79rem;line-height:1.65;color:var(--ink-2)}
+.filtros{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:flex-end;margin-bottom:2rem}
+.filtro{display:flex;flex-direction:column;gap:.5rem}
+.filtro span{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.22em;
   text-transform:uppercase;color:var(--muted)}
-.filtro select{font:inherit;font-size:.84rem;padding:.42rem .6rem;border:1px solid var(--linea);
-  background:var(--blanco);color:var(--tinta)}
-.limpiar{font:inherit;font-size:.8rem;cursor:pointer;border:1px solid var(--linea);background:none;
-  color:var(--muted);padding:.42rem .9rem}
-.limpiar:hover{border-color:var(--negro);color:var(--negro)}
-.cuentafiltro{font-family:var(--f-mono);font-size:.64rem;color:var(--muted);margin-left:auto}
-.tablawrap{overflow-x:auto;border:1px solid var(--linea)}
-.acciones{width:100%;border-collapse:collapse;font-size:.85rem;min-width:52rem;background:var(--blanco)}
-.acciones th{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);text-align:left;padding:.8rem 1rem;border-bottom:1px solid var(--negro);
+.filtro select{font:inherit;font-size:.84rem;padding:.5rem .2rem;border:0;
+  border-bottom:1px solid var(--linea);background:none;color:var(--tinta)}
+.filtro select:focus{border-bottom-color:var(--azul);outline:none}
+.limpiar{font:inherit;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;
+  border:0;border-bottom:1px solid var(--linea);background:none;color:var(--muted);padding:.5rem 0}
+.limpiar:hover{color:var(--negro);border-bottom-color:var(--negro)}
+.cuentafiltro{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.16em;color:var(--muted);
+  margin-left:auto}
+.tablawrap{overflow-x:auto}
+.acciones{width:100%;border-collapse:collapse;font-size:.86rem;min-width:52rem}
+.acciones th{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);text-align:left;padding:1rem .8rem;border-bottom:1px solid var(--negro);
   background:var(--blanco);position:sticky;top:0}
-.acciones td{padding:.85rem 1rem;border-bottom:1px solid var(--linea-2);vertical-align:top}
-.acciones tr:last-child td{border-bottom:0}
+.acciones td{padding:1.1rem .8rem;border-bottom:1px solid var(--linea-2);vertical-align:top}
 .acciones tr:hover td{background:var(--gris)}
-.acc__cod{font-family:var(--f-mono);font-size:.68rem;color:var(--azul);white-space:nowrap}
-.acc__q b{display:block;font-weight:500;color:var(--negro);line-height:1.45}
-.acc__q span{display:block;margin-top:.3rem;font-size:.74rem;color:var(--muted);line-height:1.4}
-.acc__gana{color:var(--ink-2);line-height:1.45;max-width:22rem}
+.acc__cod{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;color:var(--azul);
+  white-space:nowrap}
+.acc__q b{display:block;font-weight:400;color:var(--negro);line-height:1.55}
+.acc__q span{display:block;margin-top:.5rem;font-size:.74rem;color:var(--muted);line-height:1.6}
+.acc__gana{color:var(--ink-2);line-height:1.6;max-width:22rem}
 .acc__meta{white-space:nowrap}
-.etq{display:inline-block;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.06em;
-  color:var(--ink-2);background:var(--gris);padding:.16rem .4rem;margin:0 .25rem .25rem 0}
-.etq--verde{background:var(--azul-p);color:var(--azul-o)}
-.etq--amarillo{background:var(--gris);color:var(--ink-2)}
-.etq--naranja{background:var(--negro);color:#fff}
-.acc__ef{white-space:nowrap;font-family:var(--f-mono);font-size:.7rem;color:var(--muted)}
-.barrita{display:inline-block;width:2.6rem;height:4px;background:var(--linea);margin-right:.45rem;
+.etq{display:inline-block;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.1em;
+  color:var(--ink-2);border:1px solid var(--linea);padding:.2rem .45rem;margin:0 .3rem .3rem 0}
+.etq--verde{border-color:var(--azul);color:var(--azul)}
+.etq--naranja{background:var(--negro);border-color:var(--negro);color:#fff}
+.acc__ef{white-space:nowrap;font-family:var(--f-mono);font-size:.68rem;color:var(--muted)}
+.barrita{display:inline-block;width:2.6rem;height:1px;background:var(--linea);margin-right:.6rem;
   position:relative;vertical-align:middle}
-.barrita::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--v);background:var(--azul)}
-.campanas{display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1px;
-  background:var(--linea);border:1px solid var(--linea)}
-.wcampana{background:var(--blanco);padding:1.4rem 1.4rem 1.5rem}
-.wcampana__k{margin:0;font-family:var(--f-mono);font-size:.58rem;color:var(--azul)}
-.wcampana h4{margin:.4rem 0 0;font-size:1.02rem;letter-spacing:-.014em;font-weight:600}
-.wcampana__r{margin:.7rem 0 0;font-size:.84rem;line-height:1.55;color:var(--ink-2)}
-.wcampana__c{display:flex;gap:1.4rem;margin:1.2rem 0 0;padding-top:1rem;
-  border-top:1px solid var(--linea)}
-.wcampana__c dt{font-family:var(--f-mono);font-size:.54rem;letter-spacing:.12em;
+.barrita::before{content:"";position:absolute;inset:-1px auto -1px 0;width:var(--v);
+  background:var(--azul)}
+.wcampanas{display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:3.4rem 3rem}
+.wcampana__k{margin:0;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.22em;
+  color:var(--azul)}
+.wcampana h4{margin:.7rem 0 0;font-size:1.05rem;letter-spacing:-.014em;font-weight:400}
+.wcampana__r{margin:.9rem 0 0;font-size:.85rem;line-height:1.75;color:var(--ink-2)}
+.wcampana__c{display:flex;gap:1.8rem;margin:1.6rem 0 0;padding-top:1.2rem;
+  border-top:1px solid var(--linea-2)}
+.wcampana__c dt{font-family:var(--f-mono);font-size:.52rem;letter-spacing:.2em;
   text-transform:uppercase;color:var(--muted)}
-.wcampana__c dd{margin:.25rem 0 0;font-size:1rem;font-weight:600;color:var(--negro)}
-
-/* --- puente ----------------------------------------------------------------- */
-.puente{display:flex;flex-direction:column;gap:.4rem}
-.puente__t{height:3rem;padding:.5rem .9rem;background:var(--gris);border-left:3px solid var(--azul);
-  width:max(var(--w),13rem);display:flex;flex-direction:column;justify-content:center}
-.puente__r{font-size:.85rem;font-weight:600;color:var(--negro)}
-.puente__v{font-family:var(--f-mono);font-size:.68rem;color:var(--ink-2)}
-.puente__pie{margin:1.4rem 0 0;font-size:.88rem;color:var(--ink-2)}
+.wcampana__c dd{margin:.4rem 0 0;font-size:1rem;font-weight:400;color:var(--negro)}
+.puente{display:flex;flex-direction:column;gap:.8rem}
+.puente__t{height:3.2rem;padding:.6rem 1.2rem;background:var(--gris);
+  border-left:1px solid var(--azul);width:max(var(--w),13rem);display:flex;flex-direction:column;
+  justify-content:center}
+.puente__r{font-size:.88rem;color:var(--negro)}
+.puente__v{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-2)}
+.puente__pie{margin:2rem 0 0;font-size:.88rem;line-height:1.8;color:var(--ink-2)}
 .puente__pie b{color:var(--negro)}
-
-/* --- el índice de la sección y sus apartados --------------------------------- */
-.lienzo--indice .idx{columns:2;column-gap:3rem;border-top:1px solid var(--linea);padding-top:1.6rem}
-.idx__g{break-inside:avoid;margin:1.4rem 0 .5rem;font-family:var(--f-mono);font-size:.6rem;
-  letter-spacing:.15em;text-transform:uppercase;color:var(--azul)}
+.lienzo--indice .idx{columns:2;column-gap:3.6rem;border-top:1px solid var(--linea);
+  padding-top:2.2rem}
+.idx__g{break-inside:avoid;margin:1.8rem 0 .7rem;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--azul)}
 .idx__g:first-child{margin-top:0}
-.idx__a{break-inside:avoid;display:flex;gap:.8rem;align-items:baseline;text-decoration:none;
-  color:var(--ink-2);padding:.35rem 0}
-.idx__a span{font-family:var(--f-mono);font-size:.64rem;color:var(--muted);flex:none;min-width:1.5rem}
-.idx__a b{font-size:.92rem;font-weight:500;line-height:1.45}
+.idx__a{break-inside:avoid;display:flex;gap:1rem;align-items:baseline;text-decoration:none;
+  color:var(--ink-2);padding:.45rem 0}
+.idx__a span{font-family:var(--f-mono);font-size:.62rem;color:var(--muted);flex:none;min-width:1.6rem}
+.idx__a b{font-size:.92rem;font-weight:400;line-height:1.55}
 .idx__a:hover b{color:var(--azul)}
-
-.hojas{border-top:1px solid var(--negro);padding-top:3rem}
-.sitio--vivo .hoja{display:none}
-.sitio--vivo .hoja.es-on{display:block}
-.hoja{max-width:var(--texto)}
-.hoja__k{margin:0 0 2rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted);display:flex;gap:.7rem;align-items:baseline}
-.hoja__k span{color:var(--azul)}
-.hoja .wrap{padding:0;max-width:none}
-.hoja .section{padding:0;background:none;border:0}
-.hoja .section + .section{margin-top:3.4rem;padding-top:3.4rem;border-top:1px solid var(--linea-2)}
-.hoja .reveal{opacity:1!important;transform:none!important}
-.hoja .phase__grid{grid-template-columns:minmax(0,1fr)}
-.hoja .phase__meta{position:static}
-.hoja .tablewrap{overflow-x:auto}
-.ref{color:var(--ink-2);border-bottom:1px dotted var(--linea)}
-/* Un enlace que cambia de sección lo dice: al lado del texto va el nombre de
-   la sección a la que lleva. Nadie pulsa a ciegas y nadie aparece en un sitio
-   que no esperaba. */
-.salta{text-decoration:none;color:var(--azul);border-bottom:1px solid var(--azul-p)}
-.salta:hover{border-bottom-color:var(--azul)}
-.salta__d{font-style:normal;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);margin-left:.45rem;white-space:nowrap}
-.salta__d::before{content:"→ "}
-.salta:hover .salta__d{color:var(--azul)}
-.puesto__ir{margin:2.6rem 0 0}
-.puesto__ir a{font-size:.9rem}
+/* Los apartados se leen en el lector, no en la página. Sin guiones se ven
+   todos seguidos, que es el documento entero. */
+.sitio--vivo .hojas{display:none}
+.ref{color:var(--ink-2)}
 .gl{font:inherit;cursor:help;background:none;border:0;padding:0;color:inherit;
-  border-bottom:1px solid var(--azul)}
-.gl:hover{color:var(--azul)}
-.remate{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:space-between;
-  margin-top:4rem;padding-top:1.6rem;border-top:1px solid var(--linea)}
-.remate a{text-decoration:none;font-size:.85rem;color:var(--ink-2);display:inline-flex;gap:.5rem}
-.remate a:hover{color:var(--azul)}
-.remate a i{font-style:normal;font-family:var(--f-mono);font-size:.64rem;color:var(--muted)}
-.wpasos{display:flex;gap:.4rem}
-.wpasos button{font:inherit;cursor:pointer;width:2rem;height:2rem;border:1px solid var(--linea);
-  background:none;color:var(--ink-2)}
-.wpasos button:hover:not(:disabled){border-color:var(--negro);color:var(--negro)}
-.wpasos button:disabled{opacity:.3;cursor:default}
+  border-bottom:1px solid var(--azul-p)}
+.gl:hover{border-bottom-color:var(--azul);color:var(--azul)}
+.salta{text-decoration:none;color:var(--azul)}
+.salta__d{font-style:normal;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-left:.5rem;white-space:nowrap}
+.salta__d::before{content:"→ "}
 
-/* ---------------------------------------------------------------------------
-   MOVIMIENTO
-   Poco y con motivo: los bloques entran una vez al aparecer, los enlaces
-   crecen su raya al pasar por encima y la barra de lectura dice en qué
-   apartado se está. Nada gira, nada rebota y todo se apaga si el sistema pide
-   menos movimiento.
-   --------------------------------------------------------------------------- */
-.entra-al-ver{opacity:0;transform:translateY(10px)}
-.wve{opacity:1;transform:none;transition:opacity .5s var(--e),transform .5s var(--e)}
-@media(prefers-reduced-motion:reduce){
-  .entra-al-ver{opacity:1;transform:none}
-  .wve{transition:none}
-}
+/* ===========================================================================
+   EL LECTOR
+   Cualquier cosa se abre encima de lo que se estaba haciendo, se lee entera y
+   se cierra: se vuelve exactamente donde se estaba. Si se abrió desde un
+   recorrido, las flechas avanzan por sus paradas y arriba se ve cuántas
+   quedan; si se abrió desde el mapa, avanzan por las catorce fases.
+   =========================================================================== */
+.lector{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;background:#fff;
+  animation:sube .28s var(--e)}
+.lector[hidden]{display:none}
+@keyframes sube{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.lector{animation:none}}
+.lector__cab{display:flex;align-items:center;gap:1.4rem;padding:0 2rem;height:var(--nav);
+  border-bottom:1px solid var(--linea-2);flex:none}
+.lector__volver{font:inherit;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  cursor:pointer;background:none;border:0;color:var(--negro);display:flex;align-items:center;
+  gap:.7rem;padding:0}
+.lector__volver:hover{color:var(--azul)}
+.lector__q{flex:1;min-width:0;text-align:center;font-family:var(--f-mono);font-size:.6rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.lector__nav{display:flex;gap:.2rem;align-items:center;flex:none}
+.lector__paso{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.16em;color:var(--muted);
+  margin-right:.7rem;white-space:nowrap}
+.lector__barra{height:1px;background:var(--linea-2);flex:none}
+.lector__barra i{display:block;height:100%;background:var(--azul);width:0;
+  transition:width .3s var(--e)}
+.lector__cuerpo{flex:1;overflow-y:auto;overscroll-behavior:contain}
+.lector__in{max-width:var(--texto);margin:0 auto;padding:calc(var(--aire) * .6) 2rem
+  calc(var(--aire) * .9)}
+/* El rótulo del apartado ya está en la cabecera del lector, con su documento
+   y su parte: repetirlo dentro es decir dos veces lo mismo. */
+.lector__in .hoja__k{display:none}
+.lector__k{margin:0 0 2.4rem}
+.lector__in h2,.lector__in h3{font-weight:300;letter-spacing:-.028em}
+.lector__in .wrap{padding:0;max-width:none}
+.lector__in .section{padding:0;background:none;border:0}
+.lector__in .section + .section{margin-top:4rem;padding-top:4rem;border-top:1px solid var(--linea-2)}
+.lector__in .reveal{opacity:1!important;transform:none!important}
+.lector__in .phase__grid{grid-template-columns:minmax(0,1fr)}
+.lector__in .phase__meta{position:static}
+.lector__in .tablewrap{overflow-x:auto}
+.lector__in a:not(.salta):not(.gl){color:var(--negro);text-decoration:none;
+  border-bottom:1px solid var(--azul-p);transition:border-color .2s var(--e),color .2s var(--e)}
+.lector__in a:not(.salta):not(.gl):hover{color:var(--azul);border-bottom-color:var(--azul)}
+.lector__pie{border-top:1px solid var(--linea-2);padding:2.4rem 2rem;max-width:var(--texto);
+  margin:0 auto;display:flex;gap:1rem;justify-content:space-between;align-items:center;
+  flex-wrap:wrap}
+.lector__sig{font:inherit;font-size:.9rem;cursor:pointer;background:none;border:0;
+  color:var(--negro);text-align:left;padding:0;display:flex;flex-direction:column;gap:.4rem}
+.lector__sig .letra{color:var(--azul)}
+.lector__sig:hover b{color:var(--azul)}
+.lector__sig b{font-weight:400}
 
-/* El numeral de la sección: dos cifras enormes al fondo de la cabecera, que
-   dicen dónde está uno sin ocupar una línea de texto. */
-.cab{position:relative;overflow:hidden}
-.cab__n{position:absolute;top:-1.6rem;right:-.6rem;font-size:clamp(6rem,14vw,11rem);
-  line-height:.8;font-weight:600;letter-spacing:-.06em;color:var(--linea-2);
-  pointer-events:none;user-select:none;z-index:0}
-.cab > *{position:relative;z-index:1}
-
-/* La barra de lectura: aparece cuando hay un apartado abierto y se queda
-   pegada bajo el índice. Dice qué se está leyendo y cuántos quedan. */
-.leyendo{position:sticky;top:var(--nav);z-index:40;display:flex;align-items:center;gap:1rem;
-  padding:.6rem 0;margin:0 0 2rem;background:var(--papel);border-bottom:1px solid var(--linea);
-  font-size:.82rem;color:var(--muted)}
-.leyendo b{color:var(--negro);font-weight:600;white-space:nowrap;overflow:hidden;
-  text-overflow:ellipsis}
-.leyendo__n{font-family:var(--f-mono);font-size:.66rem;margin-left:auto;white-space:nowrap}
-.leyendo__p{flex:none;width:5rem;height:2px;background:var(--linea);position:relative}
-.leyendo__p i{position:absolute;inset:0 auto 0 0;background:var(--azul);width:var(--v,0%)}
-
-/* Los enlaces del cuerpo: la raya crece de izquierda a derecha. */
-.hoja a:not(.salta):not(.gl),.lienzo__cab a{
-  color:var(--negro);text-decoration:none;background-image:linear-gradient(var(--azul),var(--azul));
-  background-size:0% 1px;background-position:0 100%;background-repeat:no-repeat;
-  border-bottom:1px solid var(--linea);transition:background-size .22s var(--e),color .16s var(--e);
-}
-.hoja a:not(.salta):not(.gl):hover,.lienzo__cab a:hover{color:var(--azul);background-size:100% 1px}
-
-/* --- lo que flota ------------------------------------------------------------ */
-.velo{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-start;justify-content:center;
-  padding:8vh 1.2rem 1.2rem;background:rgba(11,11,12,.42);animation:vela .14s ease}
+/* --- lo que flota ---------------------------------------------------------- */
+.velo{position:fixed;inset:0;z-index:95;display:flex;align-items:flex-start;justify-content:center;
+  padding:10vh 1.2rem 1.2rem;background:rgba(17,17,18,.5);animation:vela .18s ease}
 @keyframes vela{from{opacity:0}to{opacity:1}}
 .velo[hidden]{display:none}
-.flota{width:min(44rem,100%);max-height:82vh;display:flex;flex-direction:column;overflow:hidden;
-  background:var(--blanco);border:1px solid var(--negro);animation:sube .16s var(--e)}
-@keyframes sube{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.velo,.flota{animation:none}}
-.flota__cab{display:flex;align-items:center;gap:.7rem;padding:.9rem 1.1rem;
-  border-bottom:1px solid var(--linea)}
-.flota__cab h2{margin:0;font-size:.98rem;font-weight:600;flex:1}
-.flota__cuerpo{overflow-y:auto;padding:1.2rem 1.3rem 1.5rem}
-.flota__pie{padding:.6rem 1.1rem;border-top:1px solid var(--linea);background:var(--gris);
-  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.08em;color:var(--muted);
-  display:flex;gap:1.1rem;flex-wrap:wrap}
-.flota__pie kbd{background:var(--blanco);border:1px solid var(--linea);padding:.1rem .3rem;
-  font-family:inherit}
-.pal__campo{display:flex;align-items:center;gap:.7rem;padding:1rem 1.2rem;
-  border-bottom:1px solid var(--linea)}
-.pal__campo input{flex:1;border:0;outline:none;background:none;font:inherit;font-size:1rem;
-  color:var(--tinta)}
-.pal__lista{overflow-y:auto;padding:.4rem;max-height:56vh}
-.pal__g{margin:.8rem .6rem .35rem;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.15em;
+.flota{width:min(42rem,100%);max-height:78vh;display:flex;flex-direction:column;overflow:hidden;
+  background:var(--blanco);animation:sube .22s var(--e)}
+.flota__cab{display:flex;align-items:center;gap:.8rem;padding:1.2rem 1.4rem;
+  border-bottom:1px solid var(--linea-2)}
+.flota__cab h2{margin:0;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  font-weight:400;flex:1;color:var(--muted)}
+.flota__cuerpo{overflow-y:auto;padding:1.6rem 1.6rem 2rem}
+.flota__pie{padding:.9rem 1.4rem;border-top:1px solid var(--linea-2);font-family:var(--f-mono);
+  font-size:.56rem;letter-spacing:.16em;color:var(--muted);display:flex;gap:1.4rem;flex-wrap:wrap}
+.flota__pie kbd{border:1px solid var(--linea);padding:.12rem .35rem;font-family:inherit}
+.pal__campo{display:flex;align-items:center;gap:.9rem;padding:1.3rem 1.4rem;
+  border-bottom:1px solid var(--linea-2)}
+.pal__campo input{flex:1;border:0;outline:none;background:none;font:inherit;font-size:1.05rem;
+  font-weight:300;color:var(--tinta)}
+.pal__lista{overflow-y:auto;padding:.4rem;max-height:52vh}
+.pal__g{margin:1rem .8rem .4rem;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.24em;
   text-transform:uppercase;color:var(--muted)}
-.pal__i{display:flex;gap:.8rem;align-items:baseline;width:100%;text-align:left;font:inherit;
-  cursor:pointer;background:none;border:0;padding:.55rem .6rem;color:var(--ink-2)}
-.pal__i span{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);flex:none;min-width:1.5rem}
-.pal__i b{font-weight:500;font-size:.92rem;line-height:1.35}
-.pal__i i{font-style:normal;font-size:.74rem;color:var(--muted);margin-left:auto;flex:none;
-  padding-left:1rem}
+.pal__i{display:flex;gap:1rem;align-items:baseline;width:100%;text-align:left;font:inherit;
+  cursor:pointer;background:none;border:0;padding:.7rem .8rem;color:var(--ink-2)}
+.pal__i span{font-family:var(--f-mono);font-size:.58rem;color:var(--muted);flex:none;min-width:1.4rem}
+.pal__i b{font-weight:400;font-size:.92rem;line-height:1.45}
+.pal__i i{font-style:normal;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin-left:auto;flex:none;padding-left:1rem}
 .pal__i mark{background:var(--azul-p);color:var(--azul-o)}
-.pal__i:hover,.pal__i.es-aqui{background:var(--gris)}
-.pal__i.es-aqui{background:var(--azul);color:#fff}
+.pal__i:hover{background:var(--gris)}
+.pal__i.es-aqui{background:var(--negro);color:#fff}
 .pal__i.es-aqui b,.pal__i.es-aqui span,.pal__i.es-aqui i{color:#fff}
-.pal__i b .pal__ctx{display:block;font-family:inherit;font-size:.77rem;font-weight:400;
-  color:var(--muted);margin-top:.25rem;line-height:1.5;letter-spacing:0}
-.pal__i.es-aqui .pal__ctx{color:rgba(255,255,255,.8)}
-.pal__nada{padding:2rem 1rem;text-align:center;color:var(--muted);font-size:.9rem}
-.voz{position:absolute;z-index:90;width:min(22rem,calc(100vw - 2rem));background:var(--blanco);
-  border:1px solid var(--negro);padding:1rem 1.1rem}
+.pal__i b .pal__ctx{display:block;font-family:inherit;font-size:.78rem;font-weight:400;
+  color:var(--muted);margin-top:.4rem;line-height:1.7;letter-spacing:0}
+.pal__i.es-aqui .pal__ctx{color:rgba(255,255,255,.7)}
+.pal__nada{padding:2.4rem 1rem;text-align:center;color:var(--muted);font-size:.9rem}
+.voz{position:absolute;z-index:99;width:min(22rem,calc(100vw - 2rem));background:var(--blanco);
+  border:1px solid var(--negro);padding:1.3rem 1.4rem}
 .voz[hidden]{display:none}
-.voz b{display:block;font-size:.98rem;font-weight:600;color:var(--negro)}
-.voz p{margin:.5rem 0 0;font-size:.86rem;line-height:1.55;color:var(--ink-2)}
-.voz small{display:block;margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--linea);
-  font-family:var(--f-mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+.voz b{display:block;font-size:.98rem;font-weight:400;color:var(--negro)}
+.voz p{margin:.7rem 0 0;font-size:.86rem;line-height:1.75;color:var(--ink-2)}
+.voz small{display:block;margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--linea-2);
+  font-family:var(--f-mono);font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;
   color:var(--muted)}
-.rec__g{margin:0 0 1.7rem}
+.rec__g{margin:0 0 2.2rem}
 .rec__g:last-child{margin-bottom:0}
-.rec__t{margin:0 0 .8rem;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;
+.rec__t{margin:0 0 1rem;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.24em;
   text-transform:uppercase;color:var(--azul)}
-.rec__i{display:flex;gap:.9rem;align-items:flex-start;padding:.7rem .8rem;text-decoration:none;
-  color:inherit;width:100%;text-align:left;font:inherit;background:none;border:0;cursor:pointer}
+.rec__i{display:flex;gap:1.2rem;align-items:flex-start;padding:.9rem .4rem;text-decoration:none;
+  color:inherit;width:100%;text-align:left;font:inherit;background:none;border:0;cursor:pointer;
+  border-bottom:1px solid var(--linea-2)}
 .rec__i:hover{background:var(--gris)}
-.rec__i em{font-style:normal;font-family:var(--f-mono);font-size:.58rem;color:var(--azul);
-  flex:none;min-width:2.6rem;padding-top:.2rem;letter-spacing:.08em}
-.rec__i b{display:block;font-size:.92rem;font-weight:600;color:var(--negro)}
-.rec__i p{margin:.2rem 0 0;font-size:.8rem;line-height:1.5;color:var(--ink-2)}
-.tec{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.1rem;align-items:baseline}
-.tec dt{font-family:var(--f-mono);font-size:.7rem;color:var(--negro);white-space:nowrap}
-.tec dt kbd{background:var(--gris);border:1px solid var(--linea);padding:.14rem .4rem;
-  font-family:inherit}
-.tec dd{margin:0;font-size:.86rem;color:var(--ink-2);line-height:1.5}
-.lupa{align-items:center;padding:3vh 3vw}
-.lupa .flota{width:min(72rem,100%);max-height:94vh}
-.lupa__lienzo{padding:1.8rem 2rem 2rem;overflow:auto}
+.rec__i em{font-style:normal;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.16em;
+  color:var(--azul);flex:none;min-width:2.8rem;padding-top:.2rem}
+.rec__i b{display:block;font-size:.92rem;font-weight:400;color:var(--negro)}
+.rec__i p{margin:.4rem 0 0;font-size:.8rem;line-height:1.7;color:var(--ink-2)}
+.tec{display:grid;grid-template-columns:auto 1fr;gap:.9rem 1.6rem;align-items:baseline}
+.tec dt{font-family:var(--f-mono);font-size:.66rem;color:var(--negro);white-space:nowrap}
+.tec dt kbd{border:1px solid var(--linea);padding:.16rem .45rem;font-family:inherit}
+.tec dd{margin:0;font-size:.86rem;color:var(--ink-2);line-height:1.7}
+.lupa{align-items:center;padding:4vh 4vw}
+.lupa .flota{width:min(70rem,100%);max-height:92vh}
+.lupa__lienzo{padding:2.4rem;overflow:auto}
 .lupa__lienzo > *{max-width:100%;margin:0}
 .lupa__lienzo svg{width:100%;height:auto}
 .ampliable{cursor:zoom-in}
-.pito{position:fixed;left:50%;bottom:2rem;transform:translateX(-50%);z-index:95;
-  background:var(--negro);color:#fff;padding:.65rem 1.2rem;font-size:.85rem;animation:sube .16s ease}
+.pito{position:fixed;left:50%;bottom:2.4rem;transform:translateX(-50%);z-index:99;
+  background:var(--negro);color:#fff;padding:.8rem 1.6rem;font-size:.62rem;letter-spacing:.2em;
+  text-transform:uppercase;animation:sube .2s ease}
 .pito[hidden]{display:none}
 
 @media(max-width:900px){
-  :root{--nav:auto}
-  .nav__f{flex-wrap:wrap;height:auto;padding:.55rem 1rem;gap:.5rem 1rem}
+  :root{--nav:auto;--aire:clamp(3.2rem,9vw,5rem)}
+  .nav__f{flex-wrap:wrap;height:auto;padding:.8rem 1.1rem;gap:.6rem 1rem}
   .nav__m{flex:1 1 auto}
-  .nav__l{order:3;flex:1 0 100%;min-width:100%;height:2.3rem}
-  .nav__l button{padding:0 .65rem}
+  .nav__l{order:3;flex:1 0 100%;min-width:100%;height:2.6rem;justify-content:flex-start}
   .abrepal span{display:none}
-  .sub{columns:1;padding:1.2rem 1rem 1.6rem}
-  .sec{padding:2.4rem 1.1rem 5rem}
-  .whero{padding:2.6rem 0 2.6rem}
+  .sub{columns:1;padding:1.6rem 1.1rem 2rem}
+  .sec{padding:2.6rem 1.1rem 4rem}
+  .cab__n{font-size:5rem;top:-1rem}
   .reloj__barra{height:auto;flex-direction:column}
-  .reloj__t{width:100%!important;flex-direction:row;gap:.7rem;align-items:center;
-    border-right:0;border-bottom:1px solid var(--linea)}
+  .reloj__t{width:100%!important;flex-direction:row;gap:.9rem;align-items:center;
+    border-right:0;border-bottom:1px solid var(--linea-2)}
   .reloj__r{-webkit-line-clamp:1;flex:1}
   .reloj__eje{display:none}
-  .carril{grid-template-columns:5rem minmax(0,1fr);gap:.5rem}
+  .carril{grid-template-columns:5rem minmax(0,1fr);gap:.7rem}
   .wraci{grid-template-columns:repeat(7,minmax(0,1fr))}
   .lienzo--indice .idx{columns:1}
-  .puestosel{flex-direction:column}
-  .puestobt{border-right:0;border-bottom:1px solid var(--linea)}
-  .velo{padding:4vh .8rem .8rem}
+  .puestosel{flex-direction:column;align-items:stretch}
+  .puestobt{border-bottom:1px solid var(--linea-2)}
+  .lector__cab{padding:.8rem 1.1rem;height:auto;flex-wrap:wrap}
+  .lector__in,.lector__pie{padding-left:1.1rem;padding-right:1.1rem}
+  .velo{padding:5vh .8rem .8rem}
+  .mapa14{overflow-x:auto}
+  .mapa14 svg{min-width:44rem}
+  .nodos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nodo{min-height:7rem;padding:1.2rem 1rem 1.3rem}
 }
 @media print{
-  .nav,.paneles,.velo,.voz,.avance,.pito,.remate{display:none}
-  .sitio--vivo .sec,.sitio--vivo .hoja{display:block}
-  .hoja{break-after:page}
+  .nav,.paneles,.velo,.voz,.avance,.pito,.lector{display:none}
+  .sitio--vivo .sec,.sitio--vivo .hojas{display:block}
+}
+
+/* ====================================================================
+   REJILLAS SIN HUECOS GRISES
+   Varias rejillas dibujaban sus líneas dejando ver el fondo por una
+   separación de un píxel. Cuando la última fila no se llena, ese fondo
+   se ve como un bloque gris vacío. Aquí la línea la lleva cada celda,
+   así que donde no hay celda no hay nada: blanco.
+   ==================================================================== */
+#sitio .cards, #sitio .cinco, #sitio .entradas, #sitio .estados, #sitio .kpis,
+#sitio .mini, #sitio .nodos, #sitio .puertas, #sitio .quees, #sitio .saydont,
+#sitio .special, #sitio .specs, #sitio .wmapa,
+#lector .cards, #lector .cinco, #lector .entradas, #lector .estados, #lector .kpis,
+#lector .mini, #lector .quees, #lector .saydont, #lector .special, #lector .specs{
+  background:none;gap:0}
+#sitio .cards > *, #sitio .cinco > *, #sitio .entradas > *, #sitio .estados > *,
+#sitio .kpis > *, #sitio .mini > *, #sitio .nodos > *, #sitio .puertas > *,
+#sitio .quees > *, #sitio .saydont > *, #sitio .special > *, #sitio .specs > *,
+#sitio .wmapa > *,
+#lector .cards > *, #lector .cinco > *, #lector .entradas > *, #lector .estados > *,
+#lector .kpis > *, #lector .mini > *, #lector .quees > *, #lector .saydont > *,
+#lector .special > *, #lector .specs > *{
+  box-shadow:0 0 0 1px var(--linea)}
+
+/* ====================================================================
+   UNA SOLA PALETA
+   Los documentos vienen con la suya —verdes, ámbares, rojos—. Aquí
+   dentro mandan el negro, el gris, el blanco y el azul: lo importante
+   se ve azul, lo que avisa se ve negro, y lo demás es escala de gris.
+   No se toca una letra: solo el color con que se dibuja.
+   Va con «html:root» para ganar a los «:root» que traen los documentos,
+   estén antes o después en la hoja.
+   ==================================================================== */
+html:root{
+  --paper:#FAFAFB; --surface:#FFFFFF; --surface-2:#F1F1F3;
+  --tinta:#111112; --ink:#1A1A1D; --ink-2:#55555E; --muted:#8E8E97;
+  --line:#E6E6E9; --line-soft:#F1F1F3; --rule:#D9D9DE;
+  --accent:#1F45FF; --accent-ink:#0A2ED6; --accent-fuerte:#0A2ED6;
+  --accent-soft:rgba(31,69,255,.07);
+  --acido:#EDF0FF; --acido-ink:#0A2ED6;
+  --signal:#55555E; --signal-soft:rgba(17,17,18,.06);
+  --alerta:#111112; --alerta-soft:rgba(17,17,18,.07);
+  --sem-verde:#1F45FF; --sem-amarillo:#8E8E97;
+  --sem-naranja:#55555E; --sem-rojo:#111112;
+  --rol-direccion:#111112; --rol-doctor:#1F45FF; --rol-rac:#3A3A42;
+  --rol-recepcion:#55555E; --rol-higienista:#7A7A84; --rol-auxiliar:#9A9AA2;
+  --sombra-1:0 1px 2px rgba(17,17,18,.05);
+  --sombra-2:0 1px 3px rgba(17,17,18,.06), 0 10px 24px -18px rgba(17,17,18,.30);
+  --sombra-3:0 2px 6px rgba(17,17,18,.07), 0 20px 40px -24px rgba(17,17,18,.30);
 }
 """
 
@@ -1792,25 +2165,38 @@ JS = """
   var orden  = window.__ORDEN__ || [];
   var VOCES  = window.__VOCES__ || {};
   var GRUPO  = window.__GRUPOESTADO__ || {};
+  var RUTAS  = window.__RUTAS__ || {};
+  var FASES  = window.__FASES__ || [];
   var paneles= D.getElementById("paneles");
   var avance = D.getElementById("avance");
   if(!secs.length) return;
 
-  /* Las marcas las pone el guion: si no llegara a correr se ve el sitio entero
-     seguido —las nueve secciones y los 135 apartados— y no una página vacía. */
   sitio.classList.add("sitio--vivo");
 
   var porHoja = {};
   hojas.forEach(function(h){ porHoja[h.dataset.hoja] = h; });
 
-  var LLAVE = "giraldo.web.v8";
-  var memo = {sec:"inicio", hoja:{}};
+  var LLAVE = "giraldo.web.v9";
+  var memo = {sec:"inicio", ruta:"", paso:0};
   try { var g = localStorage.getItem(LLAVE); if(g) memo = JSON.parse(g) || memo; } catch(e){}
-  if(!memo.hoja) memo.hoja = {};
   function recuerda(){ try { localStorage.setItem(LLAVE, JSON.stringify(memo)); } catch(e){} }
   function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function rotulo(clave){
+    for(var i=0;i<orden.length;i++){ if(orden[i][0] === clave) return orden[i][3]; }
+    return "";
+  }
+  function seccionDe(clave){
+    for(var i=0;i<orden.length;i++){ if(orden[i][0] === clave) return orden[i][4]; }
+    return "";
+  }
+  function docDe(clave){
+    for(var i=0;i<orden.length;i++){ if(orden[i][0] === clave) return orden[i][1]; }
+    return "";
+  }
 
-  /* ---- ir a una sección, y dentro de ella a un apartado ---------------- */
+  /* ---------------------------------------------------------------- */
+  /*  Ir a una sección                                                  */
+  /* ---------------------------------------------------------------- */
   function veSec(id, arriba){
     var s = secs.filter(function(x){ return x.dataset.sec === id; })[0] || secs[0];
     secs.forEach(function(x){ x.classList.toggle("es-on", x === s); });
@@ -1818,68 +2204,196 @@ JS = """
       b.classList.toggle("es-on", b.dataset.irSec === s.dataset.sec);
     });
     memo.sec = s.dataset.sec; recuerda();
-    /* cada sección recuerda el apartado que se estaba leyendo en ella */
-    var suyas = [].slice.call(s.querySelectorAll(".hoja"));
-    if(suyas.length){
-      var quiere = memo.hoja[s.dataset.sec];
-      var viva = suyas.filter(function(h){ return h.classList.contains("es-on"); })[0];
-      if(!viva) veHoja((quiere && porHoja[quiere]) ? quiere : suyas[0].dataset.hoja, false);
-    }
     if(arriba !== false) window.scrollTo(0, 0);
     return s;
   }
 
-  function veHoja(clave, subir){
+  /* ================================================================ */
+  /*  EL LECTOR: se abre encima, se lee, se vuelve                     */
+  /* ================================================================ */
+  var lector = D.getElementById("lector");
+  var lecCuerpo = D.getElementById("leccuerpo");
+  var lecQ = D.getElementById("lecq");
+  var lecPaso = D.getElementById("lecpaso");
+  var lecBarra = D.getElementById("lecbarra");
+  var lecAnt = D.getElementById("lecant");
+  var lecSig = D.getElementById("lecsig");
+  var lecVolver = D.getElementById("lecvolver");
+  var viaje = null;      // {claves:[], i:0, nombre:""}
+  var scrollAntes = 0;
+
+  function claveDeParada(ruta, n){
+    var r = RUTAS[ruta];
+    return r && r.paradas[n] ? r.paradas[n] : null;
+  }
+
+  function abreLector(clave, ruta, paso){
+    var h = porHoja[clave];
+    if(!h) return false;
+    scrollAntes = window.scrollY;
+
+    if(ruta && RUTAS[ruta]){
+      viaje = {claves: RUTAS[ruta].paradas, i: paso || 0, nombre: RUTAS[ruta].quien, ruta: ruta};
+      memo.ruta = ruta; memo.paso = viaje.i; recuerda();
+    } else if(FASES.indexOf(clave) > -1){
+      viaje = {claves: FASES, i: FASES.indexOf(clave), nombre: "Las catorce fases", ruta: ""};
+    } else {
+      viaje = null;
+    }
+
+    pintaLector(clave);
+    lector.hidden = false;
+    D.documentElement.style.overflow = "hidden";
+    lecCuerpo.scrollTop = 0;
+    if(lecVolver) lecVolver.focus();
+    return true;
+  }
+
+  function pintaLector(clave){
     var h = porHoja[clave];
     if(!h) return;
-    var s = h.closest(".sec");
-    [].slice.call(s.querySelectorAll(".hoja")).forEach(function(x){
-      x.classList.toggle("es-on", x === h);
+    var copia = h.cloneNode(true);
+    /* Se quitan los identificadores de la copia: el original sigue en su
+       sección y no puede haber dos elementos con el mismo nombre. */
+    copia.removeAttribute("id");
+    [].slice.call(copia.querySelectorAll("[id]")).forEach(function(e){
+      e.dataset.era = e.id; e.removeAttribute("id");
     });
-    [].slice.call(s.querySelectorAll("[data-ir]")).forEach(function(a){
-      a.classList.toggle("es-on", a.dataset.ir === clave);
-    });
-    memo.hoja[s.dataset.sec] = clave; recuerda();
-    pinta(h, s);
-    var todas = [].slice.call(s.querySelectorAll(".hoja"));
-    pintaLeyendo(s, h, todas.indexOf(h), todas.length);
-    if(subir !== false) h.scrollIntoView({block:"start", behavior:"smooth"});
-  }
+    lecCuerpo.innerHTML = "";
+    var caja = D.createElement("div");
+    caja.className = "lector__in";
+    caja.appendChild(copia);
+    lecCuerpo.appendChild(caja);
 
-  /* El pie de cada apartado: dónde está y qué viene después. Se pinta al
-     abrirlo y no antes, que son ciento treinta y cinco. */
-  function pinta(h, s){
-    var suyas = [].slice.call(s.querySelectorAll(".hoja"));
-    var i = suyas.indexOf(h);
-    var viejo = h.querySelector(".remate");
-    if(viejo) viejo.remove();
+    lecQ.textContent = docDe(clave) + " · " + rotulo(clave);
+    if(viaje){
+      lecPaso.textContent = viaje.nombre + " · " + (viaje.i + 1) + " / " + viaje.claves.length;
+      lecBarra.style.width = (100 * (viaje.i + 1) / viaje.claves.length) + "%";
+      lecAnt.disabled = viaje.i <= 0;
+      lecSig.disabled = viaje.i >= viaje.claves.length - 1;
+    } else {
+      lecPaso.textContent = "";
+      lecBarra.style.width = "0";
+      lecAnt.disabled = true; lecSig.disabled = true;
+    }
+
     var pie = D.createElement("div");
-    pie.className = "remate";
-    var sig = suyas[i + 1], ant = suyas[i - 1];
-    pie.innerHTML =
-      '<div class="wpasos">'
-      + '<button type="button" data-paso="-1"' + (ant ? "" : " disabled") + ' aria-label="Anterior">&#8592;</button>'
-      + '<button type="button" data-paso="1"' + (sig ? "" : " disabled") + ' aria-label="Siguiente">&#8594;</button>'
-      + '</div>'
-      + (sig ? '<a href="#' + sig.dataset.hoja + '" data-ir="' + sig.dataset.hoja + '">'
-             + '<i>Sigue</i> ' + esc(rotulo(sig.dataset.hoja)) + "</a>"
-             : '<span class="ref">Último apartado de esta sección</span>')
-      + '<span class="ref" style="font-family:var(--f-mono);font-size:.64rem;border:0">'
-      + (i + 1) + " / " + suyas.length + "</span>";
-    h.appendChild(pie);
-    pie.addEventListener("click", function(e){
-      var b = e.target.closest("button[data-paso]");
-      if(!b) return;
-      var j = i + parseInt(b.dataset.paso, 10);
-      if(suyas[j]) veHoja(suyas[j].dataset.hoja, true);
-    });
-  }
-  function rotulo(clave){
-    for(var i = 0; i < orden.length; i++){ if(orden[i][0] === clave) return orden[i][3]; }
-    return "";
+    pie.className = "lector__pie";
+    if(viaje && viaje.i < viaje.claves.length - 1){
+      var sigClave = viaje.claves[viaje.i + 1];
+      pie.innerHTML = '<button type="button" class="lector__sig" data-lec-sig>'
+        + '<span class="letra">Siguiente parada</span><b>' + esc(rotulo(sigClave)) + "</b></button>"
+        + '<button type="button" class="bt" data-lec-cierra>Volver</button>';
+    } else {
+      pie.innerHTML = '<span class="letra">' + (viaje ? "Final del recorrido" : "Fin del apartado")
+        + "</span>" + '<button type="button" class="bt bt--fuerte" data-lec-cierra>Volver</button>';
+    }
+    lecCuerpo.appendChild(pie);
+    try { history.replaceState(null, "", "#" + clave); } catch(e){}
   }
 
-  /* ---- el índice de la barra ------------------------------------------- */
+  function mueveLector(paso){
+    if(!viaje) return;
+    var j = viaje.i + paso;
+    if(j < 0 || j >= viaje.claves.length) return;
+    viaje.i = j;
+    if(viaje.ruta){ memo.paso = j; recuerda(); }
+    pintaLector(viaje.claves[j]);
+    lecCuerpo.scrollTop = 0;
+  }
+
+  function cierraLector(){
+    if(!lector || lector.hidden) return false;
+    lector.hidden = true;
+    D.documentElement.style.overflow = "";
+    lecCuerpo.innerHTML = "";
+    viaje = null;
+    window.scrollTo(0, scrollAntes);
+    return true;
+  }
+
+  if(lecAnt) lecAnt.addEventListener("click", function(){ mueveLector(-1); });
+  if(lecSig) lecSig.addEventListener("click", function(){ mueveLector(1); });
+  if(lecVolver) lecVolver.addEventListener("click", cierraLector);
+  if(lecCuerpo) lecCuerpo.addEventListener("click", function(e){
+    if(e.target.closest("[data-lec-sig]")){ mueveLector(1); return; }
+    if(e.target.closest("[data-lec-cierra]")){ cierraLector(); return; }
+  });
+
+  /* ---------------------------------------------------------------- */
+  /*  Todo lo que se pulsa                                              */
+  /* ---------------------------------------------------------------- */
+  function abreDestino(id, ruta, paso){
+    if(porHoja[id]) return abreLector(id, ruta, paso);
+    var el = D.getElementById(id);
+    if(!el) return false;
+    var dueno = el.closest(".hoja");
+    if(dueno) return abreLector(dueno.dataset.hoja, ruta, paso);
+    var sec = el.closest(".sec");
+    if(sec){ cierraLector(); veSec(sec.dataset.sec, false);
+             el.scrollIntoView({block:"start", behavior:"smooth"}); return true; }
+    return false;
+  }
+
+  D.addEventListener("click", function(e){
+    var b;
+    if((b = e.target.closest("[data-lee]"))){
+      e.preventDefault();
+      abreLector(b.dataset.lee, b.dataset.ruta || "", parseInt(b.dataset.paso || "0", 10));
+      return;
+    }
+    if((b = e.target.closest("[data-empieza]"))){
+      e.preventDefault();
+      var r = RUTAS[b.dataset.empieza];
+      if(r && r.paradas.length) abreLector(r.paradas[0], b.dataset.empieza, 0);
+      return;
+    }
+    if((b = e.target.closest("[data-ve-ruta]"))){
+      e.preventDefault(); cierraPanel(); veSec("recorridos", false);
+      var d = D.getElementById("ruta-" + b.dataset.veRuta);
+      if(d) d.scrollIntoView({block:"start", behavior:"smooth"});
+      return;
+    }
+    if((b = e.target.closest("[data-abre-fase]"))){
+      e.preventDefault();
+      if(b.dataset.abreFase) abreDestino(b.dataset.abreFase);
+      return;
+    }
+    var nb = e.target.closest(".nav__l button[data-ir-sec]");
+    if(nb){
+      var abierto = !paneles.hidden && nb.classList.contains("es-abierto");
+      cierraLector(); veSec(nb.dataset.irSec, true);
+      if(abierto) cierraPanel(); else abrePanel(nb.dataset.irSec);
+      return;
+    }
+    if((b = e.target.closest("[data-ir-sec]"))){
+      e.preventDefault(); cierraPanel(); cierraLector(); veSec(b.dataset.irSec, true);
+      return;
+    }
+    var a = e.target.closest("a[data-ir], a[href^='#']");
+    if(a){
+      var clave = a.dataset.ir || a.getAttribute("href").slice(1);
+      if(D.getElementById(clave) || porHoja[clave]){
+        e.preventDefault(); cierraPanel();
+        abreDestino(clave);
+      }
+      return;
+    }
+    if(!e.target.closest(".nav")) cierraPanel();
+  });
+
+  /* el mapa también se recorre con el teclado */
+  D.addEventListener("keydown", function(e){
+    if(e.key !== "Enter" && e.key !== " ") return;
+    var n = e.target.closest("[data-abre-fase]");
+    if(!n) return;
+    e.preventDefault();
+    if(n.dataset.abreFase) abreDestino(n.dataset.abreFase);
+  });
+
+  /* ---------------------------------------------------------------- */
+  /*  El índice desplegable                                             */
+  /* ---------------------------------------------------------------- */
   function abrePanel(id){
     var hay = false;
     [].slice.call(D.querySelectorAll(".sub")).forEach(function(p){
@@ -1899,55 +2413,9 @@ JS = """
     });
   }
 
-  /* Un solo camino para llegar a cualquier cosa por su identificador: lo usan
-     los enlaces, la dirección al cargar y el cambio de dirección. Antes la
-     dirección al cargar solo entendía apartados enteros, y un enlace copiado
-     a una función concreta abría el inicio. */
-  function irA(id, suave){
-    if(porHoja[id]){
-      veSec(porHoja[id].closest(".sec").dataset.sec, false);
-      veHoja(id, suave !== false);
-      return true;
-    }
-    if(secs.some(function(s){ return s.dataset.sec === id; })){
-      veSec(id, true);
-      return true;
-    }
-    var el = D.getElementById(id);
-    if(!el) return false;
-    var sec = el.closest(".sec");
-    if(sec) veSec(sec.dataset.sec, false);
-    var dueno = el.closest(".hoja");
-    if(dueno) veHoja(dueno.dataset.hoja, false);
-    el.scrollIntoView({block:"start", behavior: suave === false ? "auto" : "smooth"});
-    return true;
-  }
-
-  D.addEventListener("click", function(e){
-    var nb = e.target.closest(".nav__l button[data-ir-sec]");
-    if(nb){
-      var abierto = !paneles.hidden && nb.classList.contains("es-abierto");
-      veSec(nb.dataset.irSec, true);
-      if(abierto) cierraPanel(); else abrePanel(nb.dataset.irSec);
-      return;
-    }
-    var b = e.target.closest("[data-ir-sec]");
-    if(b){ cierraPanel(); veSec(b.dataset.irSec, true); return; }
-
-    var a = e.target.closest("a[data-ir], a[href^='#']");
-    if(a){
-      var clave = a.dataset.ir || a.getAttribute("href").slice(1);
-      if(D.getElementById(clave) || porHoja[clave]){
-        e.preventDefault(); cierraPanel();
-        irA(clave, true);
-        try { history.replaceState(null, "", "#" + clave); } catch(err){}
-      }
-      return;
-    }
-    if(!e.target.closest(".nav")) cierraPanel();
-  });
-
-  /* ---- puestos ---------------------------------------------------------- */
+  /* ---------------------------------------------------------------- */
+  /*  Puestos y marketing                                               */
+  /* ---------------------------------------------------------------- */
   D.addEventListener("click", function(e){
     var b = e.target.closest(".puestobt");
     if(!b) return;
@@ -1959,7 +2427,6 @@ JS = """
     });
   });
 
-  /* ---- marketing -------------------------------------------------------- */
   var tabla = D.getElementById("tablaacciones");
   var cuentaAcc = D.getElementById("cuentaacc");
   function filtra(){
@@ -1975,14 +2442,14 @@ JS = """
       if(ok) vivas++;
     });
     if(cuentaAcc) cuentaAcc.textContent = vivas === filas.length
-      ? (filas.length + " acciones") : (vivas + " de " + filas.length + " acciones");
+      ? (filas.length + " acciones") : (vivas + " de " + filas.length);
+  }
+  function apagaEstados(){
+    [].slice.call(D.querySelectorAll(".estado")).forEach(function(b){ b.classList.remove("es-on"); });
   }
   [].slice.call(D.querySelectorAll("[data-filtro]")).forEach(function(s){
     s.addEventListener("change", function(){ filtra(); apagaEstados(); });
   });
-  function apagaEstados(){
-    [].slice.call(D.querySelectorAll(".estado")).forEach(function(b){ b.classList.remove("es-on"); });
-  }
   var limpia = D.getElementById("limpiafiltros");
   if(limpia) limpia.addEventListener("click", function(){
     [].slice.call(D.querySelectorAll("[data-filtro]")).forEach(function(s){ s.value = ""; });
@@ -1994,16 +2461,18 @@ JS = """
     var sel = D.querySelector('[data-filtro="grupo"]');
     var g = GRUPO[b.dataset.estado];
     if(!sel || !g) return;
-    var yaEstaba = b.classList.contains("es-on");
+    var ya = b.classList.contains("es-on");
     apagaEstados();
-    sel.value = yaEstaba ? "" : g;
-    if(!yaEstaba) b.classList.add("es-on");
+    sel.value = ya ? "" : g;
+    if(!ya) b.classList.add("es-on");
     filtra();
-    if(!yaEstaba && tabla) tabla.closest(".lienzo").scrollIntoView({block:"start", behavior:"smooth"});
+    if(!ya && tabla) tabla.closest(".lienzo").scrollIntoView({block:"start", behavior:"smooth"});
   });
   filtra();
 
-  /* ---- lo que flota ------------------------------------------------------ */
+  /* ---------------------------------------------------------------- */
+  /*  Lo que flota: paleta, recursos, teclas, glosario, lupa            */
+  /* ---------------------------------------------------------------- */
   var velos = {}, ultimoFoco = null;
   [].slice.call(D.querySelectorAll(".velo")).forEach(function(v){ velos[v.dataset.velo] = v; });
   function abre(cual){
@@ -2021,7 +2490,7 @@ JS = """
     var abierto = false;
     Object.keys(velos).forEach(function(k){ if(!velos[k].hidden){ velos[k].hidden = true; abierto = true; } });
     tapaVoz();
-    D.documentElement.style.overflow = "";
+    if(lector && lector.hidden) D.documentElement.style.overflow = "";
     if(abierto && ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
     return abierto;
   }
@@ -2035,7 +2504,6 @@ JS = """
     if(b) abre(b.dataset.abre);
   });
 
-  /* ---- la paleta --------------------------------------------------------- */
   var campo = D.getElementById("palq"), lista = D.getElementById("pallista");
   var cache = null, elegido = 0;
   var CON = "\\u00e1\\u00e0\\u00e4\\u00e2\\u00e3\\u00e9\\u00e8\\u00eb\\u00ea\\u00ed\\u00ec\\u00ef\\u00ee"
@@ -2051,15 +2519,16 @@ JS = """
     if(cache) return cache;
     cache = [];
     [].slice.call(D.querySelectorAll(".nav__l button")).forEach(function(b){
-      cache.push({id:b.dataset.irSec, doc:"Sección", rot:b.textContent.trim(), n:"", seccion:true});
+      cache.push({id:b.dataset.irSec, doc:"Sección", rot:b.textContent.trim(), seccion:true});
+    });
+    Object.keys(RUTAS).forEach(function(k){
+      cache.push({id:"ruta:" + k, doc:"Recorrido", rot:RUTAS[k].quien + " · " + RUTAS[k].titulo,
+                  ruta:true});
     });
     hojas.forEach(function(h){
-      var o = null;
-      for(var i=0;i<orden.length;i++){ if(orden[i][0] === h.dataset.hoja){ o = orden[i]; break; } }
-      if(!o) return;
       var crudo = (h.innerText || h.textContent || "").replace(/\\s+/g," ");
-      cache.push({id:h.dataset.hoja, doc:o[1], grupo:o[2], rot:o[3], n:"",
-                  crudo:crudo, txt:llano(crudo), rotll:llano(o[3])});
+      cache.push({id:h.dataset.hoja, doc:docDe(h.dataset.hoja), rot:rotulo(h.dataset.hoja),
+                  crudo:crudo, txt:llano(crudo), rotll:llano(rotulo(h.dataset.hoja))});
     });
     return cache;
   }
@@ -2072,37 +2541,40 @@ JS = """
   }
   function fila(d, q){
     return '<button type="button" class="pal__i" data-va="' + esc(d.id) + '">'
-         + '<span>' + (d.seccion ? "&#8594;" : "&middot;") + "</span>"
-         + '<b>' + esc(d.rot) + (q && !d.seccion ? '<span class="pal__ctx">' + trozo(d,q) + "</span>" : "") + "</b>"
-         + '<i>' + esc(d.doc) + "</i></button>";
+         + "<span>" + (d.seccion ? "&#8594;" : d.ruta ? "&#9679;" : "&middot;") + "</span>"
+         + "<b>" + esc(d.rot)
+         + (q && !d.seccion && !d.ruta ? '<span class="pal__ctx">' + trozo(d,q) + "</span>" : "")
+         + "</b><i>" + esc(d.doc) + "</i></button>";
   }
   function pinta_paleta(q){
     q = llano((q||"").trim());
     var datos = indexa();
     var ss = datos.filter(function(d){ return d.seccion; });
-    var aa = datos.filter(function(d){ return !d.seccion; });
+    var rr = datos.filter(function(d){ return d.ruta; });
+    var aa = datos.filter(function(d){ return !d.seccion && !d.ruta; });
     if(!q){
-      lista.innerHTML = '<p class="pal__g">Las nueve secciones</p>'
-        + ss.map(function(d){ return fila(d,""); }).join("")
-        + '<p class="pal__g">Apartados</p>' + aa.slice(0,20).map(function(d){ return fila(d,""); }).join("");
+      lista.innerHTML = '<p class="pal__g">Recorridos</p>' + rr.map(function(d){ return fila(d,""); }).join("")
+        + '<p class="pal__g">Secciones</p>' + ss.map(function(d){ return fila(d,""); }).join("");
     } else {
       var s1 = ss.filter(function(d){ return llano(d.rot).indexOf(q) > -1; });
-      var r1 = aa.filter(function(d){ return d.rotll.indexOf(q) > -1; });
-      var t1 = aa.filter(function(d){ return d.rotll.indexOf(q) < 0 && d.txt.indexOf(q) > -1; });
+      var r1 = rr.filter(function(d){ return llano(d.rot).indexOf(q) > -1; });
+      var t1 = aa.filter(function(d){ return d.rotll.indexOf(q) > -1; });
+      var t2 = aa.filter(function(d){ return d.rotll.indexOf(q) < 0 && d.txt.indexOf(q) > -1; });
       function entera(d){
         var i = d.txt.indexOf(q);
         if(i < 0) return false;
         var a = i ? d.txt[i-1] : " ", b = i+q.length < d.txt.length ? d.txt[i+q.length] : " ";
         return !/[a-z0-9]/.test(a) && !/[a-z0-9]/.test(b);
       }
-      t1.sort(function(m,n){ return (entera(n)?1:0) - (entera(m)?1:0); });
-      if(!s1.length && !r1.length && !t1.length){
+      t2.sort(function(m,n){ return (entera(n)?1:0) - (entera(m)?1:0); });
+      if(!s1.length && !r1.length && !t1.length && !t2.length){
         lista.innerHTML = '<p class="pal__nada">Nada con «' + esc(q) + '» en el sistema.</p>';
       } else {
         lista.innerHTML =
-          (s1.length ? '<p class="pal__g">Secciones</p>' + s1.map(function(d){ return fila(d,""); }).join("") : "")
-          + (r1.length ? '<p class="pal__g">' + r1.length + ' en el rótulo</p>' + r1.map(function(d){ return fila(d,""); }).join("") : "")
-          + (t1.length ? '<p class="pal__g">' + t1.length + ' en el texto</p>' + t1.map(function(d){ return fila(d,q); }).join("") : "");
+          (r1.length ? '<p class="pal__g">Recorridos</p>' + r1.map(function(d){ return fila(d,""); }).join("") : "")
+          + (s1.length ? '<p class="pal__g">Secciones</p>' + s1.map(function(d){ return fila(d,""); }).join("") : "")
+          + (t1.length ? '<p class="pal__g">' + t1.length + ' en el rótulo</p>' + t1.map(function(d){ return fila(d,""); }).join("") : "")
+          + (t2.length ? '<p class="pal__g">' + t2.length + ' en el texto</p>' + t2.map(function(d){ return fila(d,q); }).join("") : "");
       }
     }
     elegido = 0; marca();
@@ -2126,11 +2598,17 @@ JS = """
     if(!b) return;
     cierra(); campo.value = "";
     var v = b.dataset.va;
-    if(porHoja[v]){ veSec(porHoja[v].closest(".sec").dataset.sec, false); veHoja(v, true); }
+    if(v.indexOf("ruta:") === 0){
+      var k = v.slice(5);
+      veSec("recorridos", false);
+      var d = D.getElementById("ruta-" + k);
+      if(d) d.scrollIntoView({block:"start"});
+      return;
+    }
+    if(porHoja[v]) abreLector(v, "", 0);
     else veSec(v, true);
   });
 
-  /* ---- glosario ---------------------------------------------------------- */
   var voz = D.getElementById("voz");
   function tapaVoz(){ if(voz) voz.hidden = true; }
   D.addEventListener("click", function(e){
@@ -2151,70 +2629,38 @@ JS = """
     voz.style.left = x + "px"; voz.style.top = Math.max(8, y) + "px";
   });
 
-  /* ---- lupa -------------------------------------------------------------- */
-  var lienzo = D.getElementById("lupalienzo");
+  var lienzoLupa = D.getElementById("lupalienzo");
   D.addEventListener("click", function(e){
-    var f = e.target.closest("figure, .fig, .t-fig, .tablewrap, .tablawrap");
-    if(!f || !lienzo) return;
-    if(e.target.closest("a, button, input, select")) return;
-    lienzo.innerHTML = "";
-    lienzo.appendChild(f.cloneNode(true));
+    var f = e.target.closest("figure, .fig, .t-fig, .tablewrap, .tablawrap, .mapa14");
+    if(!f || !lienzoLupa) return;
+    if(e.target.closest("a, button, input, select, [data-abre-fase]")) return;
+    lienzoLupa.innerHTML = "";
+    lienzoLupa.appendChild(f.cloneNode(true));
     abre("lupa");
   });
-  [].slice.call(D.querySelectorAll("figure, .fig, .t-fig")).forEach(function(f){
-    f.classList.add("ampliable");
-    f.setAttribute("title", "Pulse para verla de cerca");
-  });
 
-  /* ---- teclado ----------------------------------------------------------- */
   D.addEventListener("keydown", function(e){
     var t = e.target;
     var escribiendo = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA"
                             || t.tagName === "SELECT" || t.isContentEditable);
-    if(e.key === "Escape"){ if(cierra()) { e.preventDefault(); return; } cierraPanel(); return; }
+    if(e.key === "Escape"){
+      if(cierra()){ e.preventDefault(); return; }
+      if(cierraLector()){ e.preventDefault(); return; }
+      cierraPanel(); return;
+    }
     if((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")){ e.preventDefault(); abre("paleta"); return; }
     if(escribiendo || e.ctrlKey || e.metaKey || e.altKey) return;
     if(e.key === "/"){ e.preventDefault(); abre("paleta"); return; }
     if(e.key === "?"){ e.preventDefault(); abre("teclas"); return; }
     if(e.key === "r" || e.key === "R"){ e.preventDefault(); abre("recursos"); return; }
-    if(e.key === "g"){ veSec("inicio", true); return; }
-    var viva = D.querySelector(".sec.es-on");
-    if(!viva) return;
-    var suyas = [].slice.call(viva.querySelectorAll(".hoja"));
-    if(!suyas.length) return;
-    var i = suyas.findIndex(function(h){ return h.classList.contains("es-on"); });
-    if(e.key === "ArrowRight" && suyas[i+1]) veHoja(suyas[i+1].dataset.hoja, true);
-    if(e.key === "ArrowLeft" && suyas[i-1]) veHoja(suyas[i-1].dataset.hoja, true);
+    if(lector && !lector.hidden){
+      if(e.key === "ArrowRight") mueveLector(1);
+      if(e.key === "ArrowLeft") mueveLector(-1);
+      return;
+    }
+    if(e.key === "g"){ veSec("inicio", true); }
   });
 
-  /* ---- la barra de lectura de cada sección ------------------------------- */
-  function pintaLeyendo(s, h, i, n){
-    var barra = s.querySelector(".leyendo");
-    if(!barra) return;
-    barra.hidden = false;
-    barra.querySelector("b").textContent = rotulo(h.dataset.hoja);
-    barra.querySelector(".leyendo__n").textContent = (i + 1) + " / " + n;
-    barra.querySelector(".leyendo__p i").style.setProperty("--v", (100 * (i + 1) / n) + "%");
-  }
-
-  /* ---- lo que entra al aparecer ------------------------------------------ */
-  /* Una sola vez, y solo lo que hay antes de la lectura: los bloques de datos.
-     El texto de los documentos no se toca, que se lee y no se mira. */
-  if("IntersectionObserver" in window){
-    var ojo = new IntersectionObserver(function(es){
-      es.forEach(function(en){
-        if(!en.isIntersecting) return;
-        en.target.classList.add("wve");
-        ojo.unobserve(en.target);
-      });
-    }, {rootMargin: "0px 0px -8% 0px"});
-    [].slice.call(D.querySelectorAll(".lienzo, .hecho, .idea, .puerta, .cab")).forEach(function(x){
-      x.classList.add("entra-al-ver");
-      ojo.observe(x);
-    });
-  }
-
-  /* ---- avance de lectura ------------------------------------------------- */
   function dibujaAvance(){
     if(!avance) return;
     var alto = D.documentElement.scrollHeight - window.innerHeight;
@@ -2225,12 +2671,15 @@ JS = """
 
   window.addEventListener("hashchange", function(){
     var h = (location.hash || "").slice(1);
-    if(h) irA(h, true);
+    if(!h) return;
+    if(lector && !lector.hidden && porHoja[h]) return;
+    abreDestino(h);
   });
 
-  /* ---- arranque ---------------------------------------------------------- */
+  /* ---- arranque ---------------------------------------------------- */
   var h0 = (location.hash || "").slice(1);
-  if(!h0 || !irA(h0, false)) veSec(memo.sec || "inicio", false);
+  if(h0 && secs.some(function(s){ return s.dataset.sec === h0; })) veSec(h0, false);
+  else { veSec(memo.sec || "inicio", false); if(h0) abreDestino(h0); }
   dibujaAvance();
 })();
 </script>
@@ -2246,9 +2695,16 @@ MARCO = """
     <button class="nav__m" type="button" data-ir-sec="inicio">Giraldo <em>v@VERSION@</em></button>
     <nav class="nav__l" aria-label="Secciones">@@NAV@@</nav>
     <div class="nav__b">
-      <button class="abrepal" type="button" data-abre="paleta"><span>Buscar</span><kbd>⌘K</kbd></button>
+      <button class="nav__ruta" type="button" data-ir-sec="recorridos">Recorridos</button>
+      <button class="nav__ruta" type="button" data-ir-sec="mapa">Mapa</button>
+      <span class="nav__sep"></span>
+      <button class="abrepal" type="button" data-abre="paleta"><span>Buscar</span>
+        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M10.4 10.4 L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg></button>
       <button class="icono" type="button" data-abre="recursos" aria-label="Recursos" title="Recursos (R)">&#9781;</button>
-      <button class="icono" type="button" data-abre="teclas" aria-label="Atajos" title="Atajos (?)">?</button>
+      <button class="icono" type="button" data-abre="teclas" aria-label="Cómo se usa" title="Cómo se usa (?)">?</button>
     </div>
   </div>
   <div class="paneles" id="paneles" hidden>@@PANELES@@</div>
@@ -2258,15 +2714,34 @@ MARCO = """
 @@SECCIONES@@
 </div>
 
+<!-- ------------------------------------------------------------------
+     El lector. Cualquier apartado se abre aquí encima, se lee entero y se
+     vuelve exactamente donde se estaba. Si viene de un recorrido, las
+     flechas avanzan por sus paradas.
+     ------------------------------------------------------------------ -->
+<div class="lector" id="lector" role="dialog" aria-modal="true" aria-label="Lector" hidden>
+  <div class="lector__cab">
+    <button class="lector__volver" type="button" id="lecvolver">&#8592; Volver</button>
+    <p class="lector__q" id="lecq"></p>
+    <div class="lector__nav">
+      <span class="lector__paso" id="lecpaso"></span>
+      <button class="icono" type="button" id="lecant" aria-label="Parada anterior">&#8592;</button>
+      <button class="icono" type="button" id="lecsig" aria-label="Parada siguiente">&#8594;</button>
+    </div>
+  </div>
+  <div class="lector__barra"><i id="lecbarra"></i></div>
+  <div class="lector__cuerpo" id="leccuerpo"></div>
+</div>
+
 <div class="velo" data-velo="paleta" role="dialog" aria-modal="true" aria-label="Buscar" hidden>
   <div class="flota">
     <div class="pal__campo">
       <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true" style="color:var(--muted);flex:none">
-        <circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
-        <path d="M10.4 10.4 L14.4 14.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10.4 10.4 L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
       </svg>
       <input id="palq" type="search" autocomplete="off" spellcheck="false"
-             placeholder="Buscar secciones, apartados y texto" aria-label="Buscar">
+             placeholder="Recorridos, secciones, apartados y texto" aria-label="Buscar">
       <button class="icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button>
     </div>
     <div class="pal__lista" id="pallista"></div>
@@ -2277,32 +2752,34 @@ MARCO = """
 
 <div class="velo" data-velo="recursos" role="dialog" aria-modal="true" aria-label="Recursos" hidden>
   <div class="flota">
-    <div class="flota__cab"><h2>Recursos del sistema</h2>
+    <div class="flota__cab"><h2>Recursos</h2>
       <button class="icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button></div>
     <div class="flota__cuerpo">@@RECURSOS@@</div>
-    <div class="flota__pie"><span>Uso interno y confidencial.</span></div>
   </div>
 </div>
 
-<div class="velo" data-velo="teclas" role="dialog" aria-modal="true" aria-label="Atajos" hidden>
-  <div class="flota" style="width:min(30rem,100%)">
+<div class="velo" data-velo="teclas" role="dialog" aria-modal="true" aria-label="Cómo se usa" hidden>
+  <div class="flota" style="width:min(31rem,100%)">
     <div class="flota__cab"><h2>Cómo se usa</h2>
       <button class="icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button></div>
     <div class="flota__cuerpo">
+      <p style="margin:0 0 1.8rem;font-size:.95rem;line-height:1.85;color:var(--ink-2)">
+        Hay dos maneras de entrar. Por <b>recorrido</b>: se elige quién es usted y el sitio le
+        lleva parada a parada, con las flechas y una barra que dice cuánto queda. O por
+        <b>sección</b>: el índice de arriba despliega los apartados de cada documento. En las dos,
+        cualquier cosa se abre encima de lo que estaba haciendo y al volver sigue donde estaba.
+      </p>
       <dl class="tec">
-        <dt><kbd>&#8984;K</kbd> &middot; <kbd>/</kbd></dt><dd>Buscar secciones, apartados y texto</dd>
-        <dt><kbd>&#8594;</kbd> &middot; <kbd>&#8592;</kbd></dt><dd>Apartado siguiente y anterior dentro de la sección</dd>
+        <dt><kbd>&#8984;K</kbd> &middot; <kbd>/</kbd></dt><dd>Buscar recorridos, secciones y texto</dd>
+        <dt><kbd>&#8594;</kbd> &middot; <kbd>&#8592;</kbd></dt><dd>Dentro del lector, parada siguiente y anterior</dd>
         <dt><kbd>G</kbd></dt><dd>Volver al inicio</dd>
         <dt><kbd>R</kbd></dt><dd>Recursos y descargas</dd>
         <dt><kbd>?</kbd></dt><dd>Esta ventana</dd>
-        <dt><kbd>Esc</kbd></dt><dd>Cerrar lo que esté abierto</dd>
+        <dt><kbd>Esc</kbd></dt><dd>Volver / cerrar</dd>
       </dl>
-      <p style="margin:1.5rem 0 0;font-size:.86rem;color:var(--ink-2);line-height:1.65">
-        Pulsando una sección del índice se despliegan sus apartados. Dentro de una sección,
-        <b>ningún enlace lleva fuera</b>: si un texto menciona algo que vive en otro documento, se
-        queda como texto y no como una puerta que no abre. Las siglas subrayadas —@EJEMPLO@— abren
-        su definición, que es la que está escrita en el Manual. Las figuras y las tablas anchas se
-        ven de cerca pulsando encima.
+      <p style="margin:1.8rem 0 0;font-size:.86rem;line-height:1.8;color:var(--muted)">
+        Las siglas subrayadas —@EJEMPLO@— abren su definición, que es la que está escrita en el
+        Manual. Las figuras, las tablas anchas y el mapa se ven de cerca pulsando encima.
       </p>
     </div>
   </div>
@@ -2321,6 +2798,90 @@ MARCO = """
 """
 
 
+COBALTO = (0x1F, 0x45, 0xFF)
+
+
+def _luz(r, g, b):
+    """Luminancia percibida, 0 negro y 1 blanco."""
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255.0
+
+
+def _tono(r, g, b):
+    """El matiz en grados, para saber si el color tira a verde o a rojo."""
+    mx, mn = max(r, g, b), min(r, g, b)
+    if mx == mn:
+        return 0.0
+    d = float(mx - mn)
+    if mx == r:
+        h = ((g - b) / d) % 6
+    elif mx == g:
+        h = (b - r) / d + 2
+    else:
+        h = (r - g) / d + 4
+    return h * 60.0
+
+
+def _mezcla(color, luz):
+    """El color llevado a esa luminancia: hacia el blanco o hacia el negro."""
+    base = _luz(*color)
+    if luz >= base:
+        k = 0 if base >= 1 else (luz - base) / (1 - base)
+        return tuple(int(round(c + (255 - c) * k)) for c in color)
+    k = 0 if base <= 0 else (base - luz) / base
+    return tuple(int(round(c * (1 - k))) for c in color)
+
+
+def monocroma(css):
+    """Una sola paleta.
+
+    Los documentos traen su propia gama —verdes, ambares, rojos—. Aqui
+    dentro mandan el negro, el gris, el blanco y el azul. Lo que en los
+    documentos era el color de acento (los verdes y azulados) pasa a ser
+    el azul; todo lo demas pasa a ser el gris de su misma claridad. Se
+    cambia el color con que se dibuja, nunca lo que dice.
+    """
+    def pinta(r, g, b):
+        d = max(r, g, b) - min(r, g, b)
+        if d < 14:                                # ya es neutro: se deja igual
+            return (r, g, b)
+        if d < 40:                                # apenas teñido: se apaga
+            gris = int(round(_luz(r, g, b) * 255))
+            return (gris, gris, gris)
+        h = _tono(r, g, b)
+        luz = _luz(r, g, b)
+        if 200 <= h <= 265:                       # el azul propio, intacto
+            return (r, g, b)
+        if 110 <= h < 200:                        # verdes y azulados: acento
+            return _mezcla(COBALTO, luz)
+        gris = int(round(min(0.98, max(0.07, luz)) * 255))
+        return (gris, gris, gris)
+
+    def enhex(m):
+        s = m.group(1)
+        if len(s) == 3:
+            s = "".join(c * 2 for c in s)
+        if len(s) == 8:                            # #rrggbbaa
+            cola, s = s[6:], s[:6]
+        else:
+            cola = ""
+        r, g, b = int(s[0:2], 16), int(s[2:4], 16), int(s[4:6], 16)
+        return "#%02X%02X%02X%s" % (pinta(r, g, b) + (cola,))
+
+    def enrgb(m):
+        partes = [x.strip() for x in m.group(2).split(",")]
+        if len(partes) < 3 or any("%" in x for x in partes[:3]):
+            return m.group(0)
+        try:
+            r, g, b = (int(round(float(x))) for x in partes[:3])
+        except ValueError:
+            return m.group(0)
+        nuevos = ["%d" % c for c in pinta(r, g, b)] + partes[3:]
+        return "%s(%s)" % (m.group(1), ",".join(nuevos))
+
+    css = re.sub(r"#([0-9A-Fa-f]{8}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b", enhex, css)
+    return re.sub(r"\b(rgba?)\(([^)]*)\)", enrgb, css)
+
+
 def hoja_propia(doc, marca):
     for b in re.findall(r"<style>(.*?)</style>", fuente(doc), re.S):
         if marca in b:
@@ -2329,9 +2890,19 @@ def hoja_propia(doc, marca):
 
 
 def main():
-    secciones, menus, indice, orden, voces = monta()
+    secciones, menus, indice, orden, voces, mapa = monta()
     total = len(orden)
-    inicio = sec_inicio(indice, total, voces)
+    for i, r, doc, _l, _n in SECCIONES:
+        if doc:
+            SEC_ROTULO[i] = r
+    SEC_ROTULO["recorridos"] = "Recorridos"
+    SEC_ROTULO["mapa"] = "El mapa"
+
+    svg = mapa_interactivo(mapa)
+    rutas_html, tarjetas = dibuja_recorridos(mapa)
+    inicio = sec_inicio(indice, total, voces, svg, tarjetas)
+    recorridos_html = sec_recorridos(rutas_html)
+    mapa_html = sec_mapa(svg)
 
     nav = ('<button type="button" data-ir-sec="inicio">Inicio</button>'
            + "".join('<button type="button" data-ir-sec="%s">%s</button>' % (i, H.escape(r))
@@ -2340,18 +2911,18 @@ def main():
     recursos = (
         '<div class="rec__g"><p class="rec__t">La entrega</p>'
         + "".join(
-            ('<div class="rec__i" style="opacity:.6"><em>%s</em><div><b>%s</b>'
+            ('<div class="rec__i" style="opacity:.55"><em>%s</em><div><b>%s</b>'
              '<p>%s Es la que está viendo.</p></div></div>' % (k, H.escape(n), H.escape(q)))
             if r == "centro.html" else
             ('<a class="rec__i" href="%s"%s><em>%s</em><div><b>%s</b><p>%s</p></div></a>'
              % (r, " download" if d else "", k, H.escape(n), H.escape(q)))
             for r, k, n, q, d in ENTREGA)
-        + '</div><div class="rec__g"><p class="rec__t">Los ocho documentos, por separado</p>'
+        + '</div><div class="rec__g"><p class="rec__t">Los ocho documentos</p>'
         + "".join(
             '<a class="rec__i" href="%s"><em>%02d</em><div><b>%s</b><p>%s</p></div></a>'
             % (doc, n + 1, H.escape(nombre), H.escape(INTROS[i][0]))
             for n, (i, _r, doc, _l, nombre) in enumerate([s for s in SECCIONES if s[2]]))
-        + '</div><div class="rec__g"><p class="rec__t">El glosario, entero</p>'
+        + '</div><div class="rec__g"><p class="rec__t">El glosario</p>'
         + "".join(
             '<button class="rec__i" type="button" data-gl="%s"><em>voz</em>'
             '<div><b>%s</b><p>%s</p></div></button>'
@@ -2364,9 +2935,32 @@ def main():
         for e in re.findall(r"E\d+", estados):
             grupo_de[e] = cod
 
+    # Los recorridos, resueltos a identificadores reales, para el guion.
+    rutas_datos = {}
+    for r in recorridos():
+        paradas = []
+        for _rot, anc, _por in r["paradas"]:
+            d = mapa.get("@" + anc)
+            if d:
+                paradas.append(d[0][0])
+        if paradas:
+            rutas_datos[r["id"]] = {"quien": r["quien"], "titulo": r["titulo"], "paradas": paradas}
+
+    fases_datos = []
+    for n in range(1, 13):
+        d = mapa.get("@f%02d" % n)
+        if d:
+            fases_datos.append(d[0][0])
+    for n in (13, 14):
+        d = mapa.get("@m%02d" % n)
+        if d:
+            fases_datos.append(d[0][0])
+
     cuerpo = (MARCO.replace("@@NAV@@", nav)
                    .replace("@@PANELES@@", "\n".join(menus))
-                   .replace("@@SECCIONES@@", inicio + "\n" + "\n".join(secciones))
+                   .replace("@@SECCIONES@@",
+                            inicio + "\n" + recorridos_html + "\n" + mapa_html + "\n"
+                            + "\n".join(secciones))
                    .replace("@@RECURSOS@@", recursos)
                    .replace("@EJEMPLO@", ", ".join(sorted(voces)[:3])))
 
@@ -2377,10 +2971,9 @@ def main():
                                 "<title>Centro de Excelencia Implantológica Giraldo</title>")
     cabecera = re.sub(
         r'<meta name="description" content="[^"]*">',
-        '<meta name="description" content="Centro de Excelencia Implantológica Giraldo: la '
-        'dirección, la presentación de Junta, los protocolos por puesto, la primera visita minuto '
-        'a minuto, las operaciones, el marketing, los documentos de apoyo y los números. Ocho '
-        'documentos y %d apartados, completos." >' % total, cabecera, count=1)
+        '<meta name="description" content="Centro de Excelencia Implantológica Giraldo. Diez '
+        'recorridos guiados, el mapa de las catorce fases y los ocho documentos del sistema con '
+        'sus %d apartados, completos." >' % total, cabecera, count=1)
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
@@ -2391,17 +2984,22 @@ def main():
              + json.dumps([[c, d, g, r, s] for c, d, g, r, s in orden], ensure_ascii=False)
              + ";\nwindow.__VOCES__ = " + json.dumps(voces, ensure_ascii=False)
              + ";\nwindow.__GRUPOESTADO__ = " + json.dumps(grupo_de, ensure_ascii=False)
+             + ";\nwindow.__RUTAS__ = " + json.dumps(rutas_datos, ensure_ascii=False)
+             + ";\nwindow.__FASES__ = " + json.dumps(fases_datos, ensure_ascii=False)
              + ";</script>")
 
     salida = RAIZ / "centro.html"
     texto = (cabecera + "\n" + cuerpo + "\n" + datos + "\n" + JS + "\n</body>\n</html>\n")
     texto = texto.replace("@VERSION@", VERSION).replace("@FECHA@", FECHA)
+    texto = re.sub(r"(<style[^>]*>)(.*?)(</style>)",
+                   lambda m: m.group(1) + monocroma(m.group(2)) + m.group(3),
+                   texto, flags=re.S)
+    texto = re.sub(r'(style=")([^"]*)(")',
+                   lambda m: m.group(1) + monocroma(m.group(2)) + m.group(3), texto)
+    texto = re.sub(r'\b(fill|stroke|stop-color|flood-color|lighting-color)="([^"]*)"',
+                   lambda m: '%s="%s"' % (m.group(1), monocroma(m.group(2))), texto)
     salida.write_text(texto, encoding="utf-8")
 
-    # Ni un enlace muerto y ni un salto fuera de su sección: se comprueba aquí
-    # mismo, que es donde se puede arreglar.
-    # se mira el cuerpo, no los guiones: dentro del guion hay trozos de cadena
-    # que parecen enlaces y no lo son
     cuerpo_html = re.sub(r"<script\b.*?</script>", "",
                          texto[texto.index('<div id="sitio">'):], flags=re.S)
     ids = set(re.findall(r'id="([^"]+)"', texto))
@@ -2409,8 +3007,8 @@ def main():
     if muertos:
         raise SystemExit("  enlaces muertos en centro.html: %s" % ", ".join(muertos[:8]))
 
-    print("centro.html · 9 secciones · %d apartados · %d KB"
-          % (total, salida.stat().st_size // 1024))
+    print("centro.html · %d recorridos · %d secciones · %d apartados · %d KB"
+          % (len(rutas_datos), len(indice) + 3, total, salida.stat().st_size // 1024))
 
 
 if __name__ == "__main__":
