@@ -584,6 +584,62 @@ INICIO_BLOQUES = [
       ("2", "partidas contables por separado"), ("12", "meses de seguimiento")]),
 ]
 
+# Lo que no se hará nunca. Un centro se reconoce antes por sus prohibiciones
+# que por su catálogo, y una web que solo enseña lo que ofrece no dice nada.
+# Están escritas en el Plan de Marketing; aquí se explica por qué cada una.
+PRINCIPIOS = [
+    ("No se promete lo que no se puede sostener",
+     "Ni ausencia de dolor, ni plazos que dependan de que todo salga bien, ni resultados de "
+     "otro paciente. Lo que se dice en la primera visita tiene que poder rastrearse hasta el "
+     "informe firmado por el Doctor."),
+    ("No se presiona con el precio",
+     "El presupuesto no se presenta como una oferta que caduca. Se presenta como la "
+     "consecuencia lógica de un diagnóstico que el paciente ya ha entendido, y el paciente se "
+     "lo lleva a casa si quiere."),
+    ("No se trata sin diagnóstico completo",
+     "Ningún plan se firma sin las pruebas hechas, el informe emitido y el consentimiento "
+     "explicado. La prisa del paciente no es motivo para saltarse una fase."),
+    ("No se deja un tratamiento a medias",
+     "Ni por presupuesto, ni por agenda, ni por cansancio. De ahí sale el nombre de todo esto: "
+     "una media sonrisa es la que se hace a medias, y el corte no lo ve nadie salvo el "
+     "paciente, que lo ve todos los días."),
+    ("No se abandona al paciente cuando termina",
+     "El alta no es una despedida: es el paso a mantenimiento, con cita agendada antes de "
+     "salir y un programa que lo sostiene."),
+    ("No se cuentan como propios los datos que no lo son",
+     "Cuando una cifra viene del sector y no del centro, se dice. Cinco números clave todavía "
+     "no se tienen, y están señalados como supuestos de trabajo en todos los documentos donde "
+     "aparecen."),
+]
+
+# Las preguntas que se hacen de verdad, contestadas con lo que el sistema dice.
+PREGUNTAS = [
+    ("¿Cuánto dura la primera visita?",
+     "Entre ciento quince y ciento veinte minutos de consulta, ciento veintitrés contando la "
+     "llamada previa. No es una estimación: está medida fase a fase y cada fase tiene su "
+     "duración escrita."),
+    ("¿Con quién se habla, y cuántas veces se cambia de persona?",
+     "Con cinco puestos, y el testigo se pasa cinco veces: recepción, dirección, doctor, "
+     "dirección y recepción otra vez. Esos cinco cambios son los cinco puntos donde una "
+     "primera visita se rompe, y por eso están protocolizados uno a uno."),
+    ("¿Qué se lleva el paciente el primer día?",
+     "Un diagnóstico explicado, un plan en tres dimensiones, un presupuesto con su "
+     "justificación y nueve documentos firmados o entregados. Y una decisión que puede tomar "
+     "en casa, sin plazo que caduque."),
+    ("¿Quién responde si algo se salta?",
+     "La matriz RACI asigna a cada una de las catorce fases alguien que ejecuta y alguien que "
+     "responde del resultado. No hay ninguna fase sin responsable, y está escrito qué ocurre "
+     "cuando un puesto no cumple: no es una conversación, es un procedimiento."),
+    ("¿Y después del tratamiento?",
+     "El alta abre el programa de cuidado: cuota anual, revisiones agendadas antes de salir de "
+     "la clínica e informe que se entrega en persona. Es la única partida del plan que produce "
+     "sin ocupar un hueco de primera visita."),
+    ("¿Se puede auditar todo esto?",
+     "Esa es la idea. Trescientos veintidós puntos de verificación —físicos, documentales y de "
+     "proceso—, veintiséis procedimientos numerados y un instrumento que mide diez indicadores "
+     "mes a mes. Lo que no se verifica, no ocurre."),
+]
+
 HECHOS = [
     ("8", "documentos", "Tres troncales, cuatro derivados y un instrumento. Misma versión y misma fecha: ninguno puede quedar desfasado respecto de otro sin que se note."),
     ("@TOTAL@", "apartados", "Todos están en este sitio, enteros y sin resumir. Lo que no está aquí, no está escrito."),
@@ -615,31 +671,68 @@ SECCIONES = [
     ("numeros", "Los números", "instrumentos/captura.html", "h", "Los números del centro"),
 ]
 
-ENLACE = re.compile(r"<a\b[^>]*>.*?</a>", re.I | re.S)
+ENLACE = re.compile(r"<a\b([^>]*)>(.*?)</a>", re.I | re.S)
+SOLO_DOC = re.compile(r'href="([^"#]+\.html)"')
 
 
-def desata(html, dentro_de):
-    """Un enlace que no lleva a esta sección deja de ser un enlace.
+def cose(html, mapa, seccion, rotulos):
+    """Cada enlace lleva a donde tiene que llevar, y dice adónde.
 
-    Este era el defecto de verdad: la matriz de un puesto enlazaba cada fase al
-    Protocolo de Primera Visita y el lector aparecía en mitad de otro
-    documento, sin cabecera y sin vuelta. Y alguno, al no encontrar destino,
-    caía en un sitio que no tenía nada que ver. La regla ahora es una sola y se
-    puede comprobar sola: dentro de una sección, un enlace lleva a esa sección
-    o no es un enlace. El texto se queda —no se elimina nada—; lo que se quita
-    es la promesa de un salto que no se puede cumplir.
+    Aquí está todo en la misma página: los ocho documentos y sus 135 apartados.
+    Así que un enlace no tiene por qué morir ni por qué sacar al lector del
+    sitio. Se resuelve contra el mapa de todo lo que hay:
+
+      · si el destino está en esta misma sección, es un enlace normal;
+      · si está en otra, sigue siendo un enlace y se le pone al lado el nombre
+        de la sección a la que va, para que nadie pulse a ciegas;
+      · si no está en ninguna parte —porque el ancla venía mal escrita—, no se
+        finge: el texto se queda y el enlace desaparece.
+
+    De la tercera clase quedaban once, todas con el ancla cortada a treinta y
+    cuatro caracteres en perfiles.py. Estaban arregladas en el origen antes de
+    escribir esto, y check-coherencia falla si vuelve a aparecer una.
     """
     def uno(m):
-        trozo = m.group(0)
-        href = re.search(r'href="([^"]*)"', trozo)
+        atr, texto = m.group(1), m.group(2)
+        href = re.search(r'href="([^"]*)"', atr)
         if not href:
-            return trozo
+            return m.group(0)
         destino = href.group(1)
-        if destino.startswith("#") and destino[1:] in dentro_de:
-            return trozo
-        texto = re.sub(r"<a\b[^>]*>|</a>", "", trozo)
+        if destino.startswith("#"):
+            clave = destino[1:]
+        elif ".html#" in destino:
+            clave = destino.split("#", 1)[1]
+        elif destino.endswith(".html"):
+            clave = None
+        else:
+            return m.group(0)            # correo, teléfono, enlace externo
+
+        if clave is None:
+            # un enlace al documento entero: lleva a su sección
+            doc = destino.split("/")[-1]
+            sec = DOC_A_SEC.get(destino) or DOC_A_SEC.get(doc)
+            if not sec:
+                return '<span class="ref">%s</span>' % texto
+            return ('<a href="#%s" class="salta">%s<i class="salta__d">%s</i></a>'
+                    % (sec, texto, H.escape(rotulos[sec])))
+
+        aqui = mapa.get(seccion + "/" + clave)
+        if aqui:
+            return '<a href="#%s"%s>%s</a>' % (aqui[0], _limpio(atr), texto)
+        for s in mapa.get("@" + clave, []):
+            ident, sec = s
+            return ('<a href="#%s" class="salta">%s<i class="salta__d">%s</i></a>'
+                    % (ident, texto, H.escape(rotulos[sec])))
         return '<span class="ref">%s</span>' % texto
     return ENLACE.sub(uno, html)
+
+
+def _limpio(atr):
+    """Los atributos del enlace menos el href, que se reescribe."""
+    return re.sub(r'\s*href="[^"]*"', "", atr)
+
+
+DOC_A_SEC = {}
 
 
 def submenu(apartados, pre):
@@ -724,7 +817,7 @@ def bloque_primera_visita(pre):
    .replace("@@C@@", "".join(carriles)).replace("@@TOT@@", str(total)))
 
 
-CLASE_RACI = {"R/A": "es-ra", "R": "es-r", "A": "es-a", "C": "es-c", "I": "es-i", "—": "es-no"}
+CLASE_RACI = {"R/A": "wes-ra", "R": "wes-r", "A": "wes-a", "C": "wes-c", "I": "wes-i", "—": "wes-no"}
 
 
 def bloque_protocolos(pre):
@@ -738,28 +831,30 @@ def bloque_protocolos(pre):
             '<b>%s</b><span>%d de 14 fases</span></button>'
             % (" es-on" if n == 0 else "", p["id"], H.escape(p["corto"]), activas))
         celdas = "".join(
-            '<div class="raci__c %s" title="Fase %02d · %s · %s">'
-            '<span class="raci__f">%02d</span><span class="raci__p">%s</span></div>'
+            '<div class="wraci__c %s" title="Fase %02d · %s · %s">'
+            '<span class="wraci__f">%02d</span><span class="wraci__p">%s</span></div>'
             % (CLASE_RACI[papel], i + 1, H.escape(fase), H.escape(P.QUE_ES[papel][0]),
                i + 1, H.escape(papel))
             for i, (fase, papel) in enumerate(raci))
-        bloques = "".join('<li><span class="ref">%s</span></li>' % H.escape(r)
-                          for r, _a in p["bloques"])
-        vang = "".join('<li><span class="ref">%s</span></li>' % H.escape(r)
-                       for r, _a in p["vanguardia"])
+        bloques = "".join('<li><a href="manual.html#%s">%s</a></li>' % (a, H.escape(r))
+                          for r, a in p["bloques"])
+        vang = "".join('<li><a href="manual.html#%s">%s</a></li>' % (a, H.escape(r))
+                       for r, a in p["vanguardia"])
         fichas.append(
             '<article class="puesto" data-puesto="%s"%s>\n'
             '  <p class="puesto__k">Puesto %d de 6 · columna %s de la matriz</p>\n'
             '  <h3>%s</h3>\n  <p class="puesto__q">%s</p>\n'
             '  %s\n'
             '  <p class="rotulillo">Su papel en las catorce fases del recorrido</p>\n'
-            '  <div class="raci">%s</div>\n'
+            '  <div class="wraci">%s</div>\n'
             '  <p class="leyenda">%s</p>\n'
             '  <div class="puesto__cols">\n'
             '    <div><p class="rotulillo">Sus procedimientos escritos</p><ul class="lista2">%s</ul></div>\n'
             '    <div><p class="rotulillo">Sus funciones de vanguardia</p><ul class="lista2">%s</ul></div>\n'
-            '  </div>\n</article>'
-            % (p["id"], "" if n == 0 else " hidden", n + 1, p.get("raci") or "—",
+            '  </div>\n'
+            '  <p class="puesto__ir"><a href="manual.html#%s">Su manual de puesto, completo</a></p>\n'
+            '</article>'
+            % (p["id"], "" if n == 0 else " hidden", n + 1, p.get("wraci") or "—",
                H.escape(p["nombre"]), H.escape(p["que"]),
                cifras([(str(activas), "fases en las que interviene"),
                        (str(len(p["bloques"])), "procedimientos escritos"),
@@ -769,7 +864,7 @@ def bloque_protocolos(pre):
                bloques or '<li class="es-vacio">Su manual no se numera en procedimientos: su '
                           'trabajo es de gobierno y está escrito en el manual del puesto.</li>',
                vang or '<li class="es-vacio">Ninguna propia: las suyas son de gobierno del '
-                       'sistema.</li>'))
+                       'sistema.</li>', p["manual"]))
     return ("""
 <div class="lienzo">
   <div class="lienzo__cab">
@@ -826,9 +921,9 @@ def bloque_marketing(pre):
                + opciones("sem", "Marco", [(k, SEM_ROT[k])
                                            for k in ("verde", "amarillo", "naranja")]))
     camp = "".join(
-        '<article class="campana"><p class="campana__k">%s</p><h4>%s</h4>'
-        '<p class="campana__r">%s</p>'
-        '<dl class="campana__c"><div><dt>Aporta</dt><dd>%s €</dd></div>'
+        '<article class="wcampana"><p class="wcampana__k">%s</p><h4>%s</h4>'
+        '<p class="wcampana__r">%s</p>'
+        '<dl class="wcampana__c"><div><dt>Aporta</dt><dd>%s €</dd></div>'
         '<div><dt>Cuesta</dt><dd>%s €</dd></div>'
         '<div><dt>Por cada euro</dt><dd>%s €</dd></div></dl></article>'
         % (H.escape(c["cod"]), H.escape(c["nombre"]), H.escape(c.get("razon", "")),
@@ -921,7 +1016,7 @@ def bloque_operaciones(pre):
     <p>Catorce fases. Las doce primeras son la primera visita; la trece ejecuta lo vendido y la
       catorce es la que da coherencia al nombre del centro.</p>
   </div>
-  <div class="mapa">@@M@@</div>
+  <div class="wmapa">@@M@@</div>
 </div>
 """.replace("@@M@@", mapa))
 
@@ -936,41 +1031,59 @@ BLOQUES = {
 
 
 def monta():
-    """Las nueve secciones, con sus documentos enteros y sus enlaces atados."""
+    """Las nueve secciones, con sus documentos enteros y los enlaces resueltos."""
     voces = glosario()
     orden_voces = sorted(voces, key=len, reverse=True)
     anclas_glosario = {a for _d, a, _p in GLOSARIOS}
 
-    secciones, menus, indice, orden = [], [], [], []
+    rotulos = {i: r for i, r, doc, _l, _n in SECCIONES if doc}
+    for i, _r, doc, _l, _n in SECCIONES:
+        if doc:
+            DOC_A_SEC[doc] = i
+            DOC_A_SEC[doc.split("/")[-1]] = i
 
+    # ------------------------------------------------------------------
+    #  Primera pasada: recoger, marcar el glosario y prefijar. De aquí sale
+    #  el mapa de TODO lo que hay, que es lo que permite que un enlace sepa
+    #  a qué sección va antes de que nadie lo pulse.
+    # ------------------------------------------------------------------
+    porSeccion, mapa = [], {}
     for ident, rotulo, doc, letra, nombre_doc in SECCIONES:
         if doc is None:
             continue
         pre = letra + "-"
         piezas = recoge(doc)
-
-        # 1 · preparar cada apartado: tablas envueltas, glosario marcado, ids propios
         for p in piezas:
             cuerpo = entabla(p["html"])
             if not any(('id="%s"' % a) in cuerpo for a in anclas_glosario):
                 cuerpo = marca_glosario(cuerpo, voces, orden_voces)
             p["html"] = prefija(cuerpo, pre)
             p["clave"] = pre + p["id"]
-
-        # 2 · atar: un enlace lleva a esta sección o deja de ser un enlace
-        dentro = set()
-        for p in piezas:
-            dentro.update(re.findall(r'id="([^"]+)"', p["html"]))
         bloque = BLOQUES.get(ident)
         propio = bloque(pre) if bloque else ""
-        dentro.update(re.findall(r'id="([^"]+)"', propio))
-        for p in piezas:
-            p["html"] = desata(p["html"], dentro)
-        propio = desata(propio, dentro)
 
-        # 3 · las hojas de la sección y su índice
-        hojas, filas, grupo = [], [], None
+        for trozo in [propio] + [p["html"] for p in piezas]:
+            for crudo in re.findall(r'id="([^"]+)"', trozo):
+                llano = crudo[len(pre):] if crudo.startswith(pre) else crudo
+                mapa[ident + "/" + llano] = (crudo, ident)
+                # y también con su prefijo puesto: los bloques que se dibujan
+                # aquí —el reloj, los carriles, el mapa de fases— ya enlazan al
+                # identificador final, y sin esta línea se quedaban sin enlace
+                mapa[ident + "/" + crudo] = (crudo, ident)
+                mapa.setdefault("@" + llano, []).append((crudo, ident))
+        porSeccion.append((ident, rotulo, doc, pre, nombre_doc, piezas, propio))
+
+    # ------------------------------------------------------------------
+    #  Segunda pasada: coser los enlaces y montar cada sección
+    # ------------------------------------------------------------------
+    secciones, menus, indice, orden = [], [], [], []
+    for ident, rotulo, doc, pre, nombre_doc, piezas, propio in porSeccion:
+        propio = cose(propio, mapa, ident, rotulos)
         for p in piezas:
+            p["html"] = cose(p["html"], mapa, ident, rotulos)
+
+        hojas, filas, grupo = [], [], None
+        for n, p in enumerate(piezas):
             orden.append((p["clave"], nombre_doc, p["grupo"], p["rotulo"], ident))
             if p["grupo"] != grupo:
                 grupo = p["grupo"]
@@ -990,10 +1103,10 @@ def monta():
         indice.append((ident, rotulo, nombre_doc, len(piezas)))
         menus.append('<div class="sub" data-sub="%s" hidden>%s</div>'
                      % (ident, submenu(piezas, pre)))
-
         secciones.append(
             '<section class="sec" id="%s" data-sec="%s">\n'
             '  <header class="cab">\n'
+            '    <span class="cab__n" aria-hidden="true">%02d</span>\n'
             '    <p class="cab__k">%s · %d apartados</p>\n'
             '    <h1>%s</h1>\n'
             '    <p class="cab__p">%s</p>\n'
@@ -1002,12 +1115,14 @@ def monta():
             '  <div class="lienzo lienzo--indice">\n'
             '    <div class="lienzo__cab"><h2>Lo que hay en %s</h2>\n'
             '      <p>%d apartados, enteros y en el orden del documento. Pulse uno y se abre '
-            'aquí; el índice de arriba lleva a cualquiera de ellos sin salir de esta sección.</p></div>\n'
+            'aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>\n'
             '    <div class="idx">%s</div>\n'
             '  </div>\n'
+            '  <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span>'
+            '<span class="leyendo__n"></span></div>\n'
             '  <div class="hojas">%s</div>\n'
             '</section>'
-            % (ident, ident, H.escape(nombre_doc), len(piezas), H.escape(titulo),
+            % (ident, ident, len(indice), H.escape(nombre_doc), len(piezas), H.escape(titulo),
                H.escape(texto), propio, H.escape(rotulo.lower()), len(piezas),
                "".join(filas), "\n".join(hojas)))
 
@@ -1036,12 +1151,12 @@ def sec_inicio(indice, total, voces):
 
     return """
 <section class="sec" id="inicio" data-sec="inicio">
-  <div class="hero">
-    <p class="hero__k">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+  <div class="whero">
+    <p class="whero__k">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
     <h1>No medias<br><em>sonrisas</em></h1>
-    <p class="hero__lema">«Le devolvemos su sonrisa completa, en el menor tiempo posible,
+    <p class="whero__lema">«Le devolvemos su sonrisa completa, en el menor tiempo posible,
       y le cuidamos para siempre.»</p>
-    <div class="hero__b">
+    <div class="whero__b">
       <button type="button" class="bt bt--fuerte" data-ir-sec="primera-visita">La primera visita</button>
       <button type="button" class="bt" data-abre="paleta">Buscar en todo el sistema</button>
     </div>
@@ -1077,6 +1192,23 @@ def sec_inicio(indice, total, voces):
     <div class="puertas">@@PUERTAS@@</div>
   </div>
 
+  <div class="lienzo">
+    <div class="lienzo__cab">
+      <h2>Lo que no haremos nunca</h2>
+      <p>Un centro se reconoce antes por sus prohibiciones que por su catálogo. Estas seis están
+        escritas y son las que se auditan primero cuando algo va mal.</p>
+    </div>
+    <ol class="prohibido">@@PRINCIPIOS@@</ol>
+  </div>
+
+  <div class="lienzo">
+    <div class="lienzo__cab">
+      <h2>Preguntas que nos hacen</h2>
+      <p>Contestadas con lo que el sistema dice, no con lo que suena bien.</p>
+    </div>
+    <div class="faq">@@PREGUNTAS@@</div>
+  </div>
+
   <div class="lienzo lienzo--contacto">
     <div class="contacto">
       <div>
@@ -1099,6 +1231,11 @@ def sec_inicio(indice, total, voces):
   </div>
 </section>
 """.replace("@@HECHOS@@", hechos).replace("@@IDEAS@@", bloques) \
+   .replace("@@PRINCIPIOS@@", "".join(
+       '<li><b>%s</b><p>%s</p></li>' % (H.escape(k), H.escape(q)) for k, q in PRINCIPIOS)) \
+   .replace("@@PREGUNTAS@@", "".join(
+       '<details class="faq__p"><summary>%s</summary><p>%s</p></details>'
+       % (H.escape(k), H.escape(q)) for k, q in PREGUNTAS)) \
    .replace("@@PUERTAS@@", puertas).replace("@TOTAL@", str(total))
 
 
@@ -1224,15 +1361,15 @@ body{background:var(--papel);color:var(--tinta)}
   letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
 /* --- inicio --------------------------------------------------------------- */
-.hero{padding:3.4rem 0 4rem;border-bottom:1px solid var(--negro);margin-bottom:5rem}
-.hero__k{margin:0;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;
+.whero{padding:3.4rem 0 4rem;border-bottom:1px solid var(--negro);margin-bottom:5rem}
+.whero__k{margin:0;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;
   text-transform:uppercase;color:var(--muted)}
-.hero h1{font-size:clamp(3.4rem,11vw,8.5rem);line-height:.92;letter-spacing:-.045em;
+.whero h1{font-size:clamp(3.4rem,11vw,8.5rem);line-height:.92;letter-spacing:-.045em;
   margin:1.6rem 0 0;font-weight:600}
-.hero h1 em{font-style:normal;color:var(--azul)}
-.hero__lema{margin:2.4rem 0 0;font-size:clamp(1.05rem,2.1vw,1.4rem);line-height:1.45;
+.whero h1 em{font-style:normal;color:var(--azul)}
+.whero__lema{margin:2.4rem 0 0;font-size:clamp(1.05rem,2.1vw,1.4rem);line-height:1.45;
   color:var(--ink-2);max-width:38ch}
-.hero__b{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.6rem}
+.whero__b{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.6rem}
 .bt{font:inherit;font-size:.88rem;cursor:pointer;padding:.7rem 1.4rem;border:1px solid var(--negro);
   background:none;color:var(--negro);transition:background .16s var(--e),color .16s var(--e)}
 .bt:hover{background:var(--negro);color:#fff}
@@ -1268,6 +1405,31 @@ body{background:var(--papel);color:var(--tinta)}
 .puerta__q{margin-top:.5rem;font-size:.83rem;line-height:1.5;color:var(--ink-2)}
 .puerta__m{margin-top:1.2rem;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.1em;
   color:var(--muted)}
+
+/* Lo que no se hará nunca: una lista numerada, en negativo. */
+/* Seis en tres columnas: dos filas exactas. Con cuatro columnas quedaban dos
+   huecos grises al final, que parecían un error y no un final. */
+.prohibido{list-style:none;margin:0;padding:0;counter-reset:p;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea)}
+.prohibido li{counter-increment:p;background:var(--blanco);padding:1.5rem 1.5rem 1.6rem;
+  position:relative}
+.prohibido li::before{content:counter(p,decimal-leading-zero);font-family:var(--f-mono);
+  font-size:.6rem;color:var(--azul);display:block;margin-bottom:.7rem}
+.prohibido b{display:block;font-size:1.02rem;font-weight:600;color:var(--negro);line-height:1.35}
+.prohibido p{margin:.6rem 0 0;font-size:.86rem;line-height:1.6;color:var(--ink-2)}
+
+/* Las preguntas: se abren de una en una y sin guion. */
+.faq{border-top:1px solid var(--negro);max-width:58rem}
+.faq__p{border-bottom:1px solid var(--linea)}
+.faq__p summary{cursor:pointer;list-style:none;padding:1.1rem 2.4rem 1.1rem 0;position:relative;
+  font-size:1.02rem;font-weight:600;color:var(--negro)}
+.faq__p summary::-webkit-details-marker{display:none}
+.faq__p summary::after{content:"+";position:absolute;right:.4rem;top:1rem;font-family:var(--f-mono);
+  color:var(--azul);font-size:1.1rem;line-height:1}
+.faq__p[open] summary::after{content:"−"}
+.faq__p summary:hover{color:var(--azul)}
+.faq__p p{margin:0 0 1.3rem;font-size:.95rem;line-height:1.68;color:var(--ink-2);max-width:60ch}
 
 .lienzo--contacto{border-top:1px solid var(--negro);padding-top:2.6rem}
 .contacto{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2.4rem}
@@ -1320,21 +1482,21 @@ body{background:var(--papel);color:var(--tinta)}
 .puesto__q{margin:1rem 0 0;font-size:1rem;line-height:1.65;color:var(--ink-2);max-width:56ch}
 .puesto .cifras{margin:2rem 0 2.6rem;padding:1.4rem 0;border-top:1px solid var(--linea);
   border-bottom:1px solid var(--linea)}
-.raci{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:2px}
-.raci__c{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+.wraci{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:2px}
+.wraci__c{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:var(--gris);cursor:help}
-.raci__f{font-family:var(--f-mono);font-size:.52rem;color:var(--muted)}
-.raci__p{font-family:var(--f-mono);font-size:.7rem;font-weight:600;color:var(--muted)}
-.raci__c.es-ra{background:var(--azul)}
-.raci__c.es-r{background:var(--azul);opacity:.72}
-.raci__c.es-a{background:var(--negro)}
-.raci__c.es-ra .raci__p,.raci__c.es-r .raci__p,.raci__c.es-a .raci__p,
-.raci__c.es-ra .raci__f,.raci__c.es-r .raci__f,.raci__c.es-a .raci__f{color:#fff}
-.raci__c.es-c{background:var(--azul-p)}
-.raci__c.es-c .raci__p{color:var(--azul-o)}
-.raci__c.es-i{background:var(--blanco);border:1px solid var(--linea)}
-.raci__c.es-no{background:none;border:1px dashed var(--linea)}
-.raci__c.es-no .raci__p{color:var(--linea)}
+.wraci__f{font-family:var(--f-mono);font-size:.52rem;color:var(--muted)}
+.wraci__p{font-family:var(--f-mono);font-size:.7rem;font-weight:600;color:var(--muted)}
+.wraci__c.wes-ra{background:var(--azul)}
+.wraci__c.wes-r{background:var(--azul);opacity:.72}
+.wraci__c.wes-a{background:var(--negro)}
+.wraci__c.wes-ra .wraci__p,.wraci__c.wes-r .wraci__p,.wraci__c.wes-a .wraci__p,
+.wraci__c.wes-ra .wraci__f,.wraci__c.wes-r .wraci__f,.wraci__c.wes-a .wraci__f{color:#fff}
+.wraci__c.wes-c{background:var(--azul-p)}
+.wraci__c.wes-c .wraci__p{color:var(--azul-o)}
+.wraci__c.wes-i{background:var(--blanco);border:1px solid var(--linea)}
+.wraci__c.wes-no{background:none;border:1px dashed var(--linea)}
+.wraci__c.wes-no .wraci__p{color:var(--linea)}
 .leyenda{margin:1rem 0 0;font-size:.76rem;color:var(--muted);line-height:1.6}
 .leyenda b{font-family:var(--f-mono);color:var(--negro)}
 .puesto__cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(19rem,1fr));gap:2.6rem;
@@ -1346,7 +1508,7 @@ body{background:var(--papel);color:var(--tinta)}
 .lista2 .es-vacio{color:var(--muted)}
 
 /* --- mapa de fases ---------------------------------------------------------- */
-.mapa{display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:1px;
+.wmapa{display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:1px;
   background:var(--linea);border:1px solid var(--linea)}
 .mfase{background:var(--blanco);padding:.9rem 1rem 1rem;text-decoration:none;display:flex;
   flex-direction:column;gap:.15rem;transition:background .16s var(--e)}
@@ -1403,15 +1565,15 @@ body{background:var(--papel);color:var(--tinta)}
 .barrita::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--v);background:var(--azul)}
 .campanas{display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1px;
   background:var(--linea);border:1px solid var(--linea)}
-.campana{background:var(--blanco);padding:1.4rem 1.4rem 1.5rem}
-.campana__k{margin:0;font-family:var(--f-mono);font-size:.58rem;color:var(--azul)}
-.campana h4{margin:.4rem 0 0;font-size:1.02rem;letter-spacing:-.014em;font-weight:600}
-.campana__r{margin:.7rem 0 0;font-size:.84rem;line-height:1.55;color:var(--ink-2)}
-.campana__c{display:flex;gap:1.4rem;margin:1.2rem 0 0;padding-top:1rem;
+.wcampana{background:var(--blanco);padding:1.4rem 1.4rem 1.5rem}
+.wcampana__k{margin:0;font-family:var(--f-mono);font-size:.58rem;color:var(--azul)}
+.wcampana h4{margin:.4rem 0 0;font-size:1.02rem;letter-spacing:-.014em;font-weight:600}
+.wcampana__r{margin:.7rem 0 0;font-size:.84rem;line-height:1.55;color:var(--ink-2)}
+.wcampana__c{display:flex;gap:1.4rem;margin:1.2rem 0 0;padding-top:1rem;
   border-top:1px solid var(--linea)}
-.campana__c dt{font-family:var(--f-mono);font-size:.54rem;letter-spacing:.12em;
+.wcampana__c dt{font-family:var(--f-mono);font-size:.54rem;letter-spacing:.12em;
   text-transform:uppercase;color:var(--muted)}
-.campana__c dd{margin:.25rem 0 0;font-size:1rem;font-weight:600;color:var(--negro)}
+.wcampana__c dd{margin:.25rem 0 0;font-size:1rem;font-weight:600;color:var(--negro)}
 
 /* --- puente ----------------------------------------------------------------- */
 .puente{display:flex;flex-direction:column;gap:.4rem}
@@ -1448,6 +1610,17 @@ body{background:var(--papel);color:var(--tinta)}
 .hoja .phase__meta{position:static}
 .hoja .tablewrap{overflow-x:auto}
 .ref{color:var(--ink-2);border-bottom:1px dotted var(--linea)}
+/* Un enlace que cambia de sección lo dice: al lado del texto va el nombre de
+   la sección a la que lleva. Nadie pulsa a ciegas y nadie aparece en un sitio
+   que no esperaba. */
+.salta{text-decoration:none;color:var(--azul);border-bottom:1px solid var(--azul-p)}
+.salta:hover{border-bottom-color:var(--azul)}
+.salta__d{font-style:normal;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-left:.45rem;white-space:nowrap}
+.salta__d::before{content:"→ "}
+.salta:hover .salta__d{color:var(--azul)}
+.puesto__ir{margin:2.6rem 0 0}
+.puesto__ir a{font-size:.9rem}
 .gl{font:inherit;cursor:help;background:none;border:0;padding:0;color:inherit;
   border-bottom:1px solid var(--azul)}
 .gl:hover{color:var(--azul)}
@@ -1456,11 +1629,52 @@ body{background:var(--papel);color:var(--tinta)}
 .remate a{text-decoration:none;font-size:.85rem;color:var(--ink-2);display:inline-flex;gap:.5rem}
 .remate a:hover{color:var(--azul)}
 .remate a i{font-style:normal;font-family:var(--f-mono);font-size:.64rem;color:var(--muted)}
-.pasos{display:flex;gap:.4rem}
-.pasos button{font:inherit;cursor:pointer;width:2rem;height:2rem;border:1px solid var(--linea);
+.wpasos{display:flex;gap:.4rem}
+.wpasos button{font:inherit;cursor:pointer;width:2rem;height:2rem;border:1px solid var(--linea);
   background:none;color:var(--ink-2)}
-.pasos button:hover:not(:disabled){border-color:var(--negro);color:var(--negro)}
-.pasos button:disabled{opacity:.3;cursor:default}
+.wpasos button:hover:not(:disabled){border-color:var(--negro);color:var(--negro)}
+.wpasos button:disabled{opacity:.3;cursor:default}
+
+/* ---------------------------------------------------------------------------
+   MOVIMIENTO
+   Poco y con motivo: los bloques entran una vez al aparecer, los enlaces
+   crecen su raya al pasar por encima y la barra de lectura dice en qué
+   apartado se está. Nada gira, nada rebota y todo se apaga si el sistema pide
+   menos movimiento.
+   --------------------------------------------------------------------------- */
+.entra-al-ver{opacity:0;transform:translateY(10px)}
+.wve{opacity:1;transform:none;transition:opacity .5s var(--e),transform .5s var(--e)}
+@media(prefers-reduced-motion:reduce){
+  .entra-al-ver{opacity:1;transform:none}
+  .wve{transition:none}
+}
+
+/* El numeral de la sección: dos cifras enormes al fondo de la cabecera, que
+   dicen dónde está uno sin ocupar una línea de texto. */
+.cab{position:relative;overflow:hidden}
+.cab__n{position:absolute;top:-1.6rem;right:-.6rem;font-size:clamp(6rem,14vw,11rem);
+  line-height:.8;font-weight:600;letter-spacing:-.06em;color:var(--linea-2);
+  pointer-events:none;user-select:none;z-index:0}
+.cab > *{position:relative;z-index:1}
+
+/* La barra de lectura: aparece cuando hay un apartado abierto y se queda
+   pegada bajo el índice. Dice qué se está leyendo y cuántos quedan. */
+.leyendo{position:sticky;top:var(--nav);z-index:40;display:flex;align-items:center;gap:1rem;
+  padding:.6rem 0;margin:0 0 2rem;background:var(--papel);border-bottom:1px solid var(--linea);
+  font-size:.82rem;color:var(--muted)}
+.leyendo b{color:var(--negro);font-weight:600;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.leyendo__n{font-family:var(--f-mono);font-size:.66rem;margin-left:auto;white-space:nowrap}
+.leyendo__p{flex:none;width:5rem;height:2px;background:var(--linea);position:relative}
+.leyendo__p i{position:absolute;inset:0 auto 0 0;background:var(--azul);width:var(--v,0%)}
+
+/* Los enlaces del cuerpo: la raya crece de izquierda a derecha. */
+.hoja a:not(.salta):not(.gl),.lienzo__cab a{
+  color:var(--negro);text-decoration:none;background-image:linear-gradient(var(--azul),var(--azul));
+  background-size:0% 1px;background-position:0 100%;background-repeat:no-repeat;
+  border-bottom:1px solid var(--linea);transition:background-size .22s var(--e),color .16s var(--e);
+}
+.hoja a:not(.salta):not(.gl):hover,.lienzo__cab a:hover{color:var(--azul);background-size:100% 1px}
 
 /* --- lo que flota ------------------------------------------------------------ */
 .velo{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-start;justify-content:center;
@@ -1544,14 +1758,14 @@ body{background:var(--papel);color:var(--tinta)}
   .abrepal span{display:none}
   .sub{columns:1;padding:1.2rem 1rem 1.6rem}
   .sec{padding:2.4rem 1.1rem 5rem}
-  .hero{padding:2.6rem 0 2.6rem}
+  .whero{padding:2.6rem 0 2.6rem}
   .reloj__barra{height:auto;flex-direction:column}
   .reloj__t{width:100%!important;flex-direction:row;gap:.7rem;align-items:center;
     border-right:0;border-bottom:1px solid var(--linea)}
   .reloj__r{-webkit-line-clamp:1;flex:1}
   .reloj__eje{display:none}
   .carril{grid-template-columns:5rem minmax(0,1fr);gap:.5rem}
-  .raci{grid-template-columns:repeat(7,minmax(0,1fr))}
+  .wraci{grid-template-columns:repeat(7,minmax(0,1fr))}
   .lienzo--indice .idx{columns:1}
   .puestosel{flex-direction:column}
   .puestobt{border-right:0;border-bottom:1px solid var(--linea)}
@@ -1627,6 +1841,8 @@ JS = """
     });
     memo.hoja[s.dataset.sec] = clave; recuerda();
     pinta(h, s);
+    var todas = [].slice.call(s.querySelectorAll(".hoja"));
+    pintaLeyendo(s, h, todas.indexOf(h), todas.length);
     if(subir !== false) h.scrollIntoView({block:"start", behavior:"smooth"});
   }
 
@@ -1641,7 +1857,7 @@ JS = """
     pie.className = "remate";
     var sig = suyas[i + 1], ant = suyas[i - 1];
     pie.innerHTML =
-      '<div class="pasos">'
+      '<div class="wpasos">'
       + '<button type="button" data-paso="-1"' + (ant ? "" : " disabled") + ' aria-label="Anterior">&#8592;</button>'
       + '<button type="button" data-paso="1"' + (sig ? "" : " disabled") + ' aria-label="Siguiente">&#8594;</button>'
       + '</div>'
@@ -1683,6 +1899,30 @@ JS = """
     });
   }
 
+  /* Un solo camino para llegar a cualquier cosa por su identificador: lo usan
+     los enlaces, la dirección al cargar y el cambio de dirección. Antes la
+     dirección al cargar solo entendía apartados enteros, y un enlace copiado
+     a una función concreta abría el inicio. */
+  function irA(id, suave){
+    if(porHoja[id]){
+      veSec(porHoja[id].closest(".sec").dataset.sec, false);
+      veHoja(id, suave !== false);
+      return true;
+    }
+    if(secs.some(function(s){ return s.dataset.sec === id; })){
+      veSec(id, true);
+      return true;
+    }
+    var el = D.getElementById(id);
+    if(!el) return false;
+    var sec = el.closest(".sec");
+    if(sec) veSec(sec.dataset.sec, false);
+    var dueno = el.closest(".hoja");
+    if(dueno) veHoja(dueno.dataset.hoja, false);
+    el.scrollIntoView({block:"start", behavior: suave === false ? "auto" : "smooth"});
+    return true;
+  }
+
   D.addEventListener("click", function(e){
     var nb = e.target.closest(".nav__l button[data-ir-sec]");
     if(nb){
@@ -1697,20 +1937,9 @@ JS = """
     var a = e.target.closest("a[data-ir], a[href^='#']");
     if(a){
       var clave = a.dataset.ir || a.getAttribute("href").slice(1);
-      if(porHoja[clave]){
+      if(D.getElementById(clave) || porHoja[clave]){
         e.preventDefault(); cierraPanel();
-        veSec(porHoja[clave].closest(".sec").dataset.sec, false);
-        veHoja(clave, true);
-        try { history.replaceState(null, "", "#" + clave); } catch(err){}
-        return;
-      }
-      var el = D.getElementById(clave);
-      if(el){
-        var dueno = el.closest(".hoja");
-        e.preventDefault(); cierraPanel();
-        veSec(el.closest(".sec").dataset.sec, false);
-        if(dueno) veHoja(dueno.dataset.hoja, false);
-        el.scrollIntoView({block:"start", behavior:"smooth"});
+        irA(clave, true);
         try { history.replaceState(null, "", "#" + clave); } catch(err){}
       }
       return;
@@ -1958,6 +2187,33 @@ JS = """
     if(e.key === "ArrowLeft" && suyas[i-1]) veHoja(suyas[i-1].dataset.hoja, true);
   });
 
+  /* ---- la barra de lectura de cada sección ------------------------------- */
+  function pintaLeyendo(s, h, i, n){
+    var barra = s.querySelector(".leyendo");
+    if(!barra) return;
+    barra.hidden = false;
+    barra.querySelector("b").textContent = rotulo(h.dataset.hoja);
+    barra.querySelector(".leyendo__n").textContent = (i + 1) + " / " + n;
+    barra.querySelector(".leyendo__p i").style.setProperty("--v", (100 * (i + 1) / n) + "%");
+  }
+
+  /* ---- lo que entra al aparecer ------------------------------------------ */
+  /* Una sola vez, y solo lo que hay antes de la lectura: los bloques de datos.
+     El texto de los documentos no se toca, que se lee y no se mira. */
+  if("IntersectionObserver" in window){
+    var ojo = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(!en.isIntersecting) return;
+        en.target.classList.add("wve");
+        ojo.unobserve(en.target);
+      });
+    }, {rootMargin: "0px 0px -8% 0px"});
+    [].slice.call(D.querySelectorAll(".lienzo, .hecho, .idea, .puerta, .cab")).forEach(function(x){
+      x.classList.add("entra-al-ver");
+      ojo.observe(x);
+    });
+  }
+
   /* ---- avance de lectura ------------------------------------------------- */
   function dibujaAvance(){
     if(!avance) return;
@@ -1969,16 +2225,12 @@ JS = """
 
   window.addEventListener("hashchange", function(){
     var h = (location.hash || "").slice(1);
-    if(!h) return;
-    if(porHoja[h]){ veSec(porHoja[h].closest(".sec").dataset.sec, false); veHoja(h, true); }
-    else if(secs.some(function(s){ return s.dataset.sec === h; })) veSec(h, true);
+    if(h) irA(h, true);
   });
 
   /* ---- arranque ---------------------------------------------------------- */
   var h0 = (location.hash || "").slice(1);
-  if(porHoja[h0]){ veSec(porHoja[h0].closest(".sec").dataset.sec, false); veHoja(h0, false); }
-  else if(h0 && secs.some(function(s){ return s.dataset.sec === h0; })) veSec(h0, false);
-  else veSec(memo.sec || "inicio", false);
+  if(!h0 || !irA(h0, false)) veSec(memo.sec || "inicio", false);
   dibujaAvance();
 })();
 </script>

@@ -47,7 +47,11 @@ DOCUMENTOS = [
     # El último de la lista: trae literatura de los ocho documentos ya
     # terminados —con sus anclas, sus números y sus tableros— así que tiene
     # que ir después de todos ellos.
-    (RAIZ / "build-sitio.py", "centro.html · el centro contado por áreas"),
+    (RAIZ / "build-sitio.py", "centro.html · la web del centro"),
+    # Cada enlace del sitio, pulsado: que exista el destino y que sea el que
+    # el enlace promete. De aquí salieron once anclas cortadas a treinta y
+    # cuatro caracteres que no llevaban a ninguna parte.
+    (RAIZ / "verifica-enlaces.py", "cada enlace de la web, comprobado"),
 ]
 
 EXTRAS = [

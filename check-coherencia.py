@@ -677,16 +677,29 @@ def comprueba_sitio():
     for a in muertos[:6]:
         falla("centro.html", "el enlace «#%s» no lleva a ninguna parte" % a)
 
-    # ni un enlace que se salga de su sección
+    # Un enlace que cambia de sección es legítimo —aquí está todo en la misma
+    # página—, pero tiene que decirlo: va marcado y lleva al lado el nombre de
+    # la sección a la que va. Un enlace que cambia de sección sin avisar es el
+    # salto a ciegas de siempre.
     for m in re.finditer(r'<section class="sec" id="([^"]+)"', cuerpo):
         ini_s = m.start()
         sig = cuerpo.find('<section class="sec" id="', ini_s + 10)
         trozo = cuerpo[ini_s:sig if sig > 0 else len(cuerpo)]
         propios = set(re.findall(r'id="([^"]+)"', trozo))
-        fuera = [h for h in re.findall(r'href="#([^"]+)"', trozo) if h not in propios]
-        if fuera:
-            falla("centro.html", "en la sección «%s» hay %d enlaces que se salen de ella (%s)"
-                  % (m.group(1), len(fuera), ", ".join(sorted(set(fuera))[:3])))
+        for enlace in re.findall(r'<a\b[^>]*href="#([^"]+)"[^>]*>', trozo):
+            pass
+        callados = []
+        for a_m in re.finditer(r'<a\b([^>]*)href="#([^"]+)"([^>]*)>', trozo):
+            destino = a_m.group(2)
+            if destino in propios:
+                continue
+            atr = a_m.group(1) + a_m.group(3)
+            if "salta" not in atr:
+                callados.append(destino)
+        if callados:
+            falla("centro.html", "en la sección «%s» hay %d enlaces que cambian de sección "
+                                 "sin avisar (%s)"
+                  % (m.group(1), len(callados), ", ".join(sorted(set(callados))[:3])))
 
 
 def main():
