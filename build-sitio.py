@@ -18,6 +18,7 @@ lo que ya declara el propio documento. Lo único que se añade es el armazón pa
 recorrerlo.
 """
 import html as H
+import collections
 import json
 import pathlib
 import re
@@ -107,9 +108,19 @@ def dentro(elem):
     return elem[i:j]
 
 
+# Las etiquetas que van dentro de una línea no separan palabras: quitar un
+# <em> y dejar un espacio convertía «sistema operativo, no clínica» en «sistema
+# operativo , no clínica». El <br> sí separa, porque parte el renglón.
+ENLINEA = {"a", "abbr", "b", "bdi", "bdo", "cite", "code", "data", "dfn", "em", "i", "kbd",
+           "mark", "q", "rp", "rt", "ruby", "s", "samp", "small", "span", "strong", "sub",
+           "sup", "time", "u", "var", "wbr"}
+
+
 def sin_marcas(html):
     """El texto llano, para el buscador y para contar."""
     t = re.sub(r"<(script|style)\b.*?</\1>", " ", html, flags=re.S | re.I)
+    t = re.sub(r"</?([a-zA-Z][\w-]*)[^>]*>",
+               lambda m: "" if m.group(1).lower() in ENLINEA else " ", t)
     t = re.sub(r"<[^>]+>", " ", t)
     t = H.unescape(t)
     return re.sub(r"\s+", " ", t).strip()
@@ -757,6 +768,129 @@ def cifras(pares):
 # --------------------------------------------------------------------------
 #  Los bloques propios de cada sección
 # --------------------------------------------------------------------------
+# Un recorte de marcado no tiene por qué cuadrar: si se corta un capítulo por
+# sus apartados, al primer trozo le faltan cierres y al último le sobran. Esto
+# lo arregla, y si aun así no cuadra, para la construcción en vez de publicar
+# una página rota.
+ETIQUETAS = re.compile(r"<(/?)([a-zA-Z][\w-]*)([^>]*)>")
+VACIAS = {"area", "base", "br", "circle", "col", "embed", "hr", "img", "input", "line",
+          "link", "meta", "path", "polygon", "polyline", "rect", "source", "stop",
+          "track", "use", "wbr"}
+CIERRE_FINAL = re.compile(r"\s*</[a-zA-Z][\w-]*>\s*$")
+
+
+def _pila(frag):
+    """Lo que queda abierto y los cierres que sobran, en ese orden."""
+    abiertas, huerfanos = [], 0
+    for m in ETIQUETAS.finditer(frag):
+        nombre = m.group(2).lower()
+        if nombre in VACIAS or m.group(3).rstrip().endswith("/"):
+            continue
+        if not m.group(1):
+            abiertas.append(nombre)
+        elif abiertas and abiertas[-1] == nombre:
+            abiertas.pop()
+        elif nombre in abiertas:
+            while abiertas.pop() != nombre:
+                pass
+        else:
+            huerfanos += 1
+    return abiertas, huerfanos
+
+
+def cuadra(frag):
+    """El recorte, con sus etiquetas cuadradas."""
+    _abiertas, huerfanos = _pila(frag)
+    for _ in range(huerfanos):
+        frag = CIERRE_FINAL.sub("", frag, count=1)
+    abiertas, huerfanos = _pila(frag)
+    frag += "".join("</%s>" % n for n in reversed(abiertas))
+    if _pila(frag) != ([], 0):
+        raise SystemExit("  un recorte no cuadra: %s…" % frag[:80])
+    return frag
+
+
+def reparte(entera, anclas):
+    """Una pieza repartida entre los titulares que lleva dentro.
+
+    Devuelve lo que va antes del primero —la entrada del capítulo— y un trozo
+    por titular, en un diccionario, porque el orden en que el documento los
+    escribe no tiene por qué ser el orden en que conviene leerlos. Cada trozo
+    se cuadra: al recortar, al primero le faltan cierres y al último le sobran.
+    """
+    cortes = []
+    for a in anclas:
+        i = entera.find('id="%s"' % a)
+        if i < 0:
+            return None, None
+        cortes.append((entera.rfind("<", 0, i), a))
+    cortes.sort()                      # el documento manda en el orden del corte
+    trozos = {}
+    for k, (ini, a) in enumerate(cortes):
+        hasta = cortes[k + 1][0] if k + 1 < len(cortes) else len(entera)
+        trozos[a] = cuadra(entera[ini:hasta])
+    return cuadra(entera[:cortes[0][0]]), trozos
+
+
+def partes_de(doc, anclas):
+    """Los apartados, vengan como vengan.
+
+    Hay apartados que son secciones propias y hay apartados que son un titular
+    dentro de una sección: las funciones de vanguardia de cada puesto, por
+    ejemplo, son cinco o seis <h3> dentro de un solo capítulo. Pedir cada uno
+    por separado devolvería el capítulo entero cinco veces; aquí se pide una
+    vez y se reparte por sus titulares, que es lo que son.
+    """
+    if not anclas:
+        return []
+    entera = pieza(doc, anclas[0])
+    if all(('id="%s"' % a) in entera for a in anclas[1:]):
+        _entrada, trozos = reparte(entera, anclas)
+        if trozos:
+            return trozos
+    return {a: pieza(doc, a) for a in anclas}
+
+
+# ---------------------------------------------------------------------------
+#  El desplegable
+# ---------------------------------------------------------------------------
+#  Un titular que se pulsa y debajo aparece lo que hay. Es el mecanismo con el
+#  que esta web deja de ser una lista de enlaces: el texto está aquí, no «a un
+#  clic de aquí». Sin JavaScript no hay nada que pulsar y todo queda abierto,
+#  que es como tiene que quedarse un documento cuando el navegador no ejecuta
+#  nada; con JavaScript se cierran al arrancar y se abre el que se quiera.
+def desplegable(clave, n, rotulo, apunte, cuerpo, extra=""):
+    return (
+        '<section class="desp" id="%s"%s>\n'
+        '  <h4 class="desp__h"><button type="button" class="desp__b" aria-expanded="true"\n'
+        '      aria-controls="%s-c">'
+        '<span class="desp__n">%s</span>'
+        '<span class="desp__t"><b>%s</b>%s</span>'
+        '<span class="desp__x" aria-hidden="true"></span></button></h4>\n'
+        '  <div class="desp__c" id="%s-c" role="region">\n'
+        '    <div class="desp__in">%s</div>\n'
+        '  </div>\n'
+        '</section>'
+        % (clave, extra, clave, H.escape(n), H.escape(rotulo),
+           ('<i>%s</i>' % H.escape(apunte)) if apunte else "",
+           clave, cuerpo))
+
+
+def grupo_desplegables(rotulo, apunte, piezas):
+    """Un grupo de desplegables, con su rótulo y su «abrir todo»."""
+    if not piezas:
+        return ""
+    return ('<div class="grupod">\n'
+            '  <div class="grupod__cab">\n'
+            '    <p class="rotulillo">%s</p>\n'
+            '    <p class="grupod__q">%s</p>\n'
+            '    <button type="button" class="grupod__t" data-abre-todo>Abrir los %d</button>\n'
+            '  </div>\n'
+            '  <div class="grupod__l">%s</div>\n'
+            '</div>'
+            % (H.escape(rotulo), H.escape(apunte), len(piezas), "\n".join(piezas)))
+
+
 def bloque_primera_visita(pre):
     fs = fases("index.html")
     total = sum(f["min"] for f in fs)
@@ -820,6 +954,41 @@ def bloque_primera_visita(pre):
 CLASE_RACI = {"R/A": "wes-ra", "R": "wes-r", "A": "wes-a", "C": "wes-c", "I": "wes-i", "—": "wes-no"}
 
 
+# Los identificadores finales de las catorce fases. El recorrido vive en dos
+# documentos —doce fases en el Protocolo de Primera Visita y dos en el Manual—
+# y aquí, con los ocho documentos en una página, cada uno lleva delante la
+# letra de su sección. Si alguna vez dejara de cuadrar, main() lo para: toda
+# fase a la que se llama tiene que existir como identificador en la página.
+def id_de_fase(n):
+    letra = {i: l for i, _r, _d, l, _n in SECCIONES if l}
+    return ("%s-f%02d" % (letra["primera-visita"], n) if n <= 12
+            else "%s-m%02d" % (letra["operaciones"], n))
+
+
+# Los ecos: la literatura que se repite a propósito.
+#
+# El manual de cada puesto vive en Operaciones y aquí se copia entero dentro de
+# su ficha, porque quien llega a trabajar un lunes no tiene por qué ir a
+# buscarlo a otro documento. La copia no inventa nada ni cambia una palabra: es
+# el mismo texto, con sus identificadores prefijados para que no choquen.
+#
+# Se anotan en ECOS para que el mapa de enlaces siga sabiendo dónde vive el
+# original: dentro de Protocolos los enlaces se resuelven en la propia página
+# —que es de lo que se trata—, y desde cualquier otra sección se sigue yendo al
+# Manual, que es la casa del texto.
+ECOS = set()
+
+
+def marca_eco(cuerpo):
+    ECOS.update(re.findall(r'id="([^"]+)"', cuerpo))
+    return cuerpo
+
+
+def eco(ancla, pre, doc="manual.html"):
+    """Una pieza de otro documento, traída entera y sin chocar con nada."""
+    return marca_eco(prefija(entabla(pieza(doc, ancla)), pre))
+
+
 def bloque_protocolos(pre):
     P = PERFILES
     botones, fichas = [], []
@@ -831,15 +1000,71 @@ def bloque_protocolos(pre):
             '<b>%s</b><span>%d de 14 fases</span></button>'
             % (" es-on" if n == 0 else "", p["id"], H.escape(p["corto"]), activas))
         celdas = "".join(
-            '<div class="wraci__c %s" title="Fase %02d · %s · %s">'
-            '<span class="wraci__f">%02d</span><span class="wraci__p">%s</span></div>'
-            % (CLASE_RACI[papel], i + 1, H.escape(fase), H.escape(P.QUE_ES[papel][0]),
-               i + 1, H.escape(papel))
+            '<button type="button" class="wraci__c %s" data-abre-fase="%s" '
+            'title="Fase %02d · %s · %s">'
+            '<span class="wraci__f">%02d</span><span class="wraci__p">%s</span></button>'
+            % (CLASE_RACI[papel], id_de_fase(i + 1), i + 1, H.escape(fase),
+               H.escape(P.QUE_ES[papel][0]), i + 1, H.escape(papel))
             for i, (fase, papel) in enumerate(raci))
-        bloques = "".join('<li><a href="manual.html#%s">%s</a></li>' % (a, H.escape(r))
-                          for r, a in p["bloques"])
-        vang = "".join('<li><a href="manual.html#%s">%s</a></li>' % (a, H.escape(r))
-                       for r, a in p["vanguardia"])
+        suyas = "".join(
+            '<button type="button" class="fasep" data-abre-fase="%s">'
+            '<span class="fasep__n">%02d</span>'
+            '<span class="fasep__r">%s</span>'
+            '<span class="fasep__p %s">%s</span></button>'
+            % (id_de_fase(i + 1), i + 1, H.escape(fase), CLASE_RACI[papel],
+               H.escape(P.QUE_ES[papel][0]))
+            for i, (fase, papel) in enumerate(raci) if papel != "—")
+
+        # El manual del puesto, entero. Sus apartados no son secciones sueltas:
+        # son los titulares de su propio capítulo. Así que el capítulo se pide
+        # una vez y se reparte entre ellos —lo que va antes del primero es la
+        # entrada—, y así no se emite ni una línea dos veces.
+        capitulo = entabla(pieza("manual.html", p["manual"]))
+        entrada, trozos = reparte(capitulo, [a for _r, a in p["bloques"]])
+        if trozos is None:
+            raise SystemExit("  %s: su capítulo no se deja repartir" % p["id"])
+
+        piezas = [desplegable(
+            "%spd-%s-0" % (pre, p["id"]), "00", "Qué es este puesto y de qué responde",
+            "Manual Maestro · entrada del capítulo",
+            marca_eco(prefija(entrada, pre)))]
+        for k, (rotulo, ancla) in enumerate(p["bloques"]):
+            piezas.append(desplegable(
+                "%spd-%s-%d" % (pre, p["id"], k + 1), "%02d" % (k + 1),
+                rotulo, "Manual Maestro · %s" % p["nombre"],
+                marca_eco(prefija(trozos[ancla], pre))))
+        manual_puesto = grupo_desplegables(
+            "Su manual de puesto, entero",
+            "Lo que el Manual Maestro escribe de este puesto, aquí mismo y palabra por "
+            "palabra. No hay que ir a ninguna otra parte a leerlo.",
+            piezas)
+
+        funciones = partes_de("manual.html", [a for _r, a in p["vanguardia"]])
+        if p["vanguardia"]:
+            vang = grupo_desplegables(
+                "Sus funciones de vanguardia",
+                "Lo que este puesto hace y en la mayoría de los centros no se hace. Cada "
+                "una entera, con sus procedimientos y sus indicadores.",
+                [desplegable("%spv-%s-%d" % (pre, p["id"], k + 1), "%02d" % (k + 1),
+                             rotulo, "Manual Maestro · funciones de vanguardia",
+                             marca_eco(prefija(entabla(funciones[ancla]), pre)))
+                 for k, (rotulo, ancla) in enumerate(p["vanguardia"])])
+        else:
+            vang = ('<div class="grupod"><div class="grupod__cab">'
+                    '<p class="rotulillo">Sus funciones de vanguardia</p>'
+                    '<p class="grupod__q">Ninguna propia: las suyas son de gobierno del '
+                    'sistema, y están escritas en su manual de puesto, aquí arriba.</p>'
+                    '</div></div>')
+
+        indice = "".join(
+            '<a href="#%spd-%s-%d"><span>%02d</span>%s</a>' % (pre, p["id"], k, k, H.escape(r))
+            for k, r in enumerate(["Qué es este puesto y de qué responde"]
+                                  + [r for r, _a in p["bloques"]]))
+        indice += "".join(
+            '<a href="#%spv-%s-%d"><span>V%d</span>%s</a>'
+            % (pre, p["id"], k + 1, k + 1, H.escape(r))
+            for k, (r, _a) in enumerate(p["vanguardia"]))
+
         fichas.append(
             '<article class="puesto" data-puesto="%s"%s>\n'
             '  <p class="puesto__k">Puesto %d de 6 · %s</p>\n'
@@ -848,36 +1073,49 @@ def bloque_protocolos(pre):
             '  <p class="rotulillo">Su papel en las catorce fases del recorrido</p>\n'
             '  <div class="wraci">%s</div>\n'
             '  <p class="leyenda">%s</p>\n'
-            '  <div class="puesto__cols">\n'
-            '    <div><p class="rotulillo">Sus procedimientos escritos</p><ul class="lista2">%s</ul></div>\n'
-            '    <div><p class="rotulillo">Sus funciones de vanguardia</p><ul class="lista2">%s</ul></div>\n'
-            '  </div>\n'
-            '  <p class="puesto__ir"><a href="manual.html#%s">Su manual de puesto, completo</a></p>\n'
+            '  <p class="leyenda leyenda--pista">Pulse una fase y se abre entera; al cerrarla '
+            'se vuelve aquí.</p>\n'
+            '  <p class="rotulillo">Las fases en las que entra, con nombre</p>\n'
+            '  <div class="fases-p">%s</div>\n'
+            '  <nav class="puesto__idx" aria-label="Lo que hay de este puesto">%s</nav>\n'
+            '  %s\n  %s\n'
             '</article>'
             % (p["id"], "" if n == 0 else " hidden", n + 1,
                ("columna %s de la matriz" % p["raci"]) if p.get("raci")
                else "sin columna propia en la matriz: la nota lo sitúa en el mantenimiento",
                H.escape(p["nombre"]), H.escape(p["que"]),
                cifras([(str(activas), "fases en las que interviene"),
-                       (str(len(p["bloques"])), "procedimientos escritos"),
+                       (str(len(p["bloques"]) + 1), "apartados de su manual, enteros"),
                        (str(len(p["vanguardia"])), "funciones de vanguardia")]),
                celdas,
                " · ".join("<b>%s</b> %s" % (k, H.escape(v[0])) for k, v in P.QUE_ES.items()),
-               bloques or '<li class="es-vacio">Su manual no se numera en procedimientos: su '
-                          'trabajo es de gobierno y está escrito en el manual del puesto.</li>',
-               vang or '<li class="es-vacio">Ninguna propia: las suyas son de gobierno del '
-                       'sistema.</li>', p["manual"]))
+               suyas, indice, manual_puesto, vang))
+
     return ("""
 <div class="lienzo">
   <div class="lienzo__cab">
     <h2>Elija su puesto</h2>
-    <p>Seis. Al elegir uno aparece lo suyo: dónde entra en las catorce fases y con qué papel,
-      qué tiene escrito y qué funciones de vanguardia le tocan. Todo ocurre en esta página.</p>
+    <p>Seis. Al elegir uno aparece todo lo suyo y nada más: dónde entra en las catorce fases y
+      con qué papel, su manual de puesto entero —no un enlace a él: el texto— y las funciones
+      de vanguardia que le tocan. Todo ocurre en esta página.</p>
   </div>
   <div class="puestosel">@@B@@</div>
   <div class="puestos">@@F@@</div>
 </div>
-""".replace("@@B@@", "".join(botones)).replace("@@F@@", "\n".join(fichas)))
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Y si no se cumple</h2>
+    <p>Vale para los seis. No es una conversación: es un procedimiento escrito, con sus plazos
+      y con quién lo aplica.</p>
+  </div>
+  @@NOCUMPLE@@
+</div>
+""".replace("@@B@@", "".join(botones)).replace("@@F@@", "\n".join(fichas))
+   .replace("@@NOCUMPLE@@", grupo_desplegables(
+       "El procedimiento", "Qué ocurre exactamente cuando un puesto no cumple.",
+       [desplegable(pre + "pd-nocumple", "01",
+                    "Qué pasa exactamente cuando un puesto no cumple",
+                    "Manual Maestro", eco("m-pasa-exactamente-cuando-puesto-no-cumple", pre))])))
 
 
 COSTE_ROT = {"0": "No cuesta dinero", "€": "Hasta 1.000 €", "€€": "De 1 a 5 mil",
@@ -1023,7 +1261,138 @@ def bloque_operaciones(pre):
 """.replace("@@M@@", mapa))
 
 
+# ---------------------------------------------------------------------------
+#  La presentación de Junta, explicada
+# ---------------------------------------------------------------------------
+#  Las cuarenta y tres diapositivas estaban en la página, pero en la página no
+#  se veían: el deck las dibuja una encima de otra y oculta todas menos la que
+#  toca, que es lo que hace falta para proyectar y justo lo contrario de lo que
+#  hace falta para leer. Aquí se despliegan: cada diapositiva con su minuto y
+#  su parte, y debajo el guion del ponente —qué decir al pasarla y qué se
+#  contesta a la pregunta difícil—, que hasta ahora no salía de las notas.
+DIAPO = re.compile(r'<section([^>]*)class="([^"]*\bslide\b[^"]*)"([^>]*)>', re.I)
+NOTA = re.compile(r'<aside class="nota"[^>]*>(.*?)</aside>', re.S | re.I)
+LEDE = re.compile(r'<p class="lede"[^>]*>(.*?)</p>', re.S | re.I)
+
+
+def diapositivas():
+    """Las cuarenta y tres, con su minuto, su parte y su guion."""
+    t = fuente("deck.html")
+    fuera = []
+    for m in DIAPO.finditer(t):
+        entero = elemento(t, m.start())
+        if entero is None:
+            continue
+        atr = dict(re.findall(r'data-([\w-]+)="([^"]*)"', m.group(1) + m.group(3)))
+        nota = NOTA.search(entero)
+        eb = re.search(r'<p class="eyebrow"[^>]*>(.*?)</p>', entero, re.S)
+        tit = re.search(r"<h[1-4][^>]*>(.*?)</h[1-4]>", entero, re.S)
+        lede = LEDE.search(entero)
+        fuera.append({
+            "min": atr.get("min", ""),
+            "esencial": atr.get("esencial") == "1",
+            "separa": "slide--div" in m.group(2),
+            "eyebrow": sin_marcas(eb.group(1)) if eb else "",
+            "titulo": sin_marcas(tit.group(1)) if tit else "",
+            "lede": sin_marcas(lede.group(1)) if lede else "",
+            "html": NOTA.sub("", entero),
+            "guion": nota.group(1).strip() if nota else "",
+        })
+    return fuera
+
+
+def _minutos(ms):
+    """El minuto en que arranca una diapositiva, en minutos enteros."""
+    m = re.match(r"(\d+):(\d+)", ms or "")
+    return int(m.group(1)) if m else 0
+
+
+def bloque_presentacion(pre):
+    ds = diapositivas()
+    total = len(ds)
+    esenciales = sum(1 for d in ds if d["esencial"])
+    dura = max(_minutos(d["min"]) for d in ds)
+
+    # Las partes salen de las propias diapositivas de separación: no se inventa
+    # una estructura, se lee la que la presentación ya tiene escrita.
+    partes = []
+    actual = {"rotulo": "La apertura", "titulo": "Con qué se abre la sesión", "esencial": False,
+              "lede": "Las dos diapositivas que fijan de qué se va a hablar y con qué regla: "
+                      "un plan que se expone a ser refutado, no un informe de lo que ya pasó.",
+              "diapos": []}
+    for d in ds:
+        if d["separa"]:
+            if actual["diapos"]:
+                partes.append(actual)
+            actual = {"rotulo": d["eyebrow"], "titulo": d["titulo"],
+                      "lede": d["lede"], "esencial": d["esencial"], "diapos": []}
+        else:
+            actual["diapos"].append(d)
+    if actual["diapos"]:
+        partes.append(actual)
+
+    idx, cuerpos = [], []
+    for k, parte in enumerate(partes):
+        clave = "%spt-%d" % (pre, k)
+        dd = parte["diapos"]
+        ess = sum(1 for d in dd if d["esencial"])
+        idx.append('<a href="#%s"><span>%s</span><b>%s</b><i>%d diapositivas · minuto %s</i></a>'
+                   % (clave, H.escape(parte["rotulo"]), H.escape(parte["titulo"]),
+                      len(dd), H.escape(dd[0]["min"])))
+        piezas = [
+            desplegable("%s-d%d" % (clave, j), d["min"] or "·",
+                        d["titulo"] or d["eyebrow"] or "Diapositiva",
+                        d["eyebrow"] + (" · esencial" if d["esencial"] else ""),
+                        '<div class="dia">%s</div>%s'
+                        % (d["html"],
+                           ('<div class="guion"><p class="rotulillo">El guion del ponente</p>'
+                            '%s</div>' % d["guion"]) if d["guion"] else ""),
+                        extra=' data-esencial="%d"' % (1 if d["esencial"] else 0))
+            for j, d in enumerate(dd)]
+        cuerpos.append(
+            '<div class="parte" id="%s">\n'
+            '  <p class="parte__k">%s · del minuto %s al %s · %d diapositivas%s</p>\n'
+            '  <h3>%s</h3>\n  %s\n'
+            '  <div class="grupod__l">%s</div>\n'
+            '</div>'
+            % (clave, H.escape(parte["rotulo"]), H.escape(dd[0]["min"]),
+               H.escape(dd[-1]["min"]), len(dd),
+               (" · %d de la ruta corta" % (ess + (1 if parte["esencial"] else 0))) if ess else "",
+               H.escape(parte["titulo"]),
+               ('<p class="parte__q">%s</p>' % H.escape(parte["lede"])) if parte["lede"] else "",
+               "\n".join(piezas)))
+
+    return ("""
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>La sesión, diapositiva a diapositiva</h2>
+    <p>Las @N@ diapositivas de la Junta, aquí dentro y legibles: cada una con el minuto en el
+      que entra, la parte a la que pertenece y —esto no salía de las notas del documento— el
+      guion del ponente: qué hay que decir al pasarla y qué se contesta a la pregunta difícil
+      que viene detrás. Pulse una y se abre.</p>
+  </div>
+  @@CIFRAS@@
+  <div class="presfil">
+    <button type="button" class="presfil__b es-on" data-pres="todas">Todas</button>
+    <button type="button" class="presfil__b" data-pres="esencial">Solo la ruta corta</button>
+    <p class="presfil__q">La ruta corta son las @E@ diapositivas que sostienen el argumento
+      entero cuando la agenda se rompe y la sesión se queda en veinte minutos. Una de ellas
+      es la que abre la Parte VI, y aquí es el título de esa parte.</p>
+  </div>
+  <nav class="presidx" aria-label="Las partes de la sesión">@@IDX@@</nav>
+  <div class="partes">@@CUERPOS@@</div>
+</div>
+""".replace("@@CIFRAS@@", cifras([(str(total), "diapositivas"),
+                                  ("%d min" % dura, "dura la sesión entera"),
+                                  (str(len(partes)), "partes"),
+                                  (str(esenciales), "esenciales: la ruta corta")]))
+   .replace("@@IDX@@", "".join(idx))
+   .replace("@@CUERPOS@@", "\n".join(cuerpos))
+   .replace("@N@", str(total)).replace("@E@", str(esenciales)))
+
+
 BLOQUES = {
+    "presentacion": bloque_presentacion,
     "primera-visita": bloque_primera_visita,
     "protocolos": bloque_protocolos,
     "marketing": bloque_marketing,
@@ -1072,7 +1441,10 @@ def monta():
                 # aquí —el reloj, los carriles, el mapa de fases— ya enlazan al
                 # identificador final, y sin esta línea se quedaban sin enlace
                 mapa[ident + "/" + crudo] = (crudo, ident)
-                mapa.setdefault("@" + llano, []).append((crudo, ident))
+                if crudo not in ECOS:
+                    # un eco no compite con su original: desde fuera se sigue
+                    # yendo al documento donde el texto vive
+                    mapa.setdefault("@" + llano, []).append((crudo, ident))
         porSeccion.append((ident, rotulo, doc, pre, nombre_doc, piezas, propio))
 
     # ------------------------------------------------------------------
@@ -2069,6 +2441,159 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
   text-transform:uppercase;animation:sube .2s ease}
 .pito[hidden]{display:none}
 
+/* ====================================================================
+   EL DESPLEGABLE
+   Un titular que se pulsa y debajo aparece lo que hay. Sin JavaScript no
+   hay nada que pulsar: todo queda abierto y el documento se lee entero.
+   ==================================================================== */
+.desp{border-top:1px solid var(--linea-2)}
+.desp:last-child{border-bottom:1px solid var(--linea-2)}
+.desp__h{margin:0;font:inherit;font-weight:400}
+.desp__b{width:100%;display:flex;align-items:baseline;gap:1.6rem;padding:1.5rem .4rem;
+  font:inherit;text-align:left;background:none;border:0;cursor:default;
+  transition:background .2s var(--e),padding .26s var(--e)}
+.sitio--vivo .desp__b{cursor:pointer}
+.sitio--vivo .desp__b:hover{background:var(--gris);padding-left:1rem}
+.desp__n{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.1em;color:var(--azul);
+  flex:none;min-width:3.2rem}
+.desp__t{flex:1;min-width:0}
+.desp__t b{display:block;font-size:1.05rem;font-weight:400;color:var(--negro);line-height:1.45}
+.desp__t i{display:block;margin-top:.5rem;font-style:normal;font-family:var(--f-mono);
+  font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.desp__x{display:none;flex:none;position:relative;width:12px;height:12px;
+  align-self:center;margin-left:1rem}
+.sitio--vivo .desp__x{display:block}
+.desp__x::before,.desp__x::after{content:"";position:absolute;background:var(--negro);
+  transition:transform .32s var(--e),background .2s var(--e)}
+.desp__x::before{left:0;right:0;top:5px;height:1px}
+.desp__x::after{top:0;bottom:0;left:5px;width:1px}
+.desp.es-ab .desp__x::after{transform:scaleY(0)}
+.sitio--vivo .desp__b:hover .desp__x::before,
+.sitio--vivo .desp__b:hover .desp__x::after{background:var(--azul)}
+.sitio--vivo .desp__c{display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows .34s var(--e)}
+.sitio--vivo .desp.es-ab .desp__c{grid-template-rows:1fr}
+.sitio--vivo .desp__in{min-height:0;overflow:hidden}
+.desp__in{padding:.2rem 0 2.6rem}
+.sitio--vivo .desp__in{padding:0}
+.sitio--vivo .desp.es-ab .desp__in{padding:.2rem 0 2.6rem}
+@media(prefers-reduced-motion:reduce){.sitio--vivo .desp__c{transition:none}}
+.desp__in > section,.desp__in > div{max-width:none}
+
+/* el grupo de desplegables, con su rótulo y su «abrir todo» */
+.grupod{margin-top:calc(var(--aire) * .5)}
+.grupod__cab{margin-bottom:1.4rem;padding-bottom:1.2rem;
+  border-bottom:1px solid var(--negro);display:grid;gap:.9rem 2.6rem;
+  grid-template-columns:minmax(0,1fr) auto}
+.grupod__cab .rotulillo{margin:0;grid-column:1/-1}
+.grupod__q{margin:0;flex:1;min-width:18rem;max-width:58ch;font-size:.92rem;line-height:1.75;
+  color:var(--ink-2)}
+.grupod__t{display:none;align-self:end;justify-self:end;font:inherit;font-family:var(--f-mono);font-size:.54rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--azul);background:none;border:0;
+  border-bottom:1px solid var(--linea);padding:.35rem 0;cursor:pointer;flex:none}
+.sitio--vivo .grupod__t{display:block}
+.grupod__t:hover{border-color:var(--azul)}
+
+/* el índice de un puesto: todo lo suyo, de un vistazo */
+.puesto__idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));
+  gap:0 2.6rem;margin:2.6rem 0 0;border-top:1px solid var(--linea-2)}
+.puesto__idx a{display:flex;gap:.8rem;align-items:baseline;padding:.9rem .1rem;
+  border-bottom:1px solid var(--linea-2);text-decoration:none;font-size:.88rem;
+  line-height:1.5;color:var(--ink-2)}
+.puesto__idx a span{flex:none;min-width:1.5rem;font-family:var(--f-mono);font-size:.54rem;
+  color:var(--azul)}
+.puesto__idx a:hover{color:var(--azul)}
+.leyenda--pista{color:var(--muted)}
+.leyenda + .rotulillo,.wraci + .rotulillo,.fases-p + .rotulillo{margin-top:3rem}
+.puesto .rotulillo{margin-top:3.2rem}
+.puesto .cifras + .rotulillo{margin-top:3.4rem}
+.sitio--vivo .wraci__c{cursor:pointer}
+.wraci__c{font:inherit;border:0;padding:0}
+
+/* las fases del puesto, con su nombre y su papel */
+.fases-p{display:grid;grid-template-columns:repeat(auto-fill,minmax(20rem,1fr));
+  gap:0 2.6rem;border-top:1px solid var(--linea-2)}
+.fasep{display:flex;align-items:baseline;gap:.9rem;width:100%;padding:.85rem .1rem;
+  font:inherit;text-align:left;background:none;border:0;border-bottom:1px solid var(--linea-2);
+  cursor:default;transition:padding .22s var(--e),background .2s var(--e)}
+.sitio--vivo .fasep{cursor:pointer}
+.sitio--vivo .fasep:hover{background:var(--gris);padding-left:.7rem}
+.fasep__n{flex:none;font-family:var(--f-mono);font-size:.54rem;color:var(--azul)}
+.fasep__r{flex:1;min-width:0;font-size:.9rem;line-height:1.5;color:var(--negro)}
+.fasep__p{flex:none;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.fasep__p.wes-ra,.fasep__p.wes-r,.fasep__p.wes-a{color:var(--negro)}
+
+/* el selector de puesto se queda arriba: se cambia de puesto sin subir */
+.puestosel{position:sticky;top:calc(var(--nav) - 1px);z-index:6;background:var(--blanco)}
+
+/* ====================================================================
+   LA PRESENTACIÓN
+   Las cuarenta y tres, legibles: cada una con su minuto, su parte y el
+   guion del ponente debajo.
+   ==================================================================== */
+.presfil{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.8rem;margin:2.8rem 0 0;
+  padding-bottom:1.4rem;border-bottom:1px solid var(--linea)}
+.presfil__b{font:inherit;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.22em;
+  text-transform:uppercase;background:none;cursor:pointer;color:var(--muted);
+  border:1px solid var(--linea);padding:.7rem 1.2rem;transition:.2s var(--e)}
+.presfil__b:hover{color:var(--negro);border-color:var(--negro)}
+.presfil__b.es-on{background:var(--negro);border-color:var(--negro);color:#fff}
+.presfil__q{margin:0;flex:1;min-width:16rem;font-size:.86rem;line-height:1.7;color:var(--muted)}
+.presidx{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));
+  gap:0 2.6rem;margin:2.6rem 0 0}
+.presidx a{display:block;padding:1.3rem .1rem 1.4rem;text-decoration:none;
+  border-top:1px solid var(--negro)}
+.presidx a span{display:block;font-family:var(--f-mono);font-size:.54rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--azul)}
+.presidx a b{display:block;margin-top:.7rem;font-size:.98rem;font-weight:400;line-height:1.45;
+  color:var(--negro)}
+.presidx a i{display:block;margin-top:.7rem;font-style:normal;font-family:var(--f-mono);
+  font-size:.54rem;letter-spacing:.16em;color:var(--muted)}
+.presidx a:hover b{color:var(--azul)}
+.parte{padding:var(--aire) 0 0}
+.parte__k{margin:0;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--azul)}
+.parte h3{margin:1.1rem 0 0;font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;
+  letter-spacing:-.026em;line-height:1.2;max-width:26ch;color:var(--negro)}
+.parte__q{margin:1.2rem 0 2.4rem;max-width:60ch;font-size:.96rem;line-height:1.8;
+  color:var(--ink-2)}
+.parte .grupod__l{margin-top:2rem}
+.parte[hidden]{display:none}
+
+/* la diapositiva, dentro de la página: ni absoluta ni oculta */
+#sitio .dia{margin:0 0 2.4rem}
+#sitio .dia .slide{position:static;display:block;inset:auto;width:auto;height:auto;
+  min-height:0;animation:none;border:1px solid var(--linea);background:var(--blanco);
+  padding:clamp(1.8rem,3vw,2.8rem);overflow:visible}
+#sitio .dia .slide--stmt{background:var(--negro);border-color:var(--negro)}
+#sitio .dia .slide h2{font-size:clamp(1.3rem,2.3vw,1.85rem);max-width:32ch;
+  font-weight:400;line-height:1.2}
+#sitio .dia .slide--portada h1,#sitio .dia .slide--stmt h2{
+  font-size:clamp(1.5rem,2.8vw,2.3rem);max-width:26ch}
+#sitio .dia .slide--div .rom{font-size:clamp(2.2rem,5vw,4rem)}
+#sitio .dia .slide .lede{max-width:64ch}
+#sitio .deck--sitio,#lector .deck--sitio{display:block;position:static;height:auto;
+  overflow:visible}
+#sitio .deck--sitio .slide,#lector .deck--sitio .slide{position:static;display:block;
+  inset:auto;width:auto;height:auto;min-height:0;animation:none;
+  border:1px solid var(--linea);background:var(--blanco);
+  padding:clamp(1.8rem,3vw,2.8rem);margin:0 0 1.6rem;overflow:visible}
+#sitio .deck--sitio .slide--stmt,#lector .deck--sitio .slide--stmt{
+  background:var(--negro);border-color:var(--negro)}
+#sitio .deck--sitio .slide h2,#lector .deck--sitio .slide h2{
+  font-size:clamp(1.3rem,2.3vw,1.85rem);max-width:32ch;font-weight:400;line-height:1.2}
+
+/* el guion del ponente: lo que hasta ahora vivía escondido en las notas */
+.guion{border-left:2px solid var(--azul);padding:.2rem 0 .2rem 1.8rem;margin:0 0 1rem;
+  max-width:64ch}
+.guion .rotulillo{margin-top:0}
+.guion > div{margin-top:1.2rem}
+.guion b{display:block;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;font-weight:400;color:var(--muted)}
+.guion p{margin:.5rem 0 0;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
+.guion .nota__q{color:var(--negro)}
+
 @media(max-width:900px){
   :root{--nav:auto;--aire:clamp(3.2rem,9vw,5rem)}
   .nav__f{flex-wrap:wrap;height:auto;padding:.8rem 1.1rem;gap:.6rem 1rem}
@@ -2086,8 +2611,16 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
   .carril{grid-template-columns:5rem minmax(0,1fr);gap:.7rem}
   .wraci{grid-template-columns:repeat(7,minmax(0,1fr))}
   .lienzo--indice .idx{columns:1}
-  .puestosel{flex-direction:column;align-items:stretch}
-  .puestobt{border-bottom:1px solid var(--linea-2)}
+  .puestosel{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .puestosel::-webkit-scrollbar{display:none}
+  .puestobt{flex:0 0 auto;min-width:8.5rem}
+  .grupod__cab{grid-template-columns:minmax(0,1fr)}
+  .grupod__t{justify-self:start}
+  .desp__b{gap:1rem;padding:1.2rem .2rem}
+  .desp__n{min-width:2.6rem}
+  .fasep{flex-wrap:wrap}
+  .fasep__p{width:100%;padding-left:1.7rem}
+  #sitio .dia .slide{padding:1.4rem 1.2rem}
   .lector__cab{padding:.8rem 1.1rem;height:auto;flex-wrap:wrap}
   .lector__in,.lector__pie{padding-left:1.1rem;padding-right:1.1rem}
   .velo{padding:5vh .8rem .8rem}
@@ -2330,8 +2863,24 @@ JS = """
     var dueno = el.closest(".hoja");
     if(dueno) return abreLector(dueno.dataset.hoja, ruta, paso);
     var sec = el.closest(".sec");
-    if(sec){ cierraLector(); veSec(sec.dataset.sec, false);
-             el.scrollIntoView({block:"start", behavior:"smooth"}); return true; }
+    if(sec){
+      cierraLector(); veSec(sec.dataset.sec, false);
+      /* si lo que se busca está dentro de un puesto que no es el que se ve, o
+         dentro de un desplegable cerrado, se abre antes de ir: nadie tiene que
+         adivinar dónde estaba */
+      var ficha = el.closest(".puesto");
+      if(ficha && ficha.hidden) vePuesto(ficha.dataset.puesto);
+      var caja = el.closest(".desp"), movio = false;
+      while(caja){
+        movio = abreDesp(caja) || movio;
+        var g = caja.closest(".grupod");
+        if(g) cuentaGrupo(g);
+        caja = caja.parentElement && caja.parentElement.closest(".desp");
+      }
+      var ve = function(){ el.scrollIntoView({block:"start", behavior:"smooth"}); };
+      if(movio) setTimeout(ve, 380); else ve();
+      return true;
+    }
     return false;
   }
 
@@ -2416,15 +2965,22 @@ JS = """
   /* ---------------------------------------------------------------- */
   /*  Puestos y marketing                                               */
   /* ---------------------------------------------------------------- */
+  function vePuesto(id){
+    [].slice.call(D.querySelectorAll(".puestobt")).forEach(function(x){
+      x.classList.toggle("es-on", x.dataset.puesto === id);
+    });
+    [].slice.call(D.querySelectorAll(".puesto")).forEach(function(p){
+      p.hidden = p.dataset.puesto !== id;
+    });
+  }
+
   D.addEventListener("click", function(e){
     var b = e.target.closest(".puestobt");
     if(!b) return;
-    [].slice.call(D.querySelectorAll(".puestobt")).forEach(function(x){
-      x.classList.toggle("es-on", x === b);
-    });
-    [].slice.call(D.querySelectorAll(".puesto")).forEach(function(p){
-      p.hidden = p.dataset.puesto !== b.dataset.puesto;
-    });
+    vePuesto(b.dataset.puesto);
+    var sel = b.closest(".puestosel");
+    if(sel && sel.getBoundingClientRect().top < 0)
+      sel.scrollIntoView({block:"start", behavior:"smooth"});
   });
 
   var tabla = D.getElementById("tablaacciones");
@@ -2674,6 +3230,71 @@ JS = """
     if(!h) return;
     if(lector && !lector.hidden && porHoja[h]) return;
     abreDestino(h);
+  });
+
+  /* ---------------------------------------------------------------- */
+  /*  Los desplegables                                                  */
+  /*  Se cierran al arrancar —sin JavaScript quedan abiertos, que es    */
+  /*  como se lee un documento— y se abren de uno en uno o de golpe.    */
+  /* ---------------------------------------------------------------- */
+  function pintaDesp(d, abierto){
+    d.classList.toggle("es-ab", abierto);
+    var b = d.querySelector(".desp__b");
+    if(b) b.setAttribute("aria-expanded", abierto ? "true" : "false");
+  }
+  function abreDesp(d){
+    if(!d || d.classList.contains("es-ab")) return false;
+    pintaDesp(d, true);
+    return true;
+  }
+  [].slice.call(D.querySelectorAll(".desp")).forEach(function(d){ pintaDesp(d, false); });
+
+  function cuentaGrupo(g){
+    var b = g.querySelector("[data-abre-todo]");
+    if(!b) return;
+    var dd = [].slice.call(g.querySelectorAll(".desp"));
+    var abiertos = dd.filter(function(d){ return d.classList.contains("es-ab"); }).length;
+    b.textContent = (abiertos === dd.length ? "Cerrar los " : "Abrir los ") + dd.length;
+  }
+
+  D.addEventListener("click", function(e){
+    var t = e.target.closest("[data-abre-todo]");
+    if(t){
+      var g = t.closest(".grupod");
+      var dd = [].slice.call(g.querySelectorAll(".desp"));
+      var cerrar = dd.every(function(d){ return d.classList.contains("es-ab"); });
+      dd.forEach(function(d){ pintaDesp(d, !cerrar); });
+      cuentaGrupo(g);
+      return;
+    }
+    var b = e.target.closest(".desp__b");
+    if(!b) return;
+    var d = b.closest(".desp");
+    pintaDesp(d, !d.classList.contains("es-ab"));
+    var g = d.closest(".grupod");
+    if(g) cuentaGrupo(g);
+    if(d.classList.contains("es-ab")){
+      var arriba = d.getBoundingClientRect().top;
+      if(arriba < 0) d.scrollIntoView({block:"start", behavior:"smooth"});
+    }
+  });
+
+  /* ---------------------------------------------------------------- */
+  /*  La presentación: las cuarenta y tres o las doce esenciales        */
+  /* ---------------------------------------------------------------- */
+  D.addEventListener("click", function(e){
+    var b = e.target.closest("[data-pres]");
+    if(!b) return;
+    var solo = b.dataset.pres === "esencial";
+    [].slice.call(D.querySelectorAll("[data-pres]")).forEach(function(x){
+      x.classList.toggle("es-on", x === b);
+    });
+    [].slice.call(D.querySelectorAll(".desp[data-esencial]")).forEach(function(d){
+      d.hidden = solo && d.dataset.esencial !== "1";
+    });
+    [].slice.call(D.querySelectorAll(".parte")).forEach(function(p){
+      p.hidden = !p.querySelector(".desp:not([hidden])");
+    });
   });
 
   /* ---- arranque ---------------------------------------------------- */
@@ -3004,8 +3625,21 @@ def main():
                          texto[texto.index('<div id="sitio">'):], flags=re.S)
     ids = set(re.findall(r'id="([^"]+)"', texto))
     muertos = sorted({h for h in re.findall(r'href="#([^"]+)"', cuerpo_html) if h not in ids})
+    muertos += sorted({f for f in re.findall(r'data-abre-fase="([^"]+)"', cuerpo_html)
+                       if f and f not in ids})
     if muertos:
         raise SystemExit("  enlaces muertos en centro.html: %s" % ", ".join(muertos[:8]))
+
+    # Un identificador repetido rompe cualquier enlace que apunte a él. Se
+    # admite una sola repetición conocida: la hoja de un apartado lleva el
+    # mismo identificador que el apartado que envuelve, y es a la hoja a la que
+    # se va. Cualquier otra para la construcción.
+    cuenta = collections.Counter(re.findall(r'id="([^"]+)"', cuerpo_html))
+    hojas = set(re.findall(r'<article class="hoja" id="([^"]+)"', cuerpo_html))
+    sobra = sorted(k for k, v in cuenta.items() if v > 2 or (v == 2 and k not in hojas))
+    if sobra:
+        raise SystemExit("  identificadores repetidos en centro.html: %s"
+                         % ", ".join(sobra[:8]))
 
     print("centro.html · %d recorridos · %d secciones · %d apartados · %d KB"
           % (len(rutas_datos), len(indice) + 3, total, salida.stat().st_size // 1024))
