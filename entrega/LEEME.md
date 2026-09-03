@@ -4,7 +4,7 @@ Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
-| `centro.html` | **El sistema completo, en un sitio.** Los ocho documentos con sus 135 apartados —ninguno fuera— en una sola página: índice completo delante, un apartado cada vez, buscador que entra en el texto de los ocho a la vez y un hilo continuo del primer apartado al último. Doble clic y se abre, sin conexión. |
+| `centro.html` | **El sistema completo, en un sitio.** Los ocho documentos con sus 135 apartados —ninguno fuera— en una sola página. Índice completo delante; un apartado cada vez, con el sumario del apartado a la derecha; buscador de teclado (`⌘K` o `/`) que entra en el texto de los ocho a la vez; las siglas subrayadas abren su definición, que es la del Manual; las figuras y las tablas anchas se ven de cerca pulsando encima; y lo que marque como leído se queda en su navegador. Doble clic y se abre, sin conexión. |
 | `Giraldo-TODO-EN-UNO-v8.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
 | `Sistema-Documental-Giraldo-v8.0.pdf` | Los mismos ocho documentos encuadernados en 630 páginas, con portada, índice paginado y un marcador por documento. |
 | `Sistema-Documental-Giraldo-v8.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. |
