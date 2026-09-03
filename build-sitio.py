@@ -24,6 +24,8 @@ import pathlib
 import re
 import sys
 
+import imagenes
+
 RAIZ = pathlib.Path(__file__).parent
 sys.path.insert(0, str(RAIZ))
 
@@ -995,10 +997,12 @@ def bloque_protocolos(pre):
     for n, p in enumerate(P.PERFILES):
         raci = P.raci_de(p)
         activas = sum(1 for _f, papel in raci if papel != "—")
+        cara = imagenes.arte("retrato-%d" % (n + 1), "0 0 400 400", "arte--cara")
         botones.append(
             '<button type="button" class="puestobt%s" data-puesto="%s">'
-            '<b>%s</b><span>%d de 14 fases</span></button>'
-            % (" es-on" if n == 0 else "", p["id"], H.escape(p["corto"]), activas))
+            '<span class="puestobt__c">%s</span>'
+            '<span class="puestobt__t"><b>%s</b><span>%d de 14 fases</span></span></button>'
+            % (" es-on" if n == 0 else "", p["id"], cara, H.escape(p["corto"]), activas))
         celdas = "".join(
             '<button type="button" class="wraci__c %s" data-abre-fase="%s" '
             'title="Fase %02d · %s · %s">'
@@ -1067,8 +1071,13 @@ def bloque_protocolos(pre):
 
         fichas.append(
             '<article class="puesto" data-puesto="%s"%s>\n'
-            '  <p class="puesto__k">Puesto %d de 6 · %s</p>\n'
-            '  <h3>%s</h3>\n  <p class="puesto__q">%s</p>\n'
+            '  <div class="puesto__cab">\n'
+            '    <div class="puesto__cara">%s</div>\n'
+            '    <div>\n'
+            '      <p class="puesto__k">Puesto %d de 6 · %s</p>\n'
+            '      <h3>%s</h3>\n      <p class="puesto__q">%s</p>\n'
+            '    </div>\n'
+            '  </div>\n'
             '  %s\n'
             '  <p class="rotulillo">Su papel en las catorce fases del recorrido</p>\n'
             '  <div class="wraci">%s</div>\n'
@@ -1080,7 +1089,8 @@ def bloque_protocolos(pre):
             '  <nav class="puesto__idx" aria-label="Lo que hay de este puesto">%s</nav>\n'
             '  %s\n  %s\n'
             '</article>'
-            % (p["id"], "" if n == 0 else " hidden", n + 1,
+            % (p["id"], "" if n == 0 else " hidden",
+               imagenes.arte("retrato-%d" % (n + 1), "0 0 400 400", "arte--cara"), n + 1,
                ("columna %s de la matriz" % p["raci"]) if p.get("raci")
                else "sin columna propia en la matriz: la nota lo sitúa en el mantenimiento",
                H.escape(p["nombre"]), H.escape(p["que"]),
@@ -1391,6 +1401,49 @@ def bloque_presentacion(pre):
    .replace("@N@", str(total)).replace("@E@", str(esenciales)))
 
 
+# ---------------------------------------------------------------------------
+#  La imagen de cada sección
+# ---------------------------------------------------------------------------
+#  Una web de clínica sin una sola imagen se lee como un documento, y era
+#  exactamente lo que le pasaba a esta. Cada sección abre ahora con una banda
+#  a sangre: una de las cinco piezas dibujadas en imagenes.py, recortada por un
+#  sitio distinto y en día o en noche, alternando, para que al bajar por el
+#  sitio se note que se ha cambiado de sitio.
+ARTE = {
+    "direccion":      ("campo",   "0 30 1200 430",   "noche"),
+    "presentacion":   ("campo2",  "0 130 1200 400",  "dia"),
+    "protocolos":     ("anillos", "30 40 640 360",   "noche"),
+    "primera-visita": ("arcos",   "0 110 1200 430",  "dia"),
+    "operaciones":    ("campo",   "260 170 940 360", "noche"),
+    "marketing":      ("trama",   "0 80 1200 430",   "dia"),
+    "otros":          ("campo2",  "180 40 1020 400", "noche"),
+    "numeros":        ("anillos", "0 190 700 400",   "dia"),
+    "recorridos":     ("arcos",   "180 50 940 400",  "noche"),
+    "mapa":           ("arcos",   "0 30 1200 470",   "dia"),
+}
+
+
+def frente(ident, rotulillo, titulo, texto, numero=""):
+    """La cabecera de una sección: una banda de imagen a sangre con el rótulo.
+
+    Es lo que separa una web de un índice. Debajo empieza el texto; encima,
+    solo lo que hace falta para saber dónde se ha entrado.
+    """
+    pieza, recorte, modo = ARTE[ident]
+    return (
+        '<header class="frente frente--%s" data-frente>\n'
+        '  <div class="frente__i">%s</div>\n'
+        '  <div class="frente__c">\n'
+        '    %s<p class="letra frente__k">%s</p>\n'
+        '    <h1>%s</h1>\n'
+        '    <p class="frente__p">%s</p>\n'
+        '  </div>\n'
+        '</header>'
+        % (modo, imagenes.arte(pieza, recorte),
+           ('<span class="frente__n" aria-hidden="true">%s</span>' % numero) if numero else "",
+           rotulillo, H.escape(titulo), H.escape(texto)))
+
+
 BLOQUES = {
     "presentacion": bloque_presentacion,
     "primera-visita": bloque_primera_visita,
@@ -1479,12 +1532,7 @@ def monta():
                      % (ident, submenu(piezas, pre)))
         secciones.append(
             '<section class="sec" id="%s" data-sec="%s">\n'
-            '  <header class="cab">\n'
-            '    <span class="cab__n" aria-hidden="true">%02d</span>\n'
-            '    <p class="cab__k">%s · %d apartados</p>\n'
-            '    <h1>%s</h1>\n'
-            '    <p class="cab__p">%s</p>\n'
-            '  </header>\n'
+            '  %s\n'
             '  <div class="sec__lienzos">%s</div>\n'
             '  <div class="lienzo lienzo--indice">\n'
             '    <div class="lienzo__cab"><h2>Lo que hay en %s</h2>\n'
@@ -1496,8 +1544,10 @@ def monta():
             '<span class="leyendo__n"></span></div>\n'
             '  <div class="hojas">%s</div>\n'
             '</section>'
-            % (ident, ident, len(indice), H.escape(nombre_doc), len(piezas), H.escape(titulo),
-               H.escape(texto), propio, H.escape(rotulo.lower()), len(piezas),
+            % (ident, ident,
+               frente(ident, "%s · %d apartados" % (H.escape(nombre_doc), len(piezas)),
+                      titulo, texto, "%02d" % len(indice)),
+               propio, H.escape(rotulo.lower()), len(piezas),
                "".join(filas), "\n".join(hojas)))
 
     return secciones, menus, indice, orden, voces, mapa
@@ -1730,11 +1780,18 @@ def dibuja_recorridos(mapa):
             '  </header>\n  <ol class="paradas">%s</ol>\n</article>'
             % (r["id"], r["id"], H.escape(r["quien"]), n, H.escape(r["titulo"]),
                H.escape(r["que"]), r["id"], "".join(paradas)))
+        # cada tarjeta lleva su trozo de imagen: el mismo dibujo cortado por
+        # sitios distintos, para que diez tarjetas no parezcan la misma
+        k = len(tarjetas)
         tarjetas.append(
             '<button type="button" class="rutacard" data-ve-ruta="%s">'
+            '<span class="rutacard__i">%s</span>'
             '<span class="letra">%s</span><b>%s</b>'
             '<span class="rutacard__m letra">%d paradas</span></button>'
-            % (r["id"], H.escape(r["quien"]), H.escape(r["titulo"]), n))
+            % (r["id"], imagenes.arte(("campo", "campo2", "arcos")[k % 3],
+                                      "%d %d 420 260" % (60 + (k * 97) % 700,
+                                                         40 + (k * 61) % 300)),
+               H.escape(r["quien"]), H.escape(r["titulo"]), n))
     return "\n".join(fuera), "".join(tarjetas)
 
 
@@ -1761,16 +1818,20 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
     return """
 <section class="sec" id="inicio" data-sec="inicio">
 
-  <div class="portada">
-    <p class="letra portada__k">Centro de Excelencia Implantológica Giraldo</p>
-    <h1>No medias<br><em>sonrisas</em></h1>
-    <p class="portada__l">Le devolvemos su sonrisa completa, en el menor tiempo posible,
-      y le cuidamos para siempre.</p>
-    <div class="portada__b">
-      <button type="button" class="bt bt--fuerte" data-ir-sec="recorridos">Elegir un recorrido</button>
-      <button type="button" class="bt" data-ir-sec="mapa">Ver el mapa</button>
+  <div class="portada" data-frente>
+    <div class="portada__i">@@ARTE@@</div>
+    <div class="portada__c">
+      <p class="letra portada__k">Centro de Excelencia Implantológica Giraldo · Vigo</p>
+      <h1>No medias<br><em>sonrisas</em></h1>
+      <p class="portada__l">Le devolvemos su sonrisa completa, en el menor tiempo posible,
+        y le cuidamos para siempre.</p>
+      <div class="portada__b">
+        <button type="button" class="bt bt--fuerte" data-ir-sec="recorridos">Elegir un recorrido</button>
+        <button type="button" class="bt" data-ir-sec="mapa">Ver el mapa</button>
+      </div>
     </div>
     <p class="portada__pie letra">Rúa Bolivia nº 2 · Vigo · Uso interno y confidencial</p>
+    <span class="portada__baja" aria-hidden="true"><i></i></span>
   </div>
 
   <div class="banda">
@@ -1783,7 +1844,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
     <div class="rutas">@@TARJETAS@@</div>
   </div>
 
-  <div class="banda banda--mapa">
+  <div class="banda banda--mapa" data-frente>
     <div class="banda__c">
       <p class="letra">El recorrido del paciente</p>
       <h2>Catorce fases, y ninguna se salta</h2>
@@ -1793,7 +1854,8 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
     @@MAPA@@
   </div>
 
-  <div class="banda">
+  <div class="banda banda--noche" data-frente>
+    <div class="banda__i">@@ARTE2@@</div>
     <div class="banda__c">
       <p class="letra">Los hechos</p>
       <h2>Lo que hay debajo de esas dos frases</h2>
@@ -1837,7 +1899,8 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
     <div class="puertas">@@PUERTAS@@</div>
   </div>
 
-  <div class="banda banda--pie">
+  <div class="banda banda--pie" data-frente>
+    <div class="banda__i">@@ARTE3@@</div>
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
         Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
@@ -1850,7 +1913,10 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
   </div>
 
 </section>
-""".replace("@@TARJETAS@@", tarjetas).replace("@@MAPA@@", mapa_svg) \
+""".replace("@@ARTE@@", imagenes.arte("campo", "0 0 1200 600", "arte--hero")) \
+   .replace("@@ARTE2@@", imagenes.arte("trama", "150 60 900 480")) \
+   .replace("@@ARTE3@@", imagenes.arte("campo2", "0 240 1200 360")) \
+   .replace("@@TARJETAS@@", tarjetas).replace("@@MAPA@@", mapa_svg) \
    .replace("@@HECHOS@@", hechos).replace("@@IDEAS@@", ideas) \
    .replace("@@PUERTAS@@", puertas) \
    .replace("@@PRINCIPIOS@@", "".join(
@@ -1864,34 +1930,31 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
 def sec_recorridos(rutas):
     return """
 <section class="sec" id="recorridos" data-sec="recorridos">
-  <header class="cab">
-    <span class="cab__n" aria-hidden="true">10</span>
-    <p class="cab__k letra">Diez maneras de entrar</p>
-    <h1>Elija por dónde<em>quiere empezar</em></h1>
-    <p class="cab__p">Un recorrido es una pregunta convertida en camino. Cinco a nueve paradas,
-      en orden, cada una con lo que hay que mirar y por qué. Se abre una parada, se lee entera,
-      se pasa a la siguiente y se vuelve cuando se quiere: el recorrido no se pierde.</p>
-  </header>
+  @@FRENTE@@
   <div class="rutas rutas--todas">@@RUTAS@@</div>
 </section>
-""".replace("@@RUTAS@@", rutas)
+""".replace("@@RUTAS@@", rutas).replace("@@FRENTE@@", frente(
+        "recorridos", "Diez maneras de entrar",
+        "Elija por dónde quiere empezar",
+        "Un recorrido es una pregunta convertida en camino. Cinco a nueve paradas, en orden, "
+        "cada una con lo que hay que mirar y por qué. Se abre una parada, se lee entera, se "
+        "pasa a la siguiente y se vuelve cuando se quiere: el recorrido no se pierde.", "10"))
 
 
 def sec_mapa(mapa_svg):
     return """
 <section class="sec" id="mapa" data-sec="mapa">
-  <header class="cab">
-    <span class="cab__n" aria-hidden="true">14</span>
-    <p class="cab__k letra">El recorrido del paciente</p>
-    <h1>Catorce fases,<em>de la llamada al mantenimiento</em></h1>
-    <p class="cab__p">Cada fase construye sobre la anterior: la información recogida en la
-      llamada personaliza la recepción, la anamnesis alimenta la presentación y el cierre abre el
-      circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso ninguna
-      fase se salta «por falta de tiempo». Pulse una y se abre entera; del lector se vuelve aquí.</p>
-  </header>
+  @@FRENTE@@
   @@MAPA@@
 </section>
-""".replace("@@MAPA@@", mapa_svg)
+""".replace("@@MAPA@@", mapa_svg).replace("@@FRENTE@@", frente(
+        "mapa", "El recorrido del paciente",
+        "Catorce fases, de la llamada al mantenimiento",
+        "Cada fase construye sobre la anterior: la información recogida en la llamada "
+        "personaliza la recepción, la anamnesis alimenta la presentación y el cierre abre el "
+        "circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso "
+        "ninguna fase se salta «por falta de tiempo». Pulse una y se abre entera; del lector "
+        "se vuelve aquí.", "14"))
 
 
 CSS = """
@@ -1926,6 +1989,12 @@ CSS = """
   --radio:0px; --radio-s:0px; --sombra-1:none; --sombra-2:none;
 
   --nav:4.2rem; --texto:66ch; --ancho:78rem; --aire:clamp(5rem,10vw,10rem);
+  /* el margen de la columna de lectura, para que lo que se sale a sangre
+     vuelva a alinearse con el texto por dentro */
+  --marco:max(2rem,calc(50vw - 37rem));
+  /* lo que hay que subir una banda para que empiece en el borde de arriba:
+     el aire de la sección y la barra, que ocupa sitio por ser pegajosa */
+  --saca:calc((var(--aire) + var(--nav)) * -1);
   --e:cubic-bezier(.16,.84,.44,1);
 }
 html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -2052,7 +2121,7 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 /* --- los recorridos -------------------------------------------------------- */
 /* Sin rejilla de fondo: con diez tarjetas en cuatro columnas quedaban dos
    huecos grises al final que parecían un error. Cada tarjeta lleva su raya. */
-.rutas{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:2.4rem 2.6rem}
+.rutas{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:1.6rem 2.6rem}
 .rutacard{font:inherit;text-align:left;cursor:pointer;border:0;background:none;
   padding:1.6rem 0 1.8rem;display:flex;flex-direction:column;gap:.9rem;
   border-top:1px solid var(--negro);transition:opacity .26s var(--e)}
@@ -2594,8 +2663,165 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .guion p{margin:.5rem 0 0;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
 .guion .nota__q{color:var(--negro)}
 
+/* ====================================================================
+   LA IMAGEN
+   No hay fotografías del centro, así que la imagen se dibuja: cinco
+   piezas de SVG definidas una sola vez en la página, recortadas por un
+   sitio distinto en cada banda y coloreadas desde aquí. En noche la
+   tinta es blanca sobre negro; en día, negra sobre blanco.
+   ==================================================================== */
+:root{--arte-a:var(--azul)}
+.artes{position:absolute;width:0;height:0;overflow:hidden}
+/* «a sangre»: la banda se sale de la columna de lectura hasta el borde de la
+   pantalla. El recorte de body evita que la barra de desplazamiento cuente dos
+   veces; es clip y no hidden porque hidden rompería lo que se queda pegado
+   arriba al bajar. */
+body{overflow-x:clip}
+.portada,.frente,.banda--noche,.banda--pie{margin-inline:calc(50% - 50vw)}
+.arte{display:block;width:100%;height:100%}
+
+/* la portada: a pantalla, como se abre una web y no un documento */
+.portada{position:relative;text-align:left;min-height:min(94vh,60rem);display:flex;
+  flex-direction:column;justify-content:center;
+  padding:calc(var(--nav) + 4rem) var(--marco) 5.5rem;
+  background:var(--negro);color:#fff;overflow:hidden;isolation:isolate;
+  margin-top:var(--saca)}
+.portada__k{margin:0}
+.portada__l{margin-left:0;margin-right:0;font-weight:300}
+.portada__b{justify-content:flex-start}
+.portada__pie{margin-top:0}
+.portada .bt{border-color:rgba(255,255,255,.32);color:#fff}
+.portada .bt:hover{border-color:#fff}
+.portada .bt--fuerte{background:#fff;border-color:#fff;color:var(--negro)}
+.portada .bt--fuerte:hover{background:var(--azul);border-color:var(--azul);color:#fff}
+.portada__i{position:absolute;inset:0;z-index:-2;color:#fff}
+.portada__i .arte{transform:scale(1.06);transition:transform 1.2s var(--e)}
+.portada::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(17,17,18,.92) 0,rgba(17,17,18,0) 20%),
+    linear-gradient(105deg,rgba(17,17,18,.94) 0 34%,rgba(17,17,18,.55) 62%,
+    rgba(17,17,18,.30) 100%)}
+.portada__c{position:relative;max-width:46rem}
+.portada__k{color:rgba(255,255,255,.62)}
+.portada h1{margin:2.2rem 0 0;font-size:clamp(3rem,9vw,7.5rem);font-weight:200;line-height:.92;
+  letter-spacing:-.045em;color:#fff}
+.portada h1 em{font-style:normal;color:var(--azul)}
+.portada__l{margin:2.4rem 0 0;max-width:34ch;font-size:clamp(1rem,1.6vw,1.24rem);
+  line-height:1.75;color:rgba(255,255,255,.78)}
+.portada__b{margin-top:3.2rem;display:flex;flex-wrap:wrap;gap:1rem}
+.portada__pie{position:absolute;left:var(--marco);bottom:2.2rem;color:rgba(255,255,255,.42)}
+.portada__baja{position:absolute;right:var(--marco);bottom:2.2rem;width:1px;height:3.4rem;
+  background:rgba(255,255,255,.22);overflow:hidden}
+.portada__baja i{position:absolute;inset:0;background:#fff;
+  animation:baja 2.6s var(--e) infinite}
+@keyframes baja{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
+@media(prefers-reduced-motion:reduce){.portada__baja i{animation:none}}
+
+/* la cabecera de cada sección: la misma banda, en día o en noche */
+.frente{position:relative;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;
+  min-height:min(60vh,36rem);padding:calc(var(--nav) + 5rem) var(--marco) 3.6rem;
+  margin-top:var(--saca);margin-bottom:var(--aire)}
+.frente__i{position:absolute;inset:0;z-index:-2}
+.frente::after{content:"";position:absolute;inset:0;z-index:-1}
+.frente--noche{background:var(--negro);color:#fff}
+.frente--noche .frente__i{color:#fff}
+.frente--noche::after{background:linear-gradient(180deg,rgba(17,17,18,.92) 0,
+    rgba(17,17,18,0) 22%),
+  linear-gradient(100deg,rgba(17,17,18,.93) 0 30%,rgba(17,17,18,.52) 64%,
+  rgba(17,17,18,.26) 100%)}
+.frente--dia{background:var(--blanco);color:var(--negro)}
+.frente--dia .frente__i{color:var(--negro)}
+.frente--dia::after{background:linear-gradient(180deg,rgba(255,255,255,.96) 0,
+    rgba(255,255,255,0) 22%),
+  linear-gradient(100deg,rgba(255,255,255,.95) 0 32%,rgba(255,255,255,.62) 66%,
+  rgba(255,255,255,.30) 100%)}
+.frente__c{position:relative;max-width:44rem}
+.frente__n{display:block;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.3em;
+  opacity:.45;margin-bottom:1.4rem}
+.frente__k{opacity:.7}
+.frente h1{margin:1.4rem 0 0;font-size:clamp(1.9rem,4.6vw,3.7rem);font-weight:200;
+  line-height:1.06;letter-spacing:-.036em}
+.frente__p{margin:1.8rem 0 0;max-width:56ch;font-size:1rem;line-height:1.85;opacity:.82}
+
+/* una banda de la portada puede llevar imagen debajo */
+.banda--noche{position:relative;background:var(--negro);color:#fff;overflow:hidden;
+  isolation:isolate;padding:var(--aire) var(--marco)}
+.banda__i{position:absolute;inset:0;z-index:-2;color:#fff;opacity:.3}
+.banda--noche::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,var(--negro) 0,rgba(17,17,18,.72) 40%,var(--negro) 100%)}
+.banda--noche h2,.banda--noche .hecho b{color:#fff}
+.banda--noche .letra{color:rgba(255,255,255,.55)}
+.banda--noche .hecho{border-color:rgba(255,255,255,.16)}
+.banda--noche .hecho p{color:rgba(255,255,255,.7)}
+.banda--pie{position:relative;overflow:hidden;isolation:isolate;padding:var(--aire) var(--marco) calc(var(--aire) * .7)}
+.banda--pie .banda__i{opacity:.22;color:var(--negro)}
+
+/* el retrato de cada puesto */
+.arte--cara{border-radius:50%}
+.puestobt{display:flex;align-items:center;gap:.9rem}
+.puestobt__c{flex:none;width:2.2rem;height:2.2rem;color:var(--ink-2);opacity:.85;
+  transition:color .24s var(--e),opacity .24s var(--e)}
+.puestobt:hover .puestobt__c{opacity:1;color:var(--negro)}
+.puestobt.es-on .puestobt__c{color:var(--azul);opacity:1}
+.puestobt__t{min-width:0}
+.puesto__cab{display:flex;align-items:flex-start;gap:2.2rem;flex-wrap:wrap}
+.puesto__cara{flex:none;width:clamp(5rem,9vw,7.6rem);height:clamp(5rem,9vw,7.6rem);
+  color:var(--negro)}
+.puesto__cab > div:last-child{flex:1;min-width:16rem}
+
+/* la tarjeta de un recorrido, con su trozo de dibujo */
+.rutacard__i{display:block;height:7.5rem;margin-bottom:1.3rem;color:var(--ink-2);
+  background:var(--gris);opacity:.62;transition:opacity .3s var(--e)}
+.rutacard:hover .rutacard__i{opacity:1;color:var(--azul)}
+
+/* La barra, sobre una banda oscura
+   Mientras la cabecera de imagen ocupa la pantalla, la barra se quita de en
+   medio: transparente y en blanco, como se abre una web. En cuanto la banda
+   pasa, vuelve a ser la barra de siempre. */
+.nav{transition:background .32s var(--e),border-color .32s var(--e)}
+.nav--sobre{background:transparent;border-color:rgba(255,255,255,.14);backdrop-filter:none}
+.nav--claro{background:transparent;border-color:transparent;backdrop-filter:none}
+.nav--sobre .nav__m{color:#fff}
+.nav--sobre .nav__m em,.nav--sobre .abrepal,.nav--sobre .icono{color:rgba(255,255,255,.5)}
+.nav--sobre .nav__l button{color:rgba(255,255,255,.66)}
+.nav--sobre .nav__l button:hover,.nav--sobre .nav__l button.es-on{color:#fff}
+.nav--sobre .nav__ruta{color:rgba(255,255,255,.78)}
+.nav--sobre .nav__ruta:first-child{color:#fff}
+.nav--sobre .abrepal:hover,.nav--sobre .icono:hover:not(:disabled){color:#fff}
+.nav--sobre .nav__sep{background:rgba(255,255,255,.2)}
+.nav--sobre .nav__l button::after{background:#fff}
+
+/* que aparezcan al llegar, no de golpe */
+[data-frente]{--sube:1}
+.sitio--vivo [data-frente]:not(.es-ve) .frente__c,
+.sitio--vivo [data-frente]:not(.es-ve) .portada__c,
+.sitio--vivo [data-frente]:not(.es-ve) .banda__c{opacity:0;transform:translateY(14px)}
+.frente__c,.portada__c,.banda__c{transition:opacity .7s var(--e),transform .7s var(--e)}
+@media(prefers-reduced-motion:reduce){
+  .frente__c,.portada__c,.banda__c{transition:none}
+  .sitio--vivo [data-frente]:not(.es-ve) .frente__c,
+  .sitio--vivo [data-frente]:not(.es-ve) .portada__c,
+  .sitio--vivo [data-frente]:not(.es-ve) .banda__c{opacity:1;transform:none}
+}
+
 @media(max-width:900px){
-  :root{--nav:auto;--aire:clamp(3.2rem,9vw,5rem)}
+  /* En el teléfono la barra se parte en dos o tres filas y su alto deja de ser
+     un número: por eso aquí las bandas no se meten debajo de ella ni calculan
+     nada con «auto», que invalidaría la regla entera. */
+  :root{--nav:auto;--aire:clamp(3.2rem,9vw,5rem);--saca:-2.6rem}
+  .portada{min-height:auto;padding:4.5rem 1.6rem 3.5rem}
+  .portada__pie{position:static;margin-top:3rem}
+  .portada__baja{display:none}
+  .frente{min-height:auto;padding:3.6rem 1.6rem 2.6rem;margin-bottom:calc(var(--aire) * .8)}
+  .frente h1{font-size:clamp(1.7rem,7vw,2.3rem)}
+  .banda--noche,.banda--pie{padding-left:1.6rem;padding-right:1.6rem}
+  .nav--sobre,.nav--claro{background:rgba(255,255,255,.94);border-color:var(--linea-2);
+    backdrop-filter:saturate(1.4) blur(12px)}
+  .nav--sobre .nav__m{color:var(--negro)}
+  .nav--sobre .nav__m em,.nav--sobre .abrepal,.nav--sobre .icono{color:var(--muted)}
+  .nav--sobre .nav__l button{color:var(--ink-2)}
+  .nav--sobre .nav__ruta{color:var(--negro)}
+  .nav--sobre .nav__sep{background:var(--linea)}
+  .nav--sobre .nav__l button::after{background:var(--azul)}
   .nav__f{flex-wrap:wrap;height:auto;padding:.8rem 1.1rem;gap:.6rem 1rem}
   .nav__m{flex:1 1 auto}
   .nav__l{order:3;flex:1 0 100%;min-width:100%;height:2.6rem;justify-content:flex-start}
@@ -2738,6 +2964,7 @@ JS = """
     });
     memo.sec = s.dataset.sec; recuerda();
     if(arriba !== false) window.scrollTo(0, 0);
+    if(typeof pintaBarra === "function") pintaBarra();
     return s;
   }
 
@@ -3297,17 +3524,69 @@ JS = """
     });
   });
 
+  /* ---------------------------------------------------------------- */
+  /*  Las bandas de imagen                                              */
+  /*  Aparecen al llegar a ellas, y el dibujo de la portada se mueve un  */
+  /*  poco más despacio que la página. Nada de esto hace falta para      */
+  /*  leer: si el navegador no lo trae, todo queda quieto y visible.     */
+  /* ---------------------------------------------------------------- */
+  var bandas = [].slice.call(D.querySelectorAll("[data-frente]"));
+  if (window.IntersectionObserver) {
+    var ojo = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add("es-ve"); ojo.unobserve(e.target); }
+      });
+    }, {rootMargin: "0px 0px -12% 0px"});
+    bandas.forEach(function(b){ ojo.observe(b); });
+  } else {
+    bandas.forEach(function(b){ b.classList.add("es-ve"); });
+  }
+
+  /* la barra se aparta mientras la banda oscura ocupa la pantalla */
+  var barra = D.querySelector(".nav");
+  function pintaBarra(){
+    if (!barra) return;
+    var sec = D.querySelector(".sec.es-on");
+    var banda = sec && sec.querySelector(".portada, .frente");
+    var alto = barra.getBoundingClientRect().height;
+    var encima = !!banda && banda.getBoundingClientRect().bottom > alto + 10
+                 && paneles.hidden;
+    var noche = !!banda && !banda.classList.contains("frente--dia");
+    barra.classList.toggle("nav--sobre", encima && noche);
+    barra.classList.toggle("nav--claro", encima && !noche);
+  }
+  window.addEventListener("scroll", pintaBarra, {passive: true});
+  window.addEventListener("resize", pintaBarra);
+  D.addEventListener("click", function(){ setTimeout(pintaBarra, 60); });
+
+  var quieto = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var dibujo = D.querySelector(".portada__i .arte");
+  if (dibujo && !quieto.matches) {
+    var pendiente = false;
+    window.addEventListener("scroll", function(){
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(function(){
+        pendiente = false;
+        var y = Math.min(window.scrollY, 900);
+        dibujo.style.transform = "scale(1.06) translateY(" + (y * 0.16) + "px)";
+      });
+    }, {passive: true});
+  }
+
   /* ---- arranque ---------------------------------------------------- */
   var h0 = (location.hash || "").slice(1);
   if(h0 && secs.some(function(s){ return s.dataset.sec === h0; })) veSec(h0, false);
   else { veSec(memo.sec || "inicio", false); if(h0) abreDestino(h0); }
   dibujaAvance();
+  pintaBarra();
 })();
 </script>
 """
 
 
 MARCO = """
+@@ARTES@@
 <a class="saltar" href="#sitio">Saltar al contenido</a>
 <div class="avance" id="avance" aria-hidden="true"></div>
 
@@ -3611,6 +3890,7 @@ def main():
 
     salida = RAIZ / "centro.html"
     texto = (cabecera + "\n" + cuerpo + "\n" + datos + "\n" + JS + "\n</body>\n</html>\n")
+    texto = texto.replace("@@ARTES@@", imagenes.defensa())
     texto = texto.replace("@VERSION@", VERSION).replace("@FECHA@", FECHA)
     texto = re.sub(r"(<style[^>]*>)(.*?)(</style>)",
                    lambda m: m.group(1) + monocroma(m.group(2)) + m.group(3),
