@@ -1006,8 +1006,71 @@ def eco(ancla, pre, doc="manual.html"):
     return marca_eco(prefija(entabla(pieza(doc, ancla)), pre))
 
 
+# ---------------------------------------------------------------------------
+#  Las obligaciones de cada puesto
+# ---------------------------------------------------------------------------
+#  El Manual termina con una tabla que no dice qué hace cada puesto sino qué se
+#  rompe aguas abajo cuando no lo hace. Es la definición operativa de una
+#  obligación: no «tienes que escanear», sino «si no escaneas el mismo día, lo
+#  firmado a efectos prácticos no existe». Esa tabla vivía en un anexo del
+#  Manual y había que ir a buscarla; aquí, cada puesto lleva delante las suyas.
+OBLIGA = re.compile(r"<tr[^>]*>(.*?)</tr>", re.S | re.I)
+CELDA = re.compile(r"<t([dh])[^>]*>(.*?)</t\1>", re.S | re.I)
+
+
+def obligaciones():
+    """{puesto: [(si no se hace, lo que se rompe)]}, leído de la propia tabla."""
+    t = fuente("manual.html")
+    i = t.index('id="m-pasa-exactamente-cuando-puesto-no-cumple"')
+    tabla = re.search(r"<table.*?</table>", t[i:i + 12000], re.S)
+    if not tabla:
+        raise SystemExit("  la matriz de obligaciones ya no está donde estaba")
+    fuera, puesto = {}, None
+    for fila in OBLIGA.finditer(tabla.group(0)):
+        celdas = [sin_marcas(c.group(2)) for c in CELDA.finditer(fila.group(1))]
+        if not celdas or celdas[0] == "Puesto":
+            continue
+        if len(celdas) == 3:
+            puesto = celdas[0]
+            fuera.setdefault(puesto, []).append((celdas[1], celdas[2]))
+        elif len(celdas) == 2 and puesto:
+            fuera[puesto].append((celdas[0], celdas[1]))
+    if not fuera:
+        raise SystemExit("  la matriz de obligaciones no se deja leer")
+    return fuera
+
+
+def bloque_obligaciones(p, tabla, ancla):
+    """Lo que este puesto tiene que hacer, dicho por lo que se rompe si no."""
+    filas = tabla.get(p.get("obliga") or "", [])
+    if not filas:
+        return ('<div class="obliga obliga--sin">\n'
+                '  <p class="rotulillo">Sus obligaciones</p>\n'
+                '  <p class="obliga__q">%s</p>\n'
+                '</div>' % H.escape(PERFILES.OBLIGACIONES_SIN_FILA))
+    filas_html = "".join(
+        '<li class="obliga__f">'
+        '<span class="obliga__n">%02d</span>'
+        '<span class="obliga__si"><i class="letra">Si no se hace</i>%s</span>'
+        '<span class="obliga__rompe"><i class="letra">Lo que se rompe</i>%s</span>'
+        '</li>' % (k + 1, H.escape(a), H.escape(b))
+        for k, (a, b) in enumerate(filas))
+    return ('<div class="obliga">\n'
+            '  <p class="rotulillo">Sus obligaciones · qué se rompe si no se hace</p>\n'
+            '  <p class="obliga__q">Un manual dice lo que hay que hacer. Esto dice lo '
+            'contrario: qué se rompe, y en qué otro puesto, cuando no se hace. Casi ningún '
+            'fallo se queda en el puesto que lo comete, y por eso estas %d líneas son la '
+            'definición operativa de lo que este puesto debe. Salen de la matriz de '
+            'obligaciones del Manual Maestro, palabra por palabra.</p>\n'
+            '  <ol class="obliga__l">%s</ol>\n'
+            '  <p class="obliga__pie"><a href="manual.html#%s">La matriz de obligaciones '
+            'entera, con los seis puestos</a></p>\n'
+            '</div>' % (len(filas), filas_html, ancla))
+
+
 def bloque_protocolos(pre):
     P = PERFILES
+    tabla_obliga = obligaciones()
     botones, fichas = [], []
     for n, p in enumerate(P.PERFILES):
         raci = P.raci_de(p)
@@ -1101,6 +1164,7 @@ def bloque_protocolos(pre):
             'se vuelve aquí.</p>\n'
             '  <p class="rotulillo">Las fases en las que entra, con nombre</p>\n'
             '  <div class="fases-p">%s</div>\n'
+            '  %s\n'
             '  <nav class="puesto__idx" aria-label="Lo que hay de este puesto">%s</nav>\n'
             '  %s\n  %s\n'
             '</article>'
@@ -1114,7 +1178,10 @@ def bloque_protocolos(pre):
                        (str(len(p["vanguardia"])), "funciones de vanguardia")]),
                celdas,
                " · ".join("<b>%s</b> %s" % (k, H.escape(v[0])) for k, v in P.QUE_ES.items()),
-               suyas, indice, manual_puesto, vang))
+               suyas,
+               bloque_obligaciones(p, tabla_obliga,
+                                   "m-pasa-exactamente-cuando-puesto-no-cumple"),
+               indice, manual_puesto, vang))
 
     return ("""
 <div class="lienzo">
@@ -1295,6 +1362,105 @@ def bloque_operaciones(pre):
 #  hace falta para leer. Aquí se despliegan: cada diapositiva con su minuto y
 #  su parte, y debajo el guion del ponente —qué decir al pasarla y qué se
 #  contesta a la pregunta difícil—, que hasta ahora no salía de las notas.
+# Cómo se conduce cada parte de la sesión. Es lo único de esta pantalla que no
+# sale de la presentación: son las siete notas de conducción que no estaban
+# escritas en ninguna parte y que hacen falta para llevar una Junta de una hora
+# sin perder el hilo ni el minuto.
+CONDUCE = {
+    "La apertura": (
+        "Dos diapositivas y noventa segundos. No hay que explicar nada todavía: hay que "
+        "fijar la regla con la que se va a discutir el resto de la hora. La primera se "
+        "sostiene sola —se lee y se calla—; la segunda dice que esto es un plan y no un "
+        "informe, y que cada cifra lleva marcada su naturaleza. Si esa distinción no queda "
+        "clara aquí, la Parte III se convierte en una discusión sobre si los números son "
+        "reales.",
+        "Que alguien pregunte, en la segunda, si las cifras son inventadas. Se contesta con "
+        "la marca: rango del sector, modelo o pendiente. Nunca «es un dato nuestro»."),
+    "Parte I · La posición": (
+        "Cinco diapositivas, cinco minutos y quince segundos. Es la parte que responde a «por "
+        "qué aquí y por qué nosotros». Va de fuera hacia dentro: primero la apuesta, luego "
+        "los segmentos que nadie atiende, después el mapa de la ciudad y al final el foso. El "
+        "orden importa: el foso solo se entiende cuando ya se ha visto que el hueco existe.",
+        "Que se discuta el mapa competitivo nombre por nombre. No es una lista de rivales: "
+        "son cuatro maneras de vender implantes, y la nuestra es la cuarta."),
+    "Parte II · El sistema": (
+        "Tres diapositivas y dos minutos y medio. Es la parte que más se subestima y la que "
+        "sostiene la valoración: lo que se ha construido no es una clínica, es un sistema "
+        "operativo escrito. Aquí se enseña, no se cuenta: los tres documentos troncales están "
+        "sobre la mesa y se pueden abrir.",
+        "Que se lea como burocracia. La respuesta está en la diapositiva siguiente: lo que "
+        "garantiza tenerlo por escrito es que el resultado no dependa de quién esté ese día."),
+    "Parte III · La economía": (
+        "Nueve diapositivas y doce minutos: es la parte más larga y donde se juega la "
+        "credibilidad de todo lo demás. Empieza reconociendo lo que no se sabe —los cinco "
+        "números que aún no se tienen— y solo después presenta escenarios. Ese orden no es "
+        "retórico: presentar escenarios antes de declarar la ignorancia es lo que convierte "
+        "un plan en un folleto.",
+        "Que se pida una cifra propia. No la hay todavía, y decirlo es la posición fuerte: la "
+        "línea base es la primera tarea de los cien días."),
+    "Parte IV · El riesgo": (
+        "Cuatro diapositivas y cuatro minutos y medio. Se cuenta cómo fracasa esto antes de "
+        "que ocurra, con dueño y con fecha. El pre-mortem no es un ejercicio de humildad: es "
+        "el que produce los cinco disparadores que obligan a convocar a la Junta sin esperar "
+        "a la reunión ordinaria.",
+        "Que se quiera pasar rápido. Es justo la parte que un consejo recuerda seis meses "
+        "después, cuando uno de los cinco disparadores se enciende."),
+    "Parte V · La decisión": (
+        "Cinco diapositivas y once minutos. Aquí se pide. Palancas, orden de prelación del "
+        "capital, hoja de ruta con sus tres puertas y, al final, las quince decisiones "
+        "repartidas en dos diapositivas: las ocho de la operación y las siete de la "
+        "estrategia. Cada una tiene su hoja de acta preparada en el anexo.",
+        "Que se aprueben en bloque. No se aprueban en bloque: cada decisión tiene su hoja, y "
+        "la hoja pide dueño y fecha."),
+    "Parte VI · La cifra": (
+        "Nueve diapositivas y trece minutos, y la parte que la mitad de la sala está "
+        "esperando desde el principio. Se llega a 1,2 M€ por construcción, bloque a bloque, y "
+        "antes de enseñar el puente se contesta la pregunta previa: si eso cabe en la agenda "
+        "que hay. Termina en las condiciones que tienen que ser ciertas y en qué mide el "
+        "éxito de este año.",
+        "Que se lea 1,2 M€ como un objetivo de este ejercicio. Es un objetivo del año tres, y "
+        "hay una diapositiva entera dedicada a decirlo."),
+}
+
+
+def apartados_de_direccion():
+    """El número de apartado del Plan de Dirección con su rótulo y su ancla.
+
+    Cada diapositiva lleva en su antetítulo el número del apartado del que se
+    extrae —«09 · El activo» sale del apartado 09—, así que la presentación
+    puede decir de dónde sale cada cosa sin que nadie lo teclee.
+    """
+    fuera = {}
+    for p in de_apartados("memoria.html"):
+        if p["n"]:
+            fuera[p["n"].strip()] = (p["id"], p["rotulo"])
+    return fuera
+
+
+NATURALEZA = {
+    "Modelo": "Se deriva de supuestos declarados, no es una medición. Los supuestos están "
+              "escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.",
+    "Hecho": "Es un dato comprobable, no una estimación.",
+    "Pendiente": "Todavía no se tiene. Está señalado como lo que es, y su medición es parte "
+                 "de la primera tarea de los cien días.",
+}
+
+
+def _segundos(ms):
+    m = re.match(r"(\d+):(\d+)", ms or "")
+    return int(m.group(1)) * 60 + int(m.group(2)) if m else 0
+
+
+def dura(desde, hasta):
+    s = max(0, _segundos(hasta) - _segundos(desde))
+    if not s:
+        return ""
+    if s < 60:
+        return "%d segundos" % s
+    m, r = divmod(s, 60)
+    return "%d min" % m if not r else "%d min %02d s" % (m, r)
+
+
 DIAPO = re.compile(r'<section([^>]*)class="([^"]*\bslide\b[^"]*)"([^>]*)>', re.I)
 NOTA = re.compile(r'<aside class="nota"[^>]*>(.*?)</aside>', re.S | re.I)
 LEDE = re.compile(r'<p class="lede"[^>]*>(.*?)</p>', re.S | re.I)
@@ -1313,11 +1479,16 @@ def diapositivas():
         eb = re.search(r'<p class="eyebrow"[^>]*>(.*?)</p>', entero, re.S)
         tit = re.search(r"<h[1-4][^>]*>(.*?)</h[1-4]>", entero, re.S)
         lede = LEDE.search(entero)
+        antetitulo = eb.group(1) if eb else ""
+        sem = re.search(r'<span class="sem[^"]*">([^<]*)</span>', antetitulo)
+        num = re.match(r"\s*(\d{2})\s*·", sin_marcas(antetitulo))
         fuera.append({
             "min": atr.get("min", ""),
             "esencial": atr.get("esencial") == "1",
             "separa": "slide--div" in m.group(2),
-            "eyebrow": sin_marcas(eb.group(1)) if eb else "",
+            "sem": sin_marcas(sem.group(1)) if sem else "",
+            "apartado": num.group(1) if num else "",
+            "eyebrow": sin_marcas(antetitulo),
             "titulo": sin_marcas(tit.group(1)) if tit else "",
             "lede": sin_marcas(lede.group(1)) if lede else "",
             "html": NOTA.sub("", entero),
@@ -1330,6 +1501,72 @@ def _minutos(ms):
     """El minuto en que arranca una diapositiva, en minutos enteros."""
     m = re.match(r"(\d+):(\d+)", ms or "")
     return int(m.group(1)) if m else 0
+
+
+def conduce(rotulo, dd):
+    """Cómo se conduce esta parte: lo único que no sale de la presentación."""
+    nota = CONDUCE.get(rotulo)
+    if not nota:
+        return ""
+    como, ojo = nota
+    return ('<div class="conduce">\n'
+            '  <div><p class="rotulillo">Cómo se conduce</p><p>%s</p></div>\n'
+            '  <div><p class="rotulillo">Dónde se tuerce</p><p>%s</p></div>\n'
+            '</div>' % (H.escape(como), H.escape(ojo)))
+
+
+def explica(d, dd, j, parte, k, cuantas_partes, apdir, siguiente=""):
+    """Todo lo que hay que saber de una diapositiva, junto y en orden.
+
+    Cuánto dura y en qué minuto entra, qué hay que decir al pasarla, qué se
+    contesta a la pregunta que va a venir detrás, de qué apartado del Plan de
+    Dirección se extrae —con el enlace, para leer el razonamiento entero— y de
+    qué naturaleza son sus cifras. Nada de esto se teclea: sale de la propia
+    presentación y del propio Plan.
+    """
+    trozos = []
+
+    # la duración se mide contra la siguiente diapositiva de la sesión, no
+    # contra la siguiente de esta parte: entre una parte y otra hay una
+    # diapositiva de separación que también ocupa su minuto
+    datos = [("En el minuto", d["min"] or "—"),
+             ("Dura", dura(d["min"], siguiente) or "hasta el cierre"),
+             ("Dónde va", "La apertura" if k == 0 else "Parte %s de VI" % romano(k)),
+             ("En esta parte", "%d de %d" % (j + 1, len(dd)))]
+    if d["esencial"]:
+        datos.append(("Ruta corta", "Sí: se pasa aunque no haya tiempo"))
+    trozos.append('<div class="explica__d">%s</div>' % "".join(
+        '<div><i class="letra">%s</i><b>%s</b></div>' % (H.escape(a), H.escape(b))
+        for a, b in datos))
+
+    if d["guion"]:
+        trozos.append('<div class="explica__b"><p class="rotulillo">Qué hay que decir al '
+                      'pasarla, y qué contestar</p>%s</div>' % d["guion"])
+
+    ap = apdir.get(d["apartado"])
+    if ap:
+        trozos.append(
+            '<div class="explica__b"><p class="rotulillo">De dónde sale</p>'
+            '<p>Apartado <b>%s</b> del Plan de Dirección · '
+            '<a href="memoria.html#%s">%s</a>. La diapositiva es el extracto; ahí está el '
+            'razonamiento entero, con los supuestos declarados y las cifras con su '
+            'naturaleza marcada.</p></div>'
+            % (H.escape(d["apartado"]), ap[0], H.escape(ap[1])))
+
+    if d["sem"] and d["sem"] in NATURALEZA:
+        trozos.append(
+            '<div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p>'
+            '<p><b>%s.</b> %s</p></div>'
+            % (H.escape(d["sem"]), H.escape(NATURALEZA[d["sem"]])))
+
+    return '<div class="explica">%s</div>' % "".join(trozos)
+
+
+ROMANO = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII"]
+
+
+def romano(k):
+    return ROMANO[k] if 0 < k < len(ROMANO) else str(k)
 
 
 def bloque_presentacion(pre):
@@ -1356,6 +1593,9 @@ def bloque_presentacion(pre):
     if actual["diapos"]:
         partes.append(actual)
 
+    apdir = apartados_de_direccion()
+    # el minuto de la diapositiva siguiente, en el orden real de la sesión
+    despues = {id(ds[i]): ds[i + 1]["min"] for i in range(len(ds) - 1)}
     idx, cuerpos = [], []
     for k, parte in enumerate(partes):
         clave = "%spt-%d" % (pre, k)
@@ -1369,15 +1609,14 @@ def bloque_presentacion(pre):
                         d["titulo"] or d["eyebrow"] or "Diapositiva",
                         d["eyebrow"] + (" · esencial" if d["esencial"] else ""),
                         '<div class="dia">%s</div>%s'
-                        % (d["html"],
-                           ('<div class="guion"><p class="rotulillo">El guion del ponente</p>'
-                            '%s</div>' % d["guion"]) if d["guion"] else ""),
+                        % (d["html"], explica(d, dd, j, parte, k, len(partes), apdir,
+                                             despues.get(id(d), ""))),
                         extra=' data-esencial="%d"' % (1 if d["esencial"] else 0))
             for j, d in enumerate(dd)]
         cuerpos.append(
             '<div class="parte" id="%s">\n'
             '  <p class="parte__k">%s · del minuto %s al %s · %d diapositivas%s</p>\n'
-            '  <h3>%s</h3>\n  %s\n'
+            '  <h3>%s</h3>\n  %s\n  %s\n'
             '  <div class="grupod" data-parte>\n'
             '    <div class="grupod__cab grupod__cab--fina">\n'
             '      <p class="rotulillo">Las %d, con el guion del ponente</p>\n'
@@ -1394,6 +1633,7 @@ def bloque_presentacion(pre):
                (" · %d de la ruta corta" % (ess + (1 if parte["esencial"] else 0))) if ess else "",
                H.escape(parte["titulo"]),
                ('<p class="parte__q">%s</p>' % H.escape(parte["lede"])) if parte["lede"] else "",
+               conduce(parte["rotulo"], dd),
                len(dd), "Abrir la 1" if len(dd) == 1 else "Abrir las %d" % len(dd),
                "\n".join(piezas)))
 
@@ -2544,6 +2784,14 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .lector__cuerpo{flex:1;overflow-y:auto;overscroll-behavior:contain}
 .lector__in{max-width:var(--texto);margin:0 auto;padding:calc(var(--aire) * .6) 2rem
   calc(var(--aire) * .9)}
+/* el punto exacto al que llevaba el enlace, marcado un momento */
+.es-diana{animation:diana 2.4s var(--e) 1}
+@keyframes diana{
+  0%{background:var(--azul-p);box-shadow:-1.2rem 0 0 var(--azul-p),1.2rem 0 0 var(--azul-p)}
+  70%{background:var(--azul-p);box-shadow:-1.2rem 0 0 var(--azul-p),1.2rem 0 0 var(--azul-p)}
+  100%{background:transparent;box-shadow:none}}
+@media(prefers-reduced-motion:reduce){.es-diana{animation:none;outline:2px solid var(--azul);
+  outline-offset:.5rem}}
 /* El rótulo del apartado ya está en la cabecera del lector, con su documento
    y su parte: repetirlo dentro es decir dos veces lo mismo. */
 .lector__in .hoja__k{display:none}
@@ -2949,6 +3197,48 @@ body{overflow-x:clip}
   transition:transform .3s var(--e),color .3s var(--e)}
 .sigue__p:hover .sigue__f{transform:translateX(4px);color:var(--azul)}
 
+/* ====================================================================
+   LAS OBLIGACIONES DE UN PUESTO
+   Un manual dice lo que hay que hacer. Esto dice lo contrario: qué se
+   rompe, y en qué otro puesto, cuando no se hace.
+   ==================================================================== */
+.obliga{margin-top:3.4rem}
+.obliga__q{margin:0 0 2rem;max-width:64ch;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
+.obliga__l{list-style:none;margin:0;padding:0;border-top:1px solid var(--negro)}
+.obliga__f{display:grid;grid-template-columns:2.4rem minmax(0,1fr) minmax(0,1.15fr);
+  gap:.4rem 2.4rem;padding:1.4rem .2rem;border-bottom:1px solid var(--linea-2);
+  align-items:start}
+.obliga__n{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);padding-top:.35rem}
+.obliga__si i,.obliga__rompe i{display:block;margin-bottom:.5rem;color:var(--muted)}
+.obliga__si{font-size:.95rem;line-height:1.7;color:var(--negro)}
+.obliga__rompe{font-size:.95rem;line-height:1.7;color:var(--ink-2);
+  border-left:2px solid var(--azul);padding-left:1.4rem}
+.obliga__pie{margin:1.6rem 0 0;font-size:.86rem}
+.obliga--sin .obliga__q{max-width:70ch;border-left:2px solid var(--linea);padding-left:1.4rem}
+
+/* ====================================================================
+   LA EXPLICACIÓN DE UNA DIAPOSITIVA
+   Qué dura, qué hay que decir, qué contestar, de dónde sale y de qué
+   naturaleza son sus cifras. Todo junto, debajo de la diapositiva.
+   ==================================================================== */
+.conduce{display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));
+  gap:1.6rem 3.4rem;margin:2rem 0 0;padding:1.8rem 0 0;border-top:1px solid var(--linea)}
+.conduce p:last-child{margin:.2rem 0 0;font-size:.94rem;line-height:1.85;color:var(--ink-2);
+  max-width:52ch}
+.explica{border-top:1px solid var(--linea);margin-top:2rem;padding-top:1.8rem}
+.explica__d{display:flex;flex-wrap:wrap;gap:1.4rem 3rem;margin-bottom:2.2rem}
+.explica__d i{display:block;font-style:normal;color:var(--muted);margin-bottom:.45rem}
+.explica__d b{font-size:.95rem;font-weight:400;color:var(--negro)}
+.explica__b{margin-top:2rem;max-width:66ch}
+.explica__b .rotulillo{margin-bottom:.9rem}
+.explica__b p{margin:.5rem 0 0;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
+.explica__b b{font-weight:400;color:var(--negro)}
+.explica__b > div{margin-top:1.4rem;border-left:2px solid var(--linea);padding-left:1.4rem}
+.explica__b > div:first-of-type{border-color:var(--azul)}
+.explica__b .nota__q{color:var(--negro)}
+.explica__b > div > b{display:block;font-family:var(--f-mono);font-size:.55rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+
 @media(max-width:900px){
   /* En el teléfono la barra se parte en dos o tres filas y su alto deja de ser
      un número: por eso aquí las bandas no se meten debajo de ella ni calculan
@@ -2992,6 +3282,8 @@ body{overflow-x:clip}
   .desp__n{min-width:2.6rem}
   .fasep{flex-wrap:wrap}
   .fasep__p{width:100%;padding-left:1.7rem}
+  .obliga__f{grid-template-columns:1.8rem minmax(0,1fr);gap:1rem}
+  .obliga__rompe{grid-column:2;padding-left:1rem}
   #sitio .dia .slide{padding:1.4rem 1.2rem}
   .lector__cab{padding:.8rem 1.1rem;height:auto;flex-wrap:wrap}
   .lector__in,.lector__pie{padding-left:1.1rem;padding-right:1.1rem}
@@ -3133,7 +3425,7 @@ JS = """
     return r && r.paradas[n] ? r.paradas[n] : null;
   }
 
-  function abreLector(clave, ruta, paso){
+  function abreLector(clave, ruta, paso, ancla){
     var h = porHoja[clave];
     if(!h) return false;
     scrollAntes = window.scrollY;
@@ -3147,15 +3439,16 @@ JS = """
       viaje = null;
     }
 
-    pintaLector(clave);
+    /* Se enseña antes de pintar: mientras está oculto no tiene medidas, y
+       sin medidas no se puede ir al punto exacto que pedía el enlace. */
     lector.hidden = false;
     D.documentElement.style.overflow = "hidden";
-    lecCuerpo.scrollTop = 0;
+    pintaLector(clave, ancla);
     if(lecVolver) lecVolver.focus();
     return true;
   }
 
-  function pintaLector(clave){
+  function pintaLector(clave, ancla){
     var h = porHoja[clave];
     if(!h) return;
     var copia = h.cloneNode(true);
@@ -3195,7 +3488,32 @@ JS = """
         + "</span>" + '<button type="button" class="bt bt--fuerte" data-lec-cierra>Volver</button>';
     }
     lecCuerpo.appendChild(pie);
-    try { history.replaceState(null, "", "#" + clave); } catch(e){}
+
+    /* ---------------------------------------------------------------- */
+    /*  Aterrizar donde dice el enlace, no al principio del apartado      */
+    /*  Un apartado puede tener catorce fases dentro. Pulsar «Fase 14» y  */
+    /*  caer en la fase 1 es exactamente llegar a un sitio que no es el   */
+    /*  que se pidió: aquí se busca el punto exacto dentro del apartado,  */
+    /*  se va a él y se marca un momento para que se vea dónde se está.   */
+    /* ---------------------------------------------------------------- */
+    lecCuerpo.scrollTop = 0;
+    if(ancla && ancla !== clave){
+      var diana = lecCuerpo.querySelector('[data-era="' + ancla + '"]');
+      if(diana){
+        [].slice.call(lecCuerpo.querySelectorAll(".es-diana")).forEach(function(x){
+          x.classList.remove("es-diana");
+        });
+        diana.classList.add("es-diana");
+        var caja2 = lecCuerpo.getBoundingClientRect();
+        lecCuerpo.scrollTop += diana.getBoundingClientRect().top - caja2.top - 24;
+        /* y se dice en la cabecera adónde se ha llegado dentro del apartado */
+        var suyo = /^H[1-6]$/.test(diana.tagName)
+          ? diana : diana.querySelector("h1,h2,h3,h4,h5,h6");
+        var dice = suyo && (suyo.innerText || suyo.textContent || "").trim();
+        if(dice) lecQ.textContent += " · " + dice.replace(/\s+/g, " ").slice(0, 70);
+      }
+    }
+    try { history.replaceState(null, "", "#" + (ancla || clave)); } catch(e){}
   }
 
   function mueveLector(paso){
@@ -3234,7 +3552,7 @@ JS = """
     var el = D.getElementById(id);
     if(!el) return false;
     var dueno = el.closest(".hoja");
-    if(dueno) return abreLector(dueno.dataset.hoja, ruta, paso);
+    if(dueno) return abreLector(dueno.dataset.hoja, ruta, paso, id);
     var sec = el.closest(".sec");
     if(sec){
       cierraLector(); veSec(sec.dataset.sec, false);
@@ -3250,8 +3568,14 @@ JS = """
         if(g) cuentaGrupo(g);
         caja = caja.parentElement && caja.parentElement.closest(".desp");
       }
-      var ve = function(){ el.scrollIntoView({block:"start", behavior:"smooth"}); };
-      if(movio) setTimeout(ve, 380); else ve();
+      /* Se va dos veces: una ya, y otra cuando el desplegable ha terminado de
+         abrirse o la ficha de puesto ha terminado de cambiar. Con una sola, el
+         sitio al que se llega depende de lo que tardara la animación. */
+      var ve = function(suave){
+        el.scrollIntoView({block:"start", behavior:suave ? "smooth" : "auto"});
+      };
+      ve(!movio);
+      if(movio) setTimeout(function(){ ve(true); }, 420);
       return true;
     }
     return false;

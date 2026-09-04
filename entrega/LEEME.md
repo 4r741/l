@@ -42,6 +42,17 @@ Además, en `centro.html` ningún enlace es ya un salto a ciegas: el que cambia 
 sección lo lleva escrito al lado, y todos dicen, al pasar el ratón, el nombre
 del apartado al que llegan.
 
+Y se ha arreglado el defecto que hacía que un enlace correcto pareciera
+equivocado: **un apartado puede tener catorce fases dentro**, y pulsar «Fase 14»
+abría el apartado por el principio, en la fase 1. Ahora el lector va al punto
+exacto que pedía el enlace, lo marca un momento para que se vea, y la cabecera
+lo dice: «Manual Maestro · Las catorce fases del recorrido · **Mantenimiento y
+seguimiento a largo plazo**».
+
+La comprobación final no es de código: es de uso. Se abre la página, se pulsan
+**los 548 enlaces de las once secciones, uno a uno**, y se mira dónde se
+aterriza. Ninguno cae fuera de sitio.
+
 ## Por dónde se sigue
 
 Al final de cada sección hay dos puertas: adónde lleva lo que se acaba de leer y
@@ -50,13 +61,42 @@ parecido: están escritas una a una. De Marketing se sigue a Los números —con
 se mide si una acción funciona— y a Otros —el contrato del programa GTC—; de
 Primera Visita, a Protocolos y a las fases 13 y 14.
 
-## Las diapositivas, con su guion
+## Las diapositivas, explicadas
 
 Cada una de las cuarenta y tres se abre con la diapositiva tal cual se proyecta
-y, debajo, **el guion del ponente**: en qué minuto entra, qué hay que decir al
-pasarla y qué se contesta a la pregunta difícil que viene detrás. Cada parte
-tiene su «abrir las N» para verlas todas de golpe, y un botón deja a la vista
-solo la ruta corta.
+y, debajo, todo lo que hace falta para pasarla:
+
+- **En qué minuto entra y cuánto dura**, medido contra la diapositiva siguiente
+  de la sesión. **Dónde va**: la apertura o la parte I a VI, y cuál es dentro de
+  su parte. Si es de la ruta corta, lo dice.
+- **Qué hay que decir al pasarla, y qué contestar**: el guion del ponente, que
+  hasta ahora no salía de las notas del documento, con la pregunta difícil que
+  viene detrás y su respuesta.
+- **De dónde sale**: el apartado exacto del Plan de Dirección del que se extrae,
+  con su nombre y su enlace. La diapositiva es el extracto; ahí está el
+  razonamiento entero, con los supuestos declarados. Treinta y cuatro de las
+  treinta y siete lo llevan; las otras tres son la apertura y el cierre, que no
+  extraen de ningún apartado.
+- **La naturaleza de sus cifras**: si la diapositiva marca *Modelo*, *Hecho* o
+  *Pendiente*, se explica qué significa esa marca y dónde están los supuestos.
+
+Y cada una de las siete partes abre con **cómo se conduce** —cuántas
+diapositivas, cuántos minutos, en qué orden va y por qué ese orden— y **dónde se
+tuerce**: lo que suele pasar en esa parte de la sesión y cómo se responde.
+
+## Las obligaciones de cada puesto
+
+El Manual termina con una tabla que no dice qué hace cada puesto, sino **qué se
+rompe aguas abajo cuando no lo hace**. Es la definición operativa de una
+obligación: no «hay que escanear», sino «si no se escanea el mismo día, lo
+firmado a efectos prácticos no existe».
+
+Esa tabla vivía en el Manual y había que ir a buscarla. Ahora cada puesto lleva
+las suyas delante, en su propia ficha, en dos columnas: **si no se hace** y **lo
+que se rompe**. Recepción tiene cuatro, RAC tres, y Dirección, Doctor y Auxiliar
+dos cada uno. El Higienista no tiene fila en esa matriz, y la ficha lo dice y
+explica por qué: su trabajo empieza donde termina el circuito de la primera
+visita.
 
 ## La imagen
 

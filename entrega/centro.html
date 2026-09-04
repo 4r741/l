@@ -1563,6 +1563,14 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .lector__cuerpo{flex:1;overflow-y:auto;overscroll-behavior:contain}
 .lector__in{max-width:var(--texto);margin:0 auto;padding:calc(var(--aire) * .6) 2rem
   calc(var(--aire) * .9)}
+/* el punto exacto al que llevaba el enlace, marcado un momento */
+.es-diana{animation:diana 2.4s var(--e) 1}
+@keyframes diana{
+  0%{background:var(--azul-p);box-shadow:-1.2rem 0 0 var(--azul-p),1.2rem 0 0 var(--azul-p)}
+  70%{background:var(--azul-p);box-shadow:-1.2rem 0 0 var(--azul-p),1.2rem 0 0 var(--azul-p)}
+  100%{background:transparent;box-shadow:none}}
+@media(prefers-reduced-motion:reduce){.es-diana{animation:none;outline:2px solid var(--azul);
+  outline-offset:.5rem}}
 /* El rótulo del apartado ya está en la cabecera del lector, con su documento
    y su parte: repetirlo dentro es decir dos veces lo mismo. */
 .lector__in .hoja__k{display:none}
@@ -1968,6 +1976,48 @@ body{overflow-x:clip}
   transition:transform .3s var(--e),color .3s var(--e)}
 .sigue__p:hover .sigue__f{transform:translateX(4px);color:var(--azul)}
 
+/* ====================================================================
+   LAS OBLIGACIONES DE UN PUESTO
+   Un manual dice lo que hay que hacer. Esto dice lo contrario: qué se
+   rompe, y en qué otro puesto, cuando no se hace.
+   ==================================================================== */
+.obliga{margin-top:3.4rem}
+.obliga__q{margin:0 0 2rem;max-width:64ch;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
+.obliga__l{list-style:none;margin:0;padding:0;border-top:1px solid var(--negro)}
+.obliga__f{display:grid;grid-template-columns:2.4rem minmax(0,1fr) minmax(0,1.15fr);
+  gap:.4rem 2.4rem;padding:1.4rem .2rem;border-bottom:1px solid var(--linea-2);
+  align-items:start}
+.obliga__n{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);padding-top:.35rem}
+.obliga__si i,.obliga__rompe i{display:block;margin-bottom:.5rem;color:var(--muted)}
+.obliga__si{font-size:.95rem;line-height:1.7;color:var(--negro)}
+.obliga__rompe{font-size:.95rem;line-height:1.7;color:var(--ink-2);
+  border-left:2px solid var(--azul);padding-left:1.4rem}
+.obliga__pie{margin:1.6rem 0 0;font-size:.86rem}
+.obliga--sin .obliga__q{max-width:70ch;border-left:2px solid var(--linea);padding-left:1.4rem}
+
+/* ====================================================================
+   LA EXPLICACIÓN DE UNA DIAPOSITIVA
+   Qué dura, qué hay que decir, qué contestar, de dónde sale y de qué
+   naturaleza son sus cifras. Todo junto, debajo de la diapositiva.
+   ==================================================================== */
+.conduce{display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));
+  gap:1.6rem 3.4rem;margin:2rem 0 0;padding:1.8rem 0 0;border-top:1px solid var(--linea)}
+.conduce p:last-child{margin:.2rem 0 0;font-size:.94rem;line-height:1.85;color:var(--ink-2);
+  max-width:52ch}
+.explica{border-top:1px solid var(--linea);margin-top:2rem;padding-top:1.8rem}
+.explica__d{display:flex;flex-wrap:wrap;gap:1.4rem 3rem;margin-bottom:2.2rem}
+.explica__d i{display:block;font-style:normal;color:var(--muted);margin-bottom:.45rem}
+.explica__d b{font-size:.95rem;font-weight:400;color:var(--negro)}
+.explica__b{margin-top:2rem;max-width:66ch}
+.explica__b .rotulillo{margin-bottom:.9rem}
+.explica__b p{margin:.5rem 0 0;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
+.explica__b b{font-weight:400;color:var(--negro)}
+.explica__b > div{margin-top:1.4rem;border-left:2px solid var(--linea);padding-left:1.4rem}
+.explica__b > div:first-of-type{border-color:var(--azul)}
+.explica__b .nota__q{color:var(--negro)}
+.explica__b > div > b{display:block;font-family:var(--f-mono);font-size:.55rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+
 @media(max-width:900px){
   /* En el teléfono la barra se parte en dos o tres filas y su alto deja de ser
      un número: por eso aquí las bandas no se meten debajo de ella ni calculan
@@ -2011,6 +2061,8 @@ body{overflow-x:clip}
   .desp__n{min-width:2.6rem}
   .fasep{flex-wrap:wrap}
   .fasep__p{width:100%;padding-left:1.7rem}
+  .obliga__f{grid-template-columns:1.8rem minmax(0,1fr);gap:1rem}
+  .obliga__rompe{grid-column:2;padding-left:1rem}
   #sitio .dia .slide{padding:1.4rem 1.2rem}
   .lector__cab{padding:.8rem 1.1rem;height:auto;flex-wrap:wrap}
   .lector__in,.lector__pie{padding-left:1.1rem;padding-right:1.1rem}
@@ -6396,6 +6448,10 @@ REVISIÓN PREVISTA:</div>
   <p class="parte__k">La apertura · del minuto 0:00 al 0:45 · 2 diapositivas · 1 de la ruta corta</p>
   <h3>Con qué se abre la sesión</h3>
   <p class="parte__q">Las dos diapositivas que fijan de qué se va a hablar y con qué regla: un plan que se expone a ser refutado, no un informe de lo que ya pasó.</p>
+  <div class="conduce">
+  <div><p class="rotulillo">Cómo se conduce</p><p>Dos diapositivas y noventa segundos. No hay que explicar nada todavía: hay que fijar la regla con la que se va a discutir el resto de la hora. La primera se sostiene sola —se lee y se calla—; la segunda dice que esto es un plan y no un informe, y que cada cifra lleva marcada su naturaleza. Si esa distinción no queda clara aquí, la Parte III se convierte en una discusión sobre si los números son reales.</p></div>
+  <div><p class="rotulillo">Dónde se tuerce</p><p>Que alguien pregunte, en la segunda, si las cifras son inventadas. Se contesta con la marca: rango del sector, modelo o pendiente. Nunca «es un dato nuestro».</p></div>
+</div>
   <div class="grupod" data-parte>
     <div class="grupod__cab grupod__cab--fina">
       <p class="rotulillo">Las 2, con el guion del ponente</p>
@@ -6412,8 +6468,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v8.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Esto es un eslogan de marketing?</p><p>Es el criterio de aceptación clínico. Está escrito como punto verificable en doce fases del protocolo; el marketing vino después.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Esto es un eslogan de marketing?</p><p>Es el criterio de aceptación clínico. Está escrito como punto verificable en doce fases del protocolo; el marketing vino después.</p></div></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-0-d1" data-esencial="0">
@@ -6431,8 +6487,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Un informe cuenta lo que ha pasado. Un plan afirma, apuesta y se expone a ser refutada. Cada cifra de esta presentación lleva marcada su naturaleza: <b>hecho</b>, <b>modelo</b> o <b>pendiente</b>.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 0:45</b><p>Marcar la diferencia entre informe y plan. Insistir en que cada cifra lleva su naturaleza marcada y que no hay ni un dato propio disfrazado.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Entonces las cifras no son reales?</p><p>Los rangos son del sector y están marcados como modelo. Los datos propios llegan cuando exista la línea base: es la primera tarea de los cien días y está en el apartado 7.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:45</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>2 de 2</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:45</b><p>Marcar la diferencia entre informe y plan. Insistir en que cada cifra lleva su naturaleza marcada y que no hay ni un dato propio disfrazado.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Entonces las cifras no son reales?</p><p>Los rangos son del sector y están marcados como modelo. Los datos propios llegan cuando exista la línea base: es la primera tarea de los cien días y está en el apartado 7.</p></div></div></div></div>
   </div>
 </section></div>
   </div>
@@ -6441,6 +6497,10 @@ REVISIÓN PREVISTA:</div>
   <p class="parte__k">Parte I · La posición · del minuto 2:15 al 7:30 · 5 diapositivas · 1 de la ruta corta</p>
   <h3>Dónde estamos parados y por qué ahí</h3>
   <p class="parte__q">La apuesta del proyecto, los segmentos desatendidos, el mapa competitivo de Vigo y el foso: qué tendría que hacer un competidor para quitarnos el sitio y cuánto tardaría.</p>
+  <div class="conduce">
+  <div><p class="rotulillo">Cómo se conduce</p><p>Cinco diapositivas, cinco minutos y quince segundos. Es la parte que responde a «por qué aquí y por qué nosotros». Va de fuera hacia dentro: primero la apuesta, luego los segmentos que nadie atiende, después el mapa de la ciudad y al final el foso. El orden importa: el foso solo se entiende cuando ya se ha visto que el hueco existe.</p></div>
+  <div><p class="rotulillo">Dónde se tuerce</p><p>Que se discuta el mapa competitivo nombre por nombre. No es una lista de rivales: son cuatro maneras de vender implantes, y la nuestra es la cuarta.</p></div>
+</div>
   <div class="grupod" data-parte>
     <div class="grupod__cab grupod__cab--fina">
       <p class="rotulillo">Las 5, con el guion del ponente</p>
@@ -6458,8 +6518,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">La primera mitad es el resultado: ningún tratamiento se deja a medias. La segunda es la relación, y tiene instrumento propio: el programa de cuidado anual. La ventaja competitiva no es el equipamiento —lo reivindican todos— sino la ejecución sistemática.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 2:15</b><p>La apuesta en una frase, y la segunda mitad —«le cuidamos para siempre»— como el compromiso que tiene instrumento contractual, no como una promesa amable.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No dicen todos lo mismo?</p><p>Todos dicen la primera mitad. Pida a un competidor el documento donde figure por escrito quién responde a los cinco años. Ahí se acaba el parecido.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>2:15</b></div><div><i class="letra">Dura</i><b>1 min</b></div><div><i class="letra">Dónde va</i><b>Parte I de VI</b></div><div><i class="letra">En esta parte</i><b>1 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 2:15</b><p>La apuesta en una frase, y la segunda mitad —«le cuidamos para siempre»— como el compromiso que tiene instrumento contractual, no como una promesa amable.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No dicen todos lo mismo?</p><p>Todos dicen la primera mitad. Pida a un competidor el documento donde figure por escrito quién responde a los cinco años. Ahí se acaba el parecido.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>02</b> del Plan de Dirección · <a href="#a-tesis" class="salta" title="Va a: Por qué este centro y no otro · Dirección">Por qué este centro y no otro<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-1-d1" data-esencial="0">
@@ -6480,8 +6540,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Ninguno compra precio: los tres compran solución. Es el terreno donde la competencia en tarifa no llega.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 3:15</b><p>Tres segmentos, y el matiz que importa: ninguno compra precio. Es el terreno donde la guerra de tarifas no llega.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Hay demanda suficiente en Vigo para tres segmentos?</p><p>Es exactamente lo que no sabemos y lo reconocemos: el estudio de mercado está en la hoja de ruta del primer trimestre. Hoy es una hipótesis declarada, no un dato.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>3:15</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte I de VI</b></div><div><i class="letra">En esta parte</i><b>2 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 3:15</b><p>Tres segmentos, y el matiz que importa: ninguno compra precio. Es el terreno donde la guerra de tarifas no llega.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Hay demanda suficiente en Vigo para tres segmentos?</p><p>Es exactamente lo que no sabemos y lo reconocemos: el estudio de mercado está en la hoja de ruta del primer trimestre. Hoy es una hipótesis declarada, no un dato.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>02</b> del Plan de Dirección · <a href="#a-tesis" class="salta" title="Va a: Por qué este centro y no otro · Dirección">Por qué este centro y no otro<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-1-d2" data-esencial="0">
@@ -6503,8 +6563,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">El mercado no se segmenta por precio, sino por <b>quién asume el riesgo del resultado</b>. A, B y C compiten por vender el acto; nosotros vendemos que alguien siga respondiendo cuando el acto ya se cobró. <span class="sem sem--ambar">Modelo</span></p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 4:30</b><p>Insistir en el eje: el mercado no se ordena por precio, sino por quién asume el riesgo del resultado. Recorrer A, B y C rápido, y detenerse en D.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué está libre la posición D si es tan buena?</p><p>Porque exige casuística alta, sistema documentado y compromiso con coste asumido por adelantado, las tres a la vez. Ninguna se compra por separado y las tres juntas tardan años.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>4:30</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte I de VI</b></div><div><i class="letra">En esta parte</i><b>3 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 4:30</b><p>Insistir en el eje: el mercado no se ordena por precio, sino por quién asume el riesgo del resultado. Recorrer A, B y C rápido, y detenerse en D.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué está libre la posición D si es tan buena?</p><p>Porque exige casuística alta, sistema documentado y compromiso con coste asumido por adelantado, las tres a la vez. Ninguna se compra por separado y las tres juntas tardan años.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>03</b> del Plan de Dirección · <a href="#a-mapa" class="salta" title="Va a: Mapa competitivo de Vigo y el hueco libre · Dirección">Mapa competitivo de Vigo y el hueco libre<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-1-d3" data-esencial="1">
@@ -6529,8 +6589,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Los tres primeros cuestan dinero. Los cuatro últimos dan ventaja. Estamos invirtiendo, deliberadamente, en la mitad de abajo. <span class="sem sem--ambar">Modelo</span></p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 6:00 · ruta corta</b><p>La diapositiva del foso. Señalar físicamente la línea que separa las tres primeras filas de las cuatro últimas.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es más rápido y seguro invertir en tecnología?</p><p>Es más rápido y por eso mismo no defiende: cualquiera con financiación nos iguala en tres meses. Lo que compramos en las cuatro filas de abajo es tiempo que el competidor no puede acortar con dinero.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>6:00</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte I de VI</b></div><div><i class="letra">En esta parte</i><b>4 de 5</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 6:00 · ruta corta</b><p>La diapositiva del foso. Señalar físicamente la línea que separa las tres primeras filas de las cuatro últimas.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es más rápido y seguro invertir en tecnología?</p><p>Es más rápido y por eso mismo no defiende: cualquiera con financiación nos iguala en tres meses. Lo que compramos en las cuatro filas de abajo es tiempo que el competidor no puede acortar con dinero.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>04</b> del Plan de Dirección · <a href="#a-foso" class="salta" title="Va a: El foso: lo que un competidor no puede comprar · Dirección">El foso: lo que un competidor no puede comprar<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-1-d4" data-esencial="0">
@@ -6543,8 +6603,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Por eso el gasto en formación, verificación y programa de seguimiento no es estructura ni coste indirecto: es la única partida del presupuesto que compra tiempo de ventaja frente a un competidor con más capital. Y es siempre la primera candidata al recorte.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 7:30</b><p>Leerla despacio. Es la frase que debe salir de la sala en la cabeza de todos.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto dinero supone eso al año?</p><p>Es la decisión D12: se pide fijar el suelo como porcentaje y concretar la cifra cuando exista línea base, en la revisión del primer trimestre.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>7:30</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>Parte I de VI</b></div><div><i class="letra">En esta parte</i><b>5 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 7:30</b><p>Leerla despacio. Es la frase que debe salir de la sala en la cabeza de todos.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto dinero supone eso al año?</p><p>Es la decisión D12: se pide fijar el suelo como porcentaje y concretar la cifra cuando exista línea base, en la revisión del primer trimestre.</p></div></div></div></div>
   </div>
 </section></div>
   </div>
@@ -6553,6 +6613,10 @@ REVISIÓN PREVISTA:</div>
   <p class="parte__k">Parte II · El sistema · del minuto 8:30 al 10:45 · 3 diapositivas</p>
   <h3>El activo se llama sistema operativo, no clínica</h3>
   <p class="parte__q">Una clínica es un local con pacientes. Un sistema operativo es un conjunto de decisiones ya tomadas que hacen que el resultado no dependa de quién esté ese martes. Lo primero se vende al peso; lo segundo, por múltiplo.</p>
+  <div class="conduce">
+  <div><p class="rotulillo">Cómo se conduce</p><p>Tres diapositivas y dos minutos y medio. Es la parte que más se subestima y la que sostiene la valoración: lo que se ha construido no es una clínica, es un sistema operativo escrito. Aquí se enseña, no se cuenta: los tres documentos troncales están sobre la mesa y se pueden abrir.</p></div>
+  <div><p class="rotulillo">Dónde se tuerce</p><p>Que se lea como burocracia. La respuesta está en la diapositiva siguiente: lo que garantiza tenerlo por escrito es que el resultado no dependa de quién esté ese día.</p></div>
+</div>
   <div class="grupod" data-parte>
     <div class="grupod__cab grupod__cab--fina">
       <p class="rotulillo">Las 3, con el guion del ponente</p>
@@ -6575,8 +6639,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Normativa interna con criterios de salida, registros obligatorios e indicador por fase. Escrita para ejecutarse y para auditarse.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 8:30</b><p>Los cuatro números del sistema construido. No leerlos: señalarlos y decir que están disponibles para auditar hoy mismo.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Quién ha verificado que eso existe de verdad?</p><p>Está en los tres documentos que acompañan a este plan y los 322 puntos son comprobables en un recorrido físico de una mañana. La invitación está abierta.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>8:30</b></div><div><i class="letra">Dura</i><b>1 min</b></div><div><i class="letra">Dónde va</i><b>Parte II de VI</b></div><div><i class="letra">En esta parte</i><b>1 de 3</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 8:30</b><p>Los cuatro números del sistema construido. No leerlos: señalarlos y decir que están disponibles para auditar hoy mismo.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Quién ha verificado que eso existe de verdad?</p><p>Está en los tres documentos que acompañan a este plan y los 322 puntos son comprobables en un recorrido físico de una mañana. La invitación está abierta.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>05</b> del Plan de Dirección · <a href="#a-sistema" class="salta" title="Va a: El sistema operativo que se ha construido · Dirección">El sistema operativo que se ha construido<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-2-d1" data-esencial="0">
@@ -6594,8 +6658,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Que la calidad no dependa de quién esté de turno; que un profesional nuevo sea productivo en semanas; que una inspección encuentre trazabilidad y no explicaciones; y que la Dirección pueda delegar sin perder control. En términos de Junta: la diferencia entre un negocio dependiente de personas y un negocio con activos transferibles.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 9:30</b><p>Los tres troncales y, sobre todo, la frase final: la diferencia entre un negocio dependiente de personas y uno con activos transferibles.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es demasiada documentación para una clínica?</p><p>La cantidad no es el objetivo: la verificabilidad sí. Un estándar que no se puede comprobar en una lista es una intención.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>9:30</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte II de VI</b></div><div><i class="letra">En esta parte</i><b>2 de 3</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 9:30</b><p>Los tres troncales y, sobre todo, la frase final: la diferencia entre un negocio dependiente de personas y uno con activos transferibles.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es demasiada documentación para una clínica?</p><p>La cantidad no es el objetivo: la verificabilidad sí. Un estándar que no se puede comprobar en una lista es una intención.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>05</b> del Plan de Dirección · <a href="#a-sistema" class="salta" title="Va a: El sistema operativo que se ha construido · Dirección">El sistema operativo que se ha construido<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-2-d2" data-esencial="0">
@@ -6616,8 +6680,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">El H1 se juzga por retorno, el H2 por hitos de aprendizaje y el H3 por mantener abierta la opción a coste bajo. Confundir los criterios mata el horizonte largo sin que nadie decida matarlo. <b>Decisión D9.</b></p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 10:45</b><p>Los tres horizontes y el error que evita la regla: exigir retorno inmediato al horizonte largo lo mata sin que nadie decida matarlo. Pedir D9 aquí.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Un 10 % en cosas que no dan dinero?</p><p>Un 10 % en mantener abiertas opciones que, si el mercado cambia, no se pueden abrir después a ningún precio. Y con revisión anual del reparto real frente al aprobado.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>10:45</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte II de VI</b></div><div><i class="letra">En esta parte</i><b>3 de 3</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 10:45</b><p>Los tres horizontes y el error que evita la regla: exigir retorno inmediato al horizonte largo lo mata sin que nadie decida matarlo. Pedir D9 aquí.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Un 10 % en cosas que no dan dinero?</p><p>Un 10 % en mantener abiertas opciones que, si el mercado cambia, no se pueden abrir después a ningún precio. Y con revisión anual del reparto real frente al aprobado.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>06</b> del Plan de Dirección · <a href="#a-innovacion" class="salta" title="Va a: Innovación: tres horizontes, tres criterios · Dirección">Innovación: tres horizontes, tres criterios<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section></div>
   </div>
@@ -6626,6 +6690,10 @@ REVISIÓN PREVISTA:</div>
   <p class="parte__k">Parte III · La economía · del minuto 12:15 al 23:15 · 9 diapositivas · 2 de la ruta corta</p>
   <h3>De dónde sale el dinero y qué lo destruye</h3>
   <p class="parte__q">Cuánto vale cada primera visita según cómo la trabajemos, qué le pasa a la facturación si movemos las dos únicas palancas que la gobiernan, y por qué un paciente en seguimiento vale más del doble que un paciente atendido.</p>
+  <div class="conduce">
+  <div><p class="rotulillo">Cómo se conduce</p><p>Nueve diapositivas y doce minutos: es la parte más larga y donde se juega la credibilidad de todo lo demás. Empieza reconociendo lo que no se sabe —los cinco números que aún no se tienen— y solo después presenta escenarios. Ese orden no es retórico: presentar escenarios antes de declarar la ignorancia es lo que convierte un plan en un folleto.</p></div>
+  <div><p class="rotulillo">Dónde se tuerce</p><p>Que se pida una cifra propia. No la hay todavía, y decirlo es la posición fuerte: la línea base es la primera tarea de los cien días.</p></div>
+</div>
   <div class="grupod" data-parte>
     <div class="grupod__cab grupod__cab--fina">
       <p class="rotulillo">Las 9, con el guion del ponente</p>
@@ -6649,8 +6717,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Sin estas cinco cifras, cualquier objetivo comercial es una opinión. Esta memoria no contiene ni un solo dato real de explotación: donde hace falta un orden de magnitud, se usa un supuesto de trabajo declarado.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 12:15</b><p>Reconocer sin rodeos que no tenemos los cinco números. Es la diapositiva que da credibilidad a todas las demás.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cómo se puede dirigir sin esos datos?</p><p>No se puede, y por eso el mes 1 es línea base y no objetivo comercial. La hoja de captura acompaña a este documento y las cinco cifras tienen fecha: días 15, 21 y 30.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>12:15</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>1 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 12:15</b><p>Reconocer sin rodeos que no tenemos los cinco números. Es la diapositiva que da credibilidad a todas las demás.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cómo se puede dirigir sin esos datos?</p><p>No se puede, y por eso el mes 1 es línea base y no objetivo comercial. La hoja de captura acompaña a este documento y las cinco cifras tienen fecha: días 15, 21 y 30.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>07</b> del Plan de Dirección · <a href="#a-linea-base" class="salta" title="Va a: Los cinco números que aún no tenemos · Dirección">Los cinco números que aún no tenemos<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d1" data-esencial="0">
@@ -6709,8 +6777,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 13:45</b><p>Los tres escenarios. Señalar la distancia entre base y objetivo en el mes 36 y decir en voz alta: esto es lo que está en juego hoy.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué probabilidad tiene el escenario objetivo?</p><p>No le asignamos probabilidad porque sería inventarla. Le asignamos condiciones: son las palancas del apartado 14 y las decisiones de esta sesión. Sin ellas, el escenario base.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>13:45</b></div><div><i class="letra">Dura</i><b>1 min 45 s</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>2 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 13:45</b><p>Los tres escenarios. Señalar la distancia entre base y objetivo en el mes 36 y decir en voz alta: esto es lo que está en juego hoy.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué probabilidad tiene el escenario objetivo?</p><p>No le asignamos probabilidad porque sería inventarla. Le asignamos condiciones: son las palancas del apartado 14 y las decisiones de esta sesión. Sin ellas, el escenario base.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>08</b> del Plan de Dirección · <a href="#a-unidad" class="salta" title="Va a: Economía por paciente: qué gobierna el resultado · Dirección">Economía por paciente: qué gobierna el resultado<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d2" data-esencial="1">
@@ -6761,8 +6829,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 15:30 · ruta corta</b><p>La matriz. Es la diapositiva más importante de la sesión: las dos palancas se multiplican, no se suman. Si hay tiempo, abrir la comprobación en directo del documento.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si la conversión se queda en el 35 %?</p><p>Se ve en la matriz y podemos moverlo en directo: con 35 % y ticket de 1.800 € son 544 k€. Por eso el protocolo de primera visita es el documento económico central, no un documento de calidad.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>15:30</b></div><div><i class="letra">Dura</i><b>1 min 45 s</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>3 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 15:30 · ruta corta</b><p>La matriz. Es la diapositiva más importante de la sesión: las dos palancas se multiplican, no se suman. Si hay tiempo, abrir la comprobación en directo del documento.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si la conversión se queda en el 35 %?</p><p>Se ve en la matriz y podemos moverlo en directo: con 35 % y ticket de 1.800 € son 544 k€. Por eso el protocolo de primera visita es el documento económico central, no un documento de calidad.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>08</b> del Plan de Dirección · <a href="#a-unidad" class="salta" title="Va a: Economía por paciente: qué gobierna el resultado · Dirección">Economía por paciente: qué gobierna el resultado<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d3" data-esencial="0">
@@ -6821,8 +6889,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 17:15</b><p>El coste real del descuento. La cifra que hay que dejar caer: un 10 % de descuento se lleva el 25 % del beneficio del caso.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Nunca vamos a hacer descuentos?</p><p>Sí, los reglados. Lo que se pide en D1 es que estén tipificados, topados y autorizados por tramo, y que cada uno se registre con su coste en beneficio, no en facturación.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>17:15</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>4 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 17:15</b><p>El coste real del descuento. La cifra que hay que dejar caer: un 10 % de descuento se lleva el 25 % del beneficio del caso.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Nunca vamos a hacer descuentos?</p><p>Sí, los reglados. Lo que se pide en D1 es que estén tipificados, topados y autorizados por tramo, y que cada uno se registre con su coste en beneficio, no en facturación.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>13</b> del Plan de Dirección · <a href="#a-mando" class="salta" title="Va a: Cuadro de mando: con qué se dirige cada mes · Dirección">Cuadro de mando: con qué se dirige cada mes<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d4" data-esencial="0">
@@ -6861,8 +6929,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 18:30</b><p>Cada diez puntos de conversión equivalen a una primera visita diaria que no hay que captar ni pagar.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es más fácil captar más pacientes?</p><p>Es más caro. Captar más para convertir igual es pagar por desperdicio: por eso captación es la prioridad 4 y conversión la 3.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>18:30</b></div><div><i class="letra">Dura</i><b>1 min</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>5 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 18:30</b><p>Cada diez puntos de conversión equivalen a una primera visita diaria que no hay que captar ni pagar.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es más fácil captar más pacientes?</p><p>Es más caro. Captar más para convertir igual es pagar por desperdicio: por eso captación es la prioridad 4 y conversión la 3.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>07</b> del Plan de Dirección · <a href="#a-linea-base" class="salta" title="Va a: Los cinco números que aún no tenemos · Dirección">Los cinco números que aún no tenemos<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d5" data-esencial="0">
@@ -6904,8 +6972,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 19:30</b><p>El valor del paciente en relación frente al paciente en transacción.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿La cuota del programa compensa el coste de darlo?</p><p>La cuota es casi irrelevante. Lo que compensa es lo que arrastra: revisiones que detectan a tiempo, tratamientos sencillos en lugar de complejos y familiares que entran por la puerta.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>19:30</b></div><div><i class="letra">Dura</i><b>1 min</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>6 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 19:30</b><p>El valor del paciente en relación frente al paciente en transacción.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿La cuota del programa compensa el coste de darlo?</p><p>La cuota es casi irrelevante. Lo que compensa es lo que arrastra: revisiones que detectan a tiempo, tratamientos sencillos en lugar de complejos y familiares que entran por la puerta.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>13</b> del Plan de Dirección · <a href="#a-mando" class="salta" title="Va a: Cuadro de mando: con qué se dirige cada mes · Dirección">Cuadro de mando: con qué se dirige cada mes<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d6" data-esencial="1">
@@ -6964,8 +7032,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 20:30 · ruta corta</b><p>El área sombreada. Decir la frase tal cual: no se pierde por competencia, se pierde por no volver a llamar.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto es eso en total?</p><p>Con 75 tratamientos terminados por trimestre son del orden de 66 k€ de valor a cinco años por cada trimestre de retraso en D5. Está cuantificado en el coste de no decidir.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>20:30</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>7 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 20:30 · ruta corta</b><p>El área sombreada. Decir la frase tal cual: no se pierde por competencia, se pierde por no volver a llamar.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto es eso en total?</p><p>Con 75 tratamientos terminados por trimestre son del orden de 66 k€ de valor a cinco años por cada trimestre de retraso en D5. Está cuantificado en el coste de no decidir.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>09</b> del Plan de Dirección · <a href="#a-activo" class="salta" title="Va a: Cuánto vale el centro, y por qué · Dirección">Cuánto vale el centro, y por qué<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d7" data-esencial="0">
@@ -6985,8 +7053,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Cada decisión de hoy puede leerse dos veces: por su efecto en la cuenta de este año y por el nivel de esta escalera al que lleva al centro. La segunda lectura rara vez aparece en el consejo de una clínica.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 21:45</b><p>La escalera de valor y, acto seguido, la aritmética del múltiplo. Es el momento de decir que una inversión que no mueve el beneficio de este año puede ser la más rentable del presupuesto.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿De dónde salen esos múltiplos?</p><p>De rangos habituales del sector en transacciones de clínicas dentales, marcados como modelo. No es una tasación ni una oferta: es el orden de magnitud de lo que está en juego.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>21:45</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>8 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 21:45</b><p>La escalera de valor y, acto seguido, la aritmética del múltiplo. Es el momento de decir que una inversión que no mueve el beneficio de este año puede ser la más rentable del presupuesto.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿De dónde salen esos múltiplos?</p><p>De rangos habituales del sector en transacciones de clínicas dentales, marcados como modelo. No es una tasación ni una oferta: es el orden de magnitud de lo que está en juego.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>09</b> del Plan de Dirección · <a href="#a-activo" class="salta" title="Va a: Cuánto vale el centro, y por qué · Dirección">Cuánto vale el centro, y por qué<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-3-d8" data-esencial="0">
@@ -7006,8 +7074,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Los centros que fracasan al escalar casi nunca fallan por falta de demanda en la segunda plaza: replicaron una operación que nunca había funcionado sin su fundador delante. <b>Decisión D11.</b></p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 23:15</b><p>Los cinco pasos del escalado. El orden es lo único innegociable. Pedir D11 aquí, y subrayar que hoy es barata porque no hay ninguna oportunidad concreta sobre la mesa.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si aparece un local irrepetible el mes que viene?</p><p>Esa frase —«no se va a repetir»— es literalmente la señal temprana de la causa 5 del pre-mortem. Por eso la condición se fija hoy y no cuando el local esté delante.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>23:15</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte III de VI</b></div><div><i class="letra">En esta parte</i><b>9 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 23:15</b><p>Los cinco pasos del escalado. El orden es lo único innegociable. Pedir D11 aquí, y subrayar que hoy es barata porque no hay ninguna oportunidad concreta sobre la mesa.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si aparece un local irrepetible el mes que viene?</p><p>Esa frase —«no se va a repetir»— es literalmente la señal temprana de la causa 5 del pre-mortem. Por eso la condición se fija hoy y no cuando el local esté delante.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>10</b> del Plan de Dirección · <a href="#a-escalado" class="salta" title="Va a: Escalado: de un centro a una red · Dirección">Escalado: de un centro a una red<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section></div>
   </div>
@@ -7016,6 +7084,10 @@ REVISIÓN PREVISTA:</div>
   <p class="parte__k">Parte IV · El riesgo · del minuto 24:45 al 29:15 · 4 diapositivas · 1 de la ruta corta</p>
   <h3>Cómo fracasa esto, contado antes de que ocurra</h3>
   <p class="parte__q">Un registro de riesgos enumera lo que puede salir mal. Un pre-mortem se sitúa tres años en el futuro, da por hecho el fracaso y pide explicar la causa. Cambia la pregunta, y con ella el nivel de honestidad de las respuestas.</p>
+  <div class="conduce">
+  <div><p class="rotulillo">Cómo se conduce</p><p>Cuatro diapositivas y cuatro minutos y medio. Se cuenta cómo fracasa esto antes de que ocurra, con dueño y con fecha. El pre-mortem no es un ejercicio de humildad: es el que produce los cinco disparadores que obligan a convocar a la Junta sin esperar a la reunión ordinaria.</p></div>
+  <div><p class="rotulillo">Dónde se tuerce</p><p>Que se quiera pasar rápido. Es justo la parte que un consejo recuerda seis meses después, cuando uno de los cinco disparadores se enciende.</p></div>
+</div>
   <div class="grupod" data-parte>
     <div class="grupod__cab grupod__cab--fina">
       <p class="rotulillo">Las 4, con el guion del ponente</p>
@@ -7042,8 +7114,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede"><b>La única regla que detiene la clínica:</b> sin verificación positiva de la cobertura aseguradora no se realiza actividad clínica. Es el riesgo cuyo coste no tiene techo.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 24:45</b><p>Los cinco riesgos con dueño, y después el registro puntuado: probabilidad por impacto, residual y fecha de revisión.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué la cobertura aseguradora paraliza la clínica y los demás riesgos no?</p><p>Porque es el único cuyo coste no tiene techo. Los demás se gestionan; ese se evita.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>24:45</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte IV de VI</b></div><div><i class="letra">En esta parte</i><b>1 de 4</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 24:45</b><p>Los cinco riesgos con dueño, y después el registro puntuado: probabilidad por impacto, residual y fecha de revisión.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué la cobertura aseguradora paraliza la clínica y los demás riesgos no?</p><p>Porque es el único cuyo coste no tiene techo. Los demás se gestionan; ese se evita.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>11</b> del Plan de Dirección · <a href="#a-riesgos" class="salta" title="Va a: Registro de riesgos, con dueño y fecha · Dirección">Registro de riesgos, con dueño y fecha<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-4-d1" data-esencial="1">
@@ -7067,8 +7139,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Ninguna es un accidente externo: las seis son decisiones que tomamos nosotros o dejamos de tomar.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 26:15 · ruta corta</b><p>El pre-mortem. Cambiar el tono: estamos en 2029 y esto ha fracasado. Recorrer las seis causas por su señal temprana, no por su descripción.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es un poco derrotista traer esto a una junta?</p><p>Es lo contrario: las seis son decisiones nuestras, no accidentes externos. Un riesgo con señal temprana escrita es un riesgo que se puede parar barato.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>26:15</b></div><div><i class="letra">Dura</i><b>1 min 45 s</b></div><div><i class="letra">Dónde va</i><b>Parte IV de VI</b></div><div><i class="letra">En esta parte</i><b>2 de 4</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 26:15 · ruta corta</b><p>El pre-mortem. Cambiar el tono: estamos en 2029 y esto ha fracasado. Recorrer las seis causas por su señal temprana, no por su descripción.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es un poco derrotista traer esto a una junta?</p><p>Es lo contrario: las seis son decisiones nuestras, no accidentes externos. Un riesgo con señal temprana escrita es un riesgo que se puede parar barato.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>12</b> del Plan de Dirección · <a href="#a-premortem" class="salta" title="Va a: Pre-mortem: es 2029 y ha fracasado · Dirección">Pre-mortem: es 2029 y ha fracasado<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-4-d2" data-esencial="0">
@@ -7088,8 +7160,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Los seis modos de fallo son lentos y cómodos: nunca parecen suficientemente graves el día en que aún son baratos de corregir. Un disparador automático protege a la Junta de la propia Dirección en ese momento exacto.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 28:00</b><p>Los cinco disparadores. Insistir en «sin valorar la gravedad»: ese es el punto entero.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Eso no ata las manos a la Dirección?</p><p>Protege a la Junta de la Dirección justo cuando la Dirección estaría tentada de minimizar el problema. Y es la decisión D13.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>28:00</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte IV de VI</b></div><div><i class="letra">En esta parte</i><b>3 de 4</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 28:00</b><p>Los cinco disparadores. Insistir en «sin valorar la gravedad»: ese es el punto entero.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Eso no ata las manos a la Dirección?</p><p>Protege a la Junta de la Dirección justo cuando la Dirección estaría tentada de minimizar el problema. Y es la decisión D13.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>12</b> del Plan de Dirección · <a href="#a-premortem" class="salta" title="Va a: Pre-mortem: es 2029 y ha fracasado · Dirección">Pre-mortem: es 2029 y ha fracasado<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-4-d3" data-esencial="0">
@@ -7108,8 +7180,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Diez casillas vacías no son una debilidad del documento: son el diagnóstico honesto de dónde estamos. La Junta debe exigir que en la revisión trimestral las diez tengan valor y tendencia.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 29:15</b><p>El cuadro de mando: ocho casillas vacías. Convertirlo en fortaleza —es el diagnóstico honesto— y presentar acto seguido el diccionario de indicadores.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuándo tendremos datos?</p><p>En la revisión trimestral, las diez casillas con valor y tendencia. Y la definición operativa ya está acordada, que era el bloqueo real.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>29:15</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte IV de VI</b></div><div><i class="letra">En esta parte</i><b>4 de 4</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 29:15</b><p>El cuadro de mando: ocho casillas vacías. Convertirlo en fortaleza —es el diagnóstico honesto— y presentar acto seguido el diccionario de indicadores.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuándo tendremos datos?</p><p>En la revisión trimestral, las diez casillas con valor y tendencia. Y la definición operativa ya está acordada, que era el bloqueo real.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>13</b> del Plan de Dirección · <a href="#a-mando" class="salta" title="Va a: Cuadro de mando: con qué se dirige cada mes · Dirección">Cuadro de mando: con qué se dirige cada mes<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section></div>
   </div>
@@ -7118,6 +7190,10 @@ REVISIÓN PREVISTA:</div>
   <p class="parte__k">Parte V · La decisión · del minuto 31:00 al 38:00 · 5 diapositivas</p>
   <h3>Qué se pide hoy, y qué cuesta no pedirlo</h3>
   <p class="parte__q">Las palancas de valor, el orden en que se asigna el capital, la hoja de ruta a treinta y seis meses y las quince decisiones que solo puede tomar este órgano.</p>
+  <div class="conduce">
+  <div><p class="rotulillo">Cómo se conduce</p><p>Cinco diapositivas y once minutos. Aquí se pide. Palancas, orden de prelación del capital, hoja de ruta con sus tres puertas y, al final, las quince decisiones repartidas en dos diapositivas: las ocho de la operación y las siete de la estrategia. Cada una tiene su hoja de acta preparada en el anexo.</p></div>
+  <div><p class="rotulillo">Dónde se tuerce</p><p>Que se aprueben en bloque. No se aprueban en bloque: cada decisión tiene su hoja, y la hoja pide dueño y fecha.</p></div>
+</div>
   <div class="grupod" data-parte>
     <div class="grupod__cab grupod__cab--fina">
       <p class="rotulillo">Las 5, con el guion del ponente</p>
@@ -7144,8 +7220,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede"><b>Sostener → recuperar → fidelizar → captar.</b> Invertir en captación con la cartera propia desatendida es la asignación de recursos menos eficiente posible.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 31:00</b><p>Las cinco palancas en su orden: sostener, recuperar, fidelizar, captar. La menos eficiente es invertir en captación con la cartera propia desatendida.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto tarda la palanca 1 en dar caja?</p><p>Semanas, y no cuesta nada más que gestión: es producto ya cobrado que hay que convertir en producción.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>31:00</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte V de VI</b></div><div><i class="letra">En esta parte</i><b>1 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 31:00</b><p>Las cinco palancas en su orden: sostener, recuperar, fidelizar, captar. La menos eficiente es invertir en captación con la cartera propia desatendida.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuánto tarda la palanca 1 en dar caja?</p><p>Semanas, y no cuesta nada más que gestión: es producto ya cobrado que hay que convertir en producción.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>14</b> del Plan de Dirección · <a href="#a-palancas" class="salta" title="Va a: Palancas: por dónde se crece y en qué orden · Dirección">Palancas: por dónde se crece y en qué orden<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-5-d1" data-esencial="0">
@@ -7165,8 +7241,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Excepción legítima, una sola: cuando una prioridad inferior es condición técnica de una superior. Se documenta y se presenta en la Junta siguiente. <b>Decisión D10.</b></p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 32:15</b><p>El orden de prelación del capital y la única regla de excepción. Decir que la prioridad 2 es la primera que se recorta en cualquier centro con prisa, y que este orden existe para impedirlo. Pedir D10.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si un trimestre viene mal?</p><p>Es exactamente el escenario para el que se aprueba hoy. Sin el orden escrito, la partida que da ventaja competitiva es siempre la primera candidata al recorte.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>32:15</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte V de VI</b></div><div><i class="letra">En esta parte</i><b>2 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 32:15</b><p>El orden de prelación del capital y la única regla de excepción. Decir que la prioridad 2 es la primera que se recorta en cualquier centro con prisa, y que este orden existe para impedirlo. Pedir D10.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si un trimestre viene mal?</p><p>Es exactamente el escenario para el que se aprueba hoy. Sin el orden escrito, la partida que da ventaja competitiva es siempre la primera candidata al recorte.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>15</b> del Plan de Dirección · <a href="#a-capital" class="salta" title="Va a: Asignación de capital: en qué se gasta antes · Dirección">Asignación de capital: en qué se gasta antes<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-5-d2" data-esencial="0">
@@ -7184,8 +7260,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">El programa no avanza por calendario, sino por criterios de salida verificados en los días 30, 60 y 100. Ninguna fase se adelanta.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 33:45</b><p>Los tres horizontes y las tres puertas. Ninguna fase se adelanta por calendario: se pasa por criterio de salida verificado.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si vamos por delante de lo previsto?</p><p>Mejor, pero la puerta sigue siendo la puerta. Adelantar una fase sin criterio de salida es cómo se abre la segunda unidad demasiado pronto.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>33:45</b></div><div><i class="letra">Dura</i><b>1 min 15 s</b></div><div><i class="letra">Dónde va</i><b>Parte V de VI</b></div><div><i class="letra">En esta parte</i><b>3 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 33:45</b><p>Los tres horizontes y las tres puertas. Ninguna fase se adelanta por calendario: se pasa por criterio de salida verificado.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Y si vamos por delante de lo previsto?</p><p>Mejor, pero la puerta sigue siendo la puerta. Adelantar una fase sin criterio de salida es cómo se abre la segunda unidad demasiado pronto.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>16</b> del Plan de Dirección · <a href="#a-ruta" class="salta" title="Va a: Hoja de ruta y sus tres puertas de paso · Dirección">Hoja de ruta y sus tres puertas de paso<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-5-d3" data-esencial="0">
@@ -7210,8 +7286,8 @@ REVISIÓN PREVISTA:</div>
   </table>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 35:00</b><p>Las ocho de la operación. Leer solo las cuatro inmediatas y decir, con la cifra delante, lo que cuesta aplazarlas un trimestre.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Se pueden aprobar todas hoy?</p><p>Las inmediatas sí: no requieren información que no esté en el documento. D5 queda condicionada al dictamen jurídico, que es un plazo, no una duda.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>35:00</b></div><div><i class="letra">Dura</i><b>3 min</b></div><div><i class="letra">Dónde va</i><b>Parte V de VI</b></div><div><i class="letra">En esta parte</i><b>4 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 35:00</b><p>Las ocho de la operación. Leer solo las cuatro inmediatas y decir, con la cifra delante, lo que cuesta aplazarlas un trimestre.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Se pueden aprobar todas hoy?</p><p>Las inmediatas sí: no requieren información que no esté en el documento. D5 queda condicionada al dictamen jurídico, que es un plazo, no una duda.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>17</b> del Plan de Dirección · <a href="#a-decisiones" class="salta" title="Va a: Las quince decisiones que se someten a la Junta · Dirección">Las quince decisiones que se someten a la Junta<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-5-d4" data-esencial="0">
@@ -7236,8 +7312,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Las ocho anteriores resuelven la operación. Estas siete fijan las reglas con las que la Junta decidirá lo que todavía no está sobre la mesa. Es la diferencia entre gobernar y reaccionar.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 38:00</b><p>Las seis de la estrategia. Insistir en que fijan las reglas con las que se decidirá lo que aún no está sobre la mesa. Repartir el cuadernillo de acuerdos aquí.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué hay que decidir hoy reglas para problemas que no existen?</p><p>Porque cuando existan, decidirlas será caro y estará contaminado por el caso concreto. Una regla se aprueba barata solo antes de necesitarla.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>38:00</b></div><div><i class="letra">Dura</i><b>3 min 45 s</b></div><div><i class="letra">Dónde va</i><b>Parte V de VI</b></div><div><i class="letra">En esta parte</i><b>5 de 5</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 38:00</b><p>Las seis de la estrategia. Insistir en que fijan las reglas con las que se decidirá lo que aún no está sobre la mesa. Repartir el cuadernillo de acuerdos aquí.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué hay que decidir hoy reglas para problemas que no existen?</p><p>Porque cuando existan, decidirlas será caro y estará contaminado por el caso concreto. Una regla se aprueba barata solo antes de necesitarla.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>17</b> del Plan de Dirección · <a href="#a-decisiones" class="salta" title="Va a: Las quince decisiones que se someten a la Junta · Dirección">Las quince decisiones que se someten a la Junta<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section></div>
   </div>
@@ -7246,6 +7322,10 @@ REVISIÓN PREVISTA:</div>
   <p class="parte__k">Parte VI · La cifra · del minuto 42:00 al 55:00 · 9 diapositivas · 7 de la ruta corta</p>
   <h3>Cómo se llega a 1,2 M€</h3>
   <p class="parte__q">El objetivo, descompuesto hasta el último euro: de dónde sale cada bloque, si cabe en la agenda que tenemos y qué nueve campañas lo sostienen.</p>
+  <div class="conduce">
+  <div><p class="rotulillo">Cómo se conduce</p><p>Nueve diapositivas y trece minutos, y la parte que la mitad de la sala está esperando desde el principio. Se llega a 1,2 M€ por construcción, bloque a bloque, y antes de enseñar el puente se contesta la pregunta previa: si eso cabe en la agenda que hay. Termina en las condiciones que tienen que ser ciertas y en qué mide el éxito de este año.</p></div>
+  <div><p class="rotulillo">Dónde se tuerce</p><p>Que se lea 1,2 M€ como un objetivo de este ejercicio. Es un objetivo del año tres, y hay una diapositiva entera dedicada a decirlo.</p></div>
+</div>
   <div class="grupod" data-parte>
     <div class="grupod__cab grupod__cab--fina">
       <p class="rotulillo">Las 9, con el guion del ponente</p>
@@ -7311,8 +7391,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 42:00</b><p>El puente. Recorrerlo de izquierda a derecha sin detenerse en cada bloque, y parar en el colchón: se planifican 1.440 para comprometer 1.200.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué descontar un 17 % de entrada?</p><p>Porque de nueve campañas, dos no arrancan a tiempo y una rinde la mitad. Es la tasa normal. Planificar 1.200 para conseguir 1.200 obliga a que las nueve salgan perfectas, y entonces la primera que falle se lleva el objetivo.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>42:00</b></div><div><i class="letra">Dura</i><b>2 min</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>1 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 42:00</b><p>El puente. Recorrerlo de izquierda a derecha sin detenerse en cada bloque, y parar en el colchón: se planifican 1.440 para comprometer 1.200.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué descontar un 17 % de entrada?</p><p>Porque de nueve campañas, dos no arrancan a tiempo y una rinde la mitad. Es la tasa normal. Planificar 1.200 para conseguir 1.200 obliga a que las nueve salgan perfectas, y entonces la primera que falle se lleva el objetivo.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>20</b> del Plan de Dirección · <a href="#a-puente" class="salta" title="Va a: El puente: de 720 k€ a 1,2 M€, bloque a bloque · Dirección">El puente: de 720 k€ a 1,2 M€, bloque a bloque<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d1" data-esencial="1">
@@ -7331,8 +7411,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede"><b>La agenda no admite más volumen.</b> El objetivo no se alcanza captando más pacientes: se alcanza sacando un 10 % más de los que ya vienen y construyendo 300 k€ de ingreso que hoy no existe.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 44:00 · ruta corta</b><p>La pregunta previa, y es la importante: ¿cabe la cifra en la agenda? Señalar los 5,9 al día frente a los 4 que da la agenda.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">Entonces, ¿hay que hacer más marketing?</p><p>No. Hacer más marketing traería demanda que no podemos atender, y eso se paga dos veces: el coste de la campaña y el daño de la espera. Lo que hay que hacer es sacar un 10 % más de las mismas cuatro visitas y construir ingreso fuera del embudo.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>44:00</b></div><div><i class="letra">Dura</i><b>2 min</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>2 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 44:00 · ruta corta</b><p>La pregunta previa, y es la importante: ¿cabe la cifra en la agenda? Señalar los 5,9 al día frente a los 4 que da la agenda.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">Entonces, ¿hay que hacer más marketing?</p><p>No. Hacer más marketing traería demanda que no podemos atender, y eso se paga dos veces: el coste de la campaña y el daño de la espera. Lo que hay que hacer es sacar un 10 % más de las mismas cuatro visitas y construir ingreso fuera del embudo.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>20</b> del Plan de Dirección · <a href="#a-puente" class="salta" title="Va a: El puente: de 720 k€ a 1,2 M€, bloque a bloque · Dirección">El puente: de 720 k€ a 1,2 M€, bloque a bloque<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d2" data-esencial="1">
@@ -7380,8 +7460,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 46:00 · ruta corta</b><p>La composición. Dejar caer la frase: dos tercios del salto no son implantes.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Trescientos mil euros de dónde salen exactamente?</p><p>De la base de pacientes que el centro ya tiene y hoy no vuelve: cuotas de seguimiento, mantenimiento y el tratamiento que la revisión detecta a tiempo. No hay que captar a nadie para eso.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>46:00</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>3 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 46:00 · ruta corta</b><p>La composición. Dejar caer la frase: dos tercios del salto no son implantes.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Trescientos mil euros de dónde salen exactamente?</p><p>De la base de pacientes que el centro ya tiene y hoy no vuelve: cuotas de seguimiento, mantenimiento y el tratamiento que la revisión detecta a tiempo. No hay que captar a nadie para eso.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>20</b> del Plan de Dirección · <a href="#a-puente" class="salta" title="Va a: El puente: de 720 k€ a 1,2 M€, bloque a bloque · Dirección">El puente: de 720 k€ a 1,2 M€, bloque a bloque<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d3" data-esencial="0">
@@ -7408,8 +7488,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede"><b>Las dos que más aportan son las dos más baratas, y ninguna capta pacientes:</b> trabajan sobre los que ya son del centro. La única con gasto externo relevante es la única con retorno negativo, y aun así se aprueba: sin presencia digital, cuatro de las otras no encuentran a nadie.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 47:30</b><p>Las nueve campañas. No leerlas todas: señalar que GTC es una de nueve, y detenerse en los 274 k€ que dependen de decisiones de hoy.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No son demasiadas campañas a la vez?</p><p>No van a la vez: el calendario de la diapositiva siguiente lo impide. Nunca más de dos arrancando, y cada una con umbral de parada a los sesenta días.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>47:30</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>4 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 47:30</b><p>Las nueve campañas. No leerlas todas: señalar que GTC es una de nueve, y detenerse en los 274 k€ que dependen de decisiones de hoy.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No son demasiadas campañas a la vez?</p><p>No van a la vez: el calendario de la diapositiva siguiente lo impide. Nunca más de dos arrancando, y cada una con umbral de parada a los sesenta días.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>21</b> del Plan de Dirección · <a href="#a-cartera" class="salta" title="Va a: La cartera de nueve campañas · Dirección">La cartera de nueve campañas<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d4" data-esencial="1">
@@ -7427,8 +7507,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Un plan concentrado no es un plan malo, pero hay que saber dónde está concentrado. Aquí no está en la campaña más cara: está en la más barata y en la más fácil de dejar de hacer un martes con prisa.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 49:00 · ruta corta</b><p>El hallazgo del modelo, y es el que debería salir de la sala: la mitad del objetivo depende de que el seguimiento se ofrezca siempre. Decirlo despacio.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es arriesgado depender tanto de dos campañas?</p><p>Sí, y por eso está escrito. Lo tranquilizador es dónde está la concentración: no en la campaña más cara ni en la más incierta, sino en la más barata y la que más control tenemos sobre ella. Depende de nosotros, no del mercado.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>49:00</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>5 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 49:00 · ruta corta</b><p>El hallazgo del modelo, y es el que debería salir de la sala: la mitad del objetivo depende de que el seguimiento se ofrezca siempre. Decirlo despacio.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿No es arriesgado depender tanto de dos campañas?</p><p>Sí, y por eso está escrito. Lo tranquilizador es dónde está la concentración: no en la campaña más cara ni en la más incierta, sino en la más barata y la que más control tenemos sobre ella. Depende de nosotros, no del mercado.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>21</b> del Plan de Dirección · <a href="#a-cartera" class="salta" title="Va a: La cartera de nueve campañas · Dirección">La cartera de nueve campañas<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d5" data-esencial="1">
@@ -7594,8 +7674,8 @@ REVISIÓN PREVISTA:</div>
   </figure>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 50:30 · ruta corta</b><p>El calendario. Insistir en la regla de los dos arranques y en por qué en julio no se enciende nada caro.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué pasa si una campaña no funciona?</p><p>Se para. Cada ficha del anexo B lleva su umbral: si a los sesenta días no llega a la mitad de su ritmo, se detiene y se revisa. Sin umbral escrito, una campaña que no funciona no se cancela nunca.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>50:30</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>6 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 50:30 · ruta corta</b><p>El calendario. Insistir en la regla de los dos arranques y en por qué en julio no se enciende nada caro.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué pasa si una campaña no funciona?</p><p>Se para. Cada ficha del anexo B lleva su umbral: si a los sesenta días no llega a la mitad de su ritmo, se detiene y se revisa. Sin umbral escrito, una campaña que no funciona no se cancela nunca.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>22</b> del Plan de Dirección · <a href="#a-calendario" class="salta" title="Va a: Calendario y capacidad del año · Dirección">Calendario y capacidad del año<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div><div class="explica__b"><p class="rotulillo">La naturaleza de sus cifras</p><p><b>Modelo.</b> Se deriva de supuestos declarados, no es una medición. Los supuestos están escritos en el apartado 18 del Plan de Dirección y se pueden discutir uno a uno.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d6" data-esencial="0">
@@ -7613,8 +7693,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Comprimirlo a dieciocho meses no se consigue acelerando campañas —maduran a su ritmo— sino ampliando capacidad, y eso anticipa la prioridad 5 del apartado 15. Es legítimo, tiene precio, y debe constar en el acta. Es la decisión <b>D15</b>.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 52:00</b><p>La senda a tres años. Es el momento de ser explícito: 1,2 M€ es objetivo de año tres, y si la Junta lo quiere en dieciocho meses eso tiene precio y nombre.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué no puede ser en el primer año?</p><p>Porque haría falta un rendimiento de 1.190 € por primera visita, un 47 % por encima del actual, y las campañas no maduran en doce meses. Se puede comprimir ampliando capacidad, pero entonces se anticipa la prioridad 5 del apartado 15 y debe constar en el acta.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>52:00</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>7 de 9</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 52:00</b><p>La senda a tres años. Es el momento de ser explícito: 1,2 M€ es objetivo de año tres, y si la Junta lo quiere en dieciocho meses eso tiene precio y nombre.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Por qué no puede ser en el primer año?</p><p>Porque haría falta un rendimiento de 1.190 € por primera visita, un 47 % por encima del actual, y las campañas no maduran en doce meses. Se puede comprimir ampliando capacidad, pero entonces se anticipa la prioridad 5 del apartado 15 y debe constar en el acta.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>22</b> del Plan de Dirección · <a href="#a-calendario" class="salta" title="Va a: Calendario y capacidad del año · Dirección">Calendario y capacidad del año<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d7" data-esencial="1">
@@ -7637,8 +7717,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Ninguna de las cinco es una campaña. Son condiciones: si alguna no se cumple, el objetivo no baja un poco, se cae el bloque entero que dependía de ella.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 53:30 · ruta corta</b><p>Las cinco condiciones. Terminar la parte recordando que ninguna es una campaña: son condiciones, y si falla una se cae el bloque entero.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuál le preocupa más?</p><p>La segunda. Tres campañas y 232 k€ se apoyan en una cartera propia que nadie ha contado todavía. Es lo más barato de comprobar y está sin hacer: dos semanas de inventario.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>53:30</b></div><div><i class="letra">Dura</i><b>1 min 30 s</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>8 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 53:30 · ruta corta</b><p>Las cinco condiciones. Terminar la parte recordando que ninguna es una campaña: son condiciones, y si falla una se cae el bloque entero.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Cuál le preocupa más?</p><p>La segunda. Tres campañas y 232 k€ se apoyan en una cartera propia que nadie ha contado todavía. Es lo más barato de comprobar y está sin hacer: dos semanas de inventario.</p></div></div><div class="explica__b"><p class="rotulillo">De dónde sale</p><p>Apartado <b>23</b> del Plan de Dirección · <a href="#a-cierto" class="salta" title="Va a: Las cinco condiciones que tienen que ser ciertas · Dirección">Las cinco condiciones que tienen que ser ciertas<i class="salta__d">Dirección</i></a>. La diapositiva es el extracto; ahí está el razonamiento entero, con los supuestos declarados y las cifras con su naturaleza marcada.</p></div></div></div>
   </div>
 </section>
 <section class="desp" id="b-pt-6-d8" data-esencial="1">
@@ -7656,8 +7736,8 @@ REVISIÓN PREVISTA:</div>
   <p class="lede">Lo que se pide hoy no es respaldo genérico: es resolver las quince decisiones y fijar la fecha de la próxima revisión.</p>
 
   
-</section></div><div class="guion"><p class="rotulillo">El guion del ponente</p><div><b>Minuto 55:00 · ruta corta</b><p>Cerrar con los tres resultados verificables. La última frase debe ser la petición concreta: resolver las catorce y fijar la fecha de la próxima revisión.</p></div>
-    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué pasa si no aprobamos alguna?</p><p>Se registra como no resuelta con su fecha de reconsideración. Lo que no puede pasar es que salga de aquí sin decisión y sin fecha: eso es la causa 6 del pre-mortem.</p></div></div></div>
+</section></div><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>55:00</b></div><div><i class="letra">Dura</i><b>hasta el cierre</b></div><div><i class="letra">Dónde va</i><b>Parte VI de VI</b></div><div><i class="letra">En esta parte</i><b>9 de 9</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 55:00 · ruta corta</b><p>Cerrar con los tres resultados verificables. La última frase debe ser la petición concreta: resolver las catorce y fijar la fecha de la próxima revisión.</p></div>
+    <div class="nota__dura"><b>La pregunta difícil</b><p class="nota__q">¿Qué pasa si no aprobamos alguna?</p><p>Se registra como no resuelta con su fecha de reconsideración. Lo que no puede pasar es que salga de aquí sin decisión y sin fecha: eso es la causa 6 del pre-mortem.</p></div></div></div></div>
   </div>
 </section></div>
   </div>
@@ -8811,6 +8891,12 @@ REVISIÓN PREVISTA:</div>
   <p class="leyenda leyenda--pista">Pulse una fase y se abre entera; al cerrarla se vuelve aquí.</p>
   <p class="rotulillo">Las fases en las que entra, con nombre</p>
   <div class="fases-p"><button type="button" class="fasep" data-abre-fase="d-f01"><span class="fasep__n">01</span><span class="fasep__r">1. Preparación previa</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="d-f02"><span class="fasep__n">02</span><span class="fasep__r">2. Recepción y tour</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f03"><span class="fasep__n">03</span><span class="fasep__r">3. Anamnesis/RGPD y alta</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f04"><span class="fasep__n">04</span><span class="fasep__r">4. Historial y consentimiento</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="d-f05"><span class="fasep__n">05</span><span class="fasep__r">5. Pruebas diagnósticas</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="d-f06"><span class="fasep__n">06</span><span class="fasep__r">6. Briefing</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f07"><span class="fasep__n">07</span><span class="fasep__r">7. Anamnesis de expectativas</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="d-f08"><span class="fasep__n">08</span><span class="fasep__r">8. IAC / solicitud / informe</span><span class="fasep__p wes-r">Ejecuta</span></button><button type="button" class="fasep" data-abre-fase="d-f09"><span class="fasep__n">09</span><span class="fasep__r">9. Presentación</span><span class="fasep__p wes-r">Ejecuta</span></button><button type="button" class="fasep" data-abre-fase="d-f10"><span class="fasep__n">10</span><span class="fasep__r">10. Propuesta y cierre</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f11"><span class="fasep__n">11</span><span class="fasep__r">11. Cierre administrativo</span><span class="fasep__p wes-a">Responde</span></button><button type="button" class="fasep" data-abre-fase="d-f12"><span class="fasep__n">12</span><span class="fasep__r">12. Seguimiento</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="e-m13"><span class="fasep__n">13</span><span class="fasep__r">13. Circuito de producción</span><span class="fasep__p wes-c">Se consulta</span></button><button type="button" class="fasep" data-abre-fase="e-m14"><span class="fasep__n">14</span><span class="fasep__r">14. Mantenimiento</span><span class="fasep__p wes-i">Se informa</span></button></div>
+  <div class="obliga">
+  <p class="rotulillo">Sus obligaciones · qué se rompe si no se hace</p>
+  <p class="obliga__q">Un manual dice lo que hay que hacer. Esto dice lo contrario: qué se rompe, y en qué otro puesto, cuando no se hace. Casi ningún fallo se queda en el puesto que lo comete, y por eso estas 2 líneas son la definición operativa de lo que este puesto debe. Salen de la matriz de obligaciones del Manual Maestro, palabra por palabra.</p>
+  <ol class="obliga__l"><li class="obliga__f"><span class="obliga__n">01</span><span class="obliga__si"><i class="letra">Si no se hace</i>Retrasar la entrega de la anamnesis a Recepción</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Alta atrasada y presentación con la ficha a medias</span></li><li class="obliga__f"><span class="obliga__n">02</span><span class="obliga__si"><i class="letra">Si no se hace</i>Aviso incompleto a RAC</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>RAC no puede verificar el pago y la cirugía no se agenda</span></li></ol>
+  <p class="obliga__pie"><a href="#c-m-pasa-exactamente-cuando-puesto-no-cumple">La matriz de obligaciones entera, con los seis puestos</a></p>
+</div>
   <nav class="puesto__idx" aria-label="Lo que hay de este puesto"><a href="#c-pd-direccion-0"><span>00</span>Qué es este puesto y de qué responde</a><a href="#c-pd-direccion-1"><span>01</span>Autoridad y sus límites</a><a href="#c-pd-direccion-2"><span>02</span>Procedimientos</a><a href="#c-pd-direccion-3"><span>03</span>Indicadores del puesto</a><a href="#c-pd-direccion-4"><span>04</span>Contingencias</a><a href="#c-pd-direccion-5"><span>05</span>Criterios de calidad</a><a href="#c-pd-direccion-6"><span>06</span>Primeros 30 días en el puesto</a></nav>
   <div class="grupod">
   <div class="grupod__cab">
@@ -9039,6 +9125,12 @@ SEMÁFORO DEL DÍA:  verde / ámbar / rojo</div>
   <p class="leyenda leyenda--pista">Pulse una fase y se abre entera; al cerrarla se vuelve aquí.</p>
   <p class="rotulillo">Las fases en las que entra, con nombre</p>
   <div class="fases-p"><button type="button" class="fasep" data-abre-fase="d-f04"><span class="fasep__n">04</span><span class="fasep__r">4. Historial y consentimiento</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f05"><span class="fasep__n">05</span><span class="fasep__r">5. Pruebas diagnósticas</span><span class="fasep__p wes-c">Se consulta</span></button><button type="button" class="fasep" data-abre-fase="d-f06"><span class="fasep__n">06</span><span class="fasep__r">6. Briefing</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f07"><span class="fasep__n">07</span><span class="fasep__r">7. Anamnesis de expectativas</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f08"><span class="fasep__n">08</span><span class="fasep__r">8. IAC / solicitud / informe</span><span class="fasep__p wes-a">Responde</span></button><button type="button" class="fasep" data-abre-fase="d-f09"><span class="fasep__n">09</span><span class="fasep__r">9. Presentación</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f10"><span class="fasep__n">10</span><span class="fasep__r">10. Propuesta y cierre</span><span class="fasep__p wes-c">Se consulta</span></button><button type="button" class="fasep" data-abre-fase="e-m13"><span class="fasep__n">13</span><span class="fasep__r">13. Circuito de producción</span><span class="fasep__p wes-c">Se consulta</span></button><button type="button" class="fasep" data-abre-fase="e-m14"><span class="fasep__n">14</span><span class="fasep__r">14. Mantenimiento</span><span class="fasep__p wes-c">Se consulta</span></button></div>
+  <div class="obliga">
+  <p class="rotulillo">Sus obligaciones · qué se rompe si no se hace</p>
+  <p class="obliga__q">Un manual dice lo que hay que hacer. Esto dice lo contrario: qué se rompe, y en qué otro puesto, cuando no se hace. Casi ningún fallo se queda en el puesto que lo comete, y por eso estas 2 líneas son la definición operativa de lo que este puesto debe. Salen de la matriz de obligaciones del Manual Maestro, palabra por palabra.</p>
+  <ol class="obliga__l"><li class="obliga__f"><span class="obliga__n">01</span><span class="obliga__si"><i class="letra">Si no se hace</i>Anamnesis superficial</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Riesgo clínico directo: es el ítem de mayor exposición de toda la visita</span></li><li class="obliga__f"><span class="obliga__n">02</span><span class="obliga__si"><i class="letra">Si no se hace</i>No firmar la solicitud de presupuesto</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Bloquea al Director, que no debe elaborar presupuesto sin ella, y a RAC después</span></li></ol>
+  <p class="obliga__pie"><a href="#c-m-pasa-exactamente-cuando-puesto-no-cumple">La matriz de obligaciones entera, con los seis puestos</a></p>
+</div>
   <nav class="puesto__idx" aria-label="Lo que hay de este puesto"><a href="#c-pd-doctor-0"><span>00</span>Qué es este puesto y de qué responde</a><a href="#c-pd-doctor-1"><span>01</span>Cronograma de jornada</a><a href="#c-pd-doctor-2"><span>02</span>Procedimientos</a><a href="#c-pd-doctor-3"><span>03</span>Errores documentados</a><a href="#c-pd-doctor-4"><span>04</span>Su papel comercial y sus límites</a><a href="#c-pd-doctor-5"><span>05</span>Indicadores del puesto</a><a href="#c-pd-doctor-6"><span>06</span>Contingencias</a><a href="#c-pd-doctor-7"><span>07</span>Criterios de calidad</a><a href="#c-pd-doctor-8"><span>08</span>Primeros 30 días en el puesto</a><a href="#c-pv-doctor-1"><span>V1</span>2.1 · Preparación anticipada del caso</a><a href="#c-pv-doctor-2"><span>V2</span>2.2 · Diagnóstico integral y predictivo</a><a href="#c-pv-doctor-3"><span>V3</span>2.3 · Planificación digital del tratamiento</a><a href="#c-pv-doctor-4"><span>V4</span>2.4 · Consentimiento informado real</a><a href="#c-pv-doctor-5"><span>V5</span>2.5 · Ejecución clínica</a><a href="#c-pv-doctor-6"><span>V6</span>2.6 · Registro y trazabilidad</a></nav>
   <div class="grupod">
   <div class="grupod__cab">
@@ -9631,6 +9723,12 @@ MEDIDA CORRECTORA: ___________________________________</div>
   <p class="leyenda leyenda--pista">Pulse una fase y se abre entera; al cerrarla se vuelve aquí.</p>
   <p class="rotulillo">Las fases en las que entra, con nombre</p>
   <div class="fases-p"><button type="button" class="fasep" data-abre-fase="d-f01"><span class="fasep__n">01</span><span class="fasep__r">1. Preparación previa</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f02"><span class="fasep__n">02</span><span class="fasep__r">2. Recepción y tour</span><span class="fasep__p wes-r">Ejecuta</span></button><button type="button" class="fasep" data-abre-fase="d-f03"><span class="fasep__n">03</span><span class="fasep__r">3. Anamnesis/RGPD y alta</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f08"><span class="fasep__n">08</span><span class="fasep__r">8. IAC / solicitud / informe</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="d-f10"><span class="fasep__n">10</span><span class="fasep__r">10. Propuesta y cierre</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="d-f11"><span class="fasep__n">11</span><span class="fasep__r">11. Cierre administrativo</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f12"><span class="fasep__n">12</span><span class="fasep__r">12. Seguimiento</span><span class="fasep__p wes-r">Ejecuta</span></button><button type="button" class="fasep" data-abre-fase="e-m13"><span class="fasep__n">13</span><span class="fasep__r">13. Circuito de producción</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="e-m14"><span class="fasep__n">14</span><span class="fasep__r">14. Mantenimiento</span><span class="fasep__p wes-c">Se consulta</span></button></div>
+  <div class="obliga">
+  <p class="rotulillo">Sus obligaciones · qué se rompe si no se hace</p>
+  <p class="obliga__q">Un manual dice lo que hay que hacer. Esto dice lo contrario: qué se rompe, y en qué otro puesto, cuando no se hace. Casi ningún fallo se queda en el puesto que lo comete, y por eso estas 4 líneas son la definición operativa de lo que este puesto debe. Salen de la matriz de obligaciones del Manual Maestro, palabra por palabra.</p>
+  <ol class="obliga__l"><li class="obliga__f"><span class="obliga__n">01</span><span class="obliga__si"><i class="letra">Si no se hace</i>No verificar duplicados antes de agendar</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Historial fragmentado: el paciente acaba con dos fichas y ninguna completa</span></li><li class="obliga__f"><span class="obliga__n">02</span><span class="obliga__si"><i class="letra">Si no se hace</i>Retrasar el alta en el sistema</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>El presupuesto se elabora con datos incompletos</span></li><li class="obliga__f"><span class="obliga__n">03</span><span class="obliga__si"><i class="letra">Si no se hace</i>No escanear el mismo día</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Pérdida de trazabilidad legal: lo firmado, a efectos prácticos, no existe</span></li><li class="obliga__f"><span class="obliga__n">04</span><span class="obliga__si"><i class="letra">Si no se hace</i>No avisar a RAC tras una aceptación</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>El circuito de producción no arranca y el caso se queda en el limbo</span></li></ol>
+  <p class="obliga__pie"><a href="#c-m-pasa-exactamente-cuando-puesto-no-cumple">La matriz de obligaciones entera, con los seis puestos</a></p>
+</div>
   <nav class="puesto__idx" aria-label="Lo que hay de este puesto"><a href="#c-pd-recepcion-0"><span>00</span>Qué es este puesto y de qué responde</a><a href="#c-pd-recepcion-1"><span>01</span>Jornada minuto a minuto</a><a href="#c-pd-recepcion-2"><span>02</span>Procedimientos</a><a href="#c-pd-recepcion-3"><span>03</span>Su papel comercial real</a><a href="#c-pd-recepcion-4"><span>04</span>Indicadores del puesto</a><a href="#c-pd-recepcion-5"><span>05</span>Contingencias</a><a href="#c-pd-recepcion-6"><span>06</span>Criterios de calidad</a><a href="#c-pd-recepcion-7"><span>07</span>Primeros 30 días en el puesto</a><a href="#c-pv-recepcion-1"><span>V1</span>1.1 · Gestión de la demanda</a><a href="#c-pv-recepcion-2"><span>V2</span>1.2 · Arquitectura de agenda</a><a href="#c-pv-recepcion-3"><span>V3</span>1.3 · Custodia documental</a><a href="#c-pv-recepcion-4"><span>V4</span>1.4 · Gestión económica de mostrador</a><a href="#c-pv-recepcion-5"><span>V5</span>1.5 · Seguimiento y recuperación</a></nav>
   <div class="grupod">
   <div class="grupod__cab">
@@ -10221,6 +10319,12 @@ AUDITORÍA SEMANAL por Dirección</div>
   <p class="leyenda leyenda--pista">Pulse una fase y se abre entera; al cerrarla se vuelve aquí.</p>
   <p class="rotulillo">Las fases en las que entra, con nombre</p>
   <div class="fases-p"><button type="button" class="fasep" data-abre-fase="d-f11"><span class="fasep__n">11</span><span class="fasep__r">11. Cierre administrativo</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="e-m13"><span class="fasep__n">13</span><span class="fasep__r">13. Circuito de producción</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button></div>
+  <div class="obliga">
+  <p class="rotulillo">Sus obligaciones · qué se rompe si no se hace</p>
+  <p class="obliga__q">Un manual dice lo que hay que hacer. Esto dice lo contrario: qué se rompe, y en qué otro puesto, cuando no se hace. Casi ningún fallo se queda en el puesto que lo comete, y por eso estas 3 líneas son la definición operativa de lo que este puesto debe. Salen de la matriz de obligaciones del Manual Maestro, palabra por palabra.</p>
+  <ol class="obliga__l"><li class="obliga__f"><span class="obliga__n">01</span><span class="obliga__si"><i class="letra">Si no se hace</i>Agendar sin pago confirmado</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Riesgo de tratamiento ejecutado y no cobrado</span></li><li class="obliga__f"><span class="obliga__n">02</span><span class="obliga__si"><i class="letra">Si no se hace</i>No verificar el material con antelación</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Cancelación el mismo día, con el paciente ya preparado</span></li><li class="obliga__f"><span class="obliga__n">03</span><span class="obliga__si"><i class="letra">Si no se hace</i>No actualizar el producto pendiente</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Dirección pierde la visibilidad real de lo vendido y no entregado</span></li></ol>
+  <p class="obliga__pie"><a href="#c-m-pasa-exactamente-cuando-puesto-no-cumple">La matriz de obligaciones entera, con los seis puestos</a></p>
+</div>
   <nav class="puesto__idx" aria-label="Lo que hay de este puesto"><a href="#c-pd-rac-0"><span>00</span>Qué es este puesto y de qué responde</a><a href="#c-pd-rac-1"><span>01</span>Poder de bloqueo</a><a href="#c-pd-rac-2"><span>02</span>Procedimientos</a><a href="#c-pd-rac-3"><span>03</span>Indicadores del puesto</a><a href="#c-pd-rac-4"><span>04</span>Contingencias</a><a href="#c-pd-rac-5"><span>05</span>Criterios de calidad</a><a href="#c-pd-rac-6"><span>06</span>Primeros 30 días en el puesto</a></nav>
   <div class="grupod">
   <div class="grupod__cab">
@@ -10406,6 +10510,12 @@ AUDITORÍA SEMANAL por Dirección</div>
   <p class="leyenda leyenda--pista">Pulse una fase y se abre entera; al cerrarla se vuelve aquí.</p>
   <p class="rotulillo">Las fases en las que entra, con nombre</p>
   <div class="fases-p"><button type="button" class="fasep" data-abre-fase="d-f05"><span class="fasep__n">05</span><span class="fasep__r">5. Pruebas diagnósticas</span><span class="fasep__p wes-ra">Ejecuta y responde</span></button><button type="button" class="fasep" data-abre-fase="d-f06"><span class="fasep__n">06</span><span class="fasep__r">6. Briefing</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="d-f07"><span class="fasep__n">07</span><span class="fasep__r">7. Anamnesis de expectativas</span><span class="fasep__p wes-c">Se consulta</span></button><button type="button" class="fasep" data-abre-fase="d-f09"><span class="fasep__n">09</span><span class="fasep__r">9. Presentación</span><span class="fasep__p wes-i">Se informa</span></button><button type="button" class="fasep" data-abre-fase="e-m13"><span class="fasep__n">13</span><span class="fasep__r">13. Circuito de producción</span><span class="fasep__p wes-c">Se consulta</span></button></div>
+  <div class="obliga">
+  <p class="rotulillo">Sus obligaciones · qué se rompe si no se hace</p>
+  <p class="obliga__q">Un manual dice lo que hay que hacer. Esto dice lo contrario: qué se rompe, y en qué otro puesto, cuando no se hace. Casi ningún fallo se queda en el puesto que lo comete, y por eso estas 2 líneas son la definición operativa de lo que este puesto debe. Salen de la matriz de obligaciones del Manual Maestro, palabra por palabra.</p>
+  <ol class="obliga__l"><li class="obliga__f"><span class="obliga__n">01</span><span class="obliga__si"><i class="letra">Si no se hace</i>Subir una imagen de baja calidad</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Repetición de la prueba en plena presentación, delante del paciente</span></li><li class="obliga__f"><span class="obliga__n">02</span><span class="obliga__si"><i class="letra">Si no se hace</i>Responder sobre material sin comprobarlo</span><span class="obliga__rompe"><i class="letra">Lo que se rompe</i>Cirugía agendada sin material real, y cancelación el mismo día</span></li></ol>
+  <p class="obliga__pie"><a href="#c-m-pasa-exactamente-cuando-puesto-no-cumple">La matriz de obligaciones entera, con los seis puestos</a></p>
+</div>
   <nav class="puesto__idx" aria-label="Lo que hay de este puesto"><a href="#c-pd-auxiliar-0"><span>00</span>Qué es este puesto y de qué responde</a><a href="#c-pd-auxiliar-1"><span>01</span>Procedimientos</a><a href="#c-pd-auxiliar-2"><span>02</span>Indicadores del puesto</a><a href="#c-pd-auxiliar-3"><span>03</span>Contingencias</a><a href="#c-pd-auxiliar-4"><span>04</span>Criterios de calidad</a><a href="#c-pd-auxiliar-5"><span>05</span>Primeros 30 días en el puesto</a><a href="#c-pv-auxiliar-1"><span>V1</span>4.1 · Gestión de equipos</a><a href="#c-pv-auxiliar-2"><span>V2</span>4.2 · Batería diagnóstica</a><a href="#c-pv-auxiliar-3"><span>V3</span>4.3 · Esterilización y bioseguridad</a></nav>
   <div class="grupod">
   <div class="grupod__cab">
@@ -10872,6 +10982,10 @@ RAC AGENDA EN CONSECUENCIA</div>
   <p class="leyenda leyenda--pista">Pulse una fase y se abre entera; al cerrarla se vuelve aquí.</p>
   <p class="rotulillo">Las fases en las que entra, con nombre</p>
   <div class="fases-p"><button type="button" class="fasep" data-abre-fase="e-m14"><span class="fasep__n">14</span><span class="fasep__r">14. Mantenimiento</span><span class="fasep__p wes-c">Se consulta</span></button></div>
+  <div class="obliga obliga--sin">
+  <p class="rotulillo">Sus obligaciones</p>
+  <p class="obliga__q">El higienista no tiene fila propia en la matriz de obligaciones del Manual. No es un olvido: su trabajo empieza donde termina el circuito de la primera visita, y lo que se rompe cuando no se hace se mide en la fase 14 y en sus propios indicadores, no aguas abajo de la visita.</p>
+</div>
   <nav class="puesto__idx" aria-label="Lo que hay de este puesto"><a href="#c-pd-higienista-0"><span>00</span>Qué es este puesto y de qué responde</a><a href="#c-pd-higienista-1"><span>01</span>Por qué este puesto es estratégico</a><a href="#c-pd-higienista-2"><span>02</span>Procedimientos</a><a href="#c-pd-higienista-3"><span>03</span>Indicadores del puesto</a><a href="#c-pd-higienista-4"><span>04</span>Contingencias</a><a href="#c-pd-higienista-5"><span>05</span>Criterios de calidad</a><a href="#c-pd-higienista-6"><span>06</span>Primeros 30 días en el puesto</a><a href="#c-pv-higienista-1"><span>V1</span>3.1 · Programa de mantenimiento</a><a href="#c-pv-higienista-2"><span>V2</span>3.2 · Detección precoz y derivación</a><a href="#c-pv-higienista-3"><span>V3</span>3.3 · Monitorización remota</a><a href="#c-pv-higienista-4"><span>V4</span>3.4 · El perfil Giraldo anual</a></nav>
   <div class="grupod">
   <div class="grupod__cab">
@@ -11556,6 +11670,8 @@ DÍA 7   Valoración de evolución
     <div class="tb__rejilla"><section class="tb__g"><header class="tb__gh"><h3>Apertura</h3><span>3</span></header><div class="tb__l"><a href="#d-fundamentos" class="tb__e" title="Va a: Los cinco principios de la visita"><b class="tb__n">·</b><span class="tb__r">Los cinco principios de la visita</span><span class="tb__c">7</span></a><a href="#d-mapa" class="tb__e" title="Va a: La visita entera, minuto a minuto"><b class="tb__n">·</b><span class="tb__r">La visita entera, minuto a minuto</span><span class="tb__c">2</span></a><a href="#d-flujo" class="tb__e" title="Va a: Quién tiene al paciente en cada momento"><b class="tb__n">·</b><span class="tb__r">Quién tiene al paciente en cada momento</span><span class="tb__c">5</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Las doce fases de la visita</h3><span>12</span></header><div class="tb__l"><a href="#d-f01" class="tb__e" title="Va a: Preparación previa y primera llamada"><b class="tb__n">01</b><span class="tb__r">Preparación previa y primera llamada</span><span class="tb__c">1</span></a><a href="#d-f02" class="tb__e" title="Va a: Acogida y recorrido por la tecnología"><b class="tb__n">02</b><span class="tb__r">Acogida y recorrido por la tecnología</span><span class="tb__c">1</span></a><a href="#d-f03" class="tb__e" title="Va a: Alta, RGPD y protección de datos"><b class="tb__n">03</b><span class="tb__r">Alta, RGPD y protección de datos</span><span class="tb__c">1</span></a><a href="#d-f04" class="tb__e" title="Va a: Historia clínica y consentimiento"><b class="tb__n">04</b><span class="tb__r">Historia clínica y consentimiento</span><span class="tb__c">1</span></a><a href="#d-f05" class="tb__e" title="Va a: Pruebas diagnósticas y fotografía"><b class="tb__n">05</b><span class="tb__r">Pruebas diagnósticas y fotografía</span><span class="tb__c">1</span></a><a href="#d-f06" class="tb__e" title="Va a: Briefing entre Doctor y Director"><b class="tb__n">06</b><span class="tb__r">Briefing entre Doctor y Director</span><span class="tb__c">1</span></a><a href="#d-f07" class="tb__e" title="Va a: Expectativas y exploración clínica"><b class="tb__n">07</b><span class="tb__r">Expectativas y exploración clínica</span><span class="tb__c">1</span></a><a href="#d-f08" class="tb__e" title="Va a: Informe de Análisis Clínico (IAC)"><b class="tb__n">08</b><span class="tb__r">Informe de Análisis Clínico (IAC)</span><span class="tb__c">1</span></a><a href="#d-f09" class="tb__e" title="Va a: Presentación del diagnóstico en 3D"><b class="tb__n">09</b><span class="tb__r">Presentación del diagnóstico en 3D</span><span class="tb__c">1</span></a><a href="#d-f10" class="tb__e" title="Va a: Propuesta económica y cierre"><b class="tb__n">10</b><span class="tb__r">Propuesta económica y cierre</span><span class="tb__c">1</span></a><a href="#d-f11" class="tb__e" title="Va a: Cierre administrativo y digitalización"><b class="tb__n">11</b><span class="tb__r">Cierre administrativo y digitalización</span><span class="tb__c">1</span></a><a href="#d-f12" class="tb__e" title="Va a: Despedida y seguimiento estratégico"><b class="tb__n">12</b><span class="tb__r">Despedida y seguimiento estratégico</span><span class="tb__c">1</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Cierre</h3><span>7</span></header><div class="tb__l"><a href="#d-estandares" class="tb__e" title="Va a: Estándares comunes a las doce fases"><b class="tb__n">·</b><span class="tb__r">Estándares comunes a las doce fases</span><span class="tb__c">8</span></a><a href="#d-casos" class="tb__e" title="Va a: Casos especiales: cuando no encaja"><b class="tb__n">·</b><span class="tb__r">Casos especiales: cuando no encaja</span><span class="tb__c">1</span></a><a href="#d-continua" class="tb__e" title="Va a: Fases 13 y 14: producción y mantenimiento"><b class="tb__n">·</b><span class="tb__r">Fases 13 y 14: producción y mantenimiento</span><span class="tb__c">4</span></a><a href="#d-trazabilidad" class="tb__e" title="Va a: Qué queda registrado y quién responde"><b class="tb__n">·</b><span class="tb__r">Qué queda registrado y quién responde</span><span class="tb__c">1</span></a><a href="#d-indicadores" class="tb__e" title="Va a: Cómo se mide si el protocolo funciona"><b class="tb__n">·</b><span class="tb__r">Cómo se mide si el protocolo funciona</span><span class="tb__c">2</span></a><a href="#d-formacion" class="tb__e" title="Va a: Formación y certificación por rol"><b class="tb__n">·</b><span class="tb__r">Formación y certificación por rol</span><span class="tb__c">4</span></a><a href="#d-anexos" class="tb__e" title="Va a: Anexos: guiones y preguntas frecuentes"><b class="tb__n">·</b><span class="tb__r">Anexos: guiones y preguntas frecuentes</span><span class="tb__c">15</span></a></div></section></div>
   </nav>
 </div>
+
+
 
 
 
@@ -15350,6 +15466,8 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
     <div class="tb__rejilla"><section class="tb__g"><header class="tb__gh"><h3>Apertura</h3><span>3</span></header><div class="tb__l"><a href="#e-presentacion" class="tb__e" title="Va a: Un documento, tres usos"><b class="tb__n">·</b><span class="tb__r">Un documento, tres usos</span><span class="tb__c">5</span></a><a href="#e-indice" class="tb__e" title="Va a: Índice: dónde está cada cosa"><b class="tb__n">·</b><span class="tb__r">Índice: dónde está cada cosa</span><span class="tb__c">1</span></a><a href="#e-vanguardia" class="tb__e" title="Va a: Marco de vanguardia y los cinco pilares"><b class="tb__n">·</b><span class="tb__r">Marco de vanguardia y los cinco pilares</span><span class="tb__c">4</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Las ocho partes</h3><span>9</span></header><div class="tb__l"><a href="#e-p1" class="tb__e" title="Va a: Fundamentos y principios rectores"><b class="tb__n">I</b><span class="tb__r">Fundamentos y principios rectores</span><span class="tb__c">9</span></a><a href="#e-estandares" class="tb__e" title="Va a: Estándares transversales del centro"><b class="tb__n">·</b><span class="tb__r">Estándares transversales del centro</span><span class="tb__c">13</span></a><a href="#e-p2" class="tb__e" title="Va a: Las catorce fases del recorrido"><b class="tb__n">II</b><span class="tb__r">Las catorce fases del recorrido</span><span class="tb__c">16</span></a><a href="#e-p3" class="tb__e" title="Va a: Matriz RACI: quién hace qué en cada fase"><b class="tb__n">III</b><span class="tb__r">Matriz RACI: quién hace qué en cada fase</span><span class="tb__c">1</span></a><a href="#e-p4" class="tb__e" title="Va a: Manuales de los seis puestos"><b class="tb__n">IV</b><span class="tb__r">Manuales de los seis puestos</span><span class="tb__c">53</span></a><a href="#e-p5" class="tb__e" title="Va a: Funciones de vanguardia por perfil"><b class="tb__n">V</b><span class="tb__r">Funciones de vanguardia por perfil</span><span class="tb__c">36</span></a><a href="#e-p6" class="tb__e" title="Va a: Indicadores e interdependencias"><b class="tb__n">VI</b><span class="tb__r">Indicadores e interdependencias</span><span class="tb__c">18</span></a><a href="#e-p7" class="tb__e" title="Va a: Plan de incentivos y retribución variable"><b class="tb__n">VII</b><span class="tb__r">Plan de incentivos y retribución variable</span><span class="tb__c">10</span></a><a href="#e-p8" class="tb__e" title="Va a: Puesta en marcha del centro"><b class="tb__n">VIII</b><span class="tb__r">Puesta en marcha del centro</span><span class="tb__c">14</span></a></div></section><section class="tb__g"><header class="tb__gh"><h3>Cierre</h3><span>3</span></header><div class="tb__l"><a href="#e-anexos" class="tb__e" title="Va a: Anexos: plantillas y checklists"><b class="tb__n">·</b><span class="tb__r">Anexos: plantillas y checklists</span><span class="tb__c">14</span></a><a href="#e-otros" class="tb__e" title="Va a: Otros documentos del sistema"><b class="tb__n">·</b><span class="tb__r">Otros documentos del sistema</span><span class="tb__c">1</span></a><a href="#e-notas" class="tb__e" title="Va a: Puntos que siguen abiertos"><b class="tb__n">·</b><span class="tb__r">Puntos que siguen abiertos</span><span class="tb__c">2</span></a></div></section></div>
   </nav>
 </div>
+
+
 
 
 
@@ -23773,6 +23891,8 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
+
+
 <div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v8.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
@@ -27991,7 +28111,7 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
     return r && r.paradas[n] ? r.paradas[n] : null;
   }
 
-  function abreLector(clave, ruta, paso){
+  function abreLector(clave, ruta, paso, ancla){
     var h = porHoja[clave];
     if(!h) return false;
     scrollAntes = window.scrollY;
@@ -28005,15 +28125,16 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
       viaje = null;
     }
 
-    pintaLector(clave);
+    /* Se enseña antes de pintar: mientras está oculto no tiene medidas, y
+       sin medidas no se puede ir al punto exacto que pedía el enlace. */
     lector.hidden = false;
     D.documentElement.style.overflow = "hidden";
-    lecCuerpo.scrollTop = 0;
+    pintaLector(clave, ancla);
     if(lecVolver) lecVolver.focus();
     return true;
   }
 
-  function pintaLector(clave){
+  function pintaLector(clave, ancla){
     var h = porHoja[clave];
     if(!h) return;
     var copia = h.cloneNode(true);
@@ -28053,7 +28174,32 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
         + "</span>" + '<button type="button" class="bt bt--fuerte" data-lec-cierra>Volver</button>';
     }
     lecCuerpo.appendChild(pie);
-    try { history.replaceState(null, "", "#" + clave); } catch(e){}
+
+    /* ---------------------------------------------------------------- */
+    /*  Aterrizar donde dice el enlace, no al principio del apartado      */
+    /*  Un apartado puede tener catorce fases dentro. Pulsar «Fase 14» y  */
+    /*  caer en la fase 1 es exactamente llegar a un sitio que no es el   */
+    /*  que se pidió: aquí se busca el punto exacto dentro del apartado,  */
+    /*  se va a él y se marca un momento para que se vea dónde se está.   */
+    /* ---------------------------------------------------------------- */
+    lecCuerpo.scrollTop = 0;
+    if(ancla && ancla !== clave){
+      var diana = lecCuerpo.querySelector('[data-era="' + ancla + '"]');
+      if(diana){
+        [].slice.call(lecCuerpo.querySelectorAll(".es-diana")).forEach(function(x){
+          x.classList.remove("es-diana");
+        });
+        diana.classList.add("es-diana");
+        var caja2 = lecCuerpo.getBoundingClientRect();
+        lecCuerpo.scrollTop += diana.getBoundingClientRect().top - caja2.top - 24;
+        /* y se dice en la cabecera adónde se ha llegado dentro del apartado */
+        var suyo = /^H[1-6]$/.test(diana.tagName)
+          ? diana : diana.querySelector("h1,h2,h3,h4,h5,h6");
+        var dice = suyo && (suyo.innerText || suyo.textContent || "").trim();
+        if(dice) lecQ.textContent += " · " + dice.replace(/\s+/g, " ").slice(0, 70);
+      }
+    }
+    try { history.replaceState(null, "", "#" + (ancla || clave)); } catch(e){}
   }
 
   function mueveLector(paso){
@@ -28092,7 +28238,7 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
     var el = D.getElementById(id);
     if(!el) return false;
     var dueno = el.closest(".hoja");
-    if(dueno) return abreLector(dueno.dataset.hoja, ruta, paso);
+    if(dueno) return abreLector(dueno.dataset.hoja, ruta, paso, id);
     var sec = el.closest(".sec");
     if(sec){
       cierraLector(); veSec(sec.dataset.sec, false);
@@ -28108,8 +28254,14 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
         if(g) cuentaGrupo(g);
         caja = caja.parentElement && caja.parentElement.closest(".desp");
       }
-      var ve = function(){ el.scrollIntoView({block:"start", behavior:"smooth"}); };
-      if(movio) setTimeout(ve, 380); else ve();
+      /* Se va dos veces: una ya, y otra cuando el desplegable ha terminado de
+         abrirse o la ficha de puesto ha terminado de cambiar. Con una sola, el
+         sitio al que se llega depende de lo que tardara la animación. */
+      var ve = function(suave){
+        el.scrollIntoView({block:"start", behavior:suave ? "smooth" : "auto"});
+      };
+      ve(!movio);
+      if(movio) setTimeout(function(){ ve(true); }, 420);
       return true;
     }
     return false;

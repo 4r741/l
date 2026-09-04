@@ -12,6 +12,16 @@ corresponde a quién; el guion que dibuja la página los reúne.
 # La matriz RACI del Manual, tal cual está publicada: catorce fases por seis
 # columnas. R ejecuta, A responde del resultado, C se consulta, I se informa.
 RACI_COLUMNAS = ["REC", "DC", "DR", "AUX", "DdC", "RAC"]
+
+# El nombre con el que cada puesto aparece en la matriz de obligaciones del
+# Manual —la tabla que dice qué se rompe aguas abajo cuando algo no se hace—.
+# El higienista no tiene fila propia en esa matriz, y no es un olvido: su
+# trabajo está aguas abajo del alta, y lo que rompe se mide en la fase 14 y en
+# sus propios indicadores, no en el circuito de la primera visita.
+OBLIGACIONES_SIN_FILA = ("El higienista no tiene fila propia en la matriz de obligaciones del "
+                         "Manual. No es un olvido: su trabajo empieza donde termina el circuito "
+                         "de la primera visita, y lo que se rompe cuando no se hace se mide en "
+                         "la fase 14 y en sus propios indicadores, no aguas abajo de la visita.")
 RACI = [
     ("1. Preparación previa",          ["R/A", "I", "—", "—", "I", "—"]),
     ("2. Recepción y tour",            ["R", "R/A", "—", "—", "—", "—"]),
@@ -47,7 +57,7 @@ FASES_PV = {
 PERFILES = [
     dict(
         id="direccion", nombre="Dirección de Clínica", corto="Dirección",
-        raci="DC", roles=("director", "dc"),
+        raci="DC", roles=("director", "dc"), obliga="Director",
         que="Dirige la clínica y responde de que el sistema se cumpla. Es la única "
             "figura que puede autorizar una excepción, y la que rinde cuentas cuando "
             "algo se salta.",
@@ -62,7 +72,7 @@ PERFILES = [
     ),
     dict(
         id="doctor", nombre="Doctor", corto="Doctor",
-        raci="DR", roles=("doctor", "dr"),
+        raci="DR", roles=("doctor", "dr"), obliga="Doctor",
         que="Diagnostica, planifica y ejecuta el tratamiento. Responde del criterio "
             "clínico y de que el paciente entienda su caso antes de decidir.",
         manual="m-doctor",
@@ -83,7 +93,7 @@ PERFILES = [
     ),
     dict(
         id="recepcion", nombre="Recepción", corto="Recepción",
-        raci="REC", roles=("recepcion", "rec"),
+        raci="REC", roles=("recepcion", "rec"), obliga="Recepción",
         que="La primera voz y la última. Gestiona la demanda, la agenda, el alta y "
             "el cierre administrativo, y es quien recupera al paciente que no vuelve.",
         manual="m-recepcion",
@@ -102,7 +112,7 @@ PERFILES = [
     ),
     dict(
         id="rac", nombre="RAC · Responsable de Producción", corto="RAC",
-        raci="RAC", roles=("rac",),
+        raci="RAC", roles=("rac",), obliga="RAC",
         que="Responde del circuito de producción: que lo aceptado se fabrique, se "
             "coloque y se cierre. Tiene poder de bloqueo cuando un caso no está listo.",
         manual="m-rac-responsable-produccion",
@@ -116,7 +126,7 @@ PERFILES = [
     ),
     dict(
         id="auxiliar", nombre="Auxiliar", corto="Auxiliar",
-        raci="AUX", roles=("auxiliar", "aux"),
+        raci="AUX", roles=("auxiliar", "aux"), obliga="Auxiliar",
         que="Sostiene el acto clínico: equipos listos, batería diagnóstica completa "
             "y esterilización trazable. Sin esto, la fase 5 no existe.",
         manual="m-auxiliar",
@@ -131,7 +141,7 @@ PERFILES = [
     ),
     dict(
         id="higienista", nombre="Higienista", corto="Higienista",
-        raci=None, roles=("higienista", "hig"),
+        raci=None, roles=("higienista", "hig"), obliga=None,
         que="El puesto del largo plazo: mantiene lo tratado, detecta pronto lo que "
             "se tuerce y sostiene la relación año tras año. Es R/A en la fase 14.",
         manual="m-higienista",

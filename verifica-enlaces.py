@@ -73,12 +73,14 @@ print("enlaces internos:", len(datos), "· muertos:", len(muertos))
 for d in muertos[:10]:
     print("   MUERTO  #%s  («%s»)" % (d["id"], d["t"][:50]))
 
+# Palabras que no prometen nada por sí solas. «Matriz» u «obligaciones» sí
+# prometen, y estaban aquí: con ellas dentro, un enlace llamado «la matriz de
+# obligaciones entera» no tenía con qué acertar y salía marcado sin serlo.
 VACIAS = {"fase", "apartado", "parte", "anexo", "del", "de", "la", "el", "los", "las",
           "primera", "visita", "manual", "maestro", "plan", "direccion", "marketing",
           "operaciones", "numeros", "centro", "protocolo", "documento", "documentos",
           "otros", "presentacion", "protocolos", "ver", "vease", "aqui", "completo",
-          "puesto", "puestos", "matriz", "obligaciones", "sistema", "mapa", "maestro",
-          "entero", "entera", "sus", "suyo", "este", "esta"}
+          "mapa", "entero", "entera", "sus", "suyo", "este", "esta"}
 
 
 def parecido(texto, titulo, ident):
@@ -115,6 +117,10 @@ REVISADOS = {
     "h-definiciones", "h-cinco", "h-anual", "e-p8", "e-m10", "g-otros-perfiles",
     "g-otros-gtc", "g-otros-continuidad", "g-otros-30dias", "b-pt-6",
     "operaciones", "otros", "primera-visita",
+    # «Manual del puesto, completo» cae en el capítulo de ese puesto, que se
+    # titula con su nombre: Dirección de Clínica, Doctor, Recepción…
+    "c-m-direccion-clinica", "c-m-doctor", "c-m-recepcion",
+    "c-m-rac-responsable-produccion", "c-m-auxiliar", "c-m-higienista",
 }
 
 raros = [d for d in datos if not d.get("err")
