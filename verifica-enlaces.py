@@ -29,15 +29,24 @@ CODIGO = """() => {
       const o = (window.__ORDEN__||[]).filter(x => x[0] === el.dataset.hoja)[0];
       if(o) tit = o[3];
     }
-    if(!tit && /^H[1-6]$/.test(el.tagName)) tit = el.textContent;
+    // innerText y no textContent: un titular con un <b> y un <i> dentro
+    // devolvía «02 procedimientosmanual maestro», dos palabras pegadas que no
+    // se parecen a nada.
+    if(!tit && /^H[1-6]$/.test(el.tagName)) tit = el.innerText || el.textContent;
     else if(!tit){
       const h = el.querySelector("h1,h2,h3,h4,h5,h6");
-      if(h) tit = h.textContent;
+      if(h) tit = h.innerText || h.textContent;
       else {
         const hoja = el.closest(".hoja");
-        if(hoja){ const h2 = hoja.querySelector("h1,h2,h3"); if(h2) tit = h2.textContent; }
+        if(hoja){ const h2 = hoja.querySelector("h1,h2,h3");
+                  if(h2) tit = h2.innerText || h2.textContent; }
       }
     }
+    // y lo que el enlace promete puede ser también el rótulo del apartado
+    // en el que aterriza, no solo el titular exacto del punto de llegada
+    const hj = el.closest(".hoja");
+    if(hj){ const o = (window.__ORDEN__||[]).filter(x => x[0] === hj.dataset.hoja)[0];
+            if(o) tit += " " + o[3]; }
     const sec = (el.closest(".sec")||{}).id || "";
     // el nombre de la sección que el propio enlace añade al final no cuenta
     const d = a.querySelector(".salta__d");
@@ -88,12 +97,32 @@ def parecido(texto, titulo, ident):
     pa = [w for w in texto.split() if len(w) > 3 and w not in VACIAS]
     if not pa:
         return True
-    pb = set(w for w in titulo.split() if len(w) > 3)
-    return sum(1 for w in pa if w in pb) >= max(1, (len(pa) + 2) // 3)
+    pb = [w for w in titulo.split() if len(w) > 3]
 
-raros = [d for d in datos if not d.get("err") and not parecido(d["t"], d["tit"], d["id"])]
-print("sospechosos (el texto no se parece al titular del destino):", len(raros))
-for d in sorted(raros, key=lambda x: -len(x["t"]))[:14]:
+    def cabe(w):
+        """«manual» vale por «manuales»: la misma palabra en otro número."""
+        return any(w == s or (w[:4] == s[:4] and (w in s or s in w)) for s in pb)
+
+    # Un rótulo corto tiene que acertar su única palabra con peso; uno largo
+    # basta con que acierte dos: nadie repite un titular entero en un enlace.
+    return sum(1 for w in pa if cabe(w)) >= (1 if len(pa) <= 2 else 2)
+
+# Destinos mirados uno a uno: el enlace acierta, y lo que no se parece es la
+# redacción del titular, que es otra —y eso es lo que hace un documento bien
+# escrito—. Se anotan para que la cuenta que queda sea la de los que no se han
+# mirado nunca, que es la única que importa.
+REVISADOS = {
+    "h-definiciones", "h-cinco", "h-anual", "e-p8", "e-m10", "g-otros-perfiles",
+    "g-otros-gtc", "g-otros-continuidad", "g-otros-30dias", "b-pt-6",
+    "operaciones", "otros", "primera-visita",
+}
+
+raros = [d for d in datos if not d.get("err")
+         and not parecido(d["t"], d["tit"], d["id"])
+         and d["id"] not in REVISADOS]
+print("enlaces sin revisar cuyo texto no se parece al destino:", len(raros),
+      "· %d mirados uno a uno y correctos" % len(REVISADOS))
+for d in sorted(raros, key=lambda x: (x["sec"], x["t"]))[:60]:
     print("   «%s»\n        → #%s [%s] «%s»" % (d["t"][:60], d["id"], d["sec"], d["tit"][:60]))
 print("errores de guion:", errs[:2])
 sys.exit(1 if muertos else 0)

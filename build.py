@@ -51,6 +51,7 @@ DOCUMENTOS = [
     # Cada enlace del sitio, pulsado: que exista el destino y que sea el que
     # el enlace promete. De aquí salieron once anclas cortadas a treinta y
     # cuatro caracteres que no llevaban a ninguna parte.
+    (RAIZ / "verifica-anclas.py", "cada enlace, contra el titular al que llega"),
     (RAIZ / "verifica-enlaces.py", "cada enlace de la web, comprobado"),
 ]
 
