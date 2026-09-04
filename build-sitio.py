@@ -1068,6 +1068,130 @@ def bloque_obligaciones(p, tabla, ancla):
             '</div>' % (len(filas), filas_html, ancla))
 
 
+# ---------------------------------------------------------------------------
+#  Las funciones de un puesto, una a una
+# ---------------------------------------------------------------------------
+#  Quien ocupa un puesto tiene que poder contestar, sin abrir nada, a «¿cuáles
+#  son mis funciones?». Estaban escritas —cada manual de puesto lleva sus
+#  procedimientos numerados, con su objetivo y su indicador— pero había que ir
+#  a buscarlas dentro del capítulo. Aquí salen delante, enumeradas y descritas.
+PROC = re.compile(r'<div class="pr">(.*?)</div>\s*</div>', re.S)
+PR_CAB = re.compile(r'<span class="pr__code">(.*?)</span>\s*'
+                    r'<span class="pr__title">(.*?)</span>'
+                    r'(?:\s*<span class="pr__meta">(.*?)</span>)?', re.S)
+OBJETIVO = re.compile(r"<strong>\s*Objetivo:?\s*</strong>(.*?)</p>", re.S | re.I)
+KPI = re.compile(r"<dt>(.*?)</dt>\s*<dd>(.*?)</dd>", re.S)
+
+
+def procedimientos_de(trozo):
+    """Los procedimientos escritos de un puesto: código, nombre y objetivo."""
+    fuera = []
+    for m in re.finditer(r'<div class="pr">', trozo):
+        bloque = elemento(trozo, m.start())
+        if bloque is None:
+            continue
+        cab = PR_CAB.search(bloque)
+        if not cab:
+            continue
+        obj = OBJETIVO.search(bloque)
+        fuera.append({
+            "codigo": sin_marcas(cab.group(1)),
+            "titulo": sin_marcas(cab.group(2)),
+            "cuando": sin_marcas(cab.group(3) or ""),
+            "objetivo": sin_marcas(obj.group(1)) if obj else "",
+            "kpis": [(sin_marcas(a), sin_marcas(b)) for a, b in KPI.findall(bloque)],
+        })
+    return fuera
+
+
+def mision_de(capitulo):
+    """La misión del puesto: la frase con la que su capítulo se abre."""
+    # La misión no es un titular: es el antetítulo de la caja con la que abre
+    # cada capítulo de puesto —«R.1 · Misión y ámbito»— y lo que sigue.
+    m = re.search(r'<p class="eyebrow">[^<]*Misi[óo]n y [áa]mbito</p>(.*?)</div>',
+                  capitulo, re.S | re.I)
+    if not m:
+        return "", ""
+    parrafos = [sin_marcas(x) for x in re.findall(r"<p[^>]*>(.*?)</p>", m.group(1), re.S)]
+    parrafos = [x for x in parrafos if len(x) > 25]
+    if not parrafos:
+        return "", ""
+    return parrafos[0], " ".join(parrafos[1:])
+
+
+def vanguardia_de(anclas, trozos):
+    """Cada función de vanguardia con la línea que la define."""
+    fuera = []
+    for rotulo, ancla in anclas:
+        cuerpo = trozos.get(ancla, "")
+        m = re.search(r"</h[1-6]>\s*<p[^>]*>(.*?)</p>", cuerpo, re.S)
+        fuera.append((rotulo, sin_marcas(m.group(1)) if m else ""))
+    return fuera
+
+
+def bloque_funciones(p, capitulo, trozos, funciones):
+    """Qué hace este puesto, dicho entero y sin abrir nada."""
+    mision, ambito = mision_de(capitulo)
+    procs = []
+    for rotulo, ancla in p["bloques"]:
+        if "rocedimiento" in rotulo:
+            procs = procedimientos_de(trozos.get(ancla, ""))
+            break
+
+    partes = []
+    if mision:
+        partes.append(
+            '<div class="fun__m">\n'
+            '  <p class="rotulillo">Su misión</p>\n'
+            '  <p class="fun__mf">%s</p>\n%s'
+            '</div>'
+            % (H.escape(mision),
+               ('  <p class="fun__ma">%s</p>\n' % H.escape(ambito)) if ambito else ""))
+
+    if procs:
+        filas = "".join(
+            '<li class="fun__f">\n'
+            '  <span class="fun__c">%s</span>\n'
+            '  <span class="fun__t"><b>%s</b>%s</span>\n'
+            '  <span class="fun__o"><i class="letra">Para</i>%s%s</span>\n'
+            '</li>'
+            % (H.escape(x["codigo"]), H.escape(x["titulo"]),
+               ('<i class="letra">%s</i>' % H.escape(x["cuando"])) if x["cuando"] else "",
+               H.escape(x["objetivo"]),
+               ("".join('<span class="fun__k"><i>%s</i><b>%s</b></span>'
+                        % (H.escape(a), H.escape(b)) for a, b in x["kpis"])
+                if x["kpis"] else ""))
+            for x in procs)
+        partes.append(
+            '<div class="fun">\n'
+            '  <p class="rotulillo">Sus funciones · %d procedimientos escritos</p>\n'
+            '  <p class="fun__q">Esto es lo que hace este puesto, una función por línea, con '
+            'su código, cuándo se ejecuta, para qué sirve y —cuando lo tiene— el número con el '
+            'que se comprueba que se está haciendo. Sale de los procedimientos numerados de su '
+            'propio manual, palabra por palabra.</p>\n'
+            '  <ol class="fun__l">%s</ol>\n'
+            '</div>' % (len(procs), filas))
+
+    if funciones:
+        filas = "".join(
+            '<li class="fun__f fun__f--v">\n'
+            '  <span class="fun__c">%s</span>\n'
+            '  <span class="fun__t"><b>%s</b></span>\n'
+            '  <span class="fun__o"><i class="letra">Qué es</i>%s</span>\n'
+            '</li>' % (H.escape(r.split("·")[0].strip()),
+                       H.escape(r.split("·", 1)[1].strip() if "·" in r else r),
+                       H.escape(q))
+            for r, q in funciones)
+        partes.append(
+            '<div class="fun">\n'
+            '  <p class="rotulillo">Sus funciones de vanguardia · %d</p>\n'
+            '  <p class="fun__q">Lo que este puesto hace y en la mayoría de los centros no se '
+            'hace. Cada una está desarrollada entera más abajo.</p>\n'
+            '  <ol class="fun__l">%s</ol>\n'
+            '</div>' % (len(funciones), filas))
+    return "\n".join(partes)
+
+
 def bloque_protocolos(pre):
     P = PERFILES
     tabla_obliga = obligaciones()
@@ -1122,6 +1246,8 @@ def bloque_protocolos(pre):
             piezas)
 
         funciones = partes_de("manual.html", [a for _r, a in p["vanguardia"]])
+        lista_funciones = bloque_funciones(p, capitulo, trozos,
+                                           vanguardia_de(p["vanguardia"], funciones))
         if p["vanguardia"]:
             vang = grupo_desplegables(
                 "Sus funciones de vanguardia",
@@ -1165,6 +1291,7 @@ def bloque_protocolos(pre):
             '  <p class="rotulillo">Las fases en las que entra, con nombre</p>\n'
             '  <div class="fases-p">%s</div>\n'
             '  %s\n'
+            '  %s\n'
             '  <nav class="puesto__idx" aria-label="Lo que hay de este puesto">%s</nav>\n'
             '  %s\n  %s\n'
             '</article>'
@@ -1178,7 +1305,7 @@ def bloque_protocolos(pre):
                        (str(len(p["vanguardia"])), "funciones de vanguardia")]),
                celdas,
                " · ".join("<b>%s</b> %s" % (k, H.escape(v[0])) for k, v in P.QUE_ES.items()),
-               suyas,
+               suyas, lista_funciones,
                bloque_obligaciones(p, tabla_obliga,
                                    "m-pasa-exactamente-cuando-puesto-no-cumple"),
                indice, manual_puesto, vang))
@@ -1767,6 +1894,124 @@ def sigue(ident, rotulos, cuantos):
             '</div>' % filas)
 
 
+# ---------------------------------------------------------------------------
+#  Qué es cada sección, dicho en tres líneas antes de entrar
+# ---------------------------------------------------------------------------
+#  Un documento largo no asusta por largo: asusta cuando no se sabe qué es,
+#  para quién es ni qué se hace con él. Eso son tres frases, y van delante.
+#  Debajo, la extensión declarada: cuántos apartados, cuántas palabras y
+#  cuánto se tarda en leerlo entero. Declararla es lo que permite no leerlo
+#  entero sin sensación de estar saltándose algo.
+QUE_ES = {
+    "direccion": (
+        "El documento que gobierna. Fija dónde está parado el centro y por qué ahí, qué "
+        "construye la ventaja que un competidor no puede comprar, de dónde sale el dinero y "
+        "qué lo destruye, y termina en quince decisiones que solo puede tomar la Junta.",
+        "Para la Junta y para la Dirección. Quien no decide no necesita leerlo entero; quien "
+        "decide, sí.",
+        "Se lleva a la sesión de Junta. Cada decisión sale de aquí con fecha y con dueño, y "
+        "vuelve aquí cuando se revisa."),
+    "presentacion": (
+        "El Plan de Dirección extraído en cuarenta y tres diapositivas, para conducir una "
+        "sesión de una hora sin leer setenta y nueve páginas en voz alta.",
+        "Para quien presenta, y para quien no pudo estar y quiere saber qué se dijo y en qué "
+        "minuto se dijo.",
+        "Se proyecta. Y aquí, además, se lee: cada diapositiva trae debajo el guion del "
+        "ponente y la respuesta a la pregunta difícil que viene detrás."),
+    "protocolos": (
+        "El sistema visto desde cada uno de los seis puestos: en qué fases del recorrido "
+        "entra, con qué papel, y su manual de puesto entero.",
+        "Para quien ocupa el puesto, y para quien lo va a ocupar el lunes que viene.",
+        "Se abre por el puesto propio y se lee de arriba abajo. Nada de lo que hay aquí "
+        "obliga a ir a buscar otro documento."),
+    "primera-visita": (
+        "Las doce fases de la visita que decide, medidas una a una: ciento veintitrés "
+        "minutos, cinco puestos que se pasan el testigo cinco veces y nueve documentos que "
+        "quedan firmados.",
+        "Para todo el que toca al paciente ese día, y para el paciente que quiere saber qué "
+        "le va a pasar.",
+        "Se sigue fase a fase. La duración no es una estimación: está medida, y la suma es la "
+        "que es."),
+    "operaciones": (
+        "El documento troncal. De la primera llamada al mantenimiento a largo plazo, con los "
+        "seis manuales de puesto, la matriz de responsabilidades y la puesta en marcha.",
+        "Para todo el equipo. Es el documento del que cuelgan los demás.",
+        "Se consulta por fase o por puesto. Cuando algo se discute, se mira aquí antes que en "
+        "ningún otro sitio."),
+    "marketing": (
+        "Setenta y seis acciones sobre doce estados del paciente, cada una con dueño, coste, "
+        "plazo, efecto esperado y el indicador que la delata si no funciona.",
+        "Para quien lleva la captación y para quien aprueba el gasto.",
+        "Se filtra por estado, puesto, coste o plazo, y se ejecuta lo que queda arriba. Una "
+        "acción entra si puede declarar en una línea qué gana el paciente."),
+    "otros": (
+        "Los documentos que sostienen a los tres troncales: los que se firman, los que se "
+        "cuelgan en la pared y los que se rellenan a mano.",
+        "Para quien tiene que dar con el papel exacto, hoy y sin preguntar.",
+        "Se busca el documento, se imprime o se copia, y se usa. Ninguno depende de los "
+        "demás."),
+    "numeros": (
+        "El instrumento de medida: los indicadores que se cuentan mes a mes, los cinco "
+        "números que todavía no se tienen y el puente que lleva de los 720.000 € heredados "
+        "al objetivo del tercer ejercicio.",
+        "Para Dirección y para la Junta, una vez al mes.",
+        "Se rellena una hoja por mes. Sin números propios, cualquier objetivo comercial es "
+        "una opinión bien redactada."),
+}
+
+
+def cuanto_ocupa(piezas, propio=""):
+    """Palabras y minutos de lectura, contados sobre el texto de verdad.
+
+    Cuenta también lo que la sección trae fuera de sus apartados —los manuales
+    de puesto enteros, las cuarenta y tres diapositivas, la tabla de acciones—,
+    porque para quien lee eso también es texto que está ahí.
+    """
+    palabras = sum(len(sin_marcas(p["html"]).split()) for p in piezas)
+    palabras += len(sin_marcas(propio).split())
+    return palabras, max(1, int(round(palabras / 210.0)))
+
+
+def reloj_humano(minutos):
+    if minutos < 60:
+        return "%d minutos" % minutos
+    h, m = divmod(minutos, 60)
+    if not m:
+        return "%d hora%s" % (h, "" if h == 1 else "s")
+    return "%d h %02d min" % (h, m)
+
+
+def que_es(ident, piezas, propio):
+    """Las tres líneas de antes de entrar, y la extensión, declarada."""
+    if ident not in QUE_ES:
+        return ""
+    es, quien, hace = QUE_ES[ident]
+    palabras, minutos = cuanto_ocupa(piezas, propio)
+    # Hay secciones donde el apartado no es la unidad que se lee: la
+    # presentación es un apartado y cuarenta y tres diapositivas, y protocolos
+    # son tres apartados y seis manuales de puesto enteros.
+    cuantos = unidad(ident, {ident: len(piezas)})
+    return ("""
+<div class="lienzo lienzo--que">
+  <div class="que">
+    <div class="que__c"><p class="rotulillo">Qué es</p><p>%s</p></div>
+    <div class="que__c"><p class="rotulillo">Para quién</p><p>%s</p></div>
+    <div class="que__c"><p class="rotulillo">Qué se hace con esto</p><p>%s</p></div>
+  </div>
+  <div class="que__p">
+    <p class="letra">La extensión, declarada</p>
+    <p class="que__x"><b>%s</b> · unas %s palabras · leerlo entero lleva del orden
+      de <b>%s</b>. No hace falta: cada apartado se abre solo y se lee solo, y hay
+      <button type="button" class="enlacillo" data-ir-sec="recorridos">diez recorridos</button>
+      que llevan por lo que toca a cada uno. Pero si quiere leerlo seguido, de la primera
+      línea a la última, está entero aquí abajo.</p>
+    <button type="button" class="bt bt--fino" data-seguido>Leerlo entero, seguido</button>
+  </div>
+</div>
+""" % (H.escape(es), H.escape(quien), H.escape(hace), cuantos,
+       "{:,}".format(palabras).replace(",", "."), reloj_humano(minutos)))
+
+
 def frente(ident, rotulillo, titulo, texto, numero=""):
     """La cabecera de una sección: una banda de imagen a sangre con el rótulo.
 
@@ -1897,6 +2142,7 @@ def monta():
         secciones.append(
             '<section class="sec" id="%s" data-sec="%s">\n'
             '  %s\n'
+            '  %s\n'
             '  <div class="sec__lienzos">%s</div>\n'
             '  <div class="lienzo lienzo--indice">\n'
             '    <div class="lienzo__cab"><h2>Lo que hay en %s</h2>\n'
@@ -1912,6 +2158,7 @@ def monta():
             % (ident, ident,
                frente(ident, "%s · %d apartados" % (H.escape(nombre_doc), len(piezas)),
                       titulo, texto, "%02d" % len(indice)),
+               que_es(ident, piezas, propio),
                propio, H.escape(rotulo.lower()), len(piezas),
                "".join(filas), "\n".join(hojas),
                sigue(ident, rotulos, cuantos)))
@@ -2784,6 +3031,12 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .lector__cuerpo{flex:1;overflow-y:auto;overscroll-behavior:contain}
 .lector__in{max-width:var(--texto);margin:0 auto;padding:calc(var(--aire) * .6) 2rem
   calc(var(--aire) * .9)}
+/* cuando el lector enseña solo un trozo, se dice de qué apartado es */
+.lector__trozo{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;
+  margin:0 0 2.4rem;padding-bottom:1.2rem;border-bottom:1px solid var(--linea)}
+.lector__trozo p{margin:0;color:var(--muted)}
+.lector__trozo b{color:var(--negro);font-weight:400}
+
 /* el punto exacto al que llevaba el enlace, marcado un momento */
 .es-diana{animation:diana 2.4s var(--e) 1}
 @keyframes diana{
@@ -3239,6 +3492,53 @@ body{overflow-x:clip}
 .explica__b > div > b{display:block;font-family:var(--f-mono);font-size:.55rem;
   letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
 
+/* ====================================================================
+   LAS FUNCIONES DE UN PUESTO
+   Quien ocupa un puesto tiene que poder contestar, sin abrir nada, a
+   «¿cuáles son mis funciones?». Aquí están, enumeradas y descritas.
+   ==================================================================== */
+.fun__m{margin-top:3.2rem;border-left:2px solid var(--negro);padding-left:1.8rem;
+  max-width:70ch}
+.fun__mf{margin:0;font-size:clamp(1.05rem,2vw,1.35rem);font-weight:300;line-height:1.5;
+  letter-spacing:-.016em;color:var(--negro)}
+.fun__ma{margin:1.1rem 0 0;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
+.fun{margin-top:3.4rem}
+.fun__q{margin:0 0 2rem;max-width:66ch;font-size:.95rem;line-height:1.85;color:var(--ink-2)}
+.fun__l{list-style:none;margin:0;padding:0;border-top:1px solid var(--negro)}
+.fun__f{display:grid;grid-template-columns:5.4rem minmax(0,1fr) minmax(0,1.25fr);
+  gap:.5rem 2.4rem;padding:1.5rem .2rem;border-bottom:1px solid var(--linea-2);
+  align-items:start}
+.fun__c{font-family:var(--f-mono);font-size:.62rem;color:var(--azul);padding-top:.3rem}
+.fun__t b{display:block;font-size:1rem;font-weight:400;line-height:1.45;color:var(--negro)}
+.fun__t i{display:block;margin-top:.5rem;font-style:normal;font-family:var(--f-mono);
+  font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.fun__o{font-size:.93rem;line-height:1.75;color:var(--ink-2)}
+.fun__o > i{display:block;margin-bottom:.5rem;font-style:normal;color:var(--muted)}
+.fun__k{display:block;margin-top:.7rem;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.06em}
+.fun__k i{font-style:normal;color:var(--muted)}
+.fun__k b{font-weight:400;color:var(--negro);margin-left:.6rem}
+
+/* qué es esto, para quién y qué se hace: tres líneas antes de entrar */
+.lienzo--que{margin-top:calc(var(--aire) * -.35)}
+.que{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0 3.4rem;
+  border-top:1px solid var(--negro);padding-top:1.8rem}
+.que__c p:last-child{margin:.2rem 0 0;font-size:.95rem;line-height:1.85;color:var(--ink-2);
+  max-width:42ch}
+.que__p{margin-top:3rem;padding-top:1.6rem;border-top:1px solid var(--linea-2);
+  display:flex;flex-wrap:wrap;align-items:flex-start;gap:1.4rem 3.4rem}
+.que__p > .letra{flex:none;width:11rem;color:var(--muted);margin:.3rem 0 0}
+.que__x{flex:1;min-width:20rem;max-width:64ch;margin:0;font-size:.95rem;line-height:1.85;
+  color:var(--ink-2)}
+.que__x b{font-weight:400;color:var(--negro)}
+.enlacillo{font:inherit;font-size:inherit;color:var(--azul);background:none;border:0;
+  padding:0;cursor:pointer;border-bottom:1px solid var(--azul-p)}
+.enlacillo:hover{border-color:var(--azul)}
+.bt--fino{flex:none;padding:.8rem 1.4rem;font-size:.58rem}
+.sitio--vivo .sec.es-seguido .hojas{display:block}
+.sec.es-seguido .hoja{border-top:1px solid var(--linea-2);padding-top:2.6rem;
+  margin-top:3.4rem}
+
 @media(max-width:900px){
   /* En el teléfono la barra se parte en dos o tres filas y su alto deja de ser
      un número: por eso aquí las bandas no se meten debajo de ella ni calculan
@@ -3283,6 +3583,8 @@ body{overflow-x:clip}
   .fasep{flex-wrap:wrap}
   .fasep__p{width:100%;padding-left:1.7rem}
   .obliga__f{grid-template-columns:1.8rem minmax(0,1fr);gap:1rem}
+  .fun__f{grid-template-columns:4rem minmax(0,1fr);gap:.6rem 1rem}
+  .fun__o{grid-column:2}
   .obliga__rompe{grid-column:2;padding-left:1rem}
   #sitio .dia .slide{padding:1.4rem 1.2rem}
   .lector__cab{padding:.8rem 1.1rem;height:auto;flex-wrap:wrap}
@@ -3448,9 +3750,53 @@ JS = """
     return true;
   }
 
+  /* ---------------------------------------------------------------- */
+  /*  El trozo que pedía el enlace                                       */
+  /*  Un apartado puede tener catorce fases o veinte procedimientos      */
+  /*  dentro. Llevar al lector al punto exacto y dejarlo caer en mitad   */
+  /*  de un texto no vale: se aterriza sin saber dónde se está. Así que  */
+  /*  se recorta el trozo que el enlace pedía y se enseña ese, con su    */
+  /*  titular arriba del todo y con el apartado entero a un botón.       */
+  /* ---------------------------------------------------------------- */
+  function trozoDe(raiz, ancla){
+    var el = raiz.querySelector('[data-era="' + ancla + '"]');
+    if(!el) return null;
+    if(/^H[1-6]$/.test(el.tagName)){
+      var caja = D.createElement("div");
+      var nivel = parseInt(el.tagName.charAt(1), 10);
+      caja.appendChild(el.cloneNode(true));
+      var n = el.nextElementSibling;
+      while(n){
+        var m = n.tagName.match(/^H([1-6])$/);
+        if(m && parseInt(m[1], 10) <= nivel) break;
+        caja.appendChild(n.cloneNode(true));
+        n = n.nextElementSibling;
+      }
+      return caja.children.length > 1 ? caja : null;
+    }
+    /* No vale contar hijos: una fase entera puede ser un artículo con un solo
+       envoltorio dentro. Lo que decide es si el bloque tiene texto propio
+       suficiente para leerse solo. */
+    var CAJAS = "section,article,figure,table,.pr,.phase,.ap,.callout,.wrap";
+    var bloque = el.matches && el.matches(CAJAS) ? el : el.closest(CAJAS);
+    if(bloque && bloque !== raiz && (bloque.innerText || "").trim().length > 140) return bloque;
+    return null;
+  }
+
+  function tituloDe(el){
+    var h = /^H[1-6]$/.test(el.tagName) ? el : el.querySelector("h1,h2,h3,h4,h5,h6");
+    if(!h && el.firstElementChild) h = el.firstElementChild.querySelector
+      ? el.firstElementChild.querySelector("h1,h2,h3,h4,h5,h6") : null;
+    var t = h ? (h.innerText || h.textContent || "") : "";
+    return t.replace(/\s+/g, " ").trim().slice(0, 80);
+  }
+
+  var viajeClave = "";
+
   function pintaLector(clave, ancla){
     var h = porHoja[clave];
     if(!h) return;
+    viajeClave = clave;
     var copia = h.cloneNode(true);
     /* Se quitan los identificadores de la copia: el original sigue en su
        sección y no puede haber dos elementos con el mismo nombre. */
@@ -3461,10 +3807,26 @@ JS = """
     lecCuerpo.innerHTML = "";
     var caja = D.createElement("div");
     caja.className = "lector__in";
-    caja.appendChild(copia);
+
+    /* si el enlace pedía un trozo, se enseña el trozo, empezando por él */
+    var trozo = ancla && ancla !== clave ? trozoDe(copia, ancla) : null;
+    var suTitulo = "";
+    if(trozo){
+      suTitulo = tituloDe(trozo);
+      var aviso = D.createElement("div");
+      aviso.className = "lector__trozo";
+      aviso.innerHTML = '<p class="letra">Está viendo una parte de <b>'
+        + esc(rotulo(clave)) + "</b></p>"
+        + '<button type="button" class="bt bt--fino" data-lec-entero>Ver el apartado entero</button>';
+      caja.appendChild(aviso);
+      caja.appendChild(trozo.cloneNode(true));
+    } else {
+      caja.appendChild(copia);
+    }
     lecCuerpo.appendChild(caja);
 
-    lecQ.textContent = docDe(clave) + " · " + rotulo(clave);
+    lecQ.textContent = docDe(clave) + " · " + rotulo(clave)
+      + (suTitulo ? " · " + suTitulo : "");
     if(viaje){
       lecPaso.textContent = viaje.nombre + " · " + (viaje.i + 1) + " / " + viaje.claves.length;
       lecBarra.style.width = (100 * (viaje.i + 1) / viaje.claves.length) + "%";
@@ -3496,21 +3858,16 @@ JS = """
     /*  que se pidió: aquí se busca el punto exacto dentro del apartado,  */
     /*  se va a él y se marca un momento para que se vea dónde se está.   */
     /* ---------------------------------------------------------------- */
+    /* Se empieza por arriba. Si se enseña un trozo, arriba es el principio
+       del trozo; si se enseña el apartado entero, el principio del apartado.
+       En ningún caso se cae en mitad de un texto. */
     lecCuerpo.scrollTop = 0;
-    if(ancla && ancla !== clave){
+    if(!trozo && ancla && ancla !== clave){
       var diana = lecCuerpo.querySelector('[data-era="' + ancla + '"]');
       if(diana){
-        [].slice.call(lecCuerpo.querySelectorAll(".es-diana")).forEach(function(x){
-          x.classList.remove("es-diana");
-        });
         diana.classList.add("es-diana");
         var caja2 = lecCuerpo.getBoundingClientRect();
         lecCuerpo.scrollTop += diana.getBoundingClientRect().top - caja2.top - 24;
-        /* y se dice en la cabecera adónde se ha llegado dentro del apartado */
-        var suyo = /^H[1-6]$/.test(diana.tagName)
-          ? diana : diana.querySelector("h1,h2,h3,h4,h5,h6");
-        var dice = suyo && (suyo.innerText || suyo.textContent || "").trim();
-        if(dice) lecQ.textContent += " · " + dice.replace(/\s+/g, " ").slice(0, 70);
       }
     }
     try { history.replaceState(null, "", "#" + (ancla || clave)); } catch(e){}
@@ -3542,6 +3899,11 @@ JS = """
   if(lecCuerpo) lecCuerpo.addEventListener("click", function(e){
     if(e.target.closest("[data-lec-sig]")){ mueveLector(1); return; }
     if(e.target.closest("[data-lec-cierra]")){ cierraLector(); return; }
+    if(e.target.closest("[data-lec-entero]")){
+      var clave = (location.hash || "").slice(1);
+      pintaLector(viajeClave || clave, "");
+      return;
+    }
   });
 
   /* ---------------------------------------------------------------- */
@@ -4047,6 +4409,28 @@ JS = """
       });
     }, {passive: true});
   }
+
+  /* ---------------------------------------------------------------- */
+  /*  Leerlo entero, seguido                                            */
+  /*  Por defecto cada apartado se abre en el lector, que es como se     */
+  /*  consulta. Pero un documento también se lee de la primera línea a   */
+  /*  la última, y eso no puede depender de ir abriendo ciento treinta   */
+  /*  y cinco veces: esto lo despliega entero, en orden, aquí mismo.     */
+  /* ---------------------------------------------------------------- */
+  D.addEventListener("click", function(e){
+    var b = e.target.closest("[data-seguido]");
+    if(!b) return;
+    var sec = b.closest(".sec");
+    if(!sec) return;
+    var abierto = sec.classList.toggle("es-seguido");
+    b.textContent = abierto ? "Volver al índice" : "Leerlo entero, seguido";
+    if(abierto){
+      var h = sec.querySelector(".hojas");
+      if(h) setTimeout(function(){ h.scrollIntoView({block:"start", behavior:"smooth"}); }, 40);
+    } else {
+      b.scrollIntoView({block:"center", behavior:"smooth"});
+    }
+  });
 
   /* ---- arranque ---------------------------------------------------- */
   var h0 = (location.hash || "").slice(1);

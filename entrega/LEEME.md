@@ -49,9 +49,32 @@ exacto que pedía el enlace, lo marca un momento para que se vea, y la cabecera
 lo dice: «Manual Maestro · Las catorce fases del recorrido · **Mantenimiento y
 seguimiento a largo plazo**».
 
+Y no se aterriza en mitad de un texto. Cuando un enlace pide una parte de un
+apartado —«Fase 14» dentro de las catorce fases, un procedimiento dentro de un
+capítulo—, el lector **enseña esa parte**, empezando por su titular, con una
+línea que dice de qué apartado es y un botón para ver el apartado entero. Se
+llega siempre arriba de lo que se pidió.
+
 La comprobación final no es de código: es de uso. Se abre la página, se pulsan
 **los 548 enlaces de las once secciones, uno a uno**, y se mira dónde se
 aterriza. Ninguno cae fuera de sitio.
+
+## Cada sección, explicada antes de entrar
+
+Las ocho secciones abren igual, y por eso no hay que aprender a leerlas dos
+veces:
+
+1. **Una banda de imagen** con el nombre del documento y una frase de qué es.
+2. **Tres columnas**: *qué es*, *para quién* y *qué se hace con esto*. Tres
+   frases, ni una más.
+3. **La extensión, declarada**: cuántos apartados —o diapositivas, o puestos—,
+   cuántas palabras y cuánto lleva leerlo entero. Está contado sobre el texto
+   que de verdad hay en la página, no estimado: Operaciones son 37.579 palabras
+   y casi tres horas. Declararlo es lo que permite no leerlo entero sin
+   sensación de estar saltándose algo.
+4. **Lo propio de la sección**, el índice completo, y el botón **«Leerlo entero,
+   seguido»**: con independencia de la extensión, el documento se puede leer de
+   la primera línea a la última sin abrir nada.
 
 ## Por dónde se sigue
 
@@ -83,6 +106,25 @@ y, debajo, todo lo que hace falta para pasarla:
 Y cada una de las siete partes abre con **cómo se conduce** —cuántas
 diapositivas, cuántos minutos, en qué orden va y por qué ese orden— y **dónde se
 tuerce**: lo que suele pasar en esa parte de la sesión y cómo se responde.
+
+## Las funciones de cada puesto
+
+Quien ocupa un puesto tiene que poder contestar, sin abrir nada, a «¿cuáles son
+mis funciones?». Estaban escritas —cada manual de puesto lleva sus
+procedimientos numerados— pero había que ir a buscarlas dentro del capítulo.
+Ahora salen delante, en la ficha del puesto:
+
+- **Su misión**, la frase con la que abre su capítulo. Recepción: «Ser el
+  sistema nervioso del centro: todo entra y sale por aquí, y nada se pierde».
+- **Sus funciones, una por línea**, con su código, cuándo se ejecuta, para qué
+  sirve y —cuando lo tiene— el número con el que se comprueba que se está
+  haciendo. Recepción tiene catorce; Doctor, cinco; Dirección, RAC, Auxiliar e
+  Higienista, cuatro cada uno.
+- **Sus funciones de vanguardia**, con la línea que define cada una. Doctor
+  seis, Recepción cinco, Higienista cuatro, Auxiliar tres.
+
+Todo sale de los procedimientos numerados de su propio manual, palabra por
+palabra: aquí se ordena y se enseña, no se resume.
 
 ## Las obligaciones de cada puesto
 
