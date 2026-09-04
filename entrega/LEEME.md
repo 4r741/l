@@ -4,7 +4,7 @@ Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
-| `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y el azul para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 644 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
+| `centro.html` | **La web del centro.** Abre con **una rueda**: un círculo en el centro con el nombre y el lema, y alrededor un círculo por cada sitio al que se puede ir —Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros, Los números, los Recorridos y el Mapa—. Se señala uno y debajo se lee qué hay dentro; se pulsa y se entra. Todo blanco, una línea de un pelo por radio, y nada más. Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y el azul para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 644 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
 | `Giraldo-TODO-EN-UNO-v8.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
 | `Sistema-Documental-Giraldo-v8.0.pdf` | Los mismos ocho documentos encuadernados en 630 páginas, con portada, índice paginado y un marcador por documento. |
 | `Sistema-Documental-Giraldo-v8.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. |
@@ -16,6 +16,39 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## La rueda
+
+La página abre con una sola pantalla en blanco: un círculo en el centro —el
+nombre del centro, el lema y la ciudad— y diez círculos alrededor, uno por
+cada sitio al que se puede ir. Debajo de cada nombre está el número que de
+verdad describe lo que hay dentro: «43 diapositivas» dice más que «1 apartado»,
+y «6 puestos» más que «3 apartados».
+
+Al señalar un círculo se enciende su radio en azul y debajo de la rueda se lee,
+en una línea, qué es esa sección. Al pulsarlo se entra. Se llega con el
+tabulador y se entra con la barra: cada círculo es un botón de verdad. En un
+teléfono la rueda se convierte en los mismos diez círculos en dos columnas, con
+la identidad arriba.
+
+## Cada sección, explicada antes de entrar
+
+Detrás de cada círculo hay una página que empieza siempre igual, y por eso no
+hay que aprender a leerla dos veces:
+
+1. **Una banda de imagen** con el nombre del documento y una frase de qué es.
+2. **Tres columnas**: *qué es*, *para quién* y *qué se hace con esto*. Tres
+   frases, ni una más.
+3. **La extensión, declarada**: cuántos apartados —o diapositivas, o puestos—,
+   cuántas palabras y cuánto lleva leerlo entero. Está contado sobre el texto
+   de verdad que hay en la página, no estimado. Declararlo es lo que permite
+   no leerlo entero sin sensación de estar saltándose algo.
+4. **Lo propio de esa sección**: el reloj de la primera visita, la matriz de
+   los seis puestos con su manual entero, la tabla de las 76 acciones que se
+   filtra, el puente de 720.000 € a 1,2 M€.
+5. **El índice completo**, y debajo el botón **«Leerlo entero, seguido»**: con
+   independencia de la extensión, el documento se puede leer de la primera
+   línea a la última sin abrir nada, en el orden en que está escrito.
 
 ## La imagen
 

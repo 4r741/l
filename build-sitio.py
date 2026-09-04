@@ -20,6 +20,7 @@ recorrerlo.
 import html as H
 import collections
 import json
+import math
 import pathlib
 import re
 import sys
@@ -1410,17 +1411,137 @@ def bloque_presentacion(pre):
 #  sitio distinto y en día o en noche, alternando, para que al bajar por el
 #  sitio se note que se ha cambiado de sitio.
 ARTE = {
-    "direccion":      ("campo",   "0 30 1200 430",   "noche"),
-    "presentacion":   ("campo2",  "0 130 1200 400",  "dia"),
-    "protocolos":     ("anillos", "30 40 640 360",   "noche"),
-    "primera-visita": ("arcos",   "0 110 1200 430",  "dia"),
-    "operaciones":    ("campo",   "260 170 940 360", "noche"),
-    "marketing":      ("trama",   "0 80 1200 430",   "dia"),
-    "otros":          ("campo2",  "180 40 1020 400", "noche"),
-    "numeros":        ("anillos", "0 190 700 400",   "dia"),
-    "recorridos":     ("arcos",   "180 50 940 400",  "noche"),
-    "mapa":           ("arcos",   "0 30 1200 470",   "dia"),
+    "direccion":      ("campo",   "0 30 1200 430"),
+    "presentacion":   ("campo2",  "0 130 1200 400"),
+    "protocolos":     ("anillos", "30 40 640 360"),
+    "primera-visita": ("arcos",   "0 110 1200 430"),
+    "operaciones":    ("campo",   "260 170 940 360"),
+    "marketing":      ("trama",   "0 80 1200 430"),
+    "otros":          ("campo2",  "180 40 1020 400"),
+    "numeros":        ("anillos", "0 190 700 400"),
+    "recorridos":     ("arcos",   "180 50 940 400"),
+    "mapa":           ("arcos",   "0 30 1200 470"),
 }
+
+
+# ---------------------------------------------------------------------------
+#  Qué es cada sección, dicho en tres líneas antes de entrar
+# ---------------------------------------------------------------------------
+#  Un documento largo no asusta por largo: asusta cuando no se sabe qué es,
+#  para quién es ni qué se hace con él. Eso son tres frases, y van delante.
+#  Debajo, la extensión declarada: cuántos apartados, cuántas palabras y
+#  cuánto se tarda en leerlo entero. Declararla es lo que permite no leerlo
+#  entero sin sensación de estar saltándose algo.
+QUE_ES = {
+    "direccion": (
+        "El documento que gobierna. Fija dónde está parado el centro y por qué ahí, qué "
+        "construye la ventaja que un competidor no puede comprar, de dónde sale el dinero y "
+        "qué lo destruye, y termina en quince decisiones que solo puede tomar la Junta.",
+        "Para la Junta y para la Dirección. Quien no decide no necesita leerlo entero; quien "
+        "decide, sí.",
+        "Se lleva a la sesión de Junta. Cada decisión sale de aquí con fecha y con dueño, y "
+        "vuelve aquí cuando se revisa."),
+    "presentacion": (
+        "El Plan de Dirección extraído en cuarenta y tres diapositivas, para conducir una "
+        "sesión de una hora sin leer setenta y nueve páginas en voz alta.",
+        "Para quien presenta, y para quien no pudo estar y quiere saber qué se dijo y en qué "
+        "minuto se dijo.",
+        "Se proyecta. Y aquí, además, se lee: cada diapositiva trae debajo el guion del "
+        "ponente y la respuesta a la pregunta difícil que viene detrás."),
+    "protocolos": (
+        "El sistema visto desde cada uno de los seis puestos: en qué fases del recorrido "
+        "entra, con qué papel, y su manual de puesto entero.",
+        "Para quien ocupa el puesto, y para quien lo va a ocupar el lunes que viene.",
+        "Se abre por el puesto propio y se lee de arriba abajo. Nada de lo que hay aquí "
+        "obliga a ir a buscar otro documento."),
+    "primera-visita": (
+        "Las doce fases de la visita que decide, medidas una a una: ciento veintitrés "
+        "minutos, cinco puestos que se pasan el testigo cinco veces y nueve documentos que "
+        "quedan firmados.",
+        "Para todo el que toca al paciente ese día, y para el paciente que quiere saber qué "
+        "le va a pasar.",
+        "Se sigue fase a fase. La duración no es una estimación: está medida, y la suma es la "
+        "que es."),
+    "operaciones": (
+        "El documento troncal. De la primera llamada al mantenimiento a largo plazo, con los "
+        "seis manuales de puesto, la matriz de responsabilidades y la puesta en marcha.",
+        "Para todo el equipo. Es el documento del que cuelgan los demás.",
+        "Se consulta por fase o por puesto. Cuando algo se discute, se mira aquí antes que en "
+        "ningún otro sitio."),
+    "marketing": (
+        "Setenta y seis acciones sobre doce estados del paciente, cada una con dueño, coste, "
+        "plazo, efecto esperado y el indicador que la delata si no funciona.",
+        "Para quien lleva la captación y para quien aprueba el gasto.",
+        "Se filtra por estado, puesto, coste o plazo, y se ejecuta lo que queda arriba. Una "
+        "acción entra si puede declarar en una línea qué gana el paciente."),
+    "otros": (
+        "Los documentos que sostienen a los tres troncales: los que se firman, los que se "
+        "cuelgan en la pared y los que se rellenan a mano.",
+        "Para quien tiene que dar con el papel exacto, hoy y sin preguntar.",
+        "Se busca el documento, se imprime o se copia, y se usa. Ninguno depende de los "
+        "demás."),
+    "numeros": (
+        "El instrumento de medida: los indicadores que se cuentan mes a mes, los cinco "
+        "números que todavía no se tienen y el puente que lleva de los 720.000 € heredados "
+        "al objetivo del tercer ejercicio.",
+        "Para Dirección y para la Junta, una vez al mes.",
+        "Se rellena una hoja por mes. Sin números propios, cualquier objetivo comercial es "
+        "una opinión bien redactada."),
+}
+
+
+def cuanto_ocupa(piezas, propio=""):
+    """Palabras y minutos de lectura, contados sobre el texto de verdad.
+
+    Cuenta también lo que la sección trae fuera de sus apartados —los manuales
+    de puesto enteros, las cuarenta y tres diapositivas, la tabla de acciones—,
+    porque para quien lee eso también es texto que está ahí.
+    """
+    palabras = sum(len(sin_marcas(p["html"]).split()) for p in piezas)
+    palabras += len(sin_marcas(propio).split())
+    return palabras, max(1, int(round(palabras / 210.0)))
+
+
+def reloj_humano(minutos):
+    if minutos < 60:
+        return "%d minutos" % minutos
+    h, m = divmod(minutos, 60)
+    if not m:
+        return "%d hora%s" % (h, "" if h == 1 else "s")
+    return "%d h %02d min" % (h, m)
+
+
+def que_es(ident, piezas, propio):
+    """Las tres líneas de antes de entrar, y la extensión, declarada."""
+    if ident not in QUE_ES:
+        return ""
+    es, quien, hace = QUE_ES[ident]
+    palabras, minutos = cuanto_ocupa(piezas, propio)
+    # Hay secciones donde el apartado no es la unidad que se lee: la
+    # presentación es un apartado y cuarenta y tres diapositivas, y protocolos
+    # son tres apartados y seis manuales de puesto enteros.
+    cuantos = {"presentacion": "43 diapositivas",
+               "protocolos": "6 puestos, con su manual entero"}.get(
+                   ident, "%d apartado%s" % (len(piezas), "" if len(piezas) == 1 else "s"))
+    return ("""
+<div class="lienzo lienzo--que">
+  <div class="que">
+    <div class="que__c"><p class="rotulillo">Qué es</p><p>%s</p></div>
+    <div class="que__c"><p class="rotulillo">Para quién</p><p>%s</p></div>
+    <div class="que__c"><p class="rotulillo">Qué se hace con esto</p><p>%s</p></div>
+  </div>
+  <div class="que__p">
+    <p class="letra">La extensión, declarada</p>
+    <p class="que__x"><b>%s</b> · unas %s palabras · leerlo entero lleva del orden
+      de <b>%s</b>. No hace falta: cada apartado se abre solo y se lee solo, y hay
+      <button type="button" class="enlacillo" data-ir-sec="recorridos">diez recorridos</button>
+      que llevan por lo que toca a cada uno. Pero si quiere leerlo seguido, de la primera
+      línea a la última, está entero aquí abajo.</p>
+    <button type="button" class="bt bt--fino" data-seguido>Leerlo entero, seguido</button>
+  </div>
+</div>
+""" % (H.escape(es), H.escape(quien), H.escape(hace), cuantos,
+       "{:,}".format(palabras).replace(",", "."), reloj_humano(minutos)))
 
 
 def frente(ident, rotulillo, titulo, texto, numero=""):
@@ -1429,9 +1550,9 @@ def frente(ident, rotulillo, titulo, texto, numero=""):
     Es lo que separa una web de un índice. Debajo empieza el texto; encima,
     solo lo que hace falta para saber dónde se ha entrado.
     """
-    pieza, recorte, modo = ARTE[ident]
+    pieza, recorte = ARTE[ident]
     return (
-        '<header class="frente frente--%s" data-frente>\n'
+        '<header class="frente frente--dia" data-frente>\n'
         '  <div class="frente__i">%s</div>\n'
         '  <div class="frente__c">\n'
         '    %s<p class="letra frente__k">%s</p>\n'
@@ -1439,7 +1560,7 @@ def frente(ident, rotulillo, titulo, texto, numero=""):
         '    <p class="frente__p">%s</p>\n'
         '  </div>\n'
         '</header>'
-        % (modo, imagenes.arte(pieza, recorte),
+        % (imagenes.arte(pieza, recorte),
            ('<span class="frente__n" aria-hidden="true">%s</span>' % numero) if numero else "",
            rotulillo, H.escape(titulo), H.escape(texto)))
 
@@ -1533,6 +1654,7 @@ def monta():
         secciones.append(
             '<section class="sec" id="%s" data-sec="%s">\n'
             '  %s\n'
+            '  %s\n'
             '  <div class="sec__lienzos">%s</div>\n'
             '  <div class="lienzo lienzo--indice">\n'
             '    <div class="lienzo__cab"><h2>Lo que hay en %s</h2>\n'
@@ -1547,6 +1669,7 @@ def monta():
             % (ident, ident,
                frente(ident, "%s · %d apartados" % (H.escape(nombre_doc), len(piezas)),
                       titulo, texto, "%02d" % len(indice)),
+               que_es(ident, piezas, propio),
                propio, H.escape(rotulo.lower()), len(piezas),
                "".join(filas), "\n".join(hojas)))
 
@@ -1798,6 +1921,98 @@ def dibuja_recorridos(mapa):
 SEC_ROTULO = {}
 
 
+# ---------------------------------------------------------------------------
+#  La rueda: una sola pantalla, y todo el sistema alrededor
+# ---------------------------------------------------------------------------
+#  Un índice en columna obliga a leer diez nombres en fila para elegir uno. Una
+#  rueda no: se ve entera de un vistazo, cada cosa está a la misma distancia de
+#  la mano y el centro dice qué es lo que se está señalando. Es blanca, con una
+#  línea de un pelo por radio, y no hay nada más.
+#
+#  Las posiciones se calculan aquí, no en el navegador: sin JavaScript la rueda
+#  sigue estando donde tiene que estar y cada círculo sigue siendo un enlace.
+RUEDA_R = 352.0        # el radio de la órbita, sobre un lienzo de mil
+RUEDA_S = 82.0         # el radio de cada círculo de fuera
+RUEDA_C = 134.0        # el radio del círculo del centro
+
+
+def rueda(indice, total):
+    nodos = [(i, r, n, c) for i, r, n, c in indice]
+    nodos.append(("recorridos", "Recorridos",
+                  "Diez maneras de entrar", len(RECORRIDOS_FIJOS) + len(PERFILES.PERFILES)))
+    nodos.append(("mapa", "El mapa", "Las catorce fases del recorrido", 14))
+
+    # Debajo de cada nombre va el número que de verdad describe lo que hay
+    # dentro, no el número de apartados de todo. «1 apartado» en la
+    # presentación es cierto y no dice nada; «43 diapositivas» sí.
+    CUENTA = {
+        "presentacion": "43 diapositivas",
+        "protocolos": "6 puestos",
+        "primera-visita": "12 fases",
+        "marketing": "%d acciones" % CATALOGO["total"],
+        "recorridos": "10 recorridos",
+        "mapa": "14 fases",
+    }
+
+    QUE = {
+        "recorridos": "Diez recorridos guiados: se elige quién es usted y la web lleva parada "
+                      "por parada por lo que le toca leer.",
+        "mapa": "Las catorce fases del recorrido del paciente, de la primera llamada al "
+                "mantenimiento. Se pulsa una y se abre entera.",
+    }
+
+    piezas, radios = [], []
+    n = len(nodos)
+    for k, (ident, rotulo, nombre, cuantos) in enumerate(nodos):
+        ang = math.radians(-90 + k * (360.0 / n))
+        cx = 500 + RUEDA_R * math.cos(ang)
+        cy = 500 + RUEDA_R * math.sin(ang)
+        # el radio va del borde del círculo del centro al borde del de fuera
+        radios.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
+                      'data-radio="%s"/>'
+                      % (500 + RUEDA_C * math.cos(ang), 500 + RUEDA_C * math.sin(ang),
+                         500 + (RUEDA_R - RUEDA_S) * math.cos(ang),
+                         500 + (RUEDA_R - RUEDA_S) * math.sin(ang), ident))
+        piezas.append(
+            '<button type="button" class="orbe" data-ir-sec="%s" data-orbe="%s"\n'
+            '        style="left:%.2f%%;top:%.2f%%"\n'
+            '        data-que="%s">\n'
+            '  <span class="orbe__n letra">%02d</span>\n'
+            '  <b class="orbe__r">%s</b>\n'
+            '  <span class="orbe__m letra">%s</span>\n'
+            '</button>'
+            % (ident, ident, cx / 10.0, cy / 10.0,
+               H.escape(QUE.get(ident) or INTROS[ident][1].split(". ")[0] + "."),
+               k + 1, H.escape(rotulo),
+               CUENTA.get(ident) or ("%d apartados" % cuantos)))
+
+    return ("""
+<div class="ruedero">
+<div class="rueda" data-rueda>
+  <svg class="rueda__l" viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
+    <circle cx="500" cy="500" r="@ORB@" class="rueda__o"/>
+    <g class="rueda__r">@RADIOS@</g>
+  </svg>
+
+  <div class="rueda__c">
+    <p class="letra rueda__k">Centro de Excelencia<br>Implantológica Giraldo</p>
+    <p class="rueda__m">No medias<em>sonrisas</em></p>
+    <p class="letra rueda__h">Vigo</p>
+  </div>
+
+  @ORBES@
+</div>
+<p class="rueda__q" id="ruedaq" role="status">@APARTADOS@ apartados, ocho documentos y catorce
+  fases, en esta misma página. Señale un círculo para saber qué hay dentro; púlselo para entrar.</p>
+</div>
+<p class="rueda__pie letra">Rúa Bolivia nº 2 · Vigo · Uso interno y confidencial ·
+  Versión @VERSION@</p>
+""".replace("@RADIOS@", "".join(radios))
+   .replace("@ORBES@", "\n".join(piezas))
+   .replace("@ORB@", "%.0f" % RUEDA_R)
+   .replace("@APARTADOS@", str(total)))
+
+
 def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
     hechos = "".join(
         '<div class="hecho"><b>%s</b><span class="letra">%s</span><p>%s</p></div>'
@@ -1818,13 +2033,16 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
     return """
 <section class="sec" id="inicio" data-sec="inicio">
 
+  @@RUEDA@@
+
   <div class="portada" data-frente>
     <div class="portada__i">@@ARTE@@</div>
     <div class="portada__c">
-      <p class="letra portada__k">Centro de Excelencia Implantológica Giraldo · Vigo</p>
+      <p class="letra portada__k">Lo que hay detrás de la rueda</p>
       <h1>No medias<br><em>sonrisas</em></h1>
       <p class="portada__l">Le devolvemos su sonrisa completa, en el menor tiempo posible,
-        y le cuidamos para siempre.</p>
+        y le cuidamos para siempre. Todo lo que sigue explica cómo se cumple esa frase, y
+        quién responde de cada parte.</p>
       <div class="portada__b">
         <button type="button" class="bt bt--fuerte" data-ir-sec="recorridos">Elegir un recorrido</button>
         <button type="button" class="bt" data-ir-sec="mapa">Ver el mapa</button>
@@ -1913,7 +2131,8 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
   </div>
 
 </section>
-""".replace("@@ARTE@@", imagenes.arte("campo", "0 0 1200 600", "arte--hero")) \
+""".replace("@@RUEDA@@", rueda(indice, total)) \
+   .replace("@@ARTE@@", imagenes.arte("campo", "0 0 1200 600", "arte--hero")) \
    .replace("@@ARTE2@@", imagenes.arte("trama", "150 60 900 480")) \
    .replace("@@ARTE3@@", imagenes.arte("campo2", "0 240 1200 360")) \
    .replace("@@TARJETAS@@", tarjetas).replace("@@MAPA@@", mapa_svg) \
@@ -2681,38 +2900,31 @@ body{overflow-x:clip}
 .arte{display:block;width:100%;height:100%}
 
 /* la portada: a pantalla, como se abre una web y no un documento */
-.portada{position:relative;text-align:left;min-height:min(94vh,60rem);display:flex;
+.portada{position:relative;text-align:left;min-height:min(72vh,44rem);display:flex;
   flex-direction:column;justify-content:center;
-  padding:calc(var(--nav) + 4rem) var(--marco) 5.5rem;
-  background:var(--negro);color:#fff;overflow:hidden;isolation:isolate;
-  margin-top:var(--saca)}
+  padding:var(--aire) var(--marco);
+  background:var(--blanco);color:var(--negro);overflow:hidden;isolation:isolate;
+  margin-top:0}
 .portada__k{margin:0}
 .portada__l{margin-left:0;margin-right:0;font-weight:300}
 .portada__b{justify-content:flex-start}
 .portada__pie{margin-top:0}
-.portada .bt{border-color:rgba(255,255,255,.32);color:#fff}
-.portada .bt:hover{border-color:#fff}
-.portada .bt--fuerte{background:#fff;border-color:#fff;color:var(--negro)}
-.portada .bt--fuerte:hover{background:var(--azul);border-color:var(--azul);color:#fff}
-.portada__i{position:absolute;inset:0;z-index:-2;color:#fff}
+
+.portada__i{position:absolute;inset:0;z-index:-2;color:var(--negro)}
 .portada__i .arte{transform:scale(1.06);transition:transform 1.2s var(--e)}
 .portada::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,rgba(17,17,18,.92) 0,rgba(17,17,18,0) 20%),
-    linear-gradient(105deg,rgba(17,17,18,.94) 0 34%,rgba(17,17,18,.55) 62%,
-    rgba(17,17,18,.30) 100%)}
+  background:linear-gradient(105deg,rgba(255,255,255,.96) 0 34%,rgba(255,255,255,.66) 64%,
+    rgba(255,255,255,.34) 100%)}
 .portada__c{position:relative;max-width:46rem}
-.portada__k{color:rgba(255,255,255,.62)}
-.portada h1{margin:2.2rem 0 0;font-size:clamp(3rem,9vw,7.5rem);font-weight:200;line-height:.92;
-  letter-spacing:-.045em;color:#fff}
+.portada__k{color:var(--muted)}
+.portada h1{margin:2.2rem 0 0;font-size:clamp(2.4rem,6.4vw,5.2rem);font-weight:200;line-height:.94;
+  letter-spacing:-.045em;color:var(--negro)}
 .portada h1 em{font-style:normal;color:var(--azul)}
 .portada__l{margin:2.4rem 0 0;max-width:34ch;font-size:clamp(1rem,1.6vw,1.24rem);
-  line-height:1.75;color:rgba(255,255,255,.78)}
+  line-height:1.75;color:var(--ink-2)}
 .portada__b{margin-top:3.2rem;display:flex;flex-wrap:wrap;gap:1rem}
-.portada__pie{position:absolute;left:var(--marco);bottom:2.2rem;color:rgba(255,255,255,.42)}
-.portada__baja{position:absolute;right:var(--marco);bottom:2.2rem;width:1px;height:3.4rem;
-  background:rgba(255,255,255,.22);overflow:hidden}
-.portada__baja i{position:absolute;inset:0;background:#fff;
-  animation:baja 2.6s var(--e) infinite}
+.portada__pie{position:absolute;left:var(--marco);bottom:2.2rem;color:var(--muted)}
+.portada__baja{display:none}
 @keyframes baja{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
 @media(prefers-reduced-motion:reduce){.portada__baja i{animation:none}}
 
@@ -2722,12 +2934,6 @@ body{overflow-x:clip}
   margin-top:var(--saca);margin-bottom:var(--aire)}
 .frente__i{position:absolute;inset:0;z-index:-2}
 .frente::after{content:"";position:absolute;inset:0;z-index:-1}
-.frente--noche{background:var(--negro);color:#fff}
-.frente--noche .frente__i{color:#fff}
-.frente--noche::after{background:linear-gradient(180deg,rgba(17,17,18,.92) 0,
-    rgba(17,17,18,0) 22%),
-  linear-gradient(100deg,rgba(17,17,18,.93) 0 30%,rgba(17,17,18,.52) 64%,
-  rgba(17,17,18,.26) 100%)}
 .frente--dia{background:var(--blanco);color:var(--negro)}
 .frente--dia .frente__i{color:var(--negro)}
 .frente--dia::after{background:linear-gradient(180deg,rgba(255,255,255,.96) 0,
@@ -2743,15 +2949,11 @@ body{overflow-x:clip}
 .frente__p{margin:1.8rem 0 0;max-width:56ch;font-size:1rem;line-height:1.85;opacity:.82}
 
 /* una banda de la portada puede llevar imagen debajo */
-.banda--noche{position:relative;background:var(--negro);color:#fff;overflow:hidden;
+.banda--noche{position:relative;background:var(--gris);overflow:hidden;
   isolation:isolate;padding:var(--aire) var(--marco)}
-.banda__i{position:absolute;inset:0;z-index:-2;color:#fff;opacity:.3}
+.banda__i{position:absolute;inset:0;z-index:-2;color:var(--negro);opacity:.14}
 .banda--noche::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,var(--negro) 0,rgba(17,17,18,.72) 40%,var(--negro) 100%)}
-.banda--noche h2,.banda--noche .hecho b{color:#fff}
-.banda--noche .letra{color:rgba(255,255,255,.55)}
-.banda--noche .hecho{border-color:rgba(255,255,255,.16)}
-.banda--noche .hecho p{color:rgba(255,255,255,.7)}
+  background:linear-gradient(180deg,var(--gris) 0,rgba(250,250,251,.6) 40%,var(--gris) 100%)}
 .banda--pie{position:relative;overflow:hidden;isolation:isolate;padding:var(--aire) var(--marco) calc(var(--aire) * .7)}
 .banda--pie .banda__i{opacity:.22;color:var(--negro)}
 
@@ -2773,23 +2975,6 @@ body{overflow-x:clip}
   background:var(--gris);opacity:.62;transition:opacity .3s var(--e)}
 .rutacard:hover .rutacard__i{opacity:1;color:var(--azul)}
 
-/* La barra, sobre una banda oscura
-   Mientras la cabecera de imagen ocupa la pantalla, la barra se quita de en
-   medio: transparente y en blanco, como se abre una web. En cuanto la banda
-   pasa, vuelve a ser la barra de siempre. */
-.nav{transition:background .32s var(--e),border-color .32s var(--e)}
-.nav--sobre{background:transparent;border-color:rgba(255,255,255,.14);backdrop-filter:none}
-.nav--claro{background:transparent;border-color:transparent;backdrop-filter:none}
-.nav--sobre .nav__m{color:#fff}
-.nav--sobre .nav__m em,.nav--sobre .abrepal,.nav--sobre .icono{color:rgba(255,255,255,.5)}
-.nav--sobre .nav__l button{color:rgba(255,255,255,.66)}
-.nav--sobre .nav__l button:hover,.nav--sobre .nav__l button.es-on{color:#fff}
-.nav--sobre .nav__ruta{color:rgba(255,255,255,.78)}
-.nav--sobre .nav__ruta:first-child{color:#fff}
-.nav--sobre .abrepal:hover,.nav--sobre .icono:hover:not(:disabled){color:#fff}
-.nav--sobre .nav__sep{background:rgba(255,255,255,.2)}
-.nav--sobre .nav__l button::after{background:#fff}
-
 /* que aparezcan al llegar, no de golpe */
 [data-frente]{--sube:1}
 .sitio--vivo [data-frente]:not(.es-ve) .frente__c,
@@ -2803,6 +2988,89 @@ body{overflow-x:clip}
   .sitio--vivo [data-frente]:not(.es-ve) .banda__c{opacity:1;transform:none}
 }
 
+/* ====================================================================
+   LA RUEDA
+   Una sola pantalla, blanca, y el sistema entero alrededor. El centro
+   dice dónde está uno; cada círculo, adónde lleva. Nada más.
+   ==================================================================== */
+.ruedero{min-height:calc(100svh - var(--nav));display:grid;place-items:center;
+  align-content:center;margin-top:var(--saca);padding:calc(var(--nav) + 2rem) 0 2.4rem}
+.rueda{position:relative;width:min(64vmin,41rem);aspect-ratio:1;margin:0 auto;
+  isolation:isolate}
+.rueda__l{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.rueda__o{fill:none;stroke:var(--linea);stroke-width:1}
+.rueda__r line{stroke:var(--linea);stroke-width:1;
+  transition:stroke .3s var(--e),stroke-width .3s var(--e)}
+.rueda__r line.es-ve{stroke:var(--azul);stroke-width:1.6}
+
+.rueda__c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:28%;aspect-ratio:1;border-radius:50%;border:1px solid var(--negro);
+  background:var(--blanco);display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:1.2rem;z-index:2}
+.rueda__k{font-size:.46rem;letter-spacing:.22em;color:var(--muted);line-height:1.8}
+.rueda__m{margin:1rem 0 0;font-size:clamp(1rem,2.4vmin,1.55rem);font-weight:300;
+  line-height:1.14;letter-spacing:-.03em;color:var(--negro)}
+.rueda__m em{display:block;font-style:normal;color:var(--azul)}
+.rueda__h{margin:1rem 0 0;font-size:.46rem;letter-spacing:.28em;color:var(--muted)}
+.rueda__q{margin:2.2rem auto 0;max-width:56ch;text-align:center;font-size:.94rem;
+  line-height:1.8;color:var(--ink-2);min-height:5.4em;
+  transition:color .3s var(--e)}
+.rueda__q b{font-weight:400;color:var(--negro)}
+
+.orbe{position:absolute;transform:translate(-50%,-50%);width:17.4%;aspect-ratio:1;
+  border-radius:50%;border:1px solid var(--linea);background:var(--blanco);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.35rem;padding:.6rem;text-align:center;font:inherit;cursor:pointer;z-index:2;
+  transition:border-color .3s var(--e),transform .35s var(--e),box-shadow .35s var(--e)}
+.orbe__n{font-size:.44rem;letter-spacing:.2em;color:var(--muted)}
+.orbe__r{font-size:clamp(.62rem,1.34vmin,.88rem);font-weight:400;line-height:1.2;
+  color:var(--negro);letter-spacing:-.01em}
+.orbe__m{font-size:.42rem;letter-spacing:.16em;color:var(--muted)}
+.orbe:hover,.orbe:focus-visible,.orbe.es-ve{border-color:var(--azul);
+  transform:translate(-50%,-50%) scale(1.07);
+  box-shadow:0 1px 2px rgba(17,17,18,.04),0 14px 30px -18px rgba(17,17,18,.35)}
+.orbe:hover .orbe__r,.orbe:focus-visible .orbe__r,.orbe.es-ve .orbe__r{color:var(--azul)}
+.orbe:focus-visible{outline:none}
+.rueda__pie{text-align:center;margin:2.6rem 0 0;color:var(--muted)}
+.ruedero + .portada{margin-top:0;border-top:1px solid var(--linea-2)}
+
+@media(max-width:820px){
+  /* En una pantalla estrecha una rueda de diez es ilegible: los mismos diez
+     círculos, en dos columnas, y el centro arriba. */
+  .rueda{width:100%;aspect-ratio:auto;display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+  .rueda__l{display:none}
+  .rueda__c{position:static;transform:none;width:auto;aspect-ratio:auto;
+    border-radius:1.6rem;grid-column:1/-1;padding:2.4rem 1.6rem;margin-bottom:.6rem}
+  .rueda__k{font-size:.5rem;max-width:none}
+  .rueda__m{font-size:1.7rem}
+  .rueda__q{font-size:.82rem;max-width:34ch;min-height:0}
+  .orbe{position:static;transform:none;width:auto;aspect-ratio:1;padding:1rem}
+  .orbe:hover,.orbe:focus-visible{transform:scale(1.02)}
+  .orbe__n,.orbe__m{font-size:.5rem}
+  .orbe__r{font-size:.86rem}
+}
+
+/* qué es esto, para quién y qué se hace: tres líneas antes de entrar */
+.lienzo--que{margin-top:calc(var(--aire) * -.35)}
+.que{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0 3.4rem;
+  border-top:1px solid var(--negro);padding-top:1.8rem}
+.que__c p:last-child{margin:.2rem 0 0;font-size:.95rem;line-height:1.85;color:var(--ink-2);
+  max-width:42ch}
+.que__p{margin-top:3rem;padding-top:1.6rem;border-top:1px solid var(--linea-2);
+  display:flex;flex-wrap:wrap;align-items:flex-start;gap:1.4rem 3.4rem}
+.que__p > .letra{flex:none;width:11rem;color:var(--muted);margin:.3rem 0 0}
+.que__x{flex:1;min-width:20rem;max-width:64ch;margin:0;font-size:.95rem;line-height:1.85;
+  color:var(--ink-2)}
+.que__x b{font-weight:400;color:var(--negro)}
+.enlacillo{font:inherit;font-size:inherit;color:var(--azul);background:none;border:0;
+  padding:0;cursor:pointer;border-bottom:1px solid var(--azul-p)}
+.enlacillo:hover{border-color:var(--azul)}
+.bt--fino{flex:none;padding:.8rem 1.4rem;font-size:.58rem}
+.sitio--vivo .sec.es-seguido .hojas{display:block}
+.sec.es-seguido .hoja{border-top:1px solid var(--linea-2);padding-top:2.6rem;
+  margin-top:3.4rem}
+
 @media(max-width:900px){
   /* En el teléfono la barra se parte en dos o tres filas y su alto deja de ser
      un número: por eso aquí las bandas no se meten debajo de ella ni calculan
@@ -2814,14 +3082,6 @@ body{overflow-x:clip}
   .frente{min-height:auto;padding:3.6rem 1.6rem 2.6rem;margin-bottom:calc(var(--aire) * .8)}
   .frente h1{font-size:clamp(1.7rem,7vw,2.3rem)}
   .banda--noche,.banda--pie{padding-left:1.6rem;padding-right:1.6rem}
-  .nav--sobre,.nav--claro{background:rgba(255,255,255,.94);border-color:var(--linea-2);
-    backdrop-filter:saturate(1.4) blur(12px)}
-  .nav--sobre .nav__m{color:var(--negro)}
-  .nav--sobre .nav__m em,.nav--sobre .abrepal,.nav--sobre .icono{color:var(--muted)}
-  .nav--sobre .nav__l button{color:var(--ink-2)}
-  .nav--sobre .nav__ruta{color:var(--negro)}
-  .nav--sobre .nav__sep{background:var(--linea)}
-  .nav--sobre .nav__l button::after{background:var(--azul)}
   .nav__f{flex-wrap:wrap;height:auto;padding:.8rem 1.1rem;gap:.6rem 1rem}
   .nav__m{flex:1 1 auto}
   .nav__l{order:3;flex:1 0 100%;min-width:100%;height:2.6rem;justify-content:flex-start}
@@ -2964,7 +3224,6 @@ JS = """
     });
     memo.sec = s.dataset.sec; recuerda();
     if(arriba !== false) window.scrollTo(0, 0);
-    if(typeof pintaBarra === "function") pintaBarra();
     return s;
   }
 
@@ -3542,23 +3801,6 @@ JS = """
     bandas.forEach(function(b){ b.classList.add("es-ve"); });
   }
 
-  /* la barra se aparta mientras la banda oscura ocupa la pantalla */
-  var barra = D.querySelector(".nav");
-  function pintaBarra(){
-    if (!barra) return;
-    var sec = D.querySelector(".sec.es-on");
-    var banda = sec && sec.querySelector(".portada, .frente");
-    var alto = barra.getBoundingClientRect().height;
-    var encima = !!banda && banda.getBoundingClientRect().bottom > alto + 10
-                 && paneles.hidden;
-    var noche = !!banda && !banda.classList.contains("frente--dia");
-    barra.classList.toggle("nav--sobre", encima && noche);
-    barra.classList.toggle("nav--claro", encima && !noche);
-  }
-  window.addEventListener("scroll", pintaBarra, {passive: true});
-  window.addEventListener("resize", pintaBarra);
-  D.addEventListener("click", function(){ setTimeout(pintaBarra, 60); });
-
   var quieto = window.matchMedia("(prefers-reduced-motion: reduce)");
   var dibujo = D.querySelector(".portada__i .arte");
   if (dibujo && !quieto.matches) {
@@ -3574,12 +3816,61 @@ JS = """
     }, {passive: true});
   }
 
+  /* ---------------------------------------------------------------- */
+  /*  La rueda                                                          */
+  /*  Al señalar un círculo se enciende su radio y debajo se lee qué    */
+  /*  hay dentro. Al quitar el dedo vuelve la frase de siempre.         */
+  /* ---------------------------------------------------------------- */
+  var ruedaQ = D.getElementById("ruedaq");
+  var ruedaDicho = ruedaQ ? ruedaQ.innerHTML : "";
+  function pintaRueda(id, texto){
+    [].slice.call(D.querySelectorAll(".rueda__r line")).forEach(function(l){
+      l.classList.toggle("es-ve", l.dataset.radio === id);
+    });
+    [].slice.call(D.querySelectorAll(".orbe")).forEach(function(o){
+      o.classList.toggle("es-ve", o.dataset.orbe === id);
+    });
+    if (ruedaQ) ruedaQ.innerHTML = texto || ruedaDicho;
+  }
+  [].slice.call(D.querySelectorAll(".orbe")).forEach(function(o){
+    var dentro = function(){
+      pintaRueda(o.dataset.orbe,
+                 "<b>" + o.querySelector(".orbe__r").textContent + ".</b> " + o.dataset.que);
+    };
+    var fuera = function(){ pintaRueda("", ""); };
+    o.addEventListener("mouseenter", dentro);
+    o.addEventListener("focus", dentro);
+    o.addEventListener("mouseleave", fuera);
+    o.addEventListener("blur", fuera);
+  });
+
+  /* ---------------------------------------------------------------- */
+  /*  Leerlo entero, seguido                                            */
+  /*  Por defecto cada apartado se abre en el lector, que es como se     */
+  /*  consulta. Pero un documento también se lee de la primera línea a   */
+  /*  la última, y eso no puede depender de ir abriendo ciento treinta   */
+  /*  y cinco veces: esto lo despliega entero, en orden, aquí mismo.     */
+  /* ---------------------------------------------------------------- */
+  D.addEventListener("click", function(e){
+    var b = e.target.closest("[data-seguido]");
+    if(!b) return;
+    var sec = b.closest(".sec");
+    if(!sec) return;
+    var abierto = sec.classList.toggle("es-seguido");
+    b.textContent = abierto ? "Volver al índice" : "Leerlo entero, seguido";
+    if(abierto){
+      var h = sec.querySelector(".hojas");
+      if(h) setTimeout(function(){ h.scrollIntoView({block:"start", behavior:"smooth"}); }, 40);
+    } else {
+      b.scrollIntoView({block:"center", behavior:"smooth"});
+    }
+  });
+
   /* ---- arranque ---------------------------------------------------- */
   var h0 = (location.hash || "").slice(1);
   if(h0 && secs.some(function(s){ return s.dataset.sec === h0; })) veSec(h0, false);
   else { veSec(memo.sec || "inicio", false); if(h0) abreDestino(h0); }
   dibujaAvance();
-  pintaBarra();
 })();
 </script>
 """
