@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v8.0
+# Entrega · Sistema documental Giraldo v9.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
-| `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 644 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v8.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v8.0.pdf` | Los mismos ocho documentos encuadernados en 630 páginas, con portada, índice paginado y un marcador por documento. |
-| `Sistema-Documental-Giraldo-v8.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. |
+| `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
+| `Giraldo-TODO-EN-UNO-v9.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v9.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v9.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,56 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## Los cuatro archivos, enlace a enlace
+
+La versión 8 comprobaba los enlaces de un archivo de los cuatro. Los otros tres
+no los había mirado nadie, y tenían dos defectos de bulto:
+
+**El PDF llevaba 264 enlaces al disco de la máquina que lo compiló.** Cada
+documento se escribió para vivir junto a sus hermanos en una carpeta, y sus
+referencias cruzadas —«véase la Fase 14», «la matriz RACI»— son enlaces a esos
+archivos. Al encuadernar los ocho documentos en un solo cuaderno, esos enlaces
+seguían apuntando a `file:///home/…/manual.html`: en el ordenador de cualquier
+otro lector, no abren nada. Ahora los 264 son saltos internos del cuaderno y
+caen en la página exacta: «la matriz RACI» va a la página 285, «Fase 07» a la
+420. Y el cuaderno tenía ocho marcadores para 631 páginas —uno por documento—:
+ahora tiene 128, uno por apartado, y se navega desde el panel del lector de PDF
+sin hojear.
+
+**El Word no tenía ni un enlace.** Ni un marcador. En un documento de
+seiscientas páginas, «véase la Fase 14» era texto muerto: había que buscarla a
+mano. Ahora lleva 748 marcadores y 278 saltos internos, y ninguno se queda sin
+destino: lo que en la web es un enlace, en el Word es un salto, y lo que no
+puede resolverse se queda en texto antes que llevar a ninguna parte.
+
+**El archivo único tenía enlaces que existían y aun así no llevaban a nada.**
+Mete los nueve documentos en la misma página y solo enseña uno; dentro de un
+documento, además, hay cosas plegadas. Pulsar «Doctor · Su manual de puesto» en
+el índice cambiaba de documento pero dejaba delante la ficha de Dirección, de
+modo que el lector pulsaba y no se movía nada. Ahora, antes de ir a un sitio, se
+abre lo que lo tapa: la ficha del puesto que toca, el desplegable cerrado, el
+documento que no estaba abierto.
+
+Las cuatro comprobaciones se ejecutan en cada construcción y paran el sistema si
+fallan:
+
+| Archivo | Qué se comprueba | Cómo |
+| --- | --- | --- |
+| `centro.html` | Los enlaces de las once secciones, pulsados uno a uno | `verifica-anclas.py` y `verifica-enlaces.py` |
+| `Giraldo-TODO-EN-UNO` | Los enlaces de los nueve documentos, pulsados uno a uno con el documento abierto | `verifica-unico.py` |
+| El PDF | Ni un enlace al disco de nadie; todo salto cae en una página que existe | `verifica-libro.py` |
+| El Word | XML bien formado, todo hipervínculo con su marcador | `verifica-libro.py` |
+
+## La entrega se construye sola
+
+La carpeta se venía copiando a mano, y una copia a mano se olvida: en la versión
+8 se entregó un `centro.html` que pedía las tipografías a Google al abrirse, de
+modo que el archivo anunciado como «doble clic y funciona sin conexión» se veía
+con otra letra en una sala sin red. Ahora la entrega la arma `build-entrega.py`,
+que incrusta las tipografías y no deja salir nada que apunte al disco de esta
+máquina, que pida algo a la red, que lleve otra versión o que nombre lo que no
+puede nombrarse.
 
 ## Los enlaces
 
@@ -56,8 +106,9 @@ línea que dice de qué apartado es y un botón para ver el apartado entero. Se
 llega siempre arriba de lo que se pidió.
 
 La comprobación final no es de código: es de uso. Se abre la página, se pulsan
-**los 548 enlaces de las once secciones, uno a uno**, y se mira dónde se
-aterriza. Ninguno cae fuera de sitio.
+**los 691 enlaces de las once secciones, uno a uno**, y se mira dónde se
+aterriza. Ninguno cae fuera de sitio. En el archivo único son **1.117**, y
+también se pulsan todos, con cada documento abierto.
 
 ## Cada sección, explicada antes de entrar
 

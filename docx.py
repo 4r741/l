@@ -25,14 +25,22 @@ NS = ('xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
 
 
 class Trozo:
-    """Un fragmento de texto con su forma."""
+    """Un fragmento de texto con su forma.
 
-    def __init__(self, texto, negrita=False, cursiva=False, mono=False, apagado=False):
+    «destino» es el nombre del marcador al que salta el fragmento. Un documento
+    de seiscientas páginas en el que «véase la Fase 14» es texto muerto obliga a
+    buscar a mano lo que el original resolvía con un clic; con destino, Word lo
+    convierte en un salto interno de verdad.
+    """
+
+    def __init__(self, texto, negrita=False, cursiva=False, mono=False,
+                 apagado=False, destino=None):
         self.texto = texto
         self.negrita = negrita
         self.cursiva = cursiva
         self.mono = mono
         self.apagado = apagado
+        self.destino = destino
 
     def xml(self):
         f = []
@@ -44,6 +52,8 @@ class Trozo:
             f.append('<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas"/>')
         if self.apagado:
             f.append('<w:color w:val="6B7873"/>')
+        if self.destino:
+            f.append('<w:rStyle w:val="Salto"/>')
         props = "<w:rPr>%s</w:rPr>" % "".join(f) if f else ""
         # xml:space para que no se coman los espacios de los extremos
         return ('<w:r>%s<w:t xml:space="preserve">%s</w:t></w:r>'
@@ -51,35 +61,76 @@ class Trozo:
 
 
 def _runs(trozos):
-    return "".join(t.xml() for t in trozos if t.texto)
+    """Los fragmentos, agrupando en un solo salto los que van al mismo sitio.
+
+    Word quiere el hipervínculo envolviendo los runs, no dentro de cada uno; si
+    se abre y se cierra por fragmento, un enlace de tres palabras sale partido
+    en tres enlaces.
+    """
+    salida, grupo, destino = [], [], None
+
+    def cierra():
+        if not grupo:
+            return
+        dentro = "".join(t.xml() for t in grupo)
+        if destino:
+            salida.append('<w:hyperlink w:anchor="%s" w:history="1">%s</w:hyperlink>'
+                          % (escape(destino, {'"': "&quot;"}), dentro))
+        else:
+            salida.append(dentro)
+        grupo.clear()
+
+    for t in trozos:
+        if not t.texto:
+            continue
+        if t.destino != destino:
+            cierra()
+            destino = t.destino
+        grupo.append(t)
+    cierra()
+    return "".join(salida)
 
 
 class Documento:
     def __init__(self, titulo="", autor="", asunto=""):
         self.cuerpo = []
         self.imagenes = []
+        self.marcador = 0
         self.titulo, self.autor, self.asunto = titulo, autor, asunto
 
     # ---------------------------------------------------------------- bloques
-    def parrafo(self, trozos, estilo=None, espacio=True):
+    def _marcas(self, anclas):
+        """Los marcadores que abren y cierran justo antes del texto del bloque."""
+        if not anclas:
+            return ""
+        trozos = []
+        for nombre in anclas:
+            self.marcador += 1
+            trozos.append('<w:bookmarkStart w:id="%d" w:name="%s"/>'
+                          '<w:bookmarkEnd w:id="%d"/>'
+                          % (self.marcador, escape(nombre, {'"': "&quot;"}), self.marcador))
+        return "".join(trozos)
+
+    def parrafo(self, trozos, estilo=None, espacio=True, anclas=()):
         p = []
         if estilo:
             p.append('<w:pStyle w:val="%s"/>' % estilo)
         if not espacio:
             p.append('<w:spacing w:after="0"/>')
         props = "<w:pPr>%s</w:pPr>" % "".join(p) if p else ""
-        self.cuerpo.append("<w:p>%s%s</w:p>" % (props, _runs(trozos)))
+        self.cuerpo.append("<w:p>%s%s%s</w:p>"
+                           % (props, self._marcas(anclas), _runs(trozos)))
 
-    def titular(self, nivel, trozos):
-        self.cuerpo.append('<w:p><w:pPr><w:pStyle w:val="Titular%d"/></w:pPr>%s</w:p>'
-                           % (min(nivel, 5), _runs(trozos)))
+    def titular(self, nivel, trozos, anclas=()):
+        self.cuerpo.append('<w:p><w:pPr><w:pStyle w:val="Titular%d"/></w:pPr>%s%s</w:p>'
+                           % (min(nivel, 5), self._marcas(anclas), _runs(trozos)))
 
-    def punto(self, trozos, ordenada=False, nivel=0):
+    def punto(self, trozos, ordenada=False, nivel=0, anclas=()):
         num = 2 if ordenada else 1
         self.cuerpo.append(
             '<w:p><w:pPr><w:pStyle w:val="Lista"/><w:numPr>'
-            '<w:ilvl w:val="%d"/><w:numId w:val="%d"/></w:numPr></w:pPr>%s</w:p>'
-            % (min(nivel, 2), num, _runs(trozos)))
+            '<w:ilvl w:val="%d"/><w:numId w:val="%d"/></w:numPr></w:pPr>%s%s</w:p>'
+            % (min(nivel, 2), num, self._marcas(anclas), _runs(trozos)))
 
     def cita(self, trozos):
         self.parrafo(trozos, estilo="Cita")
@@ -284,6 +335,8 @@ ESTILOS = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
  + '<w:style w:type="paragraph" w:styleId="Pie"><w:basedOn w:val="Normal"/>'
    '<w:pPr><w:jc w:val="center"/><w:spacing w:after="220"/></w:pPr>'
    '<w:rPr><w:color w:val="6B7873"/><w:sz w:val="18"/></w:rPr></w:style>'
+ + '<w:style w:type="character" w:styleId="Salto"><w:name w:val="Hyperlink"/>'
+   '<w:rPr><w:color w:val="1F3F8C"/><w:u w:val="single"/></w:rPr></w:style>'
  + '<w:style w:type="paragraph" w:styleId="Celda"><w:basedOn w:val="Normal"/>'
    '<w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr>'
    '<w:rPr><w:sz w:val="18"/></w:rPr></w:style>'

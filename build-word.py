@@ -64,8 +64,11 @@ class Bloques(HTMLParser):
     CURSIVA = {"em", "i", "cite", "blockquote"}
     MONO = {"code", "kbd", "samp"}
 
-    def __init__(self):
+    def __init__(self, archivo=""):
         super().__init__(convert_charrefs=True)
+        self.archivo = archivo     # de qué documento salen las anclas de aquí
+        self.pendientes = []       # identificadores vistos aún sin bloque al que pegarse
+        self.enlaces = []          # pila de destinos: un <a> puede envolver a otro
         self.bloques = []
         self.saltando = 0
         self.acumula = None        # trozos del bloque en curso
@@ -91,7 +94,8 @@ class Bloques(HTMLParser):
             return
         trozos = [t for t in self.acumula if t.texto.strip()]
         if trozos:
-            self.bloques.append((self.tipo, trozos))
+            self.bloques.append((self.tipo, trozos, tuple(self.pendientes)))
+            self.pendientes = []
         self.acumula, self.tipo = None, None
 
     def _abre(self, tipo):
@@ -108,9 +112,19 @@ class Bloques(HTMLParser):
             self.saltando = 1
             return
 
+        d = dict(attrs)
+        # Todo identificador que se cruza queda esperando al siguiente bloque:
+        # es donde el lector espera aterrizar cuando alguien lo enlaza.
+        for clave in ("id", "data-ap"):
+            valor = (d.get(clave) or "").strip()
+            if valor and valor not in self.pendientes:
+                self.pendientes.append(valor)
+        if etiqueta == "a":
+            self.enlaces.append(destino_de(d.get("href", ""), self.archivo))
+
         if etiqueta == "svg":
             self._cierra()
-            self.bloques.append(("figura", None))
+            self.bloques.append(("figura", None, ()))
             self.saltando = 1          # el interior del svg no es texto
             return
         if etiqueta == "figcaption":
@@ -149,6 +163,8 @@ class Bloques(HTMLParser):
         if self.saltando:
             self.saltando -= 1
             return
+        if etiqueta == "a" and self.enlaces:
+            self.enlaces.pop()
         if etiqueta in self.NEGRITA and self.negrita:
             self.negrita -= 1
         if etiqueta in self.CURSIVA and self.cursiva:
@@ -165,7 +181,8 @@ class Bloques(HTMLParser):
             self.fila = None
         elif etiqueta == "table" and self.tabla is not None:
             if self.tabla:
-                self.bloques.append(("tabla", self.tabla))
+                self.bloques.append(("tabla", self.tabla, tuple(self.pendientes)))
+                self.pendientes = []
             self.tabla, self.fila, self.celda = None, None, None
         elif etiqueta in ("ul", "ol"):
             self._cierra()
@@ -181,9 +198,10 @@ class Bloques(HTMLParser):
             if not self.saltando and datos and self.acumula is not None and datos != "\n":
                 self.acumula.append(Trozo(" "))
             return
+        salta = next((x for x in reversed(self.enlaces) if x), None)
         trozo = Trozo(re.sub(r"\s+", " ", datos),
                       negrita=bool(self.negrita), cursiva=bool(self.cursiva),
-                      mono=bool(self.mono))
+                      mono=bool(self.mono), destino=salta)
         if self.celda is not None:
             self.celda.append(trozo)
         elif self.acumula is not None:
@@ -198,12 +216,56 @@ class Bloques(HTMLParser):
         return self.bloques
 
 
+def destino_de(href, archivo):
+    """De un href del sistema a la pareja (documento, ancla), o None.
+
+    En la web, «véase la Fase 14» es un enlace; al pasar a Word era texto plano
+    y el lector tenía que buscar a mano en seiscientas páginas. Aquí se traduce:
+    un «#m14» apunta al mismo documento, un «manual.html#m14» al Manual, y un
+    «manual.html» a secas al principio del Manual.
+    """
+    href = (href or "").strip()
+    if not href or href.startswith(("http:", "https:", "mailto:", "tel:", "javascript:")):
+        return None
+    if href.startswith("#"):
+        return (archivo, href[1:]) if len(href) > 1 else None
+    camino, _, ancla = href.partition("#")
+    if not camino.endswith(".html"):
+        return None
+    return (camino.rsplit("/", 1)[-1], ancla)
+
+
+def nombre_marca(clave, registro):
+    """Un nombre de marcador que Word admita, estable y sin colisiones.
+
+    Word solo acepta letras, dígitos y subrayado, hasta cuarenta caracteres y
+    empezando por letra; las anclas del sistema llevan guiones y algunas pasan
+    de cuarenta. Se normaliza y se numera si dos distintas caen en el mismo
+    nombre, para que ningún enlace acabe en el apartado de otro.
+    """
+    if clave in registro:
+        return registro[clave]
+    archivo, ancla = clave
+    crudo = "%s_%s" % (archivo.replace(".html", ""), ancla or "inicio")
+    limpio = re.sub(r"[^A-Za-z0-9]", "_", crudo).strip("_") or "ancla"
+    if not limpio[0].isalpha():
+        limpio = "a" + limpio
+    limpio = limpio[:36]
+    usados = set(registro.values())
+    nombre, n = limpio, 1
+    while nombre in usados:
+        n += 1
+        nombre = "%s_%d" % (limpio[:32], n)
+    registro[clave] = nombre
+    return nombre
+
+
 def bloques_de(ruta):
     t = (RAIZ / ruta).read_text(encoding="utf-8")
     m = re.search(r"<main\b[^>]*>(.*?)</main>", t, re.S)
     if not m:
         sys.exit("  %s no tiene <main>" % ruta)
-    b = Bloques()
+    b = Bloques(archivo=ruta.rsplit("/", 1)[-1])
     b.feed(m.group(1))
     return b.cierra()
 
@@ -257,13 +319,50 @@ def main():
     else:
         print("  aviso: sin figuras rasterizadas; ejecute antes python3 figuras-png.py")
 
+    # Se lee todo antes de escribir nada: un enlace del Plan de Dirección apunta
+    # al Manual, que se escribe después, y hasta no haber recorrido las siete
+    # partes no se sabe qué anclas existen de verdad. Prometer un salto a algo
+    # que no está en el archivo es peor que no prometerlo.
+    partido = [(ruta, titulo, que, bloques_de(ruta)) for ruta, titulo, que in PARTES]
+    registro, disponibles = {}, set()
+    for ruta, titulo, _q, bloques in partido:
+        hoja = ruta.rsplit("/", 1)[-1]
+        disponibles.add((hoja, ""))            # el documento entero, por su titular
+        for _tipo, _dato, anclas in bloques:
+            for ancla in anclas:
+                disponibles.add((hoja, ancla))
+    for clave in sorted(disponibles):
+        nombre_marca(clave, registro)
+
+    def marcas(hoja, anclas):
+        return [registro[(hoja, a)] for a in anclas if (hoja, a) in registro]
+
+    prometidos = perdidos = 0
+
+    def resuelve(trozos):
+        """Cambia la pareja (documento, ancla) por el marcador que le toca."""
+        nonlocal prometidos, perdidos
+        for t in trozos:
+            if not t.destino:
+                continue
+            nombre = registro.get(t.destino)
+            if nombre:
+                t.destino = nombre
+                prometidos += 1
+            else:
+                t.destino = None       # antes que llevar a ninguna parte, texto
+                perdidos += 1
+        return trozos
+
     cuenta = {"h": 0, "p": 0, "li": 0, "tabla": 0, "figura": 0}
-    for ruta, titulo, que in PARTES:
+    for ruta, titulo, que, bloques in partido:
+        hoja = ruta.rsplit("/", 1)[-1]
         doc.salto()
-        doc.titular(1, [Trozo(titulo)])
+        doc.titular(1, [Trozo(titulo)], anclas=marcas(hoja, [""]))
         doc.parrafo([Trozo(que)], estilo="Sumario")
         figuras, siguiente = censo.get(ruta, []), 0
-        for tipo, dato in bloques_de(ruta):
+        for tipo, dato, anclas in bloques:
+            puestas = marcas(hoja, anclas)
             if tipo == "figura":
                 if siguiente < len(figuras):
                     f = figuras[siguiente]; siguiente += 1
@@ -272,22 +371,27 @@ def main():
                     cuenta["figura"] += 1
                 continue
             if tipo == "pie":
-                doc.pie(dato)
+                doc.pie(resuelve(dato))
                 continue
             if tipo == "tabla":
+                for fila in dato:
+                    for celda in fila:
+                        resuelve(celda)
+                if puestas:
+                    doc.parrafo([], espacio=False, anclas=puestas)
                 doc.tabla(dato, anchos=anchos(dato))
                 cuenta["tabla"] += 1
             elif tipo.startswith("h"):
-                doc.titular(int(tipo[1]), dato)
+                doc.titular(int(tipo[1]), resuelve(dato), anclas=puestas)
                 cuenta["h"] += 1
             elif tipo == "li":
-                doc.punto(dato)
+                doc.punto(resuelve(dato), anclas=puestas)
                 cuenta["li"] += 1
             elif tipo == "cita":
-                doc.cita(dato)
+                doc.cita(resuelve(dato))
                 cuenta["p"] += 1
             else:
-                doc.parrafo(dato)
+                doc.parrafo(resuelve(dato), anclas=puestas)
                 cuenta["p"] += 1
 
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
@@ -296,6 +400,8 @@ def main():
           "%d tablas · %d figuras"
           % (SALIDA.name, SALIDA.stat().st_size // 1024,
              cuenta["h"], cuenta["p"], cuenta["li"], cuenta["tabla"], cuenta["figura"]))
+    print("     %d marcadores · %d saltos internos · %d referencias que el Word no "
+          "puede resolver y quedan en texto" % (len(registro), prometidos, perdidos))
 
 
 if __name__ == "__main__":

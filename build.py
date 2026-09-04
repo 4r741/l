@@ -58,11 +58,19 @@ DOCUMENTOS = [
 EXTRAS = [
     (RAIZ / "build-libro.py", "instrumentos/…xlsx · libro de cálculo"),
     (RAIZ / "build-export.py", "export/ · HTML autónomo y archivo único"),
+    # Con el archivo único ya escrito: los mil trescientos enlaces, pulsados en
+    # un navegador. Un enlace puede existir y aun así no llevar a ninguna parte
+    # si lo que promete está en un documento cerrado o en una ficha plegada.
+    (RAIZ / "verifica-unico.py", "cada enlace del archivo único, pulsado"),
     (RAIZ / "build-pdf.py", "export/pdf/ · los PDF por documento"),
     (RAIZ / "build-pdf-completo.py", "export/ · el sistema entero en un PDF"),
     (RAIZ / "figuras-png.py", "export/figuras/ · las figuras, para el Word"),
     (RAIZ / "build-word.py", "export/ · el sistema entero en un .docx"),
     (RAIZ / "verifica-word.py", "verificación del documento de Word"),
+    (RAIZ / "verifica-libro.py", "los enlaces del PDF y del Word, comprobados"),
+    # Lo último: la carpeta que se manda. Se arma sola y no sale si algún
+    # archivo apunta al disco de esta máquina o pide algo a la red.
+    (RAIZ / "build-entrega.py", "entrega/ · los cuatro archivos que se mandan"),
 ]
 
 

@@ -751,15 +751,63 @@ SCRIPT = """<script>
     });
   }
 
+  /* ---- abrir el camino hasta lo que se pide ----------------------------
+     Conmutar de documento no basta. Dentro de un documento hay cosas
+     plegadas: la ficha de un puesto que no es el que se ve, un desplegable
+     cerrado. Un enlace del índice a «Su manual de puesto» del Doctor llegaba
+     con la ficha de Dirección delante y no se movía nada. Antes de ir a un
+     sitio se abre lo que lo tapa. */
+  function abrirPaso(el){
+    var movio = false, n = el;
+    while(n && n !== document.body){
+      if(n.tagName === "DETAILS" && !n.open){ n.open = true; movio = true; }
+      if(n.classList && n.classList.contains("pf") && n.hidden){
+        var casa = n.closest("main");
+        /* la propia página de puestos sabe cómo enseñarse: se le pide a ella */
+        if(casa && typeof casa.abrePuestoDe === "function" && casa.abrePuestoDe(el.id)) movio = true;
+        else {
+          var sel = casa && casa.querySelector(".selector");
+          var b = sel && sel.querySelector('button[data-va="' + n.dataset.perfil + '"]');
+          if(b){ b.click(); movio = true; }
+        }
+      }
+      n = n.parentElement;
+    }
+    return movio;
+  }
+
   document.querySelectorAll("[data-ir-a]").forEach(function(a){
     a.addEventListener("click", function(e){
       e.preventDefault();
       var ancla = a.dataset.ancla ? document.getElementById(a.dataset.ancla) : null;
       mostrar(a.dataset.irA, !ancla);
-      if(ancla) ancla.scrollIntoView({behavior:"instant"});
+      if(ancla){
+        var movio = abrirPaso(ancla);
+        ancla.scrollIntoView({behavior:"instant", block:"start"});
+        /* si algo tuvo que abrirse, la altura de la página cambia mientras se
+           va: se vuelve a mirar cuando ha terminado de abrirse */
+        if(movio) setTimeout(function(){
+          ancla.scrollIntoView({behavior:"instant", block:"start"});
+        }, 380);
+      }
       try { history.replaceState(null, "", "#" + (a.dataset.ancla || a.dataset.irA)); } catch(err){}
     });
   });
+
+  /* Y lo mismo para los enlaces de dentro de un documento: los que no cambian
+     de documento pero sí pueden apuntar a algo plegado. */
+  document.addEventListener("click", function(e){
+    var a = e.target.closest('a[href^="#"]');
+    if(!a || a.dataset.irA) return;
+    var id = (a.getAttribute("href") || "").slice(1);
+    if(!id) return;
+    var el = document.getElementById(id);
+    if(!el || !abrirPaso(el)) return;
+    e.preventDefault();
+    el.scrollIntoView({behavior:"instant", block:"start"});
+    setTimeout(function(){ el.scrollIntoView({behavior:"instant", block:"start"}); }, 380);
+    try { history.replaceState(null, "", "#" + id); } catch(err){}
+  }, true);
   document.querySelectorAll(".cabecera .strip").forEach(function(s){
     s.hidden = (s.dataset.de !== "doc-inicio");
   });
@@ -1582,6 +1630,9 @@ def main():
             raise SystemExit(f"No se encontró el enlace a Google Fonts en {origen}")
         if estilo is None:                      # las tres páginas usan las mismas fuentes
             estilo = fuentes_incrustadas(coincidencia.group(1))
+            # y se deja escrito, para que la entrega pueda dejar centro.html
+            # también sin conexión sin volver a pedir nada a la red
+            (DESTINO / "_fuentes.html").write_text(estilo, encoding="utf-8")
         html = ENLACES_FUENTES.sub(lambda _: estilo, html, count=1)
         for otro_origen, otra_salida in PAGINAS.items():
             # en export/ todo queda plano: se admite el «../» que usan las

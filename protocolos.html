@@ -1199,7 +1199,7 @@ tr.es-no td{opacity:.55}
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Protocolos por <b>puesto</b></span>
-        <span class="brand__tag">Giraldo · v8.0</span>
+        <span class="brand__tag">Giraldo · v9.0</span>
       </a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
       <a class="crosslink" href="index.html">Protocolo de Primera Visita</a>
@@ -1223,7 +1223,7 @@ tr.es-no td{opacity:.55}
 
 <main>
 
-<div class="printhead" aria-hidden="true"><b>Protocolos por puesto · v8.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Protocolos por puesto · v9.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <section class="hero" id="portada">
   <div class="wrap">
@@ -1470,7 +1470,7 @@ tr.es-no td{opacity:.55}
     <div class="foot__grid">
       <div><p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Protocolos por puesto · Uso interno y confidencial</p></div>
       <div><p class="eyebrow">De dónde sale</p><p>Manual Maestro · matriz RACI<br>Protocolo de Primera Visita<br>Otros documentos del sistema</p></div>
-      <div><p class="eyebrow">Versión</p><p>Versión única del sistema<br><strong>v8.0 · Agosto 2026</strong></p></div>
+      <div><p class="eyebrow">Versión</p><p>Versión única del sistema<br><strong>v9.0 · Septiembre 2026</strong></p></div>
     </div>
   </div>
 </footer>
@@ -1519,13 +1519,40 @@ tr.es-no td{opacity:.55}
     if(j < 0 || j >= botones.length) return;
     e.preventDefault(); botones[j].focus(); pon(botones[j].dataset.va, false);
   });
-  var h = (location.hash || "").replace(ES_PERFIL, "");
-  pon(paneles.some(function(p){ return p.dataset.perfil === h; }) ? h : paneles[0].dataset.perfil, false);
-  /* Un enlace a otro puesto desde dentro de la página cambia de pestaña. */
+  /* Qué puesto hay que enseñar para que una dirección se vea.
+
+     No basta con reconocer «#perfil-doctor»: la mitad de los enlaces del
+     sistema no apuntan al puesto sino a algo de dentro —«#s-doctor», «Su
+     manual de puesto», «Sus funciones de vanguardia»—, y con la pestaña de
+     otro puesto delante esos enlaces aterrizaban en un panel oculto: el lector
+     pulsaba y no se movía nada. Así que además del identificador del puesto se
+     mira dónde vive lo que se pide. */
+  function puestoDe(hash){
+    var d = (hash || "").replace(/^#/, "");
+    if(!d) return null;
+    var directo = d.replace(/^([a-z]+-)?perfil-/, "");
+    if(paneles.some(function(p){ return p.dataset.perfil === directo; })) return directo;
+    var el = document.getElementById(d);
+    var caja = el && el.closest(".pf");
+    return caja && raiz.contains(caja) ? caja.dataset.perfil : null;
+  }
+  var arranca = puestoDe(location.hash);
+  pon(arranca || paneles[0].dataset.perfil, false);
+  /* Un enlace a otro puesto —o a cualquier cosa suya— cambia de pestaña. */
   window.addEventListener("hashchange", function(){
-    var d = (location.hash || "").replace(ES_PERFIL, "");
-    if(ES_PERFIL.test(location.hash) && paneles.some(function(p){ return p.dataset.perfil === d; })) pon(d, true);
+    var d = puestoDe(location.hash);
+    if(!d) return;
+    pon(d, false);
+    var el = document.getElementById((location.hash || "").slice(1));
+    if(el) el.scrollIntoView({block:"start", behavior:"smooth"});
   });
+  /* Y desde fuera —el archivo único conmuta de documento sin tocar la
+     dirección— se pide por aquí. */
+  raiz.abrePuestoDe = function(id){
+    var d = puestoDe("#" + id);
+    if(d) { pon(d, false); return true; }
+    return false;
+  };
 })();
 </script>
 

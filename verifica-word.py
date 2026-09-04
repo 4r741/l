@@ -220,7 +220,7 @@ def main():
     for ruta, titulo, _q in bw.PARTES:
         bloques = bw.bloques_de(ruta)
         frases = []
-        for tipo, dato in bloques:
+        for tipo, dato, _anclas in bloques:
             if tipo == "tabla" or not dato:
                 continue
             t = re.sub(r"\s+", " ", "".join(x.texto for x in dato)).strip()

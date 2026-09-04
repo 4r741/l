@@ -362,13 +362,40 @@ JS = """
     if(j < 0 || j >= botones.length) return;
     e.preventDefault(); botones[j].focus(); pon(botones[j].dataset.va, false);
   });
-  var h = (location.hash || "").replace(ES_PERFIL, "");
-  pon(paneles.some(function(p){ return p.dataset.perfil === h; }) ? h : paneles[0].dataset.perfil, false);
-  /* Un enlace a otro puesto desde dentro de la página cambia de pestaña. */
+  /* Qué puesto hay que enseñar para que una dirección se vea.
+
+     No basta con reconocer «#perfil-doctor»: la mitad de los enlaces del
+     sistema no apuntan al puesto sino a algo de dentro —«#s-doctor», «Su
+     manual de puesto», «Sus funciones de vanguardia»—, y con la pestaña de
+     otro puesto delante esos enlaces aterrizaban en un panel oculto: el lector
+     pulsaba y no se movía nada. Así que además del identificador del puesto se
+     mira dónde vive lo que se pide. */
+  function puestoDe(hash){
+    var d = (hash || "").replace(/^#/, "");
+    if(!d) return null;
+    var directo = d.replace(/^([a-z]+-)?perfil-/, "");
+    if(paneles.some(function(p){ return p.dataset.perfil === directo; })) return directo;
+    var el = document.getElementById(d);
+    var caja = el && el.closest(".pf");
+    return caja && raiz.contains(caja) ? caja.dataset.perfil : null;
+  }
+  var arranca = puestoDe(location.hash);
+  pon(arranca || paneles[0].dataset.perfil, false);
+  /* Un enlace a otro puesto —o a cualquier cosa suya— cambia de pestaña. */
   window.addEventListener("hashchange", function(){
-    var d = (location.hash || "").replace(ES_PERFIL, "");
-    if(ES_PERFIL.test(location.hash) && paneles.some(function(p){ return p.dataset.perfil === d; })) pon(d, true);
+    var d = puestoDe(location.hash);
+    if(!d) return;
+    pon(d, false);
+    var el = document.getElementById((location.hash || "").slice(1));
+    if(el) el.scrollIntoView({block:"start", behavior:"smooth"});
   });
+  /* Y desde fuera —el archivo único conmuta de documento sin tocar la
+     dirección— se pide por aquí. */
+  raiz.abrePuestoDe = function(id){
+    var d = puestoDe("#" + id);
+    if(d) { pon(d, false); return true; }
+    return false;
+  };
 })();
 </script>
 """

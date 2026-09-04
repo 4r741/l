@@ -11,11 +11,15 @@ portada y un índice general con los números de página reales, que solo pueden
 calcularse después de saber cuánto ocupa cada parte. Cada documento queda además
 como marcador del PDF, de modo que un lector lo abra por donde quiera.
 """
+import json
 import pathlib
+import re
 import subprocess
 import sys
 
 from pypdf import PdfWriter, PdfReader
+from pypdf.generic import (ArrayObject, DictionaryObject, FloatObject,
+                           NameObject, NullObject, NumberObject)
 from playwright.sync_api import sync_playwright
 
 RAIZ = pathlib.Path(__file__).parent
@@ -27,6 +31,22 @@ VERSION, FECHA = _v["VERSION"], _v["FECHA"]
 PDFS = RAIZ / "export" / "pdf"
 SALIDA = RAIZ / "export" / ("Sistema-Documental-Giraldo-v%s.pdf" % VERSION)
 NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
+
+# El archivo HTML del que sale cada parte: es la clave que permite convertir un
+# enlace «memoria.html#tes-foso» en un salto a la página del cuaderno donde vive
+# ese apartado. Sin esta correspondencia, el PDF encuadernado conservaba enlaces
+# al disco de la máquina que lo compiló —file:///…/manual.html—, que en la
+# máquina de cualquier otro lector no llevan a ninguna parte.
+ORIGEN = {
+    "Plan-Direccion-Giraldo-v%s.pdf": "memoria.html",
+    "Presentacion-Junta-Giraldo-v%s.pdf": "deck.html",
+    "Plan-Marketing-Giraldo-v%s.pdf": "marketing.html",
+    "Manual-Maestro-Giraldo-v%s.pdf": "manual.html",
+    "Protocolos-Por-Puesto-Giraldo-v%s.pdf": "protocolos.html",
+    "Protocolo-Primera-Visita-Giraldo-v%s.pdf": "index.html",
+    "Otros-Documentos-Giraldo-v%s.pdf": "otros.html",
+    "Captura-Linea-Base-Giraldo-v%s.pdf": "instrumentos/captura.html",
+}
 
 # El orden es el del sistema, no el del tamaño: primero lo que gobierna, luego
 # lo que se presenta, después lo que se ejecuta y al final el instrumento.
@@ -117,6 +137,89 @@ def paginas(ruta):
     return len(PdfReader(str(ruta)).pages)
 
 
+def indice_de_destinos(ruta):
+    """Ancla → (página dentro de este PDF, x, y).
+
+    Chromium escribe un «destino con nombre» por cada ancla enlazada; build-pdf
+    se encarga de que estén todas. Aquí se traduce cada destino a un número de
+    página, que es lo que hace falta para apuntar dentro del cuaderno.
+    """
+    lector = PdfReader(str(ruta))
+    donde = {}
+    for i, pag in enumerate(lector.pages):
+        ref = pag.indirect_reference
+        if ref is not None:
+            donde[(ref.idnum, ref.generation)] = i
+    salida = {}
+    try:
+        destinos = lector.named_destinations
+    except Exception:
+        return salida
+    for nombre, d in destinos.items():
+        limpio = str(nombre).lstrip("/")
+        if not limpio:
+            continue
+        try:
+            ref = d.page
+            clave = (ref.idnum, ref.generation) if hasattr(ref, "idnum") else None
+            pag = donde.get(clave)
+            if pag is None:
+                continue
+            salida[limpio] = (pag, d.left, d.top)
+        except Exception:
+            continue
+    return salida
+
+
+def salto_a(referencia, izquierda, arriba):
+    """La acción PDF «ve a esta página, a esta altura»."""
+    def num(v):
+        try:
+            return FloatObject(float(v))
+        except Exception:
+            return NullObject()
+    return DictionaryObject({
+        NameObject("/S"): NameObject("/GoTo"),
+        NameObject("/D"): ArrayObject([referencia, NameObject("/XYZ"),
+                                       num(izquierda), num(arriba), NumberObject(0)]),
+    })
+
+
+def recose_enlaces(escritor, mapa):
+    """Convierte los enlaces «file:///…/manual.html#ancla» en saltos del cuaderno.
+
+    Cada documento se escribió para vivir junto a sus hermanos en una carpeta, y
+    sus referencias cruzadas son enlaces a esos archivos. Encuadernados en un
+    solo PDF, esos enlaces apuntaban al disco de quien compiló: aquí se
+    reescriben para que apunten a la página del propio cuaderno donde está lo
+    que prometen. Devuelve (reescritos, sin destino, dejados).
+    """
+    hechos = perdidos = otros = 0
+    huerfanos = []
+    for pagina in escritor.pages:
+        for anot in (pagina.get("/Annots") or []):
+            obj = anot.get_object()
+            if obj.get("/Subtype") != "/Link":
+                continue
+            accion = obj.get("/A")
+            accion = accion.get_object() if accion is not None else None
+            uri = str(accion.get("/URI")) if accion is not None and accion.get("/URI") else ""
+            if not uri.startswith("file:"):
+                if uri:
+                    otros += 1
+                continue
+            camino, _, ancla = uri.partition("#")
+            archivo = camino.rsplit("/", 1)[-1]
+            destino = mapa.get((archivo, ancla)) or mapa.get((archivo, ""))
+            if destino is None:
+                perdidos += 1
+                huerfanos.append(archivo + ("#" + ancla if ancla else ""))
+                continue
+            obj[NameObject("/A")] = salto_a(*destino)
+            hechos += 1
+    return hechos, perdidos, otros, huerfanos
+
+
 def main():
     faltan = [n % VERSION for n, *_ in PARTES if not (PDFS / (n % VERSION)).exists()]
     if faltan:
@@ -171,13 +274,53 @@ def main():
     else:
         sys.exit("  la portada no se estabiliza en un número de hojas")
 
-    # 3 · el cuaderno, con cada documento como marcador
+    # 3 · dónde cae cada ancla dentro del cuaderno ya encuadernado. Se calcula
+    #     antes de unir nada: cada parte sabe en qué página interna vive cada una
+    #     de sus anclas, y basta sumarle la página en la que empieza la parte.
+    mapa = {}
+    for (nombre, _t, _c, _q), desde in zip(PARTES, arranques):
+        archivo = nombre % VERSION
+        origen = ORIGEN.get(nombre, "")
+        hoja = origen.rsplit("/", 1)[-1]
+        destinos = indice_de_destinos(PDFS / archivo)
+        # el documento entero, para los enlaces que no traen ancla
+        mapa[(hoja, "")] = (desde - 1, 0, None)
+        for ancla, (pag, izq, arr) in destinos.items():
+            mapa[(hoja, ancla)] = (desde - 1 + pag, izq, arr)
+
+    # 4 · el cuaderno, con cada documento y cada apartado como marcador
     escritor = PdfWriter()
     escritor.append(str(portada))
     escritor.add_outline_item("Portada e índice", 0)
+    esquemas = {}
+    ruta_esquema = PDFS / "_esquema.json"
+    if ruta_esquema.exists():
+        esquemas = json.loads(ruta_esquema.read_text(encoding="utf-8"))
+    apartados = 0
     for (nombre, titulo, _c, _q), desde in zip(PARTES, arranques):
-        escritor.append(str(PDFS / (nombre % VERSION)))
-        escritor.add_outline_item(titulo, desde - 1)
+        archivo = nombre % VERSION
+        escritor.append(str(PDFS / archivo))
+        padre = escritor.add_outline_item(titulo, desde - 1)
+        # y dentro del documento, un marcador por apartado: un cuaderno de
+        # seiscientas páginas con ocho marcadores obliga a hojear
+        hoja = ORIGEN.get(nombre, "").rsplit("/", 1)[-1]
+        for ap in esquemas.get(archivo, []):
+            sitio = mapa.get((hoja, ap["ancla"]))
+            if sitio is None or not ap["rotulo"]:
+                continue
+            rotulo = ("%s · %s" % (ap["n"], ap["rotulo"])) if ap["n"] else ap["rotulo"]
+            escritor.add_outline_item(rotulo, sitio[0], parent=padre)
+            apartados += 1
+
+    # 5 · y los saltos entre documentos, que hasta ahora apuntaban al disco
+    recosidos, perdidos, otros, huerfanos = recose_enlaces(escritor, {
+        clave: (escritor.pages[pag].indirect_reference, izq, arr)
+        for clave, (pag, izq, arr) in mapa.items()
+    })
+    print("  · saltos entre documentos recosidos: %d" % recosidos)
+    if huerfanos:
+        print("  · enlaces sin destino en el cuaderno: %d (%s)"
+              % (perdidos, ", ".join(sorted(set(huerfanos))[:6])))
 
     escritor.add_metadata({
         "/Title": "Sistema documental · Centro de Excelencia Implantológica Giraldo",
@@ -190,8 +333,8 @@ def main():
         escritor.write(f)
 
     tmp.unlink(); portada.unlink()
-    print("  → export/%s · %d páginas · %d KB"
-          % (SALIDA.name, paginas(SALIDA), SALIDA.stat().st_size // 1024))
+    print("  → export/%s · %d páginas · %d KB · %d marcadores de apartado"
+          % (SALIDA.name, paginas(SALIDA), SALIDA.stat().st_size // 1024, apartados))
 
 
 if __name__ == "__main__":

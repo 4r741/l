@@ -8,6 +8,7 @@ pie con numeración «Página X de Y». La presentación sale en apaisado, una
 diapositiva por página, y además en una segunda versión con el guion del ponente
 impreso bajo cada diapositiva. Requiere Playwright con Chromium instalado.
 """
+import json
 import pathlib
 
 from playwright.sync_api import sync_playwright
@@ -25,6 +26,34 @@ NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 # Todo lo diferible se revela antes de imprimir; el guion del ponente solo se
 # activa en la salida que lo pide.
 REVELAR = "document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'))"
+
+# Chromium solo escribe en el PDF un «destino con nombre» por cada ancla que
+# alguien enlace dentro del propio documento. Sin destinos, un enlace que llega
+# de otro documento no tiene adónde apuntar y el cuaderno encuadernado se queda
+# con enlaces al disco de quien lo compiló. Así que antes de imprimir se añade,
+# fuera de la caja de escritura, un enlace a cada ancla del documento: no ocupa
+# ni una página y deja el PDF con un destino por ancla, que es lo que luego
+# permite convertir los saltos entre documentos en saltos de verdad.
+DESTINOS = """() => {
+  const ids = [...document.querySelectorAll('[id]')]
+      .map(e => e.id).filter(i => i && /^[A-Za-z0-9_.:-]+$/.test(i));
+  const caja = document.createElement('div');
+  caja.id = '__destinos'; caja.setAttribute('aria-hidden', 'true');
+  caja.style.cssText = 'position:absolute;left:-9999px;top:0;width:1px;height:0;overflow:hidden';
+  caja.innerHTML = ids.map(i => '<a href="#' + i + '">.</a>').join('');
+  document.body.appendChild(caja);
+  return ids.length;
+}"""
+
+# El esquema del cuaderno: qué apartados tiene cada documento, en su orden y con
+# su rótulo, para que el PDF completo lleve marcadores hasta el apartado y no
+# solo hasta el documento.
+ESQUEMA = """() => [...document.querySelectorAll('article.ap')].map(a => ({
+  ancla: a.dataset.ap || '',
+  rotulo: (a.dataset.rotulo || '').trim(),
+  n: (a.dataset.n || '').trim(),
+  grupo: (a.dataset.grupo || '').trim()
+})).filter(x => x.ancla)"""
 PONENTE = ("document.body.classList.add('modo-ponente');"
            "document.querySelectorAll('.nota').forEach(n=>n.hidden=false)")
 
@@ -68,6 +97,7 @@ def pie():
 
 def main():
     DESTINO.mkdir(parents=True, exist_ok=True)
+    esquemas = {}
     with sync_playwright() as pw:
         navegador = pw.chromium.launch(executable_path=NAVEGADOR)
         pagina = navegador.new_page()
@@ -83,6 +113,8 @@ def main():
             if preparar:
                 pagina.evaluate(preparar)
                 pagina.wait_for_timeout(200)
+            pagina.evaluate(DESTINOS)
+            esquemas[salida] = pagina.evaluate(ESQUEMA)
             opciones = dict(path=str(DESTINO / salida), print_background=True)
             if apaisado == "guion":
                 # el guion usa la hoja con nombre propio que declara su propio CSS
@@ -99,6 +131,8 @@ def main():
             pagina.pdf(**opciones)
             print("  → export/pdf/%s · %d KB" % (salida, (DESTINO / salida).stat().st_size // 1024))
         navegador.close()
+    (DESTINO / "_esquema.json").write_text(
+        json.dumps(esquemas, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":
