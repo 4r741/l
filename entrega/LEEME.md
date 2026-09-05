@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v16.0
+# Entrega · Sistema documental Giraldo v17.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
 | `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v16.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v16.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
-| `Sistema-Documental-Giraldo-v16.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
+| `Giraldo-TODO-EN-UNO-v17.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v17.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v17.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,38 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## Lo mío, en el bolsillo · versión 17
+
+**Fuera los dibujos de fondo.** Las bandas llevaban detrás un campo de líneas
+onduladas. Un fondo dibujado no dice nada que el titular no diga y compite con
+él por la atención: lo que se lee peor es el titular. Ahora la portada de una
+sección es su número enorme, su nombre y una frase, sobre papel, con una regla
+que los separa. Es lo que hace una editorial cuando quiere que se lea el
+titular. De paso, el archivo adelgaza 270 KB: el bloque de dibujos que ya no se
+usa no viaja.
+
+**Y una sección nueva: «Lo mío».** Un sistema de ciento treinta y cinco
+apartados no cabe en la cabeza de nadie, y quien ocupa un puesto tampoco lo
+necesita entero. Se elige el puesto una vez —queda recordado en ese teléfono— y
+aparece lo suyo, pensado desde el móvil hacia arriba: una columna, botones que
+se pulsan con el pulgar, texto grande y ni una tabla.
+
+- **De qué responde.** Las fases del recorrido en las que entra: en negro las
+  que ejecuta o de las que responde, en gris aquellas en las que se le consulta
+  o se le informa. Recepción ve que abre el recorrido; el Doctor, que sostiene
+  el centro; el Higienista, que entra en la catorce.
+- **Qué se rompe si no lo hace.** No es una lista de tareas: es lo que deja de
+  funcionar aguas abajo. «No escanear el mismo día» → «pérdida de trazabilidad
+  legal: lo firmado, a efectos prácticos, no existe».
+- **La primera visita, como es.** Las doce fases y los minutos que sostienen
+  todo lo demás, en orden y con quién lleva cada una.
+- **Lo que representa Giraldo.** El manifiesto entero, tal como está escrito en
+  el Plan de Dirección.
+- **Giraldo Te Cuida.** El documento del programa, completo.
+
+Nada de esto es un resumen: es el mismo texto de los documentos, ordenado por
+persona en vez de por documento.
 
 ## Lo que estaba desorganizado · versión 16
 

@@ -1257,7 +1257,7 @@ def bloque_protocolos(pre):
     for n, p in enumerate(P.PERFILES):
         raci = P.raci_de(p)
         activas = sum(1 for _f, papel in raci if papel != "—")
-        cara = imagenes.arte("retrato-%d" % (n + 1), "0 0 400 400", "arte--cara")
+        cara = ""
         botones.append(
             '<button type="button" class="puestobt%s" data-puesto="%s">'
             '<span class="puestobt__c">%s</span>'
@@ -1354,7 +1354,7 @@ def bloque_protocolos(pre):
             '  %s\n  %s\n'
             '</article>'
             % (p["id"], "" if n == 0 else " hidden",
-               imagenes.arte("retrato-%d" % (n + 1), "0 0 400 400", "arte--cara"), n + 1,
+               "", n + 1,
                ("columna %s de la matriz" % p["raci"]) if p.get("raci")
                else "sin columna propia en la matriz: la nota lo sitúa en el mantenimiento",
                H.escape(p["nombre"]), H.escape(p["que"]),
@@ -2218,27 +2218,155 @@ def que_es(ident, piezas, propio):
 
 
 def frente(ident, rotulillo, titulo, texto, numero=""):
-    """La cabecera de una sección: una banda de imagen a sangre con el rótulo.
+    """La cabecera de una sección: tipografía y nada más.
 
-    Es lo que separa una web de un índice. Debajo empieza el texto; encima,
-    solo lo que hace falta para saber dónde se ha entrado.
+    Antes era una banda con un campo de líneas onduladas detrás. Un dibujo de
+    fondo no dice nada que el titular no diga, y compite con él por la
+    atención: lo que se lee peor es el titular. Aquí la portada de una sección
+    es su número enorme, su nombre y una frase. El único gesto es la regla que
+    los separa. Es lo que hace una editorial cuando quiere que se lea el
+    titular, y es lo contrario de un fondo decorado.
     """
-    pieza, recorte, modo = ARTE[ident]
     return (
-        '<header class="frente frente--%s" data-frente>\n'
-        '  <div class="frente__i">%s</div>\n'
+        '<header class="frente" data-frente>\n'
         '  <div class="frente__c">\n'
         '    %s<p class="letra frente__k">%s</p>\n'
         '    <h1>%s</h1>\n'
         '    <p class="frente__p">%s</p>\n'
         '  </div>\n'
         '</header>'
-        % (modo, imagenes.arte(pieza, recorte),
-           ('<span class="frente__n" aria-hidden="true">%s</span>' % numero) if numero else "",
+        % (('<span class="frente__n" aria-hidden="true">%s</span>' % numero) if numero else "",
            rotulillo, H.escape(titulo), H.escape(texto)))
 
 
+def bloque_mio(pre):
+    """Lo suyo, en el bolsillo.
+
+    Un sistema de ciento treinta y cinco apartados no cabe en la cabeza de
+    nadie, y quien ocupa un puesto no necesita el sistema entero: necesita
+    cuatro cosas y las necesita en el móvil, de pie y en treinta segundos. Se
+    elige el puesto una vez —queda recordado— y aparece lo suyo: de qué
+    responde, qué se rompe si no lo hace, cómo es la visita que sostiene, qué
+    representa el centro y qué promete el programa de cuidado.
+
+    Aquí no se escribe nada nuevo: se recoge lo que ya dicen el Manual, el
+    Protocolo de Primera Visita, el Plan de Dirección y el documento del GTC,
+    y se ordena por persona en vez de por documento.
+    """
+    P = PERFILES
+    tabla = obligaciones()
+    fs = fases("index.html")
+    total = sum(f["min"] for f in fs)
+
+    botones, fichas = [], []
+    for n, p in enumerate(P.PERFILES):
+        corto = p["nombre"].split(" · ")[0]
+        raci = P.raci_de(p)
+        activas = [(i + 1, fase, papel) for i, (fase, papel) in enumerate(raci)
+                   if papel and papel != "—"]
+        manda = [x for x in activas if x[2] in ("R/A", "R")]
+        obliga = tabla.get(p.get("obliga") or "", [])
+
+        botones.append(
+            '<button type="button" class="miobt" data-mio="%s">'
+            '<span class="miobt__i" aria-hidden="true">%s</span>'
+            '<b>%s</b><span class="miobt__q">%d de 14 fases · %d que ejecuta</span></button>'
+            % (p["id"], H.escape(corto[0]), H.escape(corto), len(activas), len(manda)))
+
+        # 1 · de qué responde: las fases en las que manda, con nombre
+        responde = "".join(
+            '<li class="miol__i%s"><span class="miol__n">%02d</span>'
+            '<div><b>%s</b><i>%s</i></div></li>'
+            % (" es-manda" if papel in ("R/A", "R") else "", i,
+               H.escape(re.sub(r"^\d+\.\s*", "", fase)),
+               H.escape(P.QUE_ES.get(papel, (papel,))[0]))
+            for i, fase, papel in activas)
+
+        # 2 · lo que se rompe si no se hace
+        rompe = ("".join(
+            '<li class="mirompe"><p class="mirompe__a">%s</p>'
+            '<p class="mirompe__b">%s</p></li>' % (H.escape(a), H.escape(b))
+            for a, b in obliga)
+            if obliga else
+            '<li class="mirompe mirompe--no"><p class="mirompe__b">%s</p></li>'
+            % H.escape(P.OBLIGACIONES_SIN_FILA))
+
+        fichas.append(
+            '<article class="mio" data-mio="%s"%s>\n'
+            '  <header class="mio__cab">\n'
+            '    <p class="letra">Puesto %d de 6%s</p>\n'
+            '    <h3>%s</h3>\n    <p class="mio__q">%s</p>\n'
+            '  </header>\n'
+            '  <section class="mio__b">\n'
+            '    <h4>De qué responde</h4>\n'
+            '    <p class="mio__p">Las fases del recorrido en las que entra. En negro, las '
+            'que <b>ejecuta o de las que responde</b>; en gris, aquellas en las que se le '
+            'consulta o se le informa.</p>\n'
+            '    <ol class="miol">%s</ol>\n'
+            '  </section>\n'
+            '  <section class="mio__b">\n'
+            '    <h4>Qué se rompe si no lo hace</h4>\n'
+            '    <p class="mio__p">No es una lista de tareas: es lo que deja de funcionar '
+            'aguas abajo. Sale de la matriz de obligaciones del Manual.</p>\n'
+            '    <ul class="mirompes">%s</ul>\n'
+            '  </section>\n'
+            '</article>'
+            % (p["id"], "" if n == 0 else " hidden", n + 1,
+               (" · columna %s de la matriz" % p["raci"]) if p.get("raci") else "",
+               H.escape(p["nombre"]), H.escape(p["que"]), responde, rompe))
+
+    # la visita, minuto a minuto, en una sola columna
+    visita = "".join(
+        '<li class="mifase"><span class="mifase__n">%02d</span>'
+        '<div><b>%s</b><i>%d min · %s</i></div></li>'
+        % (f["n"], H.escape(f["label"] or f["titulo"]), f["min"],
+           H.escape(", ".join(NOMBRE_ROL.get(r, r.title()) for r in f["roles"])))
+        for f in fs)
+
+    return ("""
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Elija su puesto y llévelo en el bolsillo</h2>
+    <p>Nadie necesita el sistema entero: cada uno necesita lo suyo, y lo necesita de pie y en
+      treinta segundos. Elija su puesto una vez —queda recordado en este dispositivo— y aquí
+      debajo queda de qué responde, qué se rompe si no lo hace, cómo es la visita que sostiene,
+      qué representa el centro y qué promete el programa de cuidado. Nada de esto es un resumen:
+      es el mismo texto de los documentos, ordenado por persona en vez de por documento.</p>
+  </div>
+  <div class="miobts">@@B@@</div>
+  <div class="mios">@@F@@</div>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>La primera visita, como es</h2>
+    <p>Las doce fases y los @@T@@ minutos que sostienen todo lo demás, en orden y con quién
+      lleva cada una. Es el recorrido que hace el paciente el día que decide.</p>
+  </div>
+  <ol class="mifases">@@V@@</ol>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Lo que representa Giraldo</h2>
+    <p>La regla que ordena todo lo demás, tal como está escrita en el Plan de Dirección.</p>
+  </div>
+  <div class="miotexto">@@M@@</div>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Giraldo Te Cuida</h2>
+    <p>La otra mitad de la promesa: qué se compromete el centro a hacer después de que el
+      paciente pague, y con qué instrumento se compromete.</p>
+  </div>
+  <div class="miotexto">@@G@@</div>
+</div>
+""".replace("@@B@@", "".join(botones)).replace("@@F@@", "\n".join(fichas))
+   .replace("@@V@@", visita).replace("@@T@@", str(total))
+   .replace("@@M@@", prefija(entabla(pieza("memoria.html", "manifiesto")), pre))
+   .replace("@@G@@", prefija(entabla(pieza("otros.html", "otros-gtc")), pre)))
+
+
 BLOQUES = {
+    "mio": bloque_mio,
     "presentacion": bloque_presentacion,
     "primera-visita": bloque_primera_visita,
     "protocolos": bloque_protocolos,
@@ -2626,10 +2754,7 @@ def dibuja_recorridos(mapa):
             '<span class="rutacard__i">%s</span>'
             '<span class="letra">%s</span><b>%s</b>'
             '<span class="rutacard__m letra">%d paradas</span></button>'
-            % (r["id"], imagenes.arte(("campo", "campo2", "arcos")[k % 3],
-                                      "%d %d 420 260" % (60 + (k * 97) % 700,
-                                                         40 + (k * 61) % 300)),
-               H.escape(r["quien"]), H.escape(r["titulo"]), n))
+            % (r["id"], "", H.escape(r["quien"]), H.escape(r["titulo"]), n))
     return "\n".join(fuera), "".join(tarjetas)
 
 
@@ -2657,7 +2782,6 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
 <section class="sec" id="inicio" data-sec="inicio">
 
   <div class="portada" data-frente>
-    <div class="portada__i">@@ARTE@@</div>
     <div class="portada__c">
       <p class="letra portada__k">Centro de Excelencia Implantológica Giraldo · Vigo</p>
       <h1>No medias<br><em>sonrisas</em></h1>
@@ -2751,9 +2875,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
   </div>
 
 </section>
-""".replace("@@ARTE@@", imagenes.arte("campo", "0 0 1200 600", "arte--hero")) \
-   .replace("@@ARTE2@@", imagenes.arte("trama", "150 60 900 480")) \
-   .replace("@@ARTE3@@", imagenes.arte("campo2", "0 240 1200 360")) \
+""".replace("@@ARTE@@", "").replace("@@ARTE2@@", "").replace("@@ARTE3@@", "") \
    .replace("@@TARJETAS@@", tarjetas).replace("@@MAPA@@", mapa_svg) \
    .replace("@@HECHOS@@", hechos).replace("@@IDEAS@@", ideas) \
    .replace("@@PUERTAS@@", puertas) \
@@ -2793,6 +2915,22 @@ def sec_mapa(mapa_svg):
         "circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso "
         "ninguna fase se salta «por falta de tiempo». Pulse una y se abre entera; del lector "
         "se vuelve aquí.", "14"))
+
+
+def sec_mio():
+    return """
+<section class="sec" id="mio" data-sec="mio">
+  @@FRENTE@@
+  @@CUERPO@@
+</section>
+""".replace("@@CUERPO@@", bloque_mio("")).replace("@@FRENTE@@", frente(
+        "mio", "Para quien ocupa un puesto",
+        "Lo suyo, en el bolsillo",
+        "Un sistema de ciento treinta y cinco apartados no cabe en la cabeza de nadie, y "
+        "quien ocupa un puesto tampoco lo necesita entero: necesita saber de qué responde, "
+        "qué se rompe si no lo hace, cómo es la visita que sostiene y qué representa el "
+        "centro para el que trabaja. Se elige el puesto una vez y queda recordado en este "
+        "teléfono.", "00"))
 
 
 CSS = """
@@ -4227,6 +4365,113 @@ html:root{
 
 
 /* ====================================================================
+   LO MÍO · versión 17
+   Pensado desde el móvil hacia arriba: una columna, botones que se pulsan
+   con el pulgar, texto grande y ni una tabla. Quien ocupa un puesto lo
+   consulta de pie, en el pasillo, en treinta segundos.
+   ==================================================================== */
+.miobts{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
+  gap:1px;background:var(--linea);border:1px solid var(--linea)}
+.miobt{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.1rem;
+  background:var(--blanco);border:0;cursor:pointer;font:inherit;text-align:left;
+  color:var(--ink-2);transition:background .18s var(--e),color .18s var(--e)}
+.miobt__i{flex:none;width:2.6rem;height:2.6rem;display:flex;align-items:center;
+  justify-content:center;border:1px solid var(--linea);font-family:var(--f-mono);
+  font-size:.9rem;color:var(--muted)}
+.miobt b{display:block;font-size:1rem;font-weight:400;color:var(--negro);line-height:1.3}
+.miobt__q{display:block;margin-top:.25rem;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.miobt:hover{background:var(--gris)}
+.miobt.es-on{background:var(--negro)}
+.miobt.es-on b,.miobt.es-on .miobt__q{color:#fff}
+.miobt.es-on .miobt__i{border-color:rgba(255,255,255,.4);color:#fff}
+
+.mio[hidden]{display:none}
+.mio__cab{padding:var(--paso-4) 0 var(--paso-3);border-bottom:1px solid var(--negro)}
+.mio__cab h3{margin:.7rem 0 0;font-size:clamp(1.6rem,4.6vw,2.4rem);font-weight:300;
+  letter-spacing:-.03em;line-height:1.1;color:var(--negro)}
+.mio__q{margin:var(--paso-2) 0 0;font-size:1.02rem;line-height:1.75;color:var(--ink-2);
+  max-width:52ch}
+.mio__b{padding:var(--paso-4) 0 0}
+.mio__b h4{margin:0;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--azul);font-weight:400}
+.mio__p{margin:var(--paso-2) 0 var(--paso-3);font-size:.98rem;line-height:1.8;
+  color:var(--ink-2);max-width:56ch}
+.mio__p b{color:var(--negro);font-weight:400}
+
+.miol{list-style:none;margin:0;padding:0}
+.miol__i{display:grid;grid-template-columns:2.6rem 1fr;gap:1rem;align-items:baseline;
+  padding:.85rem 0;border-bottom:1px solid var(--linea-2)}
+.miol__n{font-family:var(--f-mono);font-size:.68rem;color:var(--linea)}
+.miol__i b{font-size:1.02rem;font-weight:400;color:var(--muted);line-height:1.4}
+.miol__i i{display:block;margin-top:.25rem;font-style:normal;font-family:var(--f-mono);
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--linea)}
+.miol__i.es-manda b{color:var(--negro)}
+.miol__i.es-manda i{color:var(--azul)}
+.miol__i.es-manda .miol__n{color:var(--azul)}
+
+.mirompes{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(19rem,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea)}
+.mirompe{background:var(--blanco);padding:1.2rem 1.1rem}
+.mirompe__a{margin:0;font-size:.96rem;line-height:1.55;color:var(--negro)}
+.mirompe__b{margin:.7rem 0 0;font-size:.92rem;line-height:1.7;color:var(--ink-2);
+  padding-top:.7rem;border-top:1px solid var(--linea-2)}
+.mirompe--no .mirompe__b{border:0;padding:0;margin:0}
+
+.mifases{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:0 var(--paso-4)}
+.mifase{display:grid;grid-template-columns:2.6rem 1fr;gap:1rem;align-items:baseline;
+  padding:.9rem 0;border-bottom:1px solid var(--linea-2)}
+.mifase__n{font-family:var(--f-mono);font-size:.68rem;color:var(--azul)}
+.mifase b{font-size:1.02rem;font-weight:400;color:var(--negro);line-height:1.4}
+.mifase i{display:block;margin-top:.25rem;font-style:normal;font-family:var(--f-mono);
+  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+.miotexto{max-width:var(--texto)}
+.miotexto > *:first-child{margin-top:0}
+
+@media(max-width:640px){
+  .miobts{grid-template-columns:1fr 1fr}
+  .miobt{flex-direction:column;align-items:flex-start;gap:.6rem;padding:1rem .9rem}
+  .miobt__q{font-size:.52rem}
+  .mirompes,.mifases{grid-template-columns:1fr}
+}
+
+/* ====================================================================
+   SIN DIBUJO DE FONDO · versión 17
+   Las bandas llevaban detrás un campo de líneas onduladas. Un fondo
+   dibujado no dice nada que el titular no diga y compite con él por la
+   atención: lo que se lee peor es el titular. Aquí la portada de una
+   sección es su número, su nombre y una frase, sobre papel. El único
+   gesto es la regla que los separa.
+   ==================================================================== */
+#sitio .portada{background:var(--negro);color:#fff;overflow:visible;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:min(88vh,46rem);padding:11rem var(--marco) 4rem}
+#sitio .portada::after{display:none}
+#sitio .portada__c{max-width:none}
+#sitio .portada__l{font-size:clamp(3rem,11vw,9rem);line-height:.92;letter-spacing:-.045em;
+  font-weight:300}
+#sitio .portada__k{color:rgba(255,255,255,.5)}
+#sitio .portada .bt{border-color:rgba(255,255,255,.3)}
+#sitio .portada__pie{color:rgba(255,255,255,.42)}
+
+#sitio .frente{position:relative;background:none;color:var(--negro);
+  min-height:0;padding:11rem 0 0;margin-inline:0;
+  display:block;overflow:visible}
+#sitio .frente::before,#sitio .frente::after{display:none}
+#sitio .frente__c{max-width:none;padding:0}
+#sitio .frente__n{position:static;display:block;font-size:clamp(4rem,13vw,10rem);
+  line-height:.82;letter-spacing:-.055em;font-weight:300;color:var(--linea);
+  margin:0 0 var(--paso-3)}
+#sitio .frente__k{color:var(--azul)}
+#sitio .frente h1{font-size:clamp(2.2rem,6.4vw,5rem);line-height:1.02;letter-spacing:-.04em;
+  font-weight:300;margin:var(--paso-2) 0 0;max-width:20ch;color:var(--negro)}
+#sitio .frente__p{margin:var(--paso-3) 0 0;max-width:56ch;font-size:1.06rem;line-height:1.8;
+  color:var(--ink-2);padding-bottom:var(--paso-4);border-bottom:1px solid var(--negro)}
+
+/* ====================================================================
    LO ANCHO · versión 16
    Un apartado se lee en una columna de sesenta y seis caracteres, que es
    lo que se lee cómodo. Pero dentro de esa columna hay tablas de siete
@@ -5268,7 +5513,9 @@ JS = """
       return;
     }
     var sec = D.querySelector(".sec.es-on");
-    var banda = sec && sec.querySelector(".portada, .frente");
+    /* solo la portada es una banda oscura; las cabeceras de sección son
+       tipografía sobre papel y la cabecera de arriba se queda como está */
+    var banda = sec && sec.querySelector(".portada");
     var alto = barra.getBoundingClientRect().height;
     var encima = !!banda && banda.getBoundingClientRect().bottom > alto + 10;
     var noche = !!banda && !banda.classList.contains("frente--dia");
@@ -5294,6 +5541,31 @@ JS = """
       });
     }, {passive: true});
   }
+
+  /* ---------------------------------------------------------------- */
+  /*  Lo mío                                                             */
+  /*  Se elige el puesto una vez y queda recordado en este dispositivo.   */
+  /* ---------------------------------------------------------------- */
+  (function(){
+    var bts = [].slice.call(D.querySelectorAll(".miobt"));
+    if(!bts.length) return;
+    var fichas = [].slice.call(D.querySelectorAll(".mio"));
+    function pon(id, mover){
+      bts.forEach(function(b){ b.classList.toggle("es-on", b.dataset.mio === id); });
+      fichas.forEach(function(f){ f.hidden = f.dataset.mio !== id; });
+      memo.mio = id; recuerda();
+      if(mover){
+        var f = fichas.filter(function(x){ return x.dataset.mio === id; })[0];
+        if(f) f.scrollIntoView({block:"start", behavior:"smooth"});
+      }
+    }
+    D.addEventListener("click", function(e){
+      var b = e.target.closest(".miobt");
+      if(b) pon(b.dataset.mio, true);
+    });
+    if(memo.mio && bts.some(function(b){ return b.dataset.mio === memo.mio; })) pon(memo.mio, false);
+    else pon(bts[0].dataset.mio, false);
+  })();
 
   /* ---------------------------------------------------------------- */
   /*  El raíl                                                            */
@@ -5903,6 +6175,7 @@ def main():
     inicio = sec_inicio(indice, total, voces, svg, tarjetas)
     recorridos_html = sec_recorridos(rutas_html)
     mapa_html = sec_mapa(svg)
+    mio_html = sec_mio()
 
     # La flecha de al lado es la que despliega y pliega el índice de la
     # sección. Va dentro del propio botón —una marca, no otro botón— para que
@@ -5971,7 +6244,11 @@ def main():
     # ya se construía para el desplegable de la barra. No se duplica nada; lo
     # que cambia es dónde vive y que ahora está siempre a la vista.
     porsec = {i: (r, d, n) for i, r, d, n in indice}
-    arbol = []
+    arbol = ['<div class="arb__s" data-arb="mio">\n'
+             '  <button type="button" class="arb__b" data-ir-sec="mio">'
+             '<i class="arb__n">00</i><span class="arb__r">Lo mío</span>'
+             '<i class="arb__c">su puesto</i><i class="arb__x"></i></button>\n'
+             '</div>']
     for k, (ident, rotulo, _doc, _lede, _num) in enumerate(
             [(i, r, d, l, n) for i, r, d, l, n in SECCIONES]):
         sub = next((m for m in menus if ('data-sub="%s"' % ident) in m), "")
@@ -5993,8 +6270,8 @@ def main():
     cuerpo = (MARCO.replace("@@ARBOL@@", "\n".join(arbol))
                    .replace("@N@", str(total))
                    .replace("@@SECCIONES@@",
-                            inicio + "\n" + recorridos_html + "\n" + mapa_html + "\n"
-                            + "\n".join(secciones))
+                            inicio + "\n" + mio_html + "\n" + recorridos_html + "\n"
+                            + mapa_html + "\n" + "\n".join(secciones))
                    .replace("@@RECURSOS@@", recursos)
                    .replace("@EJEMPLO@", ", ".join(sorted(voces)[:3])))
 
@@ -6024,7 +6301,10 @@ def main():
 
     salida = RAIZ / "centro.html"
     texto = (cabecera + "\n" + cuerpo + "\n" + datos + "\n" + JS + "\n</body>\n</html>\n")
-    texto = texto.replace("@@ARTES@@", imagenes.defensa())
+    # Ya no hay dibujos de fondo: el bloque de definiciones que los guardaba
+    # ocupaba doscientos setenta kilobytes de un archivo que se abre con doble
+    # clic. Lo que no se usa, no viaja.
+    texto = texto.replace("@@ARTES@@", "")
     texto = texto.replace("@VERSION@", VERSION).replace("@FECHA@", FECHA)
     texto = re.sub(r"(<style[^>]*>)(.*?)(</style>)",
                    lambda m: m.group(1) + monocroma(m.group(2)) + m.group(3),
