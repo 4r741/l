@@ -4236,137 +4236,140 @@ html:root{
 
 
 /* ====================================================================
-   LA ESTRUCTURA · versión 14
-   Fuera la barra de arriba y las páginas de diez mil píxeles. A la
-   izquierda, un raíl con el sistema entero desplegable y siempre a la
-   vista; a la derecha, una sola cosa en pantalla. Se elige en el raíl y
-   aparece a la derecha: no hay que recorrer una sección para encontrar
-   un apartado ni recordar dónde estaba uno.
+   LA ESTRUCTURA · versión 15
+   Ni barra de secciones arriba ni lateral permanente: las dos cosas son
+   mando a la vista todo el rato, y el mando a la vista todo el rato es lo
+   que hace que una página parezca un programa de los noventa. Arriba solo
+   una marca y una palabra. El índice aparece entero cuando se pide, a
+   tamaño de titular, y se va. Lo que queda en pantalla es lo que se lee.
    ==================================================================== */
-html:root{--rail:20rem; --nav:0px; --saca:calc(var(--aire) * -1)}
-.app{display:block}
+html:root{--nav:0px; --saca:calc(var(--aire) * -1)}
+.panel{min-height:100vh}
 
-.rail{position:fixed;inset:0 auto 0 0;width:var(--rail);z-index:60;
-  display:flex;flex-direction:column;background:var(--blanco);
-  border-right:1px solid var(--linea)}
-.rail__cab{flex:none;padding:1.6rem 1.4rem 1.2rem}
-.rail__marca{display:block;width:100%;text-align:left;background:none;border:0;padding:0;
+/* --- la cabecera: dos cosas y aire ------------------------------------ */
+/* La cabecera se apoya en el papel: blanca, con una raya de un pelo. Solo
+   desaparece cuando lo que hay debajo es una banda a sangre, que es cuando
+   tiene sentido que no esté. Transparente todo el rato dejaba pasar el texto
+   por detrás, que es exactamente lo que no puede ocurrir. */
+.tope{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;
+  justify-content:space-between;gap:2rem;padding:1.5rem clamp(1.2rem,4vw,3.4rem);
+  background:var(--blanco);box-shadow:0 1px 0 0 var(--linea-2);
+  transition:background .3s var(--e),box-shadow .3s var(--e)}
+.tope--sobre{background:transparent;box-shadow:none}
+@media(prefers-reduced-motion:reduce){.tope{transition:none}}
+.tope__m{display:flex;align-items:baseline;gap:.9rem;background:none;border:0;padding:0;
   font:inherit;cursor:pointer;color:var(--negro)}
-.rail__marca b{display:block;font-size:1.02rem;font-weight:500;letter-spacing:.12em;
-  text-transform:uppercase}
-.rail__marca span{display:block;margin-top:.35rem;font-family:var(--f-mono);font-size:.58rem;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.5}
-.rail__marca:hover b{color:var(--azul)}
-
-.rail__filtro{flex:none;display:flex;align-items:center;gap:.6rem;margin:0 1.4rem 1rem;
-  padding:.7rem .8rem;border:1px solid var(--linea);color:var(--muted)}
-.rail__filtro input{flex:1;min-width:0;font:inherit;font-size:.82rem;border:0;background:none;
-  color:var(--negro);outline:none;padding:0}
-.rail__filtro input::placeholder{color:var(--muted)}
-.rail__filtro:focus-within{border-color:var(--negro)}
-
-/* el árbol se desvanece por abajo: una línea cortada a la mitad se lee como
-   «hay más» y no como un fallo */
-.arb{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 0 1.4rem;
-  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 1.6rem),transparent 100%);
-  mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 1.6rem),transparent 100%);
-  scrollbar-width:thin;scrollbar-color:var(--linea) transparent}
-.arb__s{border-top:1px solid var(--linea-2)}
-.arb__s:first-child{border-top:0}
-.arb__b{width:100%;display:grid;grid-template-columns:2.2rem 1fr auto auto;gap:.7rem;
-  align-items:center;padding:.9rem 1.4rem;font:inherit;text-align:left;background:none;
-  border:0;cursor:pointer;color:var(--ink-2);transition:background .18s var(--e)}
-.arb__b:hover{background:var(--gris);color:var(--negro)}
-.arb__n{font-style:normal;font-family:var(--f-mono);font-size:.62rem;color:var(--linea);
-  letter-spacing:.06em}
-.arb__r{font-size:.94rem;line-height:1.3}
-.arb__c{font-style:normal;font-family:var(--f-mono);font-size:.58rem;color:var(--muted);
-  letter-spacing:.1em}
-.arb__x{color:var(--muted);transition:transform .26s var(--e)}
-.arb__s.es-ab > .arb__b{color:var(--negro);background:var(--gris)}
-.arb__s.es-ab > .arb__b .arb__n{color:var(--azul)}
-.arb__s.es-ab > .arb__b .arb__x{transform:rotate(180deg)}
-.arb__s.es-aqui > .arb__b{box-shadow:inset 2px 0 0 var(--azul)}
-.arb__l{padding:.2rem 0 1rem}
-.arb__l[hidden]{display:none}
-/* dentro del raíl el índice de una sección es una lista sobria: una columna,
-   sin rótulos de grupo en mayúsculas gritando en una barra de veinte rem */
-.arb__l .sub{display:block;columns:1;padding:0;margin:0;max-width:none}
-.arb__l .sub__b{margin:0 0 .6rem}
-.arb__l .sub__g{margin:.9rem 1.4rem .3rem;font-size:.56rem;letter-spacing:.18em;
-  color:var(--muted)}
-.arb__l .sub a{grid-template-columns:2.2rem 1fr;gap:.7rem;padding:.42rem 1.4rem;
-  font-size:.86rem;line-height:1.42;border:0}
-.arb__l .sub a span{font-size:.58rem}
-.arb__l .sub a:hover{background:var(--gris);color:var(--negro)}
-.arb__l .sub a.es-aqui{background:var(--azul-p);color:var(--negro)}
-.arb__l .sub a.es-aqui span{color:var(--azul)}
-
-.rail__pie{flex:none;display:flex;flex-wrap:wrap;gap:.2rem;padding:.9rem 1rem;
-  border-top:1px solid var(--linea)}
-.rail__pie button{font:inherit;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.16em;
+.tope__m b{font-size:1.06rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase}
+.tope__m i{font-style:normal;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted)}
+.tope__m:hover b{color:var(--azul)}
+.tope__d{display:flex;align-items:center;gap:.4rem}
+.tope__b{font:inherit;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;
   text-transform:uppercase;background:none;border:0;cursor:pointer;color:var(--muted);
-  padding:.5rem .55rem;transition:color .18s var(--e)}
-.rail__pie button:hover{color:var(--negro)}
+  padding:.7rem .8rem;transition:color .2s var(--e)}
+.tope__b:hover{color:var(--negro)}
+/* sobre una banda oscura la cabecera se vuelve blanca, sin caja ni cristal */
+.tope--noche .tope__m,.tope--noche .tope__b:hover,
+.tope--noche .railbt{color:#fff}
+.tope--noche .tope__m i,.tope--noche .tope__b{color:rgba(255,255,255,.6)}
+.tope--noche .railbt__x i{background:#fff}
+.tope--noche .railbt{border-color:rgba(255,255,255,.34)}
+.tope--noche .railbt:hover{border-color:#fff}
 
-.panel{margin-left:var(--rail);min-height:100vh}
-/* el lector ocupa el panel, no la pantalla: el raíl se queda a la vista y se
-   puede saltar a otro sitio sin cerrar lo que se está leyendo */
-.lector{inset:0 0 0 var(--rail)}
-.lector__cab{height:auto;padding:1.1rem 2rem}
-/* lo que se queda pegado arriba lo hace dentro del panel */
+.railbt{display:flex;align-items:center;gap:.8rem;margin-left:.6rem;
+  font:inherit;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;
+  text-transform:uppercase;background:none;cursor:pointer;color:var(--negro);
+  border:1px solid var(--linea);padding:.7rem 1rem;transition:border-color .2s var(--e)}
+.railbt:hover{border-color:var(--negro)}
+.railbt__x{display:block;width:14px;height:10px;position:relative}
+.railbt__x i{position:absolute;left:0;right:0;height:1px;background:currentColor;
+  transition:transform .3s var(--e),opacity .2s var(--e)}
+.railbt__x i:first-child{top:2px}
+.railbt__x i:last-child{bottom:2px}
+.railbt[aria-expanded="true"] .railbt__x i:first-child{transform:translateY(3px) rotate(45deg)}
+.railbt[aria-expanded="true"] .railbt__x i:last-child{transform:translateY(-4px) rotate(-45deg)}
+
+/* --- el índice, a pantalla completa ----------------------------------- */
+.rail{position:fixed;inset:0;z-index:65;background:var(--blanco);overflow-y:auto;
+  overscroll-behavior:contain;animation:idxentra .42s var(--e) both}
+.rail[hidden]{display:none}
+@keyframes idxentra{from{opacity:0;transform:translateY(-1.2rem)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.rail{animation:none}}
+.rail__in{max-width:96rem;margin:0 auto;padding:7rem clamp(1.2rem,4vw,3.4rem) 5rem}
+.rail__filtro{display:flex;align-items:baseline;gap:1.6rem;flex-wrap:wrap;
+  border-bottom:1px solid var(--negro);padding-bottom:1.2rem;margin-bottom:1rem}
+.rail__filtro input{flex:1;min-width:14rem;font:inherit;
+  font-size:clamp(1.2rem,2.4vw,1.9rem);font-weight:300;letter-spacing:-.02em;
+  border:0;background:none;color:var(--negro);outline:none;padding:0}
+.rail__filtro input::placeholder{color:var(--linea)}
+.rail__n{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);flex:none}
+
+.arb{display:block}
+.arb__s{border-bottom:1px solid var(--linea-2)}
+.arb__b{width:100%;display:grid;grid-template-columns:3.4rem 1fr auto auto;gap:1.4rem;
+  align-items:baseline;padding:1.5rem 0;font:inherit;text-align:left;background:none;
+  border:0;cursor:pointer;color:var(--negro);transition:color .2s var(--e)}
+.arb__n{font-style:normal;font-family:var(--f-mono);font-size:.7rem;color:var(--linea);
+  letter-spacing:.06em}
+/* el nombre de una sección, a tamaño de titular: es lo único que hay */
+.arb__r{font-size:clamp(1.5rem,3.4vw,2.7rem);font-weight:300;line-height:1.1;
+  letter-spacing:-.03em}
+.arb__c{font-style:normal;font-family:var(--f-mono);font-size:.6rem;color:var(--muted);
+  letter-spacing:.14em;align-self:center}
+.arb__x{color:var(--linea);transition:transform .3s var(--e),color .2s var(--e);
+  align-self:center;width:12px;height:8px}
+.arb__b:hover{color:var(--azul)}
+.arb__b:hover .arb__n,.arb__b:hover .arb__x{color:var(--azul)}
+.arb__s.es-ab > .arb__b .arb__n{color:var(--azul)}
+.arb__s.es-ab > .arb__b .arb__x{transform:rotate(180deg);color:var(--azul)}
+.arb__s.es-aqui > .arb__b .arb__r{text-decoration:underline;text-underline-offset:.5rem;
+  text-decoration-thickness:1px}
+.arb__l{padding:0 0 2rem 4.8rem}
+.arb__l[hidden]{display:none}
+.arb__l .sub{display:block;columns:3;column-gap:3rem;padding:0;margin:0;max-width:none}
+@media(max-width:1100px){.arb__l .sub{columns:2}}
+@media(max-width:760px){.arb__l .sub{columns:1}.arb__l{padding-left:0}}
+.arb__l .sub__b{break-inside:avoid;margin:0 0 1.6rem}
+.arb__l .sub__g{margin:0 0 .5rem;font-size:.58rem;letter-spacing:.2em;color:var(--muted)}
+.arb__l .sub a{grid-template-columns:2.2rem 1fr;gap:.8rem;padding:.4rem 0;
+  font-size:.94rem;line-height:1.45;border:0}
+.arb__l .sub a span{font-size:.6rem}
+.arb__l .sub a:hover{color:var(--negro)}
+.arb__l .sub a.es-aqui{color:var(--azul)}
+
+.rail__pie{display:flex;flex-wrap:wrap;gap:.4rem 2rem;margin-top:3.4rem;padding-top:1.6rem;
+  border-top:1px solid var(--linea)}
+.rail__pie button{font:inherit;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.18em;
+  text-transform:uppercase;background:none;border:0;cursor:pointer;color:var(--muted);
+  padding:.6rem 0;transition:color .2s var(--e)}
+.rail__pie button:hover{color:var(--azul)}
+.velorail{display:none}
+
+/* el lector ocupa la pantalla, que es lo que hay que hacer con un texto */
+.lector{inset:0}
+.lector__cab{height:auto;padding:1.2rem clamp(1.2rem,4vw,3.4rem)}
 #sitio .puestosel{top:0}
 #sitio .puesto :where(h2,h3,h4,[id]){scroll-margin-top:7rem}
 
-/* La cinta del reloj: un tramo estrecho no puede contener la palabra
-   «Preparación», y forzarla solo consigue que se corte a mitad de sílaba
-   contra el tramo de al lado. Quién lleva el nombre y quién no lo decide el
-   generador, que es el que sabe cuánto mide cada tramo; aquí solo se cuida de
-   que lo que sí cabe se parta por donde toca. */
-#sitio .reloj__r{overflow-wrap:anywhere;hyphens:auto}
-#sitio .reloj__t--fino .reloj__r{display:none}
-#sitio .reloj__t--fino{justify-content:flex-start;gap:.3rem}
+/* la portada ocupa la pantalla; lo demás entra debajo, con aire */
+/* la primera línea de una banda empieza por debajo de la cabecera, no a su
+   misma altura: dos rótulos a la misma altura se leen como uno partido */
+#sitio .portada{min-height:100vh;padding:13rem var(--marco) 5rem}
+#sitio .frente{min-height:0;padding-top:11rem}
+#sitio .sec{padding-top:0}
+#sitio .sec > .lienzo:first-of-type{padding-top:calc(var(--aire) * .8)}
 
-/* Lo que se sale «a sangre» tiene que salirse del panel, no de la pantalla:
-   con el raíl a la izquierda, una banda que mide una pantalla entera se mete
-   por debajo del raíl y se le come el principio a su propio titular. */
-#sitio .portada,#sitio .frente,#sitio .banda--noche,#sitio .banda--pie{
-  margin-inline:calc(50% - (100vw - var(--rail)) / 2)}
 @media(max-width:900px){
-  #sitio .portada,#sitio .frente,#sitio .banda--noche,#sitio .banda--pie{
-    margin-inline:calc(50% - 50vw)}
+  .tope{padding:1rem 1.1rem}
+  .tope__b{display:none}
+  .tope__m i{display:none}
+  .rail__in{padding:6rem 1.1rem 4rem}
+  #sitio .portada{min-height:0;padding:8rem 1.6rem 3.5rem}
+  #sitio .frente{padding-top:7.5rem}
 }
+@media print{.tope,.rail{display:none!important}}
 
-/* la portada y las bandas dejan de ocupar una pantalla entera: son una
-   entrada, no un cartel */
-.portada{min-height:min(66vh,34rem);padding:4.5rem var(--marco) 4rem}
-.frente{min-height:0}
-#sitio .sec{padding-top:calc(var(--aire) * .7)}
-
-/* el botón que abre el raíl en pantallas estrechas */
-.railbt{display:none;position:fixed;top:.9rem;left:.9rem;z-index:80;width:2.6rem;height:2.6rem;
-  background:var(--blanco);border:1px solid var(--linea);cursor:pointer;
-  flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.railbt span{display:block;width:14px;height:1px;background:var(--negro)}
-.velorail{position:fixed;inset:0;z-index:55;background:rgba(11,11,15,.4);opacity:0;
-  pointer-events:none;transition:opacity .26s var(--e)}
-.velorail.es-on{opacity:1;pointer-events:auto}
-
-@media(max-width:1100px){
-  html:root{--rail:17rem}
-}
-@media(max-width:900px){
-  html:root{--rail:19rem}
-  .railbt{display:flex}
-  .rail{transform:translateX(-100%);transition:transform .3s var(--e);
-    box-shadow:0 0 60px -20px rgba(11,11,15,.5)}
-  .rail.es-ab{transform:none}
-  .panel{margin-left:0;padding-top:3.4rem}
-  .lector{inset:0}
-  .portada{min-height:0;padding:3.4rem 1.6rem 3rem}
-}
-@media(prefers-reduced-motion:reduce){.rail,.velorail,.arb__x{transition:none}}
-@media print{.rail,.railbt,.velorail{display:none!important}.panel{margin-left:0}}
 
 """+ CSS_DATOS + """
 
@@ -4775,7 +4778,6 @@ JS = """
       cierraLector();
       veSec(nb.dataset.irSec, true);
       despliega(casa);
-      cierraRail();
       return;
     }
     if((b = e.target.closest("[data-ir-sec]"))){
@@ -5085,6 +5087,8 @@ JS = """
                             || t.tagName === "SELECT" || t.isContentEditable);
     if(e.key === "Escape"){
       if(cierra()){ e.preventDefault(); return; }
+      if(typeof window.__cierraIndice === "function" && window.__cierraIndice()){
+        e.preventDefault(); return; }
       if(cierraLector()){ e.preventDefault(); return; }
       cierraPanel(); return;
     }
@@ -5204,21 +5208,25 @@ JS = """
   }
 
   /* la barra se aparta mientras la banda oscura ocupa la pantalla */
-  var barra = D.querySelector(".nav");
-
+  /* La cabecera no tiene fondo: se apoya en lo que hay debajo. Sobre una
+     banda oscura se vuelve blanca; en cuanto la banda pasa, vuelve a negro.
+     Sin cajas ni cristales: dos palabras y aire. */
+  var barra = D.getElementById("tope");
   function pintaBarra(){
     if (!barra) return;
+    var idx = D.getElementById("rail");
+    if (idx && !idx.hidden){
+      barra.classList.remove("tope--sobre", "tope--noche");
+      return;
+    }
     var sec = D.querySelector(".sec.es-on");
     var banda = sec && sec.querySelector(".portada, .frente");
     var alto = barra.getBoundingClientRect().height;
-    var encima = !!banda && banda.getBoundingClientRect().bottom > alto + 10
-                 && paneles.hidden;
+    var encima = !!banda && banda.getBoundingClientRect().bottom > alto + 10;
     var noche = !!banda && !banda.classList.contains("frente--dia");
-    barra.classList.toggle("nav--sobre", encima && noche);
-    barra.classList.toggle("nav--claro", encima && !noche);
-    /* posada: ya no está sobre una banda a sangre y la página se ha movido.
-       Entonces se afina y se despega del papel con una sombra de un pelo. */
-    barra.classList.toggle("nav--posado", !encima && window.scrollY > 24);
+    barra.classList.toggle("tope--noche", encima && noche);
+    /* sin fondo solo mientras hay una banda a sangre debajo */
+    barra.classList.toggle("tope--sobre", encima);
   }
   window.addEventListener("scroll", pintaBarra, {passive: true});
   window.addEventListener("resize", pintaBarra);
@@ -5327,7 +5335,10 @@ JS = """
       });
     });
     filtra.addEventListener("keydown", function(e){
-      if(e.key === "Escape"){ filtra.value = ""; filtra.dispatchEvent(new Event("input")); }
+      if(e.key === "Escape"){
+        if(!filtra.value){ cierraRail(); return; }
+        filtra.value = ""; filtra.dispatchEvent(new Event("input"));
+      }
       if(e.key === "Enter"){
         var a = D.querySelector(".arb__s:not([hidden]) .arb__l a:not([hidden])");
         if(a){ e.preventDefault(); a.click(); }
@@ -5335,30 +5346,37 @@ JS = """
     });
   }
 
-  /* en pantalla estrecha el raíl entra por la izquierda */
+  /* El índice se pide y se va. No vive en un lateral quitándole sitio a lo
+     que se lee: ocupa la pantalla el rato que hace falta y desaparece. */
   function abreRail(){
     if(!rail) return;
-    rail.classList.add("es-ab");
+    rail.hidden = false;
+    /* con el índice delante la cabecera vuelve a su estado sólido: si se
+       queda en el de «sobre banda oscura» es letra blanca sobre papel */
+    var arriba = D.getElementById("tope");
+    if(arriba) arriba.classList.remove("tope--sobre", "tope--noche");
+    D.documentElement.style.overflow = "hidden";
     if(railbt) railbt.setAttribute("aria-expanded", "true");
-    if(!veloRail){
-      veloRail = D.createElement("div");
-      veloRail.className = "velorail";
-      veloRail.addEventListener("click", cierraRail);
-      D.body.appendChild(veloRail);
-    }
-    veloRail.classList.add("es-on");
+    /* se abre por la sección en la que se está, que es lo que casi siempre
+       se venía a mirar */
+    var viva = D.querySelector(".arb__s.es-aqui");
+    if(viva) despliega(viva);
+    if(filtra) setTimeout(function(){ filtra.focus(); }, 60);
   }
   function cierraRail(){
-    if(!rail || !window.matchMedia("(max-width: 900px)").matches) return;
-    rail.classList.remove("es-ab");
+    if(!rail || rail.hidden) return false;
+    rail.hidden = true;
+    if(!lector || lector.hidden) D.documentElement.style.overflow = "";
+    if(typeof pintaBarra === "function") pintaBarra();
     if(railbt) railbt.setAttribute("aria-expanded", "false");
-    if(veloRail) veloRail.classList.remove("es-on");
+    return true;
   }
+  window.__cierraIndice = cierraRail;
   if(railbt) railbt.addEventListener("click", function(){
-    if(rail.classList.contains("es-ab")) cierraRail(); else abreRail();
+    if(rail.hidden) abreRail(); else cierraRail();
   });
   D.addEventListener("click", function(e){
-    if(e.target.closest(".arb__l a")) cierraRail();
+    if(e.target.closest(".arb__l a") || e.target.closest(".rail__pie button")) cierraRail();
   });
 
   /* ---------------------------------------------------------------- */
@@ -5580,36 +5598,46 @@ MARCO = """
      y a la derecha una sola cosa en pantalla. No hay barra arriba ni páginas
      de diez mil píxeles: se elige en el raíl y aparece a la derecha.
      ------------------------------------------------------------------ -->
-<button class="railbt" type="button" id="railbt" aria-label="Abrir el índice"
-        aria-expanded="false"><span></span><span></span><span></span></button>
+<!-- ------------------------------------------------------------------
+     Arriba no hay barra de secciones: hay una marca y una palabra, «Índice».
+     El índice no vive en un lateral permanente robándole un quinto de la
+     pantalla a lo que se lee: aparece entero cuando se pide, a tamaño de
+     titular, y se va.
+     ------------------------------------------------------------------ -->
+<header class="tope" id="tope">
+  <button class="tope__m" type="button" data-ir-sec="inicio">
+    <b>Giraldo</b><i>No medias sonrisas</i></button>
+  <div class="tope__d">
+    <button class="tope__b" type="button" data-ir-sec="recorridos">Recorridos</button>
+    <button class="tope__b" type="button" data-ir-sec="mapa">Mapa</button>
+    <button class="tope__b" type="button" data-abre="paleta">Buscar</button>
+    <button class="railbt" type="button" id="railbt" aria-expanded="false"
+            aria-controls="rail"><span class="railbt__r">Índice</span>
+      <span class="railbt__x" aria-hidden="true"><i></i><i></i></span></button>
+  </div>
+</header>
 
-<div class="app">
-<aside class="rail" id="rail" aria-label="El sistema">
-  <div class="rail__cab">
-    <button class="rail__marca" type="button" data-ir-sec="inicio">
-      <b>Giraldo</b><span>Centro de Excelencia Implantológica</span></button>
-  </div>
-  <div class="rail__filtro">
-    <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
-      <path d="M10.4 10.4 L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-    </svg>
-    <input id="filtra" type="search" autocomplete="off" spellcheck="false"
-           placeholder="Filtrar los @N@ apartados" aria-label="Filtrar el índice">
-  </div>
-  <nav class="arb" id="arb">@@ARBOL@@</nav>
-  <div class="rail__pie">
-    <button type="button" data-ir-sec="recorridos">Recorridos</button>
-    <button type="button" data-ir-sec="mapa">Mapa</button>
-    <button type="button" data-abre="recursos">Recursos</button>
-    <button type="button" data-abre="teclas">Teclas</button>
+<aside class="rail" id="rail" aria-label="El índice del sistema" hidden>
+  <div class="rail__in">
+    <div class="rail__filtro">
+      <input id="filtra" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Escriba y el índice se queda con lo que busca"
+             aria-label="Filtrar el índice">
+      <span class="rail__n">@N@ apartados</span>
+    </div>
+    <nav class="arb" id="arb">@@ARBOL@@</nav>
+    <div class="rail__pie">
+      <button type="button" data-ir-sec="recorridos">Los diez recorridos</button>
+      <button type="button" data-ir-sec="mapa">El mapa de las catorce fases</button>
+      <button type="button" data-abre="recursos">Recursos</button>
+      <button type="button" data-abre="teclas">Cómo se usa</button>
+    </div>
   </div>
 </aside>
 
 <main class="panel" id="sitio">
 @@SECCIONES@@
 </main>
-</div>
 
 <!-- ------------------------------------------------------------------
      El lector. Cualquier apartado se abre aquí encima, se lee entero y se
@@ -5904,13 +5932,15 @@ def main():
             '<div class="arb__s" data-arb="%s">\n'
             '  <button type="button" class="arb__b" data-ir-sec="%s" aria-expanded="false">'
             '<i class="arb__n">%02d</i><span class="arb__r">%s</span>'
-            '<i class="arb__c">%s</i>'
-            '<svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true">'
-            '<path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" '
-            'stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
+            '<i class="arb__c">%s</i>%s</button>\n'
             '  <div class="arb__l" hidden>%s</div>\n'
             '</div>'
-            % (ident, ident, k + 1, H.escape(rotulo), cuenta or "", sub))
+            % (ident, ident, k + 1, H.escape(rotulo), cuenta or "",
+               ('<svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true">'
+                '<path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" '
+                'stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+               if sub else '<i class="arb__x"></i>',
+               ('\n  <div class="arb__l" hidden>%s</div>' % sub) if sub else ""))
 
     cuerpo = (MARCO.replace("@@ARBOL@@", "\n".join(arbol))
                    .replace("@N@", str(total))
