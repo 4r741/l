@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v12.0
+# Entrega · Sistema documental Giraldo v13.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
 | `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v12.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v12.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
-| `Sistema-Documental-Giraldo-v12.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
+| `Giraldo-TODO-EN-UNO-v13.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v13.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v13.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,48 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## Las cifras, dibujadas · versión 13
+
+Hasta aquí los datos del sistema se enseñaban como se enseñan en un documento:
+tablas, listas y barras horizontales. Se leen, pero no se ven. La versión 13 les
+da la vuelta: cada cifra que importa se dibuja, con la misma mano con la que
+están dibujadas las imágenes del centro —trazo fino, blanco, negro y un solo
+color— y con la misma forma, **el arco dental de catorce posiciones**, que es la
+forma del trabajo que se hace aquí. Que la figura y la imagen compartan la forma
+no es un adorno: es lo que hace que las dos se lean como una sola cosa.
+
+Son tres figuras, escritas a mano en SVG, sin ninguna biblioteca, y ninguna
+inventa un número.
+
+**El recorrido del paciente, de una sola mirada.** Las catorce fases colocadas
+sobre el arco dental, que es además una sonrisa. Cada marca es una fase, su
+posición es su sitio en el recorrido y su tamaño es lo que dura de verdad. En
+azul, las fases en las que el paciente decide —el diagnóstico, la presentación
+en 3D y la propuesta—, que son las que deciden si hay tratamiento y las que se
+pierden de vista cuando el recorrido se lee como una lista de catorce. Cuáles
+son no está tecleado: se buscan por su rótulo, de modo que si alguna vez cambian
+de sitio el dibujo las sigue marcando donde estén.
+
+**El puente, en cascada.** De los 720.000 € heredados al objetivo del tercer
+ejercicio. Una barra por bloque decía cuánto aporta cada uno; una cascada dice
+además dónde queda el total después de cada uno, que es la pregunta que se hace
+de verdad delante de una Junta. Con la línea del objetivo cruzando el dibujo y
+el acumulado escrito bajo cada bloque, se ve en qué punto exacto se cruza la
+meta y cuánto colchón queda.
+
+**Quién tiene el peso, y en qué fase.** Los seis puestos contra las catorce
+fases, en puntos en vez de en letras. Ochenta y cuatro casillas con una letra
+dentro obligan a leerlas una a una; el mismo dato en puntos enseña antes de leer
+nada dónde se concentra el peso y en qué fases cambia de manos el paciente:
+Recepción abre, el Doctor sostiene el centro del recorrido, Dirección aparece de
+punta a punta y el Higienista solo entra en la catorce. Las letras de la matriz
+siguen estando dentro de la ficha de cada puesto: el dibujo no las sustituye,
+las ordena.
+
+Las tres viven en `datos.py`, que es un lenguaje y no un adorno de una página:
+dibujan con `currentColor` y con las variables de color del sitio, así que la
+hoja de estilos manda sobre ellas y el archivo sigue abriéndose sin conexión.
 
 ## Lo que trae la versión 12
 

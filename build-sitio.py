@@ -959,7 +959,37 @@ def bloque_primera_visita(pre):
                         '<div class="carril__p">%s</div></div>'
                         % (H.escape(NOMBRE_ROL.get(r, r.title())), "".join(bloques)))
 
+    # El recorrido, dibujado: las catorce fases sobre el arco dental, que es la
+    # forma del trabajo del centro. No es un adorno puesto encima de los datos:
+    # la posición de cada fase es su sitio en el recorrido y el tamaño de su
+    # marca es lo que dura de verdad.
+    catorce = fs + [{"n": 13, "label": "Postvisita", "min": 2},
+                    {"n": 14, "label": "Mantenimiento", "min": 2}]
+    # Las tres en las que el paciente decide no se teclean: se buscan por su
+    # rótulo. Si alguna vez cambian de sitio en el recorrido, el dibujo las
+    # sigue marcando donde estén, y si alguna dejara de existir, se dice.
+    QUIEN_DECIDE = ("diagn", "presentaci", "propuesta")
+    decide = [f["n"] for f in catorce
+              if any(k in (f.get("label") or "").lower() for k in QUIEN_DECIDE)]
+    dibujo = dibuja_arco(catorce, decisivas=tuple(decide))
+    nombres_decide = " · ".join(
+        f["label"] for f in catorce if f["n"] in decide) or "las de la decisión"
+
     return ("""
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>El recorrido, de una sola mirada</h2>
+    <p>Las catorce fases colocadas sobre el arco dental, que es la forma del trabajo que se
+      hace aquí. Cada marca es una fase y su tamaño es lo que dura de verdad; en azul, las
+      <b>fases en las que el paciente decide</b> —@@DE@@—, que son las que deciden si hay
+      tratamiento y las que se pierden de vista cuando el recorrido se lee como una lista de
+      catorce.</p>
+  </div>
+  <div class="dibcaja">@@AR@@</div>
+  <p class="dibleyenda"><i class="es-hueco">Fase del recorrido</i>
+    <i class="es-azul">El paciente decide</i>
+    <i class="es-nota">El tamaño de la marca es lo que dura</i></p>
+</div>
 <div class="lienzo">
   <div class="lienzo__cab">
     <h2>El reloj de la visita</h2>
@@ -977,11 +1007,20 @@ def bloque_primera_visita(pre):
   </div>
   <div class="carriles">@@C@@</div>
 </div>
-""".replace("@@T@@", "".join(trozos)).replace("@@E@@", ejes)
+""".replace("@@T@@", "".join(trozos)).replace("@@E@@", ejes).replace("@@AR@@", dibujo).replace("@@DE@@", H.escape(nombres_decide))
    .replace("@@C@@", "".join(carriles)).replace("@@TOT@@", str(total)))
 
 
 CLASE_RACI = {"R/A": "wes-ra", "R": "wes-r", "A": "wes-a", "C": "wes-c", "I": "wes-i", "—": "wes-no"}
+
+# Las cifras dibujadas. Viven aparte porque son un lenguaje, no un adorno de
+# esta página: la misma curva con la que se dibujan las imágenes del centro
+# sirve para colocar las catorce fases del recorrido.
+_D = {}
+_D["__file__"] = str(RAIZ / "datos.py")
+exec(compile((RAIZ / "datos.py").read_text(encoding="utf-8"), "datos.py", "exec"), _D)
+dibuja_arco, dibuja_cascada, dibuja_rejilla = _D["arco"], _D["cascada"], _D["rejilla"]
+CSS_DATOS = _D["CSS"]
 
 
 # Los identificadores finales de las catorce fases. El recorrido vive en dos
@@ -1323,7 +1362,36 @@ def bloque_protocolos(pre):
                                    "m-pasa-exactamente-cuando-puesto-no-cumple"),
                indice, manual_puesto, vang))
 
+    # Quién hace qué, en puntos. Ochenta y cuatro casillas con una letra dentro
+    # obligan a leerlas una a una para ver el reparto; el mismo dato en puntos
+    # lo enseña antes de leer nada: dónde se concentra el peso, quién manda en
+    # cada fase y qué puesto entra y sale. Las letras siguen ahí, en la ficha
+    # de cada puesto.
+    nombres = [pp["nombre"].split(" · ")[0] for pp in P.PERFILES]
+    columnas = ["%02d" % i for i in range(1, 15)]
+    _tabla = {}
+    for pp in P.PERFILES:
+        corto = pp["nombre"].split(" · ")[0]
+        for i, (_fase, papel) in enumerate(P.raci_de(pp)):
+            _tabla[(corto, "%02d" % (i + 1))] = papel
+    rejilla_html = dibuja_rejilla(nombres, columnas,
+                                  lambda a, b: _tabla.get((a, b), "—"))
+
     return ("""
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Quién tiene el peso, y en qué fase</h2>
+    <p>Los seis puestos contra las catorce fases del recorrido. El punto lleno y azul es quien
+      <b>ejecuta o responde</b>; el gris, quien se consulta o se informa; el punto mínimo, quien
+      no interviene. Se ve antes de leer nada dónde se concentra el peso y en qué fases cambia
+      de manos el paciente. Las letras de la matriz siguen estando, dentro de la ficha de cada
+      puesto: esto no las sustituye, las ordena.</p>
+  </div>
+  <div class="dibcaja">@@RE@@</div>
+  <p class="dibleyenda"><i class="es-azul">Ejecuta o responde</i>
+    <i>Se consulta o se informa</i>
+    <i class="es-nota">El tamaño del punto es el peso del papel</i></p>
+</div>
 <div class="lienzo">
   <div class="lienzo__cab">
     <h2>Elija su puesto</h2>
@@ -1342,7 +1410,8 @@ def bloque_protocolos(pre):
   </div>
   @@NOCUMPLE@@
 </div>
-""".replace("@@B@@", "".join(botones)).replace("@@F@@", "\n".join(fichas))
+""".replace("@@B@@", "".join(botones)).replace("@@RE@@", rejilla_html)
+   .replace("@@F@@", "\n".join(fichas))
    .replace("@@NOCUMPLE@@", grupo_desplegables(
        "El procedimiento", "Qué ocurre exactamente cuando un puesto no cumple.",
        [desplegable(pre + "pd-nocumple", "01",
@@ -1558,11 +1627,10 @@ def bloque_numeros(pre):
     tramos = [("Punto de partida", P["base"]), ("Llenar la agenda", P["llenar"]),
               ("Mejor mezcla de casos", P["mezcla"]), ("Seguimiento y cuidado", P["seguimiento"])]
     tope = P["planificado"]
-    barras = "".join(
-        '<div class="puente__t" style="--w:%.3f%%"><span class="puente__r">%s</span>'
-        '<span class="puente__v">%s €</span></div>'
-        % (100.0 * v / tope, H.escape(r), "{:,}".format(int(v)).replace(",", "."))
-        for r, v in tramos)
+    # El puente, en cascada. Una barra por bloque decía cuánto aporta cada uno;
+    # una cascada dice además dónde queda el total después de cada uno, que es
+    # la pregunta que se hace de verdad delante de una Junta.
+    barras = dibuja_cascada(tramos, P["objetivo"])
     return ("""
 <div class="lienzo">
   <div class="lienzo__cab">
@@ -1570,9 +1638,10 @@ def bloque_numeros(pre):
     <p>De los 720.000 € heredados al objetivo del tercer ejercicio. Cada bloque mide lo que
       aporta y se audita por separado; ninguno está escrito a mano.</p>
   </div>
-  <div class="puente">@@B@@
-    <p class="puente__pie">Planificado <b>@PL@ €</b> · objetivo <b>@OB@ €</b> ·
-      colchón <b>@CO@ €</b> (@PC@ %)</p></div>
+  <div class="dibcaja">@@B@@</div>
+  <p class="dibpie">Planificado <b>@PL@ €</b> · objetivo <b>@OB@ €</b> ·
+    colchón <b>@CO@ €</b> (@PC@ %). El colchón es la distancia entre lo que suman los bloques
+    y el objetivo: es lo que puede fallar sin que el objetivo se caiga.</p>
   @@CI@@
 </div>
 """.replace("@@B@@", barras)
@@ -4158,6 +4227,8 @@ html:root{
 #sitio .puestobt__c{width:1.9rem;height:1.9rem}
 #sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
 #sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
+
+"""+ CSS_DATOS + """
 
 /* 9 · Marketing, ampliado. Las siete apuestas, lo que no cuesta dinero,
    quién sostiene cada cosa y en qué franja legal cae. Todo sale del mismo
