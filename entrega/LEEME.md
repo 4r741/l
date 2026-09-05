@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v9.0
+# Entrega · Sistema documental Giraldo v10.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
 | `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v9.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v9.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
-| `Sistema-Documental-Giraldo-v9.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
+| `Giraldo-TODO-EN-UNO-v10.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v10.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v10.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,42 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## Lo que se ha arreglado en la versión 10
+
+**La barra de navegación desaparecía.** Es el defecto de fondo detrás de lo que
+se veía: al pasar de la primera pantalla, el índice de arriba se iba con el
+papel y el resto de la web se leía sin navegación, con el texto pasando por
+detrás de lo que quedaba pegado. La causa estaba escondida: la presentación es
+una pantalla y su hoja de estilo trae `html,body{height:100%}`; al recoger su
+literatura viene también su estilo, y esa línea le ponía a la web entera la
+altura de la ventana —el cuerpo medía 900 píxeles con 10.592 de texto dentro—,
+de modo que lo que estaba pegado arriba dejaba de estarlo en cuanto se acababa
+la primera pantalla. Ahora la página recupera su altura y la barra se queda
+donde tiene que estar, en las nueve secciones y a cualquier altura.
+
+**El índice se cortaba a media línea.** Al desplegar una sección, sus apartados
+se repartían en tres columnas de CSS, y una columna de CSS reparte el texto por
+altura y no por sentido: el navegador cortaba por donde le tocaba —«06
+Innovación: tres horizon…»— y esa media línea se leía encima del titular de la
+banda de abajo. Ahora la pieza que no se puede partir es el grupo entero, así
+que las columnas se llenan hasta arriba, sin huecos, y ninguna línea se parte.
+El índice, además, es una hoja: se abre por encima de la página, apaga lo que
+hay debajo y se desvanece por el borde inferior, de modo que una fila a medias
+se lee como «hay más» y no como un error.
+
+**La barra dejaba pasar el texto por detrás.** Sobre una banda a sangre el
+cristal esmerilado es un acierto; sobre papel blanco era una mancha gris. Ahora
+la barra se vuelve opaca en cuanto deja de estar sobre una banda, y se separa
+del papel con una sombra de un pelo.
+
+**Y el cambio de sección deja de ser un parpadeo.** La sección nueva entra
+subiendo unos milímetros y su cabecera un instante después que el resto. Quien
+tenga puesto en su sistema que no quiere animaciones no ve ninguna.
+
+Además: el foco del teclado se ve igual en toda la web, los enlaces dentro del
+texto se subrayan de izquierda a derecha al pasar por encima, y lo que se puede
+pulsar se levanta un pelo al acercarse.
 
 ## Los cuatro archivos, enlace a enlace
 

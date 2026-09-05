@@ -762,17 +762,30 @@ DOC_A_SEC = {}
 
 
 def submenu(apartados, pre):
-    """El índice de la sección: sus apartados, agrupados como los agrupa él."""
-    filas, grupo = [], None
+    """El índice de la sección: sus apartados, agrupados como los agrupa él.
+
+    Cada grupo sale como un bloque cerrado. Antes esto era una sola tirada de
+    marcado repartida en tres columnas de CSS, y una columna de CSS reparte el
+    texto por altura, no por sentido: el navegador cortaba el índice por donde
+    le tocaba —a media línea, «06 Innovación: tres horizon…»— y esa media línea
+    se veía encima de la banda de abajo. Con bloques, lo que se corta es entre
+    grupos y nunca dentro de una línea.
+    """
+    grupos, actual = [], None
     for p in apartados:
-        if p["grupo"] != grupo:
-            grupo = p["grupo"]
-            if grupo:
-                filas.append('<p class="sub__g">%s</p>' % H.escape(grupo))
-        filas.append('<a href="#%s%s" data-ir="%s%s"><span>%s</span>%s</a>'
-                     % (pre, p["id"], pre, p["id"], H.escape(p["n"] or "·"),
-                        H.escape(p["rotulo"])))
-    return "".join(filas)
+        if actual is None or p["grupo"] != actual[0]:
+            actual = (p["grupo"], [])
+            grupos.append(actual)
+        actual[1].append(
+            '<a href="#%s%s" data-ir="%s%s"><span>%s</span>%s</a>'
+            % (pre, p["id"], pre, p["id"], H.escape(p["n"] or "·"),
+               H.escape(p["rotulo"])))
+    partes = []
+    for rotulo, filas in grupos:
+        partes.append('<div class="sub__b">%s%s</div>'
+                      % ('<p class="sub__g">%s</p>' % H.escape(rotulo) if rotulo else "",
+                         "".join(filas)))
+    return "".join(partes)
 
 
 def cifras(pares):
@@ -2667,24 +2680,69 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
   width:2rem;height:2rem;border:0;background:none;color:var(--muted);line-height:1}
 .icono:hover:not(:disabled){color:var(--negro)}
 .icono:disabled{opacity:.25;cursor:default}
-.paneles{border-top:1px solid var(--linea-2);background:var(--blanco);
-  max-height:min(62vh,32rem);overflow-y:auto}
+/* --- el índice de una sección, desplegado --------------------------------
+   Es una hoja, no un trozo de barra: se abre por encima de la página, tiene
+   su propio blanco y su propio borde, y lo que hay debajo se apaga. Antes
+   compartía fondo con la banda de la sección y, al cortarse por abajo, la
+   última línea del índice se leía encima del titular de la banda. */
+.paneles{position:relative;z-index:2;border-top:1px solid var(--linea-2);
+  border-bottom:1px solid var(--linea);background:var(--blanco);
+  box-shadow:0 24px 48px -32px rgba(17,17,18,.28)}
 .paneles[hidden]{display:none}
-.sub{max-width:var(--ancho);margin:0 auto;padding:2.4rem 2rem 3rem;columns:3;column-gap:3rem}
-.sub__g{break-inside:avoid;margin:1.4rem 0 .6rem;font-family:var(--f-mono);font-size:.58rem;
+/* La zona que se desplaza es la de dentro, y se desvanece por el borde: una
+   fila cortada a la mitad se lee como «hay más abajo» y no como un error. */
+.paneles__c{max-height:min(58vh,30rem);overflow-y:auto;overscroll-behavior:contain;
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 2.2rem),transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 2.2rem),transparent 100%)}
+.paneles__c::-webkit-scrollbar{width:10px}
+.paneles__c::-webkit-scrollbar-thumb{background:var(--linea);border:4px solid var(--blanco)}
+.paneles__c{scrollbar-width:thin;scrollbar-color:var(--linea) transparent}
+/* El velo apaga la página de debajo mientras el índice está abierto: no se
+   mezclan dos capas de texto en la misma pantalla. */
+.velindice{position:fixed;inset:0;z-index:1;background:rgba(17,17,18,.34);
+  opacity:0;pointer-events:none;transition:opacity .28s var(--e)}
+.velindice.es-on{opacity:1;pointer-events:auto}
+
+/* Bloques, no columnas de texto. Una columna de CSS reparte por altura y
+   parte las líneas; una rejilla de bloques reparte por sentido. */
+/* Columnas otra vez, pero con el grupo como pieza indivisible. El corte a
+   media línea venía de que la pieza que el navegador podía partir era la
+   línea; ahora es el grupo entero, así que las columnas se llenan hasta
+   arriba —sin los huecos que deja una rejilla— y ninguna línea se parte. */
+.sub{max-width:var(--ancho);margin:0 auto;padding:2.6rem var(--marco) 3.2rem;
+  columns:3;column-gap:3.4rem}
+.sub[hidden]{display:none}
+.sub__b{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.2rem}
+.sub__b:last-child{margin-bottom:0}
+.sub__b{min-width:0}
+.sub__g{margin:0 0 .9rem;font-family:var(--f-mono);font-size:.58rem;
   letter-spacing:.22em;text-transform:uppercase;color:var(--azul)}
-.sub__g:first-child{margin-top:0}
-.sub a{break-inside:avoid;display:flex;gap:.9rem;align-items:baseline;text-decoration:none;
-  color:var(--ink-2);font-size:.88rem;line-height:1.5;padding:.32rem 0}
-.sub a span{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);flex:none;min-width:1.5rem}
-.sub a:hover{color:var(--azul)}
+.sub a{display:grid;grid-template-columns:1.7rem 1fr;gap:.8rem;align-items:baseline;
+  text-decoration:none;color:var(--ink-2);font-size:.88rem;line-height:1.5;
+  padding:.34rem 0;transition:color .18s var(--e)}
+.sub a span{font-family:var(--f-mono);font-size:.6rem;color:var(--muted);
+  transition:color .18s var(--e)}
+.sub a:hover,.sub a:focus-visible{color:var(--negro)}
+.sub a:hover span,.sub a:focus-visible span{color:var(--azul)}
 
 /* --- las secciones -------------------------------------------------------- */
 .sec{max-width:var(--ancho);margin:0 auto;padding:var(--aire) 2rem calc(var(--aire) * 1.2)}
 .sitio--vivo .sec{display:none}
-.sitio--vivo .sec.es-on{display:block;animation:entra .3s var(--e)}
-@keyframes entra{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){.sitio--vivo .sec.es-on{animation:none}}
+/* El cambio de sección no es un corte: la sección nueva sube tres cuartos de
+   centímetro mientras aparece, y su cabecera entra un instante después que el
+   resto. Es lo que separa una página que cambia de una página que parpadea. */
+.sitio--vivo .sec.es-on{display:block;animation:entra .42s var(--e) both}
+@keyframes entra{from{opacity:0;transform:translate3d(0,10px,0)}
+                 to{opacity:1;transform:none}}
+.sitio--vivo .sec.es-on > .frente,
+.sitio--vivo .sec.es-on > .cab{animation:sube .56s var(--e) both;animation-delay:.06s}
+@keyframes sube{from{opacity:0;transform:translate3d(0,16px,0)}
+                to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  .sitio--vivo .sec.es-on,
+  .sitio--vivo .sec.es-on > .frente,
+  .sitio--vivo .sec.es-on > .cab{animation:none}
+}
 
 .cab{position:relative;max-width:54rem;padding-bottom:var(--aire);margin-bottom:0}
 .cab__n{position:absolute;top:-2.4rem;right:0;font-size:clamp(7rem,16vw,14rem);line-height:.75;
@@ -3225,6 +3283,9 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 
 /* el selector de puesto se queda arriba: se cambia de puesto sin subir */
 .puestosel{position:sticky;top:calc(var(--nav) - 1px);z-index:6;background:var(--blanco)}
+/* Un enlace a algo de dentro de un puesto tiene que aterrizar por debajo de
+   las dos barras pegadas, no detrás de ellas. */
+.puesto :where(h2,h3,h4,[id]){scroll-margin-top:calc(var(--nav) * 2 + 1.5rem)}
 
 /* ====================================================================
    LA PRESENTACIÓN
@@ -3309,6 +3370,15 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
    veces; es clip y no hidden porque hidden rompería lo que se queda pegado
    arriba al bajar. */
 body{overflow-x:clip}
+/* La presentación es una pantalla y trae «html,body{height:100%}» en su hoja.
+   Al recoger su literatura viene también su estilo, y esa línea le ponía a la
+   página entera la altura de la ventana: el cuerpo medía 900 px con 10.592 de
+   texto dentro, de modo que la barra de arriba dejaba de estar pegada en
+   cuanto se pasaba de la primera pantalla y el resto de la web se leía sin
+   navegación. Aquí se le devuelve su altura. Va con «html:root» y con el hijo
+   directo para ganar a esa hoja, esté antes o después. */
+html:root{height:auto}
+html:root > body{height:auto;min-height:100%}
 .portada,.frente,.banda--noche,.banda--pie{margin-inline:calc(50% - 50vw)}
 .arte{display:block;width:100%;height:100%}
 
@@ -3404,7 +3474,57 @@ body{overflow-x:clip}
    Mientras la cabecera de imagen ocupa la pantalla, la barra se quita de en
    medio: transparente y en blanco, como se abre una web. En cuanto la banda
    pasa, vuelve a ser la barra de siempre. */
-.nav{transition:background .32s var(--e),border-color .32s var(--e)}
+.nav{transition:background .32s var(--e),border-color .32s var(--e),
+  box-shadow .32s var(--e)}
+/* Al bajar, la barra se separa del papel con una sombra de un pelo: deja de
+   ser parte de la página y pasa a estar por encima de ella. Lo que no cambia
+   es su altura: debajo de ella se queda pegado el selector de puesto, a la
+   altura exacta de la barra, y una barra que encoge abría una rendija de
+   catorce píxeles por la que se veía pasar el texto entre las dos. */
+/* Y se vuelve opaca. Translúcida se veía pasar el texto por detrás en un
+   gris sucio: sobre una banda a sangre el cristal es un acierto, sobre papel
+   blanco es una mancha. */
+.nav--posado{background:var(--blanco);backdrop-filter:none;
+  box-shadow:0 1px 0 0 var(--linea),0 18px 30px -30px rgba(17,17,18,.5)}
+
+/* --- el pulido de la versión 10 -----------------------------------------
+   Nada de esto añade información: hace que la que hay se lea mejor. */
+
+/* Un enlace dentro del texto se subraya al pasar por encima, y el subrayado
+   crece desde la izquierda. Es la diferencia entre un enlace y una palabra
+   pintada de azul. */
+.sec p a:not(.bt):not(.puerta):not([class*="__"]),
+.hoja p a:not(.bt):not(.puerta):not([class*="__"]){
+  text-decoration:none;background-image:linear-gradient(var(--azul),var(--azul));
+  background-repeat:no-repeat;background-position:0 100%;background-size:0 1px;
+  transition:background-size .28s var(--e),color .2s var(--e)}
+.sec p a:not(.bt):not(.puerta):not([class*="__"]):hover,
+.sec p a:not(.bt):not(.puerta):not([class*="__"]):focus-visible,
+.hoja p a:not(.bt):not(.puerta):not([class*="__"]):hover,
+.hoja p a:not(.bt):not(.puerta):not([class*="__"]):focus-visible{background-size:100% 1px}
+@media(prefers-reduced-motion:reduce){
+  .sec p a,.hoja p a{transition:none}
+}
+
+/* El número de la sección deja de ser una marca de agua tímida: es la primera
+   cosa que se ve y dice en cuál de las nueve está. */
+.cab__n{opacity:.9}
+
+/* Lo que se puede pulsar lo dice al acercarse: la línea de abajo se vuelve
+   negra y el bloque se levanta un pelo. Un pelo, no un salto. */
+.puerta,.presidx a,.idx__a{transition:transform .28s var(--e),
+  border-color .28s var(--e),color .2s var(--e)}
+.puerta:hover,.presidx a:hover,.idx__a:hover{transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){
+  .puerta,.presidx a,.idx__a{transition:none}
+  .puerta:hover,.presidx a:hover,.idx__a:hover{transform:none}
+}
+
+/* El foco se ve, y se ve igual en todas partes. Una web que no enseña dónde
+   está el teclado no está terminada. */
+:where(a,button,summary,input,select,[tabindex]):focus-visible{
+  outline:2px solid var(--azul);outline-offset:3px;border-radius:1px}
+@media(prefers-reduced-motion:reduce){.nav,.nav__f{transition:none}}
 .nav--sobre{background:transparent;border-color:rgba(255,255,255,.14);backdrop-filter:none}
 .nav--claro{background:transparent;border-color:transparent;backdrop-filter:none}
 .nav--sobre .nav__m{color:#fff}
@@ -3563,6 +3683,9 @@ body{overflow-x:clip}
   .nav__l{order:3;flex:1 0 100%;min-width:100%;height:2.6rem;justify-content:flex-start}
   .abrepal span{display:none}
   .sub{columns:1;padding:1.6rem 1.1rem 2rem}
+  /* aquí «--nav» vale «auto» y el cálculo de arriba no es un número: en el
+     teléfono no hay nada pegado, así que el margen de aterrizaje es fijo */
+  .puesto :where(h2,h3,h4,[id]){scroll-margin-top:1rem}
   .sec{padding:2.6rem 1.1rem 4rem}
   .cab__n{font-size:5rem;top:-1rem}
   .reloj__barra{height:auto;flex-direction:column}
@@ -4002,6 +4125,16 @@ JS = """
   /* ---------------------------------------------------------------- */
   /*  El índice desplegable                                             */
   /* ---------------------------------------------------------------- */
+  var velIndice = null;
+  function velo(encendido){
+    if(!velIndice){
+      velIndice = D.createElement("div");
+      velIndice.className = "velindice";
+      velIndice.addEventListener("click", cierraPanel);
+      D.body.appendChild(velIndice);
+    }
+    velIndice.classList.toggle("es-on", !!encendido);
+  }
   function abrePanel(id){
     var hay = false;
     [].slice.call(D.querySelectorAll(".sub")).forEach(function(p){
@@ -4010,12 +4143,18 @@ JS = """
       if(si) hay = true;
     });
     paneles.hidden = !hay;
+    /* el índice se abre por su principio, no por donde se quedó la vez
+       anterior: un índice que abre a medias parece un índice roto */
+    var caja = paneles.querySelector(".paneles__c");
+    if(caja && hay) caja.scrollTop = 0;
+    velo(hay);
     [].slice.call(D.querySelectorAll(".nav__l button")).forEach(function(b){
       b.classList.toggle("es-abierto", hay && b.dataset.irSec === id);
     });
   }
   function cierraPanel(){
     if(paneles) paneles.hidden = true;
+    velo(false);
     [].slice.call(D.querySelectorAll(".nav__l button")).forEach(function(b){
       b.classList.remove("es-abierto");
     });
@@ -4380,6 +4519,7 @@ JS = """
 
   /* la barra se aparta mientras la banda oscura ocupa la pantalla */
   var barra = D.querySelector(".nav");
+
   function pintaBarra(){
     if (!barra) return;
     var sec = D.querySelector(".sec.es-on");
@@ -4390,6 +4530,9 @@ JS = """
     var noche = !!banda && !banda.classList.contains("frente--dia");
     barra.classList.toggle("nav--sobre", encima && noche);
     barra.classList.toggle("nav--claro", encima && !noche);
+    /* posada: ya no está sobre una banda a sangre y la página se ha movido.
+       Entonces se afina y se despega del papel con una sombra de un pelo. */
+    barra.classList.toggle("nav--posado", !encima && window.scrollY > 24);
   }
   window.addEventListener("scroll", pintaBarra, {passive: true});
   window.addEventListener("resize", pintaBarra);
@@ -4465,7 +4608,9 @@ MARCO = """
       <button class="icono" type="button" data-abre="teclas" aria-label="Cómo se usa" title="Cómo se usa (?)">?</button>
     </div>
   </div>
-  <div class="paneles" id="paneles" hidden>@@PANELES@@</div>
+  <div class="paneles" id="paneles" hidden>
+    <div class="paneles__c">@@PANELES@@</div>
+  </div>
 </header>
 
 <div id="sitio">
