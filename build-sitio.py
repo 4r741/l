@@ -1355,6 +1355,10 @@ COSTE_ROT = {"0": "No cuesta dinero", "€": "Hasta 1.000 €", "€€": "De 1 
 PLAZO_ROT = {"ya": "Ya", "trim": "Este trimestre", "año": "Este año",
              "estruct": "Cambia cómo trabajamos"}
 SEM_ROT = {"verde": "Sin reservas", "amarillo": "Con cautela", "naranja": "Requiere criterio"}
+# El nombre entero de cada puesto, para no obligar a nadie a traducir siglas.
+PUESTO_ROT = {"DG": "Dirección General", "GER": "Gerencia", "DC": "Dirección de Clínica",
+              "REC": "Recepción", "RAC": "RAC · Responsable de Producción",
+              "DR": "Doctor", "HIG": "Higienista"}
 
 
 def bloque_marketing(pre):
@@ -1392,6 +1396,75 @@ def bloque_marketing(pre):
                                              for k in ("ya", "trim", "año", "estruct")])
                + opciones("sem", "Marco", [(k, SEM_ROT[k])
                                            for k in ("verde", "amarillo", "naranja")]))
+    # ------------------------------------------------------------------
+    #  Lo que el plan ya dice y no se estaba enseñando
+    #  Nada de esto se teclea: sale del mismo catálogo del que sale la tabla
+    #  de las setenta y seis. Un plan de marketing no es una lista de
+    #  acciones: es siete apuestas con un orden, un coste y un dueño.
+    # ------------------------------------------------------------------
+    def _euros(n):
+        return "{:,}".format(int(n)).replace(",", ".")
+
+    por_g = {}
+    for a in C["acciones"]:
+        por_g.setdefault(a["grupo"], []).append(a)
+
+    grupos_html = "".join(
+        '<article class="mkg">\n'
+        '  <p class="mkg__k">%s · %s</p>\n'
+        '  <h4 class="mkg__t">%s</h4>\n'
+        '  <p class="mkg__q">%s</p>\n'
+        '  <dl class="mkg__d">'
+        '<div><dt>Acciones</dt><dd>%d</dd></div>'
+        '<div><dt>Sin coste</dt><dd>%d</dd></div>'
+        '<div><dt>Se empiezan ya</dt><dd>%d</dd></div>'
+        '<div><dt>Techo al año</dt><dd>%s €</dd></div></dl>\n'
+        '</article>'
+        % (H.escape(cod), H.escape(estados_cubiertos), H.escape(nombre), H.escape(lede),
+           len(por_g.get(cod, [])),
+           sum(1 for a in por_g.get(cod, []) if a["coste"] == "0"),
+           sum(1 for a in por_g.get(cod, []) if a["plazo"] == "ya"),
+           _euros(sum(a.get("coste_max") or 0 for a in por_g.get(cod, []))))
+        for cod, estados_cubiertos, nombre, lede in C["grupos"])
+
+    # Lo que no cuesta dinero: se puede empezar el lunes y no espera a nadie.
+    gratis = [a for a in C["acciones"] if a["coste"] == "0" and a["plazo"] == "ya"]
+    gratis_html = "".join(
+        '<li class="mkl__i"><span class="mkl__c">%s</span>'
+        '<div><b>%s</b><p>%s</p><i>%s</i></div></li>'
+        % (H.escape(a["cod"]), H.escape(a["accion"]), H.escape(a["gana"]),
+           H.escape(PUESTO_ROT.get(a["quien"], a["quien"])))
+        for a in gratis)
+
+    # Quién sostiene el plan: cada acción tiene un dueño, y el reparto se
+    # cuenta. Un plan cuyo dueño es «marketing» no tiene dueño.
+    por_p = {}
+    for a in C["acciones"]:
+        por_p.setdefault(a["quien"], []).append(a)
+    mayor = max((len(v) for v in por_p.values()), default=1)
+    puestos_html = "".join(
+        '<div class="mkp"><p class="mkp__n">%s</p>'
+        '<div class="mkp__b"><i style="--v:%d%%"></i></div>'
+        '<p class="mkp__c"><b>%d</b> acciones · %d sin coste · hasta %s €</p></div>'
+        % (H.escape(PUESTO_ROT.get(k, k)), round(100 * len(v) / mayor), len(v),
+           sum(1 for a in v if a["coste"] == "0"),
+           _euros(sum(a.get("coste_max") or 0 for a in v)))
+        for k, v in sorted(por_p.items(), key=lambda x: -len(x[1])))
+
+    # El marco legal, contado: cuántas acciones caen en cada franja y qué
+    # significa cada franja.
+    por_s = {}
+    for a in C["acciones"]:
+        por_s[a["sem"]] = por_s.get(a["sem"], 0) + 1
+    marco_html = "".join(
+        '<div class="mkm mkm--%s"><p class="mkm__n">%d</p><p class="mkm__r">%s</p>'
+        '<p class="mkm__q">%s</p></div>'
+        % (k, por_s.get(k, 0), H.escape(SEM_ROT.get(k, k)), H.escape(q))
+        for k, q in (
+            ("verde", "Publicidad sanitaria ordinaria: se hace y se archiva la pieza."),
+            ("amarillo", "Requiere revisión antes de publicar: quién lo firma está escrito."),
+            ("naranja", "Solo con informe previo. Si no hay informe, la acción no sale.")))
+
     camp = "".join(
         '<article class="wcampana"><p class="wcampana__k">%s</p><h4>%s</h4>'
         '<p class="wcampana__r">%s</p>'
@@ -1404,6 +1477,17 @@ def bloque_marketing(pre):
            ("%.1f" % ((c.get("aporta") or sum(p[1] for p in c.get("partes", []))) / c["coste"])).replace(".", ","))
         for c in CAMPANAS["campanas"])
     return ("""
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Las siete apuestas del plan</h2>
+    <p>El plan no es una lista de setenta y seis acciones: son siete apuestas con un orden.
+      Cada una actúa sobre unos estados concretos del paciente, tiene su propio número de
+      acciones, su parte que no cuesta dinero y su techo de gasto al año. Están en el orden en
+      que se sostienen: la primera no factura este ejercicio y sin ella no hay ninguna de las
+      siguientes.</p>
+  </div>
+  <div class="mkgs">@@GR@@</div>
+</div>
 <div class="lienzo">
   <div class="lienzo__cab">
     <h2>Los doce estados</h2>
@@ -1428,6 +1512,33 @@ def bloque_marketing(pre):
 </div>
 <div class="lienzo">
   <div class="lienzo__cab">
+    <h2>Lo que se puede empezar el lunes sin gastar</h2>
+    <p>De las setenta y seis, estas @@NG@@ no cuestan dinero y no esperan a nadie: no dependen
+      de un presupuesto, de una agencia ni de una decisión de la Junta. Son la prueba de que el
+      plan no está esperando a que llegue el dinero. Cada una lleva al lado quién la sostiene.</p>
+  </div>
+  <ol class="mkl">@@GA@@</ol>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Quién sostiene el plan</h2>
+    <p>Cada acción tiene un dueño con nombre de puesto, no un departamento. Un plan cuyo dueño
+      es «marketing» no tiene dueño: cuando algo no se hace, no hay a quién preguntar. Así queda
+      el reparto, y así se ve de un vistazo sobre qué puesto recae el peso.</p>
+  </div>
+  <div class="mkps">@@PU@@</div>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>El marco: qué se puede decir y qué no</h2>
+    <p>La publicidad sanitaria no es publicidad y ninguna acción entra en el plan sin decir en
+      qué franja cae. No es una precaución añadida al final: es una columna del catálogo, y las
+      setenta y seis están clasificadas.</p>
+  </div>
+  <div class="mkms">@@MA@@</div>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
     <h2>La cartera de campañas</h2>
     <p>Ninguna cifra está escrita a mano: todas salen del modelo, con el criterio conservador
       —una campaña vale la diferencia entre el paciente que trae y el que desplaza, no lo que
@@ -1436,7 +1547,10 @@ def bloque_marketing(pre):
   <div class="campanas">@@CA@@</div>
 </div>
 """.replace("@@E@@", estados).replace("@@FI@@", filtros)
-   .replace("@@FA@@", filas).replace("@@CA@@", camp))
+   .replace("@@FA@@", filas).replace("@@CA@@", camp)
+   .replace("@@GR@@", grupos_html).replace("@@GA@@", gratis_html)
+   .replace("@@NG@@", str(len(gratis))).replace("@@PU@@", puestos_html)
+   .replace("@@MA@@", marco_html))
 
 
 def bloque_numeros(pre):
@@ -2154,14 +2268,21 @@ def monta():
                    H.escape(nombre_doc), " · " + H.escape(p["grupo"]) if p["grupo"] else "",
                    p["html"]))
 
+        # Cada parte del documento es una banda: a la izquierda cómo se llama y
+        # cuánto ocupa, a la derecha sus apartados. Repartido en dos columnas
+        # de CSS, el índice quedaba desigual —una columna llena y otra a medias—
+        # y el rótulo de una parte podía acabar lejos de lo que rotula. Así se
+        # ve de un golpe cuántas partes hay, cómo se llaman y qué pesa cada una.
         filas = []
-        for rotulo_g, enlaces in bloques:
+        for i, (rotulo_g, enlaces) in enumerate(bloques):
             filas.append(
-                '<div class="idx__b">%s%s</div>'
-                % (('<p class="idx__g">%s</p><p class="idx__c">%s</p>'
-                    % (H.escape(rotulo_g),
-                       "1 apartado" if len(enlaces) == 1 else "%d apartados" % len(enlaces)))
-                   if rotulo_g else "",
+                '<div class="idx__b">\n'
+                '  <div class="idx__cab"><p class="idx__n">%02d</p>'
+                '<p class="idx__g">%s</p><p class="idx__c">%s</p></div>\n'
+                '  <div class="idx__l">%s</div>\n'
+                '</div>'
+                % (i + 1, H.escape(rotulo_g or "Portada"),
+                   "1 apartado" if len(enlaces) == 1 else "%d apartados" % len(enlaces),
                    "".join(enlaces)))
 
         titulo, texto = INTROS[ident]
@@ -3071,31 +3192,43 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .puente__v{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-2)}
 .puente__pie{margin:2rem 0 0;font-size:.88rem;line-height:1.8;color:var(--ink-2)}
 .puente__pie b{color:var(--negro)}
-/* El índice de una sección: una columna por grupo, y el grupo entero es la
-   pieza que no se puede partir. Repartido por líneas, el navegador dejaba el
-   rótulo de una parte al pie de una columna y sus apartados en la siguiente:
-   el índice decía una cosa y ordenaba otra. */
-.lienzo--indice .idx{columns:2;column-gap:4rem;border-top:1px solid var(--linea);
-  padding-top:2.2rem}
-.idx__b{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.6rem;
-  padding-top:1.2rem;border-top:1px solid var(--linea-2)}
-.idx__b:first-child{padding-top:0;border-top:0}
-.idx__g{margin:0;font-family:var(--f-mono);font-size:.56rem;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--azul)}
-/* cuántos apartados tiene el grupo: se sabe antes de entrar */
-.idx__c{margin:.3rem 0 .9rem;font-family:var(--f-mono);font-size:.52rem;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.idx__b:first-child .idx__c{margin-top:0}
-.idx__a{display:grid;grid-template-columns:1.9rem 1fr;gap:1rem;align-items:baseline;
-  text-decoration:none;color:var(--ink-2);padding:.45rem 0;
-  border-bottom:1px solid var(--linea-2)}
-.idx__a:last-child{border-bottom:0}
-.idx__a span{font-family:var(--f-mono);font-size:.62rem;color:var(--muted)}
-.idx__a--sinn{grid-template-columns:1.9rem 1fr}
+/* El índice de una sección, en bandas: una por parte del documento. A la
+   izquierda cómo se llama la parte y cuánto ocupa; a la derecha sus apartados,
+   repartidos en tantas columnas como quepan. Antes era una tirada de líneas en
+   dos columnas de CSS —que reparten por altura y no por sentido—: quedaba
+   desigual y el rótulo de una parte podía acabar lejos de lo que rotula. */
+.lienzo--indice .idx{border-top:1px solid var(--negro)}
+.idx__b{display:grid;grid-template-columns:minmax(11rem,15rem) 1fr;gap:1.4rem 3rem;
+  padding:2.2rem 0;border-bottom:1px solid var(--linea)}
+.idx__b:last-child{border-bottom:0}
+.idx__cab{position:sticky;top:calc(var(--nav) + 1.4rem);align-self:start}
+.idx__n{margin:0;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;
+  color:var(--linea);font-weight:400}
+.idx__g{margin:.5rem 0 0;font-size:1.02rem;line-height:1.32;font-weight:400;
+  color:var(--negro);max-width:14ch}
+.idx__c{margin:.55rem 0 0;font-family:var(--f-mono);font-size:.62rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* Los apartados bajan por la primera columna y siguen por la segunda, que es
+   como se lee un índice numerado. Una rejilla los habría puesto de izquierda a
+   derecha y los números saldrían salteados. Cada línea es indivisible, así que
+   ninguna se parte por la mitad. */
+.idx__l{columns:2;column-gap:3rem;column-fill:balance}
+@media(max-width:1200px){.idx__l{columns:1}}
+.idx__a{break-inside:avoid;page-break-inside:avoid;
+  display:grid;grid-template-columns:2.1rem 1fr;gap:1rem;align-items:baseline;
+  text-decoration:none;color:var(--ink-2);padding:.62rem 0;
+  border-bottom:1px solid var(--linea-2);transition:color .18s var(--e)}
+.idx__a span{font-family:var(--f-mono);font-size:.68rem;color:var(--muted);
+  transition:color .18s var(--e)}
 .idx__a--sinn::before{content:"";display:block}
-.idx__a b{font-size:.92rem;font-weight:400;line-height:1.55}
+.idx__a b{font-size:1rem;font-weight:400;line-height:1.5}
 .idx__a:hover b,.idx__a:focus-visible b{color:var(--negro)}
 .idx__a:hover span,.idx__a:focus-visible span{color:var(--azul)}
+@media(max-width:900px){
+  .idx__b{grid-template-columns:1fr;gap:.8rem;padding:1.6rem 0}
+  .idx__cab{position:static}
+  .idx__l{columns:1}
+}
 /* Los apartados se leen en el lector, no en la página. Sin guiones se ven
    todos seguidos, que es el documento entero. */
 .sitio--vivo .hojas{display:none}
@@ -3891,6 +4024,205 @@ html:root{
   --sombra-2:0 1px 3px rgba(17,17,18,.06), 0 10px 24px -18px rgba(17,17,18,.30);
   --sombra-3:0 2px 6px rgba(17,17,18,.07), 0 20px 40px -24px rgba(17,17,18,.30);
 }
+
+/* ====================================================================
+   LA ESCALA, LA PALETA Y EL AIRE · versión 12
+   Va la última de la hoja, y con «html:root», para mandar sobre todo lo
+   que traen los documentos recogidos.
+   ==================================================================== */
+
+/* 1 · La letra crece. Todo el sitio mide en «rem», así que subiendo la
+   raíz sube todo a la vez y en proporción: el cuerpo, los rótulos, el
+   número de un apartado y el aire entre líneas. De 16 fijos a entre 17 y
+   19 y medio según la pantalla. Nueve puntos porcentuales de tamaño no
+   son un capricho: un documento de gobierno se lee sentado y entero. */
+html:root{font-size:clamp(17px,.34vw + 15.6px,19.5px)}
+/* El cuerpo lo traía escrito en píxeles la hoja de un documento recogido, de
+   modo que se quedaba en dieciséis y medio por mucho que subiera la raíz.
+   Aquí vuelve a medirse en «rem», que es lo que hace que la escala sea una
+   escala y no una lista de tamaños sueltos. */
+html:root > body{font-size:1rem;line-height:1.62}
+
+/* 2 · Los grises. Antes eran seis tonos elegidos de uno en uno; ahora son
+   una escala con un solo criterio, la misma distancia entre peldaños, y
+   con un punto de frío para que el blanco no amarillee al lado del azul. */
+html:root{
+  --negro:#0B0B0F; --tinta:#0B0B0F; --ink:#16161C; --ink-2:#4E4E5A;
+  --muted:#84848F; --linea:#E3E3E9; --linea-2:#F0F0F4;
+  --papel:#FFFFFF; --blanco:#FFFFFF; --gris:#F7F7F9;
+  --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F7F7F9;
+  --line:#E3E3E9; --line-soft:#F0F0F4; --rule:#D5D5DD;
+  --signal:#4E4E5A; --signal-soft:rgba(11,11,15,.05);
+  --alerta:#0B0B0F; --alerta-soft:rgba(11,11,15,.06);
+  /* 3 · Y un solo color, más profundo y menos eléctrico, que a tamaño de
+     titular acompaña en vez de gritar. */
+  --azul:#1E3AD1; --azul-o:#152C9E; --azul-p:#EEF1FC;
+  --accent:#1E3AD1; --accent-ink:#152C9E; --accent-fuerte:#152C9E;
+  --accent-soft:rgba(30,58,209,.06);
+  --acido:#EEF1FC; --acido-ink:#152C9E;
+  --sem-verde:#1E3AD1; --sem-amarillo:#84848F;
+  --sem-naranja:#4E4E5A; --sem-rojo:#0B0B0F;
+  --rol-direccion:#0B0B0F; --rol-doctor:#1E3AD1; --rol-rac:#33333C;
+  --rol-recepcion:#4E4E5A; --rol-higienista:#75757F; --rol-auxiliar:#9494A0;
+}
+
+/* 4 · Los rótulos pequeños dejan de ser ilegibles. Iban de 9 a 10 píxeles
+   con mucho espaciado, que a esa escala es un adorno y no un rótulo. */
+#sitio .letra,#sitio .rotulillo,#sitio .idx__c,#sitio .sub__g,
+#sitio .parte__k,#sitio .hoja__k,#sitio .cifras span,#sitio .desp__n,
+#proy .rotulillo,#lector .rotulillo{font-size:.66rem;letter-spacing:.2em}
+#sitio .idx__n{font-size:.78rem;letter-spacing:.08em}
+
+/* 5 · El texto largo respira. Una medida de sesenta y pico caracteres y un
+   interlineado ancho es lo que separa una página que se lee de una que se
+   ojea. */
+#sitio .cab__p,#sitio .lienzo__cab p,#sitio .que__x,#sitio .que__c p:last-child{
+  font-size:1.06rem;line-height:1.85}
+#sitio .hoja p,#lector .hoja p{line-height:1.82}
+
+/* 6 · Y los titulares se aprietan al crecer, que es lo que hace que un
+   titular grande parezca dibujado y no estirado. */
+#sitio .cab h1{letter-spacing:-.038em}
+#sitio .lienzo__cab h2{letter-spacing:-.022em}
+
+/* 7 · Los desplegables. Eran una lista de filas con una raya finísima entre
+   ellas y un más de doce píxeles: a la nueva escala se quedaban en nada.
+   Ahora la fila entera es la zona que se pulsa, el número manda el ancho de
+   la columna izquierda, el signo crece y gira, y el que está abierto se
+   distingue del cerrado sin tener que leerlo: una línea azul a la izquierda
+   y el titular en negro. */
+#sitio .desp{border-top:1px solid var(--linea)}
+#sitio .desp:last-child{border-bottom:1px solid var(--linea)}
+#sitio .desp__b{gap:1.8rem;padding:1.7rem .6rem 1.7rem 0;align-items:flex-start;
+  border-left:2px solid transparent;
+  transition:background .22s var(--e),border-color .28s var(--e),padding .26s var(--e)}
+.sitio--vivo #sitio .desp__b:hover{background:var(--gris);padding-left:1rem;
+  border-left-color:var(--linea)}
+#sitio .desp.es-ab > .desp__h > .desp__b{border-left-color:var(--azul);padding-left:1rem;
+  background:none}
+#sitio .desp__n{font-size:.7rem;letter-spacing:.06em;min-width:3.6rem;
+  padding-top:.25rem;color:var(--muted);transition:color .2s var(--e)}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__n{color:var(--azul)}
+#sitio .desp__t b{font-size:1.12rem;line-height:1.38;letter-spacing:-.012em;
+  color:var(--ink-2);transition:color .2s var(--e)}
+#sitio .desp__b:hover .desp__t b,
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__t b{color:var(--negro)}
+#sitio .desp__t i{margin-top:.6rem;font-size:.62rem;letter-spacing:.2em}
+#sitio .desp__x{width:15px;height:15px;align-self:flex-start;margin-top:.4rem;
+  transition:transform .34s var(--e)}
+#sitio .desp__x::before{top:7px}
+#sitio .desp__x::after{left:7px}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__x{transform:rotate(180deg)}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__x::before{background:var(--azul)}
+.sitio--vivo #sitio .desp.es-ab .desp__in{padding:.4rem 0 3rem 1rem}
+
+/* 8 bis · La barra no crece con el texto. Es mando, no lectura: si sube con
+   la escala, nueve secciones más sus flechas dejan de caber en un portátil.
+   Se fija en píxeles, que es lo que la mantiene igual de cómoda a cualquier
+   tamaño de letra, y se le da a cada entrada el aire justo. */
+.nav__f{padding:0 1.6rem;gap:1rem}
+.nav__m{font-size:14px;letter-spacing:.1em}
+.nav__m em{font-size:9px}
+.nav__l button{font-size:11px;letter-spacing:.05em;padding:0 .5rem;gap:.28rem}
+.nav__l button::after{inset:auto .5rem 1.2rem .5rem}
+.nav__x{width:11px;height:11px}
+.nav__ruta{font-size:11px;letter-spacing:.1em;padding:.5rem .55rem}
+.abrepal{font-size:11px;letter-spacing:.14em}
+.icono{width:2rem;height:2rem}
+@media(max-width:1500px){
+  .nav__f{padding:0 1.1rem;gap:.7rem}
+  .nav__l button{font-size:10.5px;padding:0 .34rem}
+  .nav__l button::after{inset:auto .34rem 1.2rem .34rem}
+  .nav__ruta{font-size:10.5px;padding:.5rem .38rem}
+  /* la lupa se queda; la palabra «buscar» se va, que ocupa lo que dos
+     secciones y no dice nada que el icono no diga */
+  .abrepal span{display:none}
+  .abrepal{padding:.4rem .3rem}
+  .nav__sep{margin:0 .3rem}
+  .nav__m em{display:none}
+}
+@media(max-width:1340px){
+  .nav__l button{font-size:10px;padding:0 .26rem;gap:.2rem}
+  .nav__l button::after{inset:auto .26rem 1.2rem .26rem}
+  .nav__x{width:9px;height:9px}
+  .nav__ruta{font-size:10px;padding:.5rem .3rem}
+  .nav__m{font-size:12px}
+}
+
+/* 8 ter · El selector de puesto en una sola fila. A la nueva escala los seis
+   no cabían y se partía en dos, y lo que se queda pegado arriba tiene que
+   medir siempre lo mismo. */
+#sitio .puestosel{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+#sitio .puestosel::-webkit-scrollbar{display:none}
+#sitio .puestobt{flex:1 1 0;min-width:0;gap:.7rem;padding:1rem .8rem}
+#sitio .puestobt__c{width:1.9rem;height:1.9rem}
+#sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
+#sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
+
+/* 9 · Marketing, ampliado. Las siete apuestas, lo que no cuesta dinero,
+   quién sostiene cada cosa y en qué franja legal cae. Todo sale del mismo
+   catálogo del que sale la tabla de las setenta y seis. */
+.mkgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(21rem,1fr));
+  gap:0;border-top:1px solid var(--negro)}
+.mkg{display:flex;flex-direction:column;padding:2rem 2rem 2rem 0;
+  border-bottom:1px solid var(--linea)}
+.mkg + .mkg{border-left:1px solid var(--linea-2);padding-left:2rem}
+.mkg__k{margin:0;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--azul)}
+.mkg__t{margin:.8rem 0 0;font-size:1.24rem;font-weight:400;line-height:1.28;
+  letter-spacing:-.015em;color:var(--negro)}
+.mkg__q{margin:.9rem 0 0;font-size:.95rem;line-height:1.75;color:var(--ink-2);max-width:44ch}
+/* las cifras se alinean por abajo en las siete tarjetas, aunque el texto de
+   arriba mida distinto: si no, la rejilla parece descuadrada */
+.mkg__d{display:grid;grid-template-columns:1fr 1fr;gap:.1rem 1.4rem;
+  margin:1.6rem 0 0;padding-top:1.2rem;border-top:1px solid var(--linea-2)}
+.mkg__q{margin-bottom:auto}
+.mkg__d dt{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted)}
+.mkg__d dd{margin:.2rem 0 .9rem;font-size:1.06rem;color:var(--negro)}
+
+.mkl{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(24rem,1fr));gap:0 3rem;
+  border-top:1px solid var(--negro)}
+.mkl__i{display:grid;grid-template-columns:3.6rem 1fr;gap:1.2rem;
+  padding:1.3rem 0;border-bottom:1px solid var(--linea-2)}
+.mkl__c{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;color:var(--azul);
+  padding-top:.15rem}
+.mkl__i b{display:block;font-size:1rem;font-weight:400;line-height:1.48;color:var(--negro)}
+.mkl__i p{margin:.45rem 0 0;font-size:.92rem;line-height:1.7;color:var(--ink-2)}
+.mkl__i i{display:block;margin:.6rem 0 0;font-style:normal;font-family:var(--f-mono);
+  font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+.mkps{display:grid;gap:0;border-top:1px solid var(--negro)}
+.mkp{display:grid;grid-template-columns:minmax(11rem,17rem) minmax(4rem,1fr) auto;
+  gap:1rem 2rem;align-items:center;padding:1.2rem 0;border-bottom:1px solid var(--linea-2)}
+.mkp__n{margin:0;font-size:1.02rem;color:var(--negro)}
+.mkp__b{height:2px;background:var(--linea-2)}
+.mkp__b i{display:block;height:100%;width:var(--v);background:var(--azul)}
+.mkp__c{margin:0;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--muted);text-align:right;white-space:nowrap}
+.mkp__c b{font-weight:400;color:var(--negro)}
+
+.mkms{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:0;
+  border-top:1px solid var(--negro)}
+.mkm{padding:1.8rem 1.8rem 1.8rem 0;border-bottom:1px solid var(--linea)}
+.mkm + .mkm{border-left:1px solid var(--linea-2);padding-left:1.8rem}
+.mkm__n{margin:0;font-size:2.6rem;line-height:1;font-weight:300;letter-spacing:-.04em;
+  color:var(--negro)}
+.mkm--verde .mkm__n{color:var(--azul)}
+.mkm__r{margin:.7rem 0 0;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted)}
+.mkm__q{margin:.8rem 0 0;font-size:.94rem;line-height:1.72;color:var(--ink-2);max-width:36ch}
+@media(max-width:900px){
+  .mkg,.mkm{padding:1.4rem 0}
+  .mkg + .mkg,.mkm + .mkm{border-left:0;padding-left:0}
+  .mkp{grid-template-columns:1fr;gap:.5rem}
+  .mkp__c{text-align:left}
+}
+
+/* 8 · El índice desplegado del menú, a la nueva escala. */
+#sitio .sub a,.sub a{font-size:.98rem;padding:.42rem 0}
+.sub__g{font-size:.66rem;letter-spacing:.2em}
 """
 
 

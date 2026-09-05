@@ -1574,31 +1574,43 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .puente__v{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-2)}
 .puente__pie{margin:2rem 0 0;font-size:.88rem;line-height:1.8;color:var(--ink-2)}
 .puente__pie b{color:var(--negro)}
-/* El índice de una sección: una columna por grupo, y el grupo entero es la
-   pieza que no se puede partir. Repartido por líneas, el navegador dejaba el
-   rótulo de una parte al pie de una columna y sus apartados en la siguiente:
-   el índice decía una cosa y ordenaba otra. */
-.lienzo--indice .idx{columns:2;column-gap:4rem;border-top:1px solid var(--linea);
-  padding-top:2.2rem}
-.idx__b{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.6rem;
-  padding-top:1.2rem;border-top:1px solid var(--linea-2)}
-.idx__b:first-child{padding-top:0;border-top:0}
-.idx__g{margin:0;font-family:var(--f-mono);font-size:.56rem;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--azul)}
-/* cuántos apartados tiene el grupo: se sabe antes de entrar */
-.idx__c{margin:.3rem 0 .9rem;font-family:var(--f-mono);font-size:.52rem;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.idx__b:first-child .idx__c{margin-top:0}
-.idx__a{display:grid;grid-template-columns:1.9rem 1fr;gap:1rem;align-items:baseline;
-  text-decoration:none;color:var(--ink-2);padding:.45rem 0;
-  border-bottom:1px solid var(--linea-2)}
-.idx__a:last-child{border-bottom:0}
-.idx__a span{font-family:var(--f-mono);font-size:.62rem;color:var(--muted)}
-.idx__a--sinn{grid-template-columns:1.9rem 1fr}
+/* El índice de una sección, en bandas: una por parte del documento. A la
+   izquierda cómo se llama la parte y cuánto ocupa; a la derecha sus apartados,
+   repartidos en tantas columnas como quepan. Antes era una tirada de líneas en
+   dos columnas de CSS —que reparten por altura y no por sentido—: quedaba
+   desigual y el rótulo de una parte podía acabar lejos de lo que rotula. */
+.lienzo--indice .idx{border-top:1px solid var(--negro)}
+.idx__b{display:grid;grid-template-columns:minmax(11rem,15rem) 1fr;gap:1.4rem 3rem;
+  padding:2.2rem 0;border-bottom:1px solid var(--linea)}
+.idx__b:last-child{border-bottom:0}
+.idx__cab{position:sticky;top:calc(var(--nav) + 1.4rem);align-self:start}
+.idx__n{margin:0;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;
+  color:var(--linea);font-weight:400}
+.idx__g{margin:.5rem 0 0;font-size:1.02rem;line-height:1.32;font-weight:400;
+  color:var(--negro);max-width:14ch}
+.idx__c{margin:.55rem 0 0;font-family:var(--f-mono);font-size:.62rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* Los apartados bajan por la primera columna y siguen por la segunda, que es
+   como se lee un índice numerado. Una rejilla los habría puesto de izquierda a
+   derecha y los números saldrían salteados. Cada línea es indivisible, así que
+   ninguna se parte por la mitad. */
+.idx__l{columns:2;column-gap:3rem;column-fill:balance}
+@media(max-width:1200px){.idx__l{columns:1}}
+.idx__a{break-inside:avoid;page-break-inside:avoid;
+  display:grid;grid-template-columns:2.1rem 1fr;gap:1rem;align-items:baseline;
+  text-decoration:none;color:var(--ink-2);padding:.62rem 0;
+  border-bottom:1px solid var(--linea-2);transition:color .18s var(--e)}
+.idx__a span{font-family:var(--f-mono);font-size:.68rem;color:var(--muted);
+  transition:color .18s var(--e)}
 .idx__a--sinn::before{content:"";display:block}
-.idx__a b{font-size:.92rem;font-weight:400;line-height:1.55}
+.idx__a b{font-size:1rem;font-weight:400;line-height:1.5}
 .idx__a:hover b,.idx__a:focus-visible b{color:var(--negro)}
 .idx__a:hover span,.idx__a:focus-visible span{color:var(--azul)}
+@media(max-width:900px){
+  .idx__b{grid-template-columns:1fr;gap:.8rem;padding:1.6rem 0}
+  .idx__cab{position:static}
+  .idx__l{columns:1}
+}
 /* Los apartados se leen en el lector, no en la página. Sin guiones se ven
    todos seguidos, que es el documento entero. */
 .sitio--vivo .hojas{display:none}
@@ -2395,6 +2407,205 @@ html:root{
   --sombra-3:0 2px 6px rgba(17,17,18,.07), 0 20px 40px -24px rgba(17,17,18,.30);
 }
 
+/* ====================================================================
+   LA ESCALA, LA PALETA Y EL AIRE · versión 12
+   Va la última de la hoja, y con «html:root», para mandar sobre todo lo
+   que traen los documentos recogidos.
+   ==================================================================== */
+
+/* 1 · La letra crece. Todo el sitio mide en «rem», así que subiendo la
+   raíz sube todo a la vez y en proporción: el cuerpo, los rótulos, el
+   número de un apartado y el aire entre líneas. De 16 fijos a entre 17 y
+   19 y medio según la pantalla. Nueve puntos porcentuales de tamaño no
+   son un capricho: un documento de gobierno se lee sentado y entero. */
+html:root{font-size:clamp(17px,.34vw + 15.6px,19.5px)}
+/* El cuerpo lo traía escrito en píxeles la hoja de un documento recogido, de
+   modo que se quedaba en dieciséis y medio por mucho que subiera la raíz.
+   Aquí vuelve a medirse en «rem», que es lo que hace que la escala sea una
+   escala y no una lista de tamaños sueltos. */
+html:root > body{font-size:1rem;line-height:1.62}
+
+/* 2 · Los grises. Antes eran seis tonos elegidos de uno en uno; ahora son
+   una escala con un solo criterio, la misma distancia entre peldaños, y
+   con un punto de frío para que el blanco no amarillee al lado del azul. */
+html:root{
+  --negro:#0B0B0F; --tinta:#0B0B0F; --ink:#16161C; --ink-2:#4E4E5A;
+  --muted:#84848F; --linea:#E3E3E9; --linea-2:#F0F0F4;
+  --papel:#FFFFFF; --blanco:#FFFFFF; --gris:#F7F7F9;
+  --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F7F7F9;
+  --line:#E3E3E9; --line-soft:#F0F0F4; --rule:#D5D5DD;
+  --signal:#4E4E5A; --signal-soft:rgba(11,11,15,.05);
+  --alerta:#0B0B0F; --alerta-soft:rgba(11,11,15,.06);
+  /* 3 · Y un solo color, más profundo y menos eléctrico, que a tamaño de
+     titular acompaña en vez de gritar. */
+  --azul:#1E3AD1; --azul-o:#152C9E; --azul-p:#F1F1F1;
+  --accent:#1E3AD1; --accent-ink:#152C9E; --accent-fuerte:#152C9E;
+  --accent-soft:rgba(30,58,209,.06);
+  --acido:#F1F1F1; --acido-ink:#152C9E;
+  --sem-verde:#1E3AD1; --sem-amarillo:#84848F;
+  --sem-naranja:#4E4E5A; --sem-rojo:#0B0B0F;
+  --rol-direccion:#0B0B0F; --rol-doctor:#1E3AD1; --rol-rac:#33333C;
+  --rol-recepcion:#4E4E5A; --rol-higienista:#75757F; --rol-auxiliar:#9494A0;
+}
+
+/* 4 · Los rótulos pequeños dejan de ser ilegibles. Iban de 9 a 10 píxeles
+   con mucho espaciado, que a esa escala es un adorno y no un rótulo. */
+#sitio .letra,#sitio .rotulillo,#sitio .idx__c,#sitio .sub__g,
+#sitio .parte__k,#sitio .hoja__k,#sitio .cifras span,#sitio .desp__n,
+#proy .rotulillo,#lector .rotulillo{font-size:.66rem;letter-spacing:.2em}
+#sitio .idx__n{font-size:.78rem;letter-spacing:.08em}
+
+/* 5 · El texto largo respira. Una medida de sesenta y pico caracteres y un
+   interlineado ancho es lo que separa una página que se lee de una que se
+   ojea. */
+#sitio .cab__p,#sitio .lienzo__cab p,#sitio .que__x,#sitio .que__c p:last-child{
+  font-size:1.06rem;line-height:1.85}
+#sitio .hoja p,#lector .hoja p{line-height:1.82}
+
+/* 6 · Y los titulares se aprietan al crecer, que es lo que hace que un
+   titular grande parezca dibujado y no estirado. */
+#sitio .cab h1{letter-spacing:-.038em}
+#sitio .lienzo__cab h2{letter-spacing:-.022em}
+
+/* 7 · Los desplegables. Eran una lista de filas con una raya finísima entre
+   ellas y un más de doce píxeles: a la nueva escala se quedaban en nada.
+   Ahora la fila entera es la zona que se pulsa, el número manda el ancho de
+   la columna izquierda, el signo crece y gira, y el que está abierto se
+   distingue del cerrado sin tener que leerlo: una línea azul a la izquierda
+   y el titular en negro. */
+#sitio .desp{border-top:1px solid var(--linea)}
+#sitio .desp:last-child{border-bottom:1px solid var(--linea)}
+#sitio .desp__b{gap:1.8rem;padding:1.7rem .6rem 1.7rem 0;align-items:flex-start;
+  border-left:2px solid transparent;
+  transition:background .22s var(--e),border-color .28s var(--e),padding .26s var(--e)}
+.sitio--vivo #sitio .desp__b:hover{background:var(--gris);padding-left:1rem;
+  border-left-color:var(--linea)}
+#sitio .desp.es-ab > .desp__h > .desp__b{border-left-color:var(--azul);padding-left:1rem;
+  background:none}
+#sitio .desp__n{font-size:.7rem;letter-spacing:.06em;min-width:3.6rem;
+  padding-top:.25rem;color:var(--muted);transition:color .2s var(--e)}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__n{color:var(--azul)}
+#sitio .desp__t b{font-size:1.12rem;line-height:1.38;letter-spacing:-.012em;
+  color:var(--ink-2);transition:color .2s var(--e)}
+#sitio .desp__b:hover .desp__t b,
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__t b{color:var(--negro)}
+#sitio .desp__t i{margin-top:.6rem;font-size:.62rem;letter-spacing:.2em}
+#sitio .desp__x{width:15px;height:15px;align-self:flex-start;margin-top:.4rem;
+  transition:transform .34s var(--e)}
+#sitio .desp__x::before{top:7px}
+#sitio .desp__x::after{left:7px}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__x{transform:rotate(180deg)}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__x::before{background:var(--azul)}
+.sitio--vivo #sitio .desp.es-ab .desp__in{padding:.4rem 0 3rem 1rem}
+
+/* 8 bis · La barra no crece con el texto. Es mando, no lectura: si sube con
+   la escala, nueve secciones más sus flechas dejan de caber en un portátil.
+   Se fija en píxeles, que es lo que la mantiene igual de cómoda a cualquier
+   tamaño de letra, y se le da a cada entrada el aire justo. */
+.nav__f{padding:0 1.6rem;gap:1rem}
+.nav__m{font-size:14px;letter-spacing:.1em}
+.nav__m em{font-size:9px}
+.nav__l button{font-size:11px;letter-spacing:.05em;padding:0 .5rem;gap:.28rem}
+.nav__l button::after{inset:auto .5rem 1.2rem .5rem}
+.nav__x{width:11px;height:11px}
+.nav__ruta{font-size:11px;letter-spacing:.1em;padding:.5rem .55rem}
+.abrepal{font-size:11px;letter-spacing:.14em}
+.icono{width:2rem;height:2rem}
+@media(max-width:1500px){
+  .nav__f{padding:0 1.1rem;gap:.7rem}
+  .nav__l button{font-size:10.5px;padding:0 .34rem}
+  .nav__l button::after{inset:auto .34rem 1.2rem .34rem}
+  .nav__ruta{font-size:10.5px;padding:.5rem .38rem}
+  /* la lupa se queda; la palabra «buscar» se va, que ocupa lo que dos
+     secciones y no dice nada que el icono no diga */
+  .abrepal span{display:none}
+  .abrepal{padding:.4rem .3rem}
+  .nav__sep{margin:0 .3rem}
+  .nav__m em{display:none}
+}
+@media(max-width:1340px){
+  .nav__l button{font-size:10px;padding:0 .26rem;gap:.2rem}
+  .nav__l button::after{inset:auto .26rem 1.2rem .26rem}
+  .nav__x{width:9px;height:9px}
+  .nav__ruta{font-size:10px;padding:.5rem .3rem}
+  .nav__m{font-size:12px}
+}
+
+/* 8 ter · El selector de puesto en una sola fila. A la nueva escala los seis
+   no cabían y se partía en dos, y lo que se queda pegado arriba tiene que
+   medir siempre lo mismo. */
+#sitio .puestosel{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+#sitio .puestosel::-webkit-scrollbar{display:none}
+#sitio .puestobt{flex:1 1 0;min-width:0;gap:.7rem;padding:1rem .8rem}
+#sitio .puestobt__c{width:1.9rem;height:1.9rem}
+#sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
+#sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
+
+/* 9 · Marketing, ampliado. Las siete apuestas, lo que no cuesta dinero,
+   quién sostiene cada cosa y en qué franja legal cae. Todo sale del mismo
+   catálogo del que sale la tabla de las setenta y seis. */
+.mkgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(21rem,1fr));
+  gap:0;border-top:1px solid var(--negro)}
+.mkg{display:flex;flex-direction:column;padding:2rem 2rem 2rem 0;
+  border-bottom:1px solid var(--linea)}
+.mkg + .mkg{border-left:1px solid var(--linea-2);padding-left:2rem}
+.mkg__k{margin:0;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--azul)}
+.mkg__t{margin:.8rem 0 0;font-size:1.24rem;font-weight:400;line-height:1.28;
+  letter-spacing:-.015em;color:var(--negro)}
+.mkg__q{margin:.9rem 0 0;font-size:.95rem;line-height:1.75;color:var(--ink-2);max-width:44ch}
+/* las cifras se alinean por abajo en las siete tarjetas, aunque el texto de
+   arriba mida distinto: si no, la rejilla parece descuadrada */
+.mkg__d{display:grid;grid-template-columns:1fr 1fr;gap:.1rem 1.4rem;
+  margin:1.6rem 0 0;padding-top:1.2rem;border-top:1px solid var(--linea-2)}
+.mkg__q{margin-bottom:auto}
+.mkg__d dt{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted)}
+.mkg__d dd{margin:.2rem 0 .9rem;font-size:1.06rem;color:var(--negro)}
+
+.mkl{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(24rem,1fr));gap:0 3rem;
+  border-top:1px solid var(--negro)}
+.mkl__i{display:grid;grid-template-columns:3.6rem 1fr;gap:1.2rem;
+  padding:1.3rem 0;border-bottom:1px solid var(--linea-2)}
+.mkl__c{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;color:var(--azul);
+  padding-top:.15rem}
+.mkl__i b{display:block;font-size:1rem;font-weight:400;line-height:1.48;color:var(--negro)}
+.mkl__i p{margin:.45rem 0 0;font-size:.92rem;line-height:1.7;color:var(--ink-2)}
+.mkl__i i{display:block;margin:.6rem 0 0;font-style:normal;font-family:var(--f-mono);
+  font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+.mkps{display:grid;gap:0;border-top:1px solid var(--negro)}
+.mkp{display:grid;grid-template-columns:minmax(11rem,17rem) minmax(4rem,1fr) auto;
+  gap:1rem 2rem;align-items:center;padding:1.2rem 0;border-bottom:1px solid var(--linea-2)}
+.mkp__n{margin:0;font-size:1.02rem;color:var(--negro)}
+.mkp__b{height:2px;background:var(--linea-2)}
+.mkp__b i{display:block;height:100%;width:var(--v);background:var(--azul)}
+.mkp__c{margin:0;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--muted);text-align:right;white-space:nowrap}
+.mkp__c b{font-weight:400;color:var(--negro)}
+
+.mkms{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:0;
+  border-top:1px solid var(--negro)}
+.mkm{padding:1.8rem 1.8rem 1.8rem 0;border-bottom:1px solid var(--linea)}
+.mkm + .mkm{border-left:1px solid var(--linea-2);padding-left:1.8rem}
+.mkm__n{margin:0;font-size:2.6rem;line-height:1;font-weight:300;letter-spacing:-.04em;
+  color:var(--negro)}
+.mkm--verde .mkm__n{color:var(--azul)}
+.mkm__r{margin:.7rem 0 0;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted)}
+.mkm__q{margin:.8rem 0 0;font-size:.94rem;line-height:1.72;color:var(--ink-2);max-width:36ch}
+@media(max-width:900px){
+  .mkg,.mkm{padding:1.4rem 0}
+  .mkg + .mkg,.mkm + .mkm{border-left:0;padding-left:0}
+  .mkp{grid-template-columns:1fr;gap:.5rem}
+  .mkp__c{text-align:left}
+}
+
+/* 8 · El índice desplegado del menú, a la nueva escala. */
+#sitio .sub a,.sub a{font-size:.98rem;padding:.42rem 0}
+.sub__g{font-size:.66rem;letter-spacing:.2em}
+
 
 /* ============================================================
    COMPONENTES DEL MANUAL MAESTRO
@@ -3070,7 +3281,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
 
 <header class="nav">
   <div class="nav__f">
-    <button class="nav__m" type="button" data-ir-sec="inicio">Giraldo <em>v11.0</em></button>
+    <button class="nav__m" type="button" data-ir-sec="inicio">Giraldo <em>v12.0</em></button>
     <nav class="nav__l" aria-label="Secciones"><button type="button" data-ir-sec="inicio">Inicio</button><button type="button" data-ir-sec="direccion" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Dirección<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="presentacion" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Presentación<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="protocolos" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Protocolos<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="primera-visita" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Primera Visita<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="operaciones" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Operaciones<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="marketing" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Marketing<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="otros" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Otros<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="numeros" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Los números<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button></nav>
     <div class="nav__b">
       <button class="nav__ruta" type="button" data-ir-sec="recorridos">Recorridos</button>
@@ -3198,7 +3409,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
         Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
-      <div><p class="letra">Esta edición</p><p>Versión 11.0 · Septiembre 2026<br>
+      <div><p class="letra">Esta edición</p><p>Versión 12.0 · Septiembre 2026<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
         laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
@@ -3365,7 +3576,34 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en dirección</h2>
       <p>34 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><a class="idx__a idx__a--sinn" href="#a-portada-doc" data-ir="a-portada-doc"><b>Portada</b></a></div><div class="idx__b"><p class="idx__g">Apertura</p><p class="idx__c">3 apartados</p><a class="idx__a idx__a--sinn" href="#a-manifiesto" data-ir="a-manifiesto"><b>El manifiesto: la regla que ordena todo</b></a><a class="idx__a" href="#a-control" data-ir="a-control"><span>00</span><b>Control del documento y cómo se cita</b></a><a class="idx__a" href="#a-resumen" data-ir="a-resumen"><span>01</span><b>Resumen ejecutivo en dos minutos</b></a></div><div class="idx__b"><p class="idx__g">Parte I · La posición</p><p class="idx__c">4 apartados</p><a class="idx__a idx__a--sinn" href="#a-parte-1" data-ir="a-parte-1"><b>Parte I · La posición</b></a><a class="idx__a" href="#a-tesis" data-ir="a-tesis"><span>02</span><b>Por qué este centro y no otro</b></a><a class="idx__a" href="#a-mapa" data-ir="a-mapa"><span>03</span><b>Mapa competitivo de Vigo y el hueco libre</b></a><a class="idx__a" href="#a-foso" data-ir="a-foso"><span>04</span><b>El foso: lo que un competidor no puede comprar</b></a></div><div class="idx__b"><p class="idx__g">Parte II · El sistema</p><p class="idx__c">3 apartados</p><a class="idx__a idx__a--sinn" href="#a-parte-2" data-ir="a-parte-2"><b>Parte II · El sistema</b></a><a class="idx__a" href="#a-sistema" data-ir="a-sistema"><span>05</span><b>El sistema operativo que se ha construido</b></a><a class="idx__a" href="#a-innovacion" data-ir="a-innovacion"><span>06</span><b>Innovación: tres horizontes, tres criterios</b></a></div><div class="idx__b"><p class="idx__g">Parte III · La economía</p><p class="idx__c">5 apartados</p><a class="idx__a idx__a--sinn" href="#a-parte-3" data-ir="a-parte-3"><b>Parte III · La economía</b></a><a class="idx__a" href="#a-linea-base" data-ir="a-linea-base"><span>07</span><b>Los cinco números que aún no tenemos</b></a><a class="idx__a" href="#a-unidad" data-ir="a-unidad"><span>08</span><b>Economía por paciente: qué gobierna el resultado</b></a><a class="idx__a" href="#a-activo" data-ir="a-activo"><span>09</span><b>Cuánto vale el centro, y por qué</b></a><a class="idx__a" href="#a-escalado" data-ir="a-escalado"><span>10</span><b>Escalado: de un centro a una red</b></a></div><div class="idx__b"><p class="idx__g">Parte IV · El riesgo</p><p class="idx__c">4 apartados</p><a class="idx__a idx__a--sinn" href="#a-parte-4" data-ir="a-parte-4"><b>Parte IV · El riesgo</b></a><a class="idx__a" href="#a-riesgos" data-ir="a-riesgos"><span>11</span><b>Registro de riesgos, con dueño y fecha</b></a><a class="idx__a" href="#a-premortem" data-ir="a-premortem"><span>12</span><b>Pre-mortem: es 2029 y ha fracasado</b></a><a class="idx__a" href="#a-mando" data-ir="a-mando"><span>13</span><b>Cuadro de mando: con qué se dirige cada mes</b></a></div><div class="idx__b"><p class="idx__g">Parte V · La decisión</p><p class="idx__c">7 apartados</p><a class="idx__a idx__a--sinn" href="#a-parte-5" data-ir="a-parte-5"><b>Parte V · La decisión</b></a><a class="idx__a" href="#a-palancas" data-ir="a-palancas"><span>14</span><b>Palancas: por dónde se crece y en qué orden</b></a><a class="idx__a" href="#a-capital" data-ir="a-capital"><span>15</span><b>Asignación de capital: en qué se gasta antes</b></a><a class="idx__a" href="#a-ruta" data-ir="a-ruta"><span>16</span><b>Hoja de ruta y sus tres puertas de paso</b></a><a class="idx__a" href="#a-decisiones" data-ir="a-decisiones"><span>17</span><b>Las quince decisiones que se someten a la Junta</b></a><a class="idx__a" href="#a-supuestos" data-ir="a-supuestos"><span>18</span><b>Supuestos: sobre qué se ha razonado</b></a><a class="idx__a" href="#a-trazabilidad" data-ir="a-trazabilidad"><span>19</span><b>Trazabilidad: dónde aterriza cada acuerdo</b></a></div><div class="idx__b"><p class="idx__g">Parte VI · La cifra</p><p class="idx__c">5 apartados</p><a class="idx__a idx__a--sinn" href="#a-parte-6" data-ir="a-parte-6"><b>Parte VI · La cifra</b></a><a class="idx__a" href="#a-puente" data-ir="a-puente"><span>20</span><b>El puente: de 720 k€ a 1,2 M€, bloque a bloque</b></a><a class="idx__a" href="#a-cartera" data-ir="a-cartera"><span>21</span><b>La cartera de nueve campañas</b></a><a class="idx__a" href="#a-calendario" data-ir="a-calendario"><span>22</span><b>Calendario y capacidad del año</b></a><a class="idx__a" href="#a-cierto" data-ir="a-cierto"><span>23</span><b>Las cinco condiciones que tienen que ser ciertas</b></a></div><div class="idx__b"><p class="idx__g">Anexos</p><p class="idx__c">2 apartados</p><a class="idx__a" href="#a-acuerdos" data-ir="a-acuerdos"><span>A</span><b>Cuadernillo: quince hojas de acta</b></a><a class="idx__a" href="#a-campanas" data-ir="a-campanas"><span>B</span><b>Nueve fichas de campaña, para poner en marcha</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">Portada</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-portada-doc" data-ir="a-portada-doc"><b>Portada</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">02</p><p class="idx__g">Apertura</p><p class="idx__c">3 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-manifiesto" data-ir="a-manifiesto"><b>El manifiesto: la regla que ordena todo</b></a><a class="idx__a" href="#a-control" data-ir="a-control"><span>00</span><b>Control del documento y cómo se cita</b></a><a class="idx__a" href="#a-resumen" data-ir="a-resumen"><span>01</span><b>Resumen ejecutivo en dos minutos</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">03</p><p class="idx__g">Parte I · La posición</p><p class="idx__c">4 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-parte-1" data-ir="a-parte-1"><b>Parte I · La posición</b></a><a class="idx__a" href="#a-tesis" data-ir="a-tesis"><span>02</span><b>Por qué este centro y no otro</b></a><a class="idx__a" href="#a-mapa" data-ir="a-mapa"><span>03</span><b>Mapa competitivo de Vigo y el hueco libre</b></a><a class="idx__a" href="#a-foso" data-ir="a-foso"><span>04</span><b>El foso: lo que un competidor no puede comprar</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">04</p><p class="idx__g">Parte II · El sistema</p><p class="idx__c">3 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-parte-2" data-ir="a-parte-2"><b>Parte II · El sistema</b></a><a class="idx__a" href="#a-sistema" data-ir="a-sistema"><span>05</span><b>El sistema operativo que se ha construido</b></a><a class="idx__a" href="#a-innovacion" data-ir="a-innovacion"><span>06</span><b>Innovación: tres horizontes, tres criterios</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">05</p><p class="idx__g">Parte III · La economía</p><p class="idx__c">5 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-parte-3" data-ir="a-parte-3"><b>Parte III · La economía</b></a><a class="idx__a" href="#a-linea-base" data-ir="a-linea-base"><span>07</span><b>Los cinco números que aún no tenemos</b></a><a class="idx__a" href="#a-unidad" data-ir="a-unidad"><span>08</span><b>Economía por paciente: qué gobierna el resultado</b></a><a class="idx__a" href="#a-activo" data-ir="a-activo"><span>09</span><b>Cuánto vale el centro, y por qué</b></a><a class="idx__a" href="#a-escalado" data-ir="a-escalado"><span>10</span><b>Escalado: de un centro a una red</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">06</p><p class="idx__g">Parte IV · El riesgo</p><p class="idx__c">4 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-parte-4" data-ir="a-parte-4"><b>Parte IV · El riesgo</b></a><a class="idx__a" href="#a-riesgos" data-ir="a-riesgos"><span>11</span><b>Registro de riesgos, con dueño y fecha</b></a><a class="idx__a" href="#a-premortem" data-ir="a-premortem"><span>12</span><b>Pre-mortem: es 2029 y ha fracasado</b></a><a class="idx__a" href="#a-mando" data-ir="a-mando"><span>13</span><b>Cuadro de mando: con qué se dirige cada mes</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">07</p><p class="idx__g">Parte V · La decisión</p><p class="idx__c">7 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-parte-5" data-ir="a-parte-5"><b>Parte V · La decisión</b></a><a class="idx__a" href="#a-palancas" data-ir="a-palancas"><span>14</span><b>Palancas: por dónde se crece y en qué orden</b></a><a class="idx__a" href="#a-capital" data-ir="a-capital"><span>15</span><b>Asignación de capital: en qué se gasta antes</b></a><a class="idx__a" href="#a-ruta" data-ir="a-ruta"><span>16</span><b>Hoja de ruta y sus tres puertas de paso</b></a><a class="idx__a" href="#a-decisiones" data-ir="a-decisiones"><span>17</span><b>Las quince decisiones que se someten a la Junta</b></a><a class="idx__a" href="#a-supuestos" data-ir="a-supuestos"><span>18</span><b>Supuestos: sobre qué se ha razonado</b></a><a class="idx__a" href="#a-trazabilidad" data-ir="a-trazabilidad"><span>19</span><b>Trazabilidad: dónde aterriza cada acuerdo</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">08</p><p class="idx__g">Parte VI · La cifra</p><p class="idx__c">5 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#a-parte-6" data-ir="a-parte-6"><b>Parte VI · La cifra</b></a><a class="idx__a" href="#a-puente" data-ir="a-puente"><span>20</span><b>El puente: de 720 k€ a 1,2 M€, bloque a bloque</b></a><a class="idx__a" href="#a-cartera" data-ir="a-cartera"><span>21</span><b>La cartera de nueve campañas</b></a><a class="idx__a" href="#a-calendario" data-ir="a-calendario"><span>22</span><b>Calendario y capacidad del año</b></a><a class="idx__a" href="#a-cierto" data-ir="a-cierto"><span>23</span><b>Las cinco condiciones que tienen que ser ciertas</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">09</p><p class="idx__g">Anexos</p><p class="idx__c">2 apartados</p></div>
+  <div class="idx__l"><a class="idx__a" href="#a-acuerdos" data-ir="a-acuerdos"><span>A</span><b>Cuadernillo: quince hojas de acta</b></a><a class="idx__a" href="#a-campanas" data-ir="a-campanas"><span>B</span><b>Nueve fichas de campaña, para poner en marcha</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="a-portada-doc" data-hoja="a-portada-doc" data-sec="direccion">
@@ -3390,7 +3628,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v11.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v12.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="t-cover" id="a-portada">
@@ -3400,7 +3638,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
     <div class="t-cover__rule" aria-hidden="true"></div>
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Giraldo</b>Rúa Bolivia nº 2 · Vigo</span>
-      <span><b>Plan de Dirección · v11.0</b>Septiembre 2026 · versión única del sistema</span>
+      <span><b>Plan de Dirección · v12.0</b>Septiembre 2026 · versión única del sistema</span>
       <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
@@ -3477,7 +3715,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
             <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
             <tbody>
               <tr><td>Título</td><td>Plan de Dirección para la Junta Directiva</td></tr>
-              <tr><td>Versión</td><td>v11.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
+              <tr><td>Versión</td><td>v12.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
               <tr><td>Clasificación</td><td>Uso interno · Confidencial · No difundir fuera del órgano</td></tr>
               <tr><td>Propietario</td><td>Dirección General</td></tr>
               <tr><td>Elaborado con</td><td>Los 17 documentos operativos del sistema Giraldo: los 3 troncales y los 14 de apoyo, censados en el apartado 0.1</td></tr>
@@ -3508,7 +3746,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="a-t-como-citar-acta">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v11.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v11.0, Protocolo de Primera Visita v11.0, Otros documentos del sistema v11.0.</p>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v12.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v12.0, Protocolo de Primera Visita v12.0, Otros documentos del sistema v12.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="a-censo">Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -3517,14 +3755,14 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
       <table>
         <thead><tr><th>Pieza</th><th>Clase</th><th>Qué contiene</th><th>Propietario</th><th>Versión</th></tr></thead>
         <tbody>
-          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">11.0</td></tr>
-          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">11.0</td></tr>
-          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">11.0</td></tr>
-          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">11.0</td></tr>
-          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">11.0</td></tr>
-          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">11.0</td></tr>
-          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">11.0</td></tr>
-          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">11.0</td></tr>
+          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">12.0</td></tr>
+          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">12.0</td></tr>
+          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">12.0</td></tr>
+          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">12.0</td></tr>
+          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">12.0</td></tr>
+          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">12.0</td></tr>
+          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">12.0</td></tr>
+          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">12.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -6773,7 +7011,7 @@ REVISIÓN PREVISTA:</div>
     <div class="desp__in"><div class="dia"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v11.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v12.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
 </section></div><p class="dia__pr"><button type="button" class="bt bt--fino" data-proyecta="">Proyectar desde esta</button></p><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -8055,7 +8293,10 @@ REVISIÓN PREVISTA:</div>
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en presentación</h2>
       <p>1 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><p class="idx__g">La sesión</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#b-presentacion" data-ir="b-presentacion"><b>Las cuarenta y tres diapositivas, en orden</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">La sesión</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#b-presentacion" data-ir="b-presentacion"><b>Las cuarenta y tres diapositivas, en orden</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="b-presentacion" data-hoja="b-presentacion" data-sec="presentacion">
@@ -8063,7 +8304,7 @@ REVISIÓN PREVISTA:</div>
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v11.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v12.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   <aside class="nota" hidden>
     <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -11980,7 +12221,16 @@ DÍA 7   Valoración de evolución
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en protocolos</h2>
       <p>3 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><p class="idx__g">Vista operativa · Uso interno</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#c-portada" data-ir="c-portada"><b>Qué se espera de cada puesto</b></a></div><div class="idx__b"><p class="idx__g">Los seis puestos</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#c-puestos" data-ir="c-puestos"><b>Elija el suyo</b></a></div><div class="idx__b"><p class="idx__g">Común a los seis</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#c-comun" data-ir="c-comun"><b>Lo que se cumple en todos los puestos</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">Vista operativa · Uso interno</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#c-portada" data-ir="c-portada"><b>Qué se espera de cada puesto</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">02</p><p class="idx__g">Los seis puestos</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#c-puestos" data-ir="c-puestos"><b>Elija el suyo</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">03</p><p class="idx__g">Común a los seis</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#c-comun" data-ir="c-comun"><b>Lo que se cumple en todos los puestos</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="c-portada" data-hoja="c-portada" data-sec="protocolos">
@@ -12281,7 +12531,19 @@ DÍA 7   Valoración de evolución
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en primera visita</h2>
       <p>23 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><a class="idx__a idx__a--sinn" href="#d-portada-doc" data-ir="d-portada-doc"><b>Portada</b></a></div><div class="idx__b"><p class="idx__g">Apertura</p><p class="idx__c">3 apartados</p><a class="idx__a idx__a--sinn" href="#d-fundamentos" data-ir="d-fundamentos"><b>Los cinco principios de la visita</b></a><a class="idx__a idx__a--sinn" href="#d-mapa" data-ir="d-mapa"><b>La visita entera, minuto a minuto</b></a><a class="idx__a idx__a--sinn" href="#d-flujo" data-ir="d-flujo"><b>Quién tiene al paciente en cada momento</b></a></div><div class="idx__b"><p class="idx__g">Las doce fases de la visita</p><p class="idx__c">12 apartados</p><a class="idx__a" href="#d-f01" data-ir="d-f01"><span>01</span><b>Preparación previa y primera llamada</b></a><a class="idx__a" href="#d-f02" data-ir="d-f02"><span>02</span><b>Acogida y recorrido por la tecnología</b></a><a class="idx__a" href="#d-f03" data-ir="d-f03"><span>03</span><b>Alta, RGPD y protección de datos</b></a><a class="idx__a" href="#d-f04" data-ir="d-f04"><span>04</span><b>Historia clínica y consentimiento</b></a><a class="idx__a" href="#d-f05" data-ir="d-f05"><span>05</span><b>Pruebas diagnósticas y fotografía</b></a><a class="idx__a" href="#d-f06" data-ir="d-f06"><span>06</span><b>Briefing entre Doctor y Director</b></a><a class="idx__a" href="#d-f07" data-ir="d-f07"><span>07</span><b>Expectativas y exploración clínica</b></a><a class="idx__a" href="#d-f08" data-ir="d-f08"><span>08</span><b>Informe de Análisis Clínico (IAC)</b></a><a class="idx__a" href="#d-f09" data-ir="d-f09"><span>09</span><b>Presentación del diagnóstico en 3D</b></a><a class="idx__a" href="#d-f10" data-ir="d-f10"><span>10</span><b>Propuesta económica y cierre</b></a><a class="idx__a" href="#d-f11" data-ir="d-f11"><span>11</span><b>Cierre administrativo y digitalización</b></a><a class="idx__a" href="#d-f12" data-ir="d-f12"><span>12</span><b>Despedida y seguimiento estratégico</b></a></div><div class="idx__b"><p class="idx__g">Cierre</p><p class="idx__c">7 apartados</p><a class="idx__a idx__a--sinn" href="#d-estandares" data-ir="d-estandares"><b>Estándares comunes a las doce fases</b></a><a class="idx__a idx__a--sinn" href="#d-casos" data-ir="d-casos"><b>Casos especiales: cuando no encaja</b></a><a class="idx__a idx__a--sinn" href="#d-continua" data-ir="d-continua"><b>Fases 13 y 14: producción y mantenimiento</b></a><a class="idx__a idx__a--sinn" href="#d-trazabilidad" data-ir="d-trazabilidad"><b>Qué queda registrado y quién responde</b></a><a class="idx__a idx__a--sinn" href="#d-indicadores" data-ir="d-indicadores"><b>Cómo se mide si el protocolo funciona</b></a><a class="idx__a idx__a--sinn" href="#d-formacion" data-ir="d-formacion"><b>Formación y certificación por rol</b></a><a class="idx__a idx__a--sinn" href="#d-anexos" data-ir="d-anexos"><b>Anexos: guiones y preguntas frecuentes</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">Portada</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#d-portada-doc" data-ir="d-portada-doc"><b>Portada</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">02</p><p class="idx__g">Apertura</p><p class="idx__c">3 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#d-fundamentos" data-ir="d-fundamentos"><b>Los cinco principios de la visita</b></a><a class="idx__a idx__a--sinn" href="#d-mapa" data-ir="d-mapa"><b>La visita entera, minuto a minuto</b></a><a class="idx__a idx__a--sinn" href="#d-flujo" data-ir="d-flujo"><b>Quién tiene al paciente en cada momento</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">03</p><p class="idx__g">Las doce fases de la visita</p><p class="idx__c">12 apartados</p></div>
+  <div class="idx__l"><a class="idx__a" href="#d-f01" data-ir="d-f01"><span>01</span><b>Preparación previa y primera llamada</b></a><a class="idx__a" href="#d-f02" data-ir="d-f02"><span>02</span><b>Acogida y recorrido por la tecnología</b></a><a class="idx__a" href="#d-f03" data-ir="d-f03"><span>03</span><b>Alta, RGPD y protección de datos</b></a><a class="idx__a" href="#d-f04" data-ir="d-f04"><span>04</span><b>Historia clínica y consentimiento</b></a><a class="idx__a" href="#d-f05" data-ir="d-f05"><span>05</span><b>Pruebas diagnósticas y fotografía</b></a><a class="idx__a" href="#d-f06" data-ir="d-f06"><span>06</span><b>Briefing entre Doctor y Director</b></a><a class="idx__a" href="#d-f07" data-ir="d-f07"><span>07</span><b>Expectativas y exploración clínica</b></a><a class="idx__a" href="#d-f08" data-ir="d-f08"><span>08</span><b>Informe de Análisis Clínico (IAC)</b></a><a class="idx__a" href="#d-f09" data-ir="d-f09"><span>09</span><b>Presentación del diagnóstico en 3D</b></a><a class="idx__a" href="#d-f10" data-ir="d-f10"><span>10</span><b>Propuesta económica y cierre</b></a><a class="idx__a" href="#d-f11" data-ir="d-f11"><span>11</span><b>Cierre administrativo y digitalización</b></a><a class="idx__a" href="#d-f12" data-ir="d-f12"><span>12</span><b>Despedida y seguimiento estratégico</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">04</p><p class="idx__g">Cierre</p><p class="idx__c">7 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#d-estandares" data-ir="d-estandares"><b>Estándares comunes a las doce fases</b></a><a class="idx__a idx__a--sinn" href="#d-casos" data-ir="d-casos"><b>Casos especiales: cuando no encaja</b></a><a class="idx__a idx__a--sinn" href="#d-continua" data-ir="d-continua"><b>Fases 13 y 14: producción y mantenimiento</b></a><a class="idx__a idx__a--sinn" href="#d-trazabilidad" data-ir="d-trazabilidad"><b>Qué queda registrado y quién responde</b></a><a class="idx__a idx__a--sinn" href="#d-indicadores" data-ir="d-indicadores"><b>Cómo se mide si el protocolo funciona</b></a><a class="idx__a idx__a--sinn" href="#d-formacion" data-ir="d-formacion"><b>Formación y certificación por rol</b></a><a class="idx__a idx__a--sinn" href="#d-anexos" data-ir="d-anexos"><b>Anexos: guiones y preguntas frecuentes</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="d-portada-doc" data-hoja="d-portada-doc" data-sec="primera-visita">
@@ -12371,7 +12633,8 @@ DÍA 7   Valoración de evolución
 
 
 
-<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v11.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v12.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -12379,7 +12642,7 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 11.0 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 12.0 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="#operaciones" class="salta">Manual Maestro de Operaciones<i class="salta__d">Operaciones</i></a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -16102,7 +16365,19 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en operaciones</h2>
       <p>16 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><a class="idx__a idx__a--sinn" href="#e-portada-doc" data-ir="e-portada-doc"><b>Portada</b></a></div><div class="idx__b"><p class="idx__g">Apertura</p><p class="idx__c">3 apartados</p><a class="idx__a idx__a--sinn" href="#e-presentacion" data-ir="e-presentacion"><b>Un documento, tres usos</b></a><a class="idx__a idx__a--sinn" href="#e-indice" data-ir="e-indice"><b>Índice: dónde está cada cosa</b></a><a class="idx__a idx__a--sinn" href="#e-vanguardia" data-ir="e-vanguardia"><b>Marco de vanguardia y los cinco pilares</b></a></div><div class="idx__b"><p class="idx__g">Las ocho partes</p><p class="idx__c">9 apartados</p><a class="idx__a" href="#e-p1" data-ir="e-p1"><span>I</span><b>Fundamentos y principios rectores</b></a><a class="idx__a idx__a--sinn" href="#e-estandares" data-ir="e-estandares"><b>Estándares transversales del centro</b></a><a class="idx__a" href="#e-p2" data-ir="e-p2"><span>II</span><b>Las catorce fases del recorrido</b></a><a class="idx__a" href="#e-p3" data-ir="e-p3"><span>III</span><b>Matriz RACI: quién hace qué en cada fase</b></a><a class="idx__a" href="#e-p4" data-ir="e-p4"><span>IV</span><b>Manuales de los seis puestos</b></a><a class="idx__a" href="#e-p5" data-ir="e-p5"><span>V</span><b>Funciones de vanguardia por perfil</b></a><a class="idx__a" href="#e-p6" data-ir="e-p6"><span>VI</span><b>Indicadores e interdependencias</b></a><a class="idx__a" href="#e-p7" data-ir="e-p7"><span>VII</span><b>Plan de incentivos y retribución variable</b></a><a class="idx__a" href="#e-p8" data-ir="e-p8"><span>VIII</span><b>Puesta en marcha del centro</b></a></div><div class="idx__b"><p class="idx__g">Cierre</p><p class="idx__c">3 apartados</p><a class="idx__a idx__a--sinn" href="#e-anexos" data-ir="e-anexos"><b>Anexos: plantillas y checklists</b></a><a class="idx__a idx__a--sinn" href="#e-otros" data-ir="e-otros"><b>Otros documentos del sistema</b></a><a class="idx__a idx__a--sinn" href="#e-notas" data-ir="e-notas"><b>Puntos que siguen abiertos</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">Portada</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#e-portada-doc" data-ir="e-portada-doc"><b>Portada</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">02</p><p class="idx__g">Apertura</p><p class="idx__c">3 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#e-presentacion" data-ir="e-presentacion"><b>Un documento, tres usos</b></a><a class="idx__a idx__a--sinn" href="#e-indice" data-ir="e-indice"><b>Índice: dónde está cada cosa</b></a><a class="idx__a idx__a--sinn" href="#e-vanguardia" data-ir="e-vanguardia"><b>Marco de vanguardia y los cinco pilares</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">03</p><p class="idx__g">Las ocho partes</p><p class="idx__c">9 apartados</p></div>
+  <div class="idx__l"><a class="idx__a" href="#e-p1" data-ir="e-p1"><span>I</span><b>Fundamentos y principios rectores</b></a><a class="idx__a idx__a--sinn" href="#e-estandares" data-ir="e-estandares"><b>Estándares transversales del centro</b></a><a class="idx__a" href="#e-p2" data-ir="e-p2"><span>II</span><b>Las catorce fases del recorrido</b></a><a class="idx__a" href="#e-p3" data-ir="e-p3"><span>III</span><b>Matriz RACI: quién hace qué en cada fase</b></a><a class="idx__a" href="#e-p4" data-ir="e-p4"><span>IV</span><b>Manuales de los seis puestos</b></a><a class="idx__a" href="#e-p5" data-ir="e-p5"><span>V</span><b>Funciones de vanguardia por perfil</b></a><a class="idx__a" href="#e-p6" data-ir="e-p6"><span>VI</span><b>Indicadores e interdependencias</b></a><a class="idx__a" href="#e-p7" data-ir="e-p7"><span>VII</span><b>Plan de incentivos y retribución variable</b></a><a class="idx__a" href="#e-p8" data-ir="e-p8"><span>VIII</span><b>Puesta en marcha del centro</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">04</p><p class="idx__g">Cierre</p><p class="idx__c">3 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#e-anexos" data-ir="e-anexos"><b>Anexos: plantillas y checklists</b></a><a class="idx__a idx__a--sinn" href="#e-otros" data-ir="e-otros"><b>Otros documentos del sistema</b></a><a class="idx__a idx__a--sinn" href="#e-notas" data-ir="e-notas"><b>Puntos que siguen abiertos</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="e-portada-doc" data-hoja="e-portada-doc" data-sec="operaciones">
@@ -16192,7 +16467,8 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v11.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v12.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -16203,7 +16479,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 11.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 12.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -16386,11 +16662,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v11.0 · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>v12.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Giraldo (uso abreviado: Giraldo)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
-          <tr><td>Sustituye a</td><td>Protocolo v11.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
+          <tr><td>Sustituye a</td><td>Protocolo v12.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
           <tr><td>Difusión obligatoria</td><td>Recepción, Dirección de Clínica, Odontólogos, Higienistas, Auxiliares, RAC</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier incidencia grave de trazabilidad o RGPD</td></tr>
@@ -23020,8 +23296,8 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </div>
   <div class="que__p">
     <p class="letra">La extensión, declarada</p>
-    <p class="que__x"><b>34 apartados</b> · unas 22.235 palabras · leerlo entero lleva del orden
-      de <b>1 h 46 min</b>. No hace falta: cada apartado se abre solo y se lee solo, y hay
+    <p class="que__x"><b>34 apartados</b> · unas 23.477 palabras · leerlo entero lleva del orden
+      de <b>1 h 52 min</b>. No hace falta: cada apartado se abre solo y se lee solo, y hay
       <button type="button" class="enlacillo" data-ir-sec="recorridos">diez recorridos</button>
       que llevan por lo que toca a cada uno. Pero si quiere leerlo seguido, de la primera
       línea a la última, está entero aquí abajo.</p>
@@ -23030,6 +23306,52 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
 </div>
 
   <div class="sec__lienzos">
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Las siete apuestas del plan</h2>
+    <p>El plan no es una lista de setenta y seis acciones: son siete apuestas con un orden.
+      Cada una actúa sobre unos estados concretos del paciente, tiene su propio número de
+      acciones, su parte que no cuesta dinero y su techo de gasto al año. Están en el orden en
+      que se sostienen: la primera no factura este ejercicio y sin ella no hay ninguna de las
+      siguientes.</p>
+  </div>
+  <div class="mkgs"><article class="mkg">
+  <p class="mkg__k">G1 · E1 · E2 · E3</p>
+  <h4 class="mkg__t">Presencia y educación</h4>
+  <p class="mkg__q">Actuar sobre quien todavía no nos busca. Es la parte del plan que no produce facturación este ejercicio y sin la cual no hay ninguno de los siguientes.</p>
+  <dl class="mkg__d"><div><dt>Acciones</dt><dd>12</dd></div><div><dt>Sin coste</dt><dd>1</dd></div><div><dt>Se empiezan ya</dt><dd>1</dd></div><div><dt>Techo al año</dt><dd>27.000 €</dd></div></dl>
+</article><article class="mkg">
+  <p class="mkg__k">G2 · E4</p>
+  <h4 class="mkg__t">Encontrabilidad y respuesta</h4>
+  <p class="mkg__q">Que quien nos busque nos encuentre, y que al encontrarnos le conteste alguien. La segunda mitad de esa frase es donde se pierde el dinero.</p>
+  <dl class="mkg__d"><div><dt>Acciones</dt><dd>12</dd></div><div><dt>Sin coste</dt><dd>7</dd></div><div><dt>Se empiezan ya</dt><dd>8</dd></div><div><dt>Techo al año</dt><dd>56.000 €</dd></div></dl>
+</article><article class="mkg">
+  <p class="mkg__k">G3 · E5</p>
+  <h4 class="mkg__t">La duda</h4>
+  <p class="mkg__q">El territorio propio del centro. Casi toda la ventaja competitiva de «no medias sonrisas» se cobra aquí.</p>
+  <dl class="mkg__d"><div><dt>Acciones</dt><dd>10</dd></div><div><dt>Sin coste</dt><dd>7</dd></div><div><dt>Se empiezan ya</dt><dd>5</dd></div><div><dt>Techo al año</dt><dd>11.000 €</dd></div></dl>
+</article><article class="mkg">
+  <p class="mkg__k">G4 · E6</p>
+  <h4 class="mkg__t">La visita como medio</h4>
+  <p class="mkg__q">La primera visita es el mejor soporte publicitario que tenemos y el único que ya está pagado.</p>
+  <dl class="mkg__d"><div><dt>Acciones</dt><dd>12</dd></div><div><dt>Sin coste</dt><dd>9</dd></div><div><dt>Se empiezan ya</dt><dd>9</dd></div><div><dt>Techo al año</dt><dd>7.000 €</dd></div></dl>
+</article><article class="mkg">
+  <p class="mkg__k">G5 · E7 · E8</p>
+  <h4 class="mkg__t">La decisión y el tratamiento</h4>
+  <p class="mkg__q">Nadie decide en la silla el día del miedo. Lo que se hace aquí decide la conversión de verdad, no el anuncio.</p>
+  <dl class="mkg__d"><div><dt>Acciones</dt><dd>10</dd></div><div><dt>Sin coste</dt><dd>6</dd></div><div><dt>Se empiezan ya</dt><dd>5</dd></div><div><dt>Techo al año</dt><dd>26.000 €</dd></div></dl>
+</article><article class="mkg">
+  <p class="mkg__k">G6 · E9 · E11 · E12</p>
+  <h4 class="mkg__t">El cuidado, el sueño y la pérdida</h4>
+  <p class="mkg__q">Donde está el dinero, según la aritmética de la propia Plan de Dirección: dos de estas campañas son el 63 % de lo que aporta la cartera.</p>
+  <dl class="mkg__d"><div><dt>Acciones</dt><dd>10</dd></div><div><dt>Sin coste</dt><dd>2</dd></div><div><dt>Se empiezan ya</dt><dd>3</dd></div><div><dt>Techo al año</dt><dd>16.000 €</dd></div></dl>
+</article><article class="mkg">
+  <p class="mkg__k">G7 · E10</p>
+  <h4 class="mkg__t">Prescripción y alianzas</h4>
+  <p class="mkg__q">Lo que otro dice de nosotros vale más que lo que digamos nosotros, y cuesta menos. También es lo más lento de construir.</p>
+  <dl class="mkg__d"><div><dt>Acciones</dt><dd>10</dd></div><div><dt>Sin coste</dt><dd>0</dd></div><div><dt>Se empiezan ya</dt><dd>1</dd></div><div><dt>Techo al año</dt><dd>58.000 €</dd></div></dl>
+</article></div>
+</div>
 <div class="lienzo">
   <div class="lienzo__cab">
     <h2>Los doce estados</h2>
@@ -23054,6 +23376,33 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
 </div>
 <div class="lienzo">
   <div class="lienzo__cab">
+    <h2>Lo que se puede empezar el lunes sin gastar</h2>
+    <p>De las setenta y seis, estas 22 no cuestan dinero y no esperan a nadie: no dependen
+      de un presupuesto, de una agencia ni de una decisión de la Junta. Son la prueba de que el
+      plan no está esperando a que llegue el dinero. Cada una lleva al lado quién la sostiene.</p>
+  </div>
+  <ol class="mkl"><li class="mkl__i"><span class="mkl__c">A13</span><div><b>Ficha de negocio completa: horarios reales, fotos propias, servicios y accesibilidad</b><p>No se planta en la puerta un día que está cerrado</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A18</span><div><b>Respuesta en menos de quince minutos en horario; fuera de él, respuesta automática que dice la verdad sobre cuándo se le contestará</b><p>No se queda esperando sin saber si alguien le ha leído</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A20</span><div><b>WhatsApp de centro con norma publicada: aquí no se diagnostica por foto</b><p>No recibe un diagnóstico falso por una foto mal hecha</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A22</span><div><b>Recuperación de toda llamada perdida antes de dos horas, sin excepción</b><p>Le devuelven la llamada aunque él ya se haya rendido</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A23</span><div><b>Solicitud sistemática de reseña a todo paciente al alta, nunca incentivada y nunca filtrada</b><p>Lee opiniones que no están compradas</p><i>RAC · Responsable de Producción</i></div></li><li class="mkl__i"><span class="mkl__c">A24</span><div><b>Respuesta pública a toda reseña, y en veinticuatro horas a la negativa</b><p>Ve cómo tratamos a quien se queja, que es el único dato fiable</p><i>Dirección General</i></div></li><li class="mkl__i"><span class="mkl__c">A28</span><div><b>Presupuesto sin prisa: sin caducidad comercial, con la consecuencia clínica de esperar seis, doce y veinticuatro meses</b><p>Decide con información en vez de con urgencia inventada</p><i>Doctor</i></div></li><li class="mkl__i"><span class="mkl__c">A31</span><div><b>Visita previa de cinco minutos para ver la clínica y conocer al equipo, sin sillón</b><p>Conoce el sitio sin comprometerse a nada</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A33</span><div><b>Financiación con coste total visible y sin comisión para quien la ofrece</b><p>Nadie gana nada por empujarle a financiar</p><i>Gerencia</i></div></li><li class="mkl__i"><span class="mkl__c">A34</span><div><b>Tabla de garantías publicada por tipo de tratamiento, entregada con cada presupuesto</b><p>Sabe por escrito qué pasa si algo falla dentro de cinco años</p><i>Dirección General</i></div></li><li class="mkl__i"><span class="mkl__c">A35</span><div><b>Recordatorio de cita que cuenta lo que va a pasar, cuánto dura y qué traer</b><p>Llega sabiendo a qué viene y no en ayunas por si acaso</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A36</span><div><b>Acogida en noventa segundos, por su nombre y sin mostrador de por medio</b><p>Le reciben como a una persona esperada, no como a un turno</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A37</span><div><b>El Acompañante: silla, nombre, y copia del plan también para él</b><p>Quien viene con él entiende lo mismo y puede ayudarle a decidir en casa</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A40</span><div><b>Entrega del plan por escrito el mismo día, siempre, también cuando el plan es no hacer nada</b><p>Sale con papel. Siempre</p><i>Doctor</i></div></li><li class="mkl__i"><span class="mkl__c">A41</span><div><b>Nada se cierra el día del miedo: por norma se le invita a pensarlo</b><p>Nadie le arranca un sí el día que llegó asustado</p><i>Dirección General</i></div></li><li class="mkl__i"><span class="mkl__c">A42</span><div><b>Registro literal de lo que dijo que le preocupaba, en su ficha y en sus palabras</b><p>La próxima vez alguien se acuerda de lo que le importaba</p><i>RAC · Responsable de Producción</i></div></li><li class="mkl__i"><span class="mkl__c">A43</span><div><b>Encuesta de una sola pregunta al salir, contestada de pie y en diez segundos</b><p>Le preguntan cuando aún se acuerda</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A45</span><div><b>Información real de aparcamiento, bus y accesibilidad, publicada y comprobada</b><p>Sabe dónde dejar el coche y si entra con silla de ruedas</p><i>Recepción</i></div></li><li class="mkl__i"><span class="mkl__c">A47</span><div><b>Llamada del propio clínico veinticuatro horas después de cualquier cirugía</b><p>Le llama quien le operó, no un número desconocido</p><i>Doctor</i></div></li><li class="mkl__i"><span class="mkl__c">A52</span><div><b>Acompañamiento pactado paso a paso para el paciente con miedo, con señal de parada acordada</b><p>Puede parar la intervención con una señal, y se respeta</p><i>Doctor</i></div></li><li class="mkl__i"><span class="mkl__c">A53</span><div><b>Aviso antes de ejecutar cualquier cambio de coste sobre el plan aprobado</b><p>Nunca le llega una factura que no esperaba</p><i>Gerencia</i></div></li><li class="mkl__i"><span class="mkl__c">A54</span><div><b>Documento de alta con lo conseguido y lo que toca a partir de ahora</b><p>Sabe qué pasa el año que viene y el siguiente</p><i>Doctor</i></div></li></ol>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>Quién sostiene el plan</h2>
+    <p>Cada acción tiene un dueño con nombre de puesto, no un departamento. Un plan cuyo dueño
+      es «marketing» no tiene dueño: cuando algo no se hace, no hay a quién preguntar. Así queda
+      el reparto, y así se ve de un vistazo sobre qué puesto recae el peso.</p>
+  </div>
+  <div class="mkps"><div class="mkp"><p class="mkp__n">Doctor</p><div class="mkp__b"><i style="--v:100%"></i></div><p class="mkp__c"><b>16</b> acciones · 7 sin coste · hasta 29.000 €</p></div><div class="mkp"><p class="mkp__n">Gerencia</p><div class="mkp__b"><i style="--v:81%"></i></div><p class="mkp__c"><b>13</b> acciones · 5 sin coste · hasta 77.000 €</p></div><div class="mkp"><p class="mkp__n">Recepción</p><div class="mkp__b"><i style="--v:81%"></i></div><p class="mkp__c"><b>13</b> acciones · 11 sin coste · hasta 10.000 €</p></div><div class="mkp"><p class="mkp__n">Dirección General</p><div class="mkp__b"><i style="--v:75%"></i></div><p class="mkp__c"><b>12</b> acciones · 5 sin coste · hasta 29.000 €</p></div><div class="mkp"><p class="mkp__n">Dirección de Clínica</p><div class="mkp__b"><i style="--v:50%"></i></div><p class="mkp__c"><b>8</b> acciones · 0 sin coste · hasta 34.000 €</p></div><div class="mkp"><p class="mkp__n">RAC · Responsable de Producción</p><div class="mkp__b"><i style="--v:50%"></i></div><p class="mkp__c"><b>8</b> acciones · 3 sin coste · hasta 5.000 €</p></div><div class="mkp"><p class="mkp__n">Higienista</p><div class="mkp__b"><i style="--v:38%"></i></div><p class="mkp__c"><b>6</b> acciones · 1 sin coste · hasta 17.000 €</p></div></div>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
+    <h2>El marco: qué se puede decir y qué no</h2>
+    <p>La publicidad sanitaria no es publicidad y ninguna acción entra en el plan sin decir en
+      qué franja cae. No es una precaución añadida al final: es una columna del catálogo, y las
+      setenta y seis están clasificadas.</p>
+  </div>
+  <div class="mkms"><div class="mkm mkm--verde"><p class="mkm__n">36</p><p class="mkm__r">Sin reservas</p><p class="mkm__q">Publicidad sanitaria ordinaria: se hace y se archiva la pieza.</p></div><div class="mkm mkm--amarillo"><p class="mkm__n">29</p><p class="mkm__r">Con cautela</p><p class="mkm__q">Requiere revisión antes de publicar: quién lo firma está escrito.</p></div><div class="mkm mkm--naranja"><p class="mkm__n">11</p><p class="mkm__r">Requiere criterio</p><p class="mkm__q">Solo con informe previo. Si no hay informe, la acción no sale.</p></div></div>
+</div>
+<div class="lienzo">
+  <div class="lienzo__cab">
     <h2>La cartera de campañas</h2>
     <p>Ninguna cifra está escrita a mano: todas salen del modelo, con el criterio conservador
       —una campaña vale la diferencia entre el paciente que trae y el que desplaza, no lo que
@@ -23065,7 +23414,40 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en marketing</h2>
       <p>34 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><a class="idx__a idx__a--sinn" href="#f-portada-doc" data-ir="f-portada-doc"><b>Portada</b></a></div><div class="idx__b"><p class="idx__g">Apertura</p><p class="idx__c">2 apartados</p><a class="idx__a idx__a--sinn" href="#f-portada" data-ir="f-portada"><b>Portada</b></a><a class="idx__a" href="#f-control" data-ir="f-control"><span>00</span><b>Ficha de control del documento</b></a></div><div class="idx__b"><p class="idx__g">Parte I · La doctrina</p><p class="idx__c">5 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-1" data-ir="f-parte-1"><b>Parte I · La doctrina</b></a><a class="idx__a" href="#f-doctrina" data-ir="f-doctrina"><span>01</span><b>Por qué este plan no es un plan al uso</b></a><a class="idx__a" href="#f-regla" data-ir="f-regla"><span>02</span><b>La regla de la ficha: qué gana el paciente</b></a><a class="idx__a" href="#f-nunca" data-ir="f-nunca"><span>03</span><b>Las ocho cosas que no haremos nunca</b></a><a class="idx__a" href="#f-legal" data-ir="f-legal"><span>04</span><b>El marco legal de la publicidad sanitaria</b></a></div><div class="idx__b"><p class="idx__g">Parte II · El paciente</p><p class="idx__c">5 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-2" data-ir="f-parte-2"><b>Parte II · El paciente</b></a><a class="idx__a" href="#f-estados" data-ir="f-estados"><span>05</span><b>Los doce estados del paciente</b></a><a class="idx__a" href="#f-arquetipos" data-ir="f-arquetipos"><span>06</span><b>Los seis pacientes de la ría</b></a><a class="idx__a" href="#f-momentos" data-ir="f-momentos"><span>07</span><b>Los siete momentos de verdad</b></a><a class="idx__a" href="#f-asimetria" data-ir="f-asimetria"><span>08</span><b>La asimetría: lo que el paciente no sabe</b></a></div><div class="idx__b"><p class="idx__g">Parte III · El catálogo</p><p class="idx__c">2 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-3" data-ir="f-parte-3"><b>Parte III · El catálogo</b></a><a class="idx__a" href="#f-catalogo" data-ir="f-catalogo"><span>09</span><b>Las 76 acciones, con dueño y coste</b></a></div><div class="idx__b"><p class="idx__g">Parte IV · Las diez piezas</p><p class="idx__c">2 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-4" data-ir="f-parte-4"><b>Parte IV · Las diez piezas</b></a><a class="idx__a" href="#f-piezas" data-ir="f-piezas"><span>10</span><b>Las diez piezas que nadie hace en Vigo</b></a></div><div class="idx__b"><p class="idx__g">Parte V · El territorio</p><p class="idx__c">4 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-5" data-ir="f-parte-5"><b>Parte V · El territorio</b></a><a class="idx__a" href="#f-digital" data-ir="f-digital"><span>11</span><b>La presencia digital, y para qué sirve</b></a><a class="idx__a" href="#f-ria" data-ir="f-ria"><span>12</span><b>El mapa de la ría: dónde está el paciente</b></a><a class="idx__a" href="#f-mar" data-ir="f-mar"><span>13</span><b>La Campaña de Mar, verano a verano</b></a></div><div class="idx__b"><p class="idx__g">Parte VI · La prioridad</p><p class="idx__c">4 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-6" data-ir="f-parte-6"><b>Parte VI · La prioridad</b></a><a class="idx__a" href="#f-economia" data-ir="f-economia"><span>14</span><b>Qué aporta cada grupo de acciones</b></a><a class="idx__a" href="#f-prioridad" data-ir="f-prioridad"><span>15</span><b>Qué va primero, y por qué</b></a><a class="idx__a" href="#f-presupuesto" data-ir="f-presupuesto"><span>16</span><b>Presupuesto y techo de gasto</b></a></div><div class="idx__b"><p class="idx__g">Parte VII · El gobierno</p><p class="idx__c">4 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-7" data-ir="f-parte-7"><b>Parte VII · El gobierno</b></a><a class="idx__a" href="#f-indicadores" data-ir="f-indicadores"><span>17</span><b>Las ocho medidas del plan</b></a><a class="idx__a" href="#f-calendario" data-ir="f-calendario"><span>18</span><b>El calendario del ejercicio</b></a><a class="idx__a" href="#f-parada" data-ir="f-parada"><span>19</span><b>Reglas de parada: cuándo se corta</b></a></div><div class="idx__b"><p class="idx__g">Parte VIII · El programa</p><p class="idx__c">2 apartados</p><a class="idx__a idx__a--sinn" href="#f-parte-8" data-ir="f-parte-8"><b>Parte VIII · El programa</b></a><a class="idx__a" href="#f-gtc" data-ir="f-gtc"><span>20</span><b>Giraldo Te Cuida: el programa de acompañamiento</b></a></div><div class="idx__b"><p class="idx__g">Anexos</p><p class="idx__c">3 apartados</p><a class="idx__a" href="#f-anexo-legal" data-ir="f-anexo-legal"><span>A</span><b>Semáforo legal, acción por acción</b></a><a class="idx__a" href="#f-anexo-cartera" data-ir="f-anexo-cartera"><span>B</span><b>Correspondencia con la cartera de campañas</b></a><a class="idx__a" href="#f-anexo-trimestre" data-ir="f-anexo-trimestre"><span>C</span><b>Lo que se activa este trimestre</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">Portada</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-portada-doc" data-ir="f-portada-doc"><b>Portada</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">02</p><p class="idx__g">Apertura</p><p class="idx__c">2 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-portada" data-ir="f-portada"><b>Portada</b></a><a class="idx__a" href="#f-control" data-ir="f-control"><span>00</span><b>Ficha de control del documento</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">03</p><p class="idx__g">Parte I · La doctrina</p><p class="idx__c">5 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-1" data-ir="f-parte-1"><b>Parte I · La doctrina</b></a><a class="idx__a" href="#f-doctrina" data-ir="f-doctrina"><span>01</span><b>Por qué este plan no es un plan al uso</b></a><a class="idx__a" href="#f-regla" data-ir="f-regla"><span>02</span><b>La regla de la ficha: qué gana el paciente</b></a><a class="idx__a" href="#f-nunca" data-ir="f-nunca"><span>03</span><b>Las ocho cosas que no haremos nunca</b></a><a class="idx__a" href="#f-legal" data-ir="f-legal"><span>04</span><b>El marco legal de la publicidad sanitaria</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">04</p><p class="idx__g">Parte II · El paciente</p><p class="idx__c">5 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-2" data-ir="f-parte-2"><b>Parte II · El paciente</b></a><a class="idx__a" href="#f-estados" data-ir="f-estados"><span>05</span><b>Los doce estados del paciente</b></a><a class="idx__a" href="#f-arquetipos" data-ir="f-arquetipos"><span>06</span><b>Los seis pacientes de la ría</b></a><a class="idx__a" href="#f-momentos" data-ir="f-momentos"><span>07</span><b>Los siete momentos de verdad</b></a><a class="idx__a" href="#f-asimetria" data-ir="f-asimetria"><span>08</span><b>La asimetría: lo que el paciente no sabe</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">05</p><p class="idx__g">Parte III · El catálogo</p><p class="idx__c">2 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-3" data-ir="f-parte-3"><b>Parte III · El catálogo</b></a><a class="idx__a" href="#f-catalogo" data-ir="f-catalogo"><span>09</span><b>Las 76 acciones, con dueño y coste</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">06</p><p class="idx__g">Parte IV · Las diez piezas</p><p class="idx__c">2 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-4" data-ir="f-parte-4"><b>Parte IV · Las diez piezas</b></a><a class="idx__a" href="#f-piezas" data-ir="f-piezas"><span>10</span><b>Las diez piezas que nadie hace en Vigo</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">07</p><p class="idx__g">Parte V · El territorio</p><p class="idx__c">4 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-5" data-ir="f-parte-5"><b>Parte V · El territorio</b></a><a class="idx__a" href="#f-digital" data-ir="f-digital"><span>11</span><b>La presencia digital, y para qué sirve</b></a><a class="idx__a" href="#f-ria" data-ir="f-ria"><span>12</span><b>El mapa de la ría: dónde está el paciente</b></a><a class="idx__a" href="#f-mar" data-ir="f-mar"><span>13</span><b>La Campaña de Mar, verano a verano</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">08</p><p class="idx__g">Parte VI · La prioridad</p><p class="idx__c">4 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-6" data-ir="f-parte-6"><b>Parte VI · La prioridad</b></a><a class="idx__a" href="#f-economia" data-ir="f-economia"><span>14</span><b>Qué aporta cada grupo de acciones</b></a><a class="idx__a" href="#f-prioridad" data-ir="f-prioridad"><span>15</span><b>Qué va primero, y por qué</b></a><a class="idx__a" href="#f-presupuesto" data-ir="f-presupuesto"><span>16</span><b>Presupuesto y techo de gasto</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">09</p><p class="idx__g">Parte VII · El gobierno</p><p class="idx__c">4 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-7" data-ir="f-parte-7"><b>Parte VII · El gobierno</b></a><a class="idx__a" href="#f-indicadores" data-ir="f-indicadores"><span>17</span><b>Las ocho medidas del plan</b></a><a class="idx__a" href="#f-calendario" data-ir="f-calendario"><span>18</span><b>El calendario del ejercicio</b></a><a class="idx__a" href="#f-parada" data-ir="f-parada"><span>19</span><b>Reglas de parada: cuándo se corta</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">10</p><p class="idx__g">Parte VIII · El programa</p><p class="idx__c">2 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#f-parte-8" data-ir="f-parte-8"><b>Parte VIII · El programa</b></a><a class="idx__a" href="#f-gtc" data-ir="f-gtc"><span>20</span><b>Giraldo Te Cuida: el programa de acompañamiento</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">11</p><p class="idx__g">Anexos</p><p class="idx__c">3 apartados</p></div>
+  <div class="idx__l"><a class="idx__a" href="#f-anexo-legal" data-ir="f-anexo-legal"><span>A</span><b>Semáforo legal, acción por acción</b></a><a class="idx__a" href="#f-anexo-cartera" data-ir="f-anexo-cartera"><span>B</span><b>Correspondencia con la cartera de campañas</b></a><a class="idx__a" href="#f-anexo-trimestre" data-ir="f-anexo-trimestre"><span>C</span><b>Lo que se activa este trimestre</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="f-portada-doc" data-hoja="f-portada-doc" data-sec="marketing">
@@ -23084,7 +23466,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v11.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v12.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 
@@ -23100,7 +23482,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <p class="t-cover__meta">
       <b>Plan Maestro de Marketing</b><br>
       Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2, Vigo<br>
-      v11.0 · Septiembre 2026 · Documento de dirección<br>
+      v12.0 · Septiembre 2026 · Documento de dirección<br>
       Setenta y seis acciones sobre doce estados del paciente
     </p>
   </div>
@@ -23128,7 +23510,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><th>Qué decide</th><td>Nada por sí solo. Propone; la Junta aprueba en el registro de acuerdos del Plan de Dirección</td></tr>
           <tr><th>Propietario</th><td>Dirección General, con Gerencia como responsable de ejecución y presupuesto</td></tr>
           <tr><th>Revisión</th><td>Trimestral, con la misma cadencia que el cuadro de mando del apartado 13 del Plan de Dirección</td></tr>
-          <tr><th>Versión</th><td class="num">v11.0 · Septiembre 2026</td></tr>
+          <tr><th>Versión</th><td class="num">v12.0 · Septiembre 2026</td></tr>
         </tbody>
       </table>
     </div>
@@ -24513,7 +24895,19 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en otros</h2>
       <p>18 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><a class="idx__a idx__a--sinn" href="#g-portada-doc" data-ir="g-portada-doc"><b>Portada</b></a></div><div class="idx__b"><p class="idx__g">Apertura</p><p class="idx__c">2 apartados</p><a class="idx__a idx__a--sinn" href="#g-presentacion" data-ir="g-presentacion"><b>Qué es cada cosa y cuándo se abre</b></a><a class="idx__a idx__a--sinn" href="#g-otros-mapa" data-ir="g-otros-mapa"><b>El sistema en cuatro niveles</b></a></div><div class="idx__b"><p class="idx__g">Los catorce documentos</p><p class="idx__c">14 apartados</p><a class="idx__a" href="#g-otros-compendio" data-ir="g-otros-compendio"><span>01</span><b>Compendio Maestro del sistema de gestión</b></a><a class="idx__a" href="#g-otros-verificacion" data-ir="g-otros-verificacion"><span>02</span><b>Verificación del centro · 322 puntos</b></a><a class="idx__a" href="#g-otros-auditoria" data-ir="g-otros-auditoria"><span>03</span><b>Auditoría integral de la clínica adquirida</b></a><a class="idx__a" href="#g-otros-decisiones" data-ir="g-otros-decisiones"><span>04</span><b>Decisiones de Gerencia y verificaciones</b></a><a class="idx__a" href="#g-otros-100dias" data-ir="g-otros-100dias"><span>05</span><b>Plan Director de los primeros 100 días</b></a><a class="idx__a" href="#g-otros-30dias" data-ir="g-otros-30dias"><span>06</span><b>Dosier de ejecución de los 30 días</b></a><a class="idx__a" href="#g-otros-perfiles" data-ir="g-otros-perfiles"><span>07</span><b>Protocolos operativos por perfil</b></a><a class="idx__a" href="#g-otros-innovacion" data-ir="g-otros-innovacion"><span>08</span><b>Innovación aplicada · 18 fichas</b></a><a class="idx__a" href="#g-otros-marca" data-ir="g-otros-marca"><span>09</span><b>Plan Director de marca y captación</b></a><a class="idx__a" href="#g-otros-cuaderno" data-ir="g-otros-cuaderno"><span>10</span><b>Cuaderno de campo del día 1</b></a><a class="idx__a" href="#g-otros-transicion-perfiles" data-ir="g-otros-transicion-perfiles"><span>11</span><b>Manual de puesta en marcha por perfil</b></a><a class="idx__a" href="#g-otros-continuidad" data-ir="g-otros-continuidad"><span>12</span><b>Continuidad legal, financiera y de sistemas</b></a><a class="idx__a" href="#g-otros-posicionamiento" data-ir="g-otros-posicionamiento"><span>13</span><b>«No medias sonrisas» · posicionamiento</b></a><a class="idx__a" href="#g-otros-gtc" data-ir="g-otros-gtc"><span>14</span><b>GTC · vive en el Plan de Marketing</b></a></div><div class="idx__b"><p class="idx__g">Cierre</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#g-otros-cierre" data-ir="g-otros-cierre"><b>Cómo encajan los catorce documentos</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">Portada</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#g-portada-doc" data-ir="g-portada-doc"><b>Portada</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">02</p><p class="idx__g">Apertura</p><p class="idx__c">2 apartados</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#g-presentacion" data-ir="g-presentacion"><b>Qué es cada cosa y cuándo se abre</b></a><a class="idx__a idx__a--sinn" href="#g-otros-mapa" data-ir="g-otros-mapa"><b>El sistema en cuatro niveles</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">03</p><p class="idx__g">Los catorce documentos</p><p class="idx__c">14 apartados</p></div>
+  <div class="idx__l"><a class="idx__a" href="#g-otros-compendio" data-ir="g-otros-compendio"><span>01</span><b>Compendio Maestro del sistema de gestión</b></a><a class="idx__a" href="#g-otros-verificacion" data-ir="g-otros-verificacion"><span>02</span><b>Verificación del centro · 322 puntos</b></a><a class="idx__a" href="#g-otros-auditoria" data-ir="g-otros-auditoria"><span>03</span><b>Auditoría integral de la clínica adquirida</b></a><a class="idx__a" href="#g-otros-decisiones" data-ir="g-otros-decisiones"><span>04</span><b>Decisiones de Gerencia y verificaciones</b></a><a class="idx__a" href="#g-otros-100dias" data-ir="g-otros-100dias"><span>05</span><b>Plan Director de los primeros 100 días</b></a><a class="idx__a" href="#g-otros-30dias" data-ir="g-otros-30dias"><span>06</span><b>Dosier de ejecución de los 30 días</b></a><a class="idx__a" href="#g-otros-perfiles" data-ir="g-otros-perfiles"><span>07</span><b>Protocolos operativos por perfil</b></a><a class="idx__a" href="#g-otros-innovacion" data-ir="g-otros-innovacion"><span>08</span><b>Innovación aplicada · 18 fichas</b></a><a class="idx__a" href="#g-otros-marca" data-ir="g-otros-marca"><span>09</span><b>Plan Director de marca y captación</b></a><a class="idx__a" href="#g-otros-cuaderno" data-ir="g-otros-cuaderno"><span>10</span><b>Cuaderno de campo del día 1</b></a><a class="idx__a" href="#g-otros-transicion-perfiles" data-ir="g-otros-transicion-perfiles"><span>11</span><b>Manual de puesta en marcha por perfil</b></a><a class="idx__a" href="#g-otros-continuidad" data-ir="g-otros-continuidad"><span>12</span><b>Continuidad legal, financiera y de sistemas</b></a><a class="idx__a" href="#g-otros-posicionamiento" data-ir="g-otros-posicionamiento"><span>13</span><b>«No medias sonrisas» · posicionamiento</b></a><a class="idx__a" href="#g-otros-gtc" data-ir="g-otros-gtc"><span>14</span><b>GTC · vive en el Plan de Marketing</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">04</p><p class="idx__g">Cierre</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#g-otros-cierre" data-ir="g-otros-cierre"><b>Cómo encajan los catorce documentos</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="g-portada-doc" data-hoja="g-portada-doc" data-sec="otros">
@@ -24603,7 +24997,8 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v11.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v12.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="g-portada">
@@ -24613,7 +25008,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 11.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 12.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos</dt><dd>14<small>Del posicionamiento del centro al programa de cuidado GTC</small></dd></div>
@@ -24669,13 +25064,13 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
       <table>
         <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v11.0 · Agosto 2026 · versión única del sistema</td></tr>
+          <tr><td>Versión</td><td>v12.0 · Agosto 2026 · versión única del sistema</td></tr>
           <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
           <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
           <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
           <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
-          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v11.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
+          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v12.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
         </tbody>
       </table>
     </div>
@@ -28450,7 +28845,25 @@ LTV              = Valor inicial
   <div class="lienzo lienzo--indice">
     <div class="lienzo__cab"><h2>Lo que hay en los números</h2>
       <p>6 apartados, enteros y en el orden del documento. Pulse uno y se abre aquí. Un enlace que lleve a otra sección lo dice al lado: nunca se va a ciegas.</p></div>
-    <div class="idx"><div class="idx__b"><p class="idx__g">Instrumento de medición · Ejercicio 2026 · Uso interno</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#h-portada" data-ir="h-portada"><b>Los números del centro</b></a></div><div class="idx__b"><p class="idx__g">Cómo se usa</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#h-instrucciones" data-ir="h-instrucciones"><b>Tres reglas y ninguna más</b></a></div><div class="idx__b"><p class="idx__g">Definiciones</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#h-definiciones" data-ir="h-definiciones"><b>Qué se cuenta arriba, qué se cuenta abajo</b></a></div><div class="idx__b"><p class="idx__g">Captura mensual</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#h-captura" data-ir="h-captura"><b>Una hoja por mes</b></a></div><div class="idx__b"><p class="idx__g">Resumen anual</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#h-anual" data-ir="h-anual"><b>Los doce meses en una rejilla</b></a></div><div class="idx__b"><p class="idx__g">Los cinco números</p><p class="idx__c">1 apartado</p><a class="idx__a idx__a--sinn" href="#h-cinco" data-ir="h-cinco"><b>Sin ellos, cualquier objetivo comercial es una opinión</b></a></div></div>
+    <div class="idx"><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">01</p><p class="idx__g">Instrumento de medición · Ejercicio 2026 · Uso interno</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#h-portada" data-ir="h-portada"><b>Los números del centro</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">02</p><p class="idx__g">Cómo se usa</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#h-instrucciones" data-ir="h-instrucciones"><b>Tres reglas y ninguna más</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">03</p><p class="idx__g">Definiciones</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#h-definiciones" data-ir="h-definiciones"><b>Qué se cuenta arriba, qué se cuenta abajo</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">04</p><p class="idx__g">Captura mensual</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#h-captura" data-ir="h-captura"><b>Una hoja por mes</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">05</p><p class="idx__g">Resumen anual</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#h-anual" data-ir="h-anual"><b>Los doce meses en una rejilla</b></a></div>
+</div><div class="idx__b">
+  <div class="idx__cab"><p class="idx__n">06</p><p class="idx__g">Los cinco números</p><p class="idx__c">1 apartado</p></div>
+  <div class="idx__l"><a class="idx__a idx__a--sinn" href="#h-cinco" data-ir="h-cinco"><b>Sin ellos, cualquier objetivo comercial es una opinión</b></a></div>
+</div></div>
   </div>
   <div class="leyendo" hidden><b></b><span class="leyendo__p"><i></i></span><span class="leyendo__n"></span></div>
   <div class="hojas"><article class="hoja" id="h-portada" data-hoja="h-portada" data-sec="numeros">
