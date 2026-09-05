@@ -2543,6 +2543,140 @@ html:root{
 
 
 /* ====================================================================
+   LA ESTRUCTURA · versión 14
+   Fuera la barra de arriba y las páginas de diez mil píxeles. A la
+   izquierda, un raíl con el sistema entero desplegable y siempre a la
+   vista; a la derecha, una sola cosa en pantalla. Se elige en el raíl y
+   aparece a la derecha: no hay que recorrer una sección para encontrar
+   un apartado ni recordar dónde estaba uno.
+   ==================================================================== */
+html:root{--rail:20rem; --nav:0px; --saca:calc(var(--aire) * -1)}
+.app{display:block}
+
+.rail{position:fixed;inset:0 auto 0 0;width:var(--rail);z-index:60;
+  display:flex;flex-direction:column;background:var(--blanco);
+  border-right:1px solid var(--linea)}
+.rail__cab{flex:none;padding:1.6rem 1.4rem 1.2rem}
+.rail__marca{display:block;width:100%;text-align:left;background:none;border:0;padding:0;
+  font:inherit;cursor:pointer;color:var(--negro)}
+.rail__marca b{display:block;font-size:1.02rem;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase}
+.rail__marca span{display:block;margin-top:.35rem;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.5}
+.rail__marca:hover b{color:var(--azul)}
+
+.rail__filtro{flex:none;display:flex;align-items:center;gap:.6rem;margin:0 1.4rem 1rem;
+  padding:.7rem .8rem;border:1px solid var(--linea);color:var(--muted)}
+.rail__filtro input{flex:1;min-width:0;font:inherit;font-size:.82rem;border:0;background:none;
+  color:var(--negro);outline:none;padding:0}
+.rail__filtro input::placeholder{color:var(--muted)}
+.rail__filtro:focus-within{border-color:var(--negro)}
+
+/* el árbol se desvanece por abajo: una línea cortada a la mitad se lee como
+   «hay más» y no como un fallo */
+.arb{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 0 1.4rem;
+  -webkit-mask-image:linear-gradient(180deg,#000000 0,#000000 calc(100% - 1.6rem),transparent 100%);
+  mask-image:linear-gradient(180deg,#000000 0,#000000 calc(100% - 1.6rem),transparent 100%);
+  scrollbar-width:thin;scrollbar-color:var(--linea) transparent}
+.arb__s{border-top:1px solid var(--linea-2)}
+.arb__s:first-child{border-top:0}
+.arb__b{width:100%;display:grid;grid-template-columns:2.2rem 1fr auto auto;gap:.7rem;
+  align-items:center;padding:.9rem 1.4rem;font:inherit;text-align:left;background:none;
+  border:0;cursor:pointer;color:var(--ink-2);transition:background .18s var(--e)}
+.arb__b:hover{background:var(--gris);color:var(--negro)}
+.arb__n{font-style:normal;font-family:var(--f-mono);font-size:.62rem;color:var(--linea);
+  letter-spacing:.06em}
+.arb__r{font-size:.94rem;line-height:1.3}
+.arb__c{font-style:normal;font-family:var(--f-mono);font-size:.58rem;color:var(--muted);
+  letter-spacing:.1em}
+.arb__x{color:var(--muted);transition:transform .26s var(--e)}
+.arb__s.es-ab > .arb__b{color:var(--negro);background:var(--gris)}
+.arb__s.es-ab > .arb__b .arb__n{color:var(--azul)}
+.arb__s.es-ab > .arb__b .arb__x{transform:rotate(180deg)}
+.arb__s.es-aqui > .arb__b{box-shadow:inset 2px 0 0 var(--azul)}
+.arb__l{padding:.2rem 0 1rem}
+.arb__l[hidden]{display:none}
+/* dentro del raíl el índice de una sección es una lista sobria: una columna,
+   sin rótulos de grupo en mayúsculas gritando en una barra de veinte rem */
+.arb__l .sub{display:block;columns:1;padding:0;margin:0;max-width:none}
+.arb__l .sub__b{margin:0 0 .6rem}
+.arb__l .sub__g{margin:.9rem 1.4rem .3rem;font-size:.56rem;letter-spacing:.18em;
+  color:var(--muted)}
+.arb__l .sub a{grid-template-columns:2.2rem 1fr;gap:.7rem;padding:.42rem 1.4rem;
+  font-size:.86rem;line-height:1.42;border:0}
+.arb__l .sub a span{font-size:.58rem}
+.arb__l .sub a:hover{background:var(--gris);color:var(--negro)}
+.arb__l .sub a.es-aqui{background:var(--azul-p);color:var(--negro)}
+.arb__l .sub a.es-aqui span{color:var(--azul)}
+
+.rail__pie{flex:none;display:flex;flex-wrap:wrap;gap:.2rem;padding:.9rem 1rem;
+  border-top:1px solid var(--linea)}
+.rail__pie button{font:inherit;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.16em;
+  text-transform:uppercase;background:none;border:0;cursor:pointer;color:var(--muted);
+  padding:.5rem .55rem;transition:color .18s var(--e)}
+.rail__pie button:hover{color:var(--negro)}
+
+.panel{margin-left:var(--rail);min-height:100vh}
+/* el lector ocupa el panel, no la pantalla: el raíl se queda a la vista y se
+   puede saltar a otro sitio sin cerrar lo que se está leyendo */
+.lector{inset:0 0 0 var(--rail)}
+.lector__cab{height:auto;padding:1.1rem 2rem}
+/* lo que se queda pegado arriba lo hace dentro del panel */
+#sitio .puestosel{top:0}
+#sitio .puesto :where(h2,h3,h4,[id]){scroll-margin-top:7rem}
+
+/* La cinta del reloj: un tramo estrecho no puede contener la palabra
+   «Preparación», y forzarla solo consigue que se corte a mitad de sílaba
+   contra el tramo de al lado. Quién lleva el nombre y quién no lo decide el
+   generador, que es el que sabe cuánto mide cada tramo; aquí solo se cuida de
+   que lo que sí cabe se parta por donde toca. */
+#sitio .reloj__r{overflow-wrap:anywhere;hyphens:auto}
+#sitio .reloj__t--fino .reloj__r{display:none}
+#sitio .reloj__t--fino{justify-content:flex-start;gap:.3rem}
+
+/* Lo que se sale «a sangre» tiene que salirse del panel, no de la pantalla:
+   con el raíl a la izquierda, una banda que mide una pantalla entera se mete
+   por debajo del raíl y se le come el principio a su propio titular. */
+#sitio .portada,#sitio .frente,#sitio .banda--noche,#sitio .banda--pie{
+  margin-inline:calc(50% - (100vw - var(--rail)) / 2)}
+@media(max-width:900px){
+  #sitio .portada,#sitio .frente,#sitio .banda--noche,#sitio .banda--pie{
+    margin-inline:calc(50% - 50vw)}
+}
+
+/* la portada y las bandas dejan de ocupar una pantalla entera: son una
+   entrada, no un cartel */
+.portada{min-height:min(66vh,34rem);padding:4.5rem var(--marco) 4rem}
+.frente{min-height:0}
+#sitio .sec{padding-top:calc(var(--aire) * .7)}
+
+/* el botón que abre el raíl en pantallas estrechas */
+.railbt{display:none;position:fixed;top:.9rem;left:.9rem;z-index:80;width:2.6rem;height:2.6rem;
+  background:var(--blanco);border:1px solid var(--linea);cursor:pointer;
+  flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.railbt span{display:block;width:14px;height:1px;background:var(--negro)}
+.velorail{position:fixed;inset:0;z-index:55;background:rgba(11,11,15,.4);opacity:0;
+  pointer-events:none;transition:opacity .26s var(--e)}
+.velorail.es-on{opacity:1;pointer-events:auto}
+
+@media(max-width:1100px){
+  html:root{--rail:17rem}
+}
+@media(max-width:900px){
+  html:root{--rail:19rem}
+  .railbt{display:flex}
+  .rail{transform:translateX(-100%);transition:transform .3s var(--e);
+    box-shadow:0 0 60px -20px rgba(11,11,15,.5)}
+  .rail.es-ab{transform:none}
+  .panel{margin-left:0;padding-top:3.4rem}
+  .lector{inset:0}
+  .portada{min-height:0;padding:3.4rem 1.6rem 3rem}
+}
+@media(prefers-reduced-motion:reduce){.rail,.velorail,.arb__x{transition:none}}
+@media print{.rail,.railbt,.velorail{display:none!important}.panel{margin-left:0}}
+
+
+/* ====================================================================
    LAS CIFRAS, DIBUJADAS
    Un solo lenguaje para todas: trazo fino, blanco, negro y el azul solo
    para lo que decide. Las figuras se dibujan con «currentColor», así
@@ -2580,9 +2714,14 @@ html:root{
 .dibleyenda i.es-hueco::before{background:var(--blanco);box-shadow:0 0 0 1px var(--negro)}
 /* una nota de lectura no lleva muestra de color: no nombra nada del dibujo */
 .dibleyenda i.es-nota::before{display:none}
+/* El arco y la rejilla necesitan una anchura mínima para que sus rótulos no
+   se toquen. Por debajo de ella no se encogen: se recorren de lado, que es
+   preferible a leer dos rótulos montados uno encima de otro. */
+.dibcaja{overflow-x:auto;overflow-y:hidden}
+.dib--arco{min-width:60rem}
+.dib--rejilla{min-width:46rem}
 @media(max-width:900px){
-  .dib--arco,.dib--rejilla{min-width:46rem}
-  .dibcaja{overflow-x:auto}
+  .dib--arco{min-width:52rem}
 }
 
 
@@ -3324,36 +3463,73 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
 <a class="saltar" href="#sitio">Saltar al contenido</a>
 <div class="avance" id="avance" aria-hidden="true"></div>
 
-<header class="nav">
-  <div class="nav__f">
-    <button class="nav__m" type="button" data-ir-sec="inicio">Giraldo <em>v13.0</em></button>
-    <nav class="nav__l" aria-label="Secciones"><button type="button" data-ir-sec="inicio">Inicio</button><button type="button" data-ir-sec="direccion" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Dirección<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="presentacion" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Presentación<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="protocolos" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Protocolos<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="primera-visita" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Primera Visita<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="operaciones" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Operaciones<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="marketing" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Marketing<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="otros" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Otros<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button><button type="button" data-ir-sec="numeros" title="Pulse el nombre para ir; la flecha abre y cierra su índice">Los números<i class="nav__x" aria-hidden="true"><svg viewBox="0 0 10 6" width="9" height="6"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button></nav>
-    <div class="nav__b">
-      <button class="nav__ruta" type="button" data-ir-sec="recorridos">Recorridos</button>
-      <button class="nav__ruta" type="button" data-ir-sec="mapa">Mapa</button>
-      <span class="nav__sep"></span>
-      <button class="abrepal" type="button" data-abre="paleta"><span>Buscar</span>
-        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
-          <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M10.4 10.4 L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg></button>
-      <button class="icono" type="button" data-abre="recursos" aria-label="Recursos" title="Recursos (R)">&#9781;</button>
-      <button class="icono" type="button" data-abre="teclas" aria-label="Cómo se usa" title="Cómo se usa (?)">?</button>
-    </div>
-  </div>
-  <div class="paneles" id="paneles" hidden>
-    <div class="paneles__c"><div class="sub" data-sub="direccion" hidden><div class="sub__b"><a href="#a-portada-doc" data-ir="a-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#a-manifiesto" data-ir="a-manifiesto"><span>·</span>El manifiesto: la regla que ordena todo</a><a href="#a-control" data-ir="a-control"><span>00</span>Control del documento y cómo se cita</a><a href="#a-resumen" data-ir="a-resumen"><span>01</span>Resumen ejecutivo en dos minutos</a></div><div class="sub__b"><p class="sub__g">Parte I · La posición</p><a href="#a-parte-1" data-ir="a-parte-1"><span>·</span>Parte I · La posición</a><a href="#a-tesis" data-ir="a-tesis"><span>02</span>Por qué este centro y no otro</a><a href="#a-mapa" data-ir="a-mapa"><span>03</span>Mapa competitivo de Vigo y el hueco libre</a><a href="#a-foso" data-ir="a-foso"><span>04</span>El foso: lo que un competidor no puede comprar</a></div><div class="sub__b"><p class="sub__g">Parte II · El sistema</p><a href="#a-parte-2" data-ir="a-parte-2"><span>·</span>Parte II · El sistema</a><a href="#a-sistema" data-ir="a-sistema"><span>05</span>El sistema operativo que se ha construido</a><a href="#a-innovacion" data-ir="a-innovacion"><span>06</span>Innovación: tres horizontes, tres criterios</a></div><div class="sub__b"><p class="sub__g">Parte III · La economía</p><a href="#a-parte-3" data-ir="a-parte-3"><span>·</span>Parte III · La economía</a><a href="#a-linea-base" data-ir="a-linea-base"><span>07</span>Los cinco números que aún no tenemos</a><a href="#a-unidad" data-ir="a-unidad"><span>08</span>Economía por paciente: qué gobierna el resultado</a><a href="#a-activo" data-ir="a-activo"><span>09</span>Cuánto vale el centro, y por qué</a><a href="#a-escalado" data-ir="a-escalado"><span>10</span>Escalado: de un centro a una red</a></div><div class="sub__b"><p class="sub__g">Parte IV · El riesgo</p><a href="#a-parte-4" data-ir="a-parte-4"><span>·</span>Parte IV · El riesgo</a><a href="#a-riesgos" data-ir="a-riesgos"><span>11</span>Registro de riesgos, con dueño y fecha</a><a href="#a-premortem" data-ir="a-premortem"><span>12</span>Pre-mortem: es 2029 y ha fracasado</a><a href="#a-mando" data-ir="a-mando"><span>13</span>Cuadro de mando: con qué se dirige cada mes</a></div><div class="sub__b"><p class="sub__g">Parte V · La decisión</p><a href="#a-parte-5" data-ir="a-parte-5"><span>·</span>Parte V · La decisión</a><a href="#a-palancas" data-ir="a-palancas"><span>14</span>Palancas: por dónde se crece y en qué orden</a><a href="#a-capital" data-ir="a-capital"><span>15</span>Asignación de capital: en qué se gasta antes</a><a href="#a-ruta" data-ir="a-ruta"><span>16</span>Hoja de ruta y sus tres puertas de paso</a><a href="#a-decisiones" data-ir="a-decisiones"><span>17</span>Las quince decisiones que se someten a la Junta</a><a href="#a-supuestos" data-ir="a-supuestos"><span>18</span>Supuestos: sobre qué se ha razonado</a><a href="#a-trazabilidad" data-ir="a-trazabilidad"><span>19</span>Trazabilidad: dónde aterriza cada acuerdo</a></div><div class="sub__b"><p class="sub__g">Parte VI · La cifra</p><a href="#a-parte-6" data-ir="a-parte-6"><span>·</span>Parte VI · La cifra</a><a href="#a-puente" data-ir="a-puente"><span>20</span>El puente: de 720 k€ a 1,2 M€, bloque a bloque</a><a href="#a-cartera" data-ir="a-cartera"><span>21</span>La cartera de nueve campañas</a><a href="#a-calendario" data-ir="a-calendario"><span>22</span>Calendario y capacidad del año</a><a href="#a-cierto" data-ir="a-cierto"><span>23</span>Las cinco condiciones que tienen que ser ciertas</a></div><div class="sub__b"><p class="sub__g">Anexos</p><a href="#a-acuerdos" data-ir="a-acuerdos"><span>A</span>Cuadernillo: quince hojas de acta</a><a href="#a-campanas" data-ir="a-campanas"><span>B</span>Nueve fichas de campaña, para poner en marcha</a></div></div>
-<div class="sub" data-sub="presentacion" hidden><div class="sub__b"><p class="sub__g">La sesión</p><a href="#b-presentacion" data-ir="b-presentacion"><span>·</span>Las cuarenta y tres diapositivas, en orden</a></div></div>
-<div class="sub" data-sub="protocolos" hidden><div class="sub__b"><p class="sub__g">Vista operativa · Uso interno</p><a href="#c-portada" data-ir="c-portada"><span>·</span>Qué se espera de cada puesto</a></div><div class="sub__b"><p class="sub__g">Los seis puestos</p><a href="#c-puestos" data-ir="c-puestos"><span>·</span>Elija el suyo</a></div><div class="sub__b"><p class="sub__g">Común a los seis</p><a href="#c-comun" data-ir="c-comun"><span>·</span>Lo que se cumple en todos los puestos</a></div></div>
-<div class="sub" data-sub="primera-visita" hidden><div class="sub__b"><a href="#d-portada-doc" data-ir="d-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#d-fundamentos" data-ir="d-fundamentos"><span>·</span>Los cinco principios de la visita</a><a href="#d-mapa" data-ir="d-mapa"><span>·</span>La visita entera, minuto a minuto</a><a href="#d-flujo" data-ir="d-flujo"><span>·</span>Quién tiene al paciente en cada momento</a></div><div class="sub__b"><p class="sub__g">Las doce fases de la visita</p><a href="#d-f01" data-ir="d-f01"><span>01</span>Preparación previa y primera llamada</a><a href="#d-f02" data-ir="d-f02"><span>02</span>Acogida y recorrido por la tecnología</a><a href="#d-f03" data-ir="d-f03"><span>03</span>Alta, RGPD y protección de datos</a><a href="#d-f04" data-ir="d-f04"><span>04</span>Historia clínica y consentimiento</a><a href="#d-f05" data-ir="d-f05"><span>05</span>Pruebas diagnósticas y fotografía</a><a href="#d-f06" data-ir="d-f06"><span>06</span>Briefing entre Doctor y Director</a><a href="#d-f07" data-ir="d-f07"><span>07</span>Expectativas y exploración clínica</a><a href="#d-f08" data-ir="d-f08"><span>08</span>Informe de Análisis Clínico (IAC)</a><a href="#d-f09" data-ir="d-f09"><span>09</span>Presentación del diagnóstico en 3D</a><a href="#d-f10" data-ir="d-f10"><span>10</span>Propuesta económica y cierre</a><a href="#d-f11" data-ir="d-f11"><span>11</span>Cierre administrativo y digitalización</a><a href="#d-f12" data-ir="d-f12"><span>12</span>Despedida y seguimiento estratégico</a></div><div class="sub__b"><p class="sub__g">Cierre</p><a href="#d-estandares" data-ir="d-estandares"><span>·</span>Estándares comunes a las doce fases</a><a href="#d-casos" data-ir="d-casos"><span>·</span>Casos especiales: cuando no encaja</a><a href="#d-continua" data-ir="d-continua"><span>·</span>Fases 13 y 14: producción y mantenimiento</a><a href="#d-trazabilidad" data-ir="d-trazabilidad"><span>·</span>Qué queda registrado y quién responde</a><a href="#d-indicadores" data-ir="d-indicadores"><span>·</span>Cómo se mide si el protocolo funciona</a><a href="#d-formacion" data-ir="d-formacion"><span>·</span>Formación y certificación por rol</a><a href="#d-anexos" data-ir="d-anexos"><span>·</span>Anexos: guiones y preguntas frecuentes</a></div></div>
-<div class="sub" data-sub="operaciones" hidden><div class="sub__b"><a href="#e-portada-doc" data-ir="e-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#e-presentacion" data-ir="e-presentacion"><span>·</span>Un documento, tres usos</a><a href="#e-indice" data-ir="e-indice"><span>·</span>Índice: dónde está cada cosa</a><a href="#e-vanguardia" data-ir="e-vanguardia"><span>·</span>Marco de vanguardia y los cinco pilares</a></div><div class="sub__b"><p class="sub__g">Las ocho partes</p><a href="#e-p1" data-ir="e-p1"><span>I</span>Fundamentos y principios rectores</a><a href="#e-estandares" data-ir="e-estandares"><span>·</span>Estándares transversales del centro</a><a href="#e-p2" data-ir="e-p2"><span>II</span>Las catorce fases del recorrido</a><a href="#e-p3" data-ir="e-p3"><span>III</span>Matriz RACI: quién hace qué en cada fase</a><a href="#e-p4" data-ir="e-p4"><span>IV</span>Manuales de los seis puestos</a><a href="#e-p5" data-ir="e-p5"><span>V</span>Funciones de vanguardia por perfil</a><a href="#e-p6" data-ir="e-p6"><span>VI</span>Indicadores e interdependencias</a><a href="#e-p7" data-ir="e-p7"><span>VII</span>Plan de incentivos y retribución variable</a><a href="#e-p8" data-ir="e-p8"><span>VIII</span>Puesta en marcha del centro</a></div><div class="sub__b"><p class="sub__g">Cierre</p><a href="#e-anexos" data-ir="e-anexos"><span>·</span>Anexos: plantillas y checklists</a><a href="#e-otros" data-ir="e-otros"><span>·</span>Otros documentos del sistema</a><a href="#e-notas" data-ir="e-notas"><span>·</span>Puntos que siguen abiertos</a></div></div>
-<div class="sub" data-sub="marketing" hidden><div class="sub__b"><a href="#f-portada-doc" data-ir="f-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#f-portada" data-ir="f-portada"><span>·</span>Portada</a><a href="#f-control" data-ir="f-control"><span>00</span>Ficha de control del documento</a></div><div class="sub__b"><p class="sub__g">Parte I · La doctrina</p><a href="#f-parte-1" data-ir="f-parte-1"><span>·</span>Parte I · La doctrina</a><a href="#f-doctrina" data-ir="f-doctrina"><span>01</span>Por qué este plan no es un plan al uso</a><a href="#f-regla" data-ir="f-regla"><span>02</span>La regla de la ficha: qué gana el paciente</a><a href="#f-nunca" data-ir="f-nunca"><span>03</span>Las ocho cosas que no haremos nunca</a><a href="#f-legal" data-ir="f-legal"><span>04</span>El marco legal de la publicidad sanitaria</a></div><div class="sub__b"><p class="sub__g">Parte II · El paciente</p><a href="#f-parte-2" data-ir="f-parte-2"><span>·</span>Parte II · El paciente</a><a href="#f-estados" data-ir="f-estados"><span>05</span>Los doce estados del paciente</a><a href="#f-arquetipos" data-ir="f-arquetipos"><span>06</span>Los seis pacientes de la ría</a><a href="#f-momentos" data-ir="f-momentos"><span>07</span>Los siete momentos de verdad</a><a href="#f-asimetria" data-ir="f-asimetria"><span>08</span>La asimetría: lo que el paciente no sabe</a></div><div class="sub__b"><p class="sub__g">Parte III · El catálogo</p><a href="#f-parte-3" data-ir="f-parte-3"><span>·</span>Parte III · El catálogo</a><a href="#f-catalogo" data-ir="f-catalogo"><span>09</span>Las 76 acciones, con dueño y coste</a></div><div class="sub__b"><p class="sub__g">Parte IV · Las diez piezas</p><a href="#f-parte-4" data-ir="f-parte-4"><span>·</span>Parte IV · Las diez piezas</a><a href="#f-piezas" data-ir="f-piezas"><span>10</span>Las diez piezas que nadie hace en Vigo</a></div><div class="sub__b"><p class="sub__g">Parte V · El territorio</p><a href="#f-parte-5" data-ir="f-parte-5"><span>·</span>Parte V · El territorio</a><a href="#f-digital" data-ir="f-digital"><span>11</span>La presencia digital, y para qué sirve</a><a href="#f-ria" data-ir="f-ria"><span>12</span>El mapa de la ría: dónde está el paciente</a><a href="#f-mar" data-ir="f-mar"><span>13</span>La Campaña de Mar, verano a verano</a></div><div class="sub__b"><p class="sub__g">Parte VI · La prioridad</p><a href="#f-parte-6" data-ir="f-parte-6"><span>·</span>Parte VI · La prioridad</a><a href="#f-economia" data-ir="f-economia"><span>14</span>Qué aporta cada grupo de acciones</a><a href="#f-prioridad" data-ir="f-prioridad"><span>15</span>Qué va primero, y por qué</a><a href="#f-presupuesto" data-ir="f-presupuesto"><span>16</span>Presupuesto y techo de gasto</a></div><div class="sub__b"><p class="sub__g">Parte VII · El gobierno</p><a href="#f-parte-7" data-ir="f-parte-7"><span>·</span>Parte VII · El gobierno</a><a href="#f-indicadores" data-ir="f-indicadores"><span>17</span>Las ocho medidas del plan</a><a href="#f-calendario" data-ir="f-calendario"><span>18</span>El calendario del ejercicio</a><a href="#f-parada" data-ir="f-parada"><span>19</span>Reglas de parada: cuándo se corta</a></div><div class="sub__b"><p class="sub__g">Parte VIII · El programa</p><a href="#f-parte-8" data-ir="f-parte-8"><span>·</span>Parte VIII · El programa</a><a href="#f-gtc" data-ir="f-gtc"><span>20</span>Giraldo Te Cuida: el programa de acompañamiento</a></div><div class="sub__b"><p class="sub__g">Anexos</p><a href="#f-anexo-legal" data-ir="f-anexo-legal"><span>A</span>Semáforo legal, acción por acción</a><a href="#f-anexo-cartera" data-ir="f-anexo-cartera"><span>B</span>Correspondencia con la cartera de campañas</a><a href="#f-anexo-trimestre" data-ir="f-anexo-trimestre"><span>C</span>Lo que se activa este trimestre</a></div></div>
-<div class="sub" data-sub="otros" hidden><div class="sub__b"><a href="#g-portada-doc" data-ir="g-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#g-presentacion" data-ir="g-presentacion"><span>·</span>Qué es cada cosa y cuándo se abre</a><a href="#g-otros-mapa" data-ir="g-otros-mapa"><span>·</span>El sistema en cuatro niveles</a></div><div class="sub__b"><p class="sub__g">Los catorce documentos</p><a href="#g-otros-compendio" data-ir="g-otros-compendio"><span>01</span>Compendio Maestro del sistema de gestión</a><a href="#g-otros-verificacion" data-ir="g-otros-verificacion"><span>02</span>Verificación del centro · 322 puntos</a><a href="#g-otros-auditoria" data-ir="g-otros-auditoria"><span>03</span>Auditoría integral de la clínica adquirida</a><a href="#g-otros-decisiones" data-ir="g-otros-decisiones"><span>04</span>Decisiones de Gerencia y verificaciones</a><a href="#g-otros-100dias" data-ir="g-otros-100dias"><span>05</span>Plan Director de los primeros 100 días</a><a href="#g-otros-30dias" data-ir="g-otros-30dias"><span>06</span>Dosier de ejecución de los 30 días</a><a href="#g-otros-perfiles" data-ir="g-otros-perfiles"><span>07</span>Protocolos operativos por perfil</a><a href="#g-otros-innovacion" data-ir="g-otros-innovacion"><span>08</span>Innovación aplicada · 18 fichas</a><a href="#g-otros-marca" data-ir="g-otros-marca"><span>09</span>Plan Director de marca y captación</a><a href="#g-otros-cuaderno" data-ir="g-otros-cuaderno"><span>10</span>Cuaderno de campo del día 1</a><a href="#g-otros-transicion-perfiles" data-ir="g-otros-transicion-perfiles"><span>11</span>Manual de puesta en marcha por perfil</a><a href="#g-otros-continuidad" data-ir="g-otros-continuidad"><span>12</span>Continuidad legal, financiera y de sistemas</a><a href="#g-otros-posicionamiento" data-ir="g-otros-posicionamiento"><span>13</span>«No medias sonrisas» · posicionamiento</a><a href="#g-otros-gtc" data-ir="g-otros-gtc"><span>14</span>GTC · vive en el Plan de Marketing</a></div><div class="sub__b"><p class="sub__g">Cierre</p><a href="#g-otros-cierre" data-ir="g-otros-cierre"><span>·</span>Cómo encajan los catorce documentos</a></div></div>
-<div class="sub" data-sub="numeros" hidden><div class="sub__b"><p class="sub__g">Instrumento de medición · Ejercicio 2026 · Uso interno</p><a href="#h-portada" data-ir="h-portada"><span>·</span>Los números del centro</a></div><div class="sub__b"><p class="sub__g">Cómo se usa</p><a href="#h-instrucciones" data-ir="h-instrucciones"><span>·</span>Tres reglas y ninguna más</a></div><div class="sub__b"><p class="sub__g">Definiciones</p><a href="#h-definiciones" data-ir="h-definiciones"><span>·</span>Qué se cuenta arriba, qué se cuenta abajo</a></div><div class="sub__b"><p class="sub__g">Captura mensual</p><a href="#h-captura" data-ir="h-captura"><span>·</span>Una hoja por mes</a></div><div class="sub__b"><p class="sub__g">Resumen anual</p><a href="#h-anual" data-ir="h-anual"><span>·</span>Los doce meses en una rejilla</a></div><div class="sub__b"><p class="sub__g">Los cinco números</p><a href="#h-cinco" data-ir="h-cinco"><span>·</span>Sin ellos, cualquier objetivo comercial es una opinión</a></div></div></div>
-  </div>
-</header>
+<!-- ------------------------------------------------------------------
+     La estructura: un raíl a la izquierda con el sistema entero desplegable,
+     y a la derecha una sola cosa en pantalla. No hay barra arriba ni páginas
+     de diez mil píxeles: se elige en el raíl y aparece a la derecha.
+     ------------------------------------------------------------------ -->
+<button class="railbt" type="button" id="railbt" aria-label="Abrir el índice"
+        aria-expanded="false"><span></span><span></span><span></span></button>
 
-<div id="sitio">
+<div class="app">
+<aside class="rail" id="rail" aria-label="El sistema">
+  <div class="rail__cab">
+    <button class="rail__marca" type="button" data-ir-sec="inicio">
+      <b>Giraldo</b><span>Centro de Excelencia Implantológica</span></button>
+  </div>
+  <div class="rail__filtro">
+    <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M10.4 10.4 L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    <input id="filtra" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Filtrar los 135 apartados" aria-label="Filtrar el índice">
+  </div>
+  <nav class="arb" id="arb"><div class="arb__s" data-arb="inicio">
+  <button type="button" class="arb__b" data-ir-sec="inicio" aria-expanded="false"><i class="arb__n">01</i><span class="arb__r">Inicio</span><i class="arb__c"></i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden></div>
+</div>
+<div class="arb__s" data-arb="direccion">
+  <button type="button" class="arb__b" data-ir-sec="direccion" aria-expanded="false"><i class="arb__n">02</i><span class="arb__r">Dirección</span><i class="arb__c">34</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="direccion" hidden><div class="sub__b"><a href="#a-portada-doc" data-ir="a-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#a-manifiesto" data-ir="a-manifiesto"><span>·</span>El manifiesto: la regla que ordena todo</a><a href="#a-control" data-ir="a-control"><span>00</span>Control del documento y cómo se cita</a><a href="#a-resumen" data-ir="a-resumen"><span>01</span>Resumen ejecutivo en dos minutos</a></div><div class="sub__b"><p class="sub__g">Parte I · La posición</p><a href="#a-parte-1" data-ir="a-parte-1"><span>·</span>Parte I · La posición</a><a href="#a-tesis" data-ir="a-tesis"><span>02</span>Por qué este centro y no otro</a><a href="#a-mapa" data-ir="a-mapa"><span>03</span>Mapa competitivo de Vigo y el hueco libre</a><a href="#a-foso" data-ir="a-foso"><span>04</span>El foso: lo que un competidor no puede comprar</a></div><div class="sub__b"><p class="sub__g">Parte II · El sistema</p><a href="#a-parte-2" data-ir="a-parte-2"><span>·</span>Parte II · El sistema</a><a href="#a-sistema" data-ir="a-sistema"><span>05</span>El sistema operativo que se ha construido</a><a href="#a-innovacion" data-ir="a-innovacion"><span>06</span>Innovación: tres horizontes, tres criterios</a></div><div class="sub__b"><p class="sub__g">Parte III · La economía</p><a href="#a-parte-3" data-ir="a-parte-3"><span>·</span>Parte III · La economía</a><a href="#a-linea-base" data-ir="a-linea-base"><span>07</span>Los cinco números que aún no tenemos</a><a href="#a-unidad" data-ir="a-unidad"><span>08</span>Economía por paciente: qué gobierna el resultado</a><a href="#a-activo" data-ir="a-activo"><span>09</span>Cuánto vale el centro, y por qué</a><a href="#a-escalado" data-ir="a-escalado"><span>10</span>Escalado: de un centro a una red</a></div><div class="sub__b"><p class="sub__g">Parte IV · El riesgo</p><a href="#a-parte-4" data-ir="a-parte-4"><span>·</span>Parte IV · El riesgo</a><a href="#a-riesgos" data-ir="a-riesgos"><span>11</span>Registro de riesgos, con dueño y fecha</a><a href="#a-premortem" data-ir="a-premortem"><span>12</span>Pre-mortem: es 2029 y ha fracasado</a><a href="#a-mando" data-ir="a-mando"><span>13</span>Cuadro de mando: con qué se dirige cada mes</a></div><div class="sub__b"><p class="sub__g">Parte V · La decisión</p><a href="#a-parte-5" data-ir="a-parte-5"><span>·</span>Parte V · La decisión</a><a href="#a-palancas" data-ir="a-palancas"><span>14</span>Palancas: por dónde se crece y en qué orden</a><a href="#a-capital" data-ir="a-capital"><span>15</span>Asignación de capital: en qué se gasta antes</a><a href="#a-ruta" data-ir="a-ruta"><span>16</span>Hoja de ruta y sus tres puertas de paso</a><a href="#a-decisiones" data-ir="a-decisiones"><span>17</span>Las quince decisiones que se someten a la Junta</a><a href="#a-supuestos" data-ir="a-supuestos"><span>18</span>Supuestos: sobre qué se ha razonado</a><a href="#a-trazabilidad" data-ir="a-trazabilidad"><span>19</span>Trazabilidad: dónde aterriza cada acuerdo</a></div><div class="sub__b"><p class="sub__g">Parte VI · La cifra</p><a href="#a-parte-6" data-ir="a-parte-6"><span>·</span>Parte VI · La cifra</a><a href="#a-puente" data-ir="a-puente"><span>20</span>El puente: de 720 k€ a 1,2 M€, bloque a bloque</a><a href="#a-cartera" data-ir="a-cartera"><span>21</span>La cartera de nueve campañas</a><a href="#a-calendario" data-ir="a-calendario"><span>22</span>Calendario y capacidad del año</a><a href="#a-cierto" data-ir="a-cierto"><span>23</span>Las cinco condiciones que tienen que ser ciertas</a></div><div class="sub__b"><p class="sub__g">Anexos</p><a href="#a-acuerdos" data-ir="a-acuerdos"><span>A</span>Cuadernillo: quince hojas de acta</a><a href="#a-campanas" data-ir="a-campanas"><span>B</span>Nueve fichas de campaña, para poner en marcha</a></div></div></div>
+</div>
+<div class="arb__s" data-arb="presentacion">
+  <button type="button" class="arb__b" data-ir-sec="presentacion" aria-expanded="false"><i class="arb__n">03</i><span class="arb__r">Presentación</span><i class="arb__c">1</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="presentacion" hidden><div class="sub__b"><p class="sub__g">La sesión</p><a href="#b-presentacion" data-ir="b-presentacion"><span>·</span>Las cuarenta y tres diapositivas, en orden</a></div></div></div>
+</div>
+<div class="arb__s" data-arb="protocolos">
+  <button type="button" class="arb__b" data-ir-sec="protocolos" aria-expanded="false"><i class="arb__n">04</i><span class="arb__r">Protocolos</span><i class="arb__c">3</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="protocolos" hidden><div class="sub__b"><p class="sub__g">Vista operativa · Uso interno</p><a href="#c-portada" data-ir="c-portada"><span>·</span>Qué se espera de cada puesto</a></div><div class="sub__b"><p class="sub__g">Los seis puestos</p><a href="#c-puestos" data-ir="c-puestos"><span>·</span>Elija el suyo</a></div><div class="sub__b"><p class="sub__g">Común a los seis</p><a href="#c-comun" data-ir="c-comun"><span>·</span>Lo que se cumple en todos los puestos</a></div></div></div>
+</div>
+<div class="arb__s" data-arb="primera-visita">
+  <button type="button" class="arb__b" data-ir-sec="primera-visita" aria-expanded="false"><i class="arb__n">05</i><span class="arb__r">Primera Visita</span><i class="arb__c">23</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="primera-visita" hidden><div class="sub__b"><a href="#d-portada-doc" data-ir="d-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#d-fundamentos" data-ir="d-fundamentos"><span>·</span>Los cinco principios de la visita</a><a href="#d-mapa" data-ir="d-mapa"><span>·</span>La visita entera, minuto a minuto</a><a href="#d-flujo" data-ir="d-flujo"><span>·</span>Quién tiene al paciente en cada momento</a></div><div class="sub__b"><p class="sub__g">Las doce fases de la visita</p><a href="#d-f01" data-ir="d-f01"><span>01</span>Preparación previa y primera llamada</a><a href="#d-f02" data-ir="d-f02"><span>02</span>Acogida y recorrido por la tecnología</a><a href="#d-f03" data-ir="d-f03"><span>03</span>Alta, RGPD y protección de datos</a><a href="#d-f04" data-ir="d-f04"><span>04</span>Historia clínica y consentimiento</a><a href="#d-f05" data-ir="d-f05"><span>05</span>Pruebas diagnósticas y fotografía</a><a href="#d-f06" data-ir="d-f06"><span>06</span>Briefing entre Doctor y Director</a><a href="#d-f07" data-ir="d-f07"><span>07</span>Expectativas y exploración clínica</a><a href="#d-f08" data-ir="d-f08"><span>08</span>Informe de Análisis Clínico (IAC)</a><a href="#d-f09" data-ir="d-f09"><span>09</span>Presentación del diagnóstico en 3D</a><a href="#d-f10" data-ir="d-f10"><span>10</span>Propuesta económica y cierre</a><a href="#d-f11" data-ir="d-f11"><span>11</span>Cierre administrativo y digitalización</a><a href="#d-f12" data-ir="d-f12"><span>12</span>Despedida y seguimiento estratégico</a></div><div class="sub__b"><p class="sub__g">Cierre</p><a href="#d-estandares" data-ir="d-estandares"><span>·</span>Estándares comunes a las doce fases</a><a href="#d-casos" data-ir="d-casos"><span>·</span>Casos especiales: cuando no encaja</a><a href="#d-continua" data-ir="d-continua"><span>·</span>Fases 13 y 14: producción y mantenimiento</a><a href="#d-trazabilidad" data-ir="d-trazabilidad"><span>·</span>Qué queda registrado y quién responde</a><a href="#d-indicadores" data-ir="d-indicadores"><span>·</span>Cómo se mide si el protocolo funciona</a><a href="#d-formacion" data-ir="d-formacion"><span>·</span>Formación y certificación por rol</a><a href="#d-anexos" data-ir="d-anexos"><span>·</span>Anexos: guiones y preguntas frecuentes</a></div></div></div>
+</div>
+<div class="arb__s" data-arb="operaciones">
+  <button type="button" class="arb__b" data-ir-sec="operaciones" aria-expanded="false"><i class="arb__n">06</i><span class="arb__r">Operaciones</span><i class="arb__c">16</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="operaciones" hidden><div class="sub__b"><a href="#e-portada-doc" data-ir="e-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#e-presentacion" data-ir="e-presentacion"><span>·</span>Un documento, tres usos</a><a href="#e-indice" data-ir="e-indice"><span>·</span>Índice: dónde está cada cosa</a><a href="#e-vanguardia" data-ir="e-vanguardia"><span>·</span>Marco de vanguardia y los cinco pilares</a></div><div class="sub__b"><p class="sub__g">Las ocho partes</p><a href="#e-p1" data-ir="e-p1"><span>I</span>Fundamentos y principios rectores</a><a href="#e-estandares" data-ir="e-estandares"><span>·</span>Estándares transversales del centro</a><a href="#e-p2" data-ir="e-p2"><span>II</span>Las catorce fases del recorrido</a><a href="#e-p3" data-ir="e-p3"><span>III</span>Matriz RACI: quién hace qué en cada fase</a><a href="#e-p4" data-ir="e-p4"><span>IV</span>Manuales de los seis puestos</a><a href="#e-p5" data-ir="e-p5"><span>V</span>Funciones de vanguardia por perfil</a><a href="#e-p6" data-ir="e-p6"><span>VI</span>Indicadores e interdependencias</a><a href="#e-p7" data-ir="e-p7"><span>VII</span>Plan de incentivos y retribución variable</a><a href="#e-p8" data-ir="e-p8"><span>VIII</span>Puesta en marcha del centro</a></div><div class="sub__b"><p class="sub__g">Cierre</p><a href="#e-anexos" data-ir="e-anexos"><span>·</span>Anexos: plantillas y checklists</a><a href="#e-otros" data-ir="e-otros"><span>·</span>Otros documentos del sistema</a><a href="#e-notas" data-ir="e-notas"><span>·</span>Puntos que siguen abiertos</a></div></div></div>
+</div>
+<div class="arb__s" data-arb="marketing">
+  <button type="button" class="arb__b" data-ir-sec="marketing" aria-expanded="false"><i class="arb__n">07</i><span class="arb__r">Marketing</span><i class="arb__c">34</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="marketing" hidden><div class="sub__b"><a href="#f-portada-doc" data-ir="f-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#f-portada" data-ir="f-portada"><span>·</span>Portada</a><a href="#f-control" data-ir="f-control"><span>00</span>Ficha de control del documento</a></div><div class="sub__b"><p class="sub__g">Parte I · La doctrina</p><a href="#f-parte-1" data-ir="f-parte-1"><span>·</span>Parte I · La doctrina</a><a href="#f-doctrina" data-ir="f-doctrina"><span>01</span>Por qué este plan no es un plan al uso</a><a href="#f-regla" data-ir="f-regla"><span>02</span>La regla de la ficha: qué gana el paciente</a><a href="#f-nunca" data-ir="f-nunca"><span>03</span>Las ocho cosas que no haremos nunca</a><a href="#f-legal" data-ir="f-legal"><span>04</span>El marco legal de la publicidad sanitaria</a></div><div class="sub__b"><p class="sub__g">Parte II · El paciente</p><a href="#f-parte-2" data-ir="f-parte-2"><span>·</span>Parte II · El paciente</a><a href="#f-estados" data-ir="f-estados"><span>05</span>Los doce estados del paciente</a><a href="#f-arquetipos" data-ir="f-arquetipos"><span>06</span>Los seis pacientes de la ría</a><a href="#f-momentos" data-ir="f-momentos"><span>07</span>Los siete momentos de verdad</a><a href="#f-asimetria" data-ir="f-asimetria"><span>08</span>La asimetría: lo que el paciente no sabe</a></div><div class="sub__b"><p class="sub__g">Parte III · El catálogo</p><a href="#f-parte-3" data-ir="f-parte-3"><span>·</span>Parte III · El catálogo</a><a href="#f-catalogo" data-ir="f-catalogo"><span>09</span>Las 76 acciones, con dueño y coste</a></div><div class="sub__b"><p class="sub__g">Parte IV · Las diez piezas</p><a href="#f-parte-4" data-ir="f-parte-4"><span>·</span>Parte IV · Las diez piezas</a><a href="#f-piezas" data-ir="f-piezas"><span>10</span>Las diez piezas que nadie hace en Vigo</a></div><div class="sub__b"><p class="sub__g">Parte V · El territorio</p><a href="#f-parte-5" data-ir="f-parte-5"><span>·</span>Parte V · El territorio</a><a href="#f-digital" data-ir="f-digital"><span>11</span>La presencia digital, y para qué sirve</a><a href="#f-ria" data-ir="f-ria"><span>12</span>El mapa de la ría: dónde está el paciente</a><a href="#f-mar" data-ir="f-mar"><span>13</span>La Campaña de Mar, verano a verano</a></div><div class="sub__b"><p class="sub__g">Parte VI · La prioridad</p><a href="#f-parte-6" data-ir="f-parte-6"><span>·</span>Parte VI · La prioridad</a><a href="#f-economia" data-ir="f-economia"><span>14</span>Qué aporta cada grupo de acciones</a><a href="#f-prioridad" data-ir="f-prioridad"><span>15</span>Qué va primero, y por qué</a><a href="#f-presupuesto" data-ir="f-presupuesto"><span>16</span>Presupuesto y techo de gasto</a></div><div class="sub__b"><p class="sub__g">Parte VII · El gobierno</p><a href="#f-parte-7" data-ir="f-parte-7"><span>·</span>Parte VII · El gobierno</a><a href="#f-indicadores" data-ir="f-indicadores"><span>17</span>Las ocho medidas del plan</a><a href="#f-calendario" data-ir="f-calendario"><span>18</span>El calendario del ejercicio</a><a href="#f-parada" data-ir="f-parada"><span>19</span>Reglas de parada: cuándo se corta</a></div><div class="sub__b"><p class="sub__g">Parte VIII · El programa</p><a href="#f-parte-8" data-ir="f-parte-8"><span>·</span>Parte VIII · El programa</a><a href="#f-gtc" data-ir="f-gtc"><span>20</span>Giraldo Te Cuida: el programa de acompañamiento</a></div><div class="sub__b"><p class="sub__g">Anexos</p><a href="#f-anexo-legal" data-ir="f-anexo-legal"><span>A</span>Semáforo legal, acción por acción</a><a href="#f-anexo-cartera" data-ir="f-anexo-cartera"><span>B</span>Correspondencia con la cartera de campañas</a><a href="#f-anexo-trimestre" data-ir="f-anexo-trimestre"><span>C</span>Lo que se activa este trimestre</a></div></div></div>
+</div>
+<div class="arb__s" data-arb="otros">
+  <button type="button" class="arb__b" data-ir-sec="otros" aria-expanded="false"><i class="arb__n">08</i><span class="arb__r">Otros</span><i class="arb__c">18</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="otros" hidden><div class="sub__b"><a href="#g-portada-doc" data-ir="g-portada-doc"><span>·</span>Portada</a></div><div class="sub__b"><p class="sub__g">Apertura</p><a href="#g-presentacion" data-ir="g-presentacion"><span>·</span>Qué es cada cosa y cuándo se abre</a><a href="#g-otros-mapa" data-ir="g-otros-mapa"><span>·</span>El sistema en cuatro niveles</a></div><div class="sub__b"><p class="sub__g">Los catorce documentos</p><a href="#g-otros-compendio" data-ir="g-otros-compendio"><span>01</span>Compendio Maestro del sistema de gestión</a><a href="#g-otros-verificacion" data-ir="g-otros-verificacion"><span>02</span>Verificación del centro · 322 puntos</a><a href="#g-otros-auditoria" data-ir="g-otros-auditoria"><span>03</span>Auditoría integral de la clínica adquirida</a><a href="#g-otros-decisiones" data-ir="g-otros-decisiones"><span>04</span>Decisiones de Gerencia y verificaciones</a><a href="#g-otros-100dias" data-ir="g-otros-100dias"><span>05</span>Plan Director de los primeros 100 días</a><a href="#g-otros-30dias" data-ir="g-otros-30dias"><span>06</span>Dosier de ejecución de los 30 días</a><a href="#g-otros-perfiles" data-ir="g-otros-perfiles"><span>07</span>Protocolos operativos por perfil</a><a href="#g-otros-innovacion" data-ir="g-otros-innovacion"><span>08</span>Innovación aplicada · 18 fichas</a><a href="#g-otros-marca" data-ir="g-otros-marca"><span>09</span>Plan Director de marca y captación</a><a href="#g-otros-cuaderno" data-ir="g-otros-cuaderno"><span>10</span>Cuaderno de campo del día 1</a><a href="#g-otros-transicion-perfiles" data-ir="g-otros-transicion-perfiles"><span>11</span>Manual de puesta en marcha por perfil</a><a href="#g-otros-continuidad" data-ir="g-otros-continuidad"><span>12</span>Continuidad legal, financiera y de sistemas</a><a href="#g-otros-posicionamiento" data-ir="g-otros-posicionamiento"><span>13</span>«No medias sonrisas» · posicionamiento</a><a href="#g-otros-gtc" data-ir="g-otros-gtc"><span>14</span>GTC · vive en el Plan de Marketing</a></div><div class="sub__b"><p class="sub__g">Cierre</p><a href="#g-otros-cierre" data-ir="g-otros-cierre"><span>·</span>Cómo encajan los catorce documentos</a></div></div></div>
+</div>
+<div class="arb__s" data-arb="numeros">
+  <button type="button" class="arb__b" data-ir-sec="numeros" aria-expanded="false"><i class="arb__n">09</i><span class="arb__r">Los números</span><i class="arb__c">6</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="arb__l" hidden><div class="sub" data-sub="numeros" hidden><div class="sub__b"><p class="sub__g">Instrumento de medición · Ejercicio 2026 · Uso interno</p><a href="#h-portada" data-ir="h-portada"><span>·</span>Los números del centro</a></div><div class="sub__b"><p class="sub__g">Cómo se usa</p><a href="#h-instrucciones" data-ir="h-instrucciones"><span>·</span>Tres reglas y ninguna más</a></div><div class="sub__b"><p class="sub__g">Definiciones</p><a href="#h-definiciones" data-ir="h-definiciones"><span>·</span>Qué se cuenta arriba, qué se cuenta abajo</a></div><div class="sub__b"><p class="sub__g">Captura mensual</p><a href="#h-captura" data-ir="h-captura"><span>·</span>Una hoja por mes</a></div><div class="sub__b"><p class="sub__g">Resumen anual</p><a href="#h-anual" data-ir="h-anual"><span>·</span>Los doce meses en una rejilla</a></div><div class="sub__b"><p class="sub__g">Los cinco números</p><a href="#h-cinco" data-ir="h-cinco"><span>·</span>Sin ellos, cualquier objetivo comercial es una opinión</a></div></div></div>
+</div></nav>
+  <div class="rail__pie">
+    <button type="button" data-ir-sec="recorridos">Recorridos</button>
+    <button type="button" data-ir-sec="mapa">Mapa</button>
+    <button type="button" data-abre="recursos">Recursos</button>
+    <button type="button" data-abre="teclas">Teclas</button>
+  </div>
+</aside>
+
+<main class="panel" id="sitio">
 
 <section class="sec" id="inicio" data-sec="inicio">
 
@@ -3454,7 +3630,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
         Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
-      <div><p class="letra">Esta edición</p><p>Versión 13.0 · Septiembre 2026<br>
+      <div><p class="letra">Esta edición</p><p>Versión 14.0 · Septiembre 2026<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
         laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
@@ -3673,7 +3849,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v13.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v14.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="t-cover" id="a-portada">
@@ -3683,7 +3859,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
     <div class="t-cover__rule" aria-hidden="true"></div>
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Giraldo</b>Rúa Bolivia nº 2 · Vigo</span>
-      <span><b>Plan de Dirección · v13.0</b>Septiembre 2026 · versión única del sistema</span>
+      <span><b>Plan de Dirección · v14.0</b>Septiembre 2026 · versión única del sistema</span>
       <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
@@ -3760,7 +3936,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
             <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
             <tbody>
               <tr><td>Título</td><td>Plan de Dirección para la Junta Directiva</td></tr>
-              <tr><td>Versión</td><td>v13.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
+              <tr><td>Versión</td><td>v14.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
               <tr><td>Clasificación</td><td>Uso interno · Confidencial · No difundir fuera del órgano</td></tr>
               <tr><td>Propietario</td><td>Dirección General</td></tr>
               <tr><td>Elaborado con</td><td>Los 17 documentos operativos del sistema Giraldo: los 3 troncales y los 14 de apoyo, censados en el apartado 0.1</td></tr>
@@ -3791,7 +3967,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="a-t-como-citar-acta">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v13.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v13.0, Protocolo de Primera Visita v13.0, Otros documentos del sistema v13.0.</p>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v14.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v14.0, Protocolo de Primera Visita v14.0, Otros documentos del sistema v14.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="a-censo">Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -3800,14 +3976,14 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
       <table>
         <thead><tr><th>Pieza</th><th>Clase</th><th>Qué contiene</th><th>Propietario</th><th>Versión</th></tr></thead>
         <tbody>
-          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">13.0</td></tr>
-          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">13.0</td></tr>
-          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">13.0</td></tr>
-          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">13.0</td></tr>
-          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">13.0</td></tr>
-          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">13.0</td></tr>
-          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">13.0</td></tr>
-          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">13.0</td></tr>
+          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">14.0</td></tr>
+          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">14.0</td></tr>
+          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">14.0</td></tr>
+          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">14.0</td></tr>
+          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">14.0</td></tr>
+          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">14.0</td></tr>
+          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">14.0</td></tr>
+          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">14.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -7056,7 +7232,7 @@ REVISIÓN PREVISTA:</div>
     <div class="desp__in"><div class="dia"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v13.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v14.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
 </section></div><p class="dia__pr"><button type="button" class="bt bt--fino" data-proyecta="">Proyectar desde esta</button></p><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -8349,7 +8525,7 @@ REVISIÓN PREVISTA:</div>
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v13.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v14.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   <aside class="nota" hidden>
     <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -12578,7 +12754,7 @@ DÍA 7   Valoración de evolución
       tratamiento y las que se pierden de vista cuando el recorrido se lee como una lista de
       catorce.</p>
   </div>
-  <div class="dibcaja"><svg class="dib dib--arco" viewBox="0 0 1200 680" role="img" aria-label="Las catorce fases del recorrido del paciente sobre el arco dental"><path d="M108 108L112.1 115.24L116.2 122.42L120.3 129.54L124.4 136.59L128.5 143.59L132.6 150.53L136.7 157.4L140.8 164.22L144.9 170.97L149 177.66L153.1 184.3L157.2 190.87L161.3 197.38L165.4 203.83L169.5 210.23L173.6 216.56L177.7 222.83L181.8 229.03L185.9 235.18L190 241.27L194.1 247.3L198.2 253.27L202.3 259.17L206.4 265.02L210.5 270.8L214.6 276.53L218.7 282.19L222.8 287.79L226.9 293.34L231 298.82L235.1 304.24L239.2 309.6L243.3 314.9L247.4 320.14L251.5 325.32L255.6 330.44L259.7 335.5L263.8 340.5L267.9 345.43L272 350.31L276.1 355.13L280.2 359.88L284.3 364.58L288.4 369.21L292.5 373.78L296.6 378.3L300.7 382.75L304.8 387.14L308.9 391.47L313 395.74L317.1 399.95L321.2 404.1L325.3 408.19L329.4 412.22L333.5 416.19L337.6 420.1L341.7 423.94L345.8 427.73L349.9 431.46L354 435.12L358.1 438.72L362.2 442.27L366.3 445.75L370.4 449.17L374.5 452.54L378.6 455.84L382.7 459.08L386.8 462.26L390.9 465.38L395 468.44L399.1 471.44L403.2 474.37L407.3 477.25L411.4 480.07L415.5 482.82L419.6 485.52L423.7 488.16L427.8 490.73L431.9 493.24L436 495.7L440.1 498.09L444.2 500.42L448.3 502.69L452.4 504.91L456.5 507.06L460.6 509.15L464.7 511.18L468.8 513.14L472.9 515.05L477 516.9L481.1 518.69L485.2 520.41L489.3 522.08L493.4 523.68L497.5 525.23L501.6 526.71L505.7 528.14L509.8 529.5L513.9 530.8L518 532.04L522.1 533.23L526.2 534.35L530.3 535.41L534.4 536.41L538.5 537.35L542.6 538.22L546.7 539.04L550.8 539.8L554.9 540.5L559 541.13L563.1 541.71L567.2 542.22L571.3 542.68L575.4 543.07L579.5 543.4L583.6 543.68L587.7 543.89L591.8 544.04L595.9 544.13L600 544.16L604.1 544.13L608.2 544.04L612.3 543.89L616.4 543.68L620.5 543.4L624.6 543.07L628.7 542.68L632.8 542.22L636.9 541.71L641 541.13L645.1 540.5L649.2 539.8L653.3 539.04L657.4 538.22L661.5 537.35L665.6 536.41L669.7 535.41L673.8 534.35L677.9 533.23L682 532.04L686.1 530.8L690.2 529.5L694.3 528.14L698.4 526.71L702.5 525.23L706.6 523.68L710.7 522.08L714.8 520.41L718.9 518.69L723 516.9L727.1 515.05L731.2 513.14L735.3 511.18L739.4 509.15L743.5 507.06L747.6 504.91L751.7 502.69L755.8 500.42L759.9 498.09L764 495.7L768.1 493.24L772.2 490.73L776.3 488.16L780.4 485.52L784.5 482.82L788.6 480.07L792.7 477.25L796.8 474.37L800.9 471.44L805 468.44L809.1 465.38L813.2 462.26L817.3 459.08L821.4 455.84L825.5 452.54L829.6 449.17L833.7 445.75L837.8 442.27L841.9 438.72L846 435.12L850.1 431.46L854.2 427.73L858.3 423.94L862.4 420.1L866.5 416.19L870.6 412.22L874.7 408.19L878.8 404.1L882.9 399.95L887 395.74L891.1 391.47L895.2 387.14L899.3 382.75L903.4 378.3L907.5 373.78L911.6 369.21L915.7 364.58L919.8 359.88L923.9 355.13L928 350.31L932.1 345.43L936.2 340.5L940.3 335.5L944.4 330.44L948.5 325.32L952.6 320.14L956.7 314.9L960.8 309.6L964.9 304.24L969 298.82L973.1 293.34L977.2 287.79L981.3 282.19L985.4 276.53L989.5 270.8L993.6 265.02L997.7 259.17L1001.8 253.27L1005.9 247.3L1010 241.27L1014.1 235.18L1018.2 229.03L1022.3 222.83L1026.4 216.56L1030.5 210.23L1034.6 203.83L1038.7 197.38L1042.8 190.87L1046.9 184.3L1051 177.66L1055.1 170.97L1059.2 164.22L1063.3 157.4L1067.4 150.53L1071.5 143.59L1075.6 136.59L1079.7 129.54L1083.8 122.42L1087.9 115.24L1092 108" fill="none" stroke="currentColor" stroke-width="1" stroke-opacity=".18"/><circle cx="143.14" cy="168.08" r="5.7" class="dib__p"/><line x1="150.58" y1="163.57" x2="161.61" y2="156.87" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="213.43" cy="274.9" r="5.25" class="dib__p"/><line x1="220.13" y1="270.09" x2="283.29" y2="224.75" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="283.71" cy="363.91" r="9.75" class="dib__p"/><line x1="293.3" y1="355.5" x2="304.55" y2="345.63" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="354" cy="435.12" r="7.5" class="dib__p"/><line x1="360.97" y1="427.26" x2="414.52" y2="366.85" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="424.29" cy="488.53" r="9.75" class="dib__p dib__p--decide"/><line x1="431.11" y1="477.76" x2="441.43" y2="461.45" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="494.57" cy="524.13" r="5.25" class="dib__p"/><line x1="497.5" y1="516.42" x2="528.36" y2="435.19" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="564.86" cy="541.93" r="9.75" class="dib__p"/><line x1="566.46" y1="529.29" x2="569.91" y2="502.02" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="635.14" cy="541.93" r="7.5" class="dib__p"/><line x1="633.82" y1="531.52" x2="622.33" y2="440.76" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="705.43" cy="524.13" r="9.75" class="dib__p dib__p--decide"/><line x1="700.9" y1="512.21" x2="692.77" y2="490.81" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="775.71" cy="488.53" r="12" class="dib__p dib__p--decide"/><line x1="767.69" y1="475.85" x2="723.13" y2="405.48" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="846" cy="435.12" r="5.25" class="dib__p"/><line x1="840.53" y1="428.95" x2="829.43" y2="416.43" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="916.29" cy="363.91" r="3.9" class="dib__p"/><line x1="911.1" y1="359.36" x2="851.74" y2="307.28" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="986.57" cy="274.9" r="3.9" class="dib__p"/><line x1="980.97" y1="270.87" x2="969.79" y2="262.85" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="1056.86" cy="168.08" r="3.9" class="dib__p"/><line x1="1050.96" y1="164.5" x2="985.23" y2="124.58" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><g class="dib__g"><text x="172.72" y="150.12" text-anchor="start" class="dib__t dib__n" font-size="12">01</text><text x="172.72" y="165.12" text-anchor="start" class="dib__t dib__r" font-size="11.5">Preparación</text><text x="172.72" y="180.12" text-anchor="start" class="dib__t dib__m" font-size="10.5">6 min</text></g><g class="dib__g"><text x="293.86" y="217.16" text-anchor="start" class="dib__t dib__n" font-size="12">02</text><text x="293.86" y="232.16" text-anchor="start" class="dib__t dib__r" font-size="11.5">Acogida</text><text x="293.86" y="247.16" text-anchor="start" class="dib__t dib__m" font-size="10.5">5 min</text></g><g class="dib__g"><text x="314.32" y="337.06" text-anchor="start" class="dib__t dib__n" font-size="12">03</text><text x="314.32" y="352.06" text-anchor="start" class="dib__t dib__r" font-size="11.5">Alta y RGPD</text><text x="314.32" y="367.06" text-anchor="start" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g"><text x="423.14" y="357.12" text-anchor="start" class="dib__t dib__n" font-size="12">04</text><text x="423.14" y="372.12" text-anchor="start" class="dib__t dib__r" font-size="11.5">Historia clínica</text><text x="423.14" y="387.12" text-anchor="start" class="dib__t dib__m" font-size="10.5">10 min</text></g><g class="dib__g dib__g--decide"><text x="448.39" y="450.47" text-anchor="start" class="dib__t dib__n" font-size="12">05</text><text x="448.39" y="465.47" text-anchor="start" class="dib__t dib__r" font-size="11.5">Diagnóstico</text><text x="448.39" y="480.47" text-anchor="start" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g"><text x="532.98" y="423.04" text-anchor="start" class="dib__t dib__n" font-size="12">06</text><text x="532.98" y="438.04" text-anchor="start" class="dib__t dib__r" font-size="11.5">Briefing</text><text x="532.98" y="453.04" text-anchor="start" class="dib__t dib__m" font-size="10.5">5 min</text></g><g class="dib__g"><text x="571.55" y="489.12" text-anchor="middle" class="dib__t dib__n" font-size="12">07</text><text x="571.55" y="504.12" text-anchor="middle" class="dib__t dib__r" font-size="11.5">Expectativas</text><text x="571.55" y="519.12" text-anchor="middle" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g"><text x="620.7" y="427.86" text-anchor="middle" class="dib__t dib__n" font-size="12">08</text><text x="620.7" y="442.86" text-anchor="middle" class="dib__t dib__r" font-size="11.5">IAC</text><text x="620.7" y="457.86" text-anchor="middle" class="dib__t dib__m" font-size="10.5">10 min</text></g><g class="dib__g dib__g--decide"><text x="688.15" y="478.66" text-anchor="end" class="dib__t dib__n" font-size="12">09</text><text x="688.15" y="493.66" text-anchor="end" class="dib__t dib__r" font-size="11.5">Presentación 3D</text><text x="688.15" y="508.66" text-anchor="end" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g dib__g--decide"><text x="716.17" y="394.49" text-anchor="end" class="dib__t dib__n" font-size="12">10</text><text x="716.17" y="409.49" text-anchor="end" class="dib__t dib__r" font-size="11.5">Propuesta</text><text x="716.17" y="424.49" text-anchor="end" class="dib__t dib__m" font-size="10.5">20 min</text></g><g class="dib__g"><text x="820.8" y="406.7" text-anchor="end" class="dib__t dib__n" font-size="12">11</text><text x="820.8" y="421.7" text-anchor="end" class="dib__t dib__r" font-size="11.5">Cierre admin.</text><text x="820.8" y="436.7" text-anchor="end" class="dib__t dib__m" font-size="10.5">5 min</text></g><g class="dib__g"><text x="841.97" y="298.71" text-anchor="end" class="dib__t dib__n" font-size="12">12</text><text x="841.97" y="313.71" text-anchor="end" class="dib__t dib__r" font-size="11.5">Seguimiento</text><text x="841.97" y="328.71" text-anchor="end" class="dib__t dib__m" font-size="10.5">2 min</text></g><g class="dib__g"><text x="959.23" y="255.27" text-anchor="end" class="dib__t dib__n" font-size="12">13</text><text x="959.23" y="270.27" text-anchor="end" class="dib__t dib__r" font-size="11.5">Postvisita</text><text x="959.23" y="285.27" text-anchor="end" class="dib__t dib__m" font-size="10.5">2 min</text></g><g class="dib__g"><text x="974.12" y="117.83" text-anchor="end" class="dib__t dib__n" font-size="12">14</text><text x="974.12" y="132.83" text-anchor="end" class="dib__t dib__r" font-size="11.5">Mantenimiento</text><text x="974.12" y="147.83" text-anchor="end" class="dib__t dib__m" font-size="10.5">2 min</text></g></svg></div>
+  <div class="dibcaja"><svg class="dib dib--arco" viewBox="0 0 1440 820" role="img" aria-label="Las catorce fases del recorrido del paciente sobre el arco dental"><path d="M132 132L136.9 140.67L141.8 149.28L146.7 157.81L151.6 166.26L156.5 174.65L161.4 182.96L166.3 191.2L171.2 199.36L176.1 207.46L181 215.48L185.9 223.43L190.8 231.3L195.7 239.1L200.6 246.84L205.5 254.49L210.4 262.08L215.3 269.59L220.2 277.03L225.1 284.4L230 291.7L234.9 298.92L239.8 306.07L244.7 313.15L249.6 320.15L254.5 327.08L259.4 333.94L264.3 340.73L269.2 347.44L274.1 354.09L279 360.66L283.9 367.15L288.8 373.58L293.7 379.93L298.6 386.21L303.5 392.41L308.4 398.55L313.3 404.61L318.2 410.6L323.1 416.51L328 422.36L332.9 428.13L337.8 433.82L342.7 439.45L347.6 445L352.5 450.48L357.4 455.89L362.3 461.23L367.2 466.49L372.1 471.68L377 476.8L381.9 481.84L386.8 486.81L391.7 491.71L396.6 496.54L401.5 501.3L406.4 505.98L411.3 510.59L416.2 515.12L421.1 519.59L426 523.98L430.9 528.3L435.8 532.55L440.7 536.72L445.6 540.82L450.5 544.85L455.4 548.81L460.3 552.69L465.2 556.5L470.1 560.24L475 563.9L479.9 567.5L484.8 571.02L489.7 574.47L494.6 577.84L499.5 581.14L504.4 584.37L509.3 587.53L514.2 590.62L519.1 593.63L524 596.57L528.9 599.44L533.8 602.23L538.7 604.95L543.6 607.6L548.5 610.18L553.4 612.68L558.3 615.12L563.2 617.47L568.1 619.76L573 621.98L577.9 624.12L582.8 626.19L587.7 628.18L592.6 630.1L597.5 631.96L602.4 633.73L607.3 635.44L612.2 637.07L617.1 638.63L622 640.12L626.9 641.54L631.8 642.88L636.7 644.15L641.6 645.35L646.5 646.47L651.4 647.53L656.3 648.51L661.2 649.41L666.1 650.25L671 651.01L675.9 651.7L680.8 652.32L685.7 652.86L690.6 653.33L695.5 653.73L700.4 654.06L705.3 654.31L710.2 654.49L715.1 654.6L720 654.64L724.9 654.6L729.8 654.49L734.7 654.31L739.6 654.06L744.5 653.73L749.4 653.33L754.3 652.86L759.2 652.32L764.1 651.7L769 651.01L773.9 650.25L778.8 649.41L783.7 648.51L788.6 647.53L793.5 646.47L798.4 645.35L803.3 644.15L808.2 642.88L813.1 641.54L818 640.12L822.9 638.63L827.8 637.07L832.7 635.44L837.6 633.73L842.5 631.96L847.4 630.1L852.3 628.18L857.2 626.19L862.1 624.12L867 621.98L871.9 619.76L876.8 617.47L881.7 615.12L886.6 612.68L891.5 610.18L896.4 607.6L901.3 604.95L906.2 602.23L911.1 599.44L916 596.57L920.9 593.63L925.8 590.62L930.7 587.53L935.6 584.37L940.5 581.14L945.4 577.84L950.3 574.47L955.2 571.02L960.1 567.5L965 563.9L969.9 560.24L974.8 556.5L979.7 552.69L984.6 548.81L989.5 544.85L994.4 540.82L999.3 536.72L1004.2 532.55L1009.1 528.3L1014 523.98L1018.9 519.59L1023.8 515.12L1028.7 510.59L1033.6 505.98L1038.5 501.3L1043.4 496.54L1048.3 491.71L1053.2 486.81L1058.1 481.84L1063 476.8L1067.9 471.68L1072.8 466.49L1077.7 461.23L1082.6 455.89L1087.5 450.48L1092.4 445L1097.3 439.45L1102.2 433.82L1107.1 428.13L1112 422.36L1116.9 416.51L1121.8 410.6L1126.7 404.61L1131.6 398.55L1136.5 392.41L1141.4 386.21L1146.3 379.93L1151.2 373.58L1156.1 367.15L1161 360.66L1165.9 354.09L1170.8 347.44L1175.7 340.73L1180.6 333.94L1185.5 327.08L1190.4 320.15L1195.3 313.15L1200.2 306.07L1205.1 298.92L1210 291.7L1214.9 284.4L1219.8 277.03L1224.7 269.59L1229.6 262.08L1234.5 254.49L1239.4 246.84L1244.3 239.1L1249.2 231.3L1254.1 223.43L1259 215.48L1263.9 207.46L1268.8 199.36L1273.7 191.2L1278.6 182.96L1283.5 174.65L1288.4 166.26L1293.3 157.81L1298.2 149.28L1303.1 140.67L1308 132" fill="none" stroke="currentColor" stroke-width="1" stroke-opacity=".18"/><circle cx="174" cy="204" r="5.7" class="dib__p"/><line x1="181.44" y1="199.49" x2="196.14" y2="190.59" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="258" cy="331.99" r="5.25" class="dib__p"/><line x1="264.71" y1="327.19" x2="357.49" y2="260.76" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="342" cy="438.65" r="9.75" class="dib__p"/><line x1="351.6" y1="430.25" x2="366.23" y2="417.45" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="426" cy="523.98" r="7.5" class="dib__p"/><line x1="432.98" y1="516.13" x2="510.96" y2="428.4" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="510" cy="587.98" r="9.75" class="dib__p dib__p--decide"/><line x1="516.83" y1="577.21" x2="529.81" y2="556.78" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="594" cy="630.64" r="5.25" class="dib__p"/><line x1="596.94" y1="622.93" x2="641.14" y2="506.9" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="678" cy="651.97" r="9.75" class="dib__p"/><line x1="679.61" y1="639.33" x2="683.79" y2="606.36" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="762" cy="651.97" r="7.5" class="dib__p"/><line x1="760.68" y1="641.56" x2="744.4" y2="513.36" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="846" cy="630.64" r="9.75" class="dib__p dib__p--decide"/><line x1="841.46" y1="618.73" x2="831.43" y2="592.4" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="930" cy="587.98" r="12" class="dib__p dib__p--decide"/><line x1="921.96" y1="575.31" x2="857.53" y2="473.83" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="1014" cy="523.98" r="5.25" class="dib__p"/><line x1="1008.52" y1="517.81" x2="994.31" y2="501.83" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="1098" cy="438.65" r="3.9" class="dib__p"/><line x1="1092.81" y1="434.11" x2="1005.93" y2="358.08" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="1182" cy="331.99" r="3.9" class="dib__p"/><line x1="1176.39" y1="327.97" x2="1161.66" y2="317.43" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><circle cx="1266" cy="204" r="3.9" class="dib__p"/><line x1="1260.1" y1="200.42" x2="1163.29" y2="141.78" stroke="currentColor" stroke-width="1" stroke-opacity=".2"/><g class="dib__g"><text x="207.26" y="183.85" text-anchor="start" class="dib__t dib__n" font-size="12">01</text><text x="207.26" y="198.85" text-anchor="start" class="dib__t dib__r" font-size="11.5">Preparación</text><text x="207.26" y="213.85" text-anchor="start" class="dib__t dib__m" font-size="10.5">6 min</text></g><g class="dib__g"><text x="368.06" y="253.19" text-anchor="start" class="dib__t dib__n" font-size="12">02</text><text x="368.06" y="268.19" text-anchor="start" class="dib__t dib__r" font-size="11.5">Acogida</text><text x="368.06" y="283.19" text-anchor="start" class="dib__t dib__m" font-size="10.5">5 min</text></g><g class="dib__g"><text x="376.01" y="408.89" text-anchor="start" class="dib__t dib__n" font-size="12">03</text><text x="376.01" y="423.89" text-anchor="start" class="dib__t dib__r" font-size="11.5">Alta y RGPD</text><text x="376.01" y="438.89" text-anchor="start" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g"><text x="519.6" y="418.68" text-anchor="start" class="dib__t dib__n" font-size="12">04</text><text x="519.6" y="433.68" text-anchor="start" class="dib__t dib__r" font-size="11.5">Historia clínica</text><text x="519.6" y="448.68" text-anchor="start" class="dib__t dib__m" font-size="10.5">10 min</text></g><g class="dib__g dib__g--decide"><text x="536.78" y="545.8" text-anchor="start" class="dib__t dib__n" font-size="12">05</text><text x="536.78" y="560.8" text-anchor="start" class="dib__t dib__r" font-size="11.5">Diagnóstico</text><text x="536.78" y="575.8" text-anchor="start" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g"><text x="645.77" y="494.75" text-anchor="start" class="dib__t dib__n" font-size="12">06</text><text x="645.77" y="509.75" text-anchor="start" class="dib__t dib__r" font-size="11.5">Briefing</text><text x="645.77" y="524.75" text-anchor="start" class="dib__t dib__m" font-size="10.5">5 min</text></g><g class="dib__g"><text x="685.43" y="593.46" text-anchor="middle" class="dib__t dib__n" font-size="12">07</text><text x="685.43" y="608.46" text-anchor="middle" class="dib__t dib__r" font-size="11.5">Expectativas</text><text x="685.43" y="623.46" text-anchor="middle" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g"><text x="742.76" y="500.46" text-anchor="middle" class="dib__t dib__n" font-size="12">08</text><text x="742.76" y="515.46" text-anchor="middle" class="dib__t dib__r" font-size="11.5">IAC</text><text x="742.76" y="530.46" text-anchor="middle" class="dib__t dib__m" font-size="10.5">10 min</text></g><g class="dib__g dib__g--decide"><text x="826.81" y="580.25" text-anchor="end" class="dib__t dib__n" font-size="12">09</text><text x="826.81" y="595.25" text-anchor="end" class="dib__t dib__r" font-size="11.5">Presentación 3D</text><text x="826.81" y="610.25" text-anchor="end" class="dib__t dib__m" font-size="10.5">15 min</text></g><g class="dib__g dib__g--decide"><text x="850.56" y="462.86" text-anchor="end" class="dib__t dib__n" font-size="12">10</text><text x="850.56" y="477.86" text-anchor="end" class="dib__t dib__r" font-size="11.5">Propuesta</text><text x="850.56" y="492.86" text-anchor="end" class="dib__t dib__m" font-size="10.5">20 min</text></g><g class="dib__g"><text x="985.68" y="492.11" text-anchor="end" class="dib__t dib__n" font-size="12">11</text><text x="985.68" y="507.11" text-anchor="end" class="dib__t dib__r" font-size="11.5">Cierre admin.</text><text x="985.68" y="522.11" text-anchor="end" class="dib__t dib__m" font-size="10.5">5 min</text></g><g class="dib__g"><text x="996.15" y="349.52" text-anchor="end" class="dib__t dib__n" font-size="12">12</text><text x="996.15" y="364.52" text-anchor="end" class="dib__t dib__r" font-size="11.5">Seguimiento</text><text x="996.15" y="379.52" text-anchor="end" class="dib__t dib__m" font-size="10.5">2 min</text></g><g class="dib__g"><text x="1151.09" y="309.86" text-anchor="end" class="dib__t dib__n" font-size="12">13</text><text x="1151.09" y="324.86" text-anchor="end" class="dib__t dib__r" font-size="11.5">Postvisita</text><text x="1151.09" y="339.86" text-anchor="end" class="dib__t dib__m" font-size="10.5">2 min</text></g><g class="dib__g"><text x="1152.17" y="135.04" text-anchor="end" class="dib__t dib__n" font-size="12">14</text><text x="1152.17" y="150.04" text-anchor="end" class="dib__t dib__r" font-size="11.5">Mantenimiento</text><text x="1152.17" y="165.04" text-anchor="end" class="dib__t dib__m" font-size="10.5">2 min</text></g></svg></div>
   <p class="dibleyenda"><i class="es-hueco">Fase del recorrido</i>
     <i class="es-azul">El paciente decide</i>
     <i class="es-nota">El tamaño de la marca es lo que dura</i></p>
@@ -12589,7 +12765,7 @@ DÍA 7   Valoración de evolución
     <p>Cada trozo es una fase y mide lo que dura de verdad. Pulse cualquiera y se abre entera,
       aquí mismo.</p>
   </div>
-  <div class="reloj"><div class="reloj__barra"><a href="#d-f01" class="reloj__t" data-ir="d-f01" style="width:4.8780%" title="Preparación · 6 minutos" title="Va a: Preparación previa y primera llamada"><span class="reloj__n">01</span><span class="reloj__r">Preparación</span><span class="reloj__m">6′</span></a><a href="#d-f02" class="reloj__t" data-ir="d-f02" style="width:4.0650%" title="Acogida · 5 minutos" title="Va a: Acogida y recorrido por la tecnología"><span class="reloj__n">02</span><span class="reloj__r">Acogida</span><span class="reloj__m">5′</span></a><a href="#d-f03" class="reloj__t" data-ir="d-f03" style="width:12.1951%" title="Alta y RGPD · 15 minutos" title="Va a: Alta, RGPD y protección de datos"><span class="reloj__n">03</span><span class="reloj__r">Alta y RGPD</span><span class="reloj__m">15′</span></a><a href="#d-f04" class="reloj__t" data-ir="d-f04" style="width:8.1301%" title="Historia clínica · 10 minutos" title="Va a: Historia clínica y consentimiento"><span class="reloj__n">04</span><span class="reloj__r">Historia clínica</span><span class="reloj__m">10′</span></a><a href="#d-f05" class="reloj__t" data-ir="d-f05" style="width:12.1951%" title="Diagnóstico · 15 minutos" title="Va a: Pruebas diagnósticas y fotografía"><span class="reloj__n">05</span><span class="reloj__r">Diagnóstico</span><span class="reloj__m">15′</span></a><a href="#d-f06" class="reloj__t" data-ir="d-f06" style="width:4.0650%" title="Briefing · 5 minutos" title="Va a: Briefing entre Doctor y Director"><span class="reloj__n">06</span><span class="reloj__r">Briefing</span><span class="reloj__m">5′</span></a><a href="#d-f07" class="reloj__t" data-ir="d-f07" style="width:12.1951%" title="Expectativas · 15 minutos" title="Va a: Expectativas y exploración clínica"><span class="reloj__n">07</span><span class="reloj__r">Expectativas</span><span class="reloj__m">15′</span></a><a href="#d-f08" class="reloj__t" data-ir="d-f08" style="width:8.1301%" title="IAC · 10 minutos" title="Va a: Informe de Análisis Clínico (IAC)"><span class="reloj__n">08</span><span class="reloj__r">IAC</span><span class="reloj__m">10′</span></a><a href="#d-f09" class="reloj__t" data-ir="d-f09" style="width:12.1951%" title="Presentación 3D · 15 minutos" title="Va a: Presentación del diagnóstico en 3D"><span class="reloj__n">09</span><span class="reloj__r">Presentación 3D</span><span class="reloj__m">15′</span></a><a href="#d-f10" class="reloj__t" data-ir="d-f10" style="width:16.2602%" title="Propuesta · 20 minutos" title="Va a: Propuesta económica y cierre"><span class="reloj__n">10</span><span class="reloj__r">Propuesta</span><span class="reloj__m">20′</span></a><a href="#d-f11" class="reloj__t" data-ir="d-f11" style="width:4.0650%" title="Cierre admin. · 5 minutos" title="Va a: Cierre administrativo y digitalización"><span class="reloj__n">11</span><span class="reloj__r">Cierre admin.</span><span class="reloj__m">5′</span></a><a href="#d-f12" class="reloj__t" data-ir="d-f12" style="width:1.6260%" title="Seguimiento · 2 minutos" title="Va a: Despedida y seguimiento estratégico"><span class="reloj__n">12</span><span class="reloj__r">Seguimiento</span><span class="reloj__m">2′</span></a></div><div class="reloj__eje"><span style="left:0.0000%">0′</span><span style="left:24.3902%">30′</span><span style="left:48.7805%">60′</span><span style="left:73.1707%">90′</span><span style="left:100.0000%">123′</span></div></div>
+  <div class="reloj"><div class="reloj__barra"><a href="#d-f01" class="reloj__t reloj__t--fino" data-ir="d-f01" style="width:4.8780%" title="Preparación · 6 minutos" title="Va a: Preparación previa y primera llamada"><span class="reloj__n">01</span><span class="reloj__r">Preparación</span><span class="reloj__m">6′</span></a><a href="#d-f02" class="reloj__t reloj__t--fino" data-ir="d-f02" style="width:4.0650%" title="Acogida · 5 minutos" title="Va a: Acogida y recorrido por la tecnología"><span class="reloj__n">02</span><span class="reloj__r">Acogida</span><span class="reloj__m">5′</span></a><a href="#d-f03" class="reloj__t" data-ir="d-f03" style="width:12.1951%" title="Alta y RGPD · 15 minutos" title="Va a: Alta, RGPD y protección de datos"><span class="reloj__n">03</span><span class="reloj__r">Alta y RGPD</span><span class="reloj__m">15′</span></a><a href="#d-f04" class="reloj__t" data-ir="d-f04" style="width:8.1301%" title="Historia clínica · 10 minutos" title="Va a: Historia clínica y consentimiento"><span class="reloj__n">04</span><span class="reloj__r">Historia clínica</span><span class="reloj__m">10′</span></a><a href="#d-f05" class="reloj__t" data-ir="d-f05" style="width:12.1951%" title="Diagnóstico · 15 minutos" title="Va a: Pruebas diagnósticas y fotografía"><span class="reloj__n">05</span><span class="reloj__r">Diagnóstico</span><span class="reloj__m">15′</span></a><a href="#d-f06" class="reloj__t reloj__t--fino" data-ir="d-f06" style="width:4.0650%" title="Briefing · 5 minutos" title="Va a: Briefing entre Doctor y Director"><span class="reloj__n">06</span><span class="reloj__r">Briefing</span><span class="reloj__m">5′</span></a><a href="#d-f07" class="reloj__t" data-ir="d-f07" style="width:12.1951%" title="Expectativas · 15 minutos" title="Va a: Expectativas y exploración clínica"><span class="reloj__n">07</span><span class="reloj__r">Expectativas</span><span class="reloj__m">15′</span></a><a href="#d-f08" class="reloj__t" data-ir="d-f08" style="width:8.1301%" title="IAC · 10 minutos" title="Va a: Informe de Análisis Clínico (IAC)"><span class="reloj__n">08</span><span class="reloj__r">IAC</span><span class="reloj__m">10′</span></a><a href="#d-f09" class="reloj__t" data-ir="d-f09" style="width:12.1951%" title="Presentación 3D · 15 minutos" title="Va a: Presentación del diagnóstico en 3D"><span class="reloj__n">09</span><span class="reloj__r">Presentación 3D</span><span class="reloj__m">15′</span></a><a href="#d-f10" class="reloj__t" data-ir="d-f10" style="width:16.2602%" title="Propuesta · 20 minutos" title="Va a: Propuesta económica y cierre"><span class="reloj__n">10</span><span class="reloj__r">Propuesta</span><span class="reloj__m">20′</span></a><a href="#d-f11" class="reloj__t reloj__t--fino" data-ir="d-f11" style="width:4.0650%" title="Cierre admin. · 5 minutos" title="Va a: Cierre administrativo y digitalización"><span class="reloj__n">11</span><span class="reloj__r">Cierre admin.</span><span class="reloj__m">5′</span></a><a href="#d-f12" class="reloj__t reloj__t--fino" data-ir="d-f12" style="width:1.6260%" title="Seguimiento · 2 minutos" title="Va a: Despedida y seguimiento estratégico"><span class="reloj__n">12</span><span class="reloj__r">Seguimiento</span><span class="reloj__m">2′</span></a></div><div class="reloj__eje"><span style="left:0.0000%">0′</span><span style="left:24.3902%">30′</span><span style="left:48.7805%">60′</span><span style="left:73.1707%">90′</span><span style="left:100.0000%">123′</span></div></div>
 </div>
 <div class="lienzo">
   <div class="lienzo__cab">
@@ -12708,7 +12884,9 @@ DÍA 7   Valoración de evolución
 
 
 
-<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v13.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v14.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -12716,7 +12894,7 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 13.0 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 14.0 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="#operaciones" class="salta">Manual Maestro de Operaciones<i class="salta__d">Operaciones</i></a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -16543,7 +16721,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v13.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+
+<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v14.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -16554,7 +16734,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 13.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 14.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -16737,11 +16917,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v13.0 · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>v14.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Giraldo (uso abreviado: Giraldo)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
-          <tr><td>Sustituye a</td><td>Protocolo v13.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
+          <tr><td>Sustituye a</td><td>Protocolo v14.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
           <tr><td>Difusión obligatoria</td><td>Recepción, Dirección de Clínica, Odontólogos, Higienistas, Auxiliares, RAC</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier incidencia grave de trazabilidad o RGPD</td></tr>
@@ -23541,7 +23721,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v13.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v14.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 
@@ -23557,7 +23737,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <p class="t-cover__meta">
       <b>Plan Maestro de Marketing</b><br>
       Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2, Vigo<br>
-      v13.0 · Septiembre 2026 · Documento de dirección<br>
+      v14.0 · Septiembre 2026 · Documento de dirección<br>
       Setenta y seis acciones sobre doce estados del paciente
     </p>
   </div>
@@ -23585,7 +23765,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><th>Qué decide</th><td>Nada por sí solo. Propone; la Junta aprueba en el registro de acuerdos del Plan de Dirección</td></tr>
           <tr><th>Propietario</th><td>Dirección General, con Gerencia como responsable de ejecución y presupuesto</td></tr>
           <tr><th>Revisión</th><td>Trimestral, con la misma cadencia que el cuadro de mando del apartado 13 del Plan de Dirección</td></tr>
-          <tr><th>Versión</th><td class="num">v13.0 · Septiembre 2026</td></tr>
+          <tr><th>Versión</th><td class="num">v14.0 · Septiembre 2026</td></tr>
         </tbody>
       </table>
     </div>
@@ -25074,7 +25254,9 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v13.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v14.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="g-portada">
@@ -25084,7 +25266,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 13.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 14.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos</dt><dd>14<small>Del posicionamiento del centro al programa de cuidado GTC</small></dd></div>
@@ -25140,13 +25322,13 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
       <table>
         <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v13.0 · Agosto 2026 · versión única del sistema</td></tr>
+          <tr><td>Versión</td><td>v14.0 · Agosto 2026 · versión única del sistema</td></tr>
           <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
           <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
           <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
           <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
-          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v13.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
+          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v14.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
         </tbody>
       </table>
     </div>
@@ -29164,6 +29346,7 @@ LTV              = Valor inicial
   <div class="sigue"><button type="button" class="sigue__p" data-ir-sec="direccion"><span class="letra sigue__k">Dirección · 34 apartados</span><span class="sigue__q">De dónde sale cada supuesto: el documento que fija el objetivo y responde de él.</span><span class="sigue__f" aria-hidden="true">&#8594;</span></button><button type="button" class="sigue__p" data-ir-sec="marketing"><span class="letra sigue__k">Marketing · 34 apartados</span><span class="sigue__q">Las setenta y seis acciones que mueven estos números, con dueño y coste.</span><span class="sigue__f" aria-hidden="true">&#8594;</span></button></div>
 </div>
 </section>
+</main>
 </div>
 
 <!-- ------------------------------------------------------------------
@@ -29332,6 +29515,7 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
       b.classList.toggle("es-on", b.dataset.irSec === s.dataset.sec);
     });
     memo.sec = s.dataset.sec; recuerda();
+    if(typeof window.__marcaRail === "function") window.__marcaRail(s.dataset.sec, "");
     if(arriba !== false) window.scrollTo(0, 0);
     if(typeof pintaBarra === "function") pintaBarra();
     return s;
@@ -29373,8 +29557,16 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
     /* Se enseña antes de pintar: mientras está oculto no tiene medidas, y
        sin medidas no se puede ir al punto exacto que pedía el enlace. */
     lector.hidden = false;
+    /* solo se bloquea el desplazamiento de la página, no el del raíl: el raíl
+       tiene el suyo y se sigue pudiendo saltar a otro sitio sin cerrar nada */
     D.documentElement.style.overflow = "hidden";
     pintaLector(clave, ancla);
+    /* el raíl dice en qué línea se está: leer sin saber dónde se está en el
+       índice es exactamente lo que pasaba antes */
+    if(typeof window.__marcaRail === "function"){
+      var suya = (D.getElementById(clave) || {}).dataset;
+      window.__marcaRail(suya ? suya.sec : "", clave);
+    }
     if(lecVolver) lecVolver.focus();
     return true;
   }
@@ -29596,31 +29788,20 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
       if(b.dataset.abreFase) abreDestino(b.dataset.abreFase);
       return;
     }
-    /* El índice de una sección se despliega y se vuelve a plegar. Antes se
-       abría solo al entrar en cualquier sección y se quedaba abierto tapando
-       media pantalla: para ver la sección había que adivinar que se cerraba
-       volviendo a pulsar el mismo nombre. Ahora el nombre lleva a la sección
-       —y cierra lo que hubiera abierto—, y la flecha de al lado abre y cierra
-       su índice sin moverse de sitio. */
-    var na = e.target.closest(".nav__l .nav__x");
-    if(na){
-      e.stopPropagation();
-      var suyo = na.parentElement.dataset.irSec;
-      var yaEsta = !paneles.hidden && na.parentElement.classList.contains("es-abierto");
-      if(yaEsta){ cierraPanel(); }
-      else { cierraLector(); veSec(suyo, true); abrePanel(suyo); }
-      return;
-    }
-    var nb = e.target.closest(".nav__l button[data-ir-sec]");
+    /* El raíl. Pulsar el nombre de una sección hace dos cosas a la vez, que
+       es lo que se espera de un índice: lleva a la sección y despliega lo que
+       tiene dentro. Volver a pulsarlo lo pliega. Nada tapa nada: el raíl vive
+       en su columna y lo que se lee, en la suya. */
+    var nb = e.target.closest(".arb__b[data-ir-sec]");
     if(nb){
-      var abierto = !paneles.hidden && nb.classList.contains("es-abierto");
+      var casa = nb.parentElement;
+      var abierta = casa.classList.contains("es-ab");
       var mismo = nb.dataset.irSec === (D.querySelector(".sec.es-on") || {}).id;
+      if(mismo && abierta){ pliega(casa); return; }
       cierraLector();
-      if(mismo && abierto){ cierraPanel(); return; }
       veSec(nb.dataset.irSec, true);
-      /* estando ya en la sección, el nombre abre su índice; viniendo de otra,
-         lleva a la sección y deja la pantalla limpia para verla */
-      if(mismo) abrePanel(nb.dataset.irSec); else cierraPanel();
+      despliega(casa);
+      cierraRail();
       return;
     }
     if((b = e.target.closest("[data-ir-sec]"))){
@@ -29662,6 +29843,10 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
     velIndice.classList.toggle("es-on", !!encendido);
   }
   function abrePanel(id){
+    /* El desplegable de la barra de arriba ya no existe: el índice de cada
+       sección vive en el raíl. La función se queda —la llaman los recorridos,
+       el mapa y el buscador— y no hace nada cuando no hay panel que abrir. */
+    if(!paneles) return;
     var hay = false;
     [].slice.call(D.querySelectorAll(".sub")).forEach(function(p){
       var si = p.dataset.sub === id;
@@ -29679,7 +29864,8 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
     });
   }
   function cierraPanel(){
-    if(paneles) paneles.hidden = true;
+    if(!paneles) return;
+    paneles.hidden = true;
     velo(false);
     [].slice.call(D.querySelectorAll(".nav__l button")).forEach(function(b){
       b.classList.remove("es-abierto");
@@ -30078,6 +30264,128 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
       });
     }, {passive: true});
   }
+
+  /* ---------------------------------------------------------------- */
+  /*  El raíl                                                            */
+  /*  Desplegar, plegar, filtrar y decir dónde se está. Es el índice del  */
+  /*  sistema entero, siempre a la vista y siempre en el mismo sitio.     */
+  /* ---------------------------------------------------------------- */
+  var rail = D.getElementById("rail");
+  var arb = D.getElementById("arb");
+  var filtra = D.getElementById("filtra");
+  var railbt = D.getElementById("railbt");
+  var veloRail = null;
+
+  function pliega(casa){
+    if(!casa) return;
+    casa.classList.remove("es-ab");
+    var l = casa.querySelector(".arb__l");
+    if(l) l.hidden = true;
+    var b = casa.querySelector(".arb__b");
+    if(b) b.setAttribute("aria-expanded", "false");
+  }
+  function despliega(casa){
+    if(!casa) return;
+    /* una sección abierta cada vez: un índice con nueve listas abiertas a la
+       vez es una lista de ciento treinta y cinco líneas, no un índice */
+    [].slice.call(D.querySelectorAll(".arb__s")).forEach(function(x){
+      if(x !== casa) pliega(x);
+    });
+    casa.classList.add("es-ab");
+    var l = casa.querySelector(".arb__l");
+    if(l) l.hidden = false;
+    var b = casa.querySelector(".arb__b");
+    if(b) b.setAttribute("aria-expanded", "true");
+  }
+  /* dónde estoy: la sección en el raíl y, si se está leyendo algo, su línea */
+  function marcaRail(sec, clave){
+    [].slice.call(D.querySelectorAll(".arb__s")).forEach(function(x){
+      x.classList.toggle("es-aqui", x.dataset.arb === sec);
+    });
+    [].slice.call(D.querySelectorAll(".arb__l a")).forEach(function(a){
+      a.classList.toggle("es-aqui", !!clave && a.getAttribute("href") === "#" + clave);
+    });
+    var viva = D.querySelector(".arb__l a.es-aqui");
+    if(viva && arb){
+      var r = viva.getBoundingClientRect(), c = arb.getBoundingClientRect();
+      if(r.top < c.top + 8 || r.bottom > c.bottom - 8)
+        viva.scrollIntoView({block:"center"});
+    }
+  }
+  window.__marcaRail = marcaRail;
+
+  /* el filtro: escribe y el árbol se queda con lo que coincide. Con ciento
+     treinta y cinco apartados, buscar es más rápido que recordar. */
+  if(filtra){
+    filtra.addEventListener("input", function(){
+      var q = filtra.value.trim().toLowerCase();
+      var secs = [].slice.call(D.querySelectorAll(".arb__s"));
+      if(!q){
+        secs.forEach(function(x){ x.hidden = false;
+          [].slice.call(x.querySelectorAll(".arb__l a,.arb__l .sub__b")).forEach(function(e){
+            e.hidden = false; });
+          if(!x.classList.contains("es-aqui")) pliega(x); else despliega(x);
+        });
+        return;
+      }
+      secs.forEach(function(x){
+        var enlaces = [].slice.call(x.querySelectorAll(".arb__l a"));
+        var hay = 0;
+        enlaces.forEach(function(a){
+          var si = (a.textContent || "").toLowerCase().indexOf(q) > -1;
+          a.hidden = !si; if(si) hay++;
+        });
+        [].slice.call(x.querySelectorAll(".arb__l .sub__b")).forEach(function(b){
+          b.hidden = !b.querySelector("a:not([hidden])");
+        });
+        var suNombre = (x.querySelector(".arb__r") || {}).textContent || "";
+        var coincide = suNombre.toLowerCase().indexOf(q) > -1;
+        x.hidden = !hay && !coincide;
+        if(hay) despliega(x); else pliega(x);
+      });
+      /* «despliega» pliega las demás; con filtro se quieren todas abiertas */
+      secs.forEach(function(x){
+        if(x.hidden) return;
+        if(x.querySelector(".arb__l a:not([hidden])")){
+          x.classList.add("es-ab");
+          var l = x.querySelector(".arb__l"); if(l) l.hidden = false;
+        }
+      });
+    });
+    filtra.addEventListener("keydown", function(e){
+      if(e.key === "Escape"){ filtra.value = ""; filtra.dispatchEvent(new Event("input")); }
+      if(e.key === "Enter"){
+        var a = D.querySelector(".arb__s:not([hidden]) .arb__l a:not([hidden])");
+        if(a){ e.preventDefault(); a.click(); }
+      }
+    });
+  }
+
+  /* en pantalla estrecha el raíl entra por la izquierda */
+  function abreRail(){
+    if(!rail) return;
+    rail.classList.add("es-ab");
+    if(railbt) railbt.setAttribute("aria-expanded", "true");
+    if(!veloRail){
+      veloRail = D.createElement("div");
+      veloRail.className = "velorail";
+      veloRail.addEventListener("click", cierraRail);
+      D.body.appendChild(veloRail);
+    }
+    veloRail.classList.add("es-on");
+  }
+  function cierraRail(){
+    if(!rail || !window.matchMedia("(max-width: 900px)").matches) return;
+    rail.classList.remove("es-ab");
+    if(railbt) railbt.setAttribute("aria-expanded", "false");
+    if(veloRail) veloRail.classList.remove("es-on");
+  }
+  if(railbt) railbt.addEventListener("click", function(){
+    if(rail.classList.contains("es-ab")) cierraRail(); else abreRail();
+  });
+  D.addEventListener("click", function(e){
+    if(e.target.closest(".arb__l a")) cierraRail();
+  });
 
   /* ---------------------------------------------------------------- */
   /*  El proyector                                                       */

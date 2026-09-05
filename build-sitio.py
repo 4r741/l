@@ -927,11 +927,17 @@ def bloque_primera_visita(pre):
     trozos, ejes = [], ""
     for f in fs:
         pct = 100.0 * f["min"] / total
+        # El nombre solo donde cabe. Por debajo de un dieciseisavo de la
+        # cinta, un rótulo se corta a mitad de sílaba contra el tramo de al
+        # lado: ahí se queda el número y los minutos, y el nombre lo dan el
+        # arco de arriba y el título del propio tramo.
+        cabe = pct >= 6.5
         trozos.append(
-            '<a class="reloj__t" href="#%sf%02d" data-ir="%sf%02d" style="width:%.4f%%" '
+            '<a class="reloj__t%s" href="#%sf%02d" data-ir="%sf%02d" style="width:%.4f%%" '
             'title="%s · %d minutos"><span class="reloj__n">%02d</span>'
             '<span class="reloj__r">%s</span><span class="reloj__m">%d′</span></a>'
-            % (pre, f["n"], pre, f["n"], pct, H.escape(f["label"] or f["titulo"]), f["min"],
+            % ("" if cabe else " reloj__t--fino",
+               pre, f["n"], pre, f["n"], pct, H.escape(f["label"] or f["titulo"]), f["min"],
                f["n"], H.escape(f["label"] or f["titulo"]), f["min"]))
     ejes = "".join('<span style="left:%.4f%%">%d′</span>' % (100.0 * c / total, c)
                    for c in (0, 30, 60, 90, total))
@@ -4228,6 +4234,140 @@ html:root{
 #sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
 #sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
 
+
+/* ====================================================================
+   LA ESTRUCTURA · versión 14
+   Fuera la barra de arriba y las páginas de diez mil píxeles. A la
+   izquierda, un raíl con el sistema entero desplegable y siempre a la
+   vista; a la derecha, una sola cosa en pantalla. Se elige en el raíl y
+   aparece a la derecha: no hay que recorrer una sección para encontrar
+   un apartado ni recordar dónde estaba uno.
+   ==================================================================== */
+html:root{--rail:20rem; --nav:0px; --saca:calc(var(--aire) * -1)}
+.app{display:block}
+
+.rail{position:fixed;inset:0 auto 0 0;width:var(--rail);z-index:60;
+  display:flex;flex-direction:column;background:var(--blanco);
+  border-right:1px solid var(--linea)}
+.rail__cab{flex:none;padding:1.6rem 1.4rem 1.2rem}
+.rail__marca{display:block;width:100%;text-align:left;background:none;border:0;padding:0;
+  font:inherit;cursor:pointer;color:var(--negro)}
+.rail__marca b{display:block;font-size:1.02rem;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase}
+.rail__marca span{display:block;margin-top:.35rem;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.5}
+.rail__marca:hover b{color:var(--azul)}
+
+.rail__filtro{flex:none;display:flex;align-items:center;gap:.6rem;margin:0 1.4rem 1rem;
+  padding:.7rem .8rem;border:1px solid var(--linea);color:var(--muted)}
+.rail__filtro input{flex:1;min-width:0;font:inherit;font-size:.82rem;border:0;background:none;
+  color:var(--negro);outline:none;padding:0}
+.rail__filtro input::placeholder{color:var(--muted)}
+.rail__filtro:focus-within{border-color:var(--negro)}
+
+/* el árbol se desvanece por abajo: una línea cortada a la mitad se lee como
+   «hay más» y no como un fallo */
+.arb{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 0 1.4rem;
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 1.6rem),transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 1.6rem),transparent 100%);
+  scrollbar-width:thin;scrollbar-color:var(--linea) transparent}
+.arb__s{border-top:1px solid var(--linea-2)}
+.arb__s:first-child{border-top:0}
+.arb__b{width:100%;display:grid;grid-template-columns:2.2rem 1fr auto auto;gap:.7rem;
+  align-items:center;padding:.9rem 1.4rem;font:inherit;text-align:left;background:none;
+  border:0;cursor:pointer;color:var(--ink-2);transition:background .18s var(--e)}
+.arb__b:hover{background:var(--gris);color:var(--negro)}
+.arb__n{font-style:normal;font-family:var(--f-mono);font-size:.62rem;color:var(--linea);
+  letter-spacing:.06em}
+.arb__r{font-size:.94rem;line-height:1.3}
+.arb__c{font-style:normal;font-family:var(--f-mono);font-size:.58rem;color:var(--muted);
+  letter-spacing:.1em}
+.arb__x{color:var(--muted);transition:transform .26s var(--e)}
+.arb__s.es-ab > .arb__b{color:var(--negro);background:var(--gris)}
+.arb__s.es-ab > .arb__b .arb__n{color:var(--azul)}
+.arb__s.es-ab > .arb__b .arb__x{transform:rotate(180deg)}
+.arb__s.es-aqui > .arb__b{box-shadow:inset 2px 0 0 var(--azul)}
+.arb__l{padding:.2rem 0 1rem}
+.arb__l[hidden]{display:none}
+/* dentro del raíl el índice de una sección es una lista sobria: una columna,
+   sin rótulos de grupo en mayúsculas gritando en una barra de veinte rem */
+.arb__l .sub{display:block;columns:1;padding:0;margin:0;max-width:none}
+.arb__l .sub__b{margin:0 0 .6rem}
+.arb__l .sub__g{margin:.9rem 1.4rem .3rem;font-size:.56rem;letter-spacing:.18em;
+  color:var(--muted)}
+.arb__l .sub a{grid-template-columns:2.2rem 1fr;gap:.7rem;padding:.42rem 1.4rem;
+  font-size:.86rem;line-height:1.42;border:0}
+.arb__l .sub a span{font-size:.58rem}
+.arb__l .sub a:hover{background:var(--gris);color:var(--negro)}
+.arb__l .sub a.es-aqui{background:var(--azul-p);color:var(--negro)}
+.arb__l .sub a.es-aqui span{color:var(--azul)}
+
+.rail__pie{flex:none;display:flex;flex-wrap:wrap;gap:.2rem;padding:.9rem 1rem;
+  border-top:1px solid var(--linea)}
+.rail__pie button{font:inherit;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.16em;
+  text-transform:uppercase;background:none;border:0;cursor:pointer;color:var(--muted);
+  padding:.5rem .55rem;transition:color .18s var(--e)}
+.rail__pie button:hover{color:var(--negro)}
+
+.panel{margin-left:var(--rail);min-height:100vh}
+/* el lector ocupa el panel, no la pantalla: el raíl se queda a la vista y se
+   puede saltar a otro sitio sin cerrar lo que se está leyendo */
+.lector{inset:0 0 0 var(--rail)}
+.lector__cab{height:auto;padding:1.1rem 2rem}
+/* lo que se queda pegado arriba lo hace dentro del panel */
+#sitio .puestosel{top:0}
+#sitio .puesto :where(h2,h3,h4,[id]){scroll-margin-top:7rem}
+
+/* La cinta del reloj: un tramo estrecho no puede contener la palabra
+   «Preparación», y forzarla solo consigue que se corte a mitad de sílaba
+   contra el tramo de al lado. Quién lleva el nombre y quién no lo decide el
+   generador, que es el que sabe cuánto mide cada tramo; aquí solo se cuida de
+   que lo que sí cabe se parta por donde toca. */
+#sitio .reloj__r{overflow-wrap:anywhere;hyphens:auto}
+#sitio .reloj__t--fino .reloj__r{display:none}
+#sitio .reloj__t--fino{justify-content:flex-start;gap:.3rem}
+
+/* Lo que se sale «a sangre» tiene que salirse del panel, no de la pantalla:
+   con el raíl a la izquierda, una banda que mide una pantalla entera se mete
+   por debajo del raíl y se le come el principio a su propio titular. */
+#sitio .portada,#sitio .frente,#sitio .banda--noche,#sitio .banda--pie{
+  margin-inline:calc(50% - (100vw - var(--rail)) / 2)}
+@media(max-width:900px){
+  #sitio .portada,#sitio .frente,#sitio .banda--noche,#sitio .banda--pie{
+    margin-inline:calc(50% - 50vw)}
+}
+
+/* la portada y las bandas dejan de ocupar una pantalla entera: son una
+   entrada, no un cartel */
+.portada{min-height:min(66vh,34rem);padding:4.5rem var(--marco) 4rem}
+.frente{min-height:0}
+#sitio .sec{padding-top:calc(var(--aire) * .7)}
+
+/* el botón que abre el raíl en pantallas estrechas */
+.railbt{display:none;position:fixed;top:.9rem;left:.9rem;z-index:80;width:2.6rem;height:2.6rem;
+  background:var(--blanco);border:1px solid var(--linea);cursor:pointer;
+  flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.railbt span{display:block;width:14px;height:1px;background:var(--negro)}
+.velorail{position:fixed;inset:0;z-index:55;background:rgba(11,11,15,.4);opacity:0;
+  pointer-events:none;transition:opacity .26s var(--e)}
+.velorail.es-on{opacity:1;pointer-events:auto}
+
+@media(max-width:1100px){
+  html:root{--rail:17rem}
+}
+@media(max-width:900px){
+  html:root{--rail:19rem}
+  .railbt{display:flex}
+  .rail{transform:translateX(-100%);transition:transform .3s var(--e);
+    box-shadow:0 0 60px -20px rgba(11,11,15,.5)}
+  .rail.es-ab{transform:none}
+  .panel{margin-left:0;padding-top:3.4rem}
+  .lector{inset:0}
+  .portada{min-height:0;padding:3.4rem 1.6rem 3rem}
+}
+@media(prefers-reduced-motion:reduce){.rail,.velorail,.arb__x{transition:none}}
+@media print{.rail,.railbt,.velorail{display:none!important}.panel{margin-left:0}}
+
 """+ CSS_DATOS + """
 
 /* 9 · Marketing, ampliado. Las siete apuestas, lo que no cuesta dinero,
@@ -4349,6 +4489,7 @@ JS = """
       b.classList.toggle("es-on", b.dataset.irSec === s.dataset.sec);
     });
     memo.sec = s.dataset.sec; recuerda();
+    if(typeof window.__marcaRail === "function") window.__marcaRail(s.dataset.sec, "");
     if(arriba !== false) window.scrollTo(0, 0);
     if(typeof pintaBarra === "function") pintaBarra();
     return s;
@@ -4390,8 +4531,16 @@ JS = """
     /* Se enseña antes de pintar: mientras está oculto no tiene medidas, y
        sin medidas no se puede ir al punto exacto que pedía el enlace. */
     lector.hidden = false;
+    /* solo se bloquea el desplazamiento de la página, no el del raíl: el raíl
+       tiene el suyo y se sigue pudiendo saltar a otro sitio sin cerrar nada */
     D.documentElement.style.overflow = "hidden";
     pintaLector(clave, ancla);
+    /* el raíl dice en qué línea se está: leer sin saber dónde se está en el
+       índice es exactamente lo que pasaba antes */
+    if(typeof window.__marcaRail === "function"){
+      var suya = (D.getElementById(clave) || {}).dataset;
+      window.__marcaRail(suya ? suya.sec : "", clave);
+    }
     if(lecVolver) lecVolver.focus();
     return true;
   }
@@ -4613,31 +4762,20 @@ JS = """
       if(b.dataset.abreFase) abreDestino(b.dataset.abreFase);
       return;
     }
-    /* El índice de una sección se despliega y se vuelve a plegar. Antes se
-       abría solo al entrar en cualquier sección y se quedaba abierto tapando
-       media pantalla: para ver la sección había que adivinar que se cerraba
-       volviendo a pulsar el mismo nombre. Ahora el nombre lleva a la sección
-       —y cierra lo que hubiera abierto—, y la flecha de al lado abre y cierra
-       su índice sin moverse de sitio. */
-    var na = e.target.closest(".nav__l .nav__x");
-    if(na){
-      e.stopPropagation();
-      var suyo = na.parentElement.dataset.irSec;
-      var yaEsta = !paneles.hidden && na.parentElement.classList.contains("es-abierto");
-      if(yaEsta){ cierraPanel(); }
-      else { cierraLector(); veSec(suyo, true); abrePanel(suyo); }
-      return;
-    }
-    var nb = e.target.closest(".nav__l button[data-ir-sec]");
+    /* El raíl. Pulsar el nombre de una sección hace dos cosas a la vez, que
+       es lo que se espera de un índice: lleva a la sección y despliega lo que
+       tiene dentro. Volver a pulsarlo lo pliega. Nada tapa nada: el raíl vive
+       en su columna y lo que se lee, en la suya. */
+    var nb = e.target.closest(".arb__b[data-ir-sec]");
     if(nb){
-      var abierto = !paneles.hidden && nb.classList.contains("es-abierto");
+      var casa = nb.parentElement;
+      var abierta = casa.classList.contains("es-ab");
       var mismo = nb.dataset.irSec === (D.querySelector(".sec.es-on") || {}).id;
+      if(mismo && abierta){ pliega(casa); return; }
       cierraLector();
-      if(mismo && abierto){ cierraPanel(); return; }
       veSec(nb.dataset.irSec, true);
-      /* estando ya en la sección, el nombre abre su índice; viniendo de otra,
-         lleva a la sección y deja la pantalla limpia para verla */
-      if(mismo) abrePanel(nb.dataset.irSec); else cierraPanel();
+      despliega(casa);
+      cierraRail();
       return;
     }
     if((b = e.target.closest("[data-ir-sec]"))){
@@ -4679,6 +4817,10 @@ JS = """
     velIndice.classList.toggle("es-on", !!encendido);
   }
   function abrePanel(id){
+    /* El desplegable de la barra de arriba ya no existe: el índice de cada
+       sección vive en el raíl. La función se queda —la llaman los recorridos,
+       el mapa y el buscador— y no hace nada cuando no hay panel que abrir. */
+    if(!paneles) return;
     var hay = false;
     [].slice.call(D.querySelectorAll(".sub")).forEach(function(p){
       var si = p.dataset.sub === id;
@@ -4696,7 +4838,8 @@ JS = """
     });
   }
   function cierraPanel(){
-    if(paneles) paneles.hidden = true;
+    if(!paneles) return;
+    paneles.hidden = true;
     velo(false);
     [].slice.call(D.querySelectorAll(".nav__l button")).forEach(function(b){
       b.classList.remove("es-abierto");
@@ -5097,6 +5240,128 @@ JS = """
   }
 
   /* ---------------------------------------------------------------- */
+  /*  El raíl                                                            */
+  /*  Desplegar, plegar, filtrar y decir dónde se está. Es el índice del  */
+  /*  sistema entero, siempre a la vista y siempre en el mismo sitio.     */
+  /* ---------------------------------------------------------------- */
+  var rail = D.getElementById("rail");
+  var arb = D.getElementById("arb");
+  var filtra = D.getElementById("filtra");
+  var railbt = D.getElementById("railbt");
+  var veloRail = null;
+
+  function pliega(casa){
+    if(!casa) return;
+    casa.classList.remove("es-ab");
+    var l = casa.querySelector(".arb__l");
+    if(l) l.hidden = true;
+    var b = casa.querySelector(".arb__b");
+    if(b) b.setAttribute("aria-expanded", "false");
+  }
+  function despliega(casa){
+    if(!casa) return;
+    /* una sección abierta cada vez: un índice con nueve listas abiertas a la
+       vez es una lista de ciento treinta y cinco líneas, no un índice */
+    [].slice.call(D.querySelectorAll(".arb__s")).forEach(function(x){
+      if(x !== casa) pliega(x);
+    });
+    casa.classList.add("es-ab");
+    var l = casa.querySelector(".arb__l");
+    if(l) l.hidden = false;
+    var b = casa.querySelector(".arb__b");
+    if(b) b.setAttribute("aria-expanded", "true");
+  }
+  /* dónde estoy: la sección en el raíl y, si se está leyendo algo, su línea */
+  function marcaRail(sec, clave){
+    [].slice.call(D.querySelectorAll(".arb__s")).forEach(function(x){
+      x.classList.toggle("es-aqui", x.dataset.arb === sec);
+    });
+    [].slice.call(D.querySelectorAll(".arb__l a")).forEach(function(a){
+      a.classList.toggle("es-aqui", !!clave && a.getAttribute("href") === "#" + clave);
+    });
+    var viva = D.querySelector(".arb__l a.es-aqui");
+    if(viva && arb){
+      var r = viva.getBoundingClientRect(), c = arb.getBoundingClientRect();
+      if(r.top < c.top + 8 || r.bottom > c.bottom - 8)
+        viva.scrollIntoView({block:"center"});
+    }
+  }
+  window.__marcaRail = marcaRail;
+
+  /* el filtro: escribe y el árbol se queda con lo que coincide. Con ciento
+     treinta y cinco apartados, buscar es más rápido que recordar. */
+  if(filtra){
+    filtra.addEventListener("input", function(){
+      var q = filtra.value.trim().toLowerCase();
+      var secs = [].slice.call(D.querySelectorAll(".arb__s"));
+      if(!q){
+        secs.forEach(function(x){ x.hidden = false;
+          [].slice.call(x.querySelectorAll(".arb__l a,.arb__l .sub__b")).forEach(function(e){
+            e.hidden = false; });
+          if(!x.classList.contains("es-aqui")) pliega(x); else despliega(x);
+        });
+        return;
+      }
+      secs.forEach(function(x){
+        var enlaces = [].slice.call(x.querySelectorAll(".arb__l a"));
+        var hay = 0;
+        enlaces.forEach(function(a){
+          var si = (a.textContent || "").toLowerCase().indexOf(q) > -1;
+          a.hidden = !si; if(si) hay++;
+        });
+        [].slice.call(x.querySelectorAll(".arb__l .sub__b")).forEach(function(b){
+          b.hidden = !b.querySelector("a:not([hidden])");
+        });
+        var suNombre = (x.querySelector(".arb__r") || {}).textContent || "";
+        var coincide = suNombre.toLowerCase().indexOf(q) > -1;
+        x.hidden = !hay && !coincide;
+        if(hay) despliega(x); else pliega(x);
+      });
+      /* «despliega» pliega las demás; con filtro se quieren todas abiertas */
+      secs.forEach(function(x){
+        if(x.hidden) return;
+        if(x.querySelector(".arb__l a:not([hidden])")){
+          x.classList.add("es-ab");
+          var l = x.querySelector(".arb__l"); if(l) l.hidden = false;
+        }
+      });
+    });
+    filtra.addEventListener("keydown", function(e){
+      if(e.key === "Escape"){ filtra.value = ""; filtra.dispatchEvent(new Event("input")); }
+      if(e.key === "Enter"){
+        var a = D.querySelector(".arb__s:not([hidden]) .arb__l a:not([hidden])");
+        if(a){ e.preventDefault(); a.click(); }
+      }
+    });
+  }
+
+  /* en pantalla estrecha el raíl entra por la izquierda */
+  function abreRail(){
+    if(!rail) return;
+    rail.classList.add("es-ab");
+    if(railbt) railbt.setAttribute("aria-expanded", "true");
+    if(!veloRail){
+      veloRail = D.createElement("div");
+      veloRail.className = "velorail";
+      veloRail.addEventListener("click", cierraRail);
+      D.body.appendChild(veloRail);
+    }
+    veloRail.classList.add("es-on");
+  }
+  function cierraRail(){
+    if(!rail || !window.matchMedia("(max-width: 900px)").matches) return;
+    rail.classList.remove("es-ab");
+    if(railbt) railbt.setAttribute("aria-expanded", "false");
+    if(veloRail) veloRail.classList.remove("es-on");
+  }
+  if(railbt) railbt.addEventListener("click", function(){
+    if(rail.classList.contains("es-ab")) cierraRail(); else abreRail();
+  });
+  D.addEventListener("click", function(e){
+    if(e.target.closest(".arb__l a")) cierraRail();
+  });
+
+  /* ---------------------------------------------------------------- */
   /*  El proyector                                                       */
   /*  Una diapositiva se pasa pulsándola. Aquí no se escribe ninguna     */
   /*  diapositiva nueva: se recogen las que ya están en la página, con   */
@@ -5310,30 +5575,40 @@ MARCO = """
 <a class="saltar" href="#sitio">Saltar al contenido</a>
 <div class="avance" id="avance" aria-hidden="true"></div>
 
-<header class="nav">
-  <div class="nav__f">
-    <button class="nav__m" type="button" data-ir-sec="inicio">Giraldo <em>v@VERSION@</em></button>
-    <nav class="nav__l" aria-label="Secciones">@@NAV@@</nav>
-    <div class="nav__b">
-      <button class="nav__ruta" type="button" data-ir-sec="recorridos">Recorridos</button>
-      <button class="nav__ruta" type="button" data-ir-sec="mapa">Mapa</button>
-      <span class="nav__sep"></span>
-      <button class="abrepal" type="button" data-abre="paleta"><span>Buscar</span>
-        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
-          <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M10.4 10.4 L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg></button>
-      <button class="icono" type="button" data-abre="recursos" aria-label="Recursos" title="Recursos (R)">&#9781;</button>
-      <button class="icono" type="button" data-abre="teclas" aria-label="Cómo se usa" title="Cómo se usa (?)">?</button>
-    </div>
-  </div>
-  <div class="paneles" id="paneles" hidden>
-    <div class="paneles__c">@@PANELES@@</div>
-  </div>
-</header>
+<!-- ------------------------------------------------------------------
+     La estructura: un raíl a la izquierda con el sistema entero desplegable,
+     y a la derecha una sola cosa en pantalla. No hay barra arriba ni páginas
+     de diez mil píxeles: se elige en el raíl y aparece a la derecha.
+     ------------------------------------------------------------------ -->
+<button class="railbt" type="button" id="railbt" aria-label="Abrir el índice"
+        aria-expanded="false"><span></span><span></span><span></span></button>
 
-<div id="sitio">
+<div class="app">
+<aside class="rail" id="rail" aria-label="El sistema">
+  <div class="rail__cab">
+    <button class="rail__marca" type="button" data-ir-sec="inicio">
+      <b>Giraldo</b><span>Centro de Excelencia Implantológica</span></button>
+  </div>
+  <div class="rail__filtro">
+    <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M10.4 10.4 L14.2 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    <input id="filtra" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Filtrar los @N@ apartados" aria-label="Filtrar el índice">
+  </div>
+  <nav class="arb" id="arb">@@ARBOL@@</nav>
+  <div class="rail__pie">
+    <button type="button" data-ir-sec="recorridos">Recorridos</button>
+    <button type="button" data-ir-sec="mapa">Mapa</button>
+    <button type="button" data-abre="recursos">Recursos</button>
+    <button type="button" data-abre="teclas">Teclas</button>
+  </div>
+</aside>
+
+<main class="panel" id="sitio">
 @@SECCIONES@@
+</main>
 </div>
 
 <!-- ------------------------------------------------------------------
@@ -5616,8 +5891,29 @@ def main():
         if d:
             fases_datos.append(d[0][0])
 
-    cuerpo = (MARCO.replace("@@NAV@@", nav)
-                   .replace("@@PANELES@@", "\n".join(menus))
+    # El árbol del raíl: cada sección con su cuenta y, dentro, el índice que
+    # ya se construía para el desplegable de la barra. No se duplica nada; lo
+    # que cambia es dónde vive y que ahora está siempre a la vista.
+    porsec = {i: (r, d, n) for i, r, d, n in indice}
+    arbol = []
+    for k, (ident, rotulo, _doc, _lede, _num) in enumerate(
+            [(i, r, d, l, n) for i, r, d, l, n in SECCIONES]):
+        sub = next((m for m in menus if ('data-sub="%s"' % ident) in m), "")
+        cuenta = porsec.get(ident, (None, None, 0))[2]
+        arbol.append(
+            '<div class="arb__s" data-arb="%s">\n'
+            '  <button type="button" class="arb__b" data-ir-sec="%s" aria-expanded="false">'
+            '<i class="arb__n">%02d</i><span class="arb__r">%s</span>'
+            '<i class="arb__c">%s</i>'
+            '<svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true">'
+            '<path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" '
+            'stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n'
+            '  <div class="arb__l" hidden>%s</div>\n'
+            '</div>'
+            % (ident, ident, k + 1, H.escape(rotulo), cuenta or "", sub))
+
+    cuerpo = (MARCO.replace("@@ARBOL@@", "\n".join(arbol))
+                   .replace("@N@", str(total))
                    .replace("@@SECCIONES@@",
                             inicio + "\n" + recorridos_html + "\n" + mapa_html + "\n"
                             + "\n".join(secciones))
@@ -5662,7 +5958,7 @@ def main():
     salida.write_text(texto, encoding="utf-8")
 
     cuerpo_html = re.sub(r"<script\b.*?</script>", "",
-                         texto[texto.index('<div id="sitio">'):], flags=re.S)
+                         texto[texto.index('<main class="panel" id="sitio">'):], flags=re.S)
     ids = set(re.findall(r'id="([^"]+)"', texto))
     muertos = sorted({h for h in re.findall(r'href="#([^"]+)"', cuerpo_html) if h not in ids})
     muertos += sorted({f for f in re.findall(r'data-abre-fase="([^"]+)"', cuerpo_html)

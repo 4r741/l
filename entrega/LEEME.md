@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v13.0
+# Entrega · Sistema documental Giraldo v14.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
 | `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v13.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v13.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
-| `Sistema-Documental-Giraldo-v13.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
+| `Giraldo-TODO-EN-UNO-v14.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v14.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v14.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,37 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## Otra estructura · versión 14
+
+Las versiones anteriores fueron puliendo la misma web: una barra arriba con
+nueve nombres y, debajo, nueve páginas larguísimas por las que había que bajar.
+Esta cambia la estructura, no el acabado.
+
+**Fuera la barra de arriba. Un raíl a la izquierda con el sistema entero.**
+Siempre a la vista, siempre en el mismo sitio: las nueve secciones, y dentro de
+cada una sus apartados con su parte y su número. Se pulsa una sección y se
+despliega ahí mismo, sin tapar nada, porque el raíl vive en su columna y lo que
+se lee vive en la suya. Una sección abierta cada vez: nueve listas abiertas a la
+vez no son un índice, son una lista de ciento treinta y cinco líneas.
+
+**Un filtro encima del índice.** Con ciento treinta y cinco apartados, buscar es
+más rápido que recordar. Se escribe «campaña» y el árbol se queda con Dirección
+y Marketing y sus cuatro líneas. `Intro` abre la primera; `Esc` limpia.
+
+**Una sola cosa en pantalla.** El lector deja de ser una capa que tapa la
+pantalla entera y pasa a ocupar el panel: el raíl se queda a la vista mientras
+se lee, de modo que se puede saltar a otro apartado sin cerrar nada, y la línea
+del apartado que se está leyendo se marca en el índice. Leer sin saber dónde
+está uno en el índice era exactamente lo que pasaba antes.
+
+**Y las bandas dejan de ser carteles.** La portada ocupaba una pantalla entera y
+cada sección abría con otra: ahora son una entrada, no un cartel. Lo que se sale
+a sangre se sale del panel y no de la pantalla, que es lo que antes metía las
+bandas por debajo del raíl.
+
+En pantalla estrecha el raíl entra por la izquierda con un botón, se apaga lo de
+detrás y se cierra solo al elegir algo.
 
 ## Las cifras, dibujadas · versión 13
 

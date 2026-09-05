@@ -61,7 +61,7 @@ def _texto(x, y, txt, tam=11, anclaje="middle", clase="", extra=""):
 # --------------------------------------------------------------------------
 #  1 · El recorrido del paciente, sobre el arco
 # --------------------------------------------------------------------------
-def arco(fases, ancho=1200, alto=680, decisivas=(7, 9, 10)):
+def arco(fases, ancho=1440, alto=820, decisivas=(7, 9, 10)):
     """Las catorce fases del recorrido, colocadas sobre el arco dental.
 
     «fases» es una lista de diccionarios con n, label y min. La posición de
@@ -72,7 +72,7 @@ def arco(fases, ancho=1200, alto=680, decisivas=(7, 9, 10)):
     """
     if not fases:
         return ""
-    m = 108.0                                  # margen para los dos anillos de rótulos
+    m = 132.0                                  # margen para los dos anillos de rótulos
     an, al = ancho - 2 * m, alto - 2 * m
     tope = max((f.get("min") or 1) for f in fases)
     n = len(fases)
@@ -111,7 +111,7 @@ def arco(fases, ancho=1200, alto=680, decisivas=(7, 9, 10)):
         # y donde el arco es más plano —abajo— se separan un poco más, que es
         # justo donde la perpendicular deja de abrir en abanico
         plano = 1.0 - abs(nx)
-        fuera_r = r + 26 + plano * 20 + (0 if i % 2 == 0 else 64)
+        fuera_r = r + 30 + plano * 22 + (0 if i % 2 == 0 else 96)
         fx, fy = px + nx * fuera_r, py + ny * fuera_r
         anclaje = "middle" if abs(nx) < 0.35 else ("end" if nx < 0 else "start")
         marcas.append('<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="currentColor" '
@@ -122,7 +122,7 @@ def arco(fases, ancho=1200, alto=680, decisivas=(7, 9, 10)):
             '<g class="dib__g%s">%s%s</g>'
             % (" dib__g--decide" if decide else "",
                _texto(fx, fy, "%02d" % (f.get("n") or i + 1), 12, anclaje, "dib__n"),
-               _texto(fx, fy + 15, (f.get("label") or "")[:26], 11.5, anclaje, "dib__r")
+               _texto(fx, fy + 15, (f.get("label") or "")[:22], 11.5, anclaje, "dib__r")
                + (_texto(fx, fy + 30, "%d min" % dur, 10.5, anclaje, "dib__m") if dur else "")))
 
     return ('<svg class="dib dib--arco" viewBox="0 0 %d %d" role="img" '
@@ -282,9 +282,14 @@ CSS = """
 .dibleyenda i.es-hueco::before{background:var(--blanco);box-shadow:0 0 0 1px var(--negro)}
 /* una nota de lectura no lleva muestra de color: no nombra nada del dibujo */
 .dibleyenda i.es-nota::before{display:none}
+/* El arco y la rejilla necesitan una anchura mínima para que sus rótulos no
+   se toquen. Por debajo de ella no se encogen: se recorren de lado, que es
+   preferible a leer dos rótulos montados uno encima de otro. */
+.dibcaja{overflow-x:auto;overflow-y:hidden}
+.dib--arco{min-width:60rem}
+.dib--rejilla{min-width:46rem}
 @media(max-width:900px){
-  .dib--arco,.dib--rejilla{min-width:46rem}
-  .dibcaja{overflow-x:auto}
+  .dib--arco{min-width:52rem}
 }
 """
 

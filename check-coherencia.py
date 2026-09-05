@@ -652,7 +652,7 @@ def comprueba_sitio():
         return
 
     html = pagina.read_text(encoding="utf-8")
-    cuerpo = re.sub(r"<script\b.*?</script>", "", html[html.index('<div id="sitio">'):], flags=re.S)
+    cuerpo = re.sub(r"<script\b.*?</script>", "", html[html.index('<main class="panel" id="sitio">'):], flags=re.S)
     hojas = re.findall(r'<article class="hoja" id="([^"]+)"', cuerpo)
 
     esperados = 0
