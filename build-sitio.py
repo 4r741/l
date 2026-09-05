@@ -1748,7 +1748,9 @@ def bloque_presentacion(pre):
             desplegable("%s-d%d" % (clave, j), d["min"] or "·",
                         d["titulo"] or d["eyebrow"] or "Diapositiva",
                         d["eyebrow"] + (" · esencial" if d["esencial"] else ""),
-                        '<div class="dia">%s</div>%s'
+                        '<div class="dia">%s</div>'
+                        '<p class="dia__pr"><button type="button" class="bt bt--fino" '
+                        'data-proyecta="">Proyectar desde esta</button></p>%s'
                         % (d["html"], explica(d, dd, j, parte, k, len(partes), apdir,
                                              despues.get(id(d), ""))),
                         extra=' data-esencial="%d"' % (1 if d["esencial"] else 0))
@@ -1788,6 +1790,7 @@ def bloque_presentacion(pre):
   </div>
   @@CIFRAS@@
   <div class="presfil">
+    <button type="button" class="bt bt--fuerte" data-proyecta="0">Proyectar la sesión</button>
     <button type="button" class="presfil__b es-on" data-pres="todas">Todas</button>
     <button type="button" class="presfil__b" data-pres="esencial">Solo la ruta corta</button>
     <p class="presfil__q">La ruta corta son las @E@ diapositivas que sostienen el argumento
@@ -2126,16 +2129,19 @@ def monta():
         for p in piezas:
             p["html"] = cose(p["html"], mapa, ident, rotulos, titulos)
 
-        hojas, filas, grupo = [], [], None
+        # El índice se arma por grupos cerrados, no como una tirada de líneas
+        # repartida en columnas: repartida por altura, el navegador dejaba el
+        # rótulo de una parte al pie de una columna y sus apartados en la
+        # siguiente, de modo que el índice decía una cosa y ordenaba otra.
+        hojas, bloques, grupo = [], [], object()
         for n, p in enumerate(piezas):
             orden.append((p["clave"], nombre_doc, p["grupo"], p["rotulo"], ident))
-            if p["grupo"] != grupo:
+            if p["grupo"] != grupo or not bloques:
                 grupo = p["grupo"]
-                if grupo:
-                    filas.append('<p class="idx__g">%s</p>' % H.escape(grupo))
+                bloques.append([grupo, []])
             # Un apartado sin número no lleva un punto en su sitio: lleva
             # nada, y el rótulo empieza donde empieza el de los demás.
-            filas.append(
+            bloques[-1][1].append(
                 '<a class="idx__a%s" href="#%s" data-ir="%s">%s<b>%s</b></a>'
                 % ("" if p["n"] else " idx__a--sinn", p["clave"], p["clave"],
                    ('<span>%s</span>' % H.escape(p["n"])) if p["n"] else "",
@@ -2147,6 +2153,16 @@ def monta():
                    ('<span>%s</span>' % H.escape(p["n"])) if p["n"] else "",
                    H.escape(nombre_doc), " · " + H.escape(p["grupo"]) if p["grupo"] else "",
                    p["html"]))
+
+        filas = []
+        for rotulo_g, enlaces in bloques:
+            filas.append(
+                '<div class="idx__b">%s%s</div>'
+                % (('<p class="idx__g">%s</p><p class="idx__c">%s</p>'
+                    % (H.escape(rotulo_g),
+                       "1 apartado" if len(enlaces) == 1 else "%d apartados" % len(enlaces)))
+                   if rotulo_g else "",
+                   "".join(enlaces)))
 
         titulo, texto = INTROS[ident]
         indice.append((ident, rotulo, nombre_doc, len(piezas)))
@@ -2654,15 +2670,34 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .nav__l{display:flex;gap:0;flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;
   height:100%;justify-content:center}
 .nav__l::-webkit-scrollbar{display:none}
-.nav__l button{font:inherit;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
-  cursor:pointer;border:0;background:none;color:var(--ink-2);padding:0 .55rem;white-space:nowrap;
+.nav__l button{font:inherit;font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;
+  cursor:pointer;border:0;background:none;color:var(--ink-2);padding:0 .4rem;white-space:nowrap;
   position:relative;height:100%;transition:color .2s var(--e)}
-.nav__l button::after{content:"";position:absolute;inset:auto .55rem 1.2rem .55rem;height:1px;
+.nav__l button::after{content:"";position:absolute;inset:auto .4rem 1.2rem .4rem;height:1px;
   background:var(--azul);transform:scaleX(0);transform-origin:left;
   transition:transform .28s var(--e)}
 .nav__l button:hover{color:var(--negro)}
 .nav__l button.es-on{color:var(--negro)}
 .nav__l button.es-on::after,.nav__l button.es-abierto::after{transform:scaleX(1)}
+.nav__l button{display:inline-flex;align-items:center;gap:.22rem}
+.nav__x{display:inline-flex;align-items:center;justify-content:center;
+  width:.8rem;height:.8rem;flex:none;color:var(--muted);opacity:.55;
+  transition:transform .28s var(--e),color .2s var(--e),opacity .2s var(--e)}
+.nav__l button:hover .nav__x{opacity:1}
+.nav__l button.es-abierto .nav__x{opacity:1}
+.nav__l button:hover .nav__x{color:var(--negro)}
+.nav__l button.es-abierto .nav__x{transform:rotate(180deg);color:var(--azul)}
+/* En pantallas de portátil las nueve entradas más sus flechas no caben en una
+   línea. Antes que dejar el índice desplazándose de lado —que nadie descubre—,
+   la letra se aprieta un punto y el aire entre entradas se recorta. */
+@media(max-width:1460px){
+  .nav__f{gap:.9rem;padding:0 1.6rem}
+  .nav__l button{font-size:.56rem;letter-spacing:.05em;padding:0 .28rem;gap:.16rem}
+  .nav__l button::after{inset:auto .28rem 1.2rem .28rem}
+  .nav__x{width:.72rem;height:.72rem}
+  .nav__ruta{font-size:.56rem;padding:.5rem .4rem}
+  .abrepal{font-size:.58rem;padding:.4rem .4rem}
+}
 .nav__b{display:flex;gap:.2rem;flex:none;align-items:center}
 /* Las dos maneras nuevas de entrar, siempre a mano y fuera del índice: el
    índice es el de los documentos y no se toca. */
@@ -3036,17 +3071,31 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .puente__v{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-2)}
 .puente__pie{margin:2rem 0 0;font-size:.88rem;line-height:1.8;color:var(--ink-2)}
 .puente__pie b{color:var(--negro)}
-.lienzo--indice .idx{columns:2;column-gap:3.6rem;border-top:1px solid var(--linea);
+/* El índice de una sección: una columna por grupo, y el grupo entero es la
+   pieza que no se puede partir. Repartido por líneas, el navegador dejaba el
+   rótulo de una parte al pie de una columna y sus apartados en la siguiente:
+   el índice decía una cosa y ordenaba otra. */
+.lienzo--indice .idx{columns:2;column-gap:4rem;border-top:1px solid var(--linea);
   padding-top:2.2rem}
-.idx__g{break-inside:avoid;margin:1.8rem 0 .7rem;font-family:var(--f-mono);font-size:.56rem;
+.idx__b{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.6rem;
+  padding-top:1.2rem;border-top:1px solid var(--linea-2)}
+.idx__b:first-child{padding-top:0;border-top:0}
+.idx__g{margin:0;font-family:var(--f-mono);font-size:.56rem;
   letter-spacing:.24em;text-transform:uppercase;color:var(--azul)}
-.idx__g:first-child{margin-top:0}
-.idx__a{break-inside:avoid;display:flex;gap:1rem;align-items:baseline;text-decoration:none;
-  color:var(--ink-2);padding:.45rem 0}
-.idx__a span{font-family:var(--f-mono);font-size:.62rem;color:var(--muted);flex:none;min-width:1.6rem}
-.idx__a--sinn{padding-left:2.6rem}
+/* cuántos apartados tiene el grupo: se sabe antes de entrar */
+.idx__c{margin:.3rem 0 .9rem;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.idx__b:first-child .idx__c{margin-top:0}
+.idx__a{display:grid;grid-template-columns:1.9rem 1fr;gap:1rem;align-items:baseline;
+  text-decoration:none;color:var(--ink-2);padding:.45rem 0;
+  border-bottom:1px solid var(--linea-2)}
+.idx__a:last-child{border-bottom:0}
+.idx__a span{font-family:var(--f-mono);font-size:.62rem;color:var(--muted)}
+.idx__a--sinn{grid-template-columns:1.9rem 1fr}
+.idx__a--sinn::before{content:"";display:block}
 .idx__a b{font-size:.92rem;font-weight:400;line-height:1.55}
-.idx__a:hover b{color:var(--azul)}
+.idx__a:hover b,.idx__a:focus-visible b{color:var(--negro)}
+.idx__a:hover span,.idx__a:focus-visible span{color:var(--azul)}
 /* Los apartados se leen en el lector, no en la página. Sin guiones se ven
    todos seguidos, que es el documento entero. */
 .sitio--vivo .hojas{display:none}
@@ -3324,17 +3373,29 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .parte[hidden]{display:none}
 
 /* la diapositiva, dentro de la página: ni absoluta ni oculta */
-#sitio .dia{margin:0 0 2.4rem}
-#sitio .dia .slide{position:static;display:block;inset:auto;width:auto;height:auto;
+/* Una diapositiva del deck viene pensada para proyectarse: en su hoja está
+   colocada encima de las demás y escondida. Aquí se le devuelve el flujo del
+   documento. Vale igual dentro de la página, dentro del lector y dentro del
+   proyector: los tres la enseñan de una en una. */
+#sitio .dia,#proy .dia{margin:0 0 2.4rem}
+#proy .dia{margin:0}
+#sitio .dia .slide,#proy .dia .slide{position:static;display:block;inset:auto;
+  width:auto;height:auto;
   min-height:0;animation:none;border:1px solid var(--linea);background:var(--blanco);
   padding:clamp(1.8rem,3vw,2.8rem);overflow:visible}
-#sitio .dia .slide--stmt{background:var(--negro);border-color:var(--negro)}
-#sitio .dia .slide h2{font-size:clamp(1.3rem,2.3vw,1.85rem);max-width:32ch;
+#sitio .dia .slide--stmt,#proy .dia .slide--stmt{background:var(--negro);border-color:var(--negro)}
+#sitio .dia .slide h2,#proy .dia .slide h2{font-size:clamp(1.3rem,2.3vw,1.85rem);max-width:32ch;
   font-weight:400;line-height:1.2}
-#sitio .dia .slide--portada h1,#sitio .dia .slide--stmt h2{
+#sitio .dia .slide--portada h1,#sitio .dia .slide--stmt h2,
+#proy .dia .slide--portada h1,#proy .dia .slide--stmt h2{
   font-size:clamp(1.5rem,2.8vw,2.3rem);max-width:26ch}
-#sitio .dia .slide--div .rom{font-size:clamp(2.2rem,5vw,4rem)}
-#sitio .dia .slide .lede{max-width:64ch}
+#sitio .dia .slide--div .rom,#proy .dia .slide--div .rom{font-size:clamp(2.2rem,5vw,4rem)}
+#sitio .dia .slide .lede,#proy .dia .slide .lede{max-width:64ch}
+/* proyectada ocupa la sala: sin marco y con la letra a tamaño de sala */
+#proy .dia .slide{border:0;padding:0}
+#proy .dia .slide h2{font-size:clamp(1.7rem,3.4vw,2.9rem)}
+#proy .dia .slide--portada h1,#proy .dia .slide--stmt h2{font-size:clamp(2rem,4.4vw,3.6rem)}
+#proy .dia .slide--stmt{background:var(--negro);color:#fff;padding:clamp(1.6rem,3vw,2.6rem)}
 #sitio .deck--sitio,#lector .deck--sitio{display:block;position:static;height:auto;
   overflow:visible}
 #sitio .deck--sitio .slide,#lector .deck--sitio .slide{position:static;display:block;
@@ -3486,6 +3547,65 @@ html:root > body{height:auto;min-height:100%}
    blanco es una mancha. */
 .nav--posado{background:var(--blanco);backdrop-filter:none;
   box-shadow:0 1px 0 0 var(--linea),0 18px 30px -30px rgba(17,17,18,.5)}
+
+/* ====================================================================
+   EL PROYECTOR
+   Una diapositiva es una diapositiva: ocupa la pantalla, se pasa a la
+   siguiente pulsándola y lo demás —el guion del ponente, de qué apartado
+   sale, de qué naturaleza son sus cifras— se consulta encima, sin salir
+   de ella. Aquí no se escribe nada nuevo: se enseña a tamaño de sala lo
+   que ya está en la página.
+   ==================================================================== */
+.proy{position:fixed;inset:0;z-index:120;background:var(--negro);color:#fff;
+  display:flex;flex-direction:column}
+.proy[hidden]{display:none}
+.proy__e{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+  padding:clamp(1rem,3vw,2.6rem);cursor:pointer;position:relative}
+.proy__h{width:min(100%,72rem);max-height:100%;overflow:auto;background:#fff;color:var(--negro);
+  padding:clamp(1.4rem,3vw,3rem);box-shadow:0 40px 90px -50px rgba(0,0,0,.9)}
+.proy__h .dia{margin:0}
+/* las mitades invisibles: la izquierda vuelve, la derecha avanza */
+.proy__z{position:absolute;top:0;bottom:0;width:28%;background:none;border:0;cursor:pointer;
+  opacity:0}
+.proy__z--a{left:0}
+.proy__z--s{right:0}
+.proy__b{flex:none;display:flex;align-items:center;gap:.8rem 1.2rem;flex-wrap:wrap;
+  padding:.9rem clamp(1rem,3vw,2.2rem);border-top:1px solid rgba(255,255,255,.14)}
+.proy__q{max-width:34ch}
+.proy__n{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;color:#fff;flex:none}
+.proy__n b{font-weight:400}
+.proy__n span{color:rgba(255,255,255,.5)}
+.proy__q{margin:0;flex:1;min-width:10rem;font-size:.78rem;line-height:1.5;
+  color:rgba(255,255,255,.62)}
+.proy__a{display:flex;gap:.5rem;flex:none;flex-wrap:wrap}
+.proy__t{font:inherit;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,.28);
+  color:rgba(255,255,255,.82);padding:.62rem 1rem;cursor:pointer;
+  transition:.2s var(--e)}
+.proy__t:hover:not(:disabled){border-color:#fff;color:#fff}
+.proy__t:disabled{opacity:.3;cursor:default}
+.proy__t.es-on{background:#fff;border-color:#fff;color:var(--negro)}
+/* el hilo de avance de la sesión */
+.proy__r{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,255,255,.14)}
+.proy__r i{display:block;height:100%;background:var(--azul);transition:width .3s var(--e)}
+/* el pop-up: se abre encima de la diapositiva y no la quita de delante */
+.proy__p{position:absolute;inset:auto 0 0 0;max-height:52%;overflow:auto;
+  background:#fff;color:var(--negro);padding:clamp(1.4rem,3vw,2.4rem);
+  box-shadow:0 -30px 60px -40px rgba(0,0,0,.8);cursor:default}
+.proy__p[hidden]{display:none}
+.proy__pc{max-width:64rem;margin:0 auto}
+.proy__px{position:absolute;top:.8rem;right:1rem;font:inherit;font-family:var(--f-mono);
+  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;background:none;border:0;
+  color:var(--muted);cursor:pointer;padding:.5rem}
+.proy__px:hover{color:var(--negro)}
+.proy .explica__d{margin-top:0}
+@media(max-width:900px){
+  .proy__b{gap:.7rem;padding:.7rem 1rem}
+  .proy__q{display:none}
+  .proy__z{width:22%}
+}
+@media print{.proy{display:none!important}}
+.dia__pr{margin:1.4rem 0 0}
 
 /* --- el pulido de la versión 10 -----------------------------------------
    Nada de esto añade información: hace que la que hay se lea mejor. */
@@ -4090,11 +4210,31 @@ JS = """
       if(b.dataset.abreFase) abreDestino(b.dataset.abreFase);
       return;
     }
+    /* El índice de una sección se despliega y se vuelve a plegar. Antes se
+       abría solo al entrar en cualquier sección y se quedaba abierto tapando
+       media pantalla: para ver la sección había que adivinar que se cerraba
+       volviendo a pulsar el mismo nombre. Ahora el nombre lleva a la sección
+       —y cierra lo que hubiera abierto—, y la flecha de al lado abre y cierra
+       su índice sin moverse de sitio. */
+    var na = e.target.closest(".nav__l .nav__x");
+    if(na){
+      e.stopPropagation();
+      var suyo = na.parentElement.dataset.irSec;
+      var yaEsta = !paneles.hidden && na.parentElement.classList.contains("es-abierto");
+      if(yaEsta){ cierraPanel(); }
+      else { cierraLector(); veSec(suyo, true); abrePanel(suyo); }
+      return;
+    }
     var nb = e.target.closest(".nav__l button[data-ir-sec]");
     if(nb){
       var abierto = !paneles.hidden && nb.classList.contains("es-abierto");
-      cierraLector(); veSec(nb.dataset.irSec, true);
-      if(abierto) cierraPanel(); else abrePanel(nb.dataset.irSec);
+      var mismo = nb.dataset.irSec === (D.querySelector(".sec.es-on") || {}).id;
+      cierraLector();
+      if(mismo && abierto){ cierraPanel(); return; }
+      veSec(nb.dataset.irSec, true);
+      /* estando ya en la sección, el nombre abre su índice; viniendo de otra,
+         lleva a la sección y deja la pantalla limpia para verla */
+      if(mismo) abrePanel(nb.dataset.irSec); else cierraPanel();
       return;
     }
     if((b = e.target.closest("[data-ir-sec]"))){
@@ -4554,6 +4694,182 @@ JS = """
   }
 
   /* ---------------------------------------------------------------- */
+  /*  El proyector                                                       */
+  /*  Una diapositiva se pasa pulsándola. Aquí no se escribe ninguna     */
+  /*  diapositiva nueva: se recogen las que ya están en la página, con   */
+  /*  su minuto, su parte y todo lo que las acompaña, y se enseñan a     */
+  /*  tamaño de sala. Lo que no cabe en la diapositiva —el guion del     */
+  /*  ponente, de qué apartado sale, de qué naturaleza son sus cifras—   */
+  /*  se consulta encima, sin quitarla de delante.                       */
+  /* ---------------------------------------------------------------- */
+  (function(){
+    var caja = D.getElementById("proy");
+    if(!caja) return;
+    var escena = D.getElementById("proy-escena");
+    var hoja = D.getElementById("proy-hoja");
+    var pop = D.getElementById("proy-pop");
+    var popC = D.getElementById("proy-pop-c");
+    var pops = D.getElementById("proy-pops");
+    var num = D.getElementById("proy-num");
+    var minu = D.getElementById("proy-min");
+    var pieQ = D.getElementById("proy-q");
+    var hilo = D.getElementById("proy-hilo");
+    var btCorta = D.getElementById("proy-corta");
+    var todas = [], vista = [], donde = 0, soloCorta = false, volverA = null;
+
+    function recoge(){
+      if(todas.length) return todas;
+      var desps = [].slice.call(D.querySelectorAll(".partes .desp"));
+      desps.forEach(function(dp){
+        var dia = dp.querySelector(".dia");
+        if(!dia) return;
+        var parte = dp.closest(".parte");
+        var h3 = parte && parte.querySelector("h3");
+        todas.push({
+          id: dp.id,
+          dia: dia,
+          explica: dp.querySelector(".explica"),
+          min: (dp.querySelector(".desp__n") || {}).textContent || "",
+          titulo: (dp.querySelector(".desp__t b") || {}).textContent || "",
+          parte: h3 ? h3.textContent : "",
+          esencial: dp.dataset.esencial === "1"
+        });
+      });
+      return todas;
+    }
+
+    function lista(){
+      var t = recoge();
+      return soloCorta ? t.filter(function(d){ return d.esencial; }) : t;
+    }
+
+    function cierraPop(){ pop.hidden = true; popC.innerHTML = ""; }
+
+    function pinta(){
+      var d = vista[donde];
+      if(!d) return;
+      cierraPop();
+      hoja.innerHTML = "";
+      hoja.appendChild(d.dia.cloneNode(true));
+      hoja.scrollTop = 0;
+      num.textContent = (donde + 1) + " / " + vista.length;
+      minu.innerHTML = d.min ? "<span>· minuto " + d.min + "</span>" : "";
+      pieQ.textContent = [d.parte, d.titulo].filter(Boolean).join(" · ");
+      hilo.style.width = (100 * (donde + 1) / Math.max(1, vista.length)) + "%";
+      /* los pop-ups de esta diapositiva: uno por cada bloque que la acompaña */
+      pops.innerHTML = "";
+      if(d.explica){
+        var bloques = [].slice.call(d.explica.children);
+        bloques.forEach(function(b, i){
+          var rot = b.querySelector(".rotulillo");
+          var nombre = rot ? rot.textContent : "Ficha de la diapositiva";
+          if(nombre.length > 30) nombre = nombre.slice(0, 28).replace(/[ ,·]+$/, "") + "…";
+          var bt = D.createElement("button");
+          bt.type = "button"; bt.className = "proy__t";
+          bt.textContent = nombre;
+          bt.addEventListener("click", function(ev){
+            ev.stopPropagation();
+            var yaEsta = !pop.hidden && popC.dataset.de === d.id + "-" + i;
+            if(yaEsta){ cierraPop(); return; }
+            popC.innerHTML = "";
+            popC.appendChild(b.cloneNode(true));
+            popC.dataset.de = d.id + "-" + i;
+            pop.hidden = false;
+            pop.scrollTop = 0;
+          });
+          pops.appendChild(bt);
+        });
+      }
+      [].slice.call(caja.querySelectorAll("[data-proy]")).forEach(function(b){
+        var p = parseInt(b.dataset.proy, 10);
+        b.disabled = (p < 0 && donde === 0) || (p > 0 && donde >= vista.length - 1);
+      });
+    }
+
+    function mueve(paso){
+      var n = donde + paso;
+      if(n < 0 || n >= vista.length) return;
+      donde = n; pinta();
+    }
+
+    function abre(desde){
+      vista = lista();
+      if(!vista.length) return;
+      volverA = D.querySelector(".sec.es-on");
+      donde = 0;
+      if(desde){
+        for(var i = 0; i < vista.length; i++){ if(vista[i].id === desde){ donde = i; break; } }
+      }
+      caja.hidden = false;
+      D.documentElement.style.overflow = "hidden";
+      pinta();
+      escena.focus && escena.focus();
+    }
+
+    function cierra(){
+      if(caja.hidden) return false;
+      cierraPop();
+      caja.hidden = true;
+      D.documentElement.style.overflow = "";
+      /* se vuelve a la diapositiva en la que se estaba, abierta y a la vista */
+      var d = vista[donde];
+      if(d){
+        var dp = D.getElementById(d.id);
+        if(dp){
+          if(typeof abreDesp === "function") abreDesp(dp);
+          setTimeout(function(){ dp.scrollIntoView({block:"center", behavior:"smooth"}); }, 30);
+        }
+      }
+      return true;
+    }
+    window.__cierraProyector = cierra;
+
+    /* pulsar la diapositiva pasa a la siguiente; la banda de la izquierda vuelve */
+    escena.addEventListener("click", function(e){
+      if(e.target.closest(".proy__p")) return;
+      if(e.target.closest("#proy-atras")){ mueve(-1); return; }
+      mueve(1);
+    });
+    caja.addEventListener("click", function(e){
+      var b = e.target.closest("[data-proy]");
+      if(b){ e.stopPropagation(); mueve(parseInt(b.dataset.proy, 10)); return; }
+      if(e.target.closest("[data-proy-cierra-pop]")){ e.stopPropagation(); cierraPop(); return; }
+      if(e.target.closest("[data-proy-cierra]")){ e.stopPropagation(); cierra(); return; }
+    });
+    btCorta.addEventListener("click", function(e){
+      e.stopPropagation();
+      var actual = vista[donde];
+      soloCorta = !soloCorta;
+      btCorta.classList.toggle("es-on", soloCorta);
+      btCorta.textContent = soloCorta ? ("Las " + recoge().length) : "Ruta corta";
+      vista = lista();
+      if(!vista.length){ soloCorta = false; btCorta.classList.remove("es-on"); vista = lista(); }
+      donde = 0;
+      if(actual){
+        for(var i = 0; i < vista.length; i++){ if(vista[i].id === actual.id){ donde = i; break; } }
+      }
+      pinta();
+    });
+
+    D.addEventListener("click", function(e){
+      var b = e.target.closest("[data-proyecta]");
+      if(!b) return;
+      e.preventDefault();
+      var dp = b.closest(".desp");
+      abre(dp ? dp.id : "");
+    });
+
+    D.addEventListener("keydown", function(e){
+      if(caja.hidden) return;
+      if(e.key === "Escape"){ e.preventDefault(); if(!pop.hidden) cierraPop(); else cierra(); return; }
+      if(e.key === "ArrowRight" || e.key === " " || e.key === "PageDown"){ e.preventDefault(); mueve(1); return; }
+      if(e.key === "ArrowLeft" || e.key === "PageUp"){ e.preventDefault(); mueve(-1); return; }
+      if(e.key === "Home"){ e.preventDefault(); donde = 0; pinta(); return; }
+      if(e.key === "End"){ e.preventDefault(); donde = vista.length - 1; pinta(); return; }
+    }, true);
+  })();
+
+  /* ---------------------------------------------------------------- */
   /*  Leerlo entero, seguido                                            */
   /*  Por defecto cada apartado se abre en el lector, que es como se     */
   /*  consulta. Pero un documento también se lee de la primera línea a   */
@@ -4698,6 +5014,33 @@ MARCO = """
 
 <div class="voz" id="voz" role="tooltip" hidden></div>
 <div class="pito" id="pito" role="status" hidden></div>
+
+<div class="proy" id="proy" role="dialog" aria-modal="true"
+     aria-label="La sesión, proyectada" hidden>
+  <div class="proy__e" id="proy-escena">
+    <div class="proy__r" aria-hidden="true"><i id="proy-hilo"></i></div>
+    <button type="button" class="proy__z proy__z--a" id="proy-atras"
+            aria-label="Diapositiva anterior"></button>
+    <button type="button" class="proy__z proy__z--s" id="proy-sig"
+            aria-label="Diapositiva siguiente"></button>
+    <div class="proy__h" id="proy-hoja"></div>
+    <div class="proy__p" id="proy-pop" hidden>
+      <button type="button" class="proy__px" data-proy-cierra-pop>Cerrar</button>
+      <div class="proy__pc" id="proy-pop-c"></div>
+    </div>
+  </div>
+  <div class="proy__b">
+    <p class="proy__n"><b id="proy-num">1 / 43</b> <span id="proy-min"></span></p>
+    <p class="proy__q" id="proy-q"></p>
+    <div class="proy__a" id="proy-pops"></div>
+    <div class="proy__a">
+      <button type="button" class="proy__t" id="proy-corta">Ruta corta</button>
+      <button type="button" class="proy__t" data-proy="-1">Anterior</button>
+      <button type="button" class="proy__t" data-proy="1">Siguiente</button>
+      <button type="button" class="proy__t" data-proy-cierra>Cerrar</button>
+    </div>
+  </div>
+</div>
 """
 
 
@@ -4807,8 +5150,19 @@ def main():
     recorridos_html = sec_recorridos(rutas_html)
     mapa_html = sec_mapa(svg)
 
+    # La flecha de al lado es la que despliega y pliega el índice de la
+    # sección. Va dentro del propio botón —una marca, no otro botón— para que
+    # el nombre siga siendo una sola cosa que pulsar, y se distingue por dónde
+    # se pulsa. El nombre lleva a la sección; la flecha, a su índice.
+    flecha = ('<i class="nav__x" aria-hidden="true">'
+              '<svg viewBox="0 0 10 6" width="9" height="6">'
+              '<path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" '
+              'stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>'
+              '</svg></i>')
     nav = ('<button type="button" data-ir-sec="inicio">Inicio</button>'
-           + "".join('<button type="button" data-ir-sec="%s">%s</button>' % (i, H.escape(r))
+           + "".join('<button type="button" data-ir-sec="%s" '
+                     'title="Pulse el nombre para ir; la flecha abre y cierra su índice">'
+                     '%s%s</button>' % (i, H.escape(r), flecha)
                      for i, r, doc, _l, _n in SECCIONES if doc))
 
     recursos = (

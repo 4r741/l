@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v10.0
+# Entrega · Sistema documental Giraldo v11.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
 | `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v10.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v10.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
-| `Sistema-Documental-Giraldo-v10.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
+| `Giraldo-TODO-EN-UNO-v11.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v11.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v11.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,40 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## Lo que trae la versión 11
+
+**El menú se despliega y se vuelve a plegar.** Antes el índice de una sección se
+abría solo al entrar en ella y se quedaba abierto tapando media pantalla, de
+modo que para ver la sección había que adivinar que se cerraba volviendo a
+pulsar el mismo nombre. Ahora hay dos gestos distintos y visibles: el **nombre**
+lleva a la sección y deja la pantalla limpia para verla; la **flecha** de al
+lado abre y cierra su índice sin moverse de sitio, y gira para decir en cuál
+está. Estando ya dentro de una sección, su nombre hace lo mismo que la flecha.
+`Esc` cierra el índice, y también lo cierra pulsar fuera.
+
+**Las diapositivas son diapositivas.** Hay un proyector: se abre con «Proyectar
+la sesión» o desde cualquier diapositiva con «Proyectar desde esta», ocupa la
+pantalla entera y se pasa a la siguiente **pulsándola**. La banda de la
+izquierda vuelve atrás; también valen las flechas del teclado, la barra
+espaciadora, `Inicio` y `Fin`. Abajo se ve en cuál va —«12 / 37»—, en qué minuto
+entra, a qué parte pertenece y un hilo de avance de la sesión.
+
+Y lo que no cabe en una diapositiva se consulta **en un pop-up encima de ella,
+sin quitarla de delante**: el guion del ponente con la pregunta difícil y su
+respuesta, de qué apartado del Plan de Dirección sale y de qué naturaleza son
+sus cifras. Un botón deja solo la ruta corta —las once que sostienen el
+argumento cuando la sesión se queda en veinte minutos— y al cerrar se vuelve a
+la diapositiva en la que se estaba, abierta y a la vista. Aquí no se ha escrito
+ninguna diapositiva nueva: son las mismas que ya estaban, a tamaño de sala.
+
+**Los índices, estructurados.** Un índice de sección era una tirada de líneas
+repartida en dos columnas de CSS, y una columna de CSS reparte por altura y no
+por sentido: el rótulo de una parte se quedaba al pie de una columna y sus
+apartados aparecían en la siguiente, de modo que el índice decía una cosa y
+ordenaba otra. Ahora cada parte es un bloque cerrado que no se puede partir, con
+su nombre, **cuántos apartados tiene** y una línea de separación entre entradas.
+Se ve la forma del documento antes de entrar en él.
 
 ## Lo que se ha arreglado en la versión 10
 
