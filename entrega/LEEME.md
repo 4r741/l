@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v15.0
+# Entrega · Sistema documental Giraldo v16.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
 | `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v15.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v15.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
-| `Sistema-Documental-Giraldo-v15.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
+| `Giraldo-TODO-EN-UNO-v16.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v16.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v16.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,31 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## Lo que estaba desorganizado · versión 16
+
+Tres cosas, y las tres del mismo origen: al subir el cuerpo de letra en la
+versión 12, todo lo que medía en letras subió con él.
+
+**El aire dejó de ser aire y se volvió socavón.** Una separación de diez
+unidades pasó de ciento sesenta píxeles a casi doscientos, y las piezas de una
+sección dejaron de tener relación entre ellas: flotaban. Ahora el aire se mide
+en pantalla y no en letras —crece con la ventana, no con el cuerpo del texto— y
+hay una escala de cinco pasos que usa todo el sitio.
+
+**El índice de una sección dejaba media pantalla vacía.** El rótulo de la parte
+a un lado y los apartados al otro dejaba quince unidades de columna en blanco a
+la izquierda y las líneas empezando a media pantalla. Ahora el rótulo de la
+parte es una línea sobre sus apartados, con su número a la izquierda y cuántos
+tiene a la derecha, y los apartados llenan el ancho en tres columnas. La misma
+jerarquía, el triple de densidad y ni un hueco.
+
+**Y las tablas se cortaban.** Un apartado se lee en una columna de sesenta y
+seis caracteres, que es lo que se lee cómodo; pero dentro hay tablas de cinco
+columnas, rejillas de tarjetas y figuras dibujadas, y a todas ellas esa columna
+les quedaba corta: se cortaban por la derecha a mitad de palabra y el resto no
+existía. Ahora el texto sigue en su columna y lo ancho se sale a los lados,
+centrado, con su propio desplazamiento si aun así no cabe.
 
 ## Sin mando a la vista · versión 15
 

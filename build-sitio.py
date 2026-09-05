@@ -3267,43 +3267,34 @@ h1,h2,h3,h4{font-weight:400;letter-spacing:-.02em}
 .puente__v{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-2)}
 .puente__pie{margin:2rem 0 0;font-size:.88rem;line-height:1.8;color:var(--ink-2)}
 .puente__pie b{color:var(--negro)}
-/* El índice de una sección, en bandas: una por parte del documento. A la
-   izquierda cómo se llama la parte y cuánto ocupa; a la derecha sus apartados,
-   repartidos en tantas columnas como quepan. Antes era una tirada de líneas en
-   dos columnas de CSS —que reparten por altura y no por sentido—: quedaba
-   desigual y el rótulo de una parte podía acabar lejos de lo que rotula. */
+/* El índice de una sección. La banda con el rótulo a un lado y los apartados
+   al otro dejaba un socavón: quince unidades de columna vacía a la izquierda
+   y las líneas empezando a media pantalla. Ahora el rótulo de la parte es una
+   línea sobre sus apartados y los apartados llenan el ancho: mucha más
+   densidad, la misma jerarquía y ni un hueco. */
 .lienzo--indice .idx{border-top:1px solid var(--negro)}
-.idx__b{display:grid;grid-template-columns:minmax(11rem,15rem) 1fr;gap:1.4rem 3rem;
-  padding:2.2rem 0;border-bottom:1px solid var(--linea)}
+.idx__b{padding:var(--paso-3) 0 var(--paso-2);border-bottom:1px solid var(--linea)}
 .idx__b:last-child{border-bottom:0}
-.idx__cab{position:sticky;top:calc(var(--nav) + 1.4rem);align-self:start}
-.idx__n{margin:0;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;
+.idx__cab{display:flex;align-items:baseline;gap:1rem;margin:0 0 var(--paso-2)}
+.idx__n{margin:0;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;
   color:var(--linea);font-weight:400}
-.idx__g{margin:.5rem 0 0;font-size:1.02rem;line-height:1.32;font-weight:400;
-  color:var(--negro);max-width:14ch}
-.idx__c{margin:.55rem 0 0;font-family:var(--f-mono);font-size:.62rem;
+.idx__g{margin:0;font-size:.7rem;font-family:var(--f-mono);letter-spacing:.2em;
+  text-transform:uppercase;color:var(--azul);font-weight:400}
+.idx__c{margin:0 0 0 auto;font-family:var(--f-mono);font-size:.6rem;
   letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-/* Los apartados bajan por la primera columna y siguen por la segunda, que es
-   como se lee un índice numerado. Una rejilla los habría puesto de izquierda a
-   derecha y los números saldrían salteados. Cada línea es indivisible, así que
-   ninguna se parte por la mitad. */
-.idx__l{columns:2;column-gap:3rem;column-fill:balance}
-@media(max-width:1200px){.idx__l{columns:1}}
+.idx__l{columns:3;column-gap:var(--paso-4);column-fill:balance}
+@media(max-width:1280px){.idx__l{columns:2}}
+@media(max-width:820px){.idx__l{columns:1}}
 .idx__a{break-inside:avoid;page-break-inside:avoid;
-  display:grid;grid-template-columns:2.1rem 1fr;gap:1rem;align-items:baseline;
-  text-decoration:none;color:var(--ink-2);padding:.62rem 0;
+  display:grid;grid-template-columns:2.9rem 1fr;gap:.7rem;align-items:baseline;
+  text-decoration:none;color:var(--ink-2);padding:.5rem 0;
   border-bottom:1px solid var(--linea-2);transition:color .18s var(--e)}
-.idx__a span{font-family:var(--f-mono);font-size:.68rem;color:var(--muted);
-  transition:color .18s var(--e)}
+.idx__a span{font-family:var(--f-mono);font-size:.64rem;color:var(--muted);
+  transition:color .18s var(--e);white-space:nowrap}
 .idx__a--sinn::before{content:"";display:block}
-.idx__a b{font-size:1rem;font-weight:400;line-height:1.5}
+.idx__a b{font-size:.98rem;font-weight:400;line-height:1.45}
 .idx__a:hover b,.idx__a:focus-visible b{color:var(--negro)}
 .idx__a:hover span,.idx__a:focus-visible span{color:var(--azul)}
-@media(max-width:900px){
-  .idx__b{grid-template-columns:1fr;gap:.8rem;padding:1.6rem 0}
-  .idx__cab{position:static}
-  .idx__l{columns:1}
-}
 /* Los apartados se leen en el lector, no en la página. Sin guiones se ven
    todos seguidos, que es el documento entero. */
 .sitio--vivo .hojas{display:none}
@@ -4234,6 +4225,63 @@ html:root{
 #sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
 #sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
 
+
+/* ====================================================================
+   LO ANCHO · versión 16
+   Un apartado se lee en una columna de sesenta y seis caracteres, que es
+   lo que se lee cómodo. Pero dentro de esa columna hay tablas de siete
+   columnas, rejillas de tarjetas y figuras dibujadas, y a todas ellas la
+   columna de lectura les quedaba corta: se cortaban por la derecha a
+   mitad de palabra y el resto no existía. Aquí el texto sigue en su
+   columna y lo ancho se sale a los lados, con su propio desplazamiento
+   si aun así no cabe.
+   ==================================================================== */
+#lector .lector__in{max-width:none;
+  padding-inline:clamp(1.2rem,4vw,3.4rem)}
+#lector .hoja,#lector .lector__trozo ~ *{display:grid;
+  grid-template-columns:
+    [ancho-start] minmax(0,1fr)
+    [texto-start] min(var(--texto),100%)
+    [texto-end] minmax(0,1fr) [ancho-end]}
+#lector .hoja > *{grid-column:texto}
+#lector .hoja > :where(table,figure,svg,.tablewrap,.dibcaja,.fig,.figura,
+  .cards,.grid,.kpis,.specs,.special,.mini,.entradas,.cinco,.quees,.saydont,
+  .estados,.acciones,.timemap,.reloj,.carriles,.wraci){
+  grid-column:ancho;max-width:100%;justify-self:center;
+  overflow-x:auto;overscroll-behavior-x:contain}
+#lector .hoja > table,#lector .hoja > .tablewrap{width:fit-content;max-width:100%}
+#lector .hoja > .tablewrap table,#lector .hoja > table{min-width:min(100%,48rem)}
+/* y el rótulo del apartado, la nota de trozo y las secciones internas se
+   quedan con el texto, que es donde se leen */
+#lector .hoja > :where(section,article,div):not([class]){grid-column:texto}
+
+/* ====================================================================
+   EL AIRE · versión 16
+   Al subir la letra, el aire subió con ella: todo mide en «rem» y una
+   separación de diez unidades pasó de ciento sesenta píxeles a casi
+   doscientos. El resultado no es amplitud, es que las cosas flotan sin
+   relación entre ellas. Aquí el aire deja de medirse en letras y pasa a
+   medirse en pantalla: crece con la ventana, no con el cuerpo del texto.
+   ==================================================================== */
+html:root{
+  --aire:clamp(3.4rem,4.6vw,5.6rem);
+  --paso-1:.5rem; --paso-2:1rem; --paso-3:1.8rem;
+  --paso-4:3rem; --paso-5:4.6rem;
+  --saca:calc(var(--aire) * -1);
+}
+#sitio .lienzo{margin-bottom:var(--paso-5)}
+#sitio .lienzo__cab{margin-bottom:var(--paso-4)}
+#sitio .sec{padding-bottom:var(--paso-5)}
+/* una sección no termina en un socavón: la última pieza cierra con su aire y
+   ya está */
+#sitio .sec > .lienzo:last-child{margin-bottom:0}
+#sitio .sigue__p{padding:1.2rem .2rem 1.4rem}
+#sitio .sigue{gap:0 var(--paso-4)}
+#sitio .cifras{gap:var(--paso-4);margin-top:var(--paso-3)}
+#sitio .banda{padding:var(--paso-5) 0}
+#sitio .grupod{margin-top:var(--paso-4)}
+#sitio .dibcaja{margin-top:var(--paso-3)}
+#sitio .parte{padding-top:var(--paso-5)}
 
 /* ====================================================================
    LA ESTRUCTURA · versión 15
