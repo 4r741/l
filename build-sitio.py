@@ -4289,81 +4289,6 @@ html:root{
 #sitio .cab h1{letter-spacing:-.038em}
 #sitio .lienzo__cab h2{letter-spacing:-.022em}
 
-/* 7 · Los desplegables. Eran una lista de filas con una raya finísima entre
-   ellas y un más de doce píxeles: a la nueva escala se quedaban en nada.
-   Ahora la fila entera es la zona que se pulsa, el número manda el ancho de
-   la columna izquierda, el signo crece y gira, y el que está abierto se
-   distingue del cerrado sin tener que leerlo: una línea azul a la izquierda
-   y el titular en negro. */
-#sitio .desp{border-top:1px solid var(--linea)}
-#sitio .desp:last-child{border-bottom:1px solid var(--linea)}
-#sitio .desp__b{gap:1.8rem;padding:1.7rem .6rem 1.7rem 0;align-items:flex-start;
-  border-left:2px solid transparent;
-  transition:background .22s var(--e),border-color .28s var(--e),padding .26s var(--e)}
-.sitio--vivo #sitio .desp__b:hover{background:var(--gris);padding-left:1rem;
-  border-left-color:var(--linea)}
-#sitio .desp.es-ab > .desp__h > .desp__b{border-left-color:var(--azul);padding-left:1rem;
-  background:none}
-#sitio .desp__n{font-size:.7rem;letter-spacing:.06em;min-width:3.6rem;
-  padding-top:.25rem;color:var(--muted);transition:color .2s var(--e)}
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__n{color:var(--azul)}
-#sitio .desp__t b{font-size:1.12rem;line-height:1.38;letter-spacing:-.012em;
-  color:var(--ink-2);transition:color .2s var(--e)}
-#sitio .desp__b:hover .desp__t b,
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__t b{color:var(--negro)}
-#sitio .desp__t i{margin-top:.6rem;font-size:.62rem;letter-spacing:.2em}
-#sitio .desp__x{width:15px;height:15px;align-self:flex-start;margin-top:.4rem;
-  transition:transform .34s var(--e)}
-#sitio .desp__x::before{top:7px}
-#sitio .desp__x::after{left:7px}
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__x{transform:rotate(180deg)}
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__x::before{background:var(--azul)}
-.sitio--vivo #sitio .desp.es-ab .desp__in{padding:.4rem 0 3rem 1rem}
-
-/* 8 bis · La barra no crece con el texto. Es mando, no lectura: si sube con
-   la escala, nueve secciones más sus flechas dejan de caber en un portátil.
-   Se fija en píxeles, que es lo que la mantiene igual de cómoda a cualquier
-   tamaño de letra, y se le da a cada entrada el aire justo. */
-.nav__f{padding:0 1.6rem;gap:1rem}
-.nav__m{font-size:14px;letter-spacing:.1em}
-.nav__m em{font-size:9px}
-.nav__l button{font-size:11px;letter-spacing:.05em;padding:0 .5rem;gap:.28rem}
-.nav__l button::after{inset:auto .5rem 1.2rem .5rem}
-.nav__x{width:11px;height:11px}
-.nav__ruta{font-size:11px;letter-spacing:.1em;padding:.5rem .55rem}
-.abrepal{font-size:11px;letter-spacing:.14em}
-.icono{width:2rem;height:2rem}
-@media(max-width:1500px){
-  .nav__f{padding:0 1.1rem;gap:.7rem}
-  .nav__l button{font-size:10.5px;padding:0 .34rem}
-  .nav__l button::after{inset:auto .34rem 1.2rem .34rem}
-  .nav__ruta{font-size:10.5px;padding:.5rem .38rem}
-  /* la lupa se queda; la palabra «buscar» se va, que ocupa lo que dos
-     secciones y no dice nada que el icono no diga */
-  .abrepal span{display:none}
-  .abrepal{padding:.4rem .3rem}
-  .nav__sep{margin:0 .3rem}
-  .nav__m em{display:none}
-}
-@media(max-width:1340px){
-  .nav__l button{font-size:10px;padding:0 .26rem;gap:.2rem}
-  .nav__l button::after{inset:auto .26rem 1.2rem .26rem}
-  .nav__x{width:9px;height:9px}
-  .nav__ruta{font-size:10px;padding:.5rem .3rem}
-  .nav__m{font-size:12px}
-}
-
-/* 8 ter · El selector de puesto en una sola fila. A la nueva escala los seis
-   no cabían y se partía en dos, y lo que se queda pegado arriba tiene que
-   medir siempre lo mismo. */
-#sitio .puestosel{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-#sitio .puestosel::-webkit-scrollbar{display:none}
-#sitio .puestobt{flex:1 1 0;min-width:0;gap:.7rem;padding:1rem .8rem}
-#sitio .puestobt__c{width:1.9rem;height:1.9rem}
-#sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
-#sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
-
-
 /* ====================================================================
    LO MÍO · versión 17
    Pensado desde el móvil hacia arriba: una columna, botones que se pulsan
@@ -4662,6 +4587,169 @@ html:root{--nav:0px; --saca:calc(var(--aire) * -1)}
   #sitio .frente{padding-top:7.5rem}
 }
 @media print{.tope,.rail{display:none!important}}
+
+
+
+/* ====================================================================
+   OTRA PALETA · versión 18
+   Se va el azul cobalto y el blanco de pantalla. Entra un papel cálido
+   —el del papel de verdad, no el del monitor—, una tinta casi negra con
+   un punto de tierra y un solo color: un verde azulado profundo, que es
+   el color de lo clínico sin ser el azul corporativo de todo el mundo.
+   Sigue siendo negro, gris, blanco y un color, pero ninguno de los tres
+   es el que era.
+   ==================================================================== */
+html:root{
+  --negro:#17170F; --tinta:#17170F; --ink:#22221A; --ink-2:#57574C;
+  --muted:#8B8B7E; --linea:#E4E2D8; --linea-2:#F1EFE8;
+  --papel:#FBFAF6; --blanco:#FFFFFF; --gris:#F4F2EC;
+  --paper:#FBFAF6; --surface:#FFFFFF; --surface-2:#F4F2EC;
+  --line:#E4E2D8; --line-soft:#F1EFE8; --rule:#D6D3C7;
+  --signal:#57574C; --signal-soft:rgba(23,23,15,.05);
+  --alerta:#17170F; --alerta-soft:rgba(23,23,15,.06);
+  --azul:#0E5A50; --azul-o:#0A413A; --azul-p:#E7F0EE;
+  --accent:#0E5A50; --accent-ink:#0A413A; --accent-fuerte:#0A413A;
+  --accent-soft:rgba(14,90,80,.07);
+  --acido:#E7F0EE; --acido-ink:#0A413A;
+  --sem-verde:#0E5A50; --sem-amarillo:#8B8B7E;
+  --sem-naranja:#57574C; --sem-rojo:#17170F;
+  --rol-direccion:#17170F; --rol-doctor:#0E5A50; --rol-rac:#3B3B31;
+  --rol-recepcion:#57574C; --rol-higienista:#77776A; --rol-auxiliar:#9A9A8D;
+}
+/* el papel manda en el fondo; lo que va sobre tarjeta se queda blanco */
+html:root > body{background:var(--papel)}
+#sitio .miobt,#sitio .mirompe,#sitio .puerta{background:var(--blanco)}
+.tope{background:var(--papel)}
+.tope--sobre{background:transparent}
+.rail{background:var(--papel)}
+#lector{background:var(--papel)}
+
+/* ====================================================================
+   OTRA DISPOSICIÓN · versión 18
+   Todo estaba apilado en una columna centrada: rótulo debajo de rótulo,
+   bloque debajo de bloque. Aquí las cabeceras se abren en dos: a la
+   izquierda lo que se llama, a la derecha lo que es. Es la retícula de
+   una publicación y no la de un formulario, y cambia la lectura de todas
+   las pantallas sin tocar una palabra.
+   ==================================================================== */
+#sitio .lienzo__cab{display:grid;
+  grid-template-columns:minmax(0,10fr) minmax(0,13fr);
+  gap:var(--paso-2) var(--paso-4);align-items:start;max-width:none;
+  padding-top:var(--paso-3);border-top:1px solid var(--negro)}
+#sitio .lienzo__cab h2{margin:0;font-size:clamp(1.5rem,3.2vw,2.5rem);line-height:1.08;
+  font-weight:300;letter-spacing:-.03em;max-width:16ch}
+#sitio .lienzo__cab p{margin:0;max-width:60ch;padding-top:.35rem}
+
+/* la cabecera de sección: el número, el nombre y la frase, apilados y con
+   el aire justo. Se probó a poner el número en una columna propia, pero va
+   fuera de flujo por diseño —es una marca de agua— y dejaba la columna en
+   cero: apilado se lee mejor y ocupa menos. */
+#sitio .frente{padding-top:9rem}
+#sitio .frente__n{font-size:clamp(3.4rem,9vw,7.5rem);line-height:.8;
+  margin-bottom:var(--paso-2)}
+#sitio .frente h1{max-width:18ch}
+
+/* y las dos puertas del final, una al lado de otra y no una debajo */
+#sitio .sigue{grid-template-columns:repeat(auto-fit,minmax(17rem,1fr))}
+
+/* ====================================================================
+   QUE QUEPA EN UN TELÉFONO · versión 18
+   Lo que no cabe se recorre de lado dentro de su caja; lo que nunca se
+   lleva la página consigo. Una tabla de cinco columnas no puede empujar
+   el ancho de la pantalla: la culpable era la de las setenta y seis
+   acciones, que arrastraba la página treinta y siete píxeles a la
+   derecha en un móvil.
+   ==================================================================== */
+#sitio .tablawrap,#sitio .tablewrap{overflow-x:auto;overscroll-behavior-x:contain;
+  max-width:100%;min-width:0}
+#sitio table{max-width:none}
+#sitio .dibcaja{max-width:100%}
+/* nada se sale de la ventana, pase lo que pase */
+html:root > body{overflow-x:clip}
+#sitio .sec{overflow-x:clip}
+
+@media(max-width:900px){
+  #sitio .lienzo__cab{grid-template-columns:1fr;gap:var(--paso-2)}
+  #sitio .lienzo__cab h2{max-width:none}
+  #sitio .frente{padding-top:6.5rem}
+  #sitio .frente h1{max-width:none}
+}
+
+
+/* 7 · Los desplegables. Eran una lista de filas con una raya finísima entre
+   ellas y un más de doce píxeles: a la nueva escala se quedaban en nada.
+   Ahora la fila entera es la zona que se pulsa, el número manda el ancho de
+   la columna izquierda, el signo crece y gira, y el que está abierto se
+   distingue del cerrado sin tener que leerlo: una línea azul a la izquierda
+   y el titular en negro. */
+#sitio .desp{border-top:1px solid var(--linea)}
+#sitio .desp:last-child{border-bottom:1px solid var(--linea)}
+#sitio .desp__b{gap:1.8rem;padding:1.7rem .6rem 1.7rem 0;align-items:flex-start;
+  border-left:2px solid transparent;
+  transition:background .22s var(--e),border-color .28s var(--e),padding .26s var(--e)}
+.sitio--vivo #sitio .desp__b:hover{background:var(--gris);padding-left:1rem;
+  border-left-color:var(--linea)}
+#sitio .desp.es-ab > .desp__h > .desp__b{border-left-color:var(--azul);padding-left:1rem;
+  background:none}
+#sitio .desp__n{font-size:.7rem;letter-spacing:.06em;min-width:3.6rem;
+  padding-top:.25rem;color:var(--muted);transition:color .2s var(--e)}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__n{color:var(--azul)}
+#sitio .desp__t b{font-size:1.12rem;line-height:1.38;letter-spacing:-.012em;
+  color:var(--ink-2);transition:color .2s var(--e)}
+#sitio .desp__b:hover .desp__t b,
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__t b{color:var(--negro)}
+#sitio .desp__t i{margin-top:.6rem;font-size:.62rem;letter-spacing:.2em}
+#sitio .desp__x{width:15px;height:15px;align-self:flex-start;margin-top:.4rem;
+  transition:transform .34s var(--e)}
+#sitio .desp__x::before{top:7px}
+#sitio .desp__x::after{left:7px}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__x{transform:rotate(180deg)}
+#sitio .desp.es-ab > .desp__h > .desp__b .desp__x::before{background:var(--azul)}
+.sitio--vivo #sitio .desp.es-ab .desp__in{padding:.4rem 0 3rem 1rem}
+
+/* 8 bis · La barra no crece con el texto. Es mando, no lectura: si sube con
+   la escala, nueve secciones más sus flechas dejan de caber en un portátil.
+   Se fija en píxeles, que es lo que la mantiene igual de cómoda a cualquier
+   tamaño de letra, y se le da a cada entrada el aire justo. */
+.nav__f{padding:0 1.6rem;gap:1rem}
+.nav__m{font-size:14px;letter-spacing:.1em}
+.nav__m em{font-size:9px}
+.nav__l button{font-size:11px;letter-spacing:.05em;padding:0 .5rem;gap:.28rem}
+.nav__l button::after{inset:auto .5rem 1.2rem .5rem}
+.nav__x{width:11px;height:11px}
+.nav__ruta{font-size:11px;letter-spacing:.1em;padding:.5rem .55rem}
+.abrepal{font-size:11px;letter-spacing:.14em}
+.icono{width:2rem;height:2rem}
+@media(max-width:1500px){
+  .nav__f{padding:0 1.1rem;gap:.7rem}
+  .nav__l button{font-size:10.5px;padding:0 .34rem}
+  .nav__l button::after{inset:auto .34rem 1.2rem .34rem}
+  .nav__ruta{font-size:10.5px;padding:.5rem .38rem}
+  /* la lupa se queda; la palabra «buscar» se va, que ocupa lo que dos
+     secciones y no dice nada que el icono no diga */
+  .abrepal span{display:none}
+  .abrepal{padding:.4rem .3rem}
+  .nav__sep{margin:0 .3rem}
+  .nav__m em{display:none}
+}
+@media(max-width:1340px){
+  .nav__l button{font-size:10px;padding:0 .26rem;gap:.2rem}
+  .nav__l button::after{inset:auto .26rem 1.2rem .26rem}
+  .nav__x{width:9px;height:9px}
+  .nav__ruta{font-size:10px;padding:.5rem .3rem}
+  .nav__m{font-size:12px}
+}
+
+/* 8 ter · El selector de puesto en una sola fila. A la nueva escala los seis
+   no cabían y se partía en dos, y lo que se queda pegado arriba tiene que
+   medir siempre lo mismo. */
+#sitio .puestosel{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+#sitio .puestosel::-webkit-scrollbar{display:none}
+#sitio .puestobt{flex:1 1 0;min-width:0;gap:.7rem;padding:1rem .8rem}
+#sitio .puestobt__c{width:1.9rem;height:1.9rem}
+#sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
+#sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
+
 
 
 """+ CSS_DATOS + """
@@ -6070,7 +6158,9 @@ MARCO = """
 """
 
 
-COBALTO = (0x1F, 0x45, 0xFF)
+# El color de acento al que va a parar todo lo que en los documentos era
+# color. Fue cobalto; ahora es el verde azulado profundo de la versión 18.
+COBALTO = (0x0E, 0x5A, 0x50)
 
 
 def _luz(r, g, b):
@@ -6121,10 +6211,8 @@ def monocroma(css):
             return (gris, gris, gris)
         h = _tono(r, g, b)
         luz = _luz(r, g, b)
-        if 200 <= h <= 265:                       # el azul propio, intacto
-            return (r, g, b)
-        if 110 <= h < 200:                        # verdes y azulados: acento
-            return _mezcla(COBALTO, luz)
+        if 110 <= h <= 265:                       # verdes, azulados y azules
+            return _mezcla(COBALTO, luz)          # todos van al acento
         gris = int(round(min(0.98, max(0.07, luz)) * 255))
         return (gris, gris, gris)
 
