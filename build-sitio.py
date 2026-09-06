@@ -2085,11 +2085,11 @@ def sigue(ident, rotulos, cuantos):
     if not puertas:
         return ""
     filas = "".join(
-        '<button type="button" class="sigue__p" data-ir-sec="%s">'
+        '<a href="#%s" class="sigue__p" data-ir-sec="%s">'
         '<span class="letra sigue__k">%s · %s</span>'
         '<span class="sigue__q">%s</span>'
-        '<span class="sigue__f" aria-hidden="true">&#8594;</span></button>'
-        % (i, H.escape(rotulos.get(i, i)), unidad(i, cuantos), H.escape(q))
+        '<span class="sigue__f" aria-hidden="true">&#8594;</span></a>'
+        % (i, i, H.escape(rotulos.get(i, i)), unidad(i, cuantos), H.escape(q))
         for i, q in puertas)
     return ('<div class="lienzo lienzo--sigue">\n'
             '  <div class="lienzo__cab"><h2>Por dónde se sigue</h2>\n'
@@ -2207,7 +2207,7 @@ def que_es(ident, piezas, propio):
     <p class="letra">La extensión, declarada</p>
     <p class="que__x"><b>%s</b> · unas %s palabras · leerlo entero lleva del orden
       de <b>%s</b>. No hace falta: cada apartado se abre solo y se lee solo, y hay
-      <button type="button" class="enlacillo" data-ir-sec="recorridos">diez recorridos</button>
+      <a href="#recorridos" class="enlacillo" data-ir-sec="recorridos">diez recorridos</a>
       que llevan por lo que toca a cada uno. Pero si quiere leerlo seguido, de la primera
       línea a la última, está entero aquí abajo.</p>
     <button type="button" class="bt bt--fino" data-seguido>Leerlo entero, seguido</button>
@@ -2772,10 +2772,10 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
         % (H.escape(k), H.escape(t), H.escape(q), cifras(c))
         for k, t, q, c in INICIO_BLOQUES)
     puertas = "".join(
-        '<button type="button" class="puerta" data-ir-sec="%s">'
+        '<a href="#%s" class="puerta" data-ir-sec="%s">'
         '<span class="letra">%02d</span><b>%s</b><span class="puerta__q">%s</span>'
-        '<span class="puerta__m letra">%d apartados</span></button>'
-        % (i, n + 1, H.escape(nombre), H.escape(INTROS[i][0]), cuantos)
+        '<span class="puerta__m letra">%d apartados</span></a>'
+        % (i, i, n + 1, H.escape(nombre), H.escape(INTROS[i][0]), cuantos)
         for n, (i, _rot, nombre, cuantos) in enumerate(indice))
 
     return """
@@ -2788,8 +2788,8 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
       <p class="portada__l">Le devolvemos su sonrisa completa, en el menor tiempo posible,
         y le cuidamos para siempre.</p>
       <div class="portada__b">
-        <button type="button" class="bt bt--fuerte" data-ir-sec="recorridos">Elegir un recorrido</button>
-        <button type="button" class="bt" data-ir-sec="mapa">Ver el mapa</button>
+        <a href="#recorridos" class="bt bt--fuerte" data-ir-sec="recorridos">Elegir un recorrido</a>
+        <a href="#mapa" class="bt" data-ir-sec="mapa">Ver el mapa</a>
       </div>
     </div>
     <p class="portada__pie letra">Rúa Bolivia nº 2 · Vigo · Uso interno y confidencial</p>
@@ -5193,6 +5193,9 @@ JS = """
        en su columna y lo que se lee, en la suya. */
     var nb = e.target.closest(".arb__b[data-ir-sec]");
     if(nb){
+      /* Las filas del índice son enlaces de verdad: sin guion, el navegador
+         salta a la sección por su cuenta. Con guion, mandamos nosotros. */
+      e.preventDefault();
       var casa = nb.parentElement;
       var abierta = casa.classList.contains("es-ab");
       var mismo = nb.dataset.irSec === (D.querySelector(".sec.es-on") || {}).id;
@@ -6056,6 +6059,87 @@ JS = """
 """
 
 
+SIN_GUION = """
+/* ====================================================================
+   CUANDO NO CORRE EL GUION · versión 20
+
+   Un archivo que se abre con doble clic acaba en sitios donde no se
+   ejecutan guiones: el visor de un teléfono, la vista previa de una
+   aplicación de correo o de mensajería, un navegador con los scripts
+   bloqueados. Hasta ahora, en esos sitios, la página se pintaba entera
+   y perfecta —la portada, el botón de Índice, todo— y no respondía a un
+   solo clic, porque cada mando era un botón que movía el guion. Fallaba
+   sin avisar, que es la peor manera de fallar: nada en la pantalla decía
+   que faltase nada.
+
+   El documento nace marcado «sin-js». Si el guion llega a correr, la
+   marca se va en la primera línea y no se lee nada de esto. Si no llega
+   a correr, manda esta hoja y el sistema se enseña como lo que es por
+   debajo: un documento largo con su índice de enlaces al principio.
+   Todas las secciones a la vista, todos los apartados desplegados, y
+   los ochocientos veintisiete enlaces saltando solos, que para eso son
+   enlaces de verdad y no botones.
+   ==================================================================== */
+
+/* 1 · Todo a la vista. Las secciones se esconden con «hidden» para que el
+   guion las vaya sacando de una en una; sin guion, nadie las saca. */
+.sin-js .sec[hidden],
+.sin-js .sec{display:block !important}
+.sin-js [data-sub][hidden],
+.sin-js .arb__l[hidden],
+.sin-js .sub[hidden]{display:block !important}
+
+/* 2 · El índice deja de ser un panel que se abre y pasa a ser lo primero
+   que hay, quieto, encima del documento. */
+.sin-js .rail{position:static !important;visibility:visible !important;
+  opacity:1 !important;transform:none !important;width:auto !important;
+  height:auto !important;max-height:none !important;inset:auto !important;
+  display:block !important;border-bottom:1px solid var(--linea)}
+.sin-js .rail[hidden]{display:block !important}
+.sin-js .rail__in{padding:2.4rem 1.4rem 3rem;max-height:none;overflow:visible}
+.sin-js .arb__s{border-bottom:1px solid var(--linea)}
+
+/* 3 · Lo que sin guion no puede hacer nada, no se enseña: el botón de
+   Índice, el buscador, la flecha de desplegar, el lector y sus mandos.
+   Un mando muerto en la pantalla es una promesa que no se cumple. */
+.sin-js #railbt,
+.sin-js .rail__filtro,
+.sin-js .rail__pie,
+.sin-js .abrepal,
+.sin-js .paleta,
+.sin-js #lector,
+.sin-js .volver,
+.sin-js .arb__x,
+.sin-js .arb__c,
+.sin-js [data-abre],
+.sin-js .nav,
+.sin-js .tope__d{display:none !important}
+
+/* 4 · La barra de arriba deja de estar pegada: sin guion no hay nada que
+   la mueva y solo taparía el primer titular de cada salto. */
+.sin-js .tope{position:static !important}
+.sin-js body{padding-top:0 !important}
+
+/* 5 · Los enlaces del índice, con su aire, y sin el subrayado del
+   navegador: siguen siendo la misma tipografía de siempre. */
+.sin-js a.arb__b,
+.sin-js a.puerta,
+.sin-js a.bt,
+.sin-js a.tope__m,
+.sin-js a.sigue__p{text-decoration:none;color:inherit}
+.sin-js a.arb__b{padding:1.1rem 0}
+
+/* 6 · Un aviso, una sola vez y arriba del todo, para que quien abra el
+   archivo así sepa por qué no se pulsa nada y qué hacer para tenerlo
+   entero. No es un error: es el sistema en su forma más simple. */
+.sin-js .aviso-sinjs{display:block;background:var(--negro);color:#fff;
+  padding:1.1rem 1.4rem;font-size:.82rem;line-height:1.6;letter-spacing:.01em}
+.sin-js .aviso-sinjs b{font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  font-size:.6rem;display:block;margin-bottom:.35rem;color:var(--azul-p)}
+.con-js .aviso-sinjs,
+.aviso-sinjs{display:none}
+"""
+
 MARCO = """
 @@ARTES@@
 <a class="saltar" href="#sitio">Saltar al contenido</a>
@@ -6073,11 +6157,11 @@ MARCO = """
      titular, y se va.
      ------------------------------------------------------------------ -->
 <header class="tope" id="tope">
-  <button class="tope__m" type="button" data-ir-sec="inicio">
-    <b>Giraldo</b><i>No medias sonrisas</i></button>
+  <a class="tope__m" href="#inicio" data-ir-sec="inicio">
+    <b>Giraldo</b><i>No medias sonrisas</i></a>
   <div class="tope__d">
-    <button class="tope__b" type="button" data-ir-sec="recorridos">Recorridos</button>
-    <button class="tope__b" type="button" data-ir-sec="mapa">Mapa</button>
+    <a class="tope__b" href="#recorridos" data-ir-sec="recorridos">Recorridos</a>
+    <a class="tope__b" href="#mapa" data-ir-sec="mapa">Mapa</a>
     <button class="tope__b" type="button" data-abre="paleta">Buscar</button>
     <button class="railbt" type="button" id="railbt" aria-expanded="false"
             aria-controls="rail"><span class="railbt__r">Índice</span>
@@ -6095,8 +6179,8 @@ MARCO = """
     </div>
     <nav class="arb" id="arb">@@ARBOL@@</nav>
     <div class="rail__pie">
-      <button type="button" data-ir-sec="recorridos">Los diez recorridos</button>
-      <button type="button" data-ir-sec="mapa">El mapa de las catorce fases</button>
+      <a href="#recorridos" data-ir-sec="recorridos">Los diez recorridos</a>
+      <a href="#mapa" data-ir-sec="mapa">El mapa de las catorce fases</a>
       <button type="button" data-abre="recursos">Recursos</button>
       <button type="button" data-abre="teclas">Cómo se usa</button>
     </div>
@@ -6334,10 +6418,10 @@ def main():
               '<path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" '
               'stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>'
               '</svg></i>')
-    nav = ('<button type="button" data-ir-sec="inicio">Inicio</button>'
-           + "".join('<button type="button" data-ir-sec="%s" '
+    nav = ('<a href="#inicio" data-ir-sec="inicio">Inicio</a>'
+           + "".join('<a href="#%s" data-ir-sec="%s" '
                      'title="Pulse el nombre para ir; la flecha abre y cierra su índice">'
-                     '%s%s</button>' % (i, H.escape(r), flecha)
+                     '%s%s</a>' % (i, i, H.escape(r), flecha)
                      for i, r, doc, _l, _n in SECCIONES if doc))
 
     recursos = (
@@ -6393,9 +6477,9 @@ def main():
     # que cambia es dónde vive y que ahora está siempre a la vista.
     porsec = {i: (r, d, n) for i, r, d, n in indice}
     arbol = ['<div class="arb__s" data-arb="mio">\n'
-             '  <button type="button" class="arb__b" data-ir-sec="mio">'
+             '  <a href="#mio" class="arb__b" data-ir-sec="mio">'
              '<i class="arb__n">00</i><span class="arb__r">Lo mío</span>'
-             '<i class="arb__c">su puesto</i><i class="arb__x"></i></button>\n'
+             '<i class="arb__c">su puesto</i><i class="arb__x"></i></a>\n'
              '</div>']
     for k, (ident, rotulo, _doc, _lede, _num) in enumerate(
             [(i, r, d, l, n) for i, r, d, l, n in SECCIONES]):
@@ -6409,11 +6493,11 @@ def main():
         cuenta = porsec.get(ident, (None, None, 0))[2]
         arbol.append(
             '<div class="arb__s" data-arb="%s">\n'
-            '  <button type="button" class="arb__b" data-ir-sec="%s" aria-expanded="false">'
+            '  <a href="#%s" class="arb__b" data-ir-sec="%s" aria-expanded="false">'
             '<i class="arb__n">%02d</i><span class="arb__r">%s</span>'
-            '<i class="arb__c">%s</i>%s</button>%s\n'
+            '<i class="arb__c">%s</i>%s</a>%s\n'
             '</div>'
-            % (ident, ident, k + 1, H.escape(rotulo), cuenta or "",
+            % (ident, ident, ident, k + 1, H.escape(rotulo), cuenta or "",
                ('<svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true">'
                 '<path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" '
                 'stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -6441,8 +6525,23 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
+    extra = extra + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
+
+    # El documento nace marcado «sin-js». Si el guion llega a correr, la marca
+    # se quita en la primera línea y manda la hoja de siempre. Si no llega a
+    # correr —un visor que no ejecuta guiones, un navegador viejo, una pestaña
+    # con los scripts bloqueados— la marca se queda, y con ella una hoja que
+    # enseña el sistema entero como lo que es: un documento largo con su índice
+    # de enlaces al principio. Antes, en ese caso, la página se pintaba perfecta
+    # y no respondía a un solo clic, que es la peor manera de fallar: sin avisar.
+    cabecera = cabecera.replace('<html lang="es">', '<html lang="es" class="sin-js">', 1)
+    j = cabecera.index("<head>") + len("<head>")
+    cabecera = (cabecera[:j]
+                + '\n<script>document.documentElement.classList.remove("sin-js");'
+                  'document.documentElement.classList.add("con-js");</script>'
+                + cabecera[j:])
 
     datos = ("<script>window.__ORDEN__ = "
              + json.dumps([[c, d, g, r, s] for c, d, g, r, s in orden], ensure_ascii=False)
@@ -6451,6 +6550,15 @@ def main():
              + ";\nwindow.__RUTAS__ = " + json.dumps(rutas_datos, ensure_ascii=False)
              + ";\nwindow.__FASES__ = " + json.dumps(fases_datos, ensure_ascii=False)
              + ";</script>")
+
+    # El aviso va pegado al <body>, antes que nada: si no corre el guion es
+    # lo primero que se lee, y si corre no llega a verse.
+    aviso = ('<div class="aviso-sinjs"><b>El sistema, en su forma más simple</b>'
+             'Está viendo el documento entero, con su índice al principio y todos '
+             'los apartados desplegados: los enlaces funcionan. Para tenerlo con su '
+             'índice plegable, sus recorridos y su buscador, guarde el archivo y '
+             'ábralo con un navegador (Safari, Chrome, Edge o Firefox).</div>')
+    cabecera = cabecera + "\n" + aviso
 
     salida = RAIZ / "centro.html"
     texto = (cabecera + "\n" + cuerpo + "\n" + datos + "\n" + JS + "\n</body>\n</html>\n")

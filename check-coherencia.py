@@ -694,6 +694,16 @@ def comprueba_sitio():
             if destino in propios:
                 continue
             atr = a_m.group(1) + a_m.group(3)
+            # Los mandos de navegación —las filas del índice, las ocho puertas,
+            # los botones de la portada y los de la barra— llevan «data-ir-sec»
+            # y su texto es el nombre de la sección a la que van: «Ver el mapa»,
+            # «Plan de Dirección». Esos no son saltos a ciegas, son el propio
+            # índice. Eran botones y desde la versión 20 son enlaces de verdad,
+            # para que el sistema se navegue también donde no corren los guiones.
+            # La regla sigue entera para lo que la motivó: un enlace metido en
+            # mitad de un párrafo que te saca de la sección sin decirlo.
+            if "data-ir-sec" in atr:
+                continue
             if "salta" not in atr:
                 callados.append(destino)
         if callados:

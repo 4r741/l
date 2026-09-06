@@ -17,6 +17,42 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## Por qué no se pulsaba nada · versión 20
+
+El índice seguía sin funcionar, y la causa no estaba en el índice.
+
+Un archivo que se abre con doble clic acaba en sitios donde **no se ejecutan
+guiones**: el visor de un teléfono, la vista previa de una aplicación de correo
+o de mensajería, un navegador con los scripts bloqueados. En esos sitios la
+página se pintaba **entera y perfecta** —la portada, el botón de «Índice», los
+dos botones, la tipografía— y no respondía a un solo clic. Cada mando del
+sistema era un `<button>` que movía el guion; sin guion, todos muertos.
+
+Fallaba sin avisar, que es la peor manera de fallar: nada en la pantalla decía
+que faltase nada, así que no había forma de saber que el problema era el visor
+y no el documento.
+
+Ahora el guion es una mejora, no un requisito:
+
+- **Los mandos son enlaces de verdad.** Las diez filas del índice, las ocho
+  puertas de los documentos, los botones de la portada y los de la barra de
+  arriba ya no son botones: son `<a href="#…">`. Con guion, el guion manda y
+  hace lo de siempre. Sin guion, el navegador salta por su cuenta.
+- **Sin guion, el sistema se enseña entero.** Todas las secciones a la vista,
+  todos los apartados desplegados y el índice quieto al principio: un documento
+  largo con su índice de enlaces, que es lo que esto es por debajo. Los
+  ochocientos setenta y seis enlaces internos saltan solos.
+- **Lo que no puede funcionar, no se enseña.** Sin guion desaparecen el botón
+  de «Índice», el buscador, la flecha de desplegar y el lector. Un mando muerto
+  en la pantalla es una promesa que no se cumple.
+- **Y se avisa, una vez y arriba del todo**, de que se está viendo la forma
+  simple del sistema y de que basta guardar el archivo y abrirlo con un
+  navegador para tenerlo entero.
+
+Si al abrirlo aparece esa banda negra arriba, el archivo está bien: es el visor
+el que no ejecuta guiones. **Guarde el archivo y ábralo con Safari, Chrome, Edge
+o Firefox** y tendrá el índice plegable, los recorridos y el buscador.
+
 ## El índice, en el teléfono · versión 19
 
 El índice no se desplegaba en el móvil, y la causa no era de estilo: **cada
