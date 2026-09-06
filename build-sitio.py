@@ -4675,6 +4675,47 @@ html:root > body{overflow-x:clip}
   #sitio .frente h1{max-width:none}
 }
 
+/* ====================================================================
+   EL ÍNDICE EN UN TELÉFONO · versión 19
+   En una pantalla de 390 el índice era inusable: el rótulo del buscador
+   se salía por la derecha, cada sección medía doscientos píxeles de alto
+   y solo cabían seis, y el número quedaba a un palmo de su nombre. Aquí
+   la fila es una fila: número, nombre, cuenta y flecha, en una línea y
+   con el aire justo. Y la flecha es un blanco de cuarenta y cuatro
+   píxeles, que es lo que mide un dedo.
+   ==================================================================== */
+@media(max-width:900px){
+  .rail__in{padding:5.4rem 1.1rem 3rem}
+  .rail__filtro{gap:.8rem;padding-bottom:.9rem;margin-bottom:.4rem}
+  .rail__filtro input{min-width:0;font-size:1.15rem}
+  .rail__n{font-size:.54rem}
+
+  .arb__b{grid-template-columns:2.2rem minmax(0,1fr) auto 2.6rem;
+    gap:.7rem;padding:.95rem 0;align-items:center}
+  .arb__n{font-size:.62rem}
+  .arb__r{font-size:1.32rem;line-height:1.15;letter-spacing:-.02em}
+  .arb__c{font-size:.54rem;letter-spacing:.1em}
+  /* La flecha se queda del tamaño de una flecha y lo que crece es su zona
+     de toque: el relleno cuenta para el dedo y no para el dibujo. Estirada
+     al ancho de la columna salía del tamaño de una uña. */
+  .arb__x{width:14px;height:9px;box-sizing:content-box;
+    padding:1.15rem .1rem 1.15rem 1.7rem;overflow:visible}
+  .arb__s.es-aqui > .arb__b .arb__r{text-underline-offset:.3rem}
+  .arb__l{padding:0 0 1.2rem}
+  /* sin columnas: una sola columna de CSS dentro de una caja estrecha dejaba
+     el índice con altura cero en el teléfono. Aquí no hacen falta. */
+  .arb__l .sub{columns:auto;column-count:auto;column-width:auto;display:block}
+  .arb__l .sub__b{margin:0 0 1rem}
+  .arb__l .sub a{padding:.6rem 0;font-size:1rem;grid-template-columns:2.2rem 1fr}
+  .rail__pie{margin-top:2rem;gap:.2rem 1.2rem}
+  .rail__pie button{font-size:.56rem;padding:.7rem 0}
+}
+@media(max-width:900px) and (hover:none){
+  /* sin ratón no hay «encima»: el estado se ve al tocar, no al pasar */
+  .arb__b:hover{color:var(--negro)}
+}
+
+
 
 /* 7 · Los desplegables. Eran una lista de filas con una raya finísima entre
    ellas y un más de doce píxeles: a la nueva escala se quedaban en nada.
@@ -5155,9 +5196,25 @@ JS = """
       var casa = nb.parentElement;
       var abierta = casa.classList.contains("es-ab");
       var mismo = nb.dataset.irSec === (D.querySelector(".sec.es-on") || {}).id;
-      if(mismo && abierta){ pliega(casa); return; }
-      cierraLector();
-      veSec(nb.dataset.irSec, true);
+      /* La flecha solo es flecha cuando hay algo que desplegar: en las
+         secciones sin subapartados su hueco pertenece al nombre, para que
+         en el teléfono no quede una banda muerta al borde de la fila. */
+      var enFlecha = !!e.target.closest(".arb__x") && !!casa.querySelector(".arb__l");
+      var estrecho = window.matchMedia("(max-width: 900px)").matches;
+      /* En una pantalla de teléfono el índice ocupa todo: si al elegir una
+         sección se queda delante, no se ve lo que se acaba de elegir. Ahí el
+         nombre lleva a la sección y cierra; la flecha, que es lo que se pulsa
+         para ver qué hay dentro, despliega sin cerrar nada. En el escritorio
+         el índice y lo que se lee conviven, y el nombre puede hacer las dos. */
+      if(estrecho && !enFlecha){
+        cierraLector();
+        veSec(nb.dataset.irSec, true);
+        cierraRail();
+        return;
+      }
+      if((mismo || estrecho) && abierta && (enFlecha || !estrecho)){ pliega(casa); return; }
+      if(!estrecho) cierraLector();
+      if(!estrecho) veSec(nb.dataset.irSec, true);
       despliega(casa);
       return;
     }
@@ -5769,7 +5826,10 @@ JS = """
        se venía a mirar */
     var viva = D.querySelector(".arb__s.es-aqui");
     if(viva) despliega(viva);
-    if(filtra) setTimeout(function(){ filtra.focus(); }, 60);
+    /* el foco en el buscador abre el teclado y se come media pantalla: solo
+       en escritorio, donde no estorba */
+    if(filtra && !window.matchMedia("(max-width: 900px)").matches)
+      setTimeout(function(){ filtra.focus(); }, 60);
   }
   function cierraRail(){
     if(!rail || rail.hidden) return false;
@@ -6029,7 +6089,7 @@ MARCO = """
   <div class="rail__in">
     <div class="rail__filtro">
       <input id="filtra" type="search" autocomplete="off" spellcheck="false"
-             placeholder="Escriba y el índice se queda con lo que busca"
+             placeholder="Buscar"
              aria-label="Filtrar el índice">
       <span class="rail__n">@N@ apartados</span>
     </div>
@@ -6339,14 +6399,19 @@ def main():
              '</div>']
     for k, (ident, rotulo, _doc, _lede, _num) in enumerate(
             [(i, r, d, l, n) for i, r, d, l, n in SECCIONES]):
+        # El índice de cada sección venía del desplegable de la barra antigua y
+        # traía puesto su «hidden». Dentro del árbol lo que enseña y esconde es
+        # el contenedor, no el propio índice: con el atributo puesto, el
+        # navegador le daba altura cero en cuanto se le pedía una sola columna
+        # —en un teléfono— y la sección se desplegaba vacía.
         sub = next((m for m in menus if ('data-sub="%s"' % ident) in m), "")
+        sub = sub.replace(' hidden>', '>', 1)
         cuenta = porsec.get(ident, (None, None, 0))[2]
         arbol.append(
             '<div class="arb__s" data-arb="%s">\n'
             '  <button type="button" class="arb__b" data-ir-sec="%s" aria-expanded="false">'
             '<i class="arb__n">%02d</i><span class="arb__r">%s</span>'
-            '<i class="arb__c">%s</i>%s</button>\n'
-            '  <div class="arb__l" hidden>%s</div>\n'
+            '<i class="arb__c">%s</i>%s</button>%s\n'
             '</div>'
             % (ident, ident, k + 1, H.escape(rotulo), cuenta or "",
                ('<svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true">'

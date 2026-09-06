@@ -1,13 +1,13 @@
-# Entrega · Sistema documental Giraldo v18.0
+# Entrega · Sistema documental Giraldo v19.0
 
 Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
 | `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
-| `Giraldo-TODO-EN-UNO-v18.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
-| `Sistema-Documental-Giraldo-v18.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
-| `Sistema-Documental-Giraldo-v18.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
+| `Giraldo-TODO-EN-UNO-v19.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
+| `Sistema-Documental-Giraldo-v19.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
+| `Sistema-Documental-Giraldo-v19.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
 
 Dentro de todos ellos está **Protocolos por puesto**: se elige Dirección, Doctor,
 Recepción, RAC, Auxiliar o Higienista y aparece, en un solo sitio, en qué fases
@@ -16,6 +16,39 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## El índice, en el teléfono · versión 19
+
+El índice no se desplegaba en el móvil, y la causa no era de estilo: **cada
+sección llevaba dos contenedores anidados** para su lista de apartados, uno
+dentro del otro. El guion abría el de fuera y el de dentro se quedaba oculto,
+de modo que la sección se desplegaba y dejaba un hueco en blanco. En el
+escritorio pasaba lo mismo y no se notaba porque la lista se pintaba de otro
+modo. Ahora hay un solo contenedor y los treinta y cuatro apartados de
+Dirección aparecen donde tienen que aparecer.
+
+Con eso resuelto, el índice se ha hecho a la medida de un teléfono:
+
+- **El rótulo del buscador cabe.** Decía «Escriba y el índice se queda con lo
+  que busca» y se salía por la derecha; ahora dice «Buscar» y la cuenta de
+  apartados va al otro extremo de la misma línea.
+- **Cada sección es una fila, no un bloque.** Número, nombre, cuántos apartados
+  tiene y flecha, en una línea. Antes cada una medía doscientos píxeles de alto
+  y solo cabían seis en la pantalla.
+- **Dos gestos, y distintos.** El **nombre** lleva a la sección y cierra el
+  índice: en una pantalla pequeña, si el índice se queda delante no se ve lo
+  que se acaba de elegir. La **flecha** despliega los apartados sin cerrar
+  nada, y es un blanco de cuarenta y cuatro píxeles, que es lo que mide un
+  dedo. En el escritorio, donde el índice y lo que se lee conviven, el nombre
+  sigue haciendo las dos cosas.
+- **Ninguna banda muerta.** «Lo mío» e «Inicio» no tienen subapartados, y sin
+  embargo el borde derecho de su fila seguía comportándose como una flecha:
+  se pulsaba y no ocurría nada. Ahora la flecha solo es flecha cuando hay algo
+  que desplegar; en esas dos filas ese hueco pertenece al nombre, y llevan a su
+  sección se pulse donde se pulse.
+- **El teclado no salta solo.** Abrir el índice enfocaba el buscador y en un
+  móvil eso levanta el teclado y se come media pantalla. Ahora solo se enfoca
+  en escritorio.
 
 ## Otra paleta y otra disposición · versión 18
 
