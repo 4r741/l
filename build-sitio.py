@@ -2715,6 +2715,107 @@ def mapa_interactivo(mapa):
    .replace("@MIN@", str(sum(f["min"] for f in fs))))
 
 
+def _dec(v):
+    """Un número corto: el SVG no necesita quince decimales."""
+    return ("%.2f" % v).rstrip("0").rstrip(".")
+
+
+def arco_punto(t, ancho, alto):
+    """Un punto del arco dental, con t de 0 a 1 de un extremo al otro.
+
+    Es la misma curva con la que se dibujan las imágenes del centro y las
+    figuras de datos. Que el tablero comparta la forma no es un adorno: es lo
+    que hace que todo el sistema se lea como una sola cosa.
+    """
+    x = (t - 0.5) * 2
+    return (0.5 + x * 0.5) * ancho, (0.06 + 0.94 * (x * x)) * alto
+
+
+def tablero_fases(fs, mfs, mapa):
+    """El recorrido del paciente como un tablero que se va superando.
+
+    El mapa de las catorce fases ya estaba y sigue estando debajo, entero. Lo
+    que faltaba era ver el recorrido *como recorrido*: dónde se está, cuánto
+    queda y qué viene después.
+
+    Se intentó primero sobre el arco dental, que es la curva con la que se
+    dibuja todo lo demás aquí. No funciona, y el propio sistema ya lo sabía:
+    «mapa_interactivo» lo dice en su primera línea —estuvo dibujado en SVG,
+    con los rótulos colgando de cada nodo, y a catorce nodos los rótulos se
+    montaban unos encima de otros—. Catorce fichas con nombre sobre una curva
+    son catorce sellos ilegibles. El tablero es una rejilla en orden, que a
+    catorce casillas no choca nunca y se lee como lo que es: un camino.
+
+    Una advertencia sobre el juego: **apagado no es cerrado**. Cualquier fase
+    se abre siempre, se haya superado o no. Esto es un centro médico, no un
+    videojuego: nadie puede quedarse sin leer un protocolo porque no haya
+    pulsado antes el botón de otro. Lo apagado indica por dónde va el
+    recorrido; nunca es una puerta.
+
+    Lo que se marca se guarda en el navegador de quien lo usa: cada persona
+    lleva el suyo y nadie ve el de nadie. Sin guiones, el tablero sale entero,
+    con las catorce fases a la vista y sus enlaces.
+    """
+    todas = list(fs) + list(mfs[12:])
+    claves = ["f%02d" % f["n"] for f in fs] + ["m%02d" % f["n"] for f in mfs[12:]]
+    n_pv = len(fs)
+
+    fichas = []
+    for i, (f, clave) in enumerate(zip(todas, claves)):
+        destino = mapa.get("@" + clave)
+        ident = destino[0][0] if destino else ""
+        sec = destino[0][1] if destino else ""
+        # Cada ficha lleva escrito a dónde va. Estas catorce cambian de
+        # sección —el texto de las fases vive en Primera Visita y en
+        # Operaciones, no en el mapa—, y en este sistema un enlace que cambia
+        # de sección lo dice antes de pulsarlo. Aquí lo dice dos veces: en la
+        # propia ficha y en la entradilla del tablero.
+        donde = SEC_ROTULO.get(sec, sec)
+        fichas.append(
+            '<li class="tab__f%s" data-fase="%d">'
+            '<a class="tab__b salta" href="#%s" data-lee="%s" data-fase-ir="%d" '
+            'data-salta="%s">'
+            '<span class="tab__n">%02d</span>'
+            '<span class="tab__r">%s</span>'
+            '<span class="tab__m">%s</span>'
+            '<span class="tab__d salta__d">%s</span></a>'
+            '<button type="button" class="tab__ok" data-fase-ok="%d" '
+            'aria-label="Marcar la fase %02d, %s, como superada">Marcar</button></li>'
+            % (" tab__f--post" if i >= n_pv else "", i, ident, ident, i,
+               H.escape(donde), f["n"],
+               H.escape(f["label"] or f["titulo"]),
+               ("%d min" % f["min"]) if f["min"] else "—",
+               H.escape(donde),
+               i, f["n"], H.escape(f["label"] or f["titulo"])))
+
+    minutos = sum(f["min"] for f in fs)
+    return ("""
+<div class="tablero" data-tablero data-total="@N@" data-min="@MIN@">
+  <div class="tablero__cab">
+    <div>
+      <p class="letra">El recorrido, paso a paso</p>
+      <h3 class="tablero__t">Catorce fases. Se marcan al superarlas.</h3>
+      <p class="tablero__q">Cada fase se abre entera al pulsarla, se haya
+        superado o no: aquí nunca hay una puerta cerrada. Lo apagado solo dice
+        por dónde va el camino. Cada ficha lleva escrito debajo en qué
+        documento se lee la fase, porque el texto de las fases no vive en el
+        mapa. Lo que se marca se queda guardado en este navegador, así que
+        puede seguir mañana donde lo dejó hoy.</p>
+    </div>
+    <div class="tablero__marcador">
+      <p class="tablero__c"><b data-tab-hechas>0</b><span>de @N@ fases</span></p>
+      <p class="tablero__c"><b data-tab-min>0</b><span>de @MIN@ minutos</span></p>
+      <div class="tablero__barra"><i data-tab-barra style="width:0%"></i></div>
+      <button type="button" class="tablero__reset" data-tab-reset hidden>Empezar de nuevo</button>
+    </div>
+  </div>
+  <p class="tab__tramo letra">La primera visita · @PV@ fases</p>
+  <ol class="tab__fs">@FICHAS@</ol>
+</div>
+""".replace("@FICHAS@", "".join(fichas)).replace("@N@", str(len(todas)))
+   .replace("@PV@", str(n_pv)).replace("@MIN@", str(minutos)))
+
+
 def dibuja_recorridos(mapa):
     """Los diez recorridos, con sus paradas resueltas contra todo lo que hay."""
     fuera, tarjetas = [], []
@@ -2905,13 +3006,30 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas, n_fases, n_rutas):
    .replace("@TOTAL@", str(total))
 
 
-def sec_recorridos(rutas):
+def sec_recorridos(rutas, tarjetas=""):
+    """Los diez recorridos, con su elector delante.
+
+    La sección volcaba los diez recorridos enteros, uno detrás de otro:
+    dieciséis mil ochocientos píxeles en un ordenador y veintiún mil en un
+    teléfono. Se pulsaba «Recorridos» y aparecía un muro, no un menú, y elegir
+    uno solo bajaba por el muro hasta él. Aquí se elige primero y se abre uno
+    cada vez; los diez siguen estando, y quien no tenga guiones los ve todos
+    seguidos como hasta ahora, que es la manera correcta de fallar.
+    """
     return """
 <section class="sec" id="recorridos" data-sec="recorridos">
   @@FRENTE@@
-  <div class="rutas rutas--todas">@@RUTAS@@</div>
+  <div class="elector">
+    <p class="letra elector__k">Los diez recorridos</p>
+    <div class="rutas elector__g">@@TARJETAS@@</div>
+  </div>
+  <div class="rutas rutas--todas" data-rutas>
+    <button type="button" class="volverutas" data-todas-rutas>
+      <span aria-hidden="true">&#8592;</span> Los diez recorridos</button>
+    @@RUTAS@@
+  </div>
 </section>
-""".replace("@@RUTAS@@", rutas).replace("@@FRENTE@@", frente(
+""".replace("@@RUTAS@@", rutas).replace("@@TARJETAS@@", tarjetas).replace("@@FRENTE@@", frente(
         "recorridos", "Diez maneras de entrar",
         "Elija por dónde quiere empezar",
         "Un recorrido es una pregunta convertida en camino. Cinco a nueve paradas, en orden, "
@@ -2919,13 +3037,17 @@ def sec_recorridos(rutas):
         "pasa a la siguiente y se vuelve cuando se quiere: el recorrido no se pierde.", "10"))
 
 
-def sec_mapa(mapa_svg):
+def sec_mapa(mapa_svg, tablero=""):
+    # El tablero va delante y la rejilla de siempre detrás: quien quiera
+    # recorrer el camino lo recorre, y quien quiera la lista entera la tiene
+    # debajo, intacta. No se sustituye nada.
     return """
 <section class="sec" id="mapa" data-sec="mapa">
   @@FRENTE@@
+  @@TABLERO@@
   @@MAPA@@
 </section>
-""".replace("@@MAPA@@", mapa_svg).replace("@@FRENTE@@", frente(
+""".replace("@@TABLERO@@", tablero).replace("@@MAPA@@", mapa_svg).replace("@@FRENTE@@", frente(
         "mapa", "El recorrido del paciente",
         "Catorce fases, de la llamada al mantenimiento",
         "Cada fase construye sobre la anterior: la información recogida en la llamada "
@@ -5196,8 +5318,29 @@ JS = """
     }
     if((b = e.target.closest("[data-ve-ruta]"))){
       e.preventDefault(); cierraPanel(); veSec("recorridos", false);
+      /* Se abre el elegido y solo el elegido. Los diez siguen en la página:
+         lo que cambia es que no se enseñan todos a la vez. */
+      var secR = D.getElementById("recorridos");
       var d = D.getElementById("ruta-" + b.dataset.veRuta);
-      if(d) d.scrollIntoView({block:"start", behavior:"smooth"});
+      if(secR && d){
+        [].forEach.call(secR.querySelectorAll(".wruta"), function(w){
+          w.classList.toggle("es-ve", w === d);
+        });
+        secR.classList.remove("es-elige");
+        secR.classList.add("es-una");
+        setTimeout(function(){ d.scrollIntoView({block:"start", behavior:"smooth"}); }, 40);
+      } else if(d){ d.scrollIntoView({block:"start", behavior:"smooth"}); }
+      return;
+    }
+    if((b = e.target.closest("[data-todas-rutas]"))){
+      e.preventDefault();
+      var sr = D.getElementById("recorridos");
+      if(sr){
+        sr.classList.remove("es-una");
+        sr.classList.add("es-elige");
+        var el = sr.querySelector(".elector");
+        if(el) el.scrollIntoView({block:"start", behavior:"smooth"});
+      }
       return;
     }
     if((b = e.target.closest("[data-abre-fase]"))){
@@ -6066,6 +6209,110 @@ JS = """
     }
   });
 
+  /* Los recorridos empiezan por el elector: con guion se elige uno y se abre
+     uno; sin guion salen los diez seguidos, que es como estaban. */
+  var secRec = D.getElementById("recorridos");
+  if(secRec) secRec.classList.add("es-elige");
+
+  /* ---- el tablero de las catorce fases ------------------------------ */
+  /* Lo que alguien ha superado se guarda en su propio navegador. No viaja a
+     ningún sitio, no lo ve nadie más y se puede borrar de un botón. Si el
+     navegador no deja guardar —una ventana privada, los datos bloqueados—,
+     el tablero sigue funcionando: simplemente no recuerda al volver. */
+  var tablero = D.querySelector("[data-tablero]");
+  if(tablero){
+    var LLAVE = "giraldo.fases.v1";
+    var NF = parseInt(tablero.dataset.total, 10) || 0;
+    var fichas = [].slice.call(tablero.querySelectorAll(".tab__f"));
+    var mins = fichas.map(function(f){
+      var t = (f.querySelector(".tab__m") || {}).textContent || "";
+      return parseInt(t, 10) || 0;
+    });
+    var minTotal = parseInt(tablero.dataset.min, 10) || 0;
+
+    function leeHechas(){
+      /* Lo que hay guardado viene del navegador de quien lo usa, y ahí puede
+         haber cualquier cosa: un valor de una versión anterior, algo escrito
+         a mano, un resto de otra prueba. Si no es una lista de números de
+         fase, se descarta y se empieza de cero. Un tablero no puede romperse
+         por lo que encuentre guardado; antes de comprobarlo, un dato raro
+         dejaba el marcador a cero y los botones sin responder. */
+      try{
+        var v = window.localStorage.getItem(LLAVE);
+        if(!v) return [];
+        var a = JSON.parse(v);
+        if(!Array.prototype.isPrototypeOf(a) && !(a instanceof Array)) return [];
+        var limpio = [];
+        for(var i = 0; i < a.length; i++){
+          var k = parseInt(a[i], 10);
+          if(k >= 0 && k < NF && limpio.indexOf(k) < 0) limpio.push(k);
+        }
+        return limpio;
+      }catch(e){ return []; }
+    }
+    function guarda(a){
+      try{ window.localStorage.setItem(LLAVE, JSON.stringify(a)); }catch(e){}
+    }
+    var hechas = leeHechas();
+
+    function pintaTablero(){
+      tablero.classList.add("es-p");
+      var n = 0, m = 0, ultima = -1;
+      fichas.forEach(function(f, i){
+        var si = hechas.indexOf(i) >= 0;
+        f.classList.toggle("tab__f--hecha", si);
+        f.classList.remove("tab__f--toca");
+        var punto = tablero.querySelector('.tab__p[data-p="' + i + '"]');
+        if(punto){ if(si) punto.setAttribute("data-hecho", "1");
+                   else punto.removeAttribute("data-hecho"); }
+        var b = f.querySelector(".tab__ok");
+        if(b) b.textContent = si ? "Superada" : "Marcar";
+        if(si){ n++; m += mins[i]; if(i > ultima) ultima = i; }
+      });
+      /* la que toca es la primera sin marcar: es lo que se está haciendo */
+      for(var k = 0; k < fichas.length; k++){
+        if(hechas.indexOf(k) < 0){ fichas[k].classList.add("tab__f--toca"); break; }
+      }
+      var pct = NF ? (n / NF) : 0;
+      var bh = tablero.querySelector("[data-tab-hechas]");
+      var bm = tablero.querySelector("[data-tab-min]");
+      var bb = tablero.querySelector("[data-tab-barra]");
+      var via = tablero.querySelector("[data-tab-via]");
+      if(bh) bh.textContent = n;
+      if(bm) bm.textContent = m;
+      if(bb) bb.style.width = (pct * 100) + "%";
+      if(via) via.style.strokeDashoffset = String(1 - pct);
+      var rs = tablero.querySelector("[data-tab-reset]");
+      if(rs) rs.hidden = n === 0;
+    }
+
+    tablero.addEventListener("click", function(e){
+      var ok = e.target.closest("[data-fase-ok]");
+      if(ok){
+        e.preventDefault();
+        var i = parseInt(ok.dataset.faseOk, 10);
+        var k = hechas.indexOf(i);
+        if(k >= 0) hechas.splice(k, 1); else hechas.push(i);
+        guarda(hechas); pintaTablero();
+        return;
+      }
+      var rs = e.target.closest("[data-tab-reset]");
+      if(rs){
+        e.preventDefault();
+        hechas = []; guarda(hechas); pintaTablero();
+        return;
+      }
+      /* pulsar la ficha abre la fase, esté superada o no: aquí no hay
+         puertas cerradas, solo una indicación de por dónde va el camino */
+      var ir = e.target.closest("[data-fase-ir]");
+      if(ir && ir.dataset.lee){
+        e.preventDefault();
+        abreDestino(ir.dataset.lee);
+      }
+    });
+    pintaTablero();
+  }
+
   /* ---- arranque ---------------------------------------------------- */
   var h0 = (location.hash || "").slice(1);
   if(h0 && secs.some(function(s){ return s.dataset.sec === h0; })) veSec(h0, false);
@@ -6329,6 +6576,140 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   }
 }
 """
+
+V22 = """
+/* ====================================================================
+   EL TABLERO DE LAS CATORCE FASES · versión 22
+
+   El mapa ya estaba y sigue estando debajo, entero. Lo que faltaba era ver
+   el recorrido como recorrido: dónde se está, cuánto queda y qué viene
+   después.
+
+   Se probó sobre el arco dental y no funciona: a catorce nodos los rótulos
+   se montan unos encima de otros, que es exactamente lo que este sistema ya
+   había aprendido cuando dibujó el mapa la primera vez. El tablero es una
+   rejilla en orden —cinco casillas por fila en pantalla ancha, una por fila
+   en un teléfono— que no choca nunca y se lee como un camino.
+
+   Apagado no es cerrado: cualquier fase se abre siempre, se haya superado o
+   no. Esto es un centro médico, no un videojuego.
+   ==================================================================== */
+.tablero{margin:0 0 var(--aire)}
+.tablero__cab{display:grid;gap:2rem;align-items:end;margin-bottom:2.2rem}
+.tablero__t{margin:.5rem 0 0;font-size:clamp(1.4rem,2.6vw,2rem);font-weight:300;
+  letter-spacing:-.025em;line-height:1.12;text-wrap:balance}
+.tablero__q{margin:.9rem 0 0;max-width:58ch;color:var(--ink-2);
+  font-size:.95rem;line-height:1.7;text-wrap:pretty}
+.tablero__marcador{display:grid;gap:.5rem;align-content:end}
+.tablero__c{display:flex;align-items:baseline;gap:.7rem;margin:0}
+.tablero__c b{font-size:1.7rem;font-weight:400;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:var(--azul);min-width:2.4ch;
+  text-align:right}
+.tablero__c span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.tablero__barra{height:2px;background:var(--linea);margin-top:.6rem;overflow:hidden}
+.tablero__barra i{display:block;height:100%;background:var(--azul);
+  transition:width .55s cubic-bezier(.22,.61,.36,1)}
+.tablero__reset{justify-self:start;margin-top:.8rem;font:inherit;
+  font-family:var(--f-mono);font-size:.55rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);background:none;border:0;
+  padding:.35rem 0;cursor:pointer;border-bottom:1px solid var(--linea)}
+.tablero__reset:hover{color:var(--negro);border-bottom-color:var(--negro)}
+.tab__tramo{margin:0 0 .8rem;color:var(--muted)}
+
+/* El elector de recorridos. Delante los diez, para elegir; detrás, el que se
+   elija. Sin guion no se pone «es-una» y salen los diez seguidos, enteros. */
+.elector{margin:0 0 var(--aire)}
+.elector__k{margin:0 0 1rem;color:var(--muted)}
+.volverutas{display:none;font:inherit;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  background:none;border:0;padding:.6rem 0;margin:0 0 1.6rem;cursor:pointer;
+  border-bottom:1px solid var(--linea)}
+.volverutas:hover{color:var(--negro);border-bottom-color:var(--negro)}
+/* Al entrar se elige: los diez delante y ninguno abierto todavía. Esta clase
+   la pone el guion, así que sin guion no existe y los diez salen enteros. */
+#recorridos.es-elige .rutas--todas > .wruta{display:none}
+#recorridos.es-elige .volverutas{display:none}
+#recorridos.es-una .volverutas{display:inline-block}
+#recorridos.es-una .elector{display:none}
+#recorridos.es-una .rutas--todas > .wruta{display:none}
+#recorridos.es-una .rutas--todas > .wruta.es-ve{display:block}
+
+/* El tablero: casillas en orden, con un filete entre ellas. Cada una lleva su
+   número, su nombre, sus minutos y su marca. */
+.tab__fs{list-style:none;margin:0;padding:0;display:grid;gap:0;
+  grid-template-columns:repeat(auto-fill,minmax(min(11rem,100%),1fr));
+  border-top:1px solid var(--negro);border-left:1px solid var(--linea)}
+.tab__f{display:flex;flex-direction:column;min-width:0;
+  border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  padding:1rem 1rem 0;background:var(--papel);
+  transition:background .3s var(--e),opacity .35s var(--e)}
+.tab__b{display:block;text-decoration:none;color:inherit;flex:1 1 auto}
+.tab__n{display:block;font-family:var(--f-mono);font-size:.6rem;
+  letter-spacing:.1em;color:var(--muted);font-variant-numeric:tabular-nums}
+.tab__r{display:block;font-size:.95rem;line-height:1.28;margin-top:.4rem;
+  color:var(--negro);text-wrap:balance;letter-spacing:-.01em}
+.tab__m{display:block;font-family:var(--f-mono);font-size:.54rem;
+  letter-spacing:.12em;color:var(--muted);margin-top:.4rem;text-transform:uppercase}
+/* La marca de «superada» sobraba: el fondo verde y el propio botón ya lo
+   dicen, y colgando debajo de los minutos descuadraba el alto de la fila. */
+.tab__e{display:none!important}
+.tab__d{display:block;font-family:var(--f-mono);font-size:.5rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  margin-top:.5rem;padding-top:.5rem;border-top:1px dotted var(--linea)}
+.tab__b:hover .tab__d{color:var(--azul)}
+/* Las dos últimas no son de la primera visita: van después, y conviene que se
+   vea sin tener que contar. */
+.tab__f--post .tab__n::after{content:" · después";letter-spacing:.1em}
+.tab__b:hover .tab__r{color:var(--azul)}
+.tab__ok{margin:.9rem -1rem 0;font:inherit;font-family:var(--f-mono);
+  font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);background:none;border:0;border-top:1px solid var(--linea-2);
+  padding:.6rem 1rem;cursor:pointer;text-align:left;
+  transition:color .2s var(--e),background .2s var(--e)}
+.tab__ok:hover{color:var(--negro);background:var(--gris)}
+.tab__f--post{background:var(--gris)}
+
+/* Los tres estados. Sin guion no se pone ninguno y salen todas iguales, que
+   es exactamente lo que tiene que pasar: el tablero entero, a la vista. */
+.tablero.es-p .tab__f{opacity:.5}
+.tablero.es-p .tab__f--hecha,
+.tablero.es-p .tab__f--toca{opacity:1}
+.tablero.es-p .tab__f--hecha{background:var(--azul-p)}
+.tablero.es-p .tab__f--hecha .tab__n,
+.tablero.es-p .tab__f--hecha .tab__r{color:var(--azul-o)}
+.tablero.es-p .tab__f--hecha .tab__ok{color:var(--azul);border-top-color:rgba(14,90,80,.2)}
+.tablero.es-p .tab__f--toca{box-shadow:inset 0 3px 0 0 var(--negro)}
+.tablero.es-p .tab__f--toca .tab__r{font-weight:500}
+.tablero.es-p .tab__f--toca .tab__ok{color:var(--negro)}
+
+@media(min-width:1000px){
+  .tablero__cab{grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr)}
+}
+
+/* En un teléfono cada fase es una fila: número, nombre y minutos en una
+   línea, y la marca debajo. Es el mismo juego con la forma que cabe. */
+@media(max-width:760px){
+  .tab__fs{grid-template-columns:1fr;border-left:0}
+  .tab__f{display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;
+    align-items:baseline;gap:.2rem .9rem;padding:.95rem 0 0;border-right:0}
+  .tab__b{display:contents}
+  .tab__n{grid-column:1;grid-row:1}
+  .tab__r{grid-column:2;grid-row:1;margin:0;font-size:1.02rem}
+  .tab__m{grid-column:3;grid-row:1;margin:0}
+  /* Cada cosa en su fila: el nombre arriba, debajo dónde se lee la fase y
+     debajo el botón. Sin decírselo, el destino se colocaba solo en el hueco
+     de la izquierda y quedaba pegado al botón, como si fueran lo mismo. */
+  .tab__d{grid-column:2/-1;grid-row:2;margin:.35rem 0 0;padding:0;border:0}
+  .tab__ok{grid-column:2/-1;grid-row:3;margin:.6rem 0 .9rem;padding:.4rem .9rem;
+    justify-self:start;border:1px solid var(--linea);border-radius:0}
+  .tablero.es-p .tab__f--toca{box-shadow:inset 3px 0 0 0 var(--negro);
+    padding-left:.8rem}
+  .tablero__cab{gap:1.4rem}
+  .tablero__c b{font-size:1.5rem}
+}
+"""
+
 
 SIN_GUION = """
 /* ====================================================================
@@ -6682,8 +7063,9 @@ def main():
     n_fases = svg.count('class="nodo"')
     n_rutas = tarjetas.count('data-ve-ruta=')
     inicio = sec_inicio(indice, total, voces, svg, tarjetas, n_fases, n_rutas)
-    recorridos_html = sec_recorridos(rutas_html)
-    mapa_html = sec_mapa(svg)
+    recorridos_html = sec_recorridos(rutas_html, tarjetas)
+    tablero = tablero_fases(fases("index.html"), fases("manual.html"), mapa)
+    mapa_html = sec_mapa(svg, tablero)
     mio_html = sec_mio()
 
     # La flecha de al lado es la que despliega y pliega el índice de la
@@ -6781,6 +7163,24 @@ def main():
                if sub else '<i class="arb__x"></i>',
                ('\n  <div class="arb__l" hidden>%s</div>' % sub) if sub else ""))
 
+    # Recorridos y el mapa son secciones de pleno derecho y no estaban en el
+    # índice: en el ordenador se llegaba a ellas por la barra de arriba, y en
+    # un teléfono —donde la barra solo deja sitio para GIRALDO y el índice—
+    # únicamente desde los dos botones de la portada. Quien estuviera leyendo
+    # cualquier otra cosa no tenía manera de volver. Se añaden aquí, detrás de
+    # «Inicio», sin tocar el orden de los ocho documentos: no se quita nada,
+    # se abren dos puertas que faltaban.
+    extras = []
+    for ident, rotulo, cuenta in (("recorridos", "Recorridos", "10 recorridos"),
+                                  ("mapa", "El mapa", "14 fases")):
+        extras.append(
+            '<div class="arb__s" data-arb="%s">\n'
+            '  <a href="#%s" class="arb__b" data-ir-sec="%s">'
+            '<i class="arb__n">·</i><span class="arb__r">%s</span>'
+            '<i class="arb__c">%s</i><i class="arb__x"></i></a>\n'
+            '</div>' % (ident, ident, ident, H.escape(rotulo), H.escape(cuenta)))
+    arbol[2:2] = extras
+
     cuerpo = (MARCO.replace("@@ARBOL@@", "\n".join(arbol))
                    .replace("@N@", str(total))
                    .replace("@@SECCIONES@@",
@@ -6802,7 +7202,7 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + V21 + "\n" + SIN_GUION
+    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 

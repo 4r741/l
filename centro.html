@@ -3997,6 +3997,138 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
 
 
 /* ====================================================================
+   EL TABLERO DE LAS CATORCE FASES · versión 22
+
+   El mapa ya estaba y sigue estando debajo, entero. Lo que faltaba era ver
+   el recorrido como recorrido: dónde se está, cuánto queda y qué viene
+   después.
+
+   Se probó sobre el arco dental y no funciona: a catorce nodos los rótulos
+   se montan unos encima de otros, que es exactamente lo que este sistema ya
+   había aprendido cuando dibujó el mapa la primera vez. El tablero es una
+   rejilla en orden —cinco casillas por fila en pantalla ancha, una por fila
+   en un teléfono— que no choca nunca y se lee como un camino.
+
+   Apagado no es cerrado: cualquier fase se abre siempre, se haya superado o
+   no. Esto es un centro médico, no un videojuego.
+   ==================================================================== */
+.tablero{margin:0 0 var(--aire)}
+.tablero__cab{display:grid;gap:2rem;align-items:end;margin-bottom:2.2rem}
+.tablero__t{margin:.5rem 0 0;font-size:clamp(1.4rem,2.6vw,2rem);font-weight:300;
+  letter-spacing:-.025em;line-height:1.12;text-wrap:balance}
+.tablero__q{margin:.9rem 0 0;max-width:58ch;color:var(--ink-2);
+  font-size:.95rem;line-height:1.7;text-wrap:pretty}
+.tablero__marcador{display:grid;gap:.5rem;align-content:end}
+.tablero__c{display:flex;align-items:baseline;gap:.7rem;margin:0}
+.tablero__c b{font-size:1.7rem;font-weight:400;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:var(--azul);min-width:2.4ch;
+  text-align:right}
+.tablero__c span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.tablero__barra{height:2px;background:var(--linea);margin-top:.6rem;overflow:hidden}
+.tablero__barra i{display:block;height:100%;background:var(--azul);
+  transition:width .55s cubic-bezier(.22,.61,.36,1)}
+.tablero__reset{justify-self:start;margin-top:.8rem;font:inherit;
+  font-family:var(--f-mono);font-size:.55rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);background:none;border:0;
+  padding:.35rem 0;cursor:pointer;border-bottom:1px solid var(--linea)}
+.tablero__reset:hover{color:var(--negro);border-bottom-color:var(--negro)}
+.tab__tramo{margin:0 0 .8rem;color:var(--muted)}
+
+/* El elector de recorridos. Delante los diez, para elegir; detrás, el que se
+   elija. Sin guion no se pone «es-una» y salen los diez seguidos, enteros. */
+.elector{margin:0 0 var(--aire)}
+.elector__k{margin:0 0 1rem;color:var(--muted)}
+.volverutas{display:none;font:inherit;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  background:none;border:0;padding:.6rem 0;margin:0 0 1.6rem;cursor:pointer;
+  border-bottom:1px solid var(--linea)}
+.volverutas:hover{color:var(--negro);border-bottom-color:var(--negro)}
+/* Al entrar se elige: los diez delante y ninguno abierto todavía. Esta clase
+   la pone el guion, así que sin guion no existe y los diez salen enteros. */
+#recorridos.es-elige .rutas--todas > .wruta{display:none}
+#recorridos.es-elige .volverutas{display:none}
+#recorridos.es-una .volverutas{display:inline-block}
+#recorridos.es-una .elector{display:none}
+#recorridos.es-una .rutas--todas > .wruta{display:none}
+#recorridos.es-una .rutas--todas > .wruta.es-ve{display:block}
+
+/* El tablero: casillas en orden, con un filete entre ellas. Cada una lleva su
+   número, su nombre, sus minutos y su marca. */
+.tab__fs{list-style:none;margin:0;padding:0;display:grid;gap:0;
+  grid-template-columns:repeat(auto-fill,minmax(min(11rem,100%),1fr));
+  border-top:1px solid var(--negro);border-left:1px solid var(--linea)}
+.tab__f{display:flex;flex-direction:column;min-width:0;
+  border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  padding:1rem 1rem 0;background:var(--papel);
+  transition:background .3s var(--e),opacity .35s var(--e)}
+.tab__b{display:block;text-decoration:none;color:inherit;flex:1 1 auto}
+.tab__n{display:block;font-family:var(--f-mono);font-size:.6rem;
+  letter-spacing:.1em;color:var(--muted);font-variant-numeric:tabular-nums}
+.tab__r{display:block;font-size:.95rem;line-height:1.28;margin-top:.4rem;
+  color:var(--negro);text-wrap:balance;letter-spacing:-.01em}
+.tab__m{display:block;font-family:var(--f-mono);font-size:.54rem;
+  letter-spacing:.12em;color:var(--muted);margin-top:.4rem;text-transform:uppercase}
+/* La marca de «superada» sobraba: el fondo verde y el propio botón ya lo
+   dicen, y colgando debajo de los minutos descuadraba el alto de la fila. */
+.tab__e{display:none!important}
+.tab__d{display:block;font-family:var(--f-mono);font-size:.5rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  margin-top:.5rem;padding-top:.5rem;border-top:1px dotted var(--linea)}
+.tab__b:hover .tab__d{color:var(--azul)}
+/* Las dos últimas no son de la primera visita: van después, y conviene que se
+   vea sin tener que contar. */
+.tab__f--post .tab__n::after{content:" · después";letter-spacing:.1em}
+.tab__b:hover .tab__r{color:var(--azul)}
+.tab__ok{margin:.9rem -1rem 0;font:inherit;font-family:var(--f-mono);
+  font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);background:none;border:0;border-top:1px solid var(--linea-2);
+  padding:.6rem 1rem;cursor:pointer;text-align:left;
+  transition:color .2s var(--e),background .2s var(--e)}
+.tab__ok:hover{color:var(--negro);background:var(--gris)}
+.tab__f--post{background:var(--gris)}
+
+/* Los tres estados. Sin guion no se pone ninguno y salen todas iguales, que
+   es exactamente lo que tiene que pasar: el tablero entero, a la vista. */
+.tablero.es-p .tab__f{opacity:.5}
+.tablero.es-p .tab__f--hecha,
+.tablero.es-p .tab__f--toca{opacity:1}
+.tablero.es-p .tab__f--hecha{background:var(--azul-p)}
+.tablero.es-p .tab__f--hecha .tab__n,
+.tablero.es-p .tab__f--hecha .tab__r{color:var(--azul-o)}
+.tablero.es-p .tab__f--hecha .tab__ok{color:var(--azul);border-top-color:rgba(14,90,80,.2)}
+.tablero.es-p .tab__f--toca{box-shadow:inset 0 3px 0 0 var(--negro)}
+.tablero.es-p .tab__f--toca .tab__r{font-weight:500}
+.tablero.es-p .tab__f--toca .tab__ok{color:var(--negro)}
+
+@media(min-width:1000px){
+  .tablero__cab{grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr)}
+}
+
+/* En un teléfono cada fase es una fila: número, nombre y minutos en una
+   línea, y la marca debajo. Es el mismo juego con la forma que cabe. */
+@media(max-width:760px){
+  .tab__fs{grid-template-columns:1fr;border-left:0}
+  .tab__f{display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;
+    align-items:baseline;gap:.2rem .9rem;padding:.95rem 0 0;border-right:0}
+  .tab__b{display:contents}
+  .tab__n{grid-column:1;grid-row:1}
+  .tab__r{grid-column:2;grid-row:1;margin:0;font-size:1.02rem}
+  .tab__m{grid-column:3;grid-row:1;margin:0}
+  /* Cada cosa en su fila: el nombre arriba, debajo dónde se lee la fase y
+     debajo el botón. Sin decírselo, el destino se colocaba solo en el hueco
+     de la izquierda y quedaba pegado al botón, como si fueran lo mismo. */
+  .tab__d{grid-column:2/-1;grid-row:2;margin:.35rem 0 0;padding:0;border:0}
+  .tab__ok{grid-column:2/-1;grid-row:3;margin:.6rem 0 .9rem;padding:.4rem .9rem;
+    justify-self:start;border:1px solid var(--linea);border-radius:0}
+  .tablero.es-p .tab__f--toca{box-shadow:inset 3px 0 0 0 var(--negro);
+    padding-left:.8rem}
+  .tablero__cab{gap:1.4rem}
+  .tablero__c b{font-size:1.5rem}
+}
+
+
+/* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
 
    Un archivo que se abre con doble clic acaba en sitios donde no se
@@ -4121,6 +4253,12 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
 </div>
 <div class="arb__s" data-arb="inicio">
   <a href="#inicio" class="arb__b" data-ir-sec="inicio" aria-expanded="false"><i class="arb__n">01</i><span class="arb__r">Inicio</span><i class="arb__c"></i><i class="arb__x"></i></a>
+</div>
+<div class="arb__s" data-arb="recorridos">
+  <a href="#recorridos" class="arb__b" data-ir-sec="recorridos"><i class="arb__n">·</i><span class="arb__r">Recorridos</span><i class="arb__c">10 recorridos</i><i class="arb__x"></i></a>
+</div>
+<div class="arb__s" data-arb="mapa">
+  <a href="#mapa" class="arb__b" data-ir-sec="mapa"><i class="arb__n">·</i><span class="arb__r">El mapa</span><i class="arb__c">14 fases</i><i class="arb__x"></i></a>
 </div>
 <div class="arb__s" data-arb="direccion">
   <a href="#direccion" class="arb__b" data-ir-sec="direccion" aria-expanded="false"><i class="arb__n">02</i><span class="arb__r">Dirección</span><i class="arb__c">34</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -4267,7 +4405,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
         Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
-      <div><p class="letra">Esta edición</p><p>Versión 21.0 · Septiembre 2026<br>
+      <div><p class="letra">Esta edición</p><p>Versión 22.0 · Septiembre 2026<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
         laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
@@ -4477,7 +4615,14 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <p class="frente__p">Un recorrido es una pregunta convertida en camino. Cinco a nueve paradas, en orden, cada una con lo que hay que mirar y por qué. Se abre una parada, se lee entera, se pasa a la siguiente y se vuelve cuando se quiere: el recorrido no se pierde.</p>
   </div>
 </header>
-  <div class="rutas rutas--todas"><article class="wruta" id="ruta-paciente" data-ruta="paciente">
+  <div class="elector">
+    <p class="letra elector__k">Los diez recorridos</p>
+    <div class="rutas elector__g"><button type="button" class="rutacard" data-ve-ruta="paciente"><span class="rutacard__i"></span><span class="letra">Soy paciente</span><b>Lo que le pasa a usted, de la llamada al mantenimiento</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="junta"><span class="rutacard__i"></span><span class="letra">Soy de la Junta</span><b>Qué se somete a votación y con qué se sostiene</b><span class="rutacard__m letra">5 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="lunes"><span class="rutacard__i"></span><span class="letra">Entro a trabajar</span><b>Lo primero que hay que saber, en este orden</b><span class="rutacard__m letra">6 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="marketing"><span class="rutacard__i"></span><span class="letra">Llevo la captación</span><b>Cómo llega un paciente, y qué no haremos nunca para que llegue</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-direccion"><span class="rutacard__i"></span><span class="letra">Soy Dirección</span><b>Dirige la clínica y responde de que el sistema se cumpla</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-doctor"><span class="rutacard__i"></span><span class="letra">Soy Doctor</span><b>Diagnostica, planifica y ejecuta el tratamiento</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-recepcion"><span class="rutacard__i"></span><span class="letra">Soy Recepción</span><b>La primera voz y la última</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-rac"><span class="rutacard__i"></span><span class="letra">Soy RAC</span><b>Responde del circuito de producción: que lo aceptado se fabrique, se coloque y se cierre</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-auxiliar"><span class="rutacard__i"></span><span class="letra">Soy Auxiliar</span><b>Sostiene el acto clínico: equipos listos, batería diagnóstica completa y esterilización trazable</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-higienista"><span class="rutacard__i"></span><span class="letra">Soy Higienista</span><b>El puesto del largo plazo: mantiene lo tratado, detecta pronto lo que se tuerce y sostiene la relación año tras año</b><span class="rutacard__m letra">8 paradas</span></button></div>
+  </div>
+  <div class="rutas rutas--todas" data-rutas>
+    <button type="button" class="volverutas" data-todas-rutas>
+      <span aria-hidden="true">&#8592;</span> Los diez recorridos</button>
+    <article class="wruta" id="ruta-paciente" data-ruta="paciente">
   <header class="wruta__cab">
     <p class="letra">Soy paciente · 8 paradas</p>
     <h3>Lo que le pasa a usted, de la llamada al mantenimiento</h3>
@@ -4566,7 +4711,8 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <button type="button" class="bt bt--fuerte" data-empieza="puesto-higienista">Empezar el recorrido</button>
   </header>
   <ol class="paradas"><li class="parada"><button type="button" class="parada__b" data-lee="e-m-higienista" data-ruta="puesto-higienista" data-paso="0"><span class="parada__n">01</span><span class="parada__t"><b>Quién es y de qué responde</b><span>Empiece por su manual de puesto: qué hace, de qué responde y qué puede decidir.</span></span><span class="parada__i letra">Operaciones</span></button></li><li class="parada"><button type="button" class="parada__b" data-lee="e-m-h-2-este-puesto-estrategico" data-ruta="puesto-higienista" data-paso="1"><span class="parada__n">02</span><span class="parada__t"><b>Por qué este puesto es estratégico</b><span>Uno de sus procedimientos escritos, entero.</span></span><span class="parada__i letra">Operaciones</span></button></li><li class="parada"><button type="button" class="parada__b" data-lee="e-m-h-3-procedimientos" data-ruta="puesto-higienista" data-paso="2"><span class="parada__n">03</span><span class="parada__t"><b>Procedimientos</b><span>Uno de sus procedimientos escritos, entero.</span></span><span class="parada__i letra">Operaciones</span></button></li><li class="parada"><button type="button" class="parada__b" data-lee="e-m-h-4-indicadores-higienista" data-ruta="puesto-higienista" data-paso="3"><span class="parada__n">04</span><span class="parada__t"><b>Indicadores del puesto</b><span>Uno de sus procedimientos escritos, entero.</span></span><span class="parada__i letra">Operaciones</span></button></li><li class="parada"><button type="button" class="parada__b" data-lee="e-m-funcion-3-1-programa-mantenimiento" data-ruta="puesto-higienista" data-paso="4"><span class="parada__n">05</span><span class="parada__t"><b>3.1 · Programa de mantenimiento</b><span>Una función de vanguardia: lo que este puesto hace y en otros centros no se hace.</span></span><span class="parada__i letra">Operaciones</span></button></li><li class="parada"><button type="button" class="parada__b" data-lee="e-m-indicadores-perfil" data-ruta="puesto-higienista" data-paso="5"><span class="parada__n">06</span><span class="parada__t"><b>Con qué se le mide</b><span>Los indicadores por perfil. Un puesto sin número es una opinión.</span></span><span class="parada__i letra">Operaciones</span></button></li><li class="parada"><button type="button" class="parada__b" data-lee="e-m-pasa-exactamente-cuando-puesto-no-cumple" data-ruta="puesto-higienista" data-paso="6"><span class="parada__n">07</span><span class="parada__t"><b>Qué pasa si no se cumple</b><span>La matriz de obligaciones. No es una conversación: es un procedimiento.</span></span><span class="parada__i letra">Operaciones</span></button></li><li class="parada"><button type="button" class="parada__b" data-lee="e-m-puesta-marcha" data-ruta="puesto-higienista" data-paso="7"><span class="parada__n">08</span><span class="parada__t"><b>Sus primeros treinta días</b><span>Qué se espera de usted el primer mes, semana a semana.</span></span><span class="parada__i letra">Operaciones</span></button></li></ol>
-</article></div>
+</article>
+  </div>
 </section>
 
 
@@ -4578,6 +4724,30 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <p class="frente__p">Cada fase construye sobre la anterior: la información recogida en la llamada personaliza la recepción, la anamnesis alimenta la presentación y el cierre abre el circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso ninguna fase se salta «por falta de tiempo». Pulse una y se abre entera; del lector se vuelve aquí.</p>
   </div>
 </header>
+  
+<div class="tablero" data-tablero data-total="14" data-min="123">
+  <div class="tablero__cab">
+    <div>
+      <p class="letra">El recorrido, paso a paso</p>
+      <h3 class="tablero__t">Catorce fases. Se marcan al superarlas.</h3>
+      <p class="tablero__q">Cada fase se abre entera al pulsarla, se haya
+        superado o no: aquí nunca hay una puerta cerrada. Lo apagado solo dice
+        por dónde va el camino. Cada ficha lleva escrito debajo en qué
+        documento se lee la fase, porque el texto de las fases no vive en el
+        mapa. Lo que se marca se queda guardado en este navegador, así que
+        puede seguir mañana donde lo dejó hoy.</p>
+    </div>
+    <div class="tablero__marcador">
+      <p class="tablero__c"><b data-tab-hechas>0</b><span>de 14 fases</span></p>
+      <p class="tablero__c"><b data-tab-min>0</b><span>de 123 minutos</span></p>
+      <div class="tablero__barra"><i data-tab-barra style="width:0%"></i></div>
+      <button type="button" class="tablero__reset" data-tab-reset hidden>Empezar de nuevo</button>
+    </div>
+  </div>
+  <p class="tab__tramo letra">La primera visita · 12 fases</p>
+  <ol class="tab__fs"><li class="tab__f" data-fase="0"><a class="tab__b salta" href="#d-f01" data-lee="d-f01" data-fase-ir="0" data-salta="Primera Visita"><span class="tab__n">01</span><span class="tab__r">Preparación</span><span class="tab__m">6 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="0" aria-label="Marcar la fase 01, Preparación, como superada">Marcar</button></li><li class="tab__f" data-fase="1"><a class="tab__b salta" href="#d-f02" data-lee="d-f02" data-fase-ir="1" data-salta="Primera Visita"><span class="tab__n">02</span><span class="tab__r">Acogida</span><span class="tab__m">5 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="1" aria-label="Marcar la fase 02, Acogida, como superada">Marcar</button></li><li class="tab__f" data-fase="2"><a class="tab__b salta" href="#d-f03" data-lee="d-f03" data-fase-ir="2" data-salta="Primera Visita"><span class="tab__n">03</span><span class="tab__r">Alta y RGPD</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="2" aria-label="Marcar la fase 03, Alta y RGPD, como superada">Marcar</button></li><li class="tab__f" data-fase="3"><a class="tab__b salta" href="#d-f04" data-lee="d-f04" data-fase-ir="3" data-salta="Primera Visita"><span class="tab__n">04</span><span class="tab__r">Historia clínica</span><span class="tab__m">10 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="3" aria-label="Marcar la fase 04, Historia clínica, como superada">Marcar</button></li><li class="tab__f" data-fase="4"><a class="tab__b salta" href="#d-f05" data-lee="d-f05" data-fase-ir="4" data-salta="Primera Visita"><span class="tab__n">05</span><span class="tab__r">Diagnóstico</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="4" aria-label="Marcar la fase 05, Diagnóstico, como superada">Marcar</button></li><li class="tab__f" data-fase="5"><a class="tab__b salta" href="#d-f06" data-lee="d-f06" data-fase-ir="5" data-salta="Primera Visita"><span class="tab__n">06</span><span class="tab__r">Briefing</span><span class="tab__m">5 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="5" aria-label="Marcar la fase 06, Briefing, como superada">Marcar</button></li><li class="tab__f" data-fase="6"><a class="tab__b salta" href="#d-f07" data-lee="d-f07" data-fase-ir="6" data-salta="Primera Visita"><span class="tab__n">07</span><span class="tab__r">Expectativas</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="6" aria-label="Marcar la fase 07, Expectativas, como superada">Marcar</button></li><li class="tab__f" data-fase="7"><a class="tab__b salta" href="#d-f08" data-lee="d-f08" data-fase-ir="7" data-salta="Primera Visita"><span class="tab__n">08</span><span class="tab__r">IAC</span><span class="tab__m">10 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="7" aria-label="Marcar la fase 08, IAC, como superada">Marcar</button></li><li class="tab__f" data-fase="8"><a class="tab__b salta" href="#d-f09" data-lee="d-f09" data-fase-ir="8" data-salta="Primera Visita"><span class="tab__n">09</span><span class="tab__r">Presentación 3D</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="8" aria-label="Marcar la fase 09, Presentación 3D, como superada">Marcar</button></li><li class="tab__f" data-fase="9"><a class="tab__b salta" href="#d-f10" data-lee="d-f10" data-fase-ir="9" data-salta="Primera Visita"><span class="tab__n">10</span><span class="tab__r">Propuesta</span><span class="tab__m">20 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="9" aria-label="Marcar la fase 10, Propuesta, como superada">Marcar</button></li><li class="tab__f" data-fase="10"><a class="tab__b salta" href="#d-f11" data-lee="d-f11" data-fase-ir="10" data-salta="Primera Visita"><span class="tab__n">11</span><span class="tab__r">Cierre admin.</span><span class="tab__m">5 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="10" aria-label="Marcar la fase 11, Cierre admin., como superada">Marcar</button></li><li class="tab__f" data-fase="11"><a class="tab__b salta" href="#d-f12" data-lee="d-f12" data-fase-ir="11" data-salta="Primera Visita"><span class="tab__n">12</span><span class="tab__r">Seguimiento</span><span class="tab__m">2 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="11" aria-label="Marcar la fase 12, Seguimiento, como superada">Marcar</button></li><li class="tab__f tab__f--post" data-fase="12"><a class="tab__b salta" href="#e-m13" data-lee="e-m13" data-fase-ir="12" data-salta="Operaciones"><span class="tab__n">13</span><span class="tab__r">Circuito de producción</span><span class="tab__m">—</span><span class="tab__d salta__d">Operaciones</span></a><button type="button" class="tab__ok" data-fase-ok="12" aria-label="Marcar la fase 13, Circuito de producción, como superada">Marcar</button></li><li class="tab__f tab__f--post" data-fase="13"><a class="tab__b salta" href="#e-m14" data-lee="e-m14" data-fase-ir="13" data-salta="Operaciones"><span class="tab__n">14</span><span class="tab__r">Mantenimiento</span><span class="tab__m">—</span><span class="tab__d salta__d">Operaciones</span></a><button type="button" class="tab__ok" data-fase-ok="13" aria-label="Marcar la fase 14, Mantenimiento, como superada">Marcar</button></li></ol>
+</div>
+
   
 <div class="mapa14">
   <div class="mapa14__g">
@@ -4674,7 +4844,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v21.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="t-cover" id="a-portada">
@@ -4684,7 +4854,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="t-cover__rule" aria-hidden="true"></div>
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Giraldo</b>Rúa Bolivia nº 2 · Vigo</span>
-      <span><b>Plan de Dirección · v21.0</b>Septiembre 2026 · versión única del sistema</span>
+      <span><b>Plan de Dirección · v22.0</b>Septiembre 2026 · versión única del sistema</span>
       <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
@@ -4761,7 +4931,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
             <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
             <tbody>
               <tr><td>Título</td><td>Plan de Dirección para la Junta Directiva</td></tr>
-              <tr><td>Versión</td><td>v21.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
+              <tr><td>Versión</td><td>v22.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
               <tr><td>Clasificación</td><td>Uso interno · Confidencial · No difundir fuera del órgano</td></tr>
               <tr><td>Propietario</td><td>Dirección General</td></tr>
               <tr><td>Elaborado con</td><td>Los 17 documentos operativos del sistema Giraldo: los 3 troncales y los 14 de apoyo, censados en el apartado 0.1</td></tr>
@@ -4792,7 +4962,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="a-t-como-citar-acta">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v21.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v21.0, Protocolo de Primera Visita v21.0, Otros documentos del sistema v21.0.</p>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v22.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v22.0, Protocolo de Primera Visita v22.0, Otros documentos del sistema v22.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="a-censo">Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -4801,14 +4971,14 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
       <table>
         <thead><tr><th>Pieza</th><th>Clase</th><th>Qué contiene</th><th>Propietario</th><th>Versión</th></tr></thead>
         <tbody>
-          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">21.0</td></tr>
-          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">21.0</td></tr>
-          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">21.0</td></tr>
-          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">21.0</td></tr>
-          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">21.0</td></tr>
-          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">21.0</td></tr>
-          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">21.0</td></tr>
-          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">21.0</td></tr>
+          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">22.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -8056,7 +8226,7 @@ REVISIÓN PREVISTA:</div>
     <div class="desp__in"><div class="dia"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v21.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v22.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
 </section></div><p class="dia__pr"><button type="button" class="bt bt--fino" data-proyecta="">Proyectar desde esta</button></p><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -9349,7 +9519,7 @@ REVISIÓN PREVISTA:</div>
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v21.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v22.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   <aside class="nota" hidden>
     <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -13721,7 +13891,10 @@ DÍA 7   Valoración de evolución
 
 
 
-<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v21.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -13729,7 +13902,7 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 21.0 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 22.0 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="#operaciones" class="salta">Manual Maestro de Operaciones<i class="salta__d">Operaciones</i></a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -17570,7 +17743,10 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v21.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+
+
+<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -17581,7 +17757,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 21.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 22.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -17764,11 +17940,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v21.0 · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>v22.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Giraldo (uso abreviado: Giraldo)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
-          <tr><td>Sustituye a</td><td>Protocolo v21.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
+          <tr><td>Sustituye a</td><td>Protocolo v22.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
           <tr><td>Difusión obligatoria</td><td>Recepción, Dirección de Clínica, Odontólogos, Higienistas, Auxiliares, RAC</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier incidencia grave de trazabilidad o RGPD</td></tr>
@@ -24567,7 +24743,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v21.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 
@@ -24583,7 +24759,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <p class="t-cover__meta">
       <b>Plan Maestro de Marketing</b><br>
       Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2, Vigo<br>
-      v21.0 · Septiembre 2026 · Documento de dirección<br>
+      v22.0 · Septiembre 2026 · Documento de dirección<br>
       Setenta y seis acciones sobre doce estados del paciente
     </p>
   </div>
@@ -24611,7 +24787,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><th>Qué decide</th><td>Nada por sí solo. Propone; la Junta aprueba en el registro de acuerdos del Plan de Dirección</td></tr>
           <tr><th>Propietario</th><td>Dirección General, con Gerencia como responsable de ejecución y presupuesto</td></tr>
           <tr><th>Revisión</th><td>Trimestral, con la misma cadencia que el cuadro de mando del apartado 13 del Plan de Dirección</td></tr>
-          <tr><th>Versión</th><td class="num">v21.0 · Septiembre 2026</td></tr>
+          <tr><th>Versión</th><td class="num">v22.0 · Septiembre 2026</td></tr>
         </tbody>
       </table>
     </div>
@@ -26114,7 +26290,10 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v21.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="g-portada">
@@ -26124,7 +26303,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 21.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 22.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos</dt><dd>14<small>Del posicionamiento del centro al programa de cuidado GTC</small></dd></div>
@@ -26180,13 +26359,13 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
       <table>
         <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v21.0 · Agosto 2026 · versión única del sistema</td></tr>
+          <tr><td>Versión</td><td>v22.0 · Agosto 2026 · versión única del sistema</td></tr>
           <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
           <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
           <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
           <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
-          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v21.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
+          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v22.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
         </tbody>
       </table>
     </div>
@@ -30635,8 +30814,29 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
     }
     if((b = e.target.closest("[data-ve-ruta]"))){
       e.preventDefault(); cierraPanel(); veSec("recorridos", false);
+      /* Se abre el elegido y solo el elegido. Los diez siguen en la página:
+         lo que cambia es que no se enseñan todos a la vez. */
+      var secR = D.getElementById("recorridos");
       var d = D.getElementById("ruta-" + b.dataset.veRuta);
-      if(d) d.scrollIntoView({block:"start", behavior:"smooth"});
+      if(secR && d){
+        [].forEach.call(secR.querySelectorAll(".wruta"), function(w){
+          w.classList.toggle("es-ve", w === d);
+        });
+        secR.classList.remove("es-elige");
+        secR.classList.add("es-una");
+        setTimeout(function(){ d.scrollIntoView({block:"start", behavior:"smooth"}); }, 40);
+      } else if(d){ d.scrollIntoView({block:"start", behavior:"smooth"}); }
+      return;
+    }
+    if((b = e.target.closest("[data-todas-rutas]"))){
+      e.preventDefault();
+      var sr = D.getElementById("recorridos");
+      if(sr){
+        sr.classList.remove("es-una");
+        sr.classList.add("es-elige");
+        var el = sr.querySelector(".elector");
+        if(el) el.scrollIntoView({block:"start", behavior:"smooth"});
+      }
       return;
     }
     if((b = e.target.closest("[data-abre-fase]"))){
@@ -31504,6 +31704,110 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
       b.scrollIntoView({block:"center", behavior:"smooth"});
     }
   });
+
+  /* Los recorridos empiezan por el elector: con guion se elige uno y se abre
+     uno; sin guion salen los diez seguidos, que es como estaban. */
+  var secRec = D.getElementById("recorridos");
+  if(secRec) secRec.classList.add("es-elige");
+
+  /* ---- el tablero de las catorce fases ------------------------------ */
+  /* Lo que alguien ha superado se guarda en su propio navegador. No viaja a
+     ningún sitio, no lo ve nadie más y se puede borrar de un botón. Si el
+     navegador no deja guardar —una ventana privada, los datos bloqueados—,
+     el tablero sigue funcionando: simplemente no recuerda al volver. */
+  var tablero = D.querySelector("[data-tablero]");
+  if(tablero){
+    var LLAVE = "giraldo.fases.v1";
+    var NF = parseInt(tablero.dataset.total, 10) || 0;
+    var fichas = [].slice.call(tablero.querySelectorAll(".tab__f"));
+    var mins = fichas.map(function(f){
+      var t = (f.querySelector(".tab__m") || {}).textContent || "";
+      return parseInt(t, 10) || 0;
+    });
+    var minTotal = parseInt(tablero.dataset.min, 10) || 0;
+
+    function leeHechas(){
+      /* Lo que hay guardado viene del navegador de quien lo usa, y ahí puede
+         haber cualquier cosa: un valor de una versión anterior, algo escrito
+         a mano, un resto de otra prueba. Si no es una lista de números de
+         fase, se descarta y se empieza de cero. Un tablero no puede romperse
+         por lo que encuentre guardado; antes de comprobarlo, un dato raro
+         dejaba el marcador a cero y los botones sin responder. */
+      try{
+        var v = window.localStorage.getItem(LLAVE);
+        if(!v) return [];
+        var a = JSON.parse(v);
+        if(!Array.prototype.isPrototypeOf(a) && !(a instanceof Array)) return [];
+        var limpio = [];
+        for(var i = 0; i < a.length; i++){
+          var k = parseInt(a[i], 10);
+          if(k >= 0 && k < NF && limpio.indexOf(k) < 0) limpio.push(k);
+        }
+        return limpio;
+      }catch(e){ return []; }
+    }
+    function guarda(a){
+      try{ window.localStorage.setItem(LLAVE, JSON.stringify(a)); }catch(e){}
+    }
+    var hechas = leeHechas();
+
+    function pintaTablero(){
+      tablero.classList.add("es-p");
+      var n = 0, m = 0, ultima = -1;
+      fichas.forEach(function(f, i){
+        var si = hechas.indexOf(i) >= 0;
+        f.classList.toggle("tab__f--hecha", si);
+        f.classList.remove("tab__f--toca");
+        var punto = tablero.querySelector('.tab__p[data-p="' + i + '"]');
+        if(punto){ if(si) punto.setAttribute("data-hecho", "1");
+                   else punto.removeAttribute("data-hecho"); }
+        var b = f.querySelector(".tab__ok");
+        if(b) b.textContent = si ? "Superada" : "Marcar";
+        if(si){ n++; m += mins[i]; if(i > ultima) ultima = i; }
+      });
+      /* la que toca es la primera sin marcar: es lo que se está haciendo */
+      for(var k = 0; k < fichas.length; k++){
+        if(hechas.indexOf(k) < 0){ fichas[k].classList.add("tab__f--toca"); break; }
+      }
+      var pct = NF ? (n / NF) : 0;
+      var bh = tablero.querySelector("[data-tab-hechas]");
+      var bm = tablero.querySelector("[data-tab-min]");
+      var bb = tablero.querySelector("[data-tab-barra]");
+      var via = tablero.querySelector("[data-tab-via]");
+      if(bh) bh.textContent = n;
+      if(bm) bm.textContent = m;
+      if(bb) bb.style.width = (pct * 100) + "%";
+      if(via) via.style.strokeDashoffset = String(1 - pct);
+      var rs = tablero.querySelector("[data-tab-reset]");
+      if(rs) rs.hidden = n === 0;
+    }
+
+    tablero.addEventListener("click", function(e){
+      var ok = e.target.closest("[data-fase-ok]");
+      if(ok){
+        e.preventDefault();
+        var i = parseInt(ok.dataset.faseOk, 10);
+        var k = hechas.indexOf(i);
+        if(k >= 0) hechas.splice(k, 1); else hechas.push(i);
+        guarda(hechas); pintaTablero();
+        return;
+      }
+      var rs = e.target.closest("[data-tab-reset]");
+      if(rs){
+        e.preventDefault();
+        hechas = []; guarda(hechas); pintaTablero();
+        return;
+      }
+      /* pulsar la ficha abre la fase, esté superada o no: aquí no hay
+         puertas cerradas, solo una indicación de por dónde va el camino */
+      var ir = e.target.closest("[data-fase-ir]");
+      if(ir && ir.dataset.lee){
+        e.preventDefault();
+        abreDestino(ir.dataset.lee);
+      }
+    });
+    pintaTablero();
+  }
 
   /* ---- arranque ---------------------------------------------------- */
   var h0 = (location.hash || "").slice(1);

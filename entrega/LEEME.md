@@ -17,6 +17,56 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## El tablero, y las dos puertas que faltaban · versión 22
+
+### Por qué «Mapa» y «Recorridos» no funcionaban
+
+Funcionaban: lo que no había era manera de llegar. Ninguna de las dos estaba
+en el índice. En el ordenador se llegaba por la barra de arriba; en un
+teléfono, donde la barra solo deja sitio para GIRALDO y el índice,
+**únicamente desde los dos botones de la portada**. Quien estuviera leyendo
+cualquier otra cosa no tenía ruta de vuelta.
+
+Ahora están las dos en el índice, detrás de «Inicio», **sin tocar el orden de
+los ocho documentos**: Lo mío · Inicio · Recorridos · El mapa · Dirección ·
+Presentación · Protocolos · Primera Visita · Operaciones · Marketing · Otros ·
+Los números.
+
+### Y por qué «Recorridos» parecía roto
+
+Porque la sección volcaba **los diez recorridos enteros, uno detrás de otro**:
+dieciocho mil novecientos píxeles en un ordenador y veinticinco mil novecientos
+en un teléfono. Se pulsaba y aparecía un muro, no un menú, y elegir uno solo
+bajaba por el muro hasta él.
+
+Ahora se elige primero: los diez delante, y se abre uno cada vez. Entrar pasa
+de 18.900 a 3.002 píxeles en el ordenador, y de 25.916 a 5.039 en el teléfono.
+**Los diez siguen estando**, y quien no tenga guiones los ve todos seguidos
+como hasta ahora.
+
+### El tablero de las catorce fases
+
+El mapa ya estaba y **sigue estando debajo, entero**. Lo que faltaba era ver el
+recorrido como recorrido: dónde se está, cuánto queda y qué viene después.
+
+Las catorce fases son ahora un tablero que se va superando. Cada una se marca
+al pasarla; la que toca queda encendida, las superadas en verde y las que
+faltan, atenuadas. Arriba, el marcador: cuántas fases y cuántos de los 123
+minutos lleva. Lo que se marca **se guarda en su propio navegador**, así que
+puede seguir mañana donde lo dejó hoy, y nadie ve su recorrido.
+
+**Una advertencia sobre el juego: apagado no es cerrado.** Cualquier fase se
+abre siempre, se haya superado o no. Esto es un centro médico, no un
+videojuego: nadie puede quedarse sin leer un protocolo porque no haya pulsado
+antes el botón de otro. Lo atenuado indica por dónde va el camino; nunca es una
+puerta.
+
+Se intentó primero sobre el arco dental, que es la curva con la que se dibuja
+todo lo demás aquí. No funciona, y el propio sistema ya lo sabía: catorce
+fichas con nombre sobre una curva se montan unas encima de otras. El tablero es
+una rejilla en orden —seis casillas por fila en pantalla ancha, una por fila en
+un teléfono— que no choca nunca.
+
 ## La composición · versión 21
 
 Lo que había era correcto y era anodino: una columna de sesenta y seis
