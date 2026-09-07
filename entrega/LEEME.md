@@ -17,6 +17,74 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## La composición · versión 21
+
+Lo que había era correcto y era anodino: una columna de sesenta y seis
+caracteres centrada en mitad de la pantalla, con trescientos setenta píxeles
+de nada a cada lado, los rótulos encima del texto y los avisos metidos en
+cajas de color. Esa es la maqueta por defecto de cualquier cosa.
+
+**No se ha quitado una sola palabra.** Lo que cambia es dónde se pone cada cosa.
+
+### La hoja se compone como un libro
+
+La hoja ya venía partida en tres carriles —un margen, la columna de texto y
+otro margen— para que las tablas pudieran salirse a sangre. El margen de la
+izquierda llevaba vacío desde el primer día. Ahora es la **columna del
+aparato**: ahí cuelgan el número del apartado, el rótulo de la parte y el
+estado, alineados a la derecha contra el texto, como las notas al margen de
+un libro bien hecho. Lo ancho —tablas, fichas, figuras— se sale a las dos
+columnas y respira. Y un titular que presenta una tabla se alinea con la
+tabla, no con el párrafo.
+
+### El detalle que no se ve y se nota
+
+- **Los avisos ya no son cajas de color.** Una raya arriba y el rótulo colgado
+  en el margen dicen lo mismo sin hacer ruido.
+- **Las tres fichas comparten sus tres filas**, así que el titular de la
+  tercera se apoya en la misma línea que el de la primera aunque una lleve
+  distintivo y la otra no. Antes las tres bailaban.
+- **Las tablas, a filete fino**, con la cabecera en versal pequeña. Se leen
+  como un estado de cuentas, no como una hoja de cálculo.
+- **Los titulares se reparten solos** en vez de dejar una palabra huérfana, y
+  los párrafos no terminan en una sílaba suelta.
+- **Las cifras alinean en columna** porque todas miden lo mismo, y el cero
+  lleva barra para que no se confunda con la o.
+- **El movimiento, el justo**: cada bloque entra una vez, subiendo un suspiro.
+  Se dibuja con la propia barra de desplazamiento, sin una línea de guion, y
+  quien tenga pedido «menos movimiento» en su sistema no ve ninguno.
+
+### La portada, con la jerarquía en su sitio
+
+La promesa iba a ciento cincuenta y ocho píxeles y el lema del centro a
+ochenta y cuatro: la letra pequeña era la marca y la grande, la frase. Entre
+las dos estiraban la portada hasta los mil seiscientos píxeles —casi dos
+pantallas— y la frase se cortaba por abajo sin que se viera dónde acababa.
+
+Ahora manda el lema, **«No medias sonrisas»**, que es lo que dice este centro
+de sí mismo; la promesa va debajo, grande pero a su medida. La portada entra
+entera en una pantalla, en el ordenador y en el teléfono, y los dos botones se
+ven sin bajar.
+
+### Lo que hay dentro, dicho en la portada
+
+El sesenta por ciento derecho de la portada estaba vacío. Ahí va ahora el
+**censo del sistema**: ocho documentos, 135 apartados, catorce fases del
+recorrido, seis puestos con protocolo, 76 acciones de marketing y diez
+recorridos guiados.
+
+Ninguna de esas seis cifras está escrita a mano: **todas se cuentan sobre lo
+que se acaba de generar**. Si mañana hay un apartado más, ahí pondrá uno más.
+No son cifras del sector ni promesas de resultado —es el inventario de esta
+entrega, y por eso no puede desmentir al sistema.
+
+### Y el subrayado que no pedíamos
+
+Al convertir los mandos en enlaces para que el sistema se navegue sin guiones
+(versión 20), el navegador les puso su subrayado de serie: el índice entero
+salía rayado, y los números y las cuentas con él. Corregido: son mandos, no
+citas. Solo va subrayado el nombre de la sección en la que se está.
+
 ## Por qué no se pulsaba nada · versión 20
 
 El índice seguía sin funcionar, y la causa no estaba en el índice.

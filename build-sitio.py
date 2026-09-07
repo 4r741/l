@@ -2761,7 +2761,7 @@ def dibuja_recorridos(mapa):
 SEC_ROTULO = {}
 
 
-def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
+def sec_inicio(indice, total, voces, mapa_svg, tarjetas, n_fases, n_rutas):
     hechos = "".join(
         '<div class="hecho"><b>%s</b><span class="letra">%s</span><p>%s</p></div>'
         % (n.replace("@TOTAL@", str(total)).replace("@ACC@", str(CATALOGO["total"])),
@@ -2771,6 +2771,20 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
         '<article class="idea"><p class="letra">%s</p><h3>%s</h3><p class="idea__q">%s</p>%s</article>'
         % (H.escape(k), H.escape(t), H.escape(q), cifras(c))
         for k, t, q, c in INICIO_BLOQUES)
+    # Lo que el sistema sabe de sí mismo, contado por él mismo: ninguna de
+    # estas cifras se escribe a mano, todas salen de lo que se acaba de
+    # generar. Si mañana hay un apartado más, aquí pone uno más. No son
+    # cifras del sector ni promesas: son el inventario de esta entrega.
+    censo = [(str(len(indice)), "documentos"),
+             (str(total), "apartados"),
+             (str(n_fases), "fases del recorrido"),
+             (str(len(PERFILES.PERFILES)), "puestos con protocolo"),
+             (str(CATALOGO["total"]), "acciones de marketing"),
+             (str(n_rutas), "recorridos guiados")]
+    cifras_censo = "".join(
+        '<div class="censo__i"><b>%s</b><span>%s</span></div>' % (c, H.escape(q))
+        for c, q in censo)
+
     puertas = "".join(
         '<a href="#%s" class="puerta" data-ir-sec="%s">'
         '<span class="letra">%02d</span><b>%s</b><span class="puerta__q">%s</span>'
@@ -2791,6 +2805,10 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
         <a href="#recorridos" class="bt bt--fuerte" data-ir-sec="recorridos">Elegir un recorrido</a>
         <a href="#mapa" class="bt" data-ir-sec="mapa">Ver el mapa</a>
       </div>
+    </div>
+    <div class="censo" aria-label="Lo que contiene este sistema">
+      <p class="letra censo__k">Lo que hay dentro</p>
+      @@CENSO@@
     </div>
     <p class="portada__pie letra">Rúa Bolivia nº 2 · Vigo · Uso interno y confidencial</p>
     <span class="portada__baja" aria-hidden="true"><i></i></span>
@@ -2878,7 +2896,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas):
 """.replace("@@ARTE@@", "").replace("@@ARTE2@@", "").replace("@@ARTE3@@", "") \
    .replace("@@TARJETAS@@", tarjetas).replace("@@MAPA@@", mapa_svg) \
    .replace("@@HECHOS@@", hechos).replace("@@IDEAS@@", ideas) \
-   .replace("@@PUERTAS@@", puertas) \
+   .replace("@@PUERTAS@@", puertas).replace("@@CENSO@@", cifras_censo) \
    .replace("@@PRINCIPIOS@@", "".join(
        '<li><b>%s</b><p>%s</p></li>' % (H.escape(k), H.escape(q)) for k, q in PRINCIPIOS)) \
    .replace("@@PREGUNTAS@@", "".join(
@@ -6059,6 +6077,259 @@ JS = """
 """
 
 
+V21 = """
+/* ====================================================================
+   LA COMPOSICIÓN · versión 21
+
+   Lo que había era correcto y era anodino: una columna de sesenta y seis
+   caracteres centrada en mitad de la pantalla, con trescientos setenta
+   píxeles de nada a cada lado, los rótulos encima del texto y los avisos
+   metidos en cajas de color. Eso es la maqueta por defecto de cualquier
+   cosa, y no se parece a un centro que dice «no medias sonrisas».
+
+   Aquí la página se compone como se compone un libro bien hecho: una
+   columna de margen a la izquierda donde cuelgan los rótulos, el número y
+   el estado, y la columna de lectura a su derecha, quieta y a su medida.
+   El margen deja de ser hueco y pasa a ser el sitio donde vive el aparato
+   del documento. Lo ancho —las tablas, las fichas, las figuras— se sale a
+   las dos columnas y respira.
+
+   No se quita una palabra. Lo que cambia es dónde se pone cada cosa.
+   ==================================================================== */
+
+/* 1 · El subrayado que no pedimos. Al convertir los mandos en enlaces para
+   que el sistema se navegue sin guiones (versión 20), el navegador les puso
+   su subrayado de serie: el índice entero salía rayado, y los números y las
+   cuentas con él. Son mandos, no citas: llevan su propio subrayado cuando
+   toca y ninguno cuando no. */
+a.arb__b, a.puerta, a.bt, a.tope__m, a.tope__b, a.sigue__p, a.enlacillo,
+.nav__l a, .arb__b *, .tope__m *{text-decoration:none}
+a.arb__b:focus-visible, a.puerta:focus-visible, a.bt:focus-visible{outline:2px solid var(--azul);
+  outline-offset:3px}
+/* el nombre de la sección donde se está, subrayado a propósito y con aire */
+.arb__s.es-aqui > .arb__b .arb__r{text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:.5rem}
+
+/* 2 · Detalle tipográfico. Nada de esto se ve de golpe y todo se nota:
+   los titulares se reparten solos en vez de dejar una palabra huérfana,
+   los párrafos no terminan en una sílaba suelta, las cifras alinean en
+   columna porque todas miden lo mismo, y el cero lleva barra para que no
+   se confunda con la o. */
+h1,h2,h3,h4,.arb__r,.puerta b,.card b,.lector__q{text-wrap:balance}
+p,li,dd,figcaption,.puerta__q{text-wrap:pretty}
+.letra,.eyebrow,.num,.arb__n,.arb__c,.rotulillo,.cifras,
+table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
+:root{hanging-punctuation:first last}
+::selection{background:var(--azul);color:#fff}
+:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
+
+/* 3 · La rejilla editorial. A partir de un tamaño de pantalla que la
+   admite, la hoja se parte en dos columnas: el margen, donde cuelgan los
+   rótulos y el número, y la lectura. Por debajo de esa anchura todo vuelve
+   a una sola columna, que es lo que cabe en un teléfono. */
+@media (min-width:1180px){
+  /* La hoja ya venía partida en tres carriles —un margen, la columna de
+     texto y otro margen— para que las tablas pudieran salirse a sangre. El
+     margen de la izquierda estaba vacío desde el primer día; aquí la sección
+     se estira hasta ocuparlo y ese hueco pasa a ser la columna donde cuelgan
+     los rótulos. No se inventa una rejilla nueva: se usa la que había. */
+  #lector .hoja > .section{grid-column:ancho-start/texto-end}
+  #lector .hoja .section,
+  #lector .hoja .section > .wrap{max-width:none;width:100%;margin-inline:0}
+  #lector .hoja .wrap{display:grid;
+    grid-template-columns:[marg] minmax(8rem,1fr) [txt] minmax(0,66ch) [fin];
+    column-gap:3.4rem;align-items:start}
+  #lector .hoja .wrap > *{grid-column:txt;min-width:0}
+
+  /* la cabecera reparte sus piezas entre las dos columnas */
+  #lector .hoja .wrap > .section__head{grid-column:marg/fin;
+    display:grid;grid-template-columns:subgrid;align-items:baseline}
+  #lector .hoja .wrap > .section__head > .eyebrow{grid-column:marg;margin:0;
+    text-align:right;line-height:1.5;color:var(--muted)}
+  #lector .hoja .wrap > .section__head > *:not(.eyebrow){grid-column:txt}
+
+  /* el aviso deja de ser una caja de color y pasa a ser lo que es: una
+     nota con su rótulo colgado en el margen y una raya que la abre */
+  #lector .hoja .wrap > .rulebox{grid-column:marg/fin;
+    display:grid;grid-template-columns:subgrid;
+    background:none;border:0;border-top:1px solid var(--negro);
+    padding:1.4rem 0 0;margin:2.4rem 0 1.6rem}
+  /* El rótulo del margen iba a la misma escala que un titular pequeño y con
+     mucha letra suelta: se partía en cuatro líneas y estiraba la fila entera,
+     dejando un hueco donde no había nada que leer. A esta medida cabe en dos. */
+  #lector .hoja .wrap > .rulebox > .eyebrow{grid-column:marg;margin:0;
+    text-align:right;color:var(--azul);line-height:1.45;
+    font-size:.56rem;letter-spacing:.13em}
+  #lector .hoja .wrap > .section__head > .eyebrow{font-size:.56rem;letter-spacing:.13em}
+  #lector .hoja .wrap > .rulebox > *:not(.eyebrow){grid-column:txt}
+
+  /* lo ancho ocupa las dos columnas: para eso se le dio el ancho */
+  /* Un titular que presenta una tabla o unas fichas se alinea con ellas y no
+     con el párrafo: si la tabla arranca en el margen, su nombre también. */
+  #lector .hoja .wrap > h3:has(+ .tablewrap),
+  #lector .hoja .wrap > h3:has(+ .cards),
+  #lector .hoja .wrap > h3:has(+ figure),
+  #lector .hoja .wrap > .tablewrap,
+  #lector .hoja .wrap > .cards,
+  #lector .hoja .wrap > figure,
+  #lector .hoja .wrap > .figura,
+  #lector .hoja .wrap > .reloj,
+  #lector .hoja .wrap > .rejilla{grid-column:marg/fin}
+}
+
+/* 4 · Las fichas, sin cajas. Tres rectángulos con borde alrededor son tres
+   rectángulos con borde alrededor. Una raya arriba y un filete entre ellas
+   dicen lo mismo y no hacen ruido; y al no tener caja, los titulares de las
+   tres se apoyan en la misma línea. */
+#lector .cards{border-top:1px solid var(--negro);gap:0;
+  border-left:0;border-right:0;border-bottom:0;background:none}
+#lector .cards > .card{border:0;border-left:1px solid var(--linea);
+  background:none;padding:1.5rem 1.8rem 0;margin:0}
+#lector .cards > .card:first-child{border-left:0;padding-left:0}
+#lector .cards > .card > .eyebrow{margin-top:0}
+/* Las tres fichas comparten sus tres filas —rótulo, titular y texto—, así que
+   el titular de la tercera se apoya en la misma línea que el de la primera
+   aunque una lleve distintivo y la otra no. Antes cada ficha empezaba donde
+   le tocaba y las tres bailaban. */
+#lector .cards--3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-rows:auto auto auto}
+#lector .cards--3 > .card{display:grid;grid-row:span 3;
+  grid-template-rows:subgrid;align-content:start;row-gap:.7rem}
+#lector .cards > .card > h3{margin:0;font-size:1.12rem;font-weight:400;
+  line-height:1.25;letter-spacing:-.015em}
+#lector .cards > .card > p{margin:0;font-size:.9rem;line-height:1.6;
+  color:var(--ink-2);padding-bottom:1.8rem}
+
+/* 5 · Las tablas, a filete fino y con la cabecera en versal pequeña: se
+   leen como un estado de cuentas, no como una hoja de cálculo. */
+#lector table{border-collapse:collapse;width:100%}
+#lector .tablewrap{border:0;background:none;padding:0}
+#lector table th{font-weight:400;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);
+  background:none;border-bottom:1px solid var(--negro);
+  padding:.7rem .9rem .6rem;text-align:left;vertical-align:bottom}
+#lector table td{border-bottom:1px solid var(--linea-2);padding:.85rem .9rem;
+  vertical-align:baseline}
+#lector table tr:last-child td{border-bottom:1px solid var(--linea)}
+
+/* 6 · El aire entre bloques, en una sola escala. Antes cada bloque traía
+   el margen que le venía de su documento y la página iba a saltos. */
+#lector .hoja .wrap > * + *{margin-top:2.2rem}
+#lector .hoja .wrap > h3{margin-top:3.4rem;font-size:1.5rem;font-weight:400;
+  letter-spacing:-.02em}
+#lector .hoja .wrap > .section__head{margin-bottom:.6rem}
+
+/* 7 · La portada, con la jerarquía en su sitio. La promesa iba a ciento
+   cincuenta y ocho píxeles y el lema del centro a ochenta y cuatro: la letra
+   pequeña era la marca y la grande, la frase. Entre las dos estiraban la
+   portada hasta los mil seiscientos píxeles, casi dos pantallas, y la frase
+   se cortaba por abajo sin que se viera dónde acababa.
+
+   Ahora manda el lema —«No medias sonrisas», que es lo que dice este centro
+   de sí mismo— y la promesa va debajo, grande pero a su medida: una columna
+   de veinte caracteres, que es lo que se lee de un golpe de vista. Las dos
+   escalas miran el alto de la pantalla además del ancho, así que la portada
+   entra entera en un solo golpe de vista y los dos botones se ven sin bajar. */
+#sitio .portada{min-height:100svh;display:flex;flex-direction:column;
+  justify-content:center;gap:clamp(1.4rem,3vh,3rem)}
+#sitio .portada h1,#sitio .portada .portada__t{
+  font-size:clamp(2.6rem,min(8.2vw,11vh),7rem);line-height:.94;
+  letter-spacing:-.04em;margin:0}
+#sitio .portada .portada__l{
+  font-size:clamp(1.35rem,min(3.1vw,4.4vh),2.6rem);line-height:1.14;
+  letter-spacing:-.02em;max-width:22ch;margin:0;color:var(--muted)}
+#sitio .portada .portada__b{margin:0}
+@media(max-width:640px){
+  /* en el teléfono los dos botones se ponen uno debajo del otro: si además
+     miden distinto, parece que uno importa más que el otro y no es el caso */
+  #sitio .portada .portada__b{display:grid;grid-template-columns:1fr;gap:.7rem}
+  #sitio .portada .portada__b > .bt{width:100%;text-align:center}
+}
+
+/* 7 bis · El censo. La portada tenía el sesenta por ciento derecho vacío y
+   la promesa apretada contra el borde izquierdo. Ahí va ahora lo que este
+   sistema contiene, contado por él mismo: ninguna de las seis cifras se
+   escribe a mano, todas salen de lo que se acaba de generar, así que no
+   pueden mentir ni quedarse viejas. No son cifras del sector ni promesas de
+   resultado: son el inventario de la entrega. En un teléfono se ponen debajo,
+   en dos columnas. */
+#sitio .portada{position:relative}
+#sitio .censo{margin-top:clamp(1.6rem,4vh,3.2rem);
+  border-top:1px solid rgba(255,255,255,.16);padding-top:1.3rem;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1.1rem 2.2rem;max-width:26rem}
+#sitio .censo__k{grid-column:1/-1;margin:0 0 .2rem;color:rgba(255,255,255,.45)}
+#sitio .censo__i{display:flex;align-items:baseline;gap:.6rem;min-width:0}
+#sitio .censo__i b{font-size:1.28rem;font-weight:400;letter-spacing:-.02em;
+  color:#fff;font-variant-numeric:tabular-nums;min-width:2.4ch}
+#sitio .censo__i span{font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);
+  line-height:1.5}
+
+@media(min-width:1100px){
+  /* En pantalla ancha la portada se parte: la voz a la izquierda, el
+     inventario a la derecha, y entre las dos el aire que faltaba. */
+  #sitio .portada{display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+    grid-template-rows:1fr auto;align-items:center;
+    column-gap:clamp(3rem,7vw,9rem)}
+  #sitio .portada > .portada__c{grid-column:1;grid-row:1;align-self:center}
+  #sitio .portada > .censo{grid-column:2;grid-row:1;align-self:center;
+    margin-top:0;max-width:none;border-top:0;padding-top:0;
+    grid-template-columns:minmax(0,1fr);gap:0}
+  #sitio .portada > .censo .censo__i{border-top:1px solid rgba(255,255,255,.13);
+    padding:.85rem 0;gap:1.1rem}
+  #sitio .portada > .censo .censo__i:last-child{border-bottom:1px solid rgba(255,255,255,.13)}
+  #sitio .portada > .censo .censo__i b{font-size:1.6rem;min-width:3ch;text-align:right}
+  #sitio .portada > .portada__pie{grid-column:1/-1;grid-row:2}
+  #sitio .portada .portada__l{max-width:20ch}
+}
+
+/* 7 ter · Dos cosas que en el teléfono no se podían leer.
+
+   En «Presentación», las tablas de las diapositivas medían seiscientos
+   cuarenta píxeles dentro de una diapositiva de trescientos cincuenta y tres,
+   y el contenedor que abre y cierra el desplegable las recortaba: la mitad
+   derecha de esas tablas no existía para quien lo abriera en un móvil. Ahora
+   la diapositiva se desplaza de lado y la tabla se ve entera.
+
+   En «Marketing», cada punto de la lista se salía cincuenta píxeles por la
+   derecha: es el desbordamiento clásico de una caja que por omisión no baja
+   de la anchura de su contenido. Con decirle que puede encogerse, el texto
+   se reparte en varias líneas y deja de cortarse. */
+@media(max-width:900px){
+  #sitio .dia .slide{overflow-x:auto;max-width:100%;
+    -webkit-overflow-scrolling:touch}
+  #sitio .dia .slide table{min-width:34rem}
+  #sitio .mkl__i{overflow-wrap:anywhere}
+}
+/* La lista de marketing pedía columnas de veinticuatro caracteres de ancho
+   —trescientos ochenta y cuatro píxeles— dentro de una caja de trescientos
+   cincuenta y tres: la columna no cabía y se salía con todo lo que llevaba
+   dentro. El mínimo no puede ser mayor que el sitio que hay. */
+/* La etiqueta del último tramo del reloj llegaba veintisiete píxeles más
+   allá del borde: tenía recorte y puntos suspensivos, pero su propia caja no
+   estaba atada al ancho del tramo, y «overflow» recorta lo de dentro, no lo
+   de fuera. El texto sigue entero donde tiene que estar: al pulsar la fase. */
+#sitio .reloj__r{max-width:100%;min-width:0}
+#sitio .mkl{grid-template-columns:repeat(auto-fill,minmax(min(24rem,100%),1fr))}
+#sitio .mkl,#sitio .mkl__i,#sitio .mkl__i > *{min-width:0}
+
+/* 8 · El movimiento, el justo. Cada bloque entra una vez, subiendo un
+   suspiro, y se queda. Se dibuja con la propia barra de desplazamiento, sin
+   una línea de guion, y quien tenga pedido «menos movimiento» en su sistema
+   no ve ninguno. Nunca esconde nada: si el navegador no lo entiende, el
+   bloque sale puesto y ya está. */
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:view()){
+    #lector .hoja .wrap > *{animation:v21sube linear both;
+      animation-timeline:view();animation-range:entry 0% entry 38%}
+    @keyframes v21sube{from{opacity:.25;transform:translateY(.9rem)}
+                       to{opacity:1;transform:none}}
+  }
+}
+"""
+
 SIN_GUION = """
 /* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
@@ -6404,7 +6675,13 @@ def main():
 
     svg = mapa_interactivo(mapa)
     rutas_html, tarjetas = dibuja_recorridos(mapa)
-    inicio = sec_inicio(indice, total, voces, svg, tarjetas)
+    # Las catorce fases son los nodos que el mapa acaba de dibujar —doce de
+    # primera visita y dos posteriores— y los recorridos, las tarjetas que se
+    # acaban de generar. Se cuentan sobre lo producido, no se escriben a mano:
+    # así el censo de la portada no puede desmentir al sistema.
+    n_fases = svg.count('class="nodo"')
+    n_rutas = tarjetas.count('data-ve-ruta=')
+    inicio = sec_inicio(indice, total, voces, svg, tarjetas, n_fases, n_rutas)
     recorridos_html = sec_recorridos(rutas_html)
     mapa_html = sec_mapa(svg)
     mio_html = sec_mio()
@@ -6525,7 +6802,7 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + SIN_GUION
+    extra = extra + "\n" + V21 + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 
