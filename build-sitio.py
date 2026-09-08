@@ -3044,6 +3044,130 @@ def sec_recorridos(rutas, tarjetas=""):
         "pasa a la siguiente y se vuelve cuando se quiere: el recorrido no se pierde.", "10"))
 
 
+def sec_sistema(indice, total, orden, n_fases, n_rutas, n_voces):
+    """El mapa conceptual: cómo encaja todo, en una pantalla.
+
+    Las secciones del sistema —Inicio, Recorridos, el Mapa— no tenían un solo
+    diagrama: la matriz RACI, el reloj de los 123 minutos y los carriles de
+    responsabilidad viven dentro de sus documentos, y están bien ahí, pero
+    ninguno enseña el conjunto. Quien abre esto por primera vez ve ocho
+    documentos y ciento treinta y cinco apartados sin saber qué relación
+    guardan entre sí.
+
+    Este mapa contesta cuatro preguntas y las cuelga del lema, que es de donde
+    cuelga todo lo demás: qué se promete, cómo se hace, cómo llega el paciente
+    y con qué se mide. Debajo de cada una, sus piezas con su cuenta real, y
+    cada pieza lleva a donde se lee. Ninguna cifra está escrita a mano.
+    """
+    porsec = {i: n for i, _r, _d, n in indice} if indice and len(indice[0]) == 4 else {}
+    doc_de = {}
+    for i, _rot, nombre, cuantos in indice:
+        doc_de[i] = (nombre, cuantos)
+
+    def pieza(sec, rot, cifra, pie, ident=""):
+        """Una pieza del mapa, que dice a dónde va antes de pulsarla.
+
+        Las que abren un apartado cambian de sección —el texto vive en su
+        documento, no en el mapa—, y en este sistema un enlace que cambia de
+        sección lo lleva escrito al lado. Aquí además es información útil: en
+        un mapa conceptual, saber en qué documento se lee cada pieza es parte
+        de lo que el mapa enseña.
+        """
+        donde = SEC_ROTULO.get(sec, sec)
+        if ident:
+            return ('<a class="mc__p salta" href="#%s" data-lee="%s" data-salta="%s">'
+                    '<b>%s</b><span class="mc__c">%s</span>'
+                    '<span class="mc__q">%s<i class="salta__d mc__d">%s</i></span></a>'
+                    % (ident, ident, H.escape(donde), H.escape(rot),
+                       H.escape(str(cifra)), H.escape(pie), H.escape(donde)))
+        return ('<a class="mc__p" href="#%s" data-ir-sec="%s"><b>%s</b>'
+                '<span class="mc__c">%s</span><span class="mc__q">%s</span></a>'
+                % (sec, sec, H.escape(rot), H.escape(str(cifra)), H.escape(pie)))
+
+    def col(clave, rotulo, pregunta, piezas):
+        return ('<div class="mc__col" data-mc="%s">'
+                '<p class="mc__k">%s</p><h3 class="mc__t">%s</h3>'
+                '<div class="mc__ps">%s</div></div>'
+                % (clave, H.escape(rotulo), H.escape(pregunta), "".join(piezas)))
+
+    def apart(trozo):
+        """El apartado cuyo titular contiene esto.
+
+        Se resuelve por titular y no por ancla a propósito: una página puede
+        tener anclas que no son apartados —un titular interior, una tabla— y
+        el lector solo sabe abrir apartados. Apuntar a una de esas anclas no
+        da error: sencillamente no pasa nada al pulsar, que es la peor manera
+        de fallar. Así ocurrió con la matriz RACI. Si no se encuentra, se
+        devuelve vacío y la pieza lleva a su sección, que siempre existe.
+        """
+        t = trozo.lower()
+        for o in orden:
+            if t in (o[3] or "").lower():
+                return o[0]
+        return ""
+
+    cols = [
+        col("promete", "Qué se promete", "La posición, la economía y la decisión", [
+            pieza("direccion", doc_de.get("direccion", ("Plan de Dirección", 0))[0],
+                  doc_de.get("direccion", ("", 0))[1], "apartados"),
+            pieza("direccion", "Las quince decisiones", 15, "se someten a la Junta",
+                  apart("quince decisiones")),
+            pieza("presentacion", doc_de.get("presentacion", ("Presentación de Junta", 0))[0],
+                  43, "diapositivas"),
+        ]),
+        col("hace", "Cómo se hace", "El recorrido del paciente y quién responde", [
+            pieza("mapa", "Las fases del recorrido", n_fases, "de la llamada al mantenimiento"),
+            pieza("primera-visita", doc_de.get("primera-visita", ("Primera Visita", 0))[0],
+                  doc_de.get("primera-visita", ("", 0))[1], "apartados"),
+            pieza("protocolos", "Los puestos", len(PERFILES.PERFILES),
+                  "cada uno con su protocolo"),
+            pieza("operaciones", "La matriz RACI", "%d×%d" % (len(PERFILES.PERFILES), n_fases),
+                  "quién hace qué en cada fase", apart("Matriz RACI")),
+        ]),
+        col("llega", "Cómo llega el paciente", "Lo que se hace para que entre por la puerta", [
+            pieza("marketing", "Las acciones", CATALOGO["total"], "con dueño y coste",
+                  apart("76 acciones")),
+            pieza("marketing", "Los grupos de acciones", len(CATALOGO["grupos"]), "por momento"),
+            pieza("marketing", "Los estados del paciente", len(CATALOGO["estados"]),
+                  "de desconocido a prescriptor", apart("doce estados")),
+        ]),
+        col("mide", "Con qué se mide", "Sin números, cualquier objetivo es una opinión", [
+            pieza("numeros", doc_de.get("numeros", ("Los números del centro", 0))[0],
+                  doc_de.get("numeros", ("", 0))[1], "apartados"),
+            pieza("numeros", "Los cinco números", 5, "que aún no tenemos",
+                  apart("Sin ellos")),
+            pieza("otros", doc_de.get("otros", ("Otros documentos", 0))[0],
+                  doc_de.get("otros", ("", 0))[1], "apartados"),
+        ]),
+    ]
+
+    return """
+<section class="sec" id="sistema" data-sec="sistema">
+  @@FRENTE@@
+  <div class="mc">
+    <div class="mc__eje">
+      <p class="letra">De aquí cuelga todo lo demás</p>
+      <p class="mc__lema">No medias sonrisas</p>
+      <p class="mc__sub">Le devolvemos su sonrisa completa, en el menor tiempo
+        posible, y le cuidamos para siempre.</p>
+    </div>
+    <div class="mc__cols">@@COLS@@</div>
+    <p class="mc__pie letra">@@TOT@@ apartados · @@V@@ conceptos · @@R@@ recorridos
+      guiados · todo dentro de este archivo</p>
+  </div>
+</section>
+""".replace("@@COLS@@", "".join(cols)).replace("@@TOT@@", str(total)) \
+   .replace("@@V@@", str(n_voces)).replace("@@R@@", str(n_rutas)) \
+   .replace("@@FRENTE@@", frente(
+        "sistema", "El mapa del sistema",
+        "Cómo encaja todo, en una pantalla",
+        "Ocho documentos y ciento treinta y cinco apartados no son una lista: son "
+        "las cuatro respuestas que sostienen un centro. Qué se promete, cómo se "
+        "hace, cómo llega el paciente y con qué se mide. Cada pieza de este mapa "
+        "lleva a donde se lee, y ninguna de sus cifras está escrita a mano: se "
+        "cuentan sobre lo que se acaba de generar.", "4"))
+
+
 def sec_mapa(mapa_svg, tablero=""):
     # Una sola lista de las catorce fases, no dos. En la versión 22 puse el
     # tablero DELANTE de la rejilla que ya existía y me dije que así no se
@@ -5536,6 +5660,20 @@ JS = """
   var velos = {}, ultimoFoco = null;
   [].slice.call(D.querySelectorAll(".velo")).forEach(function(v){ velos[v.dataset.velo] = v; });
   function abre(cual){
+    /* Un solo buscador. Había dos: esta paleta, que venía de antes y buscaba
+       recorridos, secciones, apartados y texto, y el campo del índice, que
+       busca además los conceptos, las catorce fases, los seis puestos, los
+       siete grupos de marketing y las trece secciones, y trae los atajos.
+       Los dos respondían a Ctrl+K y se abrían uno encima del otro. Como el
+       del índice cubre todo lo que cubría la paleta y más, todo lo que
+       llamaba a la paleta llama ahora al índice: una caja, un atajo, una
+       lista de resultados. */
+    if(cual === "paleta"){
+      var r = D.getElementById("rail");
+      if(r && r.hidden && railbt) railbt.click();
+      setTimeout(function(){ if(filtra){ filtra.focus(); filtra.select(); } }, 80);
+      return;
+    }
     cierra(); cierraPanel();
     var v = velos[cual];
     if(!v) return;
@@ -6308,7 +6446,7 @@ JS = """
 
   var ROT = {apartado:"Apartado", concepto:"Concepto", fase:"Fase",
              documento:"Documento", puesto:"Puesto", marketing:"Marketing",
-             recorrido:"Recorrido"};
+             recorrido:"Recorrido", seccion:"Sección"};
 
   /* El corpus: todo lo que se puede buscar, con su destino resuelto. */
   var CORPUS = [];
@@ -6438,6 +6576,7 @@ JS = """
       if(bt) bt.click(); else veSec("recorridos", true);
       return;
     }
+    if(c.t === "seccion"){ cierraRail(); cierraLector(); veSec(c.sec, true); return; }
     if(c.id){ cierraRail(); abreDestino(c.id); return; }
     if(c.sec){ cierraRail(); cierraLector(); veSec(c.sec, true); }
   }
@@ -6476,7 +6615,17 @@ JS = """
   /* Los atajos: lo que casi todo el mundo viene a buscar, de un solo toque. */
   (function(){
     if(!atajos) return;
-    var por = {fase:[], marketing:[], puesto:[], documento:[], concepto:[]};
+    /* Las secciones salen del propio árbol: si mañana hay una más, aquí
+       aparece sola. Van las primeras porque son el mapa de la casa. */
+    [].forEach.call(D.querySelectorAll(".arb__s"), function(x){
+      var r = x.querySelector(".arb__r"), c = x.querySelector(".arb__c");
+      if(!r) return;
+      CORPUS.push({t:"seccion", r:r.textContent.trim(),
+                   d:(c ? c.textContent.trim() : ""), p:"",
+                   sec:x.dataset.arb, _k:pela(r.textContent), _r:pela(r.textContent)});
+    });
+    var por = {seccion:[], fase:[], marketing:[], puesto:[], documento:[],
+               recorrido:[], concepto:[]};
     CORPUS.forEach(function(c){ if(por[c.t]) por[c.t].push(c); });
     Object.keys(por).forEach(function(t){
       var caja = atajos.querySelector('[data-grupo="' + t + '"] .atajos__l');
@@ -6496,20 +6645,6 @@ JS = """
       if(b) vaA(CORPUS[parseInt(b.dataset.c, 10)]);
     });
   })();
-
-  /* Se abre con la tecla, como se abre todo lo que se usa mucho: Ctrl+K o
-     ⌘K desde cualquier sitio, y también con «/» si no se está escribiendo en
-     otro campo. Escribir es más rápido que buscar un botón con el ratón. */
-  D.addEventListener("keydown", function(e){
-    var enCampo = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName || ""));
-    var abre = ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")) ||
-               (e.key === "/" && !enCampo);
-    if(!abre) return;
-    e.preventDefault();
-    var r = D.getElementById("rail");
-    if(r && r.hidden){ if(railbt) railbt.click(); }
-    setTimeout(function(){ if(filtra){ filtra.focus(); filtra.select(); } }, 80);
-  });
 
   /* ---- el tablero de las catorce fases ------------------------------ */
   /* Lo que alguien ha superado se guarda en su propio navegador. No viaja a
@@ -7210,6 +7345,95 @@ V24 = """
 """
 
 
+V26 = """
+/* ====================================================================
+   EL MAPA DEL SISTEMA, Y EL PORTÁTIL · versión 26
+
+   Dos cosas.
+
+   La primera: ni Inicio, ni Recorridos, ni el Mapa tenían un solo diagrama.
+   La matriz RACI, el reloj de los 123 minutos y los carriles viven dentro de
+   sus documentos —y ahí están bien—, pero ninguno enseña el conjunto. Quien
+   abría esto por primera vez veía ocho documentos y ciento treinta y cinco
+   apartados sin saber qué relación guardaban. El mapa conceptual contesta
+   cuatro preguntas colgadas del lema, con las piezas de cada una y su cuenta
+   real, y cada pieza lleva a donde se lee.
+
+   La segunda: esto se mira en un portátil. Una pantalla de 1280×800 deja unos
+   setecientos píxeles útiles después de la barra del navegador, no novecientos.
+   Todo lo que estaba pedido en «alto de ventana» daba por bueno un monitor de
+   sobremesa. Aquí hay un escalón propio para el portátil.
+   ==================================================================== */
+
+/* 1 · El mapa conceptual */
+.mc{margin:0 0 var(--aire)}
+.mc__eje{text-align:center;padding:0 0 2.2rem;border-bottom:1px solid var(--negro);
+  margin-bottom:0}
+.mc__eje .letra{margin:0 0 .8rem;color:var(--muted)}
+.mc__lema{margin:0;font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;
+  letter-spacing:-.035em;line-height:1;color:var(--azul)}
+.mc__sub{margin:.9rem auto 0;max-width:44ch;font-size:.95rem;line-height:1.65;
+  color:var(--ink-2);text-wrap:pretty}
+
+.mc__cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border-left:1px solid var(--linea)}
+.mc__col{border-right:1px solid var(--linea);padding:1.4rem 1.2rem 1.2rem;
+  min-width:0;display:flex;flex-direction:column}
+.mc__k{margin:0;font-family:var(--f-mono);font-size:.54rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--azul)}
+.mc__t{margin:.5rem 0 1.2rem;font-size:1.02rem;font-weight:400;line-height:1.3;
+  letter-spacing:-.01em;color:var(--negro);text-wrap:balance}
+.mc__ps{display:grid;gap:.5rem;align-content:start}
+.mc__p{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem .7rem;
+  text-decoration:none;color:inherit;padding:.6rem .7rem;
+  border:1px solid var(--linea);background:var(--papel);
+  transition:border-color .2s var(--e),background .2s var(--e)}
+.mc__p:hover{border-color:var(--negro);background:var(--gris)}
+.mc__p b{grid-column:1;font-size:.88rem;font-weight:400;line-height:1.3;
+  color:var(--negro);min-width:0}
+.mc__c{grid-column:2;grid-row:1;font-family:var(--f-mono);font-size:.86rem;
+  color:var(--azul);font-variant-numeric:tabular-nums;align-self:start}
+.mc__q{grid-column:1/-1;font-family:var(--f-mono);font-size:.5rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  line-height:1.5}
+.mc__d{display:block;margin-top:.25rem;font-style:normal;color:var(--azul)}
+.mc__pie{margin:1.6rem 0 0;color:var(--muted);text-align:center}
+
+@media(max-width:1100px){
+  .mc__cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mc__col{border-bottom:1px solid var(--linea)}
+}
+@media(max-width:640px){
+  .mc__cols{grid-template-columns:1fr}
+  .mc__eje{padding-bottom:1.6rem}
+}
+
+/* 2 · El portátil. Una pantalla de 1280×800 deja ~700 px útiles: lo que se
+   pide en «alto de ventana» tiene que contar con eso y no con un monitor
+   grande. Se aprieta el aire vertical, no la letra de leer. */
+@media(min-width:901px) and (max-height:860px){
+  :root{--aire:clamp(2.4rem,3.4vw,3.8rem)}
+  #sitio .portada{min-height:0;padding-top:2.4rem;padding-bottom:2.4rem;
+    gap:clamp(.9rem,2vh,1.6rem)}
+  #sitio .portada h1,#sitio .portada .portada__t{
+    font-size:clamp(2.2rem,min(6.4vw,8.4vh),4.6rem)}
+  #sitio .portada .portada__l{font-size:clamp(1.1rem,min(2.4vw,3.4vh),1.7rem)}
+  #sitio .censo__i b{font-size:1.3rem}
+  #sitio .portada > .censo .censo__i{padding:.6rem 0}
+  .frente,.frente__c{padding-top:2.2rem;padding-bottom:2.2rem}
+  .arb__b{padding:.62rem 0}
+  .arb__r{font-size:1.28rem}
+  .rail__in{padding-top:4rem}
+  .atajos__g{margin-bottom:1.2rem}
+  .atajo{padding:.4rem .7rem;font-size:.84rem}
+  .tablero__cab{margin-bottom:1.6rem}
+  .mc__eje{padding-bottom:1.5rem}
+  .mc__lema{font-size:clamp(1.8rem,3.6vw,2.6rem)}
+  .mc__col{padding:1.1rem 1rem 1rem}
+}
+"""
+
+
 SIN_GUION = """
 /* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
@@ -7337,6 +7561,10 @@ MARCO = """
     <div class="resu" id="resu" role="listbox" aria-label="Resultados" hidden></div>
 
     <div class="atajos" id="atajos">
+      <div class="atajos__g" data-grupo="seccion">
+        <p class="atajos__t">Todas las secciones</p>
+        <div class="atajos__l"></div>
+      </div>
       <div class="atajos__g" data-grupo="fase">
         <p class="atajos__t">Las catorce fases de la visita</p>
         <div class="atajos__l"></div>
@@ -7351,6 +7579,10 @@ MARCO = """
       </div>
       <div class="atajos__g" data-grupo="documento">
         <p class="atajos__t">Los ocho documentos</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="recorrido">
+        <p class="atajos__t">Los diez recorridos guiados</p>
         <div class="atajos__l"></div>
       </div>
       <div class="atajos__g" data-grupo="concepto">
@@ -7599,6 +7831,7 @@ def main():
     recorridos_html = sec_recorridos(rutas_html, tarjetas)
     tablero = tablero_fases(fases("index.html"), fases("manual.html"), mapa)
     mapa_html = sec_mapa(svg, tablero)
+    sistema_html = sec_sistema(indice, total, orden, n_fases, n_rutas, len(voces))
     mio_html = sec_mio()
 
     # La flecha de al lado es la que despliega y pliega el índice de la
@@ -7706,7 +7939,8 @@ def main():
     # «Inicio», sin tocar el orden de los ocho documentos: no se quita nada,
     # se abren dos puertas que faltaban.
     extras = []
-    for ident, rotulo, cuenta in (("recorridos", "Recorridos", "10 recorridos"),
+    for ident, rotulo, cuenta in (("sistema", "El sistema", "el mapa conceptual"),
+                                  ("recorridos", "Recorridos", "10 recorridos"),
                                   ("mapa", "El mapa", "14 fases")):
         extras.append(
             '<div class="arb__s" data-arb="%s">\n'
@@ -7719,7 +7953,8 @@ def main():
     cuerpo = (MARCO.replace("@@ARBOL@@", "\n".join(arbol))
                    .replace("@N@", str(total)).replace("@V@", str(len(voces)))
                    .replace("@@SECCIONES@@",
-                            inicio + "\n" + mio_html + "\n" + recorridos_html + "\n"
+                            inicio + "\n" + mio_html + "\n" + sistema_html + "\n"
+                            + recorridos_html + "\n"
                             + mapa_html + "\n" + "\n".join(secciones))
                    .replace("@@RECURSOS@@", recursos)
                    .replace("@EJEMPLO@", ", ".join(sorted(voces)[:3])))
@@ -7737,7 +7972,7 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + V24 + "\n" + SIN_GUION
+    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + V24 + "\n" + V26 + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 

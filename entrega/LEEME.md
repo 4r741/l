@@ -17,6 +17,55 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## El mapa del sistema, y el portátil · versión 26
+
+### Un mapa conceptual, porque no había ninguno
+
+La matriz RACI, el reloj de los 123 minutos y los carriles de responsabilidad
+existían ya, y están bien donde están: dentro de sus documentos. Pero **ni
+Inicio, ni Recorridos, ni el Mapa tenían un solo diagrama**, así que quien abría
+esto por primera vez veía ocho documentos y ciento treinta y cinco apartados sin
+saber qué relación guardaban entre sí.
+
+La sección nueva, **El sistema**, lo enseña en una pantalla. Del lema cuelgan
+las cuatro preguntas que sostienen un centro:
+
+| | |
+| --- | --- |
+| **Qué se promete** | La posición, la economía y la decisión |
+| **Cómo se hace** | El recorrido del paciente y quién responde |
+| **Cómo llega el paciente** | Lo que se hace para que entre por la puerta |
+| **Con qué se mide** | Sin números, cualquier objetivo es una opinión |
+
+Debajo de cada una, sus piezas con su cuenta real —34 apartados de Dirección,
+las 14 fases, los 6 puestos, la matriz RACI de 6×14, las 76 acciones, los 12
+estados del paciente, los 5 números—. **Ninguna cifra está escrita a mano** y
+las trece piezas llevan a donde se lee, comprobadas una a una.
+
+### El índice enseña ya todas las opciones
+
+Con el campo vacío hay **71 atajos en siete grupos**: las trece secciones, las
+catorce fases, los siete grupos de marketing, los seis puestos, los ocho
+documentos, los diez recorridos guiados y los conceptos que más se preguntan.
+Todo a un toque, sin atravesar ninguna jerarquía.
+
+### Un solo buscador
+
+Había **dos**: la paleta que venía de antes y el campo del índice. Los dos
+respondían a `Ctrl+K` y se abrían uno encima del otro. Como el del índice cubre
+todo lo que cubría la paleta y además los conceptos, las fases, los puestos, los
+grupos de marketing y las secciones, ahora todo lo que llamaba a la paleta
+—`Ctrl+K`, `/` y el botón «Buscar»— abre el mismo: una caja, un atajo, una lista.
+
+### Y hecha para un portátil
+
+Una pantalla de 1280×800 deja unos **setecientos píxeles útiles** después de la
+barra del navegador, no novecientos. Todo lo que estaba pedido «al alto de la
+ventana» daba por bueno un monitor de sobremesa. Hay ahora un escalón propio
+para el portátil que aprieta el aire vertical —la portada, las cabeceras de
+sección, las filas del índice, los atajos— **sin tocar el tamaño de la letra que
+se lee**. La portada pasa a caber en 586 píxeles.
+
 ## Lo que estaba duplicado, y por qué · versión 25
 
 En la sección del Mapa **las catorce fases estaban escritas dos veces**: el
