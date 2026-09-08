@@ -17,6 +17,41 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## Lo que estaba duplicado, y por qué · versión 25
+
+En la sección del Mapa **las catorce fases estaban escritas dos veces**: el
+tablero que se añadió en la versión 22 y, debajo, la rejilla que ya las
+dibujaba. Los mismos catorce nombres y los mismos minutos, una lista encima de
+la otra.
+
+El error es mío y tiene nombre. Al añadir el tablero me dije que ponerlo
+**delante** de la rejilla era la manera de «no borrar nada». No lo era:
+conservar no es duplicar. El texto de las fases vive en el Protocolo de Primera
+Visita y en el Manual de Operaciones, y ahí sigue intacto, palabra por palabra;
+lo que sobraba era una segunda lista de nombres. El tablero lleva todo lo que
+llevaba la rejilla —número, nombre y minutos— y además dice dónde se lee cada
+fase y por dónde va el recorrido.
+
+También se decía **«Primera Visita» doce veces seguidas**, una debajo de cada
+ficha. Eso es ruido, no información: ahora se dice una vez por tramo, en su
+rótulo —«La primera visita · doce fases · 123 minutos · se leen en el Protocolo
+de Primera Visita»—, que es además el que traía la rejilla.
+
+La sección pasa de 3.693 a 2.069 píxeles.
+
+### Y para que no vuelva a pasar
+
+Hay un comprobador nuevo en la compilación, `verifica-duplicados.py`: recorre
+las doce secciones y **para la entrega si alguna enseña dos veces el mismo
+nombre junto**. Distingue lo que es defecto de lo que no: un índice de los seis
+puestos y, tres mil píxeles más abajo, el manual de ese puesto, dicen su nombre
+dos veces con toda la razón; lo que no vale es enseñarlo dos veces en la misma
+pantalla.
+
+Está probado como se prueban estas cosas: se volvió a meter la rejilla a
+propósito y el comprobador cazó los once nombres repetidos; se quitó y pasó
+limpio.
+
 ## Se entra escribiendo · versión 24
 
 ### Por qué el índice era un caos aunque estuviera bien dibujado

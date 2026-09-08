@@ -2783,15 +2783,13 @@ def tablero_fases(fs, mfs, mapa):
             'data-salta="%s">'
             '<span class="tab__n">%02d</span>'
             '<span class="tab__r">%s</span>'
-            '<span class="tab__m">%s</span>'
-            '<span class="tab__d salta__d">%s</span></a>'
+            '<span class="tab__m">%s</span></a>'
             '<button type="button" class="tab__ok" data-fase-ok="%d" '
             'aria-label="Marcar la fase %02d, %s, como superada">Marcar</button></li>'
             % (" tab__f--post" if i >= n_pv else "", i, ident, ident, i,
                H.escape(donde), f["n"],
                H.escape(f["label"] or f["titulo"]),
                ("%d min" % f["min"]) if f["min"] else "—",
-               H.escape(donde),
                i, f["n"], H.escape(f["label"] or f["titulo"])))
 
     minutos = sum(f["min"] for f in fs)
@@ -2803,10 +2801,8 @@ def tablero_fases(fs, mfs, mapa):
       <h3 class="tablero__t">Catorce fases. Se marcan al superarlas.</h3>
       <p class="tablero__q">Cada fase se abre entera al pulsarla, se haya
         superado o no: aquí nunca hay una puerta cerrada. Lo apagado solo dice
-        por dónde va el camino. Cada ficha lleva escrito debajo en qué
-        documento se lee la fase, porque el texto de las fases no vive en el
-        mapa. Lo que se marca se queda guardado en este navegador, así que
-        puede seguir mañana donde lo dejó hoy.</p>
+        por dónde va el camino. Lo que se marca se queda guardado en este
+        navegador, así que puede seguir mañana donde lo dejó hoy.</p>
     </div>
     <div class="tablero__marcador">
       <p class="tablero__c"><b data-tab-hechas>0</b><span>de @N@ fases</span></p>
@@ -2815,9 +2811,15 @@ def tablero_fases(fs, mfs, mapa):
       <button type="button" class="tablero__reset" data-tab-reset hidden>Empezar de nuevo</button>
     </div>
   </div>
-  <ol class="tab__fs">@FICHAS@</ol>
+  <p class="tab__tramo letra">La primera visita · doce fases · @MIN@ minutos
+    <em>se leen en el Protocolo de Primera Visita</em></p>
+  <ol class="tab__fs">@PVF@</ol>
+  <p class="tab__tramo letra">Después de la visita · dos fases
+    <em>se leen en el Manual Maestro de Operaciones</em></p>
+  <ol class="tab__fs tab__fs--post">@POSTF@</ol>
 </div>
-""".replace("@FICHAS@", "".join(fichas)).replace("@N@", str(len(todas)))
+""".replace("@PVF@", "".join(fichas[:n_pv])).replace("@POSTF@", "".join(fichas[n_pv:]))
+   .replace("@N@", str(len(todas)))
    .replace("@PV@", str(n_pv)).replace("@MIN@", str(minutos)))
 
 
@@ -3043,14 +3045,20 @@ def sec_recorridos(rutas, tarjetas=""):
 
 
 def sec_mapa(mapa_svg, tablero=""):
-    # El tablero va delante y la rejilla de siempre detrás: quien quiera
-    # recorrer el camino lo recorre, y quien quiera la lista entera la tiene
-    # debajo, intacta. No se sustituye nada.
+    # Una sola lista de las catorce fases, no dos. En la versión 22 puse el
+    # tablero DELANTE de la rejilla que ya existía y me dije que así no se
+    # borraba nada; el resultado eran las catorce fases escritas dos veces en
+    # la misma pantalla, con sus nombres y sus minutos repetidos. Eso no es
+    # conservar, es duplicar. El tablero lleva todo lo que llevaba la rejilla
+    # —número, nombre y minutos— y además dice dónde se lee cada fase y por
+    # dónde va el recorrido, así que la rejilla no aporta nada aquí. El texto
+    # de las fases sigue donde siempre estuvo, en Primera Visita y en
+    # Operaciones, sin tocar una palabra; y la rejilla sigue viva en la
+    # portada, que es donde hace de anticipo.
     return """
 <section class="sec" id="mapa" data-sec="mapa">
   @@FRENTE@@
   @@TABLERO@@
-  @@MAPA@@
 </section>
 """.replace("@@TABLERO@@", tablero).replace("@@MAPA@@", mapa_svg).replace("@@FRENTE@@", frente(
         "mapa", "El recorrido del paciente",
@@ -6925,6 +6933,16 @@ V22 = """
 
 /* El tablero: casillas en orden, con un filete entre ellas. Cada una lleva su
    número, su nombre, sus minutos y su marca. */
+/* El rótulo de cada tramo dice, una vez, dónde se leen esas fases. Antes lo
+   decía cada ficha: «Primera Visita» aparecía doce veces seguidas debajo de
+   doce fichas, que es ruido, no información. */
+.tab__tramo{margin:0 0 .9rem;color:var(--muted);display:flex;flex-wrap:wrap;
+  align-items:baseline;gap:.3rem .9rem}
+.tab__tramo em{font-style:normal;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--azul)}
+.tab__fs--post{margin-top:0}
+.tab__fs + .tab__tramo{margin-top:2.4rem}
+
 .tab__fs{list-style:none;margin:0;padding:0;display:grid;gap:0;
   grid-template-columns:repeat(auto-fill,minmax(min(11rem,100%),1fr));
   border-top:1px solid var(--negro);border-left:1px solid var(--linea)}
@@ -6948,7 +6966,6 @@ V22 = """
 .tab__b:hover .tab__d{color:var(--azul)}
 /* Las dos últimas no son de la primera visita: van después, y conviene que se
    vea sin tener que contar. */
-.tab__f--post .tab__n::after{content:" · después";letter-spacing:.1em}
 .tab__b:hover .tab__r{color:var(--azul)}
 .tab__ok{margin:.9rem -1rem 0;font:inherit;font-family:var(--f-mono);
   font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;

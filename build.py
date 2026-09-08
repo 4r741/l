@@ -53,6 +53,7 @@ DOCUMENTOS = [
     # cuatro caracteres que no llevaban a ninguna parte.
     (RAIZ / "verifica-anclas.py", "cada enlace, contra el titular al que llega"),
     (RAIZ / "verifica-enlaces.py", "cada enlace de la web, comprobado"),
+    (RAIZ / "verifica-duplicados.py", "que nada se enseñe dos veces junto"),
 ]
 
 EXTRAS = [
