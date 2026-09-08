@@ -4033,7 +4033,6 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   text-transform:uppercase;color:var(--muted);background:none;border:0;
   padding:.35rem 0;cursor:pointer;border-bottom:1px solid var(--linea)}
 .tablero__reset:hover{color:var(--negro);border-bottom-color:var(--negro)}
-.tab__tramo{margin:0 0 .8rem;color:var(--muted)}
 
 /* El elector de recorridos. Delante los diez, para elegir; detrás, el que se
    elija. Sin guion no se pone «es-una» y salen los diez seguidos, enteros. */
@@ -4219,6 +4218,106 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
 
 
 /* ====================================================================
+   LA ENTRADA · versión 24
+
+   El índice era un árbol de doce ramas y ciento treinta y cinco hojas. Para
+   llegar a una fase de la primera visita había que saber de antemano que
+   vivía dentro del cuarto documento: se le pedía al lector que conociera la
+   estructura antes de poder usarla. Por eso era un caos aunque estuviera
+   bien dibujado.
+
+   Ahora se entra escribiendo, y con el campo vacío hay atajos a lo que casi
+   todo el mundo viene a buscar. El árbol sigue debajo, entero, plegado.
+   ==================================================================== */
+
+/* El pie del índice se quedó subrayado desde que los mandos son enlaces. */
+.rail__pie a,.todoidx > summary,.resu__i,.atajo{text-decoration:none}
+.rail__pie a{border-bottom:1px solid var(--linea);padding-bottom:.2rem}
+.rail__pie a:hover{border-bottom-color:var(--negro)}
+
+.rail__filtro{display:block;border-bottom:0;padding:0;margin:0}
+.rail__filtro input{width:100%;font:inherit;
+  font-size:clamp(1.15rem,2.4vw,1.7rem);font-weight:300;letter-spacing:-.02em;
+  padding:.9rem 0;border:0;border-bottom:2px solid var(--negro);
+  background:none;color:var(--negro);border-radius:0}
+.rail__filtro input::placeholder{color:var(--muted);opacity:1;font-size:.92em}
+.rail__filtro input:focus{outline:none;border-bottom-color:var(--azul)}
+.rail__n{display:none}
+.buscayuda{margin:.7rem 0 0;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  line-height:1.7}
+
+/* Los resultados */
+.resu{margin:1.6rem 0 0;border-top:1px solid var(--linea)}
+.resu[hidden]{display:none}
+.resu__i{display:grid;grid-template-columns:7.5rem minmax(0,1fr);
+  gap:.2rem 1.2rem;width:100%;text-align:left;font:inherit;background:none;
+  border:0;border-bottom:1px solid var(--linea-2);padding:.8rem .6rem;
+  cursor:pointer;align-items:baseline}
+.resu__i[data-sel]{background:var(--azul-p)}
+.resu__i:hover{background:var(--gris)}
+.resu__t{grid-column:1;grid-row:1;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.resu__i[data-sel] .resu__t{color:var(--azul)}
+.resu__r{grid-column:2;grid-row:1;font-size:1.02rem;line-height:1.3;
+  color:var(--negro);text-wrap:pretty}
+.resu__d{grid-column:2;grid-row:2;font-family:var(--f-mono);font-size:.54rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.resu__no{margin:1.4rem .6rem;color:var(--ink-2);font-size:.92rem;
+  line-height:1.75;max-width:56ch}
+.resu__voz{padding:1.6rem .6rem}
+.resu__voz b{display:block;font-size:1.3rem;font-weight:400;
+  letter-spacing:-.02em;color:var(--azul)}
+.resu__voz p{margin:.7rem 0 0;font-size:1rem;line-height:1.75;
+  color:var(--ink);max-width:60ch}
+.resu__voz small{display:block;margin-top:.9rem;font-family:var(--f-mono);
+  font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted)}
+
+/* Los atajos */
+.atajos{margin:2rem 0 0}
+.atajos[hidden]{display:none}
+.atajos__g{margin:0 0 1.8rem}
+.atajos__t{margin:0 0 .8rem;padding-bottom:.45rem;
+  border-bottom:1px solid var(--linea);font-family:var(--f-mono);
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--azul)}
+.atajos__l{display:flex;flex-wrap:wrap;gap:.5rem}
+.atajo{display:inline-flex;align-items:baseline;gap:.55rem;font:inherit;
+  font-size:.88rem;background:none;border:1px solid var(--linea);
+  padding:.5rem .85rem;cursor:pointer;color:var(--negro);max-width:100%;
+  transition:border-color .2s var(--e),background .2s var(--e)}
+.atajo:hover{border-color:var(--negro);background:var(--gris)}
+.atajo i{font-style:normal;font-family:var(--f-mono);font-size:.58rem;
+  color:var(--azul);flex:none;font-variant-numeric:tabular-nums}
+.atajo span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.atajo em{font-style:normal;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.1em;color:var(--muted);flex:none}
+
+/* El árbol entero, plegado: sigue estando, no manda. */
+.todoidx{margin:2.4rem 0 0;border-top:1px solid var(--negro)}
+.todoidx > summary{display:flex;justify-content:space-between;
+  align-items:baseline;gap:1rem;padding:1rem .2rem;cursor:pointer;
+  list-style:none;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--negro)}
+.todoidx > summary::-webkit-details-marker{display:none}
+.todoidx > summary i{font-style:normal;color:var(--muted)}
+.todoidx > summary:hover{color:var(--azul)}
+.todoidx[open] > summary{border-bottom:1px solid var(--linea)}
+
+@media(max-width:900px){
+  .rail__filtro input{font-size:1.05rem;padding:.7rem 0}
+  .buscayuda{font-size:.52rem}
+  .resu__i{grid-template-columns:1fr;gap:.15rem;padding:.75rem .2rem}
+  .resu__t{grid-column:1;grid-row:1}
+  .resu__r{grid-column:1;grid-row:2;font-size:1rem}
+  .resu__d{grid-column:1;grid-row:3}
+  .atajo{font-size:.84rem;padding:.45rem .7rem}
+  .atajos__l{gap:.4rem}
+}
+
+
+/* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
 
    Un archivo que se abre con doble clic acaba en sitios donde no se
@@ -4335,10 +4434,42 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   <div class="rail__in">
     <div class="rail__filtro">
       <input id="filtra" type="search" autocomplete="off" spellcheck="false"
-             placeholder="Buscar"
-             aria-label="Filtrar el índice">
-      <span class="rail__n">135 apartados</span>
+             placeholder="Escriba lo que busca: un apartado, un concepto, una fase, un puesto…"
+             aria-label="Buscar en todo el sistema"
+             aria-describedby="buscayuda" role="combobox" aria-expanded="false"
+             aria-controls="resu" aria-autocomplete="list">
+      <span class="rail__n"><kbd>Esc</kbd> cierra</span>
     </div>
+    <p class="buscayuda" id="buscayuda">135 apartados, 18 conceptos, 14 fases,
+      6 puestos y 10 recorridos. Escriba sin acentos si quiere.</p>
+
+    <div class="resu" id="resu" role="listbox" aria-label="Resultados" hidden></div>
+
+    <div class="atajos" id="atajos">
+      <div class="atajos__g" data-grupo="fase">
+        <p class="atajos__t">Las catorce fases de la visita</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="marketing">
+        <p class="atajos__t">Marketing · los siete grupos de acciones</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="puesto">
+        <p class="atajos__t">Los seis puestos</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="documento">
+        <p class="atajos__t">Los ocho documentos</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="concepto">
+        <p class="atajos__t">Los conceptos que más se preguntan</p>
+        <div class="atajos__l"></div>
+      </div>
+    </div>
+
+    <details class="todoidx" id="todoidx">
+      <summary><span>Todo el índice</span><i>135 apartados</i></summary>
     <nav class="arb" id="arb"><div class="arb__s" data-arb="mio">
   <a href="#mio" class="arb__b" data-ir-sec="mio"><i class="arb__n">00</i><span class="arb__r">Lo mío</span><i class="arb__c">su puesto</i><i class="arb__x"></i></a>
 </div>
@@ -4383,6 +4514,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   <a href="#numeros" class="arb__b" data-ir-sec="numeros" aria-expanded="false"><i class="arb__n">09</i><span class="arb__r">Los números</span><i class="arb__c">6</i><svg class="arb__x" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1.2 5 4.8 9 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   <div class="arb__l" hidden><div class="sub" data-sub="numeros"><div class="sub__b"><p class="sub__g">Instrumento de medición · Ejercicio 2026 · Uso interno</p><a href="#h-portada" data-ir="h-portada"><span>·</span>Los números del centro</a></div><div class="sub__b"><p class="sub__g">Cómo se usa</p><a href="#h-instrucciones" data-ir="h-instrucciones"><span>·</span>Tres reglas y ninguna más</a></div><div class="sub__b"><p class="sub__g">Definiciones</p><a href="#h-definiciones" data-ir="h-definiciones"><span>·</span>Qué se cuenta arriba, qué se cuenta abajo</a></div><div class="sub__b"><p class="sub__g">Captura mensual</p><a href="#h-captura" data-ir="h-captura"><span>·</span>Una hoja por mes</a></div><div class="sub__b"><p class="sub__g">Resumen anual</p><a href="#h-anual" data-ir="h-anual"><span>·</span>Los doce meses en una rejilla</a></div><div class="sub__b"><p class="sub__g">Los cinco números</p><a href="#h-cinco" data-ir="h-cinco"><span>·</span>Sin ellos, cualquier objetivo comercial es una opinión</a></div></div></div>
 </div></nav>
+    </details>
     <div class="rail__pie">
       <a href="#recorridos" data-ir-sec="recorridos">Los diez recorridos</a>
       <a href="#mapa" data-ir-sec="mapa">El mapa de las catorce fases</a>
@@ -4496,7 +4628,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
         Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
-      <div><p class="letra">Esta edición</p><p>Versión 23.0 · Septiembre 2026<br>
+      <div><p class="letra">Esta edición</p><p>Versión 24.0 · Septiembre 2026<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
         laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
@@ -4835,7 +4967,6 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
       <button type="button" class="tablero__reset" data-tab-reset hidden>Empezar de nuevo</button>
     </div>
   </div>
-  <p class="tab__tramo letra">La primera visita · 12 fases</p>
   <ol class="tab__fs"><li class="tab__f" data-fase="0"><a class="tab__b salta" href="#d-f01" data-lee="d-f01" data-fase-ir="0" data-salta="Primera Visita"><span class="tab__n">01</span><span class="tab__r">Preparación</span><span class="tab__m">6 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="0" aria-label="Marcar la fase 01, Preparación, como superada">Marcar</button></li><li class="tab__f" data-fase="1"><a class="tab__b salta" href="#d-f02" data-lee="d-f02" data-fase-ir="1" data-salta="Primera Visita"><span class="tab__n">02</span><span class="tab__r">Acogida</span><span class="tab__m">5 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="1" aria-label="Marcar la fase 02, Acogida, como superada">Marcar</button></li><li class="tab__f" data-fase="2"><a class="tab__b salta" href="#d-f03" data-lee="d-f03" data-fase-ir="2" data-salta="Primera Visita"><span class="tab__n">03</span><span class="tab__r">Alta y RGPD</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="2" aria-label="Marcar la fase 03, Alta y RGPD, como superada">Marcar</button></li><li class="tab__f" data-fase="3"><a class="tab__b salta" href="#d-f04" data-lee="d-f04" data-fase-ir="3" data-salta="Primera Visita"><span class="tab__n">04</span><span class="tab__r">Historia clínica</span><span class="tab__m">10 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="3" aria-label="Marcar la fase 04, Historia clínica, como superada">Marcar</button></li><li class="tab__f" data-fase="4"><a class="tab__b salta" href="#d-f05" data-lee="d-f05" data-fase-ir="4" data-salta="Primera Visita"><span class="tab__n">05</span><span class="tab__r">Diagnóstico</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="4" aria-label="Marcar la fase 05, Diagnóstico, como superada">Marcar</button></li><li class="tab__f" data-fase="5"><a class="tab__b salta" href="#d-f06" data-lee="d-f06" data-fase-ir="5" data-salta="Primera Visita"><span class="tab__n">06</span><span class="tab__r">Briefing</span><span class="tab__m">5 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="5" aria-label="Marcar la fase 06, Briefing, como superada">Marcar</button></li><li class="tab__f" data-fase="6"><a class="tab__b salta" href="#d-f07" data-lee="d-f07" data-fase-ir="6" data-salta="Primera Visita"><span class="tab__n">07</span><span class="tab__r">Expectativas</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="6" aria-label="Marcar la fase 07, Expectativas, como superada">Marcar</button></li><li class="tab__f" data-fase="7"><a class="tab__b salta" href="#d-f08" data-lee="d-f08" data-fase-ir="7" data-salta="Primera Visita"><span class="tab__n">08</span><span class="tab__r">IAC</span><span class="tab__m">10 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="7" aria-label="Marcar la fase 08, IAC, como superada">Marcar</button></li><li class="tab__f" data-fase="8"><a class="tab__b salta" href="#d-f09" data-lee="d-f09" data-fase-ir="8" data-salta="Primera Visita"><span class="tab__n">09</span><span class="tab__r">Presentación 3D</span><span class="tab__m">15 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="8" aria-label="Marcar la fase 09, Presentación 3D, como superada">Marcar</button></li><li class="tab__f" data-fase="9"><a class="tab__b salta" href="#d-f10" data-lee="d-f10" data-fase-ir="9" data-salta="Primera Visita"><span class="tab__n">10</span><span class="tab__r">Propuesta</span><span class="tab__m">20 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="9" aria-label="Marcar la fase 10, Propuesta, como superada">Marcar</button></li><li class="tab__f" data-fase="10"><a class="tab__b salta" href="#d-f11" data-lee="d-f11" data-fase-ir="10" data-salta="Primera Visita"><span class="tab__n">11</span><span class="tab__r">Cierre admin.</span><span class="tab__m">5 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="10" aria-label="Marcar la fase 11, Cierre admin., como superada">Marcar</button></li><li class="tab__f" data-fase="11"><a class="tab__b salta" href="#d-f12" data-lee="d-f12" data-fase-ir="11" data-salta="Primera Visita"><span class="tab__n">12</span><span class="tab__r">Seguimiento</span><span class="tab__m">2 min</span><span class="tab__d salta__d">Primera Visita</span></a><button type="button" class="tab__ok" data-fase-ok="11" aria-label="Marcar la fase 12, Seguimiento, como superada">Marcar</button></li><li class="tab__f tab__f--post" data-fase="12"><a class="tab__b salta" href="#e-m13" data-lee="e-m13" data-fase-ir="12" data-salta="Operaciones"><span class="tab__n">13</span><span class="tab__r">Circuito de producción</span><span class="tab__m">—</span><span class="tab__d salta__d">Operaciones</span></a><button type="button" class="tab__ok" data-fase-ok="12" aria-label="Marcar la fase 13, Circuito de producción, como superada">Marcar</button></li><li class="tab__f tab__f--post" data-fase="13"><a class="tab__b salta" href="#e-m14" data-lee="e-m14" data-fase-ir="13" data-salta="Operaciones"><span class="tab__n">14</span><span class="tab__r">Mantenimiento</span><span class="tab__m">—</span><span class="tab__d salta__d">Operaciones</span></a><button type="button" class="tab__ok" data-fase-ok="13" aria-label="Marcar la fase 14, Mantenimiento, como superada">Marcar</button></li></ol>
 </div>
 
@@ -4935,7 +5066,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v24.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="t-cover" id="a-portada">
@@ -4945,7 +5076,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="t-cover__rule" aria-hidden="true"></div>
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Giraldo</b>Rúa Bolivia nº 2 · Vigo</span>
-      <span><b>Plan de Dirección · v23.0</b>Septiembre 2026 · versión única del sistema</span>
+      <span><b>Plan de Dirección · v24.0</b>Septiembre 2026 · versión única del sistema</span>
       <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
@@ -5022,7 +5153,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
             <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
             <tbody>
               <tr><td>Título</td><td>Plan de Dirección para la Junta Directiva</td></tr>
-              <tr><td>Versión</td><td>v23.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
+              <tr><td>Versión</td><td>v24.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
               <tr><td>Clasificación</td><td>Uso interno · Confidencial · No difundir fuera del órgano</td></tr>
               <tr><td>Propietario</td><td>Dirección General</td></tr>
               <tr><td>Elaborado con</td><td>Los 17 documentos operativos del sistema Giraldo: los 3 troncales y los 14 de apoyo, censados en el apartado 0.1</td></tr>
@@ -5053,7 +5184,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="a-t-como-citar-acta">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v23.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v23.0, Protocolo de Primera Visita v23.0, Otros documentos del sistema v23.0.</p>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v24.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v24.0, Protocolo de Primera Visita v24.0, Otros documentos del sistema v24.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="a-censo">Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -5062,14 +5193,14 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
       <table>
         <thead><tr><th>Pieza</th><th>Clase</th><th>Qué contiene</th><th>Propietario</th><th>Versión</th></tr></thead>
         <tbody>
-          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">23.0</td></tr>
-          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">23.0</td></tr>
-          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">23.0</td></tr>
-          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">23.0</td></tr>
-          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">23.0</td></tr>
-          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">23.0</td></tr>
-          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">23.0</td></tr>
-          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">24.0</td></tr>
+          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">24.0</td></tr>
+          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">24.0</td></tr>
+          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">24.0</td></tr>
+          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">24.0</td></tr>
+          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">24.0</td></tr>
+          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">24.0</td></tr>
+          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">24.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -8317,7 +8448,7 @@ REVISIÓN PREVISTA:</div>
     <div class="desp__in"><div class="dia"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v23.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v24.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
 </section></div><p class="dia__pr"><button type="button" class="bt bt--fino" data-proyecta="">Proyectar desde esta</button></p><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -9610,7 +9741,7 @@ REVISIÓN PREVISTA:</div>
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v23.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v24.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   <aside class="nota" hidden>
     <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -13986,7 +14117,8 @@ DÍA 7   Valoración de evolución
 
 
 
-<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v24.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -13994,7 +14126,7 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 23.0 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 24.0 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="#operaciones" class="salta">Manual Maestro de Operaciones<i class="salta__d">Operaciones</i></a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -17839,7 +17971,8 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v24.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -17850,7 +17983,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 23.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 24.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -18033,11 +18166,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v23.0 · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>v24.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Giraldo (uso abreviado: Giraldo)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
-          <tr><td>Sustituye a</td><td>Protocolo v23.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
+          <tr><td>Sustituye a</td><td>Protocolo v24.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
           <tr><td>Difusión obligatoria</td><td>Recepción, Dirección de Clínica, Odontólogos, Higienistas, Auxiliares, RAC</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier incidencia grave de trazabilidad o RGPD</td></tr>
@@ -24836,7 +24969,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v24.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 
@@ -24852,7 +24985,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <p class="t-cover__meta">
       <b>Plan Maestro de Marketing</b><br>
       Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2, Vigo<br>
-      v23.0 · Septiembre 2026 · Documento de dirección<br>
+      v24.0 · Septiembre 2026 · Documento de dirección<br>
       Setenta y seis acciones sobre doce estados del paciente
     </p>
   </div>
@@ -24880,7 +25013,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><th>Qué decide</th><td>Nada por sí solo. Propone; la Junta aprueba en el registro de acuerdos del Plan de Dirección</td></tr>
           <tr><th>Propietario</th><td>Dirección General, con Gerencia como responsable de ejecución y presupuesto</td></tr>
           <tr><th>Revisión</th><td>Trimestral, con la misma cadencia que el cuadro de mando del apartado 13 del Plan de Dirección</td></tr>
-          <tr><th>Versión</th><td class="num">v23.0 · Septiembre 2026</td></tr>
+          <tr><th>Versión</th><td class="num">v24.0 · Septiembre 2026</td></tr>
         </tbody>
       </table>
     </div>
@@ -26387,7 +26520,8 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v24.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="g-portada">
@@ -26397,7 +26531,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 23.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 24.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos</dt><dd>14<small>Del posicionamiento del centro al programa de cuidado GTC</small></dd></div>
@@ -26453,13 +26587,13 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
       <table>
         <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v23.0 · Agosto 2026 · versión única del sistema</td></tr>
+          <tr><td>Versión</td><td>v24.0 · Agosto 2026 · versión única del sistema</td></tr>
           <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
           <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
           <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
           <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
-          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v23.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
+          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v24.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
         </tbody>
       </table>
     </div>
@@ -30518,7 +30652,7 @@ LTV              = Valor inicial
   <div class="flota">
     <div class="flota__cab"><h2>Recursos</h2>
       <button class="icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button></div>
-    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><div class="rec__i rec__i--f"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p><p class="rec__f">Giraldo-TODO-EN-UNO-v23.html</p></div></div><div class="rec__i rec__i--f"><em>pdf</em><div><b>El sistema encuadernado</b><p>El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.</p><p class="rec__f">Sistema-Documental-Giraldo-v23.0.pdf</p></div></div><div class="rec__i rec__i--f"><em>word</em><div><b>El sistema en Word</b><p>Índice automático, con sus tablas y las 23 figuras incrustadas.</p><p class="rec__f">Sistema-Documental-Giraldo-v23.0.docx</p></div></div></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="#direccion" data-ir-sec="direccion"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="#presentacion" data-ir-sec="presentacion"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="#protocolos" data-ir-sec="protocolos"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="#primera-visita" data-ir-sec="primera-visita"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="#operaciones" data-ir-sec="operaciones"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="#marketing" data-ir-sec="marketing"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="#otros" data-ir-sec="otros"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="#numeros" data-ir-sec="numeros"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Giraldo anual"><em>voz</em><div><b>Perfil Giraldo anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
+    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><div class="rec__i rec__i--f"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p><p class="rec__f">Giraldo-TODO-EN-UNO-v24.html</p></div></div><div class="rec__i rec__i--f"><em>pdf</em><div><b>El sistema encuadernado</b><p>El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.</p><p class="rec__f">Sistema-Documental-Giraldo-v24.0.pdf</p></div></div><div class="rec__i rec__i--f"><em>word</em><div><b>El sistema en Word</b><p>Índice automático, con sus tablas y las 23 figuras incrustadas.</p><p class="rec__f">Sistema-Documental-Giraldo-v24.0.docx</p></div></div></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="#direccion" data-ir-sec="direccion"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="#presentacion" data-ir-sec="presentacion"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="#protocolos" data-ir-sec="protocolos"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="#primera-visita" data-ir-sec="primera-visita"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="#operaciones" data-ir-sec="operaciones"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="#marketing" data-ir-sec="marketing"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="#otros" data-ir-sec="otros"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="#numeros" data-ir-sec="numeros"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Giraldo anual"><em>voz</em><div><b>Perfil Giraldo anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
   </div>
 </div>
 
@@ -30587,7 +30721,8 @@ LTV              = Valor inicial
   </div>
 </div>
 
-<script>window.__ORDEN__ = [["a-portada-doc", "Plan de Dirección", "", "Portada", "direccion"], ["a-manifiesto", "Plan de Dirección", "Apertura", "El manifiesto: la regla que ordena todo", "direccion"], ["a-control", "Plan de Dirección", "Apertura", "Control del documento y cómo se cita", "direccion"], ["a-resumen", "Plan de Dirección", "Apertura", "Resumen ejecutivo en dos minutos", "direccion"], ["a-parte-1", "Plan de Dirección", "Parte I · La posición", "Parte I · La posición", "direccion"], ["a-tesis", "Plan de Dirección", "Parte I · La posición", "Por qué este centro y no otro", "direccion"], ["a-mapa", "Plan de Dirección", "Parte I · La posición", "Mapa competitivo de Vigo y el hueco libre", "direccion"], ["a-foso", "Plan de Dirección", "Parte I · La posición", "El foso: lo que un competidor no puede comprar", "direccion"], ["a-parte-2", "Plan de Dirección", "Parte II · El sistema", "Parte II · El sistema", "direccion"], ["a-sistema", "Plan de Dirección", "Parte II · El sistema", "El sistema operativo que se ha construido", "direccion"], ["a-innovacion", "Plan de Dirección", "Parte II · El sistema", "Innovación: tres horizontes, tres criterios", "direccion"], ["a-parte-3", "Plan de Dirección", "Parte III · La economía", "Parte III · La economía", "direccion"], ["a-linea-base", "Plan de Dirección", "Parte III · La economía", "Los cinco números que aún no tenemos", "direccion"], ["a-unidad", "Plan de Dirección", "Parte III · La economía", "Economía por paciente: qué gobierna el resultado", "direccion"], ["a-activo", "Plan de Dirección", "Parte III · La economía", "Cuánto vale el centro, y por qué", "direccion"], ["a-escalado", "Plan de Dirección", "Parte III · La economía", "Escalado: de un centro a una red", "direccion"], ["a-parte-4", "Plan de Dirección", "Parte IV · El riesgo", "Parte IV · El riesgo", "direccion"], ["a-riesgos", "Plan de Dirección", "Parte IV · El riesgo", "Registro de riesgos, con dueño y fecha", "direccion"], ["a-premortem", "Plan de Dirección", "Parte IV · El riesgo", "Pre-mortem: es 2029 y ha fracasado", "direccion"], ["a-mando", "Plan de Dirección", "Parte IV · El riesgo", "Cuadro de mando: con qué se dirige cada mes", "direccion"], ["a-parte-5", "Plan de Dirección", "Parte V · La decisión", "Parte V · La decisión", "direccion"], ["a-palancas", "Plan de Dirección", "Parte V · La decisión", "Palancas: por dónde se crece y en qué orden", "direccion"], ["a-capital", "Plan de Dirección", "Parte V · La decisión", "Asignación de capital: en qué se gasta antes", "direccion"], ["a-ruta", "Plan de Dirección", "Parte V · La decisión", "Hoja de ruta y sus tres puertas de paso", "direccion"], ["a-decisiones", "Plan de Dirección", "Parte V · La decisión", "Las quince decisiones que se someten a la Junta", "direccion"], ["a-supuestos", "Plan de Dirección", "Parte V · La decisión", "Supuestos: sobre qué se ha razonado", "direccion"], ["a-trazabilidad", "Plan de Dirección", "Parte V · La decisión", "Trazabilidad: dónde aterriza cada acuerdo", "direccion"], ["a-parte-6", "Plan de Dirección", "Parte VI · La cifra", "Parte VI · La cifra", "direccion"], ["a-puente", "Plan de Dirección", "Parte VI · La cifra", "El puente: de 720 k€ a 1,2 M€, bloque a bloque", "direccion"], ["a-cartera", "Plan de Dirección", "Parte VI · La cifra", "La cartera de nueve campañas", "direccion"], ["a-calendario", "Plan de Dirección", "Parte VI · La cifra", "Calendario y capacidad del año", "direccion"], ["a-cierto", "Plan de Dirección", "Parte VI · La cifra", "Las cinco condiciones que tienen que ser ciertas", "direccion"], ["a-acuerdos", "Plan de Dirección", "Anexos", "Cuadernillo: quince hojas de acta", "direccion"], ["a-campanas", "Plan de Dirección", "Anexos", "Nueve fichas de campaña, para poner en marcha", "direccion"], ["b-presentacion", "Presentación de Junta", "La sesión", "Las cuarenta y tres diapositivas, en orden", "presentacion"], ["c-portada", "Protocolos por puesto", "Vista operativa · Uso interno", "Qué se espera de cada puesto", "protocolos"], ["c-puestos", "Protocolos por puesto", "Los seis puestos", "Elija el suyo", "protocolos"], ["c-comun", "Protocolos por puesto", "Común a los seis", "Lo que se cumple en todos los puestos", "protocolos"], ["d-portada-doc", "Protocolo de Primera Visita", "", "Portada", "primera-visita"], ["d-fundamentos", "Protocolo de Primera Visita", "Apertura", "Los cinco principios de la visita", "primera-visita"], ["d-mapa", "Protocolo de Primera Visita", "Apertura", "La visita entera, minuto a minuto", "primera-visita"], ["d-flujo", "Protocolo de Primera Visita", "Apertura", "Quién tiene al paciente en cada momento", "primera-visita"], ["d-f01", "Protocolo de Primera Visita", "Las doce fases de la visita", "Preparación previa y primera llamada", "primera-visita"], ["d-f02", "Protocolo de Primera Visita", "Las doce fases de la visita", "Acogida y recorrido por la tecnología", "primera-visita"], ["d-f03", "Protocolo de Primera Visita", "Las doce fases de la visita", "Alta, RGPD y protección de datos", "primera-visita"], ["d-f04", "Protocolo de Primera Visita", "Las doce fases de la visita", "Historia clínica y consentimiento", "primera-visita"], ["d-f05", "Protocolo de Primera Visita", "Las doce fases de la visita", "Pruebas diagnósticas y fotografía", "primera-visita"], ["d-f06", "Protocolo de Primera Visita", "Las doce fases de la visita", "Briefing entre Doctor y Director", "primera-visita"], ["d-f07", "Protocolo de Primera Visita", "Las doce fases de la visita", "Expectativas y exploración clínica", "primera-visita"], ["d-f08", "Protocolo de Primera Visita", "Las doce fases de la visita", "Informe de Análisis Clínico (IAC)", "primera-visita"], ["d-f09", "Protocolo de Primera Visita", "Las doce fases de la visita", "Presentación del diagnóstico en 3D", "primera-visita"], ["d-f10", "Protocolo de Primera Visita", "Las doce fases de la visita", "Propuesta económica y cierre", "primera-visita"], ["d-f11", "Protocolo de Primera Visita", "Las doce fases de la visita", "Cierre administrativo y digitalización", "primera-visita"], ["d-f12", "Protocolo de Primera Visita", "Las doce fases de la visita", "Despedida y seguimiento estratégico", "primera-visita"], ["d-estandares", "Protocolo de Primera Visita", "Cierre", "Estándares comunes a las doce fases", "primera-visita"], ["d-casos", "Protocolo de Primera Visita", "Cierre", "Casos especiales: cuando no encaja", "primera-visita"], ["d-continua", "Protocolo de Primera Visita", "Cierre", "Fases 13 y 14: producción y mantenimiento", "primera-visita"], ["d-trazabilidad", "Protocolo de Primera Visita", "Cierre", "Qué queda registrado y quién responde", "primera-visita"], ["d-indicadores", "Protocolo de Primera Visita", "Cierre", "Cómo se mide si el protocolo funciona", "primera-visita"], ["d-formacion", "Protocolo de Primera Visita", "Cierre", "Formación y certificación por rol", "primera-visita"], ["d-anexos", "Protocolo de Primera Visita", "Cierre", "Anexos: guiones y preguntas frecuentes", "primera-visita"], ["e-portada-doc", "Manual Maestro de Operaciones", "", "Portada", "operaciones"], ["e-presentacion", "Manual Maestro de Operaciones", "Apertura", "Un documento, tres usos", "operaciones"], ["e-indice", "Manual Maestro de Operaciones", "Apertura", "Índice: dónde está cada cosa", "operaciones"], ["e-vanguardia", "Manual Maestro de Operaciones", "Apertura", "Marco de vanguardia y los cinco pilares", "operaciones"], ["e-p1", "Manual Maestro de Operaciones", "Las ocho partes", "Fundamentos y principios rectores", "operaciones"], ["e-estandares", "Manual Maestro de Operaciones", "Las ocho partes", "Estándares transversales del centro", "operaciones"], ["e-p2", "Manual Maestro de Operaciones", "Las ocho partes", "Las catorce fases del recorrido", "operaciones"], ["e-p3", "Manual Maestro de Operaciones", "Las ocho partes", "Matriz RACI: quién hace qué en cada fase", "operaciones"], ["e-p4", "Manual Maestro de Operaciones", "Las ocho partes", "Manuales de los seis puestos", "operaciones"], ["e-p5", "Manual Maestro de Operaciones", "Las ocho partes", "Funciones de vanguardia por perfil", "operaciones"], ["e-p6", "Manual Maestro de Operaciones", "Las ocho partes", "Indicadores e interdependencias", "operaciones"], ["e-p7", "Manual Maestro de Operaciones", "Las ocho partes", "Plan de incentivos y retribución variable", "operaciones"], ["e-p8", "Manual Maestro de Operaciones", "Las ocho partes", "Puesta en marcha del centro", "operaciones"], ["e-anexos", "Manual Maestro de Operaciones", "Cierre", "Anexos: plantillas y checklists", "operaciones"], ["e-otros", "Manual Maestro de Operaciones", "Cierre", "Otros documentos del sistema", "operaciones"], ["e-notas", "Manual Maestro de Operaciones", "Cierre", "Puntos que siguen abiertos", "operaciones"], ["f-portada-doc", "Plan Maestro de Marketing", "", "Portada", "marketing"], ["f-portada", "Plan Maestro de Marketing", "Apertura", "Portada", "marketing"], ["f-control", "Plan Maestro de Marketing", "Apertura", "Ficha de control del documento", "marketing"], ["f-parte-1", "Plan Maestro de Marketing", "Parte I · La doctrina", "Parte I · La doctrina", "marketing"], ["f-doctrina", "Plan Maestro de Marketing", "Parte I · La doctrina", "Por qué este plan no es un plan al uso", "marketing"], ["f-regla", "Plan Maestro de Marketing", "Parte I · La doctrina", "La regla de la ficha: qué gana el paciente", "marketing"], ["f-nunca", "Plan Maestro de Marketing", "Parte I · La doctrina", "Las ocho cosas que no haremos nunca", "marketing"], ["f-legal", "Plan Maestro de Marketing", "Parte I · La doctrina", "El marco legal de la publicidad sanitaria", "marketing"], ["f-parte-2", "Plan Maestro de Marketing", "Parte II · El paciente", "Parte II · El paciente", "marketing"], ["f-estados", "Plan Maestro de Marketing", "Parte II · El paciente", "Los doce estados del paciente", "marketing"], ["f-arquetipos", "Plan Maestro de Marketing", "Parte II · El paciente", "Los seis pacientes de la ría", "marketing"], ["f-momentos", "Plan Maestro de Marketing", "Parte II · El paciente", "Los siete momentos de verdad", "marketing"], ["f-asimetria", "Plan Maestro de Marketing", "Parte II · El paciente", "La asimetría: lo que el paciente no sabe", "marketing"], ["f-parte-3", "Plan Maestro de Marketing", "Parte III · El catálogo", "Parte III · El catálogo", "marketing"], ["f-catalogo", "Plan Maestro de Marketing", "Parte III · El catálogo", "Las 76 acciones, con dueño y coste", "marketing"], ["f-parte-4", "Plan Maestro de Marketing", "Parte IV · Las diez piezas", "Parte IV · Las diez piezas", "marketing"], ["f-piezas", "Plan Maestro de Marketing", "Parte IV · Las diez piezas", "Las diez piezas que nadie hace en Vigo", "marketing"], ["f-parte-5", "Plan Maestro de Marketing", "Parte V · El territorio", "Parte V · El territorio", "marketing"], ["f-digital", "Plan Maestro de Marketing", "Parte V · El territorio", "La presencia digital, y para qué sirve", "marketing"], ["f-ria", "Plan Maestro de Marketing", "Parte V · El territorio", "El mapa de la ría: dónde está el paciente", "marketing"], ["f-mar", "Plan Maestro de Marketing", "Parte V · El territorio", "La Campaña de Mar, verano a verano", "marketing"], ["f-parte-6", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Parte VI · La prioridad", "marketing"], ["f-economia", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Qué aporta cada grupo de acciones", "marketing"], ["f-prioridad", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Qué va primero, y por qué", "marketing"], ["f-presupuesto", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Presupuesto y techo de gasto", "marketing"], ["f-parte-7", "Plan Maestro de Marketing", "Parte VII · El gobierno", "Parte VII · El gobierno", "marketing"], ["f-indicadores", "Plan Maestro de Marketing", "Parte VII · El gobierno", "Las ocho medidas del plan", "marketing"], ["f-calendario", "Plan Maestro de Marketing", "Parte VII · El gobierno", "El calendario del ejercicio", "marketing"], ["f-parada", "Plan Maestro de Marketing", "Parte VII · El gobierno", "Reglas de parada: cuándo se corta", "marketing"], ["f-parte-8", "Plan Maestro de Marketing", "Parte VIII · El programa", "Parte VIII · El programa", "marketing"], ["f-gtc", "Plan Maestro de Marketing", "Parte VIII · El programa", "Giraldo Te Cuida: el programa de acompañamiento", "marketing"], ["f-anexo-legal", "Plan Maestro de Marketing", "Anexos", "Semáforo legal, acción por acción", "marketing"], ["f-anexo-cartera", "Plan Maestro de Marketing", "Anexos", "Correspondencia con la cartera de campañas", "marketing"], ["f-anexo-trimestre", "Plan Maestro de Marketing", "Anexos", "Lo que se activa este trimestre", "marketing"], ["g-portada-doc", "Otros documentos del sistema", "", "Portada", "otros"], ["g-presentacion", "Otros documentos del sistema", "Apertura", "Qué es cada cosa y cuándo se abre", "otros"], ["g-otros-mapa", "Otros documentos del sistema", "Apertura", "El sistema en cuatro niveles", "otros"], ["g-otros-compendio", "Otros documentos del sistema", "Los catorce documentos", "Compendio Maestro del sistema de gestión", "otros"], ["g-otros-verificacion", "Otros documentos del sistema", "Los catorce documentos", "Verificación del centro · 322 puntos", "otros"], ["g-otros-auditoria", "Otros documentos del sistema", "Los catorce documentos", "Auditoría integral de la clínica adquirida", "otros"], ["g-otros-decisiones", "Otros documentos del sistema", "Los catorce documentos", "Decisiones de Gerencia y verificaciones", "otros"], ["g-otros-100dias", "Otros documentos del sistema", "Los catorce documentos", "Plan Director de los primeros 100 días", "otros"], ["g-otros-30dias", "Otros documentos del sistema", "Los catorce documentos", "Dosier de ejecución de los 30 días", "otros"], ["g-otros-perfiles", "Otros documentos del sistema", "Los catorce documentos", "Protocolos operativos por perfil", "otros"], ["g-otros-innovacion", "Otros documentos del sistema", "Los catorce documentos", "Innovación aplicada · 18 fichas", "otros"], ["g-otros-marca", "Otros documentos del sistema", "Los catorce documentos", "Plan Director de marca y captación", "otros"], ["g-otros-cuaderno", "Otros documentos del sistema", "Los catorce documentos", "Cuaderno de campo del día 1", "otros"], ["g-otros-transicion-perfiles", "Otros documentos del sistema", "Los catorce documentos", "Manual de puesta en marcha por perfil", "otros"], ["g-otros-continuidad", "Otros documentos del sistema", "Los catorce documentos", "Continuidad legal, financiera y de sistemas", "otros"], ["g-otros-posicionamiento", "Otros documentos del sistema", "Los catorce documentos", "«No medias sonrisas» · posicionamiento", "otros"], ["g-otros-gtc", "Otros documentos del sistema", "Los catorce documentos", "GTC · vive en el Plan de Marketing", "otros"], ["g-otros-cierre", "Otros documentos del sistema", "Cierre", "Cómo encajan los catorce documentos", "otros"], ["h-portada", "Los números del centro", "Instrumento de medición · Ejercicio 2026 · Uso interno", "Los números del centro", "numeros"], ["h-instrucciones", "Los números del centro", "Cómo se usa", "Tres reglas y ninguna más", "numeros"], ["h-definiciones", "Los números del centro", "Definiciones", "Qué se cuenta arriba, qué se cuenta abajo", "numeros"], ["h-captura", "Los números del centro", "Captura mensual", "Una hoja por mes", "numeros"], ["h-anual", "Los números del centro", "Resumen anual", "Los doce meses en una rejilla", "numeros"], ["h-cinco", "Los números del centro", "Los cinco números", "Sin ellos, cualquier objetivo comercial es una opinión", "numeros"]];
+<script>window.__ATAJOS__ = [{"t": "fase", "n": "01", "r": "Preparación", "q": "6 min", "id": "d-f01", "sec": "primera-visita"}, {"t": "fase", "n": "02", "r": "Acogida", "q": "5 min", "id": "d-f02", "sec": "primera-visita"}, {"t": "fase", "n": "03", "r": "Alta y RGPD", "q": "15 min", "id": "d-f03", "sec": "primera-visita"}, {"t": "fase", "n": "04", "r": "Historia clínica", "q": "10 min", "id": "d-f04", "sec": "primera-visita"}, {"t": "fase", "n": "05", "r": "Diagnóstico", "q": "15 min", "id": "d-f05", "sec": "primera-visita"}, {"t": "fase", "n": "06", "r": "Briefing", "q": "5 min", "id": "d-f06", "sec": "primera-visita"}, {"t": "fase", "n": "07", "r": "Expectativas", "q": "15 min", "id": "d-f07", "sec": "primera-visita"}, {"t": "fase", "n": "08", "r": "IAC", "q": "10 min", "id": "d-f08", "sec": "primera-visita"}, {"t": "fase", "n": "09", "r": "Presentación 3D", "q": "15 min", "id": "d-f09", "sec": "primera-visita"}, {"t": "fase", "n": "10", "r": "Propuesta", "q": "20 min", "id": "d-f10", "sec": "primera-visita"}, {"t": "fase", "n": "11", "r": "Cierre admin.", "q": "5 min", "id": "d-f11", "sec": "primera-visita"}, {"t": "fase", "n": "12", "r": "Seguimiento", "q": "2 min", "id": "d-f12", "sec": "primera-visita"}, {"t": "fase", "n": "13", "r": "Circuito de producción", "q": "", "id": "e-m13", "sec": "operaciones"}, {"t": "fase", "n": "14", "r": "Mantenimiento", "q": "", "id": "e-m14", "sec": "operaciones"}, {"t": "documento", "n": "", "r": "Plan de Dirección", "q": "", "id": "", "sec": "direccion"}, {"t": "documento", "n": "", "r": "Presentación de Junta", "q": "", "id": "", "sec": "presentacion"}, {"t": "documento", "n": "", "r": "Protocolos por puesto", "q": "", "id": "", "sec": "protocolos"}, {"t": "documento", "n": "", "r": "Protocolo de Primera Visita", "q": "", "id": "", "sec": "primera-visita"}, {"t": "documento", "n": "", "r": "Manual Maestro de Operaciones", "q": "", "id": "", "sec": "operaciones"}, {"t": "documento", "n": "", "r": "Plan Maestro de Marketing", "q": "", "id": "", "sec": "marketing"}, {"t": "documento", "n": "", "r": "Otros documentos del sistema", "q": "", "id": "", "sec": "otros"}, {"t": "documento", "n": "", "r": "Los números del centro", "q": "", "id": "", "sec": "numeros"}, {"t": "marketing", "n": "G1", "r": "Presencia y educación", "q": "12 acciones", "id": "f-grupo-g1", "sec": "marketing"}, {"t": "marketing", "n": "G2", "r": "Encontrabilidad y respuesta", "q": "12 acciones", "id": "f-grupo-g2", "sec": "marketing"}, {"t": "marketing", "n": "G3", "r": "La duda", "q": "10 acciones", "id": "f-grupo-g3", "sec": "marketing"}, {"t": "marketing", "n": "G4", "r": "La visita como medio", "q": "12 acciones", "id": "f-grupo-g4", "sec": "marketing"}, {"t": "marketing", "n": "G5", "r": "La decisión y el tratamiento", "q": "10 acciones", "id": "f-grupo-g5", "sec": "marketing"}, {"t": "marketing", "n": "G6", "r": "El cuidado, el sueño y la pérdida", "q": "10 acciones", "id": "f-grupo-g6", "sec": "marketing"}, {"t": "marketing", "n": "G7", "r": "Prescripción y alianzas", "q": "10 acciones", "id": "f-grupo-g7", "sec": "marketing"}, {"t": "puesto", "n": "", "r": "Dirección de Clínica", "q": "Dirección", "id": "e-m-direccion-clinica", "sec": "operaciones"}, {"t": "puesto", "n": "", "r": "Doctor", "q": "Doctor", "id": "e-m-doctor", "sec": "operaciones"}, {"t": "puesto", "n": "", "r": "Recepción", "q": "Recepción", "id": "e-m-recepcion", "sec": "operaciones"}, {"t": "puesto", "n": "", "r": "RAC · Responsable de Producción", "q": "RAC", "id": "e-m-rac-responsable-produccion", "sec": "operaciones"}, {"t": "puesto", "n": "", "r": "Auxiliar", "q": "Auxiliar", "id": "e-m-auxiliar", "sec": "operaciones"}, {"t": "puesto", "n": "", "r": "Higienista", "q": "Higienista", "id": "e-m-higienista", "sec": "operaciones"}];
+window.__ORDEN__ = [["a-portada-doc", "Plan de Dirección", "", "Portada", "direccion"], ["a-manifiesto", "Plan de Dirección", "Apertura", "El manifiesto: la regla que ordena todo", "direccion"], ["a-control", "Plan de Dirección", "Apertura", "Control del documento y cómo se cita", "direccion"], ["a-resumen", "Plan de Dirección", "Apertura", "Resumen ejecutivo en dos minutos", "direccion"], ["a-parte-1", "Plan de Dirección", "Parte I · La posición", "Parte I · La posición", "direccion"], ["a-tesis", "Plan de Dirección", "Parte I · La posición", "Por qué este centro y no otro", "direccion"], ["a-mapa", "Plan de Dirección", "Parte I · La posición", "Mapa competitivo de Vigo y el hueco libre", "direccion"], ["a-foso", "Plan de Dirección", "Parte I · La posición", "El foso: lo que un competidor no puede comprar", "direccion"], ["a-parte-2", "Plan de Dirección", "Parte II · El sistema", "Parte II · El sistema", "direccion"], ["a-sistema", "Plan de Dirección", "Parte II · El sistema", "El sistema operativo que se ha construido", "direccion"], ["a-innovacion", "Plan de Dirección", "Parte II · El sistema", "Innovación: tres horizontes, tres criterios", "direccion"], ["a-parte-3", "Plan de Dirección", "Parte III · La economía", "Parte III · La economía", "direccion"], ["a-linea-base", "Plan de Dirección", "Parte III · La economía", "Los cinco números que aún no tenemos", "direccion"], ["a-unidad", "Plan de Dirección", "Parte III · La economía", "Economía por paciente: qué gobierna el resultado", "direccion"], ["a-activo", "Plan de Dirección", "Parte III · La economía", "Cuánto vale el centro, y por qué", "direccion"], ["a-escalado", "Plan de Dirección", "Parte III · La economía", "Escalado: de un centro a una red", "direccion"], ["a-parte-4", "Plan de Dirección", "Parte IV · El riesgo", "Parte IV · El riesgo", "direccion"], ["a-riesgos", "Plan de Dirección", "Parte IV · El riesgo", "Registro de riesgos, con dueño y fecha", "direccion"], ["a-premortem", "Plan de Dirección", "Parte IV · El riesgo", "Pre-mortem: es 2029 y ha fracasado", "direccion"], ["a-mando", "Plan de Dirección", "Parte IV · El riesgo", "Cuadro de mando: con qué se dirige cada mes", "direccion"], ["a-parte-5", "Plan de Dirección", "Parte V · La decisión", "Parte V · La decisión", "direccion"], ["a-palancas", "Plan de Dirección", "Parte V · La decisión", "Palancas: por dónde se crece y en qué orden", "direccion"], ["a-capital", "Plan de Dirección", "Parte V · La decisión", "Asignación de capital: en qué se gasta antes", "direccion"], ["a-ruta", "Plan de Dirección", "Parte V · La decisión", "Hoja de ruta y sus tres puertas de paso", "direccion"], ["a-decisiones", "Plan de Dirección", "Parte V · La decisión", "Las quince decisiones que se someten a la Junta", "direccion"], ["a-supuestos", "Plan de Dirección", "Parte V · La decisión", "Supuestos: sobre qué se ha razonado", "direccion"], ["a-trazabilidad", "Plan de Dirección", "Parte V · La decisión", "Trazabilidad: dónde aterriza cada acuerdo", "direccion"], ["a-parte-6", "Plan de Dirección", "Parte VI · La cifra", "Parte VI · La cifra", "direccion"], ["a-puente", "Plan de Dirección", "Parte VI · La cifra", "El puente: de 720 k€ a 1,2 M€, bloque a bloque", "direccion"], ["a-cartera", "Plan de Dirección", "Parte VI · La cifra", "La cartera de nueve campañas", "direccion"], ["a-calendario", "Plan de Dirección", "Parte VI · La cifra", "Calendario y capacidad del año", "direccion"], ["a-cierto", "Plan de Dirección", "Parte VI · La cifra", "Las cinco condiciones que tienen que ser ciertas", "direccion"], ["a-acuerdos", "Plan de Dirección", "Anexos", "Cuadernillo: quince hojas de acta", "direccion"], ["a-campanas", "Plan de Dirección", "Anexos", "Nueve fichas de campaña, para poner en marcha", "direccion"], ["b-presentacion", "Presentación de Junta", "La sesión", "Las cuarenta y tres diapositivas, en orden", "presentacion"], ["c-portada", "Protocolos por puesto", "Vista operativa · Uso interno", "Qué se espera de cada puesto", "protocolos"], ["c-puestos", "Protocolos por puesto", "Los seis puestos", "Elija el suyo", "protocolos"], ["c-comun", "Protocolos por puesto", "Común a los seis", "Lo que se cumple en todos los puestos", "protocolos"], ["d-portada-doc", "Protocolo de Primera Visita", "", "Portada", "primera-visita"], ["d-fundamentos", "Protocolo de Primera Visita", "Apertura", "Los cinco principios de la visita", "primera-visita"], ["d-mapa", "Protocolo de Primera Visita", "Apertura", "La visita entera, minuto a minuto", "primera-visita"], ["d-flujo", "Protocolo de Primera Visita", "Apertura", "Quién tiene al paciente en cada momento", "primera-visita"], ["d-f01", "Protocolo de Primera Visita", "Las doce fases de la visita", "Preparación previa y primera llamada", "primera-visita"], ["d-f02", "Protocolo de Primera Visita", "Las doce fases de la visita", "Acogida y recorrido por la tecnología", "primera-visita"], ["d-f03", "Protocolo de Primera Visita", "Las doce fases de la visita", "Alta, RGPD y protección de datos", "primera-visita"], ["d-f04", "Protocolo de Primera Visita", "Las doce fases de la visita", "Historia clínica y consentimiento", "primera-visita"], ["d-f05", "Protocolo de Primera Visita", "Las doce fases de la visita", "Pruebas diagnósticas y fotografía", "primera-visita"], ["d-f06", "Protocolo de Primera Visita", "Las doce fases de la visita", "Briefing entre Doctor y Director", "primera-visita"], ["d-f07", "Protocolo de Primera Visita", "Las doce fases de la visita", "Expectativas y exploración clínica", "primera-visita"], ["d-f08", "Protocolo de Primera Visita", "Las doce fases de la visita", "Informe de Análisis Clínico (IAC)", "primera-visita"], ["d-f09", "Protocolo de Primera Visita", "Las doce fases de la visita", "Presentación del diagnóstico en 3D", "primera-visita"], ["d-f10", "Protocolo de Primera Visita", "Las doce fases de la visita", "Propuesta económica y cierre", "primera-visita"], ["d-f11", "Protocolo de Primera Visita", "Las doce fases de la visita", "Cierre administrativo y digitalización", "primera-visita"], ["d-f12", "Protocolo de Primera Visita", "Las doce fases de la visita", "Despedida y seguimiento estratégico", "primera-visita"], ["d-estandares", "Protocolo de Primera Visita", "Cierre", "Estándares comunes a las doce fases", "primera-visita"], ["d-casos", "Protocolo de Primera Visita", "Cierre", "Casos especiales: cuando no encaja", "primera-visita"], ["d-continua", "Protocolo de Primera Visita", "Cierre", "Fases 13 y 14: producción y mantenimiento", "primera-visita"], ["d-trazabilidad", "Protocolo de Primera Visita", "Cierre", "Qué queda registrado y quién responde", "primera-visita"], ["d-indicadores", "Protocolo de Primera Visita", "Cierre", "Cómo se mide si el protocolo funciona", "primera-visita"], ["d-formacion", "Protocolo de Primera Visita", "Cierre", "Formación y certificación por rol", "primera-visita"], ["d-anexos", "Protocolo de Primera Visita", "Cierre", "Anexos: guiones y preguntas frecuentes", "primera-visita"], ["e-portada-doc", "Manual Maestro de Operaciones", "", "Portada", "operaciones"], ["e-presentacion", "Manual Maestro de Operaciones", "Apertura", "Un documento, tres usos", "operaciones"], ["e-indice", "Manual Maestro de Operaciones", "Apertura", "Índice: dónde está cada cosa", "operaciones"], ["e-vanguardia", "Manual Maestro de Operaciones", "Apertura", "Marco de vanguardia y los cinco pilares", "operaciones"], ["e-p1", "Manual Maestro de Operaciones", "Las ocho partes", "Fundamentos y principios rectores", "operaciones"], ["e-estandares", "Manual Maestro de Operaciones", "Las ocho partes", "Estándares transversales del centro", "operaciones"], ["e-p2", "Manual Maestro de Operaciones", "Las ocho partes", "Las catorce fases del recorrido", "operaciones"], ["e-p3", "Manual Maestro de Operaciones", "Las ocho partes", "Matriz RACI: quién hace qué en cada fase", "operaciones"], ["e-p4", "Manual Maestro de Operaciones", "Las ocho partes", "Manuales de los seis puestos", "operaciones"], ["e-p5", "Manual Maestro de Operaciones", "Las ocho partes", "Funciones de vanguardia por perfil", "operaciones"], ["e-p6", "Manual Maestro de Operaciones", "Las ocho partes", "Indicadores e interdependencias", "operaciones"], ["e-p7", "Manual Maestro de Operaciones", "Las ocho partes", "Plan de incentivos y retribución variable", "operaciones"], ["e-p8", "Manual Maestro de Operaciones", "Las ocho partes", "Puesta en marcha del centro", "operaciones"], ["e-anexos", "Manual Maestro de Operaciones", "Cierre", "Anexos: plantillas y checklists", "operaciones"], ["e-otros", "Manual Maestro de Operaciones", "Cierre", "Otros documentos del sistema", "operaciones"], ["e-notas", "Manual Maestro de Operaciones", "Cierre", "Puntos que siguen abiertos", "operaciones"], ["f-portada-doc", "Plan Maestro de Marketing", "", "Portada", "marketing"], ["f-portada", "Plan Maestro de Marketing", "Apertura", "Portada", "marketing"], ["f-control", "Plan Maestro de Marketing", "Apertura", "Ficha de control del documento", "marketing"], ["f-parte-1", "Plan Maestro de Marketing", "Parte I · La doctrina", "Parte I · La doctrina", "marketing"], ["f-doctrina", "Plan Maestro de Marketing", "Parte I · La doctrina", "Por qué este plan no es un plan al uso", "marketing"], ["f-regla", "Plan Maestro de Marketing", "Parte I · La doctrina", "La regla de la ficha: qué gana el paciente", "marketing"], ["f-nunca", "Plan Maestro de Marketing", "Parte I · La doctrina", "Las ocho cosas que no haremos nunca", "marketing"], ["f-legal", "Plan Maestro de Marketing", "Parte I · La doctrina", "El marco legal de la publicidad sanitaria", "marketing"], ["f-parte-2", "Plan Maestro de Marketing", "Parte II · El paciente", "Parte II · El paciente", "marketing"], ["f-estados", "Plan Maestro de Marketing", "Parte II · El paciente", "Los doce estados del paciente", "marketing"], ["f-arquetipos", "Plan Maestro de Marketing", "Parte II · El paciente", "Los seis pacientes de la ría", "marketing"], ["f-momentos", "Plan Maestro de Marketing", "Parte II · El paciente", "Los siete momentos de verdad", "marketing"], ["f-asimetria", "Plan Maestro de Marketing", "Parte II · El paciente", "La asimetría: lo que el paciente no sabe", "marketing"], ["f-parte-3", "Plan Maestro de Marketing", "Parte III · El catálogo", "Parte III · El catálogo", "marketing"], ["f-catalogo", "Plan Maestro de Marketing", "Parte III · El catálogo", "Las 76 acciones, con dueño y coste", "marketing"], ["f-parte-4", "Plan Maestro de Marketing", "Parte IV · Las diez piezas", "Parte IV · Las diez piezas", "marketing"], ["f-piezas", "Plan Maestro de Marketing", "Parte IV · Las diez piezas", "Las diez piezas que nadie hace en Vigo", "marketing"], ["f-parte-5", "Plan Maestro de Marketing", "Parte V · El territorio", "Parte V · El territorio", "marketing"], ["f-digital", "Plan Maestro de Marketing", "Parte V · El territorio", "La presencia digital, y para qué sirve", "marketing"], ["f-ria", "Plan Maestro de Marketing", "Parte V · El territorio", "El mapa de la ría: dónde está el paciente", "marketing"], ["f-mar", "Plan Maestro de Marketing", "Parte V · El territorio", "La Campaña de Mar, verano a verano", "marketing"], ["f-parte-6", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Parte VI · La prioridad", "marketing"], ["f-economia", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Qué aporta cada grupo de acciones", "marketing"], ["f-prioridad", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Qué va primero, y por qué", "marketing"], ["f-presupuesto", "Plan Maestro de Marketing", "Parte VI · La prioridad", "Presupuesto y techo de gasto", "marketing"], ["f-parte-7", "Plan Maestro de Marketing", "Parte VII · El gobierno", "Parte VII · El gobierno", "marketing"], ["f-indicadores", "Plan Maestro de Marketing", "Parte VII · El gobierno", "Las ocho medidas del plan", "marketing"], ["f-calendario", "Plan Maestro de Marketing", "Parte VII · El gobierno", "El calendario del ejercicio", "marketing"], ["f-parada", "Plan Maestro de Marketing", "Parte VII · El gobierno", "Reglas de parada: cuándo se corta", "marketing"], ["f-parte-8", "Plan Maestro de Marketing", "Parte VIII · El programa", "Parte VIII · El programa", "marketing"], ["f-gtc", "Plan Maestro de Marketing", "Parte VIII · El programa", "Giraldo Te Cuida: el programa de acompañamiento", "marketing"], ["f-anexo-legal", "Plan Maestro de Marketing", "Anexos", "Semáforo legal, acción por acción", "marketing"], ["f-anexo-cartera", "Plan Maestro de Marketing", "Anexos", "Correspondencia con la cartera de campañas", "marketing"], ["f-anexo-trimestre", "Plan Maestro de Marketing", "Anexos", "Lo que se activa este trimestre", "marketing"], ["g-portada-doc", "Otros documentos del sistema", "", "Portada", "otros"], ["g-presentacion", "Otros documentos del sistema", "Apertura", "Qué es cada cosa y cuándo se abre", "otros"], ["g-otros-mapa", "Otros documentos del sistema", "Apertura", "El sistema en cuatro niveles", "otros"], ["g-otros-compendio", "Otros documentos del sistema", "Los catorce documentos", "Compendio Maestro del sistema de gestión", "otros"], ["g-otros-verificacion", "Otros documentos del sistema", "Los catorce documentos", "Verificación del centro · 322 puntos", "otros"], ["g-otros-auditoria", "Otros documentos del sistema", "Los catorce documentos", "Auditoría integral de la clínica adquirida", "otros"], ["g-otros-decisiones", "Otros documentos del sistema", "Los catorce documentos", "Decisiones de Gerencia y verificaciones", "otros"], ["g-otros-100dias", "Otros documentos del sistema", "Los catorce documentos", "Plan Director de los primeros 100 días", "otros"], ["g-otros-30dias", "Otros documentos del sistema", "Los catorce documentos", "Dosier de ejecución de los 30 días", "otros"], ["g-otros-perfiles", "Otros documentos del sistema", "Los catorce documentos", "Protocolos operativos por perfil", "otros"], ["g-otros-innovacion", "Otros documentos del sistema", "Los catorce documentos", "Innovación aplicada · 18 fichas", "otros"], ["g-otros-marca", "Otros documentos del sistema", "Los catorce documentos", "Plan Director de marca y captación", "otros"], ["g-otros-cuaderno", "Otros documentos del sistema", "Los catorce documentos", "Cuaderno de campo del día 1", "otros"], ["g-otros-transicion-perfiles", "Otros documentos del sistema", "Los catorce documentos", "Manual de puesta en marcha por perfil", "otros"], ["g-otros-continuidad", "Otros documentos del sistema", "Los catorce documentos", "Continuidad legal, financiera y de sistemas", "otros"], ["g-otros-posicionamiento", "Otros documentos del sistema", "Los catorce documentos", "«No medias sonrisas» · posicionamiento", "otros"], ["g-otros-gtc", "Otros documentos del sistema", "Los catorce documentos", "GTC · vive en el Plan de Marketing", "otros"], ["g-otros-cierre", "Otros documentos del sistema", "Cierre", "Cómo encajan los catorce documentos", "otros"], ["h-portada", "Los números del centro", "Instrumento de medición · Ejercicio 2026 · Uso interno", "Los números del centro", "numeros"], ["h-instrucciones", "Los números del centro", "Cómo se usa", "Tres reglas y ninguna más", "numeros"], ["h-definiciones", "Los números del centro", "Definiciones", "Qué se cuenta arriba, qué se cuenta abajo", "numeros"], ["h-captura", "Los números del centro", "Captura mensual", "Una hoja por mes", "numeros"], ["h-anual", "Los números del centro", "Resumen anual", "Los doce meses en una rejilla", "numeros"], ["h-cinco", "Los números del centro", "Los cinco números", "Sin ellos, cualquier objetivo comercial es una opinión", "numeros"]];
 window.__VOCES__ = {"RAC": ["RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)", "Manual Maestro · Glosario de roles"], "Clinic Cloud": ["Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.", "Manual Maestro · Glosario de roles"], "Smartee Doctor / Spark Approver": ["Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.", "Manual Maestro · Glosario de roles"], "WeDiagnostix": ["Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.", "Manual Maestro · Glosario de roles"], "IAC": ["Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.", "Manual Maestro · Anexo 10"], "Solicitud de presupuesto": ["Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.", "Manual Maestro · Anexo 10"], "Producto pendiente": ["Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.", "Manual Maestro · Anexo 10"], "Doble verificación": ["Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.", "Manual Maestro · Anexo 10"], "Gate de calidad": ["Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.", "Manual Maestro · Anexo 10"], "CBCT": ["Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.", "Manual Maestro · Anexo 10"], "OPG": ["Ortopantomografía: radiografía panorámica digital de ambos maxilares.", "Manual Maestro · Anexo 10"], "IOS": ["Escaneado intraoral: modelo digital de las arcadas y de la oclusión.", "Manual Maestro · Anexo 10"], "Guía quirúrgica": ["Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.", "Manual Maestro · Anexo 10"], "Carga inmediata": ["Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.", "Manual Maestro · Anexo 10"], "Perfil de riesgo": ["Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.", "Manual Maestro · Anexo 10"], "Perfil Giraldo anual": ["Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.", "Manual Maestro · Anexo 10"], "RACI": ["Reparto de papeles por fase: responsable, accountable, consultado e informado.", "Manual Maestro · Anexo 10"], "Triaje": ["Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.", "Manual Maestro · Anexo 10"]};
 window.__GRUPOESTADO__ = {"E1": "G1", "E2": "G1", "E3": "G1", "E4": "G2", "E5": "G3", "E6": "G4", "E7": "G5", "E8": "G5", "E9": "G6", "E11": "G6", "E12": "G6", "E10": "G7"};
 window.__RUTAS__ = {"paciente": {"quien": "Soy paciente", "titulo": "Lo que le pasa a usted, de la llamada al mantenimiento", "paradas": ["d-f01", "d-f02", "d-f05", "d-f09", "d-f10", "d-f12", "e-m14", "g-otros-gtc"]}, "junta": {"quien": "Soy de la Junta", "titulo": "Qué se somete a votación y con qué se sostiene", "paradas": ["a-resumen", "a-sistema", "f-economia", "a-puente", "a-decisiones"]}, "lunes": {"quien": "Entro a trabajar", "titulo": "Lo primero que hay que saber, en este orden", "paradas": ["e-m-documento-tres-usos", "e-m-estandares-transversales-ampliacion", "e-m-recorrido-paciente", "e-m-matriz-raci", "e-m-manuales-puesto", "e-m-puesta-marcha"]}, "marketing": {"quien": "Llevo la captación", "titulo": "Cómo llega un paciente, y qué no haremos nunca para que llegue", "paradas": ["f-k-creemos-nos-prohibimos-consecuencia", "f-k-ocho-no-haremos-nunca", "f-k-marco-publicidad-sanitaria", "f-k-doce-estados", "f-k-setenta-seis-acciones", "f-k-va-primero", "f-k-como-mide-regla"]}, "puesto-direccion": {"quien": "Soy Dirección", "titulo": "Dirige la clínica y responde de que el sistema se cumpla", "paradas": ["e-m-direccion-clinica", "d-f02", "e-m-g-2-autoridad-limites", "e-m-g-3-procedimientos", "e-m-g-4-indicadores-direccion", "e-m-indicadores-perfil", "e-m-pasa-exactamente-cuando-puesto-no-cumple", "e-m-puesta-marcha"]}, "puesto-doctor": {"quien": "Soy Doctor", "titulo": "Diagnostica, planifica y ejecuta el tratamiento", "paradas": ["e-m-doctor", "d-f04", "e-m-d-2-cronograma-jornada", "e-m-d-3-procedimientos", "e-m-d-4-errores-documentados", "e-m-funcion-2-1-preparacion-anticipada-caso", "e-m-indicadores-perfil", "e-m-pasa-exactamente-cuando-puesto-no-cumple", "e-m-puesta-marcha"]}, "puesto-recepcion": {"quien": "Soy Recepción", "titulo": "La primera voz y la última", "paradas": ["e-m-recepcion", "d-f01", "e-m-r-2-jornada-minuto-minuto", "e-m-r-3-procedimientos", "e-m-r-3-bis-papel-comercial-real", "e-m-funcion-1-1-gestion-demanda", "e-m-indicadores-perfil", "e-m-pasa-exactamente-cuando-puesto-no-cumple", "e-m-puesta-marcha"]}, "puesto-rac": {"quien": "Soy RAC", "titulo": "Responde del circuito de producción: que lo aceptado se fabrique, se coloque y se cierre", "paradas": ["e-m-rac-responsable-produccion", "e-m-c-2-poder-bloqueo", "e-m-c-3-procedimientos", "e-m-c-4-indicadores-rac", "e-m-indicadores-perfil", "e-m-pasa-exactamente-cuando-puesto-no-cumple", "e-m-puesta-marcha"]}, "puesto-auxiliar": {"quien": "Soy Auxiliar", "titulo": "Sostiene el acto clínico: equipos listos, batería diagnóstica completa y esterilización trazable", "paradas": ["e-m-auxiliar", "d-f05", "e-m-x-2-procedimientos", "e-m-x-3-indicadores-auxiliar", "e-m-x-4-contingencias-ampliacion", "e-m-funcion-4-1-gestion-equipos", "e-m-indicadores-perfil", "e-m-pasa-exactamente-cuando-puesto-no-cumple", "e-m-puesta-marcha"]}, "puesto-higienista": {"quien": "Soy Higienista", "titulo": "El puesto del largo plazo: mantiene lo tratado, detecta pronto lo que se tuerce y sostiene la relación año tras año", "paradas": ["e-m-higienista", "e-m-h-2-este-puesto-estrategico", "e-m-h-3-procedimientos", "e-m-h-4-indicadores-higienista", "e-m-funcion-3-1-programa-mantenimiento", "e-m-indicadores-perfil", "e-m-pasa-exactamente-cuando-puesto-no-cumple", "e-m-puesta-marcha"]}};
@@ -31853,6 +31988,240 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
      uno; sin guion salen los diez seguidos, que es como estaban. */
   var secRec = D.getElementById("recorridos");
   if(secRec) secRec.classList.add("es-elige");
+
+  /* ================================================================ */
+  /*  LA ENTRADA: se escribe lo que se busca y aparece                 */
+  /* ================================================================ */
+  /* El índice era un árbol de doce ramas y ciento treinta y cinco hojas, y
+     para llegar a una fase de la primera visita había que saber que vivía
+     dentro del cuarto documento. Eso es pedirle al lector que conozca la
+     estructura antes de poder usarla.
+
+     Aquí se escribe. Un apartado, un concepto —RACI, CBCT, GTC—, «fase 8»,
+     «recepción», «marketing»: lo que sea. Se busca en todo a la vez y se
+     ordena por cuánto se parece, sin acentos y sin importar mayúsculas, y
+     encontrando también lo que se escribe a trozos («preseco» encuentra
+     «Presentación económica»). Y con el campo vacío están los atajos: las
+     catorce fases, los siete grupos de marketing, los seis puestos, los ocho
+     documentos y los conceptos. El árbol entero sigue debajo, intacto, para
+     quien prefiera recorrerlo.
+
+     Todo esto ocurre dentro del archivo: no hay red, no se manda nada a
+     ninguna parte y funciona en un cajón sin conexión. */
+  var resu = D.getElementById("resu");
+  var atajos = D.getElementById("atajos");
+  var todoidx = D.getElementById("todoidx");
+
+  function pela(t){
+    return (t || "").toString().toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9\s·-]/g, " ").replace(/\s+/g, " ").trim();
+  }
+
+  var ROT = {apartado:"Apartado", concepto:"Concepto", fase:"Fase",
+             documento:"Documento", puesto:"Puesto", marketing:"Marketing",
+             recorrido:"Recorrido"};
+
+  /* El corpus: todo lo que se puede buscar, con su destino resuelto. */
+  var CORPUS = [];
+  (function(){
+    var ORD = window.__ORDEN__ || [];
+    ORD.forEach(function(o){
+      CORPUS.push({t:"apartado", r:o[3], d:o[1], p:o[2], id:o[0], sec:o[4]});
+    });
+    var VOC = window.__VOCES__ || {};
+    Object.keys(VOC).forEach(function(k){
+      CORPUS.push({t:"concepto", r:k, d:VOC[k][1] || "Glosario", p:"", voz:k,
+                   q:VOC[k][0]});
+    });
+    (window.__ATAJOS__ || []).forEach(function(a){
+      CORPUS.push({t:a.t, r:a.r, d:a.q || "", p:a.n || "", id:a.id, sec:a.sec});
+    });
+    var RT = window.__RUTAS__ || {};
+    Object.keys(RT).forEach(function(k){
+      CORPUS.push({t:"recorrido", r:RT[k].titulo, d:RT[k].quien, p:"",
+                   ruta:k, sec:"recorridos"});
+    });
+    CORPUS.forEach(function(c){
+      /* El nombre del tipo entra en lo que se busca: quien escribe «fase 8»
+         está diciendo el tipo y el número, y sin esto no encontraba nada.
+         El número va en sus dos formas, «08» y «8», por lo mismo. */
+      var num = c.p ? (c.p + " " + String(parseInt(c.p, 10) || c.p)) : "";
+      c._k = pela((ROT[c.t] || c.t) + " " + c.r + " " + (c.d || "") + " " +
+                  num + " " + (c.q || ""));
+      c._r = pela(c.r);
+    });
+  })();
+
+  /* Cuánto se parece. Cuatro maneras de acertar, de más a menos exacta:
+     igual, empieza por, contiene una palabra que empieza por, y las letras
+     en orden aunque salteadas. Lo que empieza por lo escrito vale más. */
+  function puntua(c, q, tro){
+    var r = c._r, k = c._k, p = 0;
+    if(r === q) p += 1000;
+    else if(r.indexOf(q) === 0) p += 600;
+    else if((" " + r).indexOf(" " + q) > -1) p += 420;
+    else if(r.indexOf(q) > -1) p += 260;
+    if(p === 0){
+      var todas = tro.every(function(t){ return k.indexOf(t) > -1; });
+      if(todas) p += 200;
+    }
+    if(p === 0){
+      /* Letras en orden, «preseco» → «PRESEntación eCOnómica», pero apretadas
+         y solo sobre el titular: sin esto, «gtc» encontraba «diaGnósTiCo» y
+         media página de ruido. Se exige además tres letras y que el tramo
+         gastado no sea desproporcionado. */
+      if(q.length < 3) return 0;
+      var i = 0, j = 0, ini = -1;
+      while(i < q.length && j < r.length){
+        if(q[i] === r[j]){ if(ini < 0) ini = j; i++; }
+        j++;
+      }
+      if(i === q.length && ini >= 0 && (j - ini) <= q.length * 3) p += 60;
+      else return 0;
+    }
+    if(c.t === "fase") p += 45;
+    else if(c.t === "concepto") p += 30;
+    else if(c.t === "documento" || c.t === "puesto" || c.t === "marketing") p += 25;
+    else if(c.t === "recorrido") p += 15;
+    p -= Math.min(40, Math.round(r.length / 3));
+    return p;
+  }
+
+  function pinta(lista, q){
+    if(!lista.length){
+      resu.innerHTML = '<p class="resu__no">Nada con «' +
+        q.replace(/</g, "&lt;") + '». Pruebe con menos letras, o mire los ' +
+        'atajos de abajo: las catorce fases, los seis puestos, los siete ' +
+        'grupos de marketing y los ocho documentos.</p>';
+      return;
+    }
+    resu.innerHTML = lista.map(function(c, i){
+      var sub = [ROT[c.t] || c.t];
+      if(c.d) sub.push(c.d);
+      if(c.p && c.t === "apartado") sub.push(c.p);
+      return '<button type="button" class="resu__i" role="option" ' +
+        'aria-selected="' + (i === 0 ? "true" : "false") + '" data-i="' + i + '"' +
+        (i === 0 ? ' data-sel' : '') + '>' +
+        '<span class="resu__t resu__t--' + c.t + '">' + (ROT[c.t] || c.t) + '</span>' +
+        '<span class="resu__r">' + c.r.replace(/</g, "&lt;") + '</span>' +
+        '<span class="resu__d">' + sub.slice(1).join(" · ").replace(/</g, "&lt;") +
+        '</span></button>';
+    }).join("");
+  }
+
+  var vistos = [];
+  function busca(){
+    var bruto = filtra ? filtra.value : "";
+    var q = pela(bruto);
+    if(!q){
+      resu.hidden = true; resu.innerHTML = "";
+      if(atajos) atajos.hidden = false;
+      if(filtra) filtra.setAttribute("aria-expanded", "false");
+      return;
+    }
+    var tro = q.split(" ").filter(Boolean);
+    vistos = CORPUS.map(function(c){ return {c:c, p:puntua(c, q, tro)}; })
+      .filter(function(x){ return x.p > 0; })
+      .sort(function(a, b){ return b.p - a.p; })
+      .slice(0, 40).map(function(x){ return x.c; });
+    if(atajos) atajos.hidden = true;
+    resu.hidden = false;
+    if(filtra) filtra.setAttribute("aria-expanded", "true");
+    pinta(vistos, bruto);
+  }
+
+  function vaA(c){
+    if(!c) return;
+    if(c.t === "concepto"){
+      /* Un concepto no está «en un sitio»: es una definición. Se enseña
+         aquí mismo, sin sacar a nadie de donde está, y con la fuente. */
+      resu.hidden = false;
+      if(atajos) atajos.hidden = true;
+      resu.innerHTML = '<div class="resu__voz"><b>' +
+        c.r.replace(/</g, "&lt;") + '</b><p>' +
+        (c.q || "").replace(/</g, "&lt;") + '</p><small>' +
+        (c.d || "").replace(/</g, "&lt;") + '</small></div>';
+      return;
+    }
+    if(c.t === "recorrido"){
+      cierraRail();
+      var bt = D.querySelector('[data-ve-ruta="' + c.ruta + '"]');
+      if(bt) bt.click(); else veSec("recorridos", true);
+      return;
+    }
+    if(c.id){ cierraRail(); abreDestino(c.id); return; }
+    if(c.sec){ cierraRail(); cierraLector(); veSec(c.sec, true); }
+  }
+
+  function sel(n){
+    var its = [].slice.call(resu.querySelectorAll(".resu__i"));
+    if(!its.length) return;
+    var i = its.findIndex ? its.findIndex(function(e){ return e.hasAttribute("data-sel"); }) : -1;
+    if(i < 0) i = 0;
+    its[i].removeAttribute("data-sel");
+    its[i].setAttribute("aria-selected", "false");
+    var j = (i + n + its.length) % its.length;
+    its[j].setAttribute("data-sel", "");
+    its[j].setAttribute("aria-selected", "true");
+    its[j].scrollIntoView({block:"nearest"});
+  }
+
+  if(resu){
+    resu.addEventListener("click", function(e){
+      var b = e.target.closest(".resu__i");
+      if(b) vaA(vistos[parseInt(b.dataset.i, 10)]);
+    });
+  }
+  if(filtra){
+    filtra.addEventListener("input", busca);
+    filtra.addEventListener("keydown", function(e){
+      if(e.key === "ArrowDown"){ e.preventDefault(); sel(1); }
+      else if(e.key === "ArrowUp"){ e.preventDefault(); sel(-1); }
+      else if(e.key === "Enter"){
+        var b = resu.querySelector(".resu__i[data-sel]");
+        if(b){ e.preventDefault(); vaA(vistos[parseInt(b.dataset.i, 10)]); }
+      }
+    });
+  }
+
+  /* Los atajos: lo que casi todo el mundo viene a buscar, de un solo toque. */
+  (function(){
+    if(!atajos) return;
+    var por = {fase:[], marketing:[], puesto:[], documento:[], concepto:[]};
+    CORPUS.forEach(function(c){ if(por[c.t]) por[c.t].push(c); });
+    Object.keys(por).forEach(function(t){
+      var caja = atajos.querySelector('[data-grupo="' + t + '"] .atajos__l');
+      if(!caja) return;
+      var l = por[t];
+      if(t === "concepto") l = l.slice(0, 12);
+      caja.innerHTML = l.map(function(c){
+        var i = CORPUS.indexOf(c);
+        return '<button type="button" class="atajo" data-c="' + i + '">' +
+          (c.p ? '<i>' + c.p + '</i>' : "") +
+          '<span>' + c.r.replace(/</g, "&lt;") + '</span>' +
+          (c.d && t === "fase" ? '<em>' + c.d + '</em>' : "") + '</button>';
+      }).join("");
+    });
+    atajos.addEventListener("click", function(e){
+      var b = e.target.closest(".atajo");
+      if(b) vaA(CORPUS[parseInt(b.dataset.c, 10)]);
+    });
+  })();
+
+  /* Se abre con la tecla, como se abre todo lo que se usa mucho: Ctrl+K o
+     ⌘K desde cualquier sitio, y también con «/» si no se está escribiendo en
+     otro campo. Escribir es más rápido que buscar un botón con el ratón. */
+  D.addEventListener("keydown", function(e){
+    var enCampo = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName || ""));
+    var abre = ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")) ||
+               (e.key === "/" && !enCampo);
+    if(!abre) return;
+    e.preventDefault();
+    var r = D.getElementById("rail");
+    if(r && r.hidden){ if(railbt) railbt.click(); }
+    setTimeout(function(){ if(filtra){ filtra.focus(); filtra.select(); } }, 80);
+  });
 
   /* ---- el tablero de las catorce fases ------------------------------ */
   /* Lo que alguien ha superado se guarda en su propio navegador. No viaja a

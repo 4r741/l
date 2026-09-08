@@ -17,6 +17,51 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## Se entra escribiendo · versión 24
+
+### Por qué el índice era un caos aunque estuviera bien dibujado
+
+Era un árbol de doce ramas y ciento treinta y cinco hojas. Para llegar a una
+fase de la primera visita había que **saber de antemano** que vivía dentro del
+cuarto documento. Se le pedía al lector que conociera la estructura del sistema
+antes de poder usarlo, y eso no lo arregla ninguna tipografía.
+
+### Ahora se escribe
+
+Un campo. Se escribe un apartado, un concepto —RACI, CBCT, GTC—, «fase 8»,
+«recepción», «marketing», «puente»: lo que sea. Se busca **en todo a la vez**
+—los 135 apartados, los 18 conceptos, las 14 fases, los 6 puestos, los 7 grupos
+de marketing, los 8 documentos y los 10 recorridos— y se ordena por cuánto se
+parece.
+
+- **Sin acentos y sin mayúsculas**: «recepcion» encuentra «Recepción».
+- **A trozos**: «preseco» encuentra «Presentación económica».
+- **Por tipo y número**: «fase 8» va a la fase 08, el IAC.
+- **Con el teclado**: `Ctrl+K` o `⌘K` desde cualquier sitio abre y pone el
+  cursor dentro; `/` también. Flechas para elegir, `Enter` para entrar.
+- **Un concepto se resuelve ahí mismo**: la definición aparece en el propio
+  buscador, con su fuente, sin sacarle de donde está.
+
+Todo ocurre dentro del archivo: no hay red, no se manda nada a ninguna parte y
+funciona igual en un portátil sin conexión.
+
+### Y con el campo vacío, los atajos
+
+Debajo están, de un solo toque: **las catorce fases** de la visita con sus
+minutos, **los siete grupos de marketing** con sus acciones, **los seis
+puestos**, **los ocho documentos** y **los conceptos** que más se preguntan.
+Eso es lo que casi todo el mundo viene a buscar, y ahora está a un clic sin
+tener que atravesar ninguna jerarquía.
+
+**El árbol completo sigue estando**, plegado bajo «Todo el índice», para quien
+prefiera recorrerlo. No se ha quitado nada: se ha cambiado por dónde se entra.
+
+### Y lo que estaba duplicado
+
+En la sección del Mapa aparecían dos rótulos diciendo lo mismo: «La primera
+visita · 12 fases» y «La primera visita · doce fases · 123 minutos». El primero
+lo había añadido yo con el tablero de la versión 22; sobraba y se ha quitado.
+
 ## Un índice donde se sabe dónde se está · versión 23
 
 ### Los enlaces que no iban a ningún lado

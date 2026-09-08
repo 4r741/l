@@ -2815,7 +2815,6 @@ def tablero_fases(fs, mfs, mapa):
       <button type="button" class="tablero__reset" data-tab-reset hidden>Empezar de nuevo</button>
     </div>
   </div>
-  <p class="tab__tramo letra">La primera visita · @PV@ fases</p>
   <ol class="tab__fs">@FICHAS@</ol>
 </div>
 """.replace("@FICHAS@", "".join(fichas)).replace("@N@", str(len(todas)))
@@ -6270,6 +6269,240 @@ JS = """
   var secRec = D.getElementById("recorridos");
   if(secRec) secRec.classList.add("es-elige");
 
+  /* ================================================================ */
+  /*  LA ENTRADA: se escribe lo que se busca y aparece                 */
+  /* ================================================================ */
+  /* El índice era un árbol de doce ramas y ciento treinta y cinco hojas, y
+     para llegar a una fase de la primera visita había que saber que vivía
+     dentro del cuarto documento. Eso es pedirle al lector que conozca la
+     estructura antes de poder usarla.
+
+     Aquí se escribe. Un apartado, un concepto —RACI, CBCT, GTC—, «fase 8»,
+     «recepción», «marketing»: lo que sea. Se busca en todo a la vez y se
+     ordena por cuánto se parece, sin acentos y sin importar mayúsculas, y
+     encontrando también lo que se escribe a trozos («preseco» encuentra
+     «Presentación económica»). Y con el campo vacío están los atajos: las
+     catorce fases, los siete grupos de marketing, los seis puestos, los ocho
+     documentos y los conceptos. El árbol entero sigue debajo, intacto, para
+     quien prefiera recorrerlo.
+
+     Todo esto ocurre dentro del archivo: no hay red, no se manda nada a
+     ninguna parte y funciona en un cajón sin conexión. */
+  var resu = D.getElementById("resu");
+  var atajos = D.getElementById("atajos");
+  var todoidx = D.getElementById("todoidx");
+
+  function pela(t){
+    return (t || "").toString().toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s·-]/g, " ").replace(/\s+/g, " ").trim();
+  }
+
+  var ROT = {apartado:"Apartado", concepto:"Concepto", fase:"Fase",
+             documento:"Documento", puesto:"Puesto", marketing:"Marketing",
+             recorrido:"Recorrido"};
+
+  /* El corpus: todo lo que se puede buscar, con su destino resuelto. */
+  var CORPUS = [];
+  (function(){
+    var ORD = window.__ORDEN__ || [];
+    ORD.forEach(function(o){
+      CORPUS.push({t:"apartado", r:o[3], d:o[1], p:o[2], id:o[0], sec:o[4]});
+    });
+    var VOC = window.__VOCES__ || {};
+    Object.keys(VOC).forEach(function(k){
+      CORPUS.push({t:"concepto", r:k, d:VOC[k][1] || "Glosario", p:"", voz:k,
+                   q:VOC[k][0]});
+    });
+    (window.__ATAJOS__ || []).forEach(function(a){
+      CORPUS.push({t:a.t, r:a.r, d:a.q || "", p:a.n || "", id:a.id, sec:a.sec});
+    });
+    var RT = window.__RUTAS__ || {};
+    Object.keys(RT).forEach(function(k){
+      CORPUS.push({t:"recorrido", r:RT[k].titulo, d:RT[k].quien, p:"",
+                   ruta:k, sec:"recorridos"});
+    });
+    CORPUS.forEach(function(c){
+      /* El nombre del tipo entra en lo que se busca: quien escribe «fase 8»
+         está diciendo el tipo y el número, y sin esto no encontraba nada.
+         El número va en sus dos formas, «08» y «8», por lo mismo. */
+      var num = c.p ? (c.p + " " + String(parseInt(c.p, 10) || c.p)) : "";
+      c._k = pela((ROT[c.t] || c.t) + " " + c.r + " " + (c.d || "") + " " +
+                  num + " " + (c.q || ""));
+      c._r = pela(c.r);
+    });
+  })();
+
+  /* Cuánto se parece. Cuatro maneras de acertar, de más a menos exacta:
+     igual, empieza por, contiene una palabra que empieza por, y las letras
+     en orden aunque salteadas. Lo que empieza por lo escrito vale más. */
+  function puntua(c, q, tro){
+    var r = c._r, k = c._k, p = 0;
+    if(r === q) p += 1000;
+    else if(r.indexOf(q) === 0) p += 600;
+    else if((" " + r).indexOf(" " + q) > -1) p += 420;
+    else if(r.indexOf(q) > -1) p += 260;
+    if(p === 0){
+      var todas = tro.every(function(t){ return k.indexOf(t) > -1; });
+      if(todas) p += 200;
+    }
+    if(p === 0){
+      /* Letras en orden, «preseco» → «PRESEntación eCOnómica», pero apretadas
+         y solo sobre el titular: sin esto, «gtc» encontraba «diaGnósTiCo» y
+         media página de ruido. Se exige además tres letras y que el tramo
+         gastado no sea desproporcionado. */
+      if(q.length < 3) return 0;
+      var i = 0, j = 0, ini = -1;
+      while(i < q.length && j < r.length){
+        if(q[i] === r[j]){ if(ini < 0) ini = j; i++; }
+        j++;
+      }
+      if(i === q.length && ini >= 0 && (j - ini) <= q.length * 3) p += 60;
+      else return 0;
+    }
+    if(c.t === "fase") p += 45;
+    else if(c.t === "concepto") p += 30;
+    else if(c.t === "documento" || c.t === "puesto" || c.t === "marketing") p += 25;
+    else if(c.t === "recorrido") p += 15;
+    p -= Math.min(40, Math.round(r.length / 3));
+    return p;
+  }
+
+  function pinta(lista, q){
+    if(!lista.length){
+      resu.innerHTML = '<p class="resu__no">Nada con «' +
+        q.replace(/</g, "&lt;") + '». Pruebe con menos letras, o mire los ' +
+        'atajos de abajo: las catorce fases, los seis puestos, los siete ' +
+        'grupos de marketing y los ocho documentos.</p>';
+      return;
+    }
+    resu.innerHTML = lista.map(function(c, i){
+      var sub = [ROT[c.t] || c.t];
+      if(c.d) sub.push(c.d);
+      if(c.p && c.t === "apartado") sub.push(c.p);
+      return '<button type="button" class="resu__i" role="option" ' +
+        'aria-selected="' + (i === 0 ? "true" : "false") + '" data-i="' + i + '"' +
+        (i === 0 ? ' data-sel' : '') + '>' +
+        '<span class="resu__t resu__t--' + c.t + '">' + (ROT[c.t] || c.t) + '</span>' +
+        '<span class="resu__r">' + c.r.replace(/</g, "&lt;") + '</span>' +
+        '<span class="resu__d">' + sub.slice(1).join(" · ").replace(/</g, "&lt;") +
+        '</span></button>';
+    }).join("");
+  }
+
+  var vistos = [];
+  function busca(){
+    var bruto = filtra ? filtra.value : "";
+    var q = pela(bruto);
+    if(!q){
+      resu.hidden = true; resu.innerHTML = "";
+      if(atajos) atajos.hidden = false;
+      if(filtra) filtra.setAttribute("aria-expanded", "false");
+      return;
+    }
+    var tro = q.split(" ").filter(Boolean);
+    vistos = CORPUS.map(function(c){ return {c:c, p:puntua(c, q, tro)}; })
+      .filter(function(x){ return x.p > 0; })
+      .sort(function(a, b){ return b.p - a.p; })
+      .slice(0, 40).map(function(x){ return x.c; });
+    if(atajos) atajos.hidden = true;
+    resu.hidden = false;
+    if(filtra) filtra.setAttribute("aria-expanded", "true");
+    pinta(vistos, bruto);
+  }
+
+  function vaA(c){
+    if(!c) return;
+    if(c.t === "concepto"){
+      /* Un concepto no está «en un sitio»: es una definición. Se enseña
+         aquí mismo, sin sacar a nadie de donde está, y con la fuente. */
+      resu.hidden = false;
+      if(atajos) atajos.hidden = true;
+      resu.innerHTML = '<div class="resu__voz"><b>' +
+        c.r.replace(/</g, "&lt;") + '</b><p>' +
+        (c.q || "").replace(/</g, "&lt;") + '</p><small>' +
+        (c.d || "").replace(/</g, "&lt;") + '</small></div>';
+      return;
+    }
+    if(c.t === "recorrido"){
+      cierraRail();
+      var bt = D.querySelector('[data-ve-ruta="' + c.ruta + '"]');
+      if(bt) bt.click(); else veSec("recorridos", true);
+      return;
+    }
+    if(c.id){ cierraRail(); abreDestino(c.id); return; }
+    if(c.sec){ cierraRail(); cierraLector(); veSec(c.sec, true); }
+  }
+
+  function sel(n){
+    var its = [].slice.call(resu.querySelectorAll(".resu__i"));
+    if(!its.length) return;
+    var i = its.findIndex ? its.findIndex(function(e){ return e.hasAttribute("data-sel"); }) : -1;
+    if(i < 0) i = 0;
+    its[i].removeAttribute("data-sel");
+    its[i].setAttribute("aria-selected", "false");
+    var j = (i + n + its.length) % its.length;
+    its[j].setAttribute("data-sel", "");
+    its[j].setAttribute("aria-selected", "true");
+    its[j].scrollIntoView({block:"nearest"});
+  }
+
+  if(resu){
+    resu.addEventListener("click", function(e){
+      var b = e.target.closest(".resu__i");
+      if(b) vaA(vistos[parseInt(b.dataset.i, 10)]);
+    });
+  }
+  if(filtra){
+    filtra.addEventListener("input", busca);
+    filtra.addEventListener("keydown", function(e){
+      if(e.key === "ArrowDown"){ e.preventDefault(); sel(1); }
+      else if(e.key === "ArrowUp"){ e.preventDefault(); sel(-1); }
+      else if(e.key === "Enter"){
+        var b = resu.querySelector(".resu__i[data-sel]");
+        if(b){ e.preventDefault(); vaA(vistos[parseInt(b.dataset.i, 10)]); }
+      }
+    });
+  }
+
+  /* Los atajos: lo que casi todo el mundo viene a buscar, de un solo toque. */
+  (function(){
+    if(!atajos) return;
+    var por = {fase:[], marketing:[], puesto:[], documento:[], concepto:[]};
+    CORPUS.forEach(function(c){ if(por[c.t]) por[c.t].push(c); });
+    Object.keys(por).forEach(function(t){
+      var caja = atajos.querySelector('[data-grupo="' + t + '"] .atajos__l');
+      if(!caja) return;
+      var l = por[t];
+      if(t === "concepto") l = l.slice(0, 12);
+      caja.innerHTML = l.map(function(c){
+        var i = CORPUS.indexOf(c);
+        return '<button type="button" class="atajo" data-c="' + i + '">' +
+          (c.p ? '<i>' + c.p + '</i>' : "") +
+          '<span>' + c.r.replace(/</g, "&lt;") + '</span>' +
+          (c.d && t === "fase" ? '<em>' + c.d + '</em>' : "") + '</button>';
+      }).join("");
+    });
+    atajos.addEventListener("click", function(e){
+      var b = e.target.closest(".atajo");
+      if(b) vaA(CORPUS[parseInt(b.dataset.c, 10)]);
+    });
+  })();
+
+  /* Se abre con la tecla, como se abre todo lo que se usa mucho: Ctrl+K o
+     ⌘K desde cualquier sitio, y también con «/» si no se está escribiendo en
+     otro campo. Escribir es más rápido que buscar un botón con el ratón. */
+  D.addEventListener("keydown", function(e){
+    var enCampo = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName || ""));
+    var abre = ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")) ||
+               (e.key === "/" && !enCampo);
+    if(!abre) return;
+    e.preventDefault();
+    var r = D.getElementById("rail");
+    if(r && r.hidden){ if(railbt) railbt.click(); }
+    setTimeout(function(){ if(filtra){ filtra.focus(); filtra.select(); } }, 80);
+  });
+
   /* ---- el tablero de las catorce fases ------------------------------ */
   /* Lo que alguien ha superado se guarda en su propio navegador. No viaja a
      ningún sitio, no lo ve nadie más y se puede borrar de un botón. Si el
@@ -6671,7 +6904,6 @@ V22 = """
   text-transform:uppercase;color:var(--muted);background:none;border:0;
   padding:.35rem 0;cursor:pointer;border-bottom:1px solid var(--linea)}
 .tablero__reset:hover{color:var(--negro);border-bottom-color:var(--negro)}
-.tab__tramo{margin:0 0 .8rem;color:var(--muted)}
 
 /* El elector de recorridos. Delante los diez, para elegir; detrás, el que se
    elija. Sin guion no se pone «es-una» y salen los diez seguidos, enteros. */
@@ -6859,6 +7091,108 @@ V23 = """
 """
 
 
+V24 = """
+/* ====================================================================
+   LA ENTRADA · versión 24
+
+   El índice era un árbol de doce ramas y ciento treinta y cinco hojas. Para
+   llegar a una fase de la primera visita había que saber de antemano que
+   vivía dentro del cuarto documento: se le pedía al lector que conociera la
+   estructura antes de poder usarla. Por eso era un caos aunque estuviera
+   bien dibujado.
+
+   Ahora se entra escribiendo, y con el campo vacío hay atajos a lo que casi
+   todo el mundo viene a buscar. El árbol sigue debajo, entero, plegado.
+   ==================================================================== */
+
+/* El pie del índice se quedó subrayado desde que los mandos son enlaces. */
+.rail__pie a,.todoidx > summary,.resu__i,.atajo{text-decoration:none}
+.rail__pie a{border-bottom:1px solid var(--linea);padding-bottom:.2rem}
+.rail__pie a:hover{border-bottom-color:var(--negro)}
+
+.rail__filtro{display:block;border-bottom:0;padding:0;margin:0}
+.rail__filtro input{width:100%;font:inherit;
+  font-size:clamp(1.15rem,2.4vw,1.7rem);font-weight:300;letter-spacing:-.02em;
+  padding:.9rem 0;border:0;border-bottom:2px solid var(--negro);
+  background:none;color:var(--negro);border-radius:0}
+.rail__filtro input::placeholder{color:var(--muted);opacity:1;font-size:.92em}
+.rail__filtro input:focus{outline:none;border-bottom-color:var(--azul)}
+.rail__n{display:none}
+.buscayuda{margin:.7rem 0 0;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  line-height:1.7}
+
+/* Los resultados */
+.resu{margin:1.6rem 0 0;border-top:1px solid var(--linea)}
+.resu[hidden]{display:none}
+.resu__i{display:grid;grid-template-columns:7.5rem minmax(0,1fr);
+  gap:.2rem 1.2rem;width:100%;text-align:left;font:inherit;background:none;
+  border:0;border-bottom:1px solid var(--linea-2);padding:.8rem .6rem;
+  cursor:pointer;align-items:baseline}
+.resu__i[data-sel]{background:var(--azul-p)}
+.resu__i:hover{background:var(--gris)}
+.resu__t{grid-column:1;grid-row:1;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.resu__i[data-sel] .resu__t{color:var(--azul)}
+.resu__r{grid-column:2;grid-row:1;font-size:1.02rem;line-height:1.3;
+  color:var(--negro);text-wrap:pretty}
+.resu__d{grid-column:2;grid-row:2;font-family:var(--f-mono);font-size:.54rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.resu__no{margin:1.4rem .6rem;color:var(--ink-2);font-size:.92rem;
+  line-height:1.75;max-width:56ch}
+.resu__voz{padding:1.6rem .6rem}
+.resu__voz b{display:block;font-size:1.3rem;font-weight:400;
+  letter-spacing:-.02em;color:var(--azul)}
+.resu__voz p{margin:.7rem 0 0;font-size:1rem;line-height:1.75;
+  color:var(--ink);max-width:60ch}
+.resu__voz small{display:block;margin-top:.9rem;font-family:var(--f-mono);
+  font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted)}
+
+/* Los atajos */
+.atajos{margin:2rem 0 0}
+.atajos[hidden]{display:none}
+.atajos__g{margin:0 0 1.8rem}
+.atajos__t{margin:0 0 .8rem;padding-bottom:.45rem;
+  border-bottom:1px solid var(--linea);font-family:var(--f-mono);
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--azul)}
+.atajos__l{display:flex;flex-wrap:wrap;gap:.5rem}
+.atajo{display:inline-flex;align-items:baseline;gap:.55rem;font:inherit;
+  font-size:.88rem;background:none;border:1px solid var(--linea);
+  padding:.5rem .85rem;cursor:pointer;color:var(--negro);max-width:100%;
+  transition:border-color .2s var(--e),background .2s var(--e)}
+.atajo:hover{border-color:var(--negro);background:var(--gris)}
+.atajo i{font-style:normal;font-family:var(--f-mono);font-size:.58rem;
+  color:var(--azul);flex:none;font-variant-numeric:tabular-nums}
+.atajo span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.atajo em{font-style:normal;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.1em;color:var(--muted);flex:none}
+
+/* El árbol entero, plegado: sigue estando, no manda. */
+.todoidx{margin:2.4rem 0 0;border-top:1px solid var(--negro)}
+.todoidx > summary{display:flex;justify-content:space-between;
+  align-items:baseline;gap:1rem;padding:1rem .2rem;cursor:pointer;
+  list-style:none;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--negro)}
+.todoidx > summary::-webkit-details-marker{display:none}
+.todoidx > summary i{font-style:normal;color:var(--muted)}
+.todoidx > summary:hover{color:var(--azul)}
+.todoidx[open] > summary{border-bottom:1px solid var(--linea)}
+
+@media(max-width:900px){
+  .rail__filtro input{font-size:1.05rem;padding:.7rem 0}
+  .buscayuda{font-size:.52rem}
+  .resu__i{grid-template-columns:1fr;gap:.15rem;padding:.75rem .2rem}
+  .resu__t{grid-column:1;grid-row:1}
+  .resu__r{grid-column:1;grid-row:2;font-size:1rem}
+  .resu__d{grid-column:1;grid-row:3}
+  .atajo{font-size:.84rem;padding:.45rem .7rem}
+  .atajos__l{gap:.4rem}
+}
+"""
+
+
 SIN_GUION = """
 /* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
@@ -6974,11 +7308,44 @@ MARCO = """
   <div class="rail__in">
     <div class="rail__filtro">
       <input id="filtra" type="search" autocomplete="off" spellcheck="false"
-             placeholder="Buscar"
-             aria-label="Filtrar el índice">
-      <span class="rail__n">@N@ apartados</span>
+             placeholder="Escriba lo que busca: un apartado, un concepto, una fase, un puesto…"
+             aria-label="Buscar en todo el sistema"
+             aria-describedby="buscayuda" role="combobox" aria-expanded="false"
+             aria-controls="resu" aria-autocomplete="list">
+      <span class="rail__n"><kbd>Esc</kbd> cierra</span>
     </div>
+    <p class="buscayuda" id="buscayuda">@N@ apartados, @V@ conceptos, 14 fases,
+      6 puestos y 10 recorridos. Escriba sin acentos si quiere.</p>
+
+    <div class="resu" id="resu" role="listbox" aria-label="Resultados" hidden></div>
+
+    <div class="atajos" id="atajos">
+      <div class="atajos__g" data-grupo="fase">
+        <p class="atajos__t">Las catorce fases de la visita</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="marketing">
+        <p class="atajos__t">Marketing · los siete grupos de acciones</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="puesto">
+        <p class="atajos__t">Los seis puestos</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="documento">
+        <p class="atajos__t">Los ocho documentos</p>
+        <div class="atajos__l"></div>
+      </div>
+      <div class="atajos__g" data-grupo="concepto">
+        <p class="atajos__t">Los conceptos que más se preguntan</p>
+        <div class="atajos__l"></div>
+      </div>
+    </div>
+
+    <details class="todoidx" id="todoidx">
+      <summary><span>Todo el índice</span><i>@N@ apartados</i></summary>
     <nav class="arb" id="arb">@@ARBOL@@</nav>
+    </details>
     <div class="rail__pie">
       <a href="#recorridos" data-ir-sec="recorridos">Los diez recorridos</a>
       <a href="#mapa" data-ir-sec="mapa">El mapa de las catorce fases</a>
@@ -7333,7 +7700,7 @@ def main():
     arbol[2:2] = extras
 
     cuerpo = (MARCO.replace("@@ARBOL@@", "\n".join(arbol))
-                   .replace("@N@", str(total))
+                   .replace("@N@", str(total)).replace("@V@", str(len(voces)))
                    .replace("@@SECCIONES@@",
                             inicio + "\n" + mio_html + "\n" + recorridos_html + "\n"
                             + mapa_html + "\n" + "\n".join(secciones))
@@ -7353,7 +7720,7 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + SIN_GUION
+    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + V24 + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 
@@ -7371,7 +7738,39 @@ def main():
                   'document.documentElement.classList.add("con-js");</script>'
                 + cabecera[j:])
 
-    datos = ("<script>window.__ORDEN__ = "
+    # Los atajos: lo que la gente busca de verdad, con su destino ya resuelto.
+    # Las catorce fases, los seis puestos, los siete grupos de marketing, los
+    # ocho documentos y los diez recorridos. Todo sale del modelo, así que si
+    # mañana hay una fase más, el buscador la conoce sin tocar nada.
+    fs_pv = fases("index.html")
+    fs_ma = fases("manual.html")
+    atajos = []
+    for k, f in enumerate(list(fs_pv) + list(fs_ma[12:])):
+        clave = ("f%02d" % f["n"]) if k < len(fs_pv) else ("m%02d" % f["n"])
+        d = mapa.get("@" + clave)
+        if d:
+            atajos.append({"t": "fase", "n": "%02d" % f["n"],
+                           "r": f["label"] or f["titulo"],
+                           "q": ("%d min" % f["min"]) if f["min"] else "",
+                           "id": d[0][0], "sec": d[0][1]})
+    for i, r, doc, _l, nombre in SECCIONES:
+        if doc:
+            atajos.append({"t": "documento", "n": "", "r": nombre, "q": "",
+                           "id": "", "sec": i})
+    for cod, _e, nom, q in CATALOGO["grupos"]:
+        d = mapa.get("@grupo-" + cod.lower())
+        atajos.append({"t": "marketing", "n": cod, "r": nom,
+                       "q": "%d acciones" % CATALOGO["por_grupo"].get(cod, 0),
+                       "id": d[0][0] if d else "f-catalogo", "sec": "marketing"})
+    for pu in PERFILES.PERFILES:
+        d = mapa.get("@" + pu["manual"])
+        atajos.append({"t": "puesto", "n": "", "r": pu["nombre"],
+                       "q": pu["corto"], "id": d[0][0] if d else "",
+                       "sec": d[0][1] if d else "protocolos"})
+
+    datos = ("<script>window.__ATAJOS__ = "
+             + json.dumps(atajos, ensure_ascii=False)
+             + ";\nwindow.__ORDEN__ = "
              + json.dumps([[c, d, g, r, s] for c, d, g, r, s in orden], ensure_ascii=False)
              + ";\nwindow.__VOCES__ = " + json.dumps(voces, ensure_ascii=False)
              + ";\nwindow.__GRUPOESTADO__ = " + json.dumps(grupo_de, ensure_ascii=False)
