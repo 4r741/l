@@ -17,6 +17,55 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## Un índice donde se sabe dónde se está · versión 23
+
+### Los enlaces que no iban a ningún lado
+
+Eran **dieciséis**, y estaban donde usted los veía: en el índice. Apuntaban a
+archivos de fuera —`memoria.html`, `manual.html#m14`, `marketing.html#gtc`…—
+que no existen cuando se abre `centro.html` solo, que es exactamente como se
+entrega. Tres de ellos, además, seguían **congelados en la versión 8**: la
+página ofrecía «Giraldo-TODO-EN-UNO-v8.html» mientras el sistema iba por la
+veintidós.
+
+- Las **ocho puertas** de los documentos ahora llevan a su sección.
+- Las **cinco referencias** de «Lo mío» (el programa GTC y tres fases) se
+  resuelven contra el mismo mapa que usa el resto de la página.
+- Los **tres archivos de la entrega** ya no se enlazan: se dice cómo se llama
+  cada uno, con la versión vigente. Un archivo hermano solo existe si se ha
+  guardado los cuatro juntos, y un enlace que a veces muere es peor que un
+  nombre bien escrito.
+
+Y **la compilación ahora se para** si sobrevive un solo enlace a un archivo de
+fuera. Es la única manera de que no vuelva a colarse uno.
+
+### Por qué el índice era un caos
+
+Se puede señalar con el dedo: los treinta y cuatro apartados de una sección se
+repartían en **tres columnas**. El orden de lectura bajaba por la primera,
+saltaba arriba a la segunda y volvía a bajar, así que el 12 quedaba a la
+derecha del 1 y no había manera de seguir el hilo.
+
+Ahora es **una sola columna, en orden**, con las partes como cabeceras de
+verdad —APERTURA, PARTE I · LA POSICIÓN…— y cada apartado con su número.
+
+### Y por qué no se sabía dónde se estaba
+
+Porque no se decía en ninguna parte. Ahora, en cuatro sitios:
+
+- **La barra de arriba lo lleva escrito siempre**: sección, parte y apartado,
+  sin tener que abrir nada.
+- **El índice marca el apartado en el que se está**, con su «está aquí».
+- **La sección abierta se queda pegada arriba** mientras se recorren sus
+  apartados, para no acabar leyendo una lista sin saber de qué sección es.
+- **Al desplegar una sección, sube justo debajo de la barra**, con sus
+  apartados a la vista. Antes se quedaba a media pantalla y sus apartados
+  nacían por debajo del borde.
+
+Además, las doce secciones **caben ahora de un vistazo**: cada fila medía
+ciento doce píxeles y doce eran mil trescientos, así que había que desplazarse
+para ver el índice entero, que es justo lo contrario de lo que sirve un índice.
+
 ## El tablero, y las dos puertas que faltaban · versión 22
 
 ### Por qué «Mapa» y «Recorridos» no funcionaban

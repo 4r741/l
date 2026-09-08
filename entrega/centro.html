@@ -4179,6 +4179,96 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
 
 
 /* ====================================================================
+   SABER DÓNDE SE ESTÁ · versión 23
+
+   El índice era bonito y era un caos, y la causa se puede señalar con el
+   dedo: los treinta y cuatro apartados de una sección se repartían en TRES
+   COLUMNAS. El orden de lectura bajaba por la primera, saltaba arriba a la
+   segunda y volvía a bajar, así que el número 12 quedaba a la derecha del 1
+   y nadie podía seguir el hilo. Además no se marcaba nunca en qué apartado
+   se estaba, y la barra de arriba no decía en qué sección andaba uno.
+
+   Aquí: una sola columna, en orden, con las partes como cabeceras de verdad;
+   el apartado en el que se está, marcado; y la barra diciendo siempre
+   sección, parte y apartado, sin tener que abrir nada.
+   ==================================================================== */
+
+/* 1 · Una columna. En orden. */
+.arb__l .sub{columns:auto!important;column-count:auto!important;
+  column-width:auto!important;display:block}
+.arb__l .sub__b{break-inside:auto;margin:0 0 1.6rem}
+.arb__l .sub__g{margin:0 0 .5rem;padding-bottom:.4rem;
+  border-bottom:1px solid var(--linea);color:var(--azul);
+  font-family:var(--f-mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase}
+.arb__l .sub a{display:grid;grid-template-columns:2.6rem minmax(0,1fr);
+  gap:.9rem;align-items:baseline;padding:.5rem 0;text-decoration:none;
+  color:var(--ink);border-bottom:1px solid transparent}
+.arb__l .sub a:hover{color:var(--azul)}
+.arb__l .sub a span{font-family:var(--f-mono);font-size:.6rem;
+  color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* 2 · Dónde se está, dentro del índice. La sección, con su filete; el
+   apartado, con un punto y el nombre en negro. Antes no se marcaba ninguno. */
+.arb__s.es-aqui > .arb__b{background:var(--azul-p)}
+.arb__s.es-aqui > .arb__b .arb__n{color:var(--azul)}
+.arb__l .sub a.es-aqui{color:var(--negro);font-weight:500;
+  background:var(--azul-p);margin-inline:-.7rem;padding-inline:.7rem}
+.arb__l .sub a.es-aqui span{color:var(--azul)}
+.arb__l .sub a.es-aqui::after{content:"está aquí";margin-left:.7rem;
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--azul);white-space:nowrap}
+
+/* 2 bis · Las doce secciones, de un vistazo. Cada fila medía ciento doce
+   píxeles: doce secciones eran mil trescientos y había que desplazarse para
+   ver el índice entero, que es justo lo contrario de lo que sirve un índice.
+   A sesenta y cuatro caben las doce en una pantalla y se ve la estructura de
+   golpe, que es de donde sale la sensación de saber dónde se está. */
+@media(min-width:901px){
+  .arb__b{padding:.85rem 0;grid-template-columns:3rem minmax(0,1fr) auto auto;
+    gap:1.1rem;align-items:center}
+  .arb__r{font-size:1.5rem;line-height:1.15}
+  .arb__n{font-size:.62rem}
+  .rail__in{padding-top:4.6rem}
+  .arb__l{padding:.2rem 0 1.6rem 4.1rem}
+}
+
+/* 2 ter · El nombre de la sección abierta se queda pegado arriba mientras se
+   recorren sus apartados. Con treinta y cuatro por delante, el titular se iba
+   de la pantalla al segundo desplazamiento y uno acababa leyendo una lista sin
+   saber de qué sección era. */
+.arb__s.es-ab > .arb__b{position:sticky;top:0;z-index:3;
+  background:var(--azul-p);box-shadow:0 1px 0 var(--linea)}
+
+/* 3 · Y dónde se está, sin abrir el índice: la barra lo lleva escrito. */
+.donde{margin:0;min-width:0;flex:1 1 auto;display:flex;align-items:baseline;
+  gap:.5rem;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);overflow:hidden;
+  white-space:nowrap;padding-left:1.6rem}
+.donde:empty{display:none}
+.donde__s{color:var(--negro);flex:none}
+.donde__p{flex:none;max-width:16ch;overflow:hidden;text-overflow:ellipsis}
+.donde__a{color:var(--azul);min-width:0;overflow:hidden;text-overflow:ellipsis}
+.donde__x{font-style:normal;color:var(--linea);flex:none}
+.tope--noche .donde{color:rgba(255,255,255,.5)}
+.tope--noche .donde__s{color:#FFFFFF}
+.tope--noche .donde__a{color:rgba(255,255,255,.75)}
+.tope--noche .donde__x{color:rgba(255,255,255,.25)}
+
+/* En pantalla estrecha la barra no da para tres tramos: se queda el apartado,
+   que es lo que cambia, y baja a su propia línea debajo del nombre. */
+@media(max-width:900px){
+  .tope{flex-wrap:wrap}
+  .donde{order:9;flex-basis:100%;padding:.3rem 0 .55rem;font-size:.54rem;
+    border-top:1px solid var(--linea)}
+  .donde__p{display:none}
+  .donde__p + .donde__x{display:none}
+  .arb__l .sub a{grid-template-columns:2.2rem minmax(0,1fr);padding:.55rem 0}
+  .arb__l .sub a.es-aqui::after{content:"aquí"}
+}
+
+
+/* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
 
    Un archivo que se abre con doble clic acaba en sitios donde no se
@@ -4280,6 +4370,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
 <header class="tope" id="tope">
   <a class="tope__m" href="#inicio" data-ir-sec="inicio">
     <b>Giraldo</b><i>No medias sonrisas</i></a>
+  <p class="donde" id="donde" aria-live="polite"></p>
   <div class="tope__d">
     <a class="tope__b" href="#recorridos" data-ir-sec="recorridos">Recorridos</a>
     <a class="tope__b" href="#mapa" data-ir-sec="mapa">Mapa</a>
@@ -4455,7 +4546,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
         Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
-      <div><p class="letra">Esta edición</p><p>Versión 22.0 · Septiembre 2026<br>
+      <div><p class="letra">Esta edición</p><p>Versión 23.0 · Septiembre 2026<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
         laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
@@ -4641,14 +4732,14 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
 
     <div class="callout">
       <p class="eyebrow">Dónde vive este documento</p>
-      <p>El programa entero —qué es en una tarjeta, por qué se ofrece a todos, los cuatro argumentos, el speech situación por situación, el manejo de objeciones, quién lo ofrece y cuándo, la campaña sobre la base de datos, las herramientas y la formación, el panel de control, el marco legal y el checklist de arranque— está en el <a href="marketing.html#gtc">Plan Maestro de Marketing, apartado 20</a>, en su Parte VIII.</p>
+      <p>El programa entero —qué es en una tarjeta, por qué se ofrece a todos, los cuatro argumentos, el speech situación por situación, el manejo de objeciones, quién lo ofrece y cuándo, la campaña sobre la base de datos, las herramientas y la formación, el panel de control, el marco legal y el checklist de arranque— está en el <a href="#f-gtc" class="salta">Plan Maestro de Marketing, apartado 20<i class="salta__d">Marketing</i></a>, en su Parte VIII.</p>
       <p>Se mudó allí porque es donde se usa: el catálogo de marketing trae al paciente y el GTC es lo que hace que se quede. Tenerlo en dos sitios habría creado dos versiones del mismo speech, que es exactamente lo que este sistema existe para evitar.</p>
-      <p class="mt"><a class="crosslink" href="marketing.html#gtc">Abrir el programa GTC</a></p>
+      <p class="mt"><a href="#f-gtc" class="salta">Abrir el programa GTC<i class="salta__d">Marketing</i></a></p>
     </div>
 
     <div class="rulebox">
       <p class="eyebrow">Dónde se engancha con el recorrido</p>
-      <p>Se presenta en la <a href="index.html#f10" style="color:var(--accent-ink)">Fase 10</a> al cerrar el tratamiento, se activa en la <a href="index.html#f11" style="color:var(--accent-ink)">Fase 11</a> con su contrato, y se vive en la <a href="manual.html#m14" style="color:var(--accent-ink)">Fase 14</a>, donde el programa de mantenimiento lo convierte en visitas reales.</p>
+      <p>Se presenta en la <a href="#d-f10" class="salta">Fase 10<i class="salta__d">Primera Visita</i></a> al cerrar el tratamiento, se activa en la <a href="#d-f11" class="salta">Fase 11<i class="salta__d">Primera Visita</i></a> con su contrato, y se vive en la <a href="#e-m14" class="salta">Fase 14<i class="salta__d">Operaciones</i></a>, donde el programa de mantenimiento lo convierte en visitas reales.</p>
     </div>
   </div>
 </section></div>
@@ -4894,7 +4985,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="t-cover" id="a-portada">
@@ -4904,7 +4995,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="t-cover__rule" aria-hidden="true"></div>
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Giraldo</b>Rúa Bolivia nº 2 · Vigo</span>
-      <span><b>Plan de Dirección · v22.0</b>Septiembre 2026 · versión única del sistema</span>
+      <span><b>Plan de Dirección · v23.0</b>Septiembre 2026 · versión única del sistema</span>
       <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
@@ -4981,7 +5072,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
             <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
             <tbody>
               <tr><td>Título</td><td>Plan de Dirección para la Junta Directiva</td></tr>
-              <tr><td>Versión</td><td>v22.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
+              <tr><td>Versión</td><td>v23.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
               <tr><td>Clasificación</td><td>Uso interno · Confidencial · No difundir fuera del órgano</td></tr>
               <tr><td>Propietario</td><td>Dirección General</td></tr>
               <tr><td>Elaborado con</td><td>Los 17 documentos operativos del sistema Giraldo: los 3 troncales y los 14 de apoyo, censados en el apartado 0.1</td></tr>
@@ -5012,7 +5103,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="a-t-como-citar-acta">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v22.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v22.0, Protocolo de Primera Visita v22.0, Otros documentos del sistema v22.0.</p>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v23.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v23.0, Protocolo de Primera Visita v23.0, Otros documentos del sistema v23.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="a-censo">Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -5021,14 +5112,14 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
       <table>
         <thead><tr><th>Pieza</th><th>Clase</th><th>Qué contiene</th><th>Propietario</th><th>Versión</th></tr></thead>
         <tbody>
-          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">22.0</td></tr>
-          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">22.0</td></tr>
-          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">22.0</td></tr>
-          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">22.0</td></tr>
-          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">22.0</td></tr>
-          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">22.0</td></tr>
-          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">22.0</td></tr>
-          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">22.0</td></tr>
+          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">23.0</td></tr>
+          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">23.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -8276,7 +8367,7 @@ REVISIÓN PREVISTA:</div>
     <div class="desp__in"><div class="dia"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v22.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v23.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
 </section></div><p class="dia__pr"><button type="button" class="bt bt--fino" data-proyecta="">Proyectar desde esta</button></p><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -9569,7 +9660,7 @@ REVISIÓN PREVISTA:</div>
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v22.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v23.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   <aside class="nota" hidden>
     <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -13944,7 +14035,8 @@ DÍA 7   Valoración de evolución
 
 
 
-<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -13952,7 +14044,7 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 22.0 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 23.0 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="#operaciones" class="salta">Manual Maestro de Operaciones<i class="salta__d">Operaciones</i></a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -17796,7 +17888,8 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -17807,7 +17900,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 22.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 23.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -17990,11 +18083,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v22.0 · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>v23.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Giraldo (uso abreviado: Giraldo)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
-          <tr><td>Sustituye a</td><td>Protocolo v22.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
+          <tr><td>Sustituye a</td><td>Protocolo v23.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
           <tr><td>Difusión obligatoria</td><td>Recepción, Dirección de Clínica, Odontólogos, Higienistas, Auxiliares, RAC</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier incidencia grave de trazabilidad o RGPD</td></tr>
@@ -24793,7 +24886,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 
@@ -24809,7 +24902,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <p class="t-cover__meta">
       <b>Plan Maestro de Marketing</b><br>
       Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2, Vigo<br>
-      v22.0 · Septiembre 2026 · Documento de dirección<br>
+      v23.0 · Septiembre 2026 · Documento de dirección<br>
       Setenta y seis acciones sobre doce estados del paciente
     </p>
   </div>
@@ -24837,7 +24930,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><th>Qué decide</th><td>Nada por sí solo. Propone; la Junta aprueba en el registro de acuerdos del Plan de Dirección</td></tr>
           <tr><th>Propietario</th><td>Dirección General, con Gerencia como responsable de ejecución y presupuesto</td></tr>
           <tr><th>Revisión</th><td>Trimestral, con la misma cadencia que el cuadro de mando del apartado 13 del Plan de Dirección</td></tr>
-          <tr><th>Versión</th><td class="num">v22.0 · Septiembre 2026</td></tr>
+          <tr><th>Versión</th><td class="num">v23.0 · Septiembre 2026</td></tr>
         </tbody>
       </table>
     </div>
@@ -26343,7 +26436,8 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v22.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v23.0</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="g-portada">
@@ -26353,7 +26447,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Giraldo. Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 22.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__note">Rúa Bolivia nº 2 · Vigo (Pontevedra) · Versión 23.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos</dt><dd>14<small>Del posicionamiento del centro al programa de cuidado GTC</small></dd></div>
@@ -26409,13 +26503,13 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
       <table>
         <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v22.0 · Agosto 2026 · versión única del sistema</td></tr>
+          <tr><td>Versión</td><td>v23.0 · Agosto 2026 · versión única del sistema</td></tr>
           <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
           <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
           <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
           <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
-          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v22.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
+          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v23.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
         </tbody>
       </table>
     </div>
@@ -30474,7 +30568,7 @@ LTV              = Valor inicial
   <div class="flota">
     <div class="flota__cab"><h2>Recursos</h2>
       <button class="icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button></div>
-    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><a class="rec__i" href="Giraldo-TODO-EN-UNO-v8.html"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p></div></a><a class="rec__i" href="Sistema-Documental-Giraldo-v8.0.pdf" download><em>pdf</em><div><b>El sistema encuadernado</b><p>630 páginas con portada, índice paginado y un marcador por documento.</p></div></a><a class="rec__i" href="Sistema-Documental-Giraldo-v8.0.docx" download><em>word</em><div><b>El sistema en Word</b><p>Índice automático, 335 tablas y las 23 figuras incrustadas.</p></div></a></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="memoria.html"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="deck.html"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="protocolos.html"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="index.html"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="manual.html"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="marketing.html"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="otros.html"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="instrumentos/captura.html"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Giraldo anual"><em>voz</em><div><b>Perfil Giraldo anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
+    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><div class="rec__i rec__i--f"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p><p class="rec__f">Giraldo-TODO-EN-UNO-v23.html</p></div></div><div class="rec__i rec__i--f"><em>pdf</em><div><b>El sistema encuadernado</b><p>El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.</p><p class="rec__f">Sistema-Documental-Giraldo-v23.0.pdf</p></div></div><div class="rec__i rec__i--f"><em>word</em><div><b>El sistema en Word</b><p>Índice automático, con sus tablas y las 23 figuras incrustadas.</p><p class="rec__f">Sistema-Documental-Giraldo-v23.0.docx</p></div></div></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="#direccion" data-ir-sec="direccion"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="#presentacion" data-ir-sec="presentacion"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="#protocolos" data-ir-sec="protocolos"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="#primera-visita" data-ir-sec="primera-visita"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="#operaciones" data-ir-sec="operaciones"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="#marketing" data-ir-sec="marketing"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="#otros" data-ir-sec="otros"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="#numeros" data-ir-sec="numeros"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Giraldo anual"><em>voz</em><div><b>Perfil Giraldo anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
   </div>
 </div>
 
@@ -30790,6 +30884,9 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
   }
 
   function cierraLector(){
+    setTimeout(function(){
+      if(typeof window.__pintaDonde === "function") window.__pintaDonde();
+    }, 0);
     if(!lector || lector.hidden) return false;
     lector.hidden = true;
     D.documentElement.style.overflow = "";
@@ -31453,6 +31550,17 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
     if(l) l.hidden = false;
     var b = casa.querySelector(".arb__b");
     if(b) b.setAttribute("aria-expanded", "true");
+    /* La sección que se abre sube al principio del índice: si se queda a
+       media pantalla, sus apartados nacen ya por debajo del borde y hay que
+       buscarlos. Se hace en el siguiente cuadro, cuando la lista ya mide. */
+    /* El que se desplaza es el raíl, no el árbol: el árbol crece con su
+       contenido y nunca tiene barra propia. Apuntar al elemento equivocado
+       hacía que esto no moviera nada. */
+    var cajon = D.getElementById("rail");
+    if(cajon) requestAnimationFrame(function(){
+      var r = casa.getBoundingClientRect(), c = cajon.getBoundingClientRect();
+      if(r.top > c.top + 90) cajon.scrollTop += (r.top - c.top) - 90;
+    });
   }
   /* dónde estoy: la sección en el raíl y, si se está leyendo algo, su línea */
   function marcaRail(sec, clave){
@@ -31463,13 +31571,49 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
       a.classList.toggle("es-aqui", !!clave && a.getAttribute("href") === "#" + clave);
     });
     var viva = D.querySelector(".arb__l a.es-aqui");
-    if(viva && arb){
-      var r = viva.getBoundingClientRect(), c = arb.getBoundingClientRect();
+    var caj = D.getElementById("rail");
+    if(viva && caj && !caj.hidden){
+      var r = viva.getBoundingClientRect(), c = caj.getBoundingClientRect();
       if(r.top < c.top + 8 || r.bottom > c.bottom - 8)
         viva.scrollIntoView({block:"center"});
     }
+    if(typeof window.__pintaDonde === "function") window.__pintaDonde();
   }
   window.__marcaRail = marcaRail;
+
+  /* Dónde estoy. Era la queja de fondo: se navegaba bien y no se sabía en qué
+     punto del sistema se estaba. Ahora la barra de arriba lo lleva escrito
+     siempre —sección, parte y apartado— y se actualiza sola al cambiar de
+     sección y al abrir o cerrar el lector. No hace falta abrir nada para
+     saberlo. */
+  var elDonde = D.getElementById("donde");
+  function pintaDonde(){
+    if(!elDonde) return;
+    var sec = D.querySelector(".arb__s.es-aqui");
+    var rot = sec ? (sec.querySelector(".arb__r") || {}).textContent : "";
+    var ap = D.querySelector(".arb__l a.es-aqui");
+    var partes = [];
+    if(rot) partes.push({t: rot.trim(), c: "donde__s"});
+    if(ap){
+      var caja = ap.closest(".sub__b");
+      var g = caja ? caja.querySelector(".sub__g") : null;
+      if(g && g.textContent.trim()) partes.push({t: g.textContent.trim(), c: "donde__p"});
+      var t = (ap.innerText || "").replace(/\s+/g, " ").trim().replace(/^[\d·]+\s*/, "");
+      /* Algunos apartados son la portadilla de su propia parte, y entonces el
+         rótulo decía dos veces lo mismo: «Parte II · El sistema / Parte II ·
+         El sistema». Si coinciden, se dice una vez. */
+      var ult = partes.length ? partes[partes.length - 1].t : "";
+      if(t && t.toLowerCase() === ult.toLowerCase()) t = "";
+      if(t) partes.push({t: t, c: "donde__a"});
+    }
+    if(!partes.length){ elDonde.textContent = ""; return; }
+    elDonde.innerHTML = partes.map(function(x, i){
+      var sep = i ? '<i class="donde__x" aria-hidden="true">/</i>' : "";
+      return sep + '<span class="' + x.c + '">' +
+             x.t.replace(/&/g, "&amp;").replace(/</g, "&lt;") + '</span>';
+    }).join("");
+  }
+  window.__pintaDonde = pintaDonde;
 
   /* el filtro: escribe y el árbol se queda con lo que coincide. Con ciento
      treinta y cinco apartados, buscar es más rápido que recordar. */

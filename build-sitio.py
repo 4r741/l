@@ -31,7 +31,7 @@ sys.path.insert(0, str(RAIZ))
 
 _v = {"__name__": "version_sitio", "__file__": "version.py"}
 exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
-VERSION, FECHA = _v["VERSION"], _v["FECHA"]
+VERSION, FECHA, CORTA = _v["VERSION"], _v["FECHA"], _v["VERSION"].split(".")[0]
 
 # ---------------------------------------------------------------------------
 #  Los ocho documentos, en el orden del sistema
@@ -57,15 +57,21 @@ DOCUMENTOS = [
 ]
 
 # Lo que hay además de esta página. Nombre, qué es y si se descarga o se abre.
+# Los nombres de los cuatro archivos se sacan de la versión vigente. Estaban
+# escritos a mano y congelados en la v8: la página decía «v8» mientras el
+# sistema iba por la veintitantos, y los tres enlaces no llevaban a ninguna
+# parte. Aquí no se enlazan: un archivo hermano solo existe si quien abre esto
+# se ha guardado los cuatro juntos, y un enlace que a veces muere es peor que
+# un nombre bien escrito. Se dice cómo se llama cada uno y ya está.
 ENTREGA = [
     ("centro.html", "web", "El sistema completo, en un sitio",
      "Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario.", False),
-    ("Giraldo-TODO-EN-UNO-v8.html", "web", "Los ocho documentos en una página",
+    ("Giraldo-TODO-EN-UNO-v%s.html" % CORTA, "web", "Los ocho documentos en una página",
      "El archivo único, con el conmutador de documentos y el tablero de cada uno.", False),
-    ("Sistema-Documental-Giraldo-v8.0.pdf", "pdf", "El sistema encuadernado",
-     "630 páginas con portada, índice paginado y un marcador por documento.", True),
-    ("Sistema-Documental-Giraldo-v8.0.docx", "word", "El sistema en Word",
-     "Índice automático, 335 tablas y las 23 figuras incrustadas.", True),
+    ("Sistema-Documental-Giraldo-v%s.pdf" % VERSION, "pdf", "El sistema encuadernado",
+     "El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.", True),
+    ("Sistema-Documental-Giraldo-v%s.docx" % VERSION, "word", "El sistema en Word",
+     "Índice automático, con sus tablas y las 23 figuras incrustadas.", True),
 ]
 
 FUENTES = {}
@@ -5244,6 +5250,9 @@ JS = """
   }
 
   function cierraLector(){
+    setTimeout(function(){
+      if(typeof window.__pintaDonde === "function") window.__pintaDonde();
+    }, 0);
     if(!lector || lector.hidden) return false;
     lector.hidden = true;
     D.documentElement.style.overflow = "";
@@ -5907,6 +5916,17 @@ JS = """
     if(l) l.hidden = false;
     var b = casa.querySelector(".arb__b");
     if(b) b.setAttribute("aria-expanded", "true");
+    /* La sección que se abre sube al principio del índice: si se queda a
+       media pantalla, sus apartados nacen ya por debajo del borde y hay que
+       buscarlos. Se hace en el siguiente cuadro, cuando la lista ya mide. */
+    /* El que se desplaza es el raíl, no el árbol: el árbol crece con su
+       contenido y nunca tiene barra propia. Apuntar al elemento equivocado
+       hacía que esto no moviera nada. */
+    var cajon = D.getElementById("rail");
+    if(cajon) requestAnimationFrame(function(){
+      var r = casa.getBoundingClientRect(), c = cajon.getBoundingClientRect();
+      if(r.top > c.top + 90) cajon.scrollTop += (r.top - c.top) - 90;
+    });
   }
   /* dónde estoy: la sección en el raíl y, si se está leyendo algo, su línea */
   function marcaRail(sec, clave){
@@ -5917,13 +5937,49 @@ JS = """
       a.classList.toggle("es-aqui", !!clave && a.getAttribute("href") === "#" + clave);
     });
     var viva = D.querySelector(".arb__l a.es-aqui");
-    if(viva && arb){
-      var r = viva.getBoundingClientRect(), c = arb.getBoundingClientRect();
+    var caj = D.getElementById("rail");
+    if(viva && caj && !caj.hidden){
+      var r = viva.getBoundingClientRect(), c = caj.getBoundingClientRect();
       if(r.top < c.top + 8 || r.bottom > c.bottom - 8)
         viva.scrollIntoView({block:"center"});
     }
+    if(typeof window.__pintaDonde === "function") window.__pintaDonde();
   }
   window.__marcaRail = marcaRail;
+
+  /* Dónde estoy. Era la queja de fondo: se navegaba bien y no se sabía en qué
+     punto del sistema se estaba. Ahora la barra de arriba lo lleva escrito
+     siempre —sección, parte y apartado— y se actualiza sola al cambiar de
+     sección y al abrir o cerrar el lector. No hace falta abrir nada para
+     saberlo. */
+  var elDonde = D.getElementById("donde");
+  function pintaDonde(){
+    if(!elDonde) return;
+    var sec = D.querySelector(".arb__s.es-aqui");
+    var rot = sec ? (sec.querySelector(".arb__r") || {}).textContent : "";
+    var ap = D.querySelector(".arb__l a.es-aqui");
+    var partes = [];
+    if(rot) partes.push({t: rot.trim(), c: "donde__s"});
+    if(ap){
+      var caja = ap.closest(".sub__b");
+      var g = caja ? caja.querySelector(".sub__g") : null;
+      if(g && g.textContent.trim()) partes.push({t: g.textContent.trim(), c: "donde__p"});
+      var t = (ap.innerText || "").replace(/\s+/g, " ").trim().replace(/^[\d·]+\s*/, "");
+      /* Algunos apartados son la portadilla de su propia parte, y entonces el
+         rótulo decía dos veces lo mismo: «Parte II · El sistema / Parte II ·
+         El sistema». Si coinciden, se dice una vez. */
+      var ult = partes.length ? partes[partes.length - 1].t : "";
+      if(t && t.toLowerCase() === ult.toLowerCase()) t = "";
+      if(t) partes.push({t: t, c: "donde__a"});
+    }
+    if(!partes.length){ elDonde.textContent = ""; return; }
+    elDonde.innerHTML = partes.map(function(x, i){
+      var sep = i ? '<i class="donde__x" aria-hidden="true">/</i>' : "";
+      return sep + '<span class="' + x.c + '">' +
+             x.t.replace(/&/g, "&amp;").replace(/</g, "&lt;") + '</span>';
+    }).join("");
+  }
+  window.__pintaDonde = pintaDonde;
 
   /* el filtro: escribe y el árbol se queda con lo que coincide. Con ciento
      treinta y cinco apartados, buscar es más rápido que recordar. */
@@ -6711,6 +6767,98 @@ V22 = """
 """
 
 
+V23 = """
+/* ====================================================================
+   SABER DÓNDE SE ESTÁ · versión 23
+
+   El índice era bonito y era un caos, y la causa se puede señalar con el
+   dedo: los treinta y cuatro apartados de una sección se repartían en TRES
+   COLUMNAS. El orden de lectura bajaba por la primera, saltaba arriba a la
+   segunda y volvía a bajar, así que el número 12 quedaba a la derecha del 1
+   y nadie podía seguir el hilo. Además no se marcaba nunca en qué apartado
+   se estaba, y la barra de arriba no decía en qué sección andaba uno.
+
+   Aquí: una sola columna, en orden, con las partes como cabeceras de verdad;
+   el apartado en el que se está, marcado; y la barra diciendo siempre
+   sección, parte y apartado, sin tener que abrir nada.
+   ==================================================================== */
+
+/* 1 · Una columna. En orden. */
+.arb__l .sub{columns:auto!important;column-count:auto!important;
+  column-width:auto!important;display:block}
+.arb__l .sub__b{break-inside:auto;margin:0 0 1.6rem}
+.arb__l .sub__g{margin:0 0 .5rem;padding-bottom:.4rem;
+  border-bottom:1px solid var(--linea);color:var(--azul);
+  font-family:var(--f-mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase}
+.arb__l .sub a{display:grid;grid-template-columns:2.6rem minmax(0,1fr);
+  gap:.9rem;align-items:baseline;padding:.5rem 0;text-decoration:none;
+  color:var(--ink);border-bottom:1px solid transparent}
+.arb__l .sub a:hover{color:var(--azul)}
+.arb__l .sub a span{font-family:var(--f-mono);font-size:.6rem;
+  color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* 2 · Dónde se está, dentro del índice. La sección, con su filete; el
+   apartado, con un punto y el nombre en negro. Antes no se marcaba ninguno. */
+.arb__s.es-aqui > .arb__b{background:var(--azul-p)}
+.arb__s.es-aqui > .arb__b .arb__n{color:var(--azul)}
+.arb__l .sub a.es-aqui{color:var(--negro);font-weight:500;
+  background:var(--azul-p);margin-inline:-.7rem;padding-inline:.7rem}
+.arb__l .sub a.es-aqui span{color:var(--azul)}
+.arb__l .sub a.es-aqui::after{content:"está aquí";margin-left:.7rem;
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--azul);white-space:nowrap}
+
+/* 2 bis · Las doce secciones, de un vistazo. Cada fila medía ciento doce
+   píxeles: doce secciones eran mil trescientos y había que desplazarse para
+   ver el índice entero, que es justo lo contrario de lo que sirve un índice.
+   A sesenta y cuatro caben las doce en una pantalla y se ve la estructura de
+   golpe, que es de donde sale la sensación de saber dónde se está. */
+@media(min-width:901px){
+  .arb__b{padding:.85rem 0;grid-template-columns:3rem minmax(0,1fr) auto auto;
+    gap:1.1rem;align-items:center}
+  .arb__r{font-size:1.5rem;line-height:1.15}
+  .arb__n{font-size:.62rem}
+  .rail__in{padding-top:4.6rem}
+  .arb__l{padding:.2rem 0 1.6rem 4.1rem}
+}
+
+/* 2 ter · El nombre de la sección abierta se queda pegado arriba mientras se
+   recorren sus apartados. Con treinta y cuatro por delante, el titular se iba
+   de la pantalla al segundo desplazamiento y uno acababa leyendo una lista sin
+   saber de qué sección era. */
+.arb__s.es-ab > .arb__b{position:sticky;top:0;z-index:3;
+  background:var(--azul-p);box-shadow:0 1px 0 var(--linea)}
+
+/* 3 · Y dónde se está, sin abrir el índice: la barra lo lleva escrito. */
+.donde{margin:0;min-width:0;flex:1 1 auto;display:flex;align-items:baseline;
+  gap:.5rem;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);overflow:hidden;
+  white-space:nowrap;padding-left:1.6rem}
+.donde:empty{display:none}
+.donde__s{color:var(--negro);flex:none}
+.donde__p{flex:none;max-width:16ch;overflow:hidden;text-overflow:ellipsis}
+.donde__a{color:var(--azul);min-width:0;overflow:hidden;text-overflow:ellipsis}
+.donde__x{font-style:normal;color:var(--linea);flex:none}
+.tope--noche .donde{color:rgba(255,255,255,.5)}
+.tope--noche .donde__s{color:#fff}
+.tope--noche .donde__a{color:rgba(255,255,255,.75)}
+.tope--noche .donde__x{color:rgba(255,255,255,.25)}
+
+/* En pantalla estrecha la barra no da para tres tramos: se queda el apartado,
+   que es lo que cambia, y baja a su propia línea debajo del nombre. */
+@media(max-width:900px){
+  .tope{flex-wrap:wrap}
+  .donde{order:9;flex-basis:100%;padding:.3rem 0 .55rem;font-size:.54rem;
+    border-top:1px solid var(--linea)}
+  .donde__p{display:none}
+  .donde__p + .donde__x{display:none}
+  .arb__l .sub a{grid-template-columns:2.2rem minmax(0,1fr);padding:.55rem 0}
+  .arb__l .sub a.es-aqui::after{content:"aquí"}
+}
+"""
+
+
 SIN_GUION = """
 /* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
@@ -6811,6 +6959,7 @@ MARCO = """
 <header class="tope" id="tope">
   <a class="tope__m" href="#inicio" data-ir-sec="inicio">
     <b>Giraldo</b><i>No medias sonrisas</i></a>
+  <p class="donde" id="donde" aria-live="polite"></p>
   <div class="tope__d">
     <a class="tope__b" href="#recorridos" data-ir-sec="recorridos">Recorridos</a>
     <a class="tope__b" href="#mapa" data-ir-sec="mapa">Mapa</a>
@@ -7089,13 +7238,15 @@ def main():
             ('<div class="rec__i" style="opacity:.55"><em>%s</em><div><b>%s</b>'
              '<p>%s Es la que está viendo.</p></div></div>' % (k, H.escape(n), H.escape(q)))
             if r == "centro.html" else
-            ('<a class="rec__i" href="%s"%s><em>%s</em><div><b>%s</b><p>%s</p></div></a>'
-             % (r, " download" if d else "", k, H.escape(n), H.escape(q)))
+            ('<div class="rec__i rec__i--f"><em>%s</em><div><b>%s</b><p>%s</p>'
+             '<p class="rec__f">%s</p></div></div>'
+             % (k, H.escape(n), H.escape(q), H.escape(r)))
             for r, k, n, q, d in ENTREGA)
         + '</div><div class="rec__g"><p class="rec__t">Los ocho documentos</p>'
         + "".join(
-            '<a class="rec__i" href="%s"><em>%02d</em><div><b>%s</b><p>%s</p></div></a>'
-            % (doc, n + 1, H.escape(nombre), H.escape(INTROS[i][0]))
+            '<a class="rec__i" href="#%s" data-ir-sec="%s"><em>%02d</em>'
+            '<div><b>%s</b><p>%s</p></div></a>'
+            % (i, i, n + 1, H.escape(nombre), H.escape(INTROS[i][0]))
             for n, (i, _r, doc, _l, nombre) in enumerate([s for s in SECCIONES if s[2]]))
         + '</div><div class="rec__g"><p class="rec__t">El glosario</p>'
         + "".join(
@@ -7202,7 +7353,7 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + SIN_GUION
+    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 
@@ -7237,6 +7388,40 @@ def main():
              'ábralo con un navegador (Safari, Chrome, Edge o Firefox).</div>')
     cabecera = cabecera + "\n" + aviso
 
+    # ------------------------------------------------------------------
+    # Ningún enlace a un archivo de fuera. Aquí está todo dentro, así que un
+    # «href="manual.html#m14"» es un enlace muerto en cuanto alguien abre este
+    # archivo solo, que es exactamente como se entrega. La cosecha reescribe
+    # los enlaces del cuerpo de los documentos, pero la literatura que entra
+    # por otros caminos —«Lo mío», por ejemplo— se los traía intactos: cinco
+    # referencias del programa GTC y de tres fases no llevaban a ninguna parte.
+    # Esta pasada final los resuelve contra el mismo mapa que usa todo lo
+    # demás, y lo que no tenga destino se queda como texto, sin fingir.
+    def _interno(m):
+        atr, texto = m.group(1), m.group(2)
+        h = re.search(r'href="([^"]*)"', atr)
+        if not h:
+            return m.group(0)
+        d = h.group(1)
+        if d.startswith("#") or d.startswith("mailto:") or d.startswith("tel:"):
+            return m.group(0)
+        if ".html#" in d:
+            clave = d.split("#", 1)[1]
+            for ident, sec in mapa.get("@" + clave, []):
+                return ('<a href="#%s" class="salta">%s<i class="salta__d">%s</i></a>'
+                        % (ident, texto, H.escape(SEC_ROTULO.get(sec, sec))))
+            return '<span class="ref">%s</span>' % texto
+        if d.endswith(".html"):
+            sec = DOC_A_SEC.get(d) or DOC_A_SEC.get(d.split("/")[-1])
+            if sec:
+                return ('<a href="#%s" data-ir-sec="%s" class="salta">%s'
+                        '<i class="salta__d">%s</i></a>'
+                        % (sec, sec, texto, H.escape(SEC_ROTULO.get(sec, sec))))
+            return '<span class="ref">%s</span>' % texto
+        return m.group(0)
+
+    cuerpo = ENLACE.sub(_interno, cuerpo)
+
     salida = RAIZ / "centro.html"
     texto = (cabecera + "\n" + cuerpo + "\n" + datos + "\n" + JS + "\n</body>\n</html>\n")
     # Ya no hay dibujos de fondo: el bloque de definiciones que los guardaba
@@ -7252,6 +7437,14 @@ def main():
     texto = re.sub(r'\b(fill|stroke|stop-color|flood-color|lighting-color)="([^"]*)"',
                    lambda m: '%s="%s"' % (m.group(1), monocroma(m.group(2))), texto)
     salida.write_text(texto, encoding="utf-8")
+
+    # Y se comprueba: si sobrevive un solo enlace a un archivo de fuera, esto
+    # no sale. Es la única manera de que no vuelva a colarse uno.
+    fuera = [h for h in re.findall(r'<a\b[^>]*href="([^"]+)"', texto)
+             if not h.startswith(("#", "mailto:", "tel:"))]
+    if fuera:
+        raise SystemExit("  enlaces a archivos de fuera en centro.html (%d): %s"
+                         % (len(fuera), ", ".join(sorted(set(fuera))[:6])))
 
     cuerpo_html = re.sub(r"<script\b.*?</script>", "",
                          texto[texto.index('<main class="panel" id="sitio">'):], flags=re.S)
