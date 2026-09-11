@@ -2859,10 +2859,10 @@ def dibuja_recorridos(mapa):
         k = len(tarjetas)
         tarjetas.append(
             '<button type="button" class="rutacard" data-ve-ruta="%s">'
-            '<span class="rutacard__i">%s</span>'
+            '<i class="rutacard__n">%02d</i>'
             '<span class="letra">%s</span><b>%s</b>'
             '<span class="rutacard__m letra">%d paradas</span></button>'
-            % (r["id"], "", H.escape(r["quien"]), H.escape(r["titulo"]), n))
+            % (r["id"], k + 1, H.escape(r["quien"]), H.escape(r["titulo"]), n))
     return "\n".join(fuera), "".join(tarjetas)
 
 
@@ -4141,9 +4141,10 @@ html:root > body{height:auto;min-height:100%}
 .puesto__cab > div:last-child{flex:1;min-width:16rem}
 
 /* la tarjeta de un recorrido, con su trozo de dibujo */
-.rutacard__i{display:block;height:7.5rem;margin-bottom:1.3rem;color:var(--ink-2);
-  background:var(--gris);opacity:.62;transition:opacity .3s var(--e)}
-.rutacard:hover .rutacard__i{opacity:1;color:var(--azul)}
+.rutacard__n{font-family:"IBM Plex Mono",monospace;font-style:normal;
+  font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;
+  letter-spacing:.06em}
+.rutacard:hover .rutacard__n{color:var(--azul)}
 
 /* La barra, sobre una banda oscura
    Mientras la cabecera de imagen ocupa la pantalla, la barra se quita de en
@@ -6867,29 +6868,7 @@ V26 = """
   .mc__eje{padding-bottom:1.6rem}
 }
 
-/* 2 · El portátil. Una pantalla de 1280×800 deja ~700 px útiles: lo que se
-   pide en «alto de ventana» tiene que contar con eso y no con un monitor
-   grande. Se aprieta el aire vertical, no la letra de leer. */
-@media(min-width:901px) and (max-height:860px){
-  :root{--aire:clamp(2.4rem,3.4vw,3.8rem)}
-  #sitio .portada{min-height:0;padding-top:2.4rem;padding-bottom:2.4rem;
-    gap:clamp(.9rem,2vh,1.6rem)}
-  #sitio .portada h1,#sitio .portada .portada__t{
-    font-size:clamp(2.2rem,min(6.4vw,8.4vh),4.6rem)}
-  #sitio .portada .portada__l{font-size:clamp(1.1rem,min(2.4vw,3.4vh),1.7rem)}
-  #sitio .censo__i b{font-size:1.3rem}
-  #sitio .portada > .censo .censo__i{padding:.6rem 0}
-  .frente,.frente__c{padding-top:2.2rem;padding-bottom:2.2rem}
-  .arb__b{padding:.62rem 0}
-  .arb__r{font-size:1.28rem}
-  .rail__in{padding-top:4rem}
-  .atajos__g{margin-bottom:1.2rem}
-  .atajo{padding:.4rem .7rem;font-size:.84rem}
-  .tablero__cab{margin-bottom:1.6rem}
-  .mc__eje{padding-bottom:1.5rem}
-  .mc__lema{font-size:clamp(1.8rem,3.6vw,2.6rem)}
-  .mc__col{padding:1.1rem 1rem 1rem}
-}
+
 """
 
 
@@ -6989,7 +6968,7 @@ HOJA = """
   --tinta:#141414; --papel:#FCFCFA; --nieve:#FFFFFF; --humo:#F2F1ED;
   --gris:#6E6E68; --linea:#E2E1DA; --fina:#EFEEE9;
   --verde:#0E5A50; --verde-o:#083C35; --verde-p:#E9F1EF;
-  --espina:17rem;
+  --barra:3.5rem;
   --e:cubic-bezier(.22,.61,.36,1);
 }
 html{-webkit-text-size-adjust:100%}
@@ -7007,52 +6986,68 @@ body{background:var(--papel);color:var(--tinta);
   font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
 [hidden]{display:none!important}
 
-/* ------------------------------------------------- 2. La espina, siempre */
-.tope{position:fixed;inset:0 auto 0 0;width:var(--espina);z-index:60;
-  background:var(--nieve);border-right:1px solid var(--linea);
-  display:flex;flex-direction:column;padding:1.5rem 1.2rem;gap:1rem;
-  overflow-y:auto;overscroll-behavior:contain}
-.tope__m{display:block;text-decoration:none;color:inherit;flex:none}
-.tope__m b{display:block;font-size:1.05rem;font-weight:500;letter-spacing:.2em;
-  text-transform:uppercase}
-.tope__m i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;
-  font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--gris);margin-top:.3rem}
-.donde{margin:0;display:flex;flex-direction:column;gap:.18rem;flex:none;
-  padding:.75rem 0;border-block:1px solid var(--fina);
-  font-family:"IBM Plex Mono",monospace;font-size:.53rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--gris);min-width:0}
-.donde:empty{display:none}
-.donde__s{color:var(--tinta)}
-.donde__a{color:var(--verde)}
-.donde__p,.donde__x{display:none}
-.espina{display:flex;flex-direction:column;gap:0;flex:1 1 auto;min-height:0;
-  margin:.2rem 0}
-.esp__i{display:block;text-decoration:none;color:var(--gris);
-  font-size:.86rem;line-height:1.3;padding:.42rem 0;
-  border-bottom:1px solid transparent;transition:color .18s var(--e)}
+/* --------------------------------------------- 2. La barra: una fina línea arriba
+
+   Ni un panel a la izquierda —que era una web de documentación cualquiera y se
+   comía media pantalla— ni una pantalla que se abre encima —bonita, y la razón
+   de que uno se perdiera—. Una sola línea fina arriba, siempre puesta, con las
+   trece secciones convertidas en NÚMEROS: 00 a 12. El número donde se está se
+   enciende y despliega su nombre; los demás son solo cifras. Se ve de un
+   vistazo cuántas secciones hay, en cuál se está y a qué distancia de las
+   otras, y no tapa una línea de lo que se lee. */
+.tope{position:fixed;inset:0 0 auto 0;height:var(--barra,3.5rem);z-index:60;
+  background:color-mix(in srgb, var(--papel) 88%, transparent);
+  backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--linea);
+  display:flex;align-items:center;gap:clamp(.8rem,2vw,2rem);
+  padding:0 clamp(1rem,3vw,2.4rem)}
+.tope__m{text-decoration:none;color:inherit;flex:none}
+.tope__m b{font-size:.95rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
+
+.espina{display:flex;align-items:center;gap:.15rem;flex:1 1 auto;min-width:0;
+  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  mask-image:linear-gradient(90deg,transparent,#000 1.5rem,#000 calc(100% - 1.5rem),transparent)}
+.espina::-webkit-scrollbar{display:none}
+.esp__i{display:flex;align-items:center;gap:.5rem;text-decoration:none;
+  color:var(--gris);flex:none;padding:.5rem .35rem;border-radius:2px;
+  transition:color .18s var(--e)}
+.esp__n{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;opacity:.7;transition:opacity .18s var(--e)}
+.esp__r{font-size:.78rem;letter-spacing:-.01em;white-space:nowrap;
+  max-width:0;overflow:hidden;opacity:0;
+  transition:max-width .32s var(--e),opacity .2s var(--e)}
 .esp__i:hover{color:var(--tinta)}
-.esp__i.es-aqui{color:var(--tinta);font-weight:500}
-.esp__i.es-aqui::before{content:"";display:inline-block;width:.5rem;height:1px;
-  background:var(--verde);vertical-align:middle;margin-right:.5rem}
-.tope__d{display:flex;flex-direction:column;gap:.1rem;flex:none;
-  border-top:1px solid var(--fina);padding-top:.6rem}
+.esp__i:hover .esp__n{opacity:1}
+.esp__i.es-aqui{color:var(--verde-o)}
+.esp__i.es-aqui .esp__n{opacity:1;color:var(--verde)}
+.esp__i.es-aqui .esp__r{max-width:14rem;opacity:1;margin-right:.3rem;
+  color:var(--tinta);font-weight:500}
+
+.tope__d{display:flex;align-items:center;gap:clamp(.6rem,1.6vw,1.4rem);flex:none;
+  margin-left:auto}
+.donde{display:none}
 .tope__b,.railbt{font:inherit;font-family:"IBM Plex Mono",monospace;
-  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--gris);background:none;border:0;padding:.45rem 0;cursor:pointer;
-  text-align:left;text-decoration:none;display:block;width:100%}
+  font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gris);background:none;border:0;padding:.5rem 0;cursor:pointer;
+  white-space:nowrap;display:flex;align-items:center;gap:.4rem}
 .tope__b:hover,.railbt:hover{color:var(--verde)}
-.railbt__x{display:none}
+.tope__b kbd{font-family:inherit;font-size:.9em;color:var(--linea);
+  border:1px solid var(--linea);border-radius:3px;padding:.05rem .3rem}
 
 /* --------------------------------------------------- 3. Lo que se lee */
-#sitio,.panel{margin-left:var(--espina);padding:0;min-width:0}
+#sitio,.panel{margin-left:0;padding:0;min-width:0}
 .sec{padding:0}
 .sec:not(.es-on){display:none}
+/* Cada sección deja arriba el alto de la barra; la portada oscura pasa por
+   debajo de la barra translúcida y solo su TEXTO respeta el hueco. */
+.frente,.banda,.hoja,.lienzo,.sec__lienzos,.mc,.tablero,.rutas,.mifases{
+  scroll-margin-top:var(--barra)}
+.sec:not(#inicio) > :first-child{padding-top:calc(var(--barra) + clamp(1rem,3vh,2.5rem))}
 
 .portada{min-height:100svh;display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,22rem);
   align-content:center;gap:clamp(2rem,5vw,6rem);
-  padding:clamp(3rem,8vh,6rem) clamp(1.6rem,5vw,5rem);
+  padding:calc(var(--barra) + clamp(2rem,6vh,4rem)) clamp(1.6rem,5vw,5rem) clamp(3rem,8vh,6rem);
   background:var(--tinta);color:var(--papel);margin:0}
 .portada__c{align-self:center;min-width:0}
 .portada__k{margin:0 0 1.6rem;color:rgba(255,255,255,.45)}
@@ -7138,22 +7133,17 @@ body{background:var(--papel);color:var(--tinta);
 
 /* ------------------------------------------------ 4. El teléfono */
 @media(max-width:900px){
-  :root{--espina:0px}
-  .tope{position:sticky;inset:auto;width:auto;height:auto;flex-direction:row;
-    align-items:center;flex-wrap:wrap;gap:.6rem 1.1rem;padding:.8rem 1.1rem;
-    border-right:0;border-bottom:1px solid var(--linea);top:0;overflow:visible}
-  .tope__m b{font-size:.95rem}
-  .tope__m i{display:none}
-  .donde{order:9;flex-basis:100%;flex-direction:row;gap:.4rem;padding:.3rem 0 0;
-    border:0;border-top:1px solid var(--fina);white-space:nowrap;overflow:hidden}
-  .tope__d{flex-direction:row;gap:.9rem;margin-left:auto}
-  .tope__b,.railbt{padding:.3rem 0;width:auto}
-  #sitio,.panel{margin-left:0}
+  .tope{gap:.6rem 1rem;padding:0 1rem}
+  .tope__m b{font-size:.88rem;letter-spacing:.16em}
+  .tope__b kbd{display:none}
+  .esp__r{font-size:.74rem}
   .portada{grid-template-columns:1fr;min-height:auto;
-    padding:clamp(2.4rem,7vh,4rem) 1.3rem}
+    padding:calc(var(--barra) + 1.6rem) 1.3rem clamp(2.4rem,7vh,4rem)}
+  .portada h1{font-size:clamp(2.4rem,10vw,3.6rem)}
   .censo{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.4rem}
   .censo__i:last-child{border-bottom:0}
   .hoja,.frente,.banda{padding-left:1.3rem;padding-right:1.3rem}
+  .sec:not(#inicio) > :first-child{padding-top:calc(var(--barra) + 1.4rem)}
 }
 """
 
@@ -7256,15 +7246,14 @@ MARCO = """
      titular, y se va.
      ------------------------------------------------------------------ -->
 <header class="tope" id="tope">
-  <a class="tope__m" href="#inicio" data-ir-sec="inicio">
-    <b>Alma</b><i>No medias sonrisas</i></a>
-  <p class="donde" id="donde" aria-live="polite"></p>
-  <nav class="espina" aria-label="Las secciones del sistema">@@ESPINA@@</nav>
+  <a class="tope__m" href="#inicio" data-ir-sec="inicio" aria-label="Alma · inicio">
+    <b>Alma</b></a>
+  <nav class="espina" id="espina" aria-label="Las secciones del sistema">@@ESPINA@@</nav>
   <div class="tope__d">
-    <button class="tope__b" type="button" data-abre="paleta">Buscar</button>
+    <p class="donde" id="donde" aria-live="polite"></p>
+    <button class="tope__b" type="button" data-abre="paleta">Buscar<kbd>⌘K</kbd></button>
     <button class="railbt" type="button" id="railbt" aria-expanded="false"
-            aria-controls="rail"><span class="railbt__r">Índice</span>
-      <span class="railbt__x" aria-hidden="true"><i></i><i></i></span></button>
+            aria-controls="rail">Índice</button>
   </div>
 </header>
 
@@ -7682,8 +7671,10 @@ def main():
                  ("mapa", "El mapa")]
     orden_esp += [(i, r) for i, r, doc, _l, _n in SECCIONES if doc]
     espina = "".join(
-        '<a class="esp__i" href="#%s" data-ir-sec="%s">%s</a>' % (i, i, H.escape(r))
-        for i, r in orden_esp)
+        '<a class="esp__i" href="#%s" data-ir-sec="%s" title="%s">'
+        '<i class="esp__n">%02d</i><span class="esp__r">%s</span></a>'
+        % (i, i, H.escape(r), k, H.escape(r))
+        for k, (i, r) in enumerate(orden_esp))
 
     cuerpo = (MARCO.replace("@@ESPINA@@", espina).replace("@@ARBOL@@", "\n".join(arbol))
                    .replace("@N@", str(total)).replace("@V@", str(len(voces)))
@@ -7707,7 +7698,15 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + HOJA + "\n" + SIN_GUION
+    # Las funciones —el buscador y sus atajos, el índice completo, el tablero
+    # de las catorce fases, el mapa conceptual, el elector de recorridos— tienen
+    # su estilo propio, que vivía en las capas viejas. Ese estilo se conserva y
+    # va ANTES de la hoja nueva: así la hoja nueva manda en la maqueta y en la
+    # barra, y cada pieza recupera su apariencia sin volver a pisar el conjunto.
+    # V21 (rejilla de lectura) y V30 (choques) quedan fuera: la hoja nueva ya
+    # hace su trabajo.
+    extra = extra + "\n" + V22 + "\n" + V23 + "\n" + V24 + "\n" + V26 \
+                  + "\n" + HOJA + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 

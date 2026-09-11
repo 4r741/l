@@ -2084,9 +2084,10 @@ html:root > body{height:auto;min-height:100%}
 .puesto__cab > div:last-child{flex:1;min-width:16rem}
 
 /* la tarjeta de un recorrido, con su trozo de dibujo */
-.rutacard__i{display:block;height:7.5rem;margin-bottom:1.3rem;color:var(--ink-2);
-  background:var(--gris);opacity:.62;transition:opacity .3s var(--e)}
-.rutacard:hover .rutacard__i{opacity:1;color:var(--azul)}
+.rutacard__n{font-family:"IBM Plex Mono",monospace;font-style:normal;
+  font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;
+  letter-spacing:.06em}
+.rutacard:hover .rutacard__n{color:var(--azul)}
 
 /* La barra, sobre una banda oscura
    Mientras la cabecera de imagen ocupa la pantalla, la barra se quita de en
@@ -3231,6 +3232,401 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
 
 
 /* ====================================================================
+   EL TABLERO DE LAS CATORCE FASES · versión 22
+
+   El mapa ya estaba y sigue estando debajo, entero. Lo que faltaba era ver
+   el recorrido como recorrido: dónde se está, cuánto queda y qué viene
+   después.
+
+   Se probó sobre el arco dental y no funciona: a catorce nodos los rótulos
+   se montan unos encima de otros, que es exactamente lo que este sistema ya
+   había aprendido cuando dibujó el mapa la primera vez. El tablero es una
+   rejilla en orden —cinco casillas por fila en pantalla ancha, una por fila
+   en un teléfono— que no choca nunca y se lee como un camino.
+
+   Apagado no es cerrado: cualquier fase se abre siempre, se haya superado o
+   no. Esto es un centro médico, no un videojuego.
+   ==================================================================== */
+.tablero{margin:0 0 var(--aire)}
+.tablero__cab{display:grid;gap:2rem;align-items:end;margin-bottom:2.2rem}
+.tablero__t{margin:.5rem 0 0;font-size:clamp(1.4rem,2.6vw,2rem);font-weight:300;
+  letter-spacing:-.025em;line-height:1.12;text-wrap:balance}
+.tablero__q{margin:.9rem 0 0;max-width:58ch;color:var(--ink-2);
+  font-size:.95rem;line-height:1.7;text-wrap:pretty}
+.tablero__marcador{display:grid;gap:.5rem;align-content:end}
+.tablero__c{display:flex;align-items:baseline;gap:.7rem;margin:0}
+.tablero__c b{font-size:1.7rem;font-weight:400;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:var(--azul);min-width:2.4ch;
+  text-align:right}
+.tablero__c span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.tablero__barra{height:2px;background:var(--linea);margin-top:.6rem;overflow:hidden}
+.tablero__barra i{display:block;height:100%;background:var(--azul);
+  transition:width .55s cubic-bezier(.22,.61,.36,1)}
+.tablero__reset{justify-self:start;margin-top:.8rem;font:inherit;
+  font-family:var(--f-mono);font-size:.55rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);background:none;border:0;
+  padding:.35rem 0;cursor:pointer;border-bottom:1px solid var(--linea)}
+.tablero__reset:hover{color:var(--negro);border-bottom-color:var(--negro)}
+
+/* El elector de recorridos. Delante los diez, para elegir; detrás, el que se
+   elija. Sin guion no se pone «es-una» y salen los diez seguidos, enteros. */
+.elector{margin:0 0 var(--aire)}
+.elector__k{margin:0 0 1rem;color:var(--muted)}
+.volverutas{display:none;font:inherit;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  background:none;border:0;padding:.6rem 0;margin:0 0 1.6rem;cursor:pointer;
+  border-bottom:1px solid var(--linea)}
+.volverutas:hover{color:var(--negro);border-bottom-color:var(--negro)}
+/* Al entrar se elige: los diez delante y ninguno abierto todavía. Esta clase
+   la pone el guion, así que sin guion no existe y los diez salen enteros. */
+#recorridos.es-elige .rutas--todas > .wruta{display:none}
+#recorridos.es-elige .volverutas{display:none}
+#recorridos.es-una .volverutas{display:inline-block}
+#recorridos.es-una .elector{display:none}
+#recorridos.es-una .rutas--todas > .wruta{display:none}
+#recorridos.es-una .rutas--todas > .wruta.es-ve{display:block}
+
+/* El tablero: casillas en orden, con un filete entre ellas. Cada una lleva su
+   número, su nombre, sus minutos y su marca. */
+/* El rótulo de cada tramo dice, una vez, dónde se leen esas fases. Antes lo
+   decía cada ficha: «Primera Visita» aparecía doce veces seguidas debajo de
+   doce fichas, que es ruido, no información. */
+.tab__tramo{margin:0 0 .9rem;color:var(--muted);display:flex;flex-wrap:wrap;
+  align-items:baseline;gap:.3rem .9rem}
+.tab__tramo em{font-style:normal;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--azul)}
+.tab__fs--post{margin-top:0}
+.tab__fs + .tab__tramo{margin-top:2.4rem}
+
+.tab__fs{list-style:none;margin:0;padding:0;display:grid;gap:0;
+  grid-template-columns:repeat(auto-fill,minmax(min(11rem,100%),1fr));
+  border-top:1px solid var(--negro);border-left:1px solid var(--linea)}
+.tab__f{display:flex;flex-direction:column;min-width:0;
+  border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  padding:1rem 1rem 0;background:var(--papel);
+  transition:background .3s var(--e),opacity .35s var(--e)}
+.tab__b{display:block;text-decoration:none;color:inherit;flex:1 1 auto}
+.tab__n{display:block;font-family:var(--f-mono);font-size:.6rem;
+  letter-spacing:.1em;color:var(--muted);font-variant-numeric:tabular-nums}
+.tab__r{display:block;font-size:.95rem;line-height:1.28;margin-top:.4rem;
+  color:var(--negro);text-wrap:balance;letter-spacing:-.01em}
+.tab__m{display:block;font-family:var(--f-mono);font-size:.54rem;
+  letter-spacing:.12em;color:var(--muted);margin-top:.4rem;text-transform:uppercase}
+/* La marca de «superada» sobraba: el fondo verde y el propio botón ya lo
+   dicen, y colgando debajo de los minutos descuadraba el alto de la fila. */
+.tab__e{display:none!important}
+.tab__d{display:block;font-family:var(--f-mono);font-size:.5rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  margin-top:.5rem;padding-top:.5rem;border-top:1px dotted var(--linea)}
+.tab__b:hover .tab__d{color:var(--azul)}
+/* Las dos últimas no son de la primera visita: van después, y conviene que se
+   vea sin tener que contar. */
+.tab__b:hover .tab__r{color:var(--azul)}
+.tab__ok{margin:.9rem -1rem 0;font:inherit;font-family:var(--f-mono);
+  font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);background:none;border:0;border-top:1px solid var(--linea-2);
+  padding:.6rem 1rem;cursor:pointer;text-align:left;
+  transition:color .2s var(--e),background .2s var(--e)}
+.tab__ok:hover{color:var(--negro);background:var(--gris)}
+.tab__f--post{background:var(--gris)}
+
+/* Los tres estados. Sin guion no se pone ninguno y salen todas iguales, que
+   es exactamente lo que tiene que pasar: el tablero entero, a la vista. */
+.tablero.es-p .tab__f{opacity:.5}
+.tablero.es-p .tab__f--hecha,
+.tablero.es-p .tab__f--toca{opacity:1}
+.tablero.es-p .tab__f--hecha{background:var(--azul-p)}
+.tablero.es-p .tab__f--hecha .tab__n,
+.tablero.es-p .tab__f--hecha .tab__r{color:var(--azul-o)}
+.tablero.es-p .tab__f--hecha .tab__ok{color:var(--azul);border-top-color:rgba(14,90,80,.2)}
+.tablero.es-p .tab__f--toca{box-shadow:inset 0 3px 0 0 var(--negro)}
+.tablero.es-p .tab__f--toca .tab__r{font-weight:500}
+.tablero.es-p .tab__f--toca .tab__ok{color:var(--negro)}
+
+@media(min-width:1000px){
+  .tablero__cab{grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr)}
+}
+
+/* En un teléfono cada fase es una fila: número, nombre y minutos en una
+   línea, y la marca debajo. Es el mismo juego con la forma que cabe. */
+@media(max-width:760px){
+  .tab__fs{grid-template-columns:1fr;border-left:0}
+  .tab__f{display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;
+    align-items:baseline;gap:.2rem .9rem;padding:.95rem 0 0;border-right:0}
+  .tab__b{display:contents}
+  .tab__n{grid-column:1;grid-row:1}
+  .tab__r{grid-column:2;grid-row:1;margin:0;font-size:1.02rem}
+  .tab__m{grid-column:3;grid-row:1;margin:0}
+  /* Cada cosa en su fila: el nombre arriba, debajo dónde se lee la fase y
+     debajo el botón. Sin decírselo, el destino se colocaba solo en el hueco
+     de la izquierda y quedaba pegado al botón, como si fueran lo mismo. */
+  .tab__d{grid-column:2/-1;grid-row:2;margin:.35rem 0 0;padding:0;border:0}
+  .tab__ok{grid-column:2/-1;grid-row:3;margin:.6rem 0 .9rem;padding:.4rem .9rem;
+    justify-self:start;border:1px solid var(--linea);border-radius:0}
+  .tablero.es-p .tab__f--toca{box-shadow:inset 3px 0 0 0 var(--negro);
+    padding-left:.8rem}
+  .tablero__cab{gap:1.4rem}
+  .tablero__c b{font-size:1.5rem}
+}
+
+
+/* ====================================================================
+   SABER DÓNDE SE ESTÁ · versión 23
+
+   El índice era bonito y era un caos, y la causa se puede señalar con el
+   dedo: los treinta y cuatro apartados de una sección se repartían en TRES
+   COLUMNAS. El orden de lectura bajaba por la primera, saltaba arriba a la
+   segunda y volvía a bajar, así que el número 12 quedaba a la derecha del 1
+   y nadie podía seguir el hilo. Además no se marcaba nunca en qué apartado
+   se estaba, y la barra de arriba no decía en qué sección andaba uno.
+
+   Aquí: una sola columna, en orden, con las partes como cabeceras de verdad;
+   el apartado en el que se está, marcado; y la barra diciendo siempre
+   sección, parte y apartado, sin tener que abrir nada.
+   ==================================================================== */
+
+/* 1 · Una columna. En orden. */
+.arb__l .sub{columns:auto!important;column-count:auto!important;
+  column-width:auto!important;display:block}
+.arb__l .sub__b{break-inside:auto;margin:0 0 1.6rem}
+.arb__l .sub__g{margin:0 0 .5rem;padding-bottom:.4rem;
+  border-bottom:1px solid var(--linea);color:var(--azul);
+  font-family:var(--f-mono);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase}
+.arb__l .sub a{display:grid;grid-template-columns:2.6rem minmax(0,1fr);
+  gap:.9rem;align-items:baseline;padding:.5rem 0;text-decoration:none;
+  color:var(--ink);border-bottom:1px solid transparent}
+.arb__l .sub a:hover{color:var(--azul)}
+.arb__l .sub a span{font-family:var(--f-mono);font-size:.6rem;
+  color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* 2 · Dónde se está, dentro del índice. La sección, con su filete; el
+   apartado, con un punto y el nombre en negro. Antes no se marcaba ninguno. */
+.arb__s.es-aqui > .arb__b{background:var(--azul-p)}
+.arb__s.es-aqui > .arb__b .arb__n{color:var(--azul)}
+.arb__l .sub a.es-aqui{color:var(--negro);font-weight:500;
+  background:var(--azul-p);margin-inline:-.7rem;padding-inline:.7rem}
+.arb__l .sub a.es-aqui span{color:var(--azul)}
+.arb__l .sub a.es-aqui::after{content:"está aquí";margin-left:.7rem;
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--azul);white-space:nowrap}
+
+/* 2 bis · Las doce secciones, de un vistazo. Cada fila medía ciento doce
+   píxeles: doce secciones eran mil trescientos y había que desplazarse para
+   ver el índice entero, que es justo lo contrario de lo que sirve un índice.
+   A sesenta y cuatro caben las doce en una pantalla y se ve la estructura de
+   golpe, que es de donde sale la sensación de saber dónde se está. */
+@media(min-width:901px){
+  .arb__b{padding:.85rem 0;grid-template-columns:3rem minmax(0,1fr) auto auto;
+    gap:1.1rem;align-items:center}
+  .arb__r{font-size:1.5rem;line-height:1.15}
+  .arb__n{font-size:.62rem}
+  .rail__in{padding-top:4.6rem}
+  .arb__l{padding:.2rem 0 1.6rem 4.1rem}
+}
+
+/* 2 ter · El nombre de la sección abierta se queda pegado arriba mientras se
+   recorren sus apartados. Con treinta y cuatro por delante, el titular se iba
+   de la pantalla al segundo desplazamiento y uno acababa leyendo una lista sin
+   saber de qué sección era. */
+.arb__s.es-ab > .arb__b{position:sticky;top:0;z-index:3;
+  background:var(--azul-p);box-shadow:0 1px 0 var(--linea)}
+
+/* 3 · Y dónde se está, sin abrir el índice: la barra lo lleva escrito. */
+.donde{margin:0;min-width:0;flex:1 1 auto;display:flex;align-items:baseline;
+  gap:.5rem;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);overflow:hidden;
+  white-space:nowrap;padding-left:1.6rem}
+.donde:empty{display:none}
+.donde__s{color:var(--negro);flex:none}
+.donde__p{flex:none;max-width:16ch;overflow:hidden;text-overflow:ellipsis}
+.donde__a{color:var(--azul);min-width:0;overflow:hidden;text-overflow:ellipsis}
+.donde__x{font-style:normal;color:var(--linea);flex:none}
+.tope--noche .donde{color:rgba(255,255,255,.5)}
+.tope--noche .donde__s{color:#FFFFFF}
+.tope--noche .donde__a{color:rgba(255,255,255,.75)}
+.tope--noche .donde__x{color:rgba(255,255,255,.25)}
+
+/* En pantalla estrecha la barra no da para tres tramos: se queda el apartado,
+   que es lo que cambia, y baja a su propia línea debajo del nombre. */
+@media(max-width:900px){
+  .tope{flex-wrap:wrap}
+  .donde{order:9;flex-basis:100%;padding:.3rem 0 .55rem;font-size:.54rem;
+    border-top:1px solid var(--linea)}
+  .donde__p{display:none}
+  .donde__p + .donde__x{display:none}
+  .arb__l .sub a{grid-template-columns:2.2rem minmax(0,1fr);padding:.55rem 0}
+  .arb__l .sub a.es-aqui::after{content:"aquí"}
+}
+
+
+/* ====================================================================
+   LA ENTRADA · versión 24
+
+   El índice era un árbol de doce ramas y ciento treinta y cinco hojas. Para
+   llegar a una fase de la primera visita había que saber de antemano que
+   vivía dentro del cuarto documento: se le pedía al lector que conociera la
+   estructura antes de poder usarla. Por eso era un caos aunque estuviera
+   bien dibujado.
+
+   Ahora se entra escribiendo, y con el campo vacío hay atajos a lo que casi
+   todo el mundo viene a buscar. El árbol sigue debajo, entero, plegado.
+   ==================================================================== */
+
+/* El pie del índice se quedó subrayado desde que los mandos son enlaces. */
+.rail__pie a,.todoidx > summary,.resu__i,.atajo{text-decoration:none}
+.rail__pie a{border-bottom:1px solid var(--linea);padding-bottom:.2rem}
+.rail__pie a:hover{border-bottom-color:var(--negro)}
+
+.rail__filtro{display:block;border-bottom:0;padding:0;margin:0}
+.rail__filtro input{width:100%;font:inherit;
+  font-size:clamp(1.15rem,2.4vw,1.7rem);font-weight:300;letter-spacing:-.02em;
+  padding:.9rem 0;border:0;border-bottom:2px solid var(--negro);
+  background:none;color:var(--negro);border-radius:0}
+.rail__filtro input::placeholder{color:var(--muted);opacity:1;font-size:.92em}
+.rail__filtro input:focus{outline:none;border-bottom-color:var(--azul)}
+.rail__n{display:none}
+.buscayuda{margin:.7rem 0 0;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  line-height:1.7}
+
+/* Los resultados */
+.resu{margin:1.6rem 0 0;border-top:1px solid var(--linea)}
+.resu[hidden]{display:none}
+.resu__i{display:grid;grid-template-columns:7.5rem minmax(0,1fr);
+  gap:.2rem 1.2rem;width:100%;text-align:left;font:inherit;background:none;
+  border:0;border-bottom:1px solid var(--linea-2);padding:.8rem .6rem;
+  cursor:pointer;align-items:baseline}
+.resu__i[data-sel]{background:var(--azul-p)}
+.resu__i:hover{background:var(--gris)}
+.resu__t{grid-column:1;grid-row:1;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.resu__i[data-sel] .resu__t{color:var(--azul)}
+.resu__r{grid-column:2;grid-row:1;font-size:1.02rem;line-height:1.3;
+  color:var(--negro);text-wrap:pretty}
+.resu__d{grid-column:2;grid-row:2;font-family:var(--f-mono);font-size:.54rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.resu__no{margin:1.4rem .6rem;color:var(--ink-2);font-size:.92rem;
+  line-height:1.75;max-width:56ch}
+.resu__voz{padding:1.6rem .6rem}
+.resu__voz b{display:block;font-size:1.3rem;font-weight:400;
+  letter-spacing:-.02em;color:var(--azul)}
+.resu__voz p{margin:.7rem 0 0;font-size:1rem;line-height:1.75;
+  color:var(--ink);max-width:60ch}
+.resu__voz small{display:block;margin-top:.9rem;font-family:var(--f-mono);
+  font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted)}
+
+/* Los atajos */
+.atajos{margin:2rem 0 0}
+.atajos[hidden]{display:none}
+.atajos__g{margin:0 0 1.8rem}
+.atajos__t{margin:0 0 .8rem;padding-bottom:.45rem;
+  border-bottom:1px solid var(--linea);font-family:var(--f-mono);
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--azul)}
+.atajos__l{display:flex;flex-wrap:wrap;gap:.5rem}
+.atajo{display:inline-flex;align-items:baseline;gap:.55rem;font:inherit;
+  font-size:.88rem;background:none;border:1px solid var(--linea);
+  padding:.5rem .85rem;cursor:pointer;color:var(--negro);max-width:100%;
+  transition:border-color .2s var(--e),background .2s var(--e)}
+.atajo:hover{border-color:var(--negro);background:var(--gris)}
+.atajo i{font-style:normal;font-family:var(--f-mono);font-size:.58rem;
+  color:var(--azul);flex:none;font-variant-numeric:tabular-nums}
+.atajo span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.atajo em{font-style:normal;font-family:var(--f-mono);font-size:.52rem;
+  letter-spacing:.1em;color:var(--muted);flex:none}
+
+/* El árbol entero, plegado: sigue estando, no manda. */
+.todoidx{margin:2.4rem 0 0;border-top:1px solid var(--negro)}
+.todoidx > summary{display:flex;justify-content:space-between;
+  align-items:baseline;gap:1rem;padding:1rem .2rem;cursor:pointer;
+  list-style:none;font-family:var(--f-mono);font-size:.58rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--negro)}
+.todoidx > summary::-webkit-details-marker{display:none}
+.todoidx > summary i{font-style:normal;color:var(--muted)}
+.todoidx > summary:hover{color:var(--azul)}
+.todoidx[open] > summary{border-bottom:1px solid var(--linea)}
+
+@media(max-width:900px){
+  .rail__filtro input{font-size:1.05rem;padding:.7rem 0}
+  .buscayuda{font-size:.52rem}
+  .resu__i{grid-template-columns:1fr;gap:.15rem;padding:.75rem .2rem}
+  .resu__t{grid-column:1;grid-row:1}
+  .resu__r{grid-column:1;grid-row:2;font-size:1rem}
+  .resu__d{grid-column:1;grid-row:3}
+  .atajo{font-size:.84rem;padding:.45rem .7rem}
+  .atajos__l{gap:.4rem}
+}
+
+
+/* ====================================================================
+   EL MAPA DEL SISTEMA, Y EL PORTÁTIL · versión 26
+
+   Dos cosas.
+
+   La primera: ni Inicio, ni Recorridos, ni el Mapa tenían un solo diagrama.
+   La matriz RACI, el reloj de los 123 minutos y los carriles viven dentro de
+   sus documentos —y ahí están bien—, pero ninguno enseña el conjunto. Quien
+   abría esto por primera vez veía ocho documentos y ciento treinta y cinco
+   apartados sin saber qué relación guardaban. El mapa conceptual contesta
+   cuatro preguntas colgadas del lema, con las piezas de cada una y su cuenta
+   real, y cada pieza lleva a donde se lee.
+
+   La segunda: esto se mira en un portátil. Una pantalla de 1280×800 deja unos
+   setecientos píxeles útiles después de la barra del navegador, no novecientos.
+   Todo lo que estaba pedido en «alto de ventana» daba por bueno un monitor de
+   sobremesa. Aquí hay un escalón propio para el portátil.
+   ==================================================================== */
+
+/* 1 · El mapa conceptual */
+.mc{margin:0 0 var(--aire)}
+.mc__eje{text-align:center;padding:0 0 2.2rem;border-bottom:1px solid var(--negro);
+  margin-bottom:0}
+.mc__eje .letra{margin:0 0 .8rem;color:var(--muted)}
+.mc__lema{margin:0;font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;
+  letter-spacing:-.035em;line-height:1;color:var(--azul)}
+.mc__sub{margin:.9rem auto 0;max-width:44ch;font-size:.95rem;line-height:1.65;
+  color:var(--ink-2);text-wrap:pretty}
+
+.mc__cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border-left:1px solid var(--linea)}
+.mc__col{border-right:1px solid var(--linea);padding:1.4rem 1.2rem 1.2rem;
+  min-width:0;display:flex;flex-direction:column}
+.mc__k{margin:0;font-family:var(--f-mono);font-size:.54rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--azul)}
+.mc__t{margin:.5rem 0 1.2rem;font-size:1.02rem;font-weight:400;line-height:1.3;
+  letter-spacing:-.01em;color:var(--negro);text-wrap:balance}
+.mc__ps{display:grid;gap:.5rem;align-content:start}
+.mc__p{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem .7rem;
+  text-decoration:none;color:inherit;padding:.6rem .7rem;
+  border:1px solid var(--linea);background:var(--papel);
+  transition:border-color .2s var(--e),background .2s var(--e)}
+.mc__p:hover{border-color:var(--negro);background:var(--gris)}
+.mc__p b{grid-column:1;font-size:.88rem;font-weight:400;line-height:1.3;
+  color:var(--negro);min-width:0}
+.mc__c{grid-column:2;grid-row:1;font-family:var(--f-mono);font-size:.86rem;
+  color:var(--azul);font-variant-numeric:tabular-nums;align-self:start}
+.mc__q{grid-column:1/-1;font-family:var(--f-mono);font-size:.5rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  line-height:1.5}
+.mc__d{display:block;margin-top:.25rem;font-style:normal;color:var(--azul)}
+.mc__pie{margin:1.6rem 0 0;color:var(--muted);text-align:center}
+
+@media(max-width:1100px){
+  .mc__cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mc__col{border-bottom:1px solid var(--linea)}
+}
+@media(max-width:640px){
+  .mc__cols{grid-template-columns:1fr}
+  .mc__eje{padding-bottom:1.6rem}
+}
+
+
+
+
+/* ====================================================================
    LA HOJA · versión 31 · escrita de una vez
 
    Lo que había eran DOCE capas puestas una encima de otra a lo largo de
@@ -3256,7 +3652,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#EAEAEA}
   --tinta:#141414; --papel:#FCFCFA; --nieve:#FFFFFF; --humo:#F2F1ED;
   --gris:#6E6E68; --linea:#E2E1DA; --fina:#EFEEE9;
   --verde:#0E5A50; --verde-o:#093C35; --verde-p:#E9F1EF;
-  --espina:17rem;
+  --barra:3.5rem;
   --e:cubic-bezier(.22,.61,.36,1);
 }
 html{-webkit-text-size-adjust:100%}
@@ -3274,52 +3670,68 @@ body{background:var(--papel);color:var(--tinta);
   font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
 [hidden]{display:none!important}
 
-/* ------------------------------------------------- 2. La espina, siempre */
-.tope{position:fixed;inset:0 auto 0 0;width:var(--espina);z-index:60;
-  background:var(--nieve);border-right:1px solid var(--linea);
-  display:flex;flex-direction:column;padding:1.5rem 1.2rem;gap:1rem;
-  overflow-y:auto;overscroll-behavior:contain}
-.tope__m{display:block;text-decoration:none;color:inherit;flex:none}
-.tope__m b{display:block;font-size:1.05rem;font-weight:500;letter-spacing:.2em;
-  text-transform:uppercase}
-.tope__m i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;
-  font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--gris);margin-top:.3rem}
-.donde{margin:0;display:flex;flex-direction:column;gap:.18rem;flex:none;
-  padding:.75rem 0;border-block:1px solid var(--fina);
-  font-family:"IBM Plex Mono",monospace;font-size:.53rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--gris);min-width:0}
-.donde:empty{display:none}
-.donde__s{color:var(--tinta)}
-.donde__a{color:var(--verde)}
-.donde__p,.donde__x{display:none}
-.espina{display:flex;flex-direction:column;gap:0;flex:1 1 auto;min-height:0;
-  margin:.2rem 0}
-.esp__i{display:block;text-decoration:none;color:var(--gris);
-  font-size:.86rem;line-height:1.3;padding:.42rem 0;
-  border-bottom:1px solid transparent;transition:color .18s var(--e)}
+/* --------------------------------------------- 2. La barra: una fina línea arriba
+
+   Ni un panel a la izquierda —que era una web de documentación cualquiera y se
+   comía media pantalla— ni una pantalla que se abre encima —bonita, y la razón
+   de que uno se perdiera—. Una sola línea fina arriba, siempre puesta, con las
+   trece secciones convertidas en NÚMEROS: 00 a 12. El número donde se está se
+   enciende y despliega su nombre; los demás son solo cifras. Se ve de un
+   vistazo cuántas secciones hay, en cuál se está y a qué distancia de las
+   otras, y no tapa una línea de lo que se lee. */
+.tope{position:fixed;inset:0 0 auto 0;height:var(--barra,3.5rem);z-index:60;
+  background:color-mix(in srgb, var(--papel) 88%, transparent);
+  backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--linea);
+  display:flex;align-items:center;gap:clamp(.8rem,2vw,2rem);
+  padding:0 clamp(1rem,3vw,2.4rem)}
+.tope__m{text-decoration:none;color:inherit;flex:none}
+.tope__m b{font-size:.95rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
+
+.espina{display:flex;align-items:center;gap:.15rem;flex:1 1 auto;min-width:0;
+  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  mask-image:linear-gradient(90deg,transparent,#000000 1.5rem,#000000 calc(100% - 1.5rem),transparent)}
+.espina::-webkit-scrollbar{display:none}
+.esp__i{display:flex;align-items:center;gap:.5rem;text-decoration:none;
+  color:var(--gris);flex:none;padding:.5rem .35rem;border-radius:2px;
+  transition:color .18s var(--e)}
+.esp__n{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;opacity:.7;transition:opacity .18s var(--e)}
+.esp__r{font-size:.78rem;letter-spacing:-.01em;white-space:nowrap;
+  max-width:0;overflow:hidden;opacity:0;
+  transition:max-width .32s var(--e),opacity .2s var(--e)}
 .esp__i:hover{color:var(--tinta)}
-.esp__i.es-aqui{color:var(--tinta);font-weight:500}
-.esp__i.es-aqui::before{content:"";display:inline-block;width:.5rem;height:1px;
-  background:var(--verde);vertical-align:middle;margin-right:.5rem}
-.tope__d{display:flex;flex-direction:column;gap:.1rem;flex:none;
-  border-top:1px solid var(--fina);padding-top:.6rem}
+.esp__i:hover .esp__n{opacity:1}
+.esp__i.es-aqui{color:var(--verde-o)}
+.esp__i.es-aqui .esp__n{opacity:1;color:var(--verde)}
+.esp__i.es-aqui .esp__r{max-width:14rem;opacity:1;margin-right:.3rem;
+  color:var(--tinta);font-weight:500}
+
+.tope__d{display:flex;align-items:center;gap:clamp(.6rem,1.6vw,1.4rem);flex:none;
+  margin-left:auto}
+.donde{display:none}
 .tope__b,.railbt{font:inherit;font-family:"IBM Plex Mono",monospace;
-  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--gris);background:none;border:0;padding:.45rem 0;cursor:pointer;
-  text-align:left;text-decoration:none;display:block;width:100%}
+  font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gris);background:none;border:0;padding:.5rem 0;cursor:pointer;
+  white-space:nowrap;display:flex;align-items:center;gap:.4rem}
 .tope__b:hover,.railbt:hover{color:var(--verde)}
-.railbt__x{display:none}
+.tope__b kbd{font-family:inherit;font-size:.9em;color:var(--linea);
+  border:1px solid var(--linea);border-radius:3px;padding:.05rem .3rem}
 
 /* --------------------------------------------------- 3. Lo que se lee */
-#sitio,.panel{margin-left:var(--espina);padding:0;min-width:0}
+#sitio,.panel{margin-left:0;padding:0;min-width:0}
 .sec{padding:0}
 .sec:not(.es-on){display:none}
+/* Cada sección deja arriba el alto de la barra; la portada oscura pasa por
+   debajo de la barra translúcida y solo su TEXTO respeta el hueco. */
+.frente,.banda,.hoja,.lienzo,.sec__lienzos,.mc,.tablero,.rutas,.mifases{
+  scroll-margin-top:var(--barra)}
+.sec:not(#inicio) > :first-child{padding-top:calc(var(--barra) + clamp(1rem,3vh,2.5rem))}
 
 .portada{min-height:100svh;display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,22rem);
   align-content:center;gap:clamp(2rem,5vw,6rem);
-  padding:clamp(3rem,8vh,6rem) clamp(1.6rem,5vw,5rem);
+  padding:calc(var(--barra) + clamp(2rem,6vh,4rem)) clamp(1.6rem,5vw,5rem) clamp(3rem,8vh,6rem);
   background:var(--tinta);color:var(--papel);margin:0}
 .portada__c{align-self:center;min-width:0}
 .portada__k{margin:0 0 1.6rem;color:rgba(255,255,255,.45)}
@@ -3405,22 +3817,17 @@ body{background:var(--papel);color:var(--tinta);
 
 /* ------------------------------------------------ 4. El teléfono */
 @media(max-width:900px){
-  :root{--espina:0px}
-  .tope{position:sticky;inset:auto;width:auto;height:auto;flex-direction:row;
-    align-items:center;flex-wrap:wrap;gap:.6rem 1.1rem;padding:.8rem 1.1rem;
-    border-right:0;border-bottom:1px solid var(--linea);top:0;overflow:visible}
-  .tope__m b{font-size:.95rem}
-  .tope__m i{display:none}
-  .donde{order:9;flex-basis:100%;flex-direction:row;gap:.4rem;padding:.3rem 0 0;
-    border:0;border-top:1px solid var(--fina);white-space:nowrap;overflow:hidden}
-  .tope__d{flex-direction:row;gap:.9rem;margin-left:auto}
-  .tope__b,.railbt{padding:.3rem 0;width:auto}
-  #sitio,.panel{margin-left:0}
+  .tope{gap:.6rem 1rem;padding:0 1rem}
+  .tope__m b{font-size:.88rem;letter-spacing:.16em}
+  .tope__b kbd{display:none}
+  .esp__r{font-size:.74rem}
   .portada{grid-template-columns:1fr;min-height:auto;
-    padding:clamp(2.4rem,7vh,4rem) 1.3rem}
+    padding:calc(var(--barra) + 1.6rem) 1.3rem clamp(2.4rem,7vh,4rem)}
+  .portada h1{font-size:clamp(2.4rem,10vw,3.6rem)}
   .censo{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.4rem}
   .censo__i:last-child{border-bottom:0}
   .hoja,.frente,.banda{padding-left:1.3rem;padding-right:1.3rem}
+  .sec:not(#inicio) > :first-child{padding-top:calc(var(--barra) + 1.4rem)}
 }
 
 
@@ -3524,15 +3931,14 @@ body{background:var(--papel);color:var(--tinta);
      titular, y se va.
      ------------------------------------------------------------------ -->
 <header class="tope" id="tope">
-  <a class="tope__m" href="#inicio" data-ir-sec="inicio">
-    <b>Alma</b><i>No medias sonrisas</i></a>
-  <p class="donde" id="donde" aria-live="polite"></p>
-  <nav class="espina" aria-label="Las secciones del sistema"><a class="esp__i" href="#mio" data-ir-sec="mio">Lo mío</a><a class="esp__i" href="#inicio" data-ir-sec="inicio">Inicio</a><a class="esp__i" href="#sistema" data-ir-sec="sistema">El sistema</a><a class="esp__i" href="#recorridos" data-ir-sec="recorridos">Recorridos</a><a class="esp__i" href="#mapa" data-ir-sec="mapa">El mapa</a><a class="esp__i" href="#direccion" data-ir-sec="direccion">Dirección</a><a class="esp__i" href="#presentacion" data-ir-sec="presentacion">Presentación</a><a class="esp__i" href="#protocolos" data-ir-sec="protocolos">Protocolos</a><a class="esp__i" href="#primera-visita" data-ir-sec="primera-visita">Primera Visita</a><a class="esp__i" href="#operaciones" data-ir-sec="operaciones">Operaciones</a><a class="esp__i" href="#marketing" data-ir-sec="marketing">Marketing</a><a class="esp__i" href="#otros" data-ir-sec="otros">Otros</a><a class="esp__i" href="#numeros" data-ir-sec="numeros">Los números</a></nav>
+  <a class="tope__m" href="#inicio" data-ir-sec="inicio" aria-label="Alma · inicio">
+    <b>Alma</b></a>
+  <nav class="espina" id="espina" aria-label="Las secciones del sistema"><a class="esp__i" href="#mio" data-ir-sec="mio" title="Lo mío"><i class="esp__n">00</i><span class="esp__r">Lo mío</span></a><a class="esp__i" href="#inicio" data-ir-sec="inicio" title="Inicio"><i class="esp__n">01</i><span class="esp__r">Inicio</span></a><a class="esp__i" href="#sistema" data-ir-sec="sistema" title="El sistema"><i class="esp__n">02</i><span class="esp__r">El sistema</span></a><a class="esp__i" href="#recorridos" data-ir-sec="recorridos" title="Recorridos"><i class="esp__n">03</i><span class="esp__r">Recorridos</span></a><a class="esp__i" href="#mapa" data-ir-sec="mapa" title="El mapa"><i class="esp__n">04</i><span class="esp__r">El mapa</span></a><a class="esp__i" href="#direccion" data-ir-sec="direccion" title="Dirección"><i class="esp__n">05</i><span class="esp__r">Dirección</span></a><a class="esp__i" href="#presentacion" data-ir-sec="presentacion" title="Presentación"><i class="esp__n">06</i><span class="esp__r">Presentación</span></a><a class="esp__i" href="#protocolos" data-ir-sec="protocolos" title="Protocolos"><i class="esp__n">07</i><span class="esp__r">Protocolos</span></a><a class="esp__i" href="#primera-visita" data-ir-sec="primera-visita" title="Primera Visita"><i class="esp__n">08</i><span class="esp__r">Primera Visita</span></a><a class="esp__i" href="#operaciones" data-ir-sec="operaciones" title="Operaciones"><i class="esp__n">09</i><span class="esp__r">Operaciones</span></a><a class="esp__i" href="#marketing" data-ir-sec="marketing" title="Marketing"><i class="esp__n">10</i><span class="esp__r">Marketing</span></a><a class="esp__i" href="#otros" data-ir-sec="otros" title="Otros"><i class="esp__n">11</i><span class="esp__r">Otros</span></a><a class="esp__i" href="#numeros" data-ir-sec="numeros" title="Los números"><i class="esp__n">12</i><span class="esp__r">Los números</span></a></nav>
   <div class="tope__d">
-    <button class="tope__b" type="button" data-abre="paleta">Buscar</button>
+    <p class="donde" id="donde" aria-live="polite"></p>
+    <button class="tope__b" type="button" data-abre="paleta">Buscar<kbd>⌘K</kbd></button>
     <button class="railbt" type="button" id="railbt" aria-expanded="false"
-            aria-controls="rail"><span class="railbt__r">Índice</span>
-      <span class="railbt__x" aria-hidden="true"><i></i><i></i></span></button>
+            aria-controls="rail">Índice</button>
   </div>
 </header>
 
@@ -3671,7 +4077,7 @@ body{background:var(--papel);color:var(--tinta);
       <p class="banda__q">Diez recorridos, cada uno con sus paradas en orden. Se abre uno, se
         avanza parada a parada y se vuelve donde estaba. Nada se pierde de vista.</p>
     </div>
-    <div class="rutas"><button type="button" class="rutacard" data-ve-ruta="paciente"><span class="rutacard__i"></span><span class="letra">Soy paciente</span><b>Lo que le pasa a usted, de la llamada al mantenimiento</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="junta"><span class="rutacard__i"></span><span class="letra">Soy de la Junta</span><b>Qué se somete a votación y con qué se sostiene</b><span class="rutacard__m letra">5 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="lunes"><span class="rutacard__i"></span><span class="letra">Entro a trabajar</span><b>Lo primero que hay que saber, en este orden</b><span class="rutacard__m letra">6 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="marketing"><span class="rutacard__i"></span><span class="letra">Llevo la captación</span><b>Cómo llega un paciente, y qué no haremos nunca para que llegue</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-direccion"><span class="rutacard__i"></span><span class="letra">Soy Dirección</span><b>Dirige la clínica y responde de que el sistema se cumpla</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-doctor"><span class="rutacard__i"></span><span class="letra">Soy Doctor</span><b>Diagnostica, planifica y ejecuta el tratamiento</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-recepcion"><span class="rutacard__i"></span><span class="letra">Soy Recepción</span><b>La primera voz y la última</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-rac"><span class="rutacard__i"></span><span class="letra">Soy RAC</span><b>Responde del circuito de producción: que lo aceptado se fabrique, se coloque y se cierre</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-auxiliar"><span class="rutacard__i"></span><span class="letra">Soy Auxiliar</span><b>Sostiene el acto clínico: equipos listos, batería diagnóstica completa y esterilización trazable</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-higienista"><span class="rutacard__i"></span><span class="letra">Soy Higienista</span><b>El puesto del largo plazo: mantiene lo tratado, detecta pronto lo que se tuerce y sostiene la relación año tras año</b><span class="rutacard__m letra">8 paradas</span></button></div>
+    <div class="rutas"><button type="button" class="rutacard" data-ve-ruta="paciente"><i class="rutacard__n">01</i><span class="letra">Soy paciente</span><b>Lo que le pasa a usted, de la llamada al mantenimiento</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="junta"><i class="rutacard__n">02</i><span class="letra">Soy de la Junta</span><b>Qué se somete a votación y con qué se sostiene</b><span class="rutacard__m letra">5 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="lunes"><i class="rutacard__n">03</i><span class="letra">Entro a trabajar</span><b>Lo primero que hay que saber, en este orden</b><span class="rutacard__m letra">6 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="marketing"><i class="rutacard__n">04</i><span class="letra">Llevo la captación</span><b>Cómo llega un paciente, y qué no haremos nunca para que llegue</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-direccion"><i class="rutacard__n">05</i><span class="letra">Soy Dirección</span><b>Dirige la clínica y responde de que el sistema se cumpla</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-doctor"><i class="rutacard__n">06</i><span class="letra">Soy Doctor</span><b>Diagnostica, planifica y ejecuta el tratamiento</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-recepcion"><i class="rutacard__n">07</i><span class="letra">Soy Recepción</span><b>La primera voz y la última</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-rac"><i class="rutacard__n">08</i><span class="letra">Soy RAC</span><b>Responde del circuito de producción: que lo aceptado se fabrique, se coloque y se cierre</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-auxiliar"><i class="rutacard__n">09</i><span class="letra">Soy Auxiliar</span><b>Sostiene el acto clínico: equipos listos, batería diagnóstica completa y esterilización trazable</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-higienista"><i class="rutacard__n">10</i><span class="letra">Soy Higienista</span><b>El puesto del largo plazo: mantiene lo tratado, detecta pronto lo que se tuerce y sostiene la relación año tras año</b><span class="rutacard__m letra">8 paradas</span></button></div>
   </div>
 
   <div class="banda banda--mapa" data-frente>
@@ -3745,7 +4151,7 @@ body{background:var(--papel);color:var(--tinta);
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Alma<br>
         Calle Progreso 2 · Ourense</p></div>
-      <div><p class="letra">Esta edición</p><p>Versión 31.0 · Septiembre 2026<br>
+      <div><p class="letra">Esta edición</p><p>Versión 32.0 · Septiembre 2026<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
         laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
@@ -3979,7 +4385,7 @@ body{background:var(--papel);color:var(--tinta);
 </header>
   <div class="elector">
     <p class="letra elector__k">Los diez recorridos</p>
-    <div class="rutas elector__g"><button type="button" class="rutacard" data-ve-ruta="paciente"><span class="rutacard__i"></span><span class="letra">Soy paciente</span><b>Lo que le pasa a usted, de la llamada al mantenimiento</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="junta"><span class="rutacard__i"></span><span class="letra">Soy de la Junta</span><b>Qué se somete a votación y con qué se sostiene</b><span class="rutacard__m letra">5 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="lunes"><span class="rutacard__i"></span><span class="letra">Entro a trabajar</span><b>Lo primero que hay que saber, en este orden</b><span class="rutacard__m letra">6 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="marketing"><span class="rutacard__i"></span><span class="letra">Llevo la captación</span><b>Cómo llega un paciente, y qué no haremos nunca para que llegue</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-direccion"><span class="rutacard__i"></span><span class="letra">Soy Dirección</span><b>Dirige la clínica y responde de que el sistema se cumpla</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-doctor"><span class="rutacard__i"></span><span class="letra">Soy Doctor</span><b>Diagnostica, planifica y ejecuta el tratamiento</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-recepcion"><span class="rutacard__i"></span><span class="letra">Soy Recepción</span><b>La primera voz y la última</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-rac"><span class="rutacard__i"></span><span class="letra">Soy RAC</span><b>Responde del circuito de producción: que lo aceptado se fabrique, se coloque y se cierre</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-auxiliar"><span class="rutacard__i"></span><span class="letra">Soy Auxiliar</span><b>Sostiene el acto clínico: equipos listos, batería diagnóstica completa y esterilización trazable</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-higienista"><span class="rutacard__i"></span><span class="letra">Soy Higienista</span><b>El puesto del largo plazo: mantiene lo tratado, detecta pronto lo que se tuerce y sostiene la relación año tras año</b><span class="rutacard__m letra">8 paradas</span></button></div>
+    <div class="rutas elector__g"><button type="button" class="rutacard" data-ve-ruta="paciente"><i class="rutacard__n">01</i><span class="letra">Soy paciente</span><b>Lo que le pasa a usted, de la llamada al mantenimiento</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="junta"><i class="rutacard__n">02</i><span class="letra">Soy de la Junta</span><b>Qué se somete a votación y con qué se sostiene</b><span class="rutacard__m letra">5 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="lunes"><i class="rutacard__n">03</i><span class="letra">Entro a trabajar</span><b>Lo primero que hay que saber, en este orden</b><span class="rutacard__m letra">6 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="marketing"><i class="rutacard__n">04</i><span class="letra">Llevo la captación</span><b>Cómo llega un paciente, y qué no haremos nunca para que llegue</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-direccion"><i class="rutacard__n">05</i><span class="letra">Soy Dirección</span><b>Dirige la clínica y responde de que el sistema se cumpla</b><span class="rutacard__m letra">8 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-doctor"><i class="rutacard__n">06</i><span class="letra">Soy Doctor</span><b>Diagnostica, planifica y ejecuta el tratamiento</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-recepcion"><i class="rutacard__n">07</i><span class="letra">Soy Recepción</span><b>La primera voz y la última</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-rac"><i class="rutacard__n">08</i><span class="letra">Soy RAC</span><b>Responde del circuito de producción: que lo aceptado se fabrique, se coloque y se cierre</b><span class="rutacard__m letra">7 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-auxiliar"><i class="rutacard__n">09</i><span class="letra">Soy Auxiliar</span><b>Sostiene el acto clínico: equipos listos, batería diagnóstica completa y esterilización trazable</b><span class="rutacard__m letra">9 paradas</span></button><button type="button" class="rutacard" data-ve-ruta="puesto-higienista"><i class="rutacard__n">10</i><span class="letra">Soy Higienista</span><b>El puesto del largo plazo: mantiene lo tratado, detecta pronto lo que se tuerce y sostiene la relación año tras año</b><span class="rutacard__m letra">8 paradas</span></button></div>
   </div>
   <div class="rutas rutas--todas" data-rutas>
     <button type="button" class="volverutas" data-todas-rutas>
@@ -4196,7 +4602,7 @@ body{background:var(--papel);color:var(--tinta);
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v31.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v32.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="t-cover" id="a-portada">
@@ -4206,7 +4612,7 @@ body{background:var(--papel);color:var(--tinta);
     <div class="t-cover__rule" aria-hidden="true"></div>
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Alma</b>Calle Progreso 2 · Ourense</span>
-      <span><b>Plan de Dirección · v31.0</b>Septiembre 2026 · versión única del sistema</span>
+      <span><b>Plan de Dirección · v32.0</b>Septiembre 2026 · versión única del sistema</span>
       <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
@@ -4283,7 +4689,7 @@ body{background:var(--papel);color:var(--tinta);
             <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
             <tbody>
               <tr><td>Título</td><td>Plan de Dirección para la Junta Directiva</td></tr>
-              <tr><td>Versión</td><td>v31.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
+              <tr><td>Versión</td><td>v32.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
               <tr><td>Clasificación</td><td>Uso interno · Confidencial · No difundir fuera del órgano</td></tr>
               <tr><td>Propietario</td><td>Dirección General</td></tr>
               <tr><td>Elaborado con</td><td>Los 17 documentos operativos del sistema Alma: los 3 troncales y los 14 de apoyo, censados en el apartado 0.1</td></tr>
@@ -4314,7 +4720,7 @@ body{background:var(--papel);color:var(--tinta);
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="a-t-como-citar-acta">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v31.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v31.0, Protocolo de Primera Visita v31.0, Otros documentos del sistema v31.0.</p>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v32.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v32.0, Protocolo de Primera Visita v32.0, Otros documentos del sistema v32.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="a-censo">Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -4323,14 +4729,14 @@ body{background:var(--papel);color:var(--tinta);
       <table>
         <thead><tr><th>Pieza</th><th>Clase</th><th>Qué contiene</th><th>Propietario</th><th>Versión</th></tr></thead>
         <tbody>
-          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">31.0</td></tr>
-          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">31.0</td></tr>
-          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">31.0</td></tr>
-          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">31.0</td></tr>
-          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">31.0</td></tr>
-          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">31.0</td></tr>
-          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">31.0</td></tr>
-          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">31.0</td></tr>
+          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">32.0</td></tr>
+          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">32.0</td></tr>
+          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">32.0</td></tr>
+          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">32.0</td></tr>
+          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">32.0</td></tr>
+          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">32.0</td></tr>
+          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">32.0</td></tr>
+          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">32.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -7578,7 +7984,7 @@ REVISIÓN PREVISTA:</div>
     <div class="desp__in"><div class="dia"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v31.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v32.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
 </section></div><p class="dia__pr"><button type="button" class="bt bt--fino" data-proyecta="">Proyectar desde esta</button></p><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -8871,7 +9277,7 @@ REVISIÓN PREVISTA:</div>
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v31.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v32.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   <aside class="nota" hidden>
     <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -13262,7 +13668,9 @@ DÍA 7   Valoración de evolución
 
 
 
-<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v31.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v32.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -13270,7 +13678,7 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 31.0 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 32.0 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="#operaciones" class="salta">Manual Maestro de Operaciones<i class="salta__d">Operaciones</i></a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -17130,7 +17538,9 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v31.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+
+
+<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v32.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -17141,7 +17551,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Alma. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Ourense · Versión 31.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Ourense · Versión 32.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -17324,11 +17734,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v31.0 · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>v32.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Alma (uso abreviado: Alma)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
-          <tr><td>Sustituye a</td><td>Protocolo v31.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
+          <tr><td>Sustituye a</td><td>Protocolo v32.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
           <tr><td>Difusión obligatoria</td><td>Recepción, Dirección de Clínica, Odontólogos, Higienistas, Auxiliares, RAC</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier incidencia grave de trazabilidad o RGPD</td></tr>
@@ -24127,7 +24537,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v31.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v32.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 
@@ -24143,7 +24553,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <p class="t-cover__meta">
       <b>Plan Maestro de Marketing</b><br>
       Centro de Excelencia Implantológica Alma · Calle Progreso 2 · Ourense<br>
-      v31.0 · Septiembre 2026 · Documento de dirección<br>
+      v32.0 · Septiembre 2026 · Documento de dirección<br>
       Setenta y seis acciones sobre doce estados del paciente
     </p>
   </div>
@@ -24171,7 +24581,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><th>Qué decide</th><td>Nada por sí solo. Propone; la Junta aprueba en el registro de acuerdos del Plan de Dirección</td></tr>
           <tr><th>Propietario</th><td>Dirección General, con Gerencia como responsable de ejecución y presupuesto</td></tr>
           <tr><th>Revisión</th><td>Trimestral, con la misma cadencia que el cuadro de mando del apartado 13 del Plan de Dirección</td></tr>
-          <tr><th>Versión</th><td class="num">v31.0 · Septiembre 2026</td></tr>
+          <tr><th>Versión</th><td class="num">v32.0 · Septiembre 2026</td></tr>
         </tbody>
       </table>
     </div>
@@ -25693,7 +26103,9 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v31.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v32.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="g-portada">
@@ -25703,7 +26115,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Alma. Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Ourense · Versión 31.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__note">Ourense · Versión 32.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos</dt><dd>14<small>Del posicionamiento del centro al programa de cuidado ATC</small></dd></div>
@@ -25759,13 +26171,13 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
       <table>
         <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v31.0 · Agosto 2026 · versión única del sistema</td></tr>
+          <tr><td>Versión</td><td>v32.0 · Agosto 2026 · versión única del sistema</td></tr>
           <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
           <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
           <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
           <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
-          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v31.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
+          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v32.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
         </tbody>
       </table>
     </div>
@@ -29824,7 +30236,7 @@ LTV              = Valor inicial
   <div class="flota">
     <div class="flota__cab"><h2>Recursos</h2>
       <button class="icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button></div>
-    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><div class="rec__i rec__i--f"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p><p class="rec__f">Alma-TODO-EN-UNO-v31.html</p></div></div><div class="rec__i rec__i--f"><em>pdf</em><div><b>El sistema encuadernado</b><p>El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.</p><p class="rec__f">Sistema-Documental-Alma-v31.0.pdf</p></div></div><div class="rec__i rec__i--f"><em>word</em><div><b>El sistema en Word</b><p>Índice automático, con sus tablas y las 23 figuras incrustadas.</p><p class="rec__f">Sistema-Documental-Alma-v31.0.docx</p></div></div></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="#direccion" data-ir-sec="direccion"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="#presentacion" data-ir-sec="presentacion"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="#protocolos" data-ir-sec="protocolos"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="#primera-visita" data-ir-sec="primera-visita"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="#operaciones" data-ir-sec="operaciones"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="#marketing" data-ir-sec="marketing"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="#otros" data-ir-sec="otros"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="#numeros" data-ir-sec="numeros"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Alma anual"><em>voz</em><div><b>Perfil Alma anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
+    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><div class="rec__i rec__i--f"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p><p class="rec__f">Alma-TODO-EN-UNO-v32.html</p></div></div><div class="rec__i rec__i--f"><em>pdf</em><div><b>El sistema encuadernado</b><p>El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.</p><p class="rec__f">Sistema-Documental-Alma-v32.0.pdf</p></div></div><div class="rec__i rec__i--f"><em>word</em><div><b>El sistema en Word</b><p>Índice automático, con sus tablas y las 23 figuras incrustadas.</p><p class="rec__f">Sistema-Documental-Alma-v32.0.docx</p></div></div></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="#direccion" data-ir-sec="direccion"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="#presentacion" data-ir-sec="presentacion"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="#protocolos" data-ir-sec="protocolos"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="#primera-visita" data-ir-sec="primera-visita"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="#operaciones" data-ir-sec="operaciones"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="#marketing" data-ir-sec="marketing"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="#otros" data-ir-sec="otros"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="#numeros" data-ir-sec="numeros"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Alma anual"><em>voz</em><div><b>Perfil Alma anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
   </div>
 </div>
 

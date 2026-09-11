@@ -17,6 +17,47 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## La barra, no el rail · versión 32
+
+En la 31 quité las doce capas y puse una espina fija a la izquierda. Tenía
+razón: un índice pegado a la izquierda es una web de documentación cualquiera
+—el patrón más convencional que existe— y encima se comía el tercio izquierdo
+de cada pantalla. No era disruptivo; era lo de siempre con otra letra.
+
+### El giro de verdad: una espina numérica arriba
+
+La navegación deja de ser una columna y pasa a ser **una sola línea fina en lo
+alto**, con las trece secciones convertidas en **números, 00 a 12**. El número
+donde se está se enciende y despliega su nombre; los demás son solo cifras. De
+un vistazo se ve cuántas secciones hay, en cuál se está y a qué distancia de
+las otras —y no se pierde ni una línea de lo que se lee—. En un teléfono esa
+misma tira de números se desliza a lo ancho.
+
+El contenido, ya sin rail que lo empuje, respira a toda la anchura.
+
+### Lo que se limpió, pantalla por pantalla
+
+- **Los rectángulos grises** de las tarjetas de recorrido —placeholders de una
+  imagen que ya no existía— fuera. Ahora cada recorrido es tipográfico: número,
+  quién, título y cuántas paradas.
+- El buscador, los atajos, el índice completo, el tablero de las catorce fases,
+  el mapa conceptual y el elector de recorridos conservan su estilo.
+
+### Un error propio, y cómo lo cazó el sistema
+
+Al quitar las capas viejas me llevé por delante el CSS de varias funciones
+—el buscador salía como una lista de píldoras amontonadas, el elector de
+recorridos enseñaba las diez rutas a la vez—. Lo cazaron los comprobadores:
+`verifica-duplicados.py` avisó de que un recorrido aparecía dos veces, y así
+descubrí que el elector se había quedado sin su hoja. La solución: el estilo de
+las funciones se conserva y va antes de la hoja nueva, de modo que la hoja
+manda en la maqueta y cada pieza recupera su apariencia.
+
+Comprobado sobre el archivo entregado: las 13 secciones llegan, cero cajas
+grises, 930 enlaces con 0 externos y 0 rotos, buscador correcto, sin errores de
+consola, nada encima de nada en 7 tamaños × 13 secciones, ninguna sección
+repetida.
+
 ## Desde cero, de verdad · versión 31
 
 Las veces anteriores que me pidió empezar de cero, puse **otra capa encima**.
