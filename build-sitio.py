@@ -4506,570 +4506,6 @@ html:root{
   --sombra-3:0 2px 6px rgba(17,17,18,.07), 0 20px 40px -24px rgba(17,17,18,.30);
 }
 
-/* ====================================================================
-   LA ESCALA, LA PALETA Y EL AIRE · versión 12
-   Va la última de la hoja, y con «html:root», para mandar sobre todo lo
-   que traen los documentos recogidos.
-   ==================================================================== */
-
-/* 1 · La letra crece. Todo el sitio mide en «rem», así que subiendo la
-   raíz sube todo a la vez y en proporción: el cuerpo, los rótulos, el
-   número de un apartado y el aire entre líneas. De 16 fijos a entre 17 y
-   19 y medio según la pantalla. Nueve puntos porcentuales de tamaño no
-   son un capricho: un documento de gobierno se lee sentado y entero. */
-html:root{font-size:clamp(17px,.34vw + 15.6px,19.5px)}
-/* El cuerpo lo traía escrito en píxeles la hoja de un documento recogido, de
-   modo que se quedaba en dieciséis y medio por mucho que subiera la raíz.
-   Aquí vuelve a medirse en «rem», que es lo que hace que la escala sea una
-   escala y no una lista de tamaños sueltos. */
-html:root > body{font-size:1rem;line-height:1.62}
-
-/* 2 · Los grises. Antes eran seis tonos elegidos de uno en uno; ahora son
-   una escala con un solo criterio, la misma distancia entre peldaños, y
-   con un punto de frío para que el blanco no amarillee al lado del azul. */
-html:root{
-  --negro:#0B0B0F; --tinta:#0B0B0F; --ink:#16161C; --ink-2:#4E4E5A;
-  --muted:#84848F; --linea:#E3E3E9; --linea-2:#F0F0F4;
-  --papel:#FFFFFF; --blanco:#FFFFFF; --gris:#F7F7F9;
-  --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F7F7F9;
-  --line:#E3E3E9; --line-soft:#F0F0F4; --rule:#D5D5DD;
-  --signal:#4E4E5A; --signal-soft:rgba(11,11,15,.05);
-  --alerta:#0B0B0F; --alerta-soft:rgba(11,11,15,.06);
-  /* 3 · Y un solo color, más profundo y menos eléctrico, que a tamaño de
-     titular acompaña en vez de gritar. */
-  --azul:#1E3AD1; --azul-o:#152C9E; --azul-p:#EEF1FC;
-  --accent:#1E3AD1; --accent-ink:#152C9E; --accent-fuerte:#152C9E;
-  --accent-soft:rgba(30,58,209,.06);
-  --acido:#EEF1FC; --acido-ink:#152C9E;
-  --sem-verde:#1E3AD1; --sem-amarillo:#84848F;
-  --sem-naranja:#4E4E5A; --sem-rojo:#0B0B0F;
-  --rol-direccion:#0B0B0F; --rol-doctor:#1E3AD1; --rol-rac:#33333C;
-  --rol-recepcion:#4E4E5A; --rol-higienista:#75757F; --rol-auxiliar:#9494A0;
-}
-
-/* 4 · Los rótulos pequeños dejan de ser ilegibles. Iban de 9 a 10 píxeles
-   con mucho espaciado, que a esa escala es un adorno y no un rótulo. */
-#sitio .letra,#sitio .rotulillo,#sitio .idx__c,#sitio .sub__g,
-#sitio .parte__k,#sitio .hoja__k,#sitio .cifras span,#sitio .desp__n,
-#proy .rotulillo,#lector .rotulillo{font-size:.66rem;letter-spacing:.2em}
-#sitio .idx__n{font-size:.78rem;letter-spacing:.08em}
-
-/* 5 · El texto largo respira. Una medida de sesenta y pico caracteres y un
-   interlineado ancho es lo que separa una página que se lee de una que se
-   ojea. */
-#sitio .cab__p,#sitio .lienzo__cab p,#sitio .que__x,#sitio .que__c p:last-child{
-  font-size:1.06rem;line-height:1.85}
-#sitio .hoja p,#lector .hoja p{line-height:1.82}
-
-/* 6 · Y los titulares se aprietan al crecer, que es lo que hace que un
-   titular grande parezca dibujado y no estirado. */
-#sitio .cab h1{letter-spacing:-.038em}
-#sitio .lienzo__cab h2{letter-spacing:-.022em}
-
-/* ====================================================================
-   LO MÍO · versión 17
-   Pensado desde el móvil hacia arriba: una columna, botones que se pulsan
-   con el pulgar, texto grande y ni una tabla. Quien ocupa un puesto lo
-   consulta de pie, en el pasillo, en treinta segundos.
-   ==================================================================== */
-.miobts{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
-  gap:1px;background:var(--linea);border:1px solid var(--linea)}
-.miobt{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.1rem;
-  background:var(--blanco);border:0;cursor:pointer;font:inherit;text-align:left;
-  color:var(--ink-2);transition:background .18s var(--e),color .18s var(--e)}
-.miobt__i{flex:none;width:2.6rem;height:2.6rem;display:flex;align-items:center;
-  justify-content:center;border:1px solid var(--linea);font-family:var(--f-mono);
-  font-size:.9rem;color:var(--muted)}
-.miobt b{display:block;font-size:1rem;font-weight:400;color:var(--negro);line-height:1.3}
-.miobt__q{display:block;margin-top:.25rem;font-family:var(--f-mono);font-size:.58rem;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.miobt:hover{background:var(--gris)}
-.miobt.es-on{background:var(--negro)}
-.miobt.es-on b,.miobt.es-on .miobt__q{color:#fff}
-.miobt.es-on .miobt__i{border-color:rgba(255,255,255,.4);color:#fff}
-
-.mio[hidden]{display:none}
-.mio__cab{padding:var(--paso-4) 0 var(--paso-3);border-bottom:1px solid var(--negro)}
-.mio__cab h3{margin:.7rem 0 0;font-size:clamp(1.6rem,4.6vw,2.4rem);font-weight:300;
-  letter-spacing:-.03em;line-height:1.1;color:var(--negro)}
-.mio__q{margin:var(--paso-2) 0 0;font-size:1.02rem;line-height:1.75;color:var(--ink-2);
-  max-width:52ch}
-.mio__b{padding:var(--paso-4) 0 0}
-.mio__b h4{margin:0;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--azul);font-weight:400}
-.mio__p{margin:var(--paso-2) 0 var(--paso-3);font-size:.98rem;line-height:1.8;
-  color:var(--ink-2);max-width:56ch}
-.mio__p b{color:var(--negro);font-weight:400}
-
-.miol{list-style:none;margin:0;padding:0}
-.miol__i{display:grid;grid-template-columns:2.6rem 1fr;gap:1rem;align-items:baseline;
-  padding:.85rem 0;border-bottom:1px solid var(--linea-2)}
-.miol__n{font-family:var(--f-mono);font-size:.68rem;color:var(--linea)}
-.miol__i b{font-size:1.02rem;font-weight:400;color:var(--muted);line-height:1.4}
-.miol__i i{display:block;margin-top:.25rem;font-style:normal;font-family:var(--f-mono);
-  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--linea)}
-.miol__i.es-manda b{color:var(--negro)}
-.miol__i.es-manda i{color:var(--azul)}
-.miol__i.es-manda .miol__n{color:var(--azul)}
-
-.mirompes{list-style:none;margin:0;padding:0;display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(19rem,1fr));gap:1px;
-  background:var(--linea);border:1px solid var(--linea)}
-.mirompe{background:var(--blanco);padding:1.2rem 1.1rem}
-.mirompe__a{margin:0;font-size:.96rem;line-height:1.55;color:var(--negro)}
-.mirompe__b{margin:.7rem 0 0;font-size:.92rem;line-height:1.7;color:var(--ink-2);
-  padding-top:.7rem;border-top:1px solid var(--linea-2)}
-.mirompe--no .mirompe__b{border:0;padding:0;margin:0}
-
-.mifases{list-style:none;margin:0;padding:0;
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:0 var(--paso-4)}
-.mifase{display:grid;grid-template-columns:2.6rem 1fr;gap:1rem;align-items:baseline;
-  padding:.9rem 0;border-bottom:1px solid var(--linea-2)}
-.mifase__n{font-family:var(--f-mono);font-size:.68rem;color:var(--azul)}
-.mifase b{font-size:1.02rem;font-weight:400;color:var(--negro);line-height:1.4}
-.mifase i{display:block;margin-top:.25rem;font-style:normal;font-family:var(--f-mono);
-  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-
-.miotexto{max-width:var(--texto)}
-.miotexto > *:first-child{margin-top:0}
-
-@media(max-width:640px){
-  .miobts{grid-template-columns:1fr 1fr}
-  .miobt{flex-direction:column;align-items:flex-start;gap:.6rem;padding:1rem .9rem}
-  .miobt__q{font-size:.52rem}
-  .mirompes,.mifases{grid-template-columns:1fr}
-}
-
-/* ====================================================================
-   SIN DIBUJO DE FONDO · versión 17
-   Las bandas llevaban detrás un campo de líneas onduladas. Un fondo
-   dibujado no dice nada que el titular no diga y compite con él por la
-   atención: lo que se lee peor es el titular. Aquí la portada de una
-   sección es su número, su nombre y una frase, sobre papel. El único
-   gesto es la regla que los separa.
-   ==================================================================== */
-#sitio .portada{background:var(--negro);color:#fff;overflow:visible;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  min-height:min(88vh,46rem);padding:11rem var(--marco) 4rem}
-#sitio .portada::after{display:none}
-#sitio .portada__c{max-width:none}
-#sitio .portada__l{font-size:clamp(3rem,11vw,9rem);line-height:.92;letter-spacing:-.045em;
-  font-weight:300}
-#sitio .portada__k{color:rgba(255,255,255,.5)}
-#sitio .portada .bt{border-color:rgba(255,255,255,.3)}
-#sitio .portada__pie{color:rgba(255,255,255,.42)}
-
-#sitio .frente{position:relative;background:none;color:var(--negro);
-  min-height:0;padding:11rem 0 0;margin-inline:0;
-  display:block;overflow:visible}
-#sitio .frente::before,#sitio .frente::after{display:none}
-#sitio .frente__c{max-width:none;padding:0}
-#sitio .frente__n{position:static;display:block;font-size:clamp(4rem,13vw,10rem);
-  line-height:.82;letter-spacing:-.055em;font-weight:300;color:var(--linea);
-  margin:0 0 var(--paso-3)}
-#sitio .frente__k{color:var(--azul)}
-#sitio .frente h1{font-size:clamp(2.2rem,6.4vw,5rem);line-height:1.02;letter-spacing:-.04em;
-  font-weight:300;margin:var(--paso-2) 0 0;max-width:20ch;color:var(--negro)}
-#sitio .frente__p{margin:var(--paso-3) 0 0;max-width:56ch;font-size:1.06rem;line-height:1.8;
-  color:var(--ink-2);padding-bottom:var(--paso-4);border-bottom:1px solid var(--negro)}
-
-/* ====================================================================
-   LO ANCHO · versión 16
-   Un apartado se lee en una columna de sesenta y seis caracteres, que es
-   lo que se lee cómodo. Pero dentro de esa columna hay tablas de siete
-   columnas, rejillas de tarjetas y figuras dibujadas, y a todas ellas la
-   columna de lectura les quedaba corta: se cortaban por la derecha a
-   mitad de palabra y el resto no existía. Aquí el texto sigue en su
-   columna y lo ancho se sale a los lados, con su propio desplazamiento
-   si aun así no cabe.
-   ==================================================================== */
-#lector .lector__in{max-width:none;
-  padding-inline:clamp(1.2rem,4vw,3.4rem)}
-#lector .hoja,#lector .lector__trozo ~ *{display:grid;
-  grid-template-columns:
-    [ancho-start] minmax(0,1fr)
-    [texto-start] min(var(--texto),100%)
-    [texto-end] minmax(0,1fr) [ancho-end]}
-#lector .hoja > *{grid-column:texto}
-#lector .hoja > :where(table,figure,svg,.tablewrap,.dibcaja,.fig,.figura,
-  .cards,.grid,.kpis,.specs,.special,.mini,.entradas,.cinco,.quees,.saydont,
-  .estados,.acciones,.timemap,.reloj,.carriles,.wraci){
-  grid-column:ancho;max-width:100%;justify-self:center;
-  overflow-x:auto;overscroll-behavior-x:contain}
-#lector .hoja > table,#lector .hoja > .tablewrap{width:fit-content;max-width:100%}
-#lector .hoja > .tablewrap table,#lector .hoja > table{min-width:min(100%,48rem)}
-/* y el rótulo del apartado, la nota de trozo y las secciones internas se
-   quedan con el texto, que es donde se leen */
-#lector .hoja > :where(section,article,div):not([class]){grid-column:texto}
-
-/* ====================================================================
-   EL AIRE · versión 16
-   Al subir la letra, el aire subió con ella: todo mide en «rem» y una
-   separación de diez unidades pasó de ciento sesenta píxeles a casi
-   doscientos. El resultado no es amplitud, es que las cosas flotan sin
-   relación entre ellas. Aquí el aire deja de medirse en letras y pasa a
-   medirse en pantalla: crece con la ventana, no con el cuerpo del texto.
-   ==================================================================== */
-html:root{
-  --aire:clamp(3.4rem,4.6vw,5.6rem);
-  --paso-1:.5rem; --paso-2:1rem; --paso-3:1.8rem;
-  --paso-4:3rem; --paso-5:4.6rem;
-  --saca:calc(var(--aire) * -1);
-}
-#sitio .lienzo{margin-bottom:var(--paso-5)}
-#sitio .lienzo__cab{margin-bottom:var(--paso-4)}
-#sitio .sec{padding-bottom:var(--paso-5)}
-/* una sección no termina en un socavón: la última pieza cierra con su aire y
-   ya está */
-#sitio .sec > .lienzo:last-child{margin-bottom:0}
-#sitio .sigue__p{padding:1.2rem .2rem 1.4rem}
-#sitio .sigue{gap:0 var(--paso-4)}
-#sitio .cifras{gap:var(--paso-4);margin-top:var(--paso-3)}
-#sitio .banda{padding:var(--paso-5) 0}
-#sitio .grupod{margin-top:var(--paso-4)}
-#sitio .dibcaja{margin-top:var(--paso-3)}
-#sitio .parte{padding-top:var(--paso-5)}
-
-/* ====================================================================
-   LA ESTRUCTURA · versión 15
-   Ni barra de secciones arriba ni lateral permanente: las dos cosas son
-   mando a la vista todo el rato, y el mando a la vista todo el rato es lo
-   que hace que una página parezca un programa de los noventa. Arriba solo
-   una marca y una palabra. El índice aparece entero cuando se pide, a
-   tamaño de titular, y se va. Lo que queda en pantalla es lo que se lee.
-   ==================================================================== */
-html:root{--nav:0px; --saca:calc(var(--aire) * -1)}
-.panel{min-height:100vh}
-
-/* --- la cabecera: dos cosas y aire ------------------------------------ */
-/* La cabecera se apoya en el papel: blanca, con una raya de un pelo. Solo
-   desaparece cuando lo que hay debajo es una banda a sangre, que es cuando
-   tiene sentido que no esté. Transparente todo el rato dejaba pasar el texto
-   por detrás, que es exactamente lo que no puede ocurrir. */
-.tope{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;
-  justify-content:space-between;gap:2rem;padding:1.5rem clamp(1.2rem,4vw,3.4rem);
-  background:var(--blanco);box-shadow:0 1px 0 0 var(--linea-2);
-  transition:background .3s var(--e),box-shadow .3s var(--e)}
-.tope--sobre{background:transparent;box-shadow:none}
-@media(prefers-reduced-motion:reduce){.tope{transition:none}}
-.tope__m{display:flex;align-items:baseline;gap:.9rem;background:none;border:0;padding:0;
-  font:inherit;cursor:pointer;color:var(--negro)}
-.tope__m b{font-size:1.06rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase}
-.tope__m i{font-style:normal;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--muted)}
-.tope__m:hover b{color:var(--azul)}
-.tope__d{display:flex;align-items:center;gap:.4rem}
-.tope__b{font:inherit;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;
-  text-transform:uppercase;background:none;border:0;cursor:pointer;color:var(--muted);
-  padding:.7rem .8rem;transition:color .2s var(--e)}
-.tope__b:hover{color:var(--negro)}
-/* sobre una banda oscura la cabecera se vuelve blanca, sin caja ni cristal */
-.tope--noche .tope__m,.tope--noche .tope__b:hover,
-.tope--noche .railbt{color:#fff}
-.tope--noche .tope__m i,.tope--noche .tope__b{color:rgba(255,255,255,.6)}
-.tope--noche .railbt__x i{background:#fff}
-.tope--noche .railbt{border-color:rgba(255,255,255,.34)}
-.tope--noche .railbt:hover{border-color:#fff}
-
-.railbt{display:flex;align-items:center;gap:.8rem;margin-left:.6rem;
-  font:inherit;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;
-  text-transform:uppercase;background:none;cursor:pointer;color:var(--negro);
-  border:1px solid var(--linea);padding:.7rem 1rem;transition:border-color .2s var(--e)}
-.railbt:hover{border-color:var(--negro)}
-.railbt__x{display:block;width:14px;height:10px;position:relative}
-.railbt__x i{position:absolute;left:0;right:0;height:1px;background:currentColor;
-  transition:transform .3s var(--e),opacity .2s var(--e)}
-.railbt__x i:first-child{top:2px}
-.railbt__x i:last-child{bottom:2px}
-.railbt[aria-expanded="true"] .railbt__x i:first-child{transform:translateY(3px) rotate(45deg)}
-.railbt[aria-expanded="true"] .railbt__x i:last-child{transform:translateY(-4px) rotate(-45deg)}
-
-/* --- el índice, a pantalla completa ----------------------------------- */
-.rail{position:fixed;inset:0;z-index:65;background:var(--blanco);overflow-y:auto;
-  overscroll-behavior:contain;animation:idxentra .42s var(--e) both}
-.rail[hidden]{display:none}
-@keyframes idxentra{from{opacity:0;transform:translateY(-1.2rem)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.rail{animation:none}}
-.rail__in{max-width:96rem;margin:0 auto;padding:7rem clamp(1.2rem,4vw,3.4rem) 5rem}
-.rail__filtro{display:flex;align-items:baseline;gap:1.6rem;flex-wrap:wrap;
-  border-bottom:1px solid var(--negro);padding-bottom:1.2rem;margin-bottom:1rem}
-.rail__filtro input{flex:1;min-width:14rem;font:inherit;
-  font-size:clamp(1.2rem,2.4vw,1.9rem);font-weight:300;letter-spacing:-.02em;
-  border:0;background:none;color:var(--negro);outline:none;padding:0}
-.rail__filtro input::placeholder{color:var(--linea)}
-.rail__n{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--muted);flex:none}
-
-.arb{display:block}
-.arb__s{border-bottom:1px solid var(--linea-2)}
-.arb__b{width:100%;display:grid;grid-template-columns:3.4rem 1fr auto auto;gap:1.4rem;
-  align-items:baseline;padding:1.5rem 0;font:inherit;text-align:left;background:none;
-  border:0;cursor:pointer;color:var(--negro);transition:color .2s var(--e)}
-.arb__n{font-style:normal;font-family:var(--f-mono);font-size:.7rem;color:var(--linea);
-  letter-spacing:.06em}
-/* el nombre de una sección, a tamaño de titular: es lo único que hay */
-.arb__r{font-size:clamp(1.5rem,3.4vw,2.7rem);font-weight:300;line-height:1.1;
-  letter-spacing:-.03em}
-.arb__c{font-style:normal;font-family:var(--f-mono);font-size:.6rem;color:var(--muted);
-  letter-spacing:.14em;align-self:center}
-.arb__x{color:var(--linea);transition:transform .3s var(--e),color .2s var(--e);
-  align-self:center;width:12px;height:8px}
-.arb__b:hover{color:var(--azul)}
-.arb__b:hover .arb__n,.arb__b:hover .arb__x{color:var(--azul)}
-.arb__s.es-ab > .arb__b .arb__n{color:var(--azul)}
-.arb__s.es-ab > .arb__b .arb__x{transform:rotate(180deg);color:var(--azul)}
-.arb__s.es-aqui > .arb__b .arb__r{text-decoration:underline;text-underline-offset:.5rem;
-  text-decoration-thickness:1px}
-.arb__l{padding:0 0 2rem 4.8rem}
-.arb__l[hidden]{display:none}
-.arb__l .sub{display:block;columns:3;column-gap:3rem;padding:0;margin:0;max-width:none}
-@media(max-width:1100px){.arb__l .sub{columns:2}}
-@media(max-width:760px){.arb__l .sub{columns:1}.arb__l{padding-left:0}}
-.arb__l .sub__b{break-inside:avoid;margin:0 0 1.6rem}
-.arb__l .sub__g{margin:0 0 .5rem;font-size:.58rem;letter-spacing:.2em;color:var(--muted)}
-.arb__l .sub a{grid-template-columns:2.2rem 1fr;gap:.8rem;padding:.4rem 0;
-  font-size:.94rem;line-height:1.45;border:0}
-.arb__l .sub a span{font-size:.6rem}
-.arb__l .sub a:hover{color:var(--negro)}
-.arb__l .sub a.es-aqui{color:var(--azul)}
-
-.rail__pie{display:flex;flex-wrap:wrap;gap:.4rem 2rem;margin-top:3.4rem;padding-top:1.6rem;
-  border-top:1px solid var(--linea)}
-.rail__pie button{font:inherit;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.18em;
-  text-transform:uppercase;background:none;border:0;cursor:pointer;color:var(--muted);
-  padding:.6rem 0;transition:color .2s var(--e)}
-.rail__pie button:hover{color:var(--azul)}
-.velorail{display:none}
-
-/* el lector ocupa la pantalla, que es lo que hay que hacer con un texto */
-.lector{inset:0}
-.lector__cab{height:auto;padding:1.2rem clamp(1.2rem,4vw,3.4rem)}
-#sitio .puestosel{top:0}
-#sitio .puesto :where(h2,h3,h4,[id]){scroll-margin-top:7rem}
-
-/* la portada ocupa la pantalla; lo demás entra debajo, con aire */
-/* la primera línea de una banda empieza por debajo de la cabecera, no a su
-   misma altura: dos rótulos a la misma altura se leen como uno partido */
-#sitio .portada{min-height:100vh;padding:13rem var(--marco) 5rem}
-#sitio .frente{min-height:0;padding-top:11rem}
-#sitio .sec{padding-top:0}
-#sitio .sec > .lienzo:first-of-type{padding-top:calc(var(--aire) * .8)}
-
-@media(max-width:900px){
-  .tope{padding:1rem 1.1rem}
-  .tope__b{display:none}
-  .tope__m i{display:none}
-  .rail__in{padding:6rem 1.1rem 4rem}
-  #sitio .portada{min-height:0;padding:8rem 1.6rem 3.5rem}
-  #sitio .frente{padding-top:7.5rem}
-}
-@media print{.tope,.rail{display:none!important}}
-
-
-
-/* ====================================================================
-   OTRA PALETA · versión 18
-   Se va el azul cobalto y el blanco de pantalla. Entra un papel cálido
-   —el del papel de verdad, no el del monitor—, una tinta casi negra con
-   un punto de tierra y un solo color: un verde azulado profundo, que es
-   el color de lo clínico sin ser el azul corporativo de todo el mundo.
-   Sigue siendo negro, gris, blanco y un color, pero ninguno de los tres
-   es el que era.
-   ==================================================================== */
-html:root{
-  --negro:#17170F; --tinta:#17170F; --ink:#22221A; --ink-2:#57574C;
-  --muted:#8B8B7E; --linea:#E4E2D8; --linea-2:#F1EFE8;
-  --papel:#FBFAF6; --blanco:#FFFFFF; --gris:#F4F2EC;
-  --paper:#FBFAF6; --surface:#FFFFFF; --surface-2:#F4F2EC;
-  --line:#E4E2D8; --line-soft:#F1EFE8; --rule:#D6D3C7;
-  --signal:#57574C; --signal-soft:rgba(23,23,15,.05);
-  --alerta:#17170F; --alerta-soft:rgba(23,23,15,.06);
-  --azul:#0E5A50; --azul-o:#0A413A; --azul-p:#E7F0EE;
-  --accent:#0E5A50; --accent-ink:#0A413A; --accent-fuerte:#0A413A;
-  --accent-soft:rgba(14,90,80,.07);
-  --acido:#E7F0EE; --acido-ink:#0A413A;
-  --sem-verde:#0E5A50; --sem-amarillo:#8B8B7E;
-  --sem-naranja:#57574C; --sem-rojo:#17170F;
-  --rol-direccion:#17170F; --rol-doctor:#0E5A50; --rol-rac:#3B3B31;
-  --rol-recepcion:#57574C; --rol-higienista:#77776A; --rol-auxiliar:#9A9A8D;
-}
-/* el papel manda en el fondo; lo que va sobre tarjeta se queda blanco */
-html:root > body{background:var(--papel)}
-#sitio .miobt,#sitio .mirompe,#sitio .puerta{background:var(--blanco)}
-.tope{background:var(--papel)}
-.tope--sobre{background:transparent}
-.rail{background:var(--papel)}
-#lector{background:var(--papel)}
-
-/* ====================================================================
-   OTRA DISPOSICIÓN · versión 18
-   Todo estaba apilado en una columna centrada: rótulo debajo de rótulo,
-   bloque debajo de bloque. Aquí las cabeceras se abren en dos: a la
-   izquierda lo que se llama, a la derecha lo que es. Es la retícula de
-   una publicación y no la de un formulario, y cambia la lectura de todas
-   las pantallas sin tocar una palabra.
-   ==================================================================== */
-#sitio .lienzo__cab{display:grid;
-  grid-template-columns:minmax(0,10fr) minmax(0,13fr);
-  gap:var(--paso-2) var(--paso-4);align-items:start;max-width:none;
-  padding-top:var(--paso-3);border-top:1px solid var(--negro)}
-#sitio .lienzo__cab h2{margin:0;font-size:clamp(1.5rem,3.2vw,2.5rem);line-height:1.08;
-  font-weight:300;letter-spacing:-.03em;max-width:16ch}
-#sitio .lienzo__cab p{margin:0;max-width:60ch;padding-top:.35rem}
-
-/* la cabecera de sección: el número, el nombre y la frase, apilados y con
-   el aire justo. Se probó a poner el número en una columna propia, pero va
-   fuera de flujo por diseño —es una marca de agua— y dejaba la columna en
-   cero: apilado se lee mejor y ocupa menos. */
-#sitio .frente{padding-top:9rem}
-#sitio .frente__n{font-size:clamp(3.4rem,9vw,7.5rem);line-height:.8;
-  margin-bottom:var(--paso-2)}
-#sitio .frente h1{max-width:18ch}
-
-/* y las dos puertas del final, una al lado de otra y no una debajo */
-#sitio .sigue{grid-template-columns:repeat(auto-fit,minmax(17rem,1fr))}
-
-/* ====================================================================
-   QUE QUEPA EN UN TELÉFONO · versión 18
-   Lo que no cabe se recorre de lado dentro de su caja; lo que nunca se
-   lleva la página consigo. Una tabla de cinco columnas no puede empujar
-   el ancho de la pantalla: la culpable era la de las setenta y seis
-   acciones, que arrastraba la página treinta y siete píxeles a la
-   derecha en un móvil.
-   ==================================================================== */
-#sitio .tablawrap,#sitio .tablewrap{overflow-x:auto;overscroll-behavior-x:contain;
-  max-width:100%;min-width:0}
-#sitio table{max-width:none}
-#sitio .dibcaja{max-width:100%}
-/* nada se sale de la ventana, pase lo que pase */
-html:root > body{overflow-x:clip}
-#sitio .sec{overflow-x:clip}
-
-@media(max-width:900px){
-  #sitio .lienzo__cab{grid-template-columns:1fr;gap:var(--paso-2)}
-  #sitio .lienzo__cab h2{max-width:none}
-  #sitio .frente{padding-top:6.5rem}
-  #sitio .frente h1{max-width:none}
-}
-
-/* ====================================================================
-   EL ÍNDICE EN UN TELÉFONO · versión 19
-   En una pantalla de 390 el índice era inusable: el rótulo del buscador
-   se salía por la derecha, cada sección medía doscientos píxeles de alto
-   y solo cabían seis, y el número quedaba a un palmo de su nombre. Aquí
-   la fila es una fila: número, nombre, cuenta y flecha, en una línea y
-   con el aire justo. Y la flecha es un blanco de cuarenta y cuatro
-   píxeles, que es lo que mide un dedo.
-   ==================================================================== */
-@media(max-width:900px){
-  .rail__in{padding:5.4rem 1.1rem 3rem}
-  .rail__filtro{gap:.8rem;padding-bottom:.9rem;margin-bottom:.4rem}
-  .rail__filtro input{min-width:0;font-size:1.15rem}
-  .rail__n{font-size:.54rem}
-
-  .arb__b{grid-template-columns:2.2rem minmax(0,1fr) auto 2.6rem;
-    gap:.7rem;padding:.95rem 0;align-items:center}
-  .arb__n{font-size:.62rem}
-  .arb__r{font-size:1.32rem;line-height:1.15;letter-spacing:-.02em}
-  .arb__c{font-size:.54rem;letter-spacing:.1em}
-  /* La flecha se queda del tamaño de una flecha y lo que crece es su zona
-     de toque: el relleno cuenta para el dedo y no para el dibujo. Estirada
-     al ancho de la columna salía del tamaño de una uña. */
-  .arb__x{width:14px;height:9px;box-sizing:content-box;
-    padding:1.15rem .1rem 1.15rem 1.7rem;overflow:visible}
-  .arb__s.es-aqui > .arb__b .arb__r{text-underline-offset:.3rem}
-  .arb__l{padding:0 0 1.2rem}
-  /* sin columnas: una sola columna de CSS dentro de una caja estrecha dejaba
-     el índice con altura cero en el teléfono. Aquí no hacen falta. */
-  .arb__l .sub{columns:auto;column-count:auto;column-width:auto;display:block}
-  .arb__l .sub__b{margin:0 0 1rem}
-  .arb__l .sub a{padding:.6rem 0;font-size:1rem;grid-template-columns:2.2rem 1fr}
-  .rail__pie{margin-top:2rem;gap:.2rem 1.2rem}
-  .rail__pie button{font-size:.56rem;padding:.7rem 0}
-}
-@media(max-width:900px) and (hover:none){
-  /* sin ratón no hay «encima»: el estado se ve al tocar, no al pasar */
-  .arb__b:hover{color:var(--negro)}
-}
-
-
-
-/* 7 · Los desplegables. Eran una lista de filas con una raya finísima entre
-   ellas y un más de doce píxeles: a la nueva escala se quedaban en nada.
-   Ahora la fila entera es la zona que se pulsa, el número manda el ancho de
-   la columna izquierda, el signo crece y gira, y el que está abierto se
-   distingue del cerrado sin tener que leerlo: una línea azul a la izquierda
-   y el titular en negro. */
-#sitio .desp{border-top:1px solid var(--linea)}
-#sitio .desp:last-child{border-bottom:1px solid var(--linea)}
-#sitio .desp__b{gap:1.8rem;padding:1.7rem .6rem 1.7rem 0;align-items:flex-start;
-  border-left:2px solid transparent;
-  transition:background .22s var(--e),border-color .28s var(--e),padding .26s var(--e)}
-.sitio--vivo #sitio .desp__b:hover{background:var(--gris);padding-left:1rem;
-  border-left-color:var(--linea)}
-#sitio .desp.es-ab > .desp__h > .desp__b{border-left-color:var(--azul);padding-left:1rem;
-  background:none}
-#sitio .desp__n{font-size:.7rem;letter-spacing:.06em;min-width:3.6rem;
-  padding-top:.25rem;color:var(--muted);transition:color .2s var(--e)}
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__n{color:var(--azul)}
-#sitio .desp__t b{font-size:1.12rem;line-height:1.38;letter-spacing:-.012em;
-  color:var(--ink-2);transition:color .2s var(--e)}
-#sitio .desp__b:hover .desp__t b,
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__t b{color:var(--negro)}
-#sitio .desp__t i{margin-top:.6rem;font-size:.62rem;letter-spacing:.2em}
-#sitio .desp__x{width:15px;height:15px;align-self:flex-start;margin-top:.4rem;
-  transition:transform .34s var(--e)}
-#sitio .desp__x::before{top:7px}
-#sitio .desp__x::after{left:7px}
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__x{transform:rotate(180deg)}
-#sitio .desp.es-ab > .desp__h > .desp__b .desp__x::before{background:var(--azul)}
-.sitio--vivo #sitio .desp.es-ab .desp__in{padding:.4rem 0 3rem 1rem}
-
-/* 8 bis · La barra no crece con el texto. Es mando, no lectura: si sube con
-   la escala, nueve secciones más sus flechas dejan de caber en un portátil.
-   Se fija en píxeles, que es lo que la mantiene igual de cómoda a cualquier
-   tamaño de letra, y se le da a cada entrada el aire justo. */
-.nav__f{padding:0 1.6rem;gap:1rem}
-.nav__m{font-size:14px;letter-spacing:.1em}
-.nav__m em{font-size:9px}
-.nav__l button{font-size:11px;letter-spacing:.05em;padding:0 .5rem;gap:.28rem}
-.nav__l button::after{inset:auto .5rem 1.2rem .5rem}
-.nav__x{width:11px;height:11px}
-.nav__ruta{font-size:11px;letter-spacing:.1em;padding:.5rem .55rem}
-.abrepal{font-size:11px;letter-spacing:.14em}
-.icono{width:2rem;height:2rem}
-@media(max-width:1500px){
-  .nav__f{padding:0 1.1rem;gap:.7rem}
-  .nav__l button{font-size:10.5px;padding:0 .34rem}
-  .nav__l button::after{inset:auto .34rem 1.2rem .34rem}
-  .nav__ruta{font-size:10.5px;padding:.5rem .38rem}
-  /* la lupa se queda; la palabra «buscar» se va, que ocupa lo que dos
-     secciones y no dice nada que el icono no diga */
-  .abrepal span{display:none}
-  .abrepal{padding:.4rem .3rem}
-  .nav__sep{margin:0 .3rem}
-  .nav__m em{display:none}
-}
-@media(max-width:1340px){
-  .nav__l button{font-size:10px;padding:0 .26rem;gap:.2rem}
-  .nav__l button::after{inset:auto .26rem 1.2rem .26rem}
-  .nav__x{width:9px;height:9px}
-  .nav__ruta{font-size:10px;padding:.5rem .3rem}
-  .nav__m{font-size:12px}
-}
-
-/* 8 ter · El selector de puesto en una sola fila. A la nueva escala los seis
-   no cabían y se partía en dos, y lo que se queda pegado arriba tiene que
-   medir siempre lo mismo. */
-#sitio .puestosel{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-#sitio .puestosel::-webkit-scrollbar{display:none}
-#sitio .puestobt{flex:1 1 0;min-width:0;gap:.7rem;padding:1rem .8rem}
-#sitio .puestobt__c{width:1.9rem;height:1.9rem}
-#sitio .puestobt b{font-size:.82rem;letter-spacing:.02em}
-#sitio .puestobt span{font-size:.58rem;letter-spacing:.12em;margin-top:.3rem}
-
-
-
 """+ CSS_DATOS + """
 
 /* 9 · Marketing, ampliado. Las siete apuestas, lo que no cuesta dinero,
@@ -6077,6 +5513,10 @@ JS = """
   function marcaRail(sec, clave){
     [].slice.call(D.querySelectorAll(".arb__s")).forEach(function(x){
       x.classList.toggle("es-aqui", x.dataset.arb === sec);
+    });
+    /* la espina marca dónde se está sin que haya que abrir nada */
+    [].slice.call(D.querySelectorAll(".esp__i")).forEach(function(a){
+      a.classList.toggle("es-aqui", a.dataset.irSec === sec);
     });
     [].slice.call(D.querySelectorAll(".arb__l a")).forEach(function(a){
       a.classList.toggle("es-aqui", !!clave && a.getAttribute("href") === "#" + clave);
@@ -7522,6 +6962,202 @@ V30 = """
 """
 
 
+HOJA = """
+/* ====================================================================
+   LA HOJA · versión 31 · escrita de una vez
+
+   Lo que había eran DOCE capas puestas una encima de otra a lo largo de
+   veinte versiones: seis dentro de la hoja base —12, 15, 16, 17, 18, 19— y
+   seis más por fuera —21, 22, 23, 24, 26, 30—. Sesenta y nueve mil bytes de
+   parches en los que cada arreglo anulaba media regla de otro, y por eso cada
+   vez que se tocaba algo se rompía otra cosa en un sitio distinto.
+
+   Se han quitado las doce. Esta es una hoja sola, escrita de arriba abajo, y
+   no se contradice a sí misma en ningún punto. La presentación de los ocho
+   documentos —sus tablas, sus figuras, sus fichas— no se toca: eso es la
+   literatura y se queda como está.
+
+   El giro: la navegación deja de ser una pantalla que se abre encima y pasa a
+   ser una ESPINA fija a la izquierda que está siempre puesta. No hay que
+   abrirla, no tapa nada y siempre dice dónde se está. El índice que se abría
+   a pantalla completa era bonito y era la razón de que uno se perdiera: al
+   cerrarlo no quedaba rastro de dónde estaba.
+   ==================================================================== */
+
+/* --------------------------------------------------------------- 1. Base */
+:root{
+  --tinta:#141414; --papel:#FCFCFA; --nieve:#FFFFFF; --humo:#F2F1ED;
+  --gris:#6E6E68; --linea:#E2E1DA; --fina:#EFEEE9;
+  --verde:#0E5A50; --verde-o:#083C35; --verde-p:#E9F1EF;
+  --espina:17rem;
+  --e:cubic-bezier(.22,.61,.36,1);
+}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--papel);color:var(--tinta);
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px;line-height:1.65;margin:0;
+  font-synthesis-weight:none;text-rendering:optimizeLegibility}
+*,*::before,*::after{box-sizing:border-box}
+:where(h1,h2,h3,h4){font-weight:400;letter-spacing:-.022em;line-height:1.14;
+  text-wrap:balance;margin:0}
+:where(p,li){text-wrap:pretty}
+::selection{background:var(--verde);color:#fff}
+:focus-visible{outline:2px solid var(--verde);outline-offset:3px}
+.letra,.eyebrow,.rotulillo{font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+[hidden]{display:none!important}
+
+/* ------------------------------------------------- 2. La espina, siempre */
+.tope{position:fixed;inset:0 auto 0 0;width:var(--espina);z-index:60;
+  background:var(--nieve);border-right:1px solid var(--linea);
+  display:flex;flex-direction:column;padding:1.5rem 1.2rem;gap:1rem;
+  overflow-y:auto;overscroll-behavior:contain}
+.tope__m{display:block;text-decoration:none;color:inherit;flex:none}
+.tope__m b{display:block;font-size:1.05rem;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase}
+.tope__m i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;
+  font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gris);margin-top:.3rem}
+.donde{margin:0;display:flex;flex-direction:column;gap:.18rem;flex:none;
+  padding:.75rem 0;border-block:1px solid var(--fina);
+  font-family:"IBM Plex Mono",monospace;font-size:.53rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris);min-width:0}
+.donde:empty{display:none}
+.donde__s{color:var(--tinta)}
+.donde__a{color:var(--verde)}
+.donde__p,.donde__x{display:none}
+.espina{display:flex;flex-direction:column;gap:0;flex:1 1 auto;min-height:0;
+  margin:.2rem 0}
+.esp__i{display:block;text-decoration:none;color:var(--gris);
+  font-size:.86rem;line-height:1.3;padding:.42rem 0;
+  border-bottom:1px solid transparent;transition:color .18s var(--e)}
+.esp__i:hover{color:var(--tinta)}
+.esp__i.es-aqui{color:var(--tinta);font-weight:500}
+.esp__i.es-aqui::before{content:"";display:inline-block;width:.5rem;height:1px;
+  background:var(--verde);vertical-align:middle;margin-right:.5rem}
+.tope__d{display:flex;flex-direction:column;gap:.1rem;flex:none;
+  border-top:1px solid var(--fina);padding-top:.6rem}
+.tope__b,.railbt{font:inherit;font-family:"IBM Plex Mono",monospace;
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gris);background:none;border:0;padding:.45rem 0;cursor:pointer;
+  text-align:left;text-decoration:none;display:block;width:100%}
+.tope__b:hover,.railbt:hover{color:var(--verde)}
+.railbt__x{display:none}
+
+/* --------------------------------------------------- 3. Lo que se lee */
+#sitio,.panel{margin-left:var(--espina);padding:0;min-width:0}
+.sec{padding:0}
+.sec:not(.es-on){display:none}
+
+.portada{min-height:100svh;display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,22rem);
+  align-content:center;gap:clamp(2rem,5vw,6rem);
+  padding:clamp(3rem,8vh,6rem) clamp(1.6rem,5vw,5rem);
+  background:var(--tinta);color:var(--papel);margin:0}
+.portada__c{align-self:center;min-width:0}
+.portada__k{margin:0 0 1.6rem;color:rgba(255,255,255,.45)}
+.portada h1{font-size:clamp(2.6rem,6vw,5rem);line-height:1;letter-spacing:-.04em;
+  color:#fff}
+.portada h1 em{font-style:normal;color:#5FBFA9;display:block}
+.portada__l{margin:1.6rem 0 0;max-width:26ch;font-size:clamp(1.05rem,1.7vw,1.4rem);
+  line-height:1.35;color:rgba(255,255,255,.62)}
+.portada__b{display:flex;flex-wrap:wrap;gap:.7rem;margin:2.4rem 0 0}
+.portada__pie{position:static;margin:3rem 0 0;color:rgba(255,255,255,.35);
+  grid-column:1/-1}
+.portada__baja{display:none}
+.bt{font:inherit;font-family:"IBM Plex Mono",monospace;font-size:.6rem;
+  letter-spacing:.18em;text-transform:uppercase;padding:.95rem 1.8rem;
+  border:1px solid rgba(255,255,255,.28);background:none;color:#fff;
+  cursor:pointer;text-decoration:none;transition:background .2s var(--e)}
+.bt:hover{background:rgba(255,255,255,.1)}
+.bt--fuerte{background:#fff;color:var(--tinta);border-color:#fff}
+.bt--fuerte:hover{background:rgba(255,255,255,.85)}
+
+/* El censo de la portada */
+.censo{align-self:center;display:grid;gap:0;margin:0;max-width:none;
+  border:0;padding:0}
+.censo__k{grid-column:1/-1;margin:0 0 .6rem;color:rgba(255,255,255,.35)}
+.censo__i{display:flex;align-items:baseline;gap:1rem;
+  border-top:1px solid rgba(255,255,255,.14);padding:.8rem 0}
+.censo__i:last-child{border-bottom:1px solid rgba(255,255,255,.14)}
+.censo__i b{font-size:1.5rem;font-weight:400;color:#fff;min-width:3ch;
+  text-align:right;font-variant-numeric:tabular-nums}
+.censo__i span{font-family:"IBM Plex Mono",monospace;font-size:.53rem;
+  letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+
+/* Las bandas y cabeceras de sección */
+.frente,.banda{padding:clamp(3rem,7vh,5.5rem) clamp(1.6rem,5vw,5rem);margin:0;
+  border-bottom:1px solid var(--linea);background:var(--papel)}
+.frente h1,.banda h2{font-size:clamp(1.9rem,3.4vw,3rem);max-width:22ch}
+.frente p,.banda__q{margin:1.1rem 0 0;max-width:62ch;color:var(--gris);
+  font-size:1rem;line-height:1.75}
+.banda__i,.artes{display:none}
+
+/* La caja de lectura: una medida, y aire */
+.lienzo,.sec__lienzos,.hojas,.hoja{padding:0;margin:0;max-width:none}
+.hoja{padding:clamp(2.4rem,6vh,4.5rem) clamp(1.6rem,5vw,5rem)}
+.hoja .section{max-width:none;margin:0}
+.hoja .wrap{max-width:66ch;margin:0}
+.hoja p,.hoja li{font-size:1rem;line-height:1.78}
+.hoja h2{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 .9rem}
+.hoja h3{font-size:1.25rem;margin:2.6rem 0 .7rem}
+.hoja .tablewrap{max-width:none;overflow-x:auto;border:0;background:none;
+  margin:1.8rem 0}
+.hoja table{border-collapse:collapse;width:100%;font-size:.9rem}
+.hoja th{font-weight:400;font-family:"IBM Plex Mono",monospace;font-size:.55rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gris);
+  background:none;border-bottom:1px solid var(--tinta);padding:.6rem .8rem;
+  text-align:left;vertical-align:bottom}
+.hoja td{border-bottom:1px solid var(--fina);padding:.75rem .8rem;
+  vertical-align:baseline}
+.hoja .rulebox,.hoja .callout{background:none;border:0;
+  border-left:2px solid var(--verde);padding:.2rem 0 .2rem 1.4rem;
+  margin:2rem 0;max-width:66ch}
+.hoja .cards{display:grid;gap:0;border-top:1px solid var(--tinta);
+  grid-template-columns:repeat(auto-fit,minmax(min(16rem,100%),1fr));
+  background:none;border-left:0;border-right:0;border-bottom:0;margin:2rem 0}
+.hoja .card{border:0;border-bottom:1px solid var(--fina);background:none;
+  padding:1.2rem 1.4rem 1.2rem 0;margin:0}
+
+/* El reloj de los 123 minutos reparte el ancho entre catorce tramos, y los
+   más cortos se quedan sin sitio para su rótulo en cuanto la columna se
+   estrecha —y aquí se ha estrechado, porque la espina ocupa su parte—. Se le
+   da un ancho mínimo y su propio desplazamiento: antes que apretar dos
+   nombres hasta que se toquen, que se pueda arrastrar. */
+/* Cada tramo mide lo que duró su fase: el más corto son dos minutos de ciento
+   veintitrés, y ahí no cabe «Preparación» por mucho ancho mínimo que se le dé.
+   Así que el rótulo se queda dentro de su tramo y se corta con puntos
+   suspensivos. El nombre entero no se pierde: está al pasar el ratón y está en
+   la fase, que se abre al pulsarla. Antes se salía y se montaba sobre el
+   rótulo del tramo siguiente. */
+.reloj,.reloj__c,.carriles{overflow-x:auto;max-width:100%}
+.reloj > *,.reloj__c > *{min-width:42rem}
+.reloj__t{overflow:hidden;min-width:0}
+.reloj__r{display:block;max-width:100%;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+
+/* ------------------------------------------------ 4. El teléfono */
+@media(max-width:900px){
+  :root{--espina:0px}
+  .tope{position:sticky;inset:auto;width:auto;height:auto;flex-direction:row;
+    align-items:center;flex-wrap:wrap;gap:.6rem 1.1rem;padding:.8rem 1.1rem;
+    border-right:0;border-bottom:1px solid var(--linea);top:0;overflow:visible}
+  .tope__m b{font-size:.95rem}
+  .tope__m i{display:none}
+  .donde{order:9;flex-basis:100%;flex-direction:row;gap:.4rem;padding:.3rem 0 0;
+    border:0;border-top:1px solid var(--fina);white-space:nowrap;overflow:hidden}
+  .tope__d{flex-direction:row;gap:.9rem;margin-left:auto}
+  .tope__b,.railbt{padding:.3rem 0;width:auto}
+  #sitio,.panel{margin-left:0}
+  .portada{grid-template-columns:1fr;min-height:auto;
+    padding:clamp(2.4rem,7vh,4rem) 1.3rem}
+  .censo{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.4rem}
+  .censo__i:last-child{border-bottom:0}
+  .hoja,.frente,.banda{padding-left:1.3rem;padding-right:1.3rem}
+}
+"""
+
+
 SIN_GUION = """
 /* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
@@ -7623,9 +7259,8 @@ MARCO = """
   <a class="tope__m" href="#inicio" data-ir-sec="inicio">
     <b>Alma</b><i>No medias sonrisas</i></a>
   <p class="donde" id="donde" aria-live="polite"></p>
+  <nav class="espina" aria-label="Las secciones del sistema">@@ESPINA@@</nav>
   <div class="tope__d">
-    <a class="tope__b" href="#recorridos" data-ir-sec="recorridos">Recorridos</a>
-    <a class="tope__b" href="#mapa" data-ir-sec="mapa">Mapa</a>
     <button class="tope__b" type="button" data-abre="paleta">Buscar</button>
     <button class="railbt" type="button" id="railbt" aria-expanded="false"
             aria-controls="rail"><span class="railbt__r">Índice</span>
@@ -8038,7 +7673,19 @@ def main():
             '</div>' % (ident, ident, ident, H.escape(rotulo), H.escape(cuenta)))
     arbol[2:2] = extras
 
-    cuerpo = (MARCO.replace("@@ARBOL@@", "\n".join(arbol))
+    # La espina: las trece secciones, siempre puestas. El índice dejó de ser
+    # una pantalla que se abre encima —bonita y la razón de que uno se
+    # perdiera, porque al cerrarla no quedaba rastro de dónde estaba— y pasa a
+    # ser una lista quieta a la izquierda que se lee de un vistazo.
+    orden_esp = [("mio", "Lo mío"), ("inicio", "Inicio"),
+                 ("sistema", "El sistema"), ("recorridos", "Recorridos"),
+                 ("mapa", "El mapa")]
+    orden_esp += [(i, r) for i, r, doc, _l, _n in SECCIONES if doc]
+    espina = "".join(
+        '<a class="esp__i" href="#%s" data-ir-sec="%s">%s</a>' % (i, i, H.escape(r))
+        for i, r in orden_esp)
+
+    cuerpo = (MARCO.replace("@@ESPINA@@", espina).replace("@@ARBOL@@", "\n".join(arbol))
                    .replace("@N@", str(total)).replace("@V@", str(len(voces)))
                    .replace("@@SECCIONES@@",
                             inicio + "\n" + mio_html + "\n" + sistema_html + "\n"
@@ -8060,7 +7707,7 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + V24 + "\n" + V26 + "\n" + V30 + "\n" + SIN_GUION
+    extra = extra + "\n" + HOJA + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 

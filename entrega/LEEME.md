@@ -17,6 +17,58 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## Desde cero, de verdad · versión 31
+
+Las veces anteriores que me pidió empezar de cero, puse **otra capa encima**.
+Esta no.
+
+### El problema de fondo, con números
+
+La hoja de estilo eran **doce capas** apiladas a lo largo de veinte versiones:
+seis dentro de la hoja base —12, 15, 16, 17, 18 y 19— y seis más por fuera
+—21, 22, 23, 24, 26 y 30—. **Sesenta y nueve mil bytes de parches** en los que
+cada arreglo anulaba media regla de otro. Por eso cada vez que se tocaba algo
+se rompía otra cosa en un sitio distinto, y por eso la página parecía
+apelotonada aunque cada pieza suelta estuviera bien.
+
+Se han quitado las doce. En su lugar hay **una hoja sola de ocho mil bytes**,
+escrita de arriba abajo, que no se contradice a sí misma en ningún punto.
+
+**La presentación de los ocho documentos no se toca**: sus tablas, sus figuras
+y sus fichas son la literatura y se quedan como están.
+
+### El giro: una espina, no una pantalla que se abre
+
+El índice era una pantalla completa que se abría encima. Era bonita y **era la
+razón de que uno se perdiera**: al cerrarla no quedaba rastro de dónde estaba.
+
+Ahora hay una **espina fija a la izquierda**, siempre puesta, que no hay que
+abrir y no tapa nada:
+
+- **Las trece secciones**, a un clic desde cualquier punto del sistema.
+- **La sección en la que se está**, marcada con una raya verde.
+- **Dónde se está**, escrito arriba: sección, parte y apartado.
+- Debajo, **Buscar** y el **Índice** completo de los 135 apartados, que siguen
+  estando para quien quiera el detalle.
+
+En un teléfono la espina se convierte en una barra horizontal arriba, con las
+mismas trece secciones.
+
+### Lo que encontró el comprobador en mi propia reescritura
+
+`verifica-choques.py` —el que se escribió en la versión 30— **paró mi primera
+compilación**: en el reloj de los 123 minutos, «Preparación» se montaba sobre
+«Acogida». Al estrechar la columna para dejar sitio a la espina, el tramo más
+corto se quedó en 62 píxeles. Cada tramo mide lo que duró su fase, y en dos
+minutos de ciento veintitrés no cabe un nombre por mucho ancho mínimo que se
+le dé: ahora el rótulo se corta dentro de su tramo con puntos suspensivos, y el
+nombre entero sigue al pasar el ratón y al abrir la fase.
+
+Comprobado sobre el archivo entregado: **13 de 13 secciones** llegan y se
+marcan, 930 enlaces con 0 externos y 0 rotos, el buscador responde, sin errores
+de consola, **nada se monta encima de nada en 7 tamaños × 13 secciones**, y
+ninguna sección enseña dos veces lo mismo.
+
 ## Que nada se monte encima de nada · versión 30
 
 Usted mandó una captura de su portátil. En ella se veía lo que yo no había
