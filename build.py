@@ -54,6 +54,7 @@ DOCUMENTOS = [
     (RAIZ / "verifica-anclas.py", "cada enlace, contra el titular al que llega"),
     (RAIZ / "verifica-enlaces.py", "cada enlace de la web, comprobado"),
     (RAIZ / "verifica-duplicados.py", "que nada se enseñe dos veces junto"),
+    (RAIZ / "verifica-choques.py", "que nada se monte encima de nada"),
 ]
 
 EXTRAS = [

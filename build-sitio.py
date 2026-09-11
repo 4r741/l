@@ -6097,6 +6097,25 @@ JS = """
      siempre —sección, parte y apartado— y se actualiza sola al cambiar de
      sección y al abrir o cerrar el lector. No hace falta abrir nada para
      saberlo. */
+  /* El alto de la barra no es un número: cambia cuando el rótulo de posición
+     se parte en dos líneas, y cambia otra vez en un teléfono. Cualquier valor
+     fijo que se escriba en la hoja acierta en un tamaño y falla en el resto
+     —que es justo lo que pasaba: el censo y el rótulo del centro corrían por
+     debajo de la barra en 1100, 1280 y 1366—. Así que lo mide el navegador y
+     lo publica, y la hoja reserva exactamente eso. */
+  function mideBarra(){
+    var t = D.getElementById("tope");
+    if(!t) return;
+    D.documentElement.style.setProperty("--barra", Math.ceil(t.offsetHeight) + "px");
+  }
+  mideBarra();
+  window.addEventListener("resize", mideBarra);
+  if(window.ResizeObserver){
+    var ro = new ResizeObserver(mideBarra);
+    var tp = D.getElementById("tope");
+    if(tp) ro.observe(tp);
+  }
+
   var elDonde = D.getElementById("donde");
   function pintaDonde(){
     if(!elDonde) return;
@@ -7434,6 +7453,75 @@ V26 = """
 """
 
 
+V30 = """
+/* ====================================================================
+   QUE NADA SE MONTE ENCIMA DE NADA · versión 30
+
+   Tres choques, encontrados mirando la captura de un portátil de verdad y
+   confirmados midiendo caja contra caja a siete tamaños:
+
+   1. En 1100, 1280 y 1366 —o sea, en cualquier portátil— el rótulo del
+      centro y las primeras cifras del censo corrían POR DEBAJO de la barra
+      de arriba. Lo provoqué yo en la versión 26: el escalón de portátil
+      quitaba el aire superior de la portada sin reservar el alto de una
+      cabecera que está fija. Se ve a simple vista y no lo vi porque mis
+      barridos medían desbordes horizontales, nunca un texto encima de otro.
+
+   2. En TODOS los tamaños, incluido el monitor grande, «sonrisas» se metía
+      dentro de «Le devolvemos su sonrisa». El titular va a un interlineado
+      de 0,94 para que las dos líneas del lema queden apretadas, y a ese
+      valor la caja del texto mide menos que las letras: lo que sobresale
+      cae sobre el párrafo siguiente.
+
+   3. A 1024 de ancho y 640 de alto el censo se comía la línea del pie.
+
+   Desde esta versión hay un comprobador, verifica-choques.py, que recorre
+   siete tamaños y para la entrega si encuentra un solo texto encima de otro
+   o por debajo de la barra.
+   ==================================================================== */
+
+/* 1 · La barra es fija y su alto lo mide el guion en «--barra». La portada
+   reserva ese alto exacto más un respiro, en cualquier pantalla. */
+/* La portada sube a propósito —«--saca»— para que su fondo oscuro pase por
+   debajo de la barra transparente. Eso es deliberado y se conserva; lo que
+   faltaba es que el TEXTO bajase otro tanto. El relleno compensa la sangría
+   (restar una cantidad negativa es sumarla) más el alto real de la barra. */
+#sitio .portada{padding-top:calc(var(--barra, 7rem) - var(--saca) + clamp(1rem, 2.5vh, 2rem))}
+@media(min-width:901px) and (max-height:860px){
+  #sitio .portada{padding-bottom:2.6rem}
+}
+/* El censo se alinea arriba, no al centro: centrado, una lista de seis filas
+   más alta que el hueco se sale por arriba y vuelve a meterse bajo la barra. */
+@media(min-width:1100px){
+  #sitio .portada > .censo{align-self:start}
+}
+
+/* 2 · El lema, con sitio para sus propias letras. A 0,94 de interlineado la
+   caja mide menos que el texto; se le devuelve lo que le falta por abajo sin
+   separar las dos líneas del lema, que es lo que se quería apretar. */
+#sitio .portada h1,#sitio .portada .portada__t{
+  line-height:.98;padding-bottom:.12em;margin-bottom:.25rem}
+#sitio .portada .portada__l{margin-top:.35rem}
+
+/* 3 · Y aire entre la voz y los botones, que se tocaban. */
+#sitio .portada .portada__b{margin-top:.9rem}
+
+/* 4 bis · Por debajo de 1100 la portada apila en una columna y el pie estaba
+   posicionado sobre el flujo: en una pantalla corta —1024×640— las dos últimas
+   cifras del censo le caían encima. Ahí el pie vuelve a la fila, detrás de
+   todo lo demás, y ya no hay nada que se le pueda montar. */
+@media(max-width:1099px){
+  #sitio .portada > .portada__pie{position:static;margin-top:1.6rem}
+}
+
+/* 4 · El censo no empieza pegado a la barra ni acaba pegado al pie. */
+@media(min-width:1100px){
+  #sitio .portada > .censo{padding-block:.6rem}
+  #sitio .portada > .portada__pie{padding-top:1.2rem}
+}
+"""
+
+
 SIN_GUION = """
 /* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
@@ -7972,7 +8060,7 @@ def main():
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
              + "\n" + hoja_propia("instrumentos/captura.html", "HOJA DE CAPTURA")
              + "\n" + hoja_propia("deck.html", ".slide{"))
-    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + V24 + "\n" + V26 + "\n" + SIN_GUION
+    extra = extra + "\n" + V21 + "\n" + V22 + "\n" + V23 + "\n" + V24 + "\n" + V26 + "\n" + V30 + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
 

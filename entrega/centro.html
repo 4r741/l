@@ -4464,6 +4464,73 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
 
 
 /* ====================================================================
+   QUE NADA SE MONTE ENCIMA DE NADA · versión 30
+
+   Tres choques, encontrados mirando la captura de un portátil de verdad y
+   confirmados midiendo caja contra caja a siete tamaños:
+
+   1. En 1100, 1280 y 1366 —o sea, en cualquier portátil— el rótulo del
+      centro y las primeras cifras del censo corrían POR DEBAJO de la barra
+      de arriba. Lo provoqué yo en la versión 26: el escalón de portátil
+      quitaba el aire superior de la portada sin reservar el alto de una
+      cabecera que está fija. Se ve a simple vista y no lo vi porque mis
+      barridos medían desbordes horizontales, nunca un texto encima de otro.
+
+   2. En TODOS los tamaños, incluido el monitor grande, «sonrisas» se metía
+      dentro de «Le devolvemos su sonrisa». El titular va a un interlineado
+      de 0,94 para que las dos líneas del lema queden apretadas, y a ese
+      valor la caja del texto mide menos que las letras: lo que sobresale
+      cae sobre el párrafo siguiente.
+
+   3. A 1024 de ancho y 640 de alto el censo se comía la línea del pie.
+
+   Desde esta versión hay un comprobador, verifica-choques.py, que recorre
+   siete tamaños y para la entrega si encuentra un solo texto encima de otro
+   o por debajo de la barra.
+   ==================================================================== */
+
+/* 1 · La barra es fija y su alto lo mide el guion en «--barra». La portada
+   reserva ese alto exacto más un respiro, en cualquier pantalla. */
+/* La portada sube a propósito —«--saca»— para que su fondo oscuro pase por
+   debajo de la barra transparente. Eso es deliberado y se conserva; lo que
+   faltaba es que el TEXTO bajase otro tanto. El relleno compensa la sangría
+   (restar una cantidad negativa es sumarla) más el alto real de la barra. */
+#sitio .portada{padding-top:calc(var(--barra, 7rem) - var(--saca) + clamp(1rem, 2.5vh, 2rem))}
+@media(min-width:901px) and (max-height:860px){
+  #sitio .portada{padding-bottom:2.6rem}
+}
+/* El censo se alinea arriba, no al centro: centrado, una lista de seis filas
+   más alta que el hueco se sale por arriba y vuelve a meterse bajo la barra. */
+@media(min-width:1100px){
+  #sitio .portada > .censo{align-self:start}
+}
+
+/* 2 · El lema, con sitio para sus propias letras. A 0,94 de interlineado la
+   caja mide menos que el texto; se le devuelve lo que le falta por abajo sin
+   separar las dos líneas del lema, que es lo que se quería apretar. */
+#sitio .portada h1,#sitio .portada .portada__t{
+  line-height:.98;padding-bottom:.12em;margin-bottom:.25rem}
+#sitio .portada .portada__l{margin-top:.35rem}
+
+/* 3 · Y aire entre la voz y los botones, que se tocaban. */
+#sitio .portada .portada__b{margin-top:.9rem}
+
+/* 4 bis · Por debajo de 1100 la portada apila en una columna y el pie estaba
+   posicionado sobre el flujo: en una pantalla corta —1024×640— las dos últimas
+   cifras del censo le caían encima. Ahí el pie vuelve a la fila, detrás de
+   todo lo demás, y ya no hay nada que se le pueda montar. */
+@media(max-width:1099px){
+  #sitio .portada > .portada__pie{position:static;margin-top:1.6rem}
+}
+
+/* 4 · El censo no empieza pegado a la barra ni acaba pegado al pie. */
+@media(min-width:1100px){
+  #sitio .portada > .censo{padding-block:.6rem}
+  #sitio .portada > .portada__pie{padding-top:1.2rem}
+}
+
+
+/* ====================================================================
    CUANDO NO CORRE EL GUION · versión 20
 
    Un archivo que se abre con doble clic acaba en sitios donde no se
@@ -4785,7 +4852,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Alma<br>
         Calle Progreso 2 · Ourense</p></div>
-      <div><p class="letra">Esta edición</p><p>Versión 29.0 · Septiembre 2026<br>
+      <div><p class="letra">Esta edición</p><p>Versión 30.0 · Septiembre 2026<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
         laboral y estratégica; no se difunde fuera de la organización sin autorización expresa
@@ -5236,7 +5303,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v29.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan de Dirección · Junta Directiva · v30.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="t-cover" id="a-portada">
@@ -5246,7 +5313,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     <div class="t-cover__rule" aria-hidden="true"></div>
     <div class="t-cover__meta">
       <span><b>Centro de Excelencia Implantológica Alma</b>Calle Progreso 2 · Ourense</span>
-      <span><b>Plan de Dirección · v29.0</b>Septiembre 2026 · versión única del sistema</span>
+      <span><b>Plan de Dirección · v30.0</b>Septiembre 2026 · versión única del sistema</span>
       <span><b>23 apartados · 6 partes · 15 decisiones</b>Lectura completa 55′ · resumen 3′</span>
     </div>
   </div>
@@ -5323,7 +5390,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
             <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
             <tbody>
               <tr><td>Título</td><td>Plan de Dirección para la Junta Directiva</td></tr>
-              <tr><td>Versión</td><td>v29.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
+              <tr><td>Versión</td><td>v30.0 · Septiembre 2026 · <strong>versión única de todo el sistema</strong></td></tr>
               <tr><td>Clasificación</td><td>Uso interno · Confidencial · No difundir fuera del órgano</td></tr>
               <tr><td>Propietario</td><td>Dirección General</td></tr>
               <tr><td>Elaborado con</td><td>Los 17 documentos operativos del sistema Alma: los 3 troncales y los 14 de apoyo, censados en el apartado 0.1</td></tr>
@@ -5354,7 +5421,7 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="a-t-como-citar-acta">Cómo citar en acta</h3>
-    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v29.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v29.0, Protocolo de Primera Visita v29.0, Otros documentos del sistema v29.0.</p>
+    <p style="color:var(--ink-2);max-width:70ch">Cada apartado lleva su marca de sección (apartados 1 a 23) y cada decisión su código (D1 a D15). Un acuerdo se recoge, por ejemplo, como <span class="mono">«Aprobada D3 en los términos del 17 de la Memoria de Dirección v30.0»</span>. Los documentos operativos se citan por su nombre y versión, que es la misma para todos: Manual Maestro v30.0, Protocolo de Primera Visita v30.0, Otros documentos del sistema v30.0.</p>
 
     <h3 style="font-size:var(--step-2);margin:3.2rem 0 .5rem" id="a-censo">Censo documental</h3>
     <p style="color:var(--ink-2);max-width:70ch">Un sistema documental que no se cuenta a sí mismo acaba contradiciéndose. Esta es la lista completa de lo que existe, con su clase y su propietario. <strong>Cualquier cifra sobre «cuántos documentos hay» sale de aquí y de ningún otro sitio.</strong></p>
@@ -5363,14 +5430,14 @@ table,td,th,time,.parada__n{font-variant-numeric:tabular-nums slashed-zero}
       <table>
         <thead><tr><th>Pieza</th><th>Clase</th><th>Qué contiene</th><th>Propietario</th><th>Versión</th></tr></thead>
         <tbody>
-          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">29.0</td></tr>
-          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">29.0</td></tr>
-          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">29.0</td></tr>
-          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">29.0</td></tr>
-          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">29.0</td></tr>
-          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">29.0</td></tr>
-          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">29.0</td></tr>
-          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">29.0</td></tr>
+          <tr><td><strong>Plan de Dirección</strong></td><td>Gobierno</td><td>Este documento. Dirige y decide; no ejecuta nada</td><td>Dirección General</td><td class="num">30.0</td></tr>
+          <tr><td><strong>Manual Maestro de Operaciones</strong></td><td>Troncal</td><td>Las 14 fases del recorrido del paciente, los 6 puestos, <button type="button" class="gl" data-gl="RACI">RACI</button>, indicadores e incentivos</td><td>Dirección de Centros</td><td class="num">30.0</td></tr>
+          <tr><td><strong>Protocolo de Primera Visita</strong></td><td>Troncal</td><td>Las 12 fases de la primera visita, minuto a minuto</td><td>Dirección de Centros</td><td class="num">30.0</td></tr>
+          <tr><td><strong>Otros documentos del sistema</strong></td><td>Troncal</td><td>Los <strong>14 documentos de apoyo</strong>, del compendio maestro al programa de cuidado</td><td>Dirección de Centros</td><td class="num">30.0</td></tr>
+          <tr><td><strong>Plan Maestro de Marketing</strong></td><td>Plan</td><td>Las 76 acciones posibles sobre los 12 estados del paciente, con dueño, coste y semáforo legal</td><td>Dirección General</td><td class="num">30.0</td></tr>
+          <tr><td><strong>Los números del centro</strong></td><td>Instrumento</td><td>Los 10 indicadores y los 5 números, mes a mes</td><td>Gerencia</td><td class="num">30.0</td></tr>
+          <tr><td><strong>Presentación de Junta</strong></td><td>Derivado</td><td>43 diapositivas extraídas de este Plan de Dirección; no contiene nada que no esté aquí</td><td>Dirección General</td><td class="num">30.0</td></tr>
+          <tr><td><strong>Portada del sistema</strong></td><td>Índice</td><td>Puerta de entrada; sin contenido propio</td><td>Dirección General</td><td class="num">30.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -8618,7 +8685,7 @@ REVISIÓN PREVISTA:</div>
     <div class="desp__in"><div class="dia"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v29.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v30.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   
 </section></div><p class="dia__pr"><button type="button" class="bt bt--fino" data-proyecta="">Proyectar desde esta</button></p><div class="explica"><div class="explica__d"><div><i class="letra">En el minuto</i><b>0:00</b></div><div><i class="letra">Dura</i><b>45 segundos</b></div><div><i class="letra">Dónde va</i><b>La apertura</b></div><div><i class="letra">En esta parte</i><b>1 de 2</b></div><div><i class="letra">Ruta corta</i><b>Sí: se pasa aunque no haya tiempo</b></div></div><div class="explica__b"><p class="rotulillo">Qué hay que decir al pasarla, y qué contestar</p><div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -9911,7 +9978,7 @@ REVISIÓN PREVISTA:</div>
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v29.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v30.0 · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 
   <aside class="nota" hidden>
     <div><b>Minuto 0:00 · ruta corta</b><p>Abrir sin preámbulo, leyendo la frase. Dejar tres segundos de silencio antes de continuar: es la única diapositiva de la sesión que se sostiene sola.</p></div>
@@ -14299,7 +14366,8 @@ DÍA 7   Valoración de evolución
 
 
 
-<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v29.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Protocolo de Experiencia Clínica · Primera Visita · v30.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -14307,7 +14375,7 @@ DÍA 7   Valoración de evolución
   <div class="wrap">
     <div class="hero__grid">
       <div>
-        <p class="eyebrow">Documento operativo interno · Versión 29.0 · Agosto 2026</p>
+        <p class="eyebrow">Documento operativo interno · Versión 30.0 · Agosto 2026</p>
         <h1>Protocolo de<br>Experiencia Clínica<br><em>Primera Visita</em></h1>
         <p class="hero__lede">Doce de las catorce fases del recorrido, coreografiadas para que el paciente reciba, en una sola visita, el diagnóstico más preciso que la tecnología permite y la certeza de estar en el sitio correcto.</p>
         <p class="hero__note" style="border-left:3px solid var(--accent);padding-left:1rem;margin-bottom:1.2rem">Este protocolo desarrolla en detalle las fases presenciales de la Primera Visita. El documento troncal del centro es el <a href="#operaciones" class="salta">Manual Maestro de Operaciones<i class="salta__d">Operaciones</i></a>, que cubre las catorce fases del recorrido, los manuales de puesto, los indicadores y la puesta en marcha.</p>
@@ -18164,7 +18232,8 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v29.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Manual Maestro de Operaciones · v30.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 
 <!-- ===================== PORTADA ===================== -->
@@ -18175,7 +18244,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="eyebrow">Documento único troncal · Uso interno · Confidencial</p>
         <h1>Manual Maestro<br>de <em>Operaciones</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Alma. El recorrido del paciente, los manuales de puesto, las funciones de vanguardia, los indicadores y la puesta en marcha, en un solo cuerpo.</p>
-        <p class="hero__note">Ourense · Versión 29.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
+        <p class="hero__note">Ourense · Versión 30.0 · Edición integrada · Agosto 2026.<br>Versión única de todo el sistema documental: los ocho documentos comparten número y fecha, para que ninguno pueda quedar desfasado respecto de otro sin que se note.<br>Es la referencia única para <strong>formación</strong>, <strong>operación</strong> y <strong>auditoría</strong>.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Fases del recorrido</dt><dd>14<small>De la primera llamada al mantenimiento a largo plazo</small></dd></div>
@@ -18358,11 +18427,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Campo</th><th>Detalle</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v29.0 · Agosto 2026</td></tr>
+          <tr><td>Versión</td><td>v30.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Alma (uso abreviado: Alma)</td></tr>
           <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
-          <tr><td>Sustituye a</td><td>Protocolo v29.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
+          <tr><td>Sustituye a</td><td>Protocolo v30.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
           <tr><td>Difusión obligatoria</td><td>Recepción, Dirección de Clínica, Odontólogos, Higienistas, Auxiliares, RAC</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier incidencia grave de trazabilidad o RGPD</td></tr>
@@ -25161,7 +25230,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </nav>
 </div>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v29.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v30.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 
@@ -25177,7 +25246,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     <p class="t-cover__meta">
       <b>Plan Maestro de Marketing</b><br>
       Centro de Excelencia Implantológica Alma · Calle Progreso 2 · Ourense<br>
-      v29.0 · Septiembre 2026 · Documento de dirección<br>
+      v30.0 · Septiembre 2026 · Documento de dirección<br>
       Setenta y seis acciones sobre doce estados del paciente
     </p>
   </div>
@@ -25205,7 +25274,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
           <tr><th>Qué decide</th><td>Nada por sí solo. Propone; la Junta aprueba en el registro de acuerdos del Plan de Dirección</td></tr>
           <tr><th>Propietario</th><td>Dirección General, con Gerencia como responsable de ejecución y presupuesto</td></tr>
           <tr><th>Revisión</th><td>Trimestral, con la misma cadencia que el cuadro de mando del apartado 13 del Plan de Dirección</td></tr>
-          <tr><th>Versión</th><td class="num">v29.0 · Septiembre 2026</td></tr>
+          <tr><th>Versión</th><td class="num">v30.0 · Septiembre 2026</td></tr>
         </tbody>
       </table>
     </div>
@@ -26724,7 +26793,8 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 
 
 
-<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v29.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
+
+<div class="printhead" aria-hidden="true"><b>Otros documentos del sistema · v30.0</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <!-- ===================== PORTADA ===================== -->
 <section class="hero" id="g-portada">
@@ -26734,7 +26804,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
         <p class="eyebrow">Tercer documento del sistema · Uso interno · Confidencial</p>
         <h1>Otros documentos<br>del <em>sistema</em></h1>
         <p class="hero__lede">Centro de Excelencia Implantológica Alma. Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita: qué contiene cada uno, cuándo se usa y qué aporta al trabajo diario.</p>
-        <p class="hero__note">Ourense · Versión 29.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
+        <p class="hero__note">Ourense · Versión 30.0 · Agosto 2026.<br>Este documento tiene el mismo rango que los otros dos: no es un anexo. Los tres se leen juntos y se enlazan entre sí. Nada de lo que aportan estos documentos se ha eliminado: lo que completa una parte del Manual o del Protocolo se ha incorporado allí con la etiqueta de su origen, y aquí queda el documento entero.</p>
       </div>
       <dl class="specs">
         <div class="spec"><dt>Documentos</dt><dd>14<small>Del posicionamiento del centro al programa de cuidado ATC</small></dd></div>
@@ -26790,13 +26860,13 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
       <table>
         <thead><tr><th>Campo</th><th>Contenido</th></tr></thead>
         <tbody>
-          <tr><td>Versión</td><td>v29.0 · Agosto 2026 · versión única del sistema</td></tr>
+          <tr><td>Versión</td><td>v30.0 · Agosto 2026 · versión única del sistema</td></tr>
           <tr><td>Clasificación</td><td>Uso interno · Confidencial</td></tr>
           <tr><td>Propietario</td><td>Dirección de Centros</td></tr>
           <tr><td>Ámbito</td><td>Los catorce documentos que rodean al Manual Maestro y al Protocolo de Primera Visita</td></tr>
           <tr><td>Difusión</td><td>Dirección, Gerencia y los perfiles a los que corresponde cada documento</td></tr>
           <tr><td>Revisión</td><td>Semestral, o ante cualquier cambio normativo o de decisión de Gerencia</td></tr>
-          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v29.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
+          <tr><td>Documentos relacionados</td><td>Todos comparten la versión v30.0: Plan de Dirección, Manual Maestro, Protocolo de Primera Visita y hoja de captura de la línea base</td></tr>
         </tbody>
       </table>
     </div>
@@ -30855,7 +30925,7 @@ LTV              = Valor inicial
   <div class="flota">
     <div class="flota__cab"><h2>Recursos</h2>
       <button class="icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button></div>
-    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><div class="rec__i rec__i--f"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p><p class="rec__f">Alma-TODO-EN-UNO-v29.html</p></div></div><div class="rec__i rec__i--f"><em>pdf</em><div><b>El sistema encuadernado</b><p>El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.</p><p class="rec__f">Sistema-Documental-Alma-v29.0.pdf</p></div></div><div class="rec__i rec__i--f"><em>word</em><div><b>El sistema en Word</b><p>Índice automático, con sus tablas y las 23 figuras incrustadas.</p><p class="rec__f">Sistema-Documental-Alma-v29.0.docx</p></div></div></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="#direccion" data-ir-sec="direccion"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="#presentacion" data-ir-sec="presentacion"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="#protocolos" data-ir-sec="protocolos"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="#primera-visita" data-ir-sec="primera-visita"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="#operaciones" data-ir-sec="operaciones"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="#marketing" data-ir-sec="marketing"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="#otros" data-ir-sec="otros"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="#numeros" data-ir-sec="numeros"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Alma anual"><em>voz</em><div><b>Perfil Alma anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
+    <div class="flota__cuerpo"><div class="rec__g"><p class="rec__t">La entrega</p><div class="rec__i" style="opacity:.55"><em>web</em><div><b>El sistema completo, en un sitio</b><p>Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario. Es la que está viendo.</p></div></div><div class="rec__i rec__i--f"><em>web</em><div><b>Los ocho documentos en una página</b><p>El archivo único, con el conmutador de documentos y el tablero de cada uno.</p><p class="rec__f">Alma-TODO-EN-UNO-v30.html</p></div></div><div class="rec__i rec__i--f"><em>pdf</em><div><b>El sistema encuadernado</b><p>El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.</p><p class="rec__f">Sistema-Documental-Alma-v30.0.pdf</p></div></div><div class="rec__i rec__i--f"><em>word</em><div><b>El sistema en Word</b><p>Índice automático, con sus tablas y las 23 figuras incrustadas.</p><p class="rec__f">Sistema-Documental-Alma-v30.0.docx</p></div></div></div><div class="rec__g"><p class="rec__t">Los ocho documentos</p><a class="rec__i" href="#direccion" data-ir-sec="direccion"><em>01</em><div><b>Plan de Dirección</b><p>Lo que se cree, lo que se apuesta y lo que se decide</p></div></a><a class="rec__i" href="#presentacion" data-ir-sec="presentacion"><em>02</em><div><b>Presentación de Junta</b><p>Las cuarenta y tres diapositivas de la sesión</p></div></a><a class="rec__i" href="#protocolos" data-ir-sec="protocolos"><em>03</em><div><b>Protocolos por puesto</b><p>Qué se espera de cada puesto, en un solo sitio</p></div></a><a class="rec__i" href="#primera-visita" data-ir-sec="primera-visita"><em>04</em><div><b>Protocolo de Primera Visita</b><p>La visita que decide, minuto a minuto</p></div></a><a class="rec__i" href="#operaciones" data-ir-sec="operaciones"><em>05</em><div><b>Manual Maestro de Operaciones</b><p>Las catorce fases del recorrido, los seis puestos y la puesta en marcha</p></div></a><a class="rec__i" href="#marketing" data-ir-sec="marketing"><em>06</em><div><b>Plan Maestro de Marketing</b><p>Cómo llega el paciente, y qué no haremos nunca para que llegue</p></div></a><a class="rec__i" href="#otros" data-ir-sec="otros"><em>07</em><div><b>Otros documentos del sistema</b><p>Los catorce documentos que sostienen a los tres troncales</p></div></a><a class="rec__i" href="#numeros" data-ir-sec="numeros"><em>08</em><div><b>Los números del centro</b><p>Con qué se mide todo esto, y qué sabemos de verdad hoy</p></div></a></div><div class="rec__g"><p class="rec__t">El glosario</p><button class="rec__i" type="button" data-gl="CBCT"><em>voz</em><div><b>CBCT</b><p>Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.</p></div></button><button class="rec__i" type="button" data-gl="Carga inmediata"><em>voz</em><div><b>Carga inmediata</b><p>Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.</p></div></button><button class="rec__i" type="button" data-gl="Clinic Cloud"><em>voz</em><div><b>Clinic Cloud</b><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div></button><button class="rec__i" type="button" data-gl="Doble verificación"><em>voz</em><div><b>Doble verificación</b><p>Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.</p></div></button><button class="rec__i" type="button" data-gl="Gate de calidad"><em>voz</em><div><b>Gate de calidad</b><p>Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.</p></div></button><button class="rec__i" type="button" data-gl="Guía quirúrgica"><em>voz</em><div><b>Guía quirúrgica</b><p>Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.</p></div></button><button class="rec__i" type="button" data-gl="IAC"><em>voz</em><div><b>IAC</b><p>Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.</p></div></button><button class="rec__i" type="button" data-gl="IOS"><em>voz</em><div><b>IOS</b><p>Escaneado intraoral: modelo digital de las arcadas y de la oclusión.</p></div></button><button class="rec__i" type="button" data-gl="OPG"><em>voz</em><div><b>OPG</b><p>Ortopantomografía: radiografía panorámica digital de ambos maxilares.</p></div></button><button class="rec__i" type="button" data-gl="Perfil Alma anual"><em>voz</em><div><b>Perfil Alma anual</b><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Perfil de riesgo"><em>voz</em><div><b>Perfil de riesgo</b><p>Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.</p></div></button><button class="rec__i" type="button" data-gl="Producto pendiente"><em>voz</em><div><b>Producto pendiente</b><p>Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.</p></div></button><button class="rec__i" type="button" data-gl="RAC"><em>voz</em><div><b>RAC</b><p>RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)</p></div></button><button class="rec__i" type="button" data-gl="RACI"><em>voz</em><div><b>RACI</b><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div></button><button class="rec__i" type="button" data-gl="Smartee Doctor / Spark Approver"><em>voz</em><div><b>Smartee Doctor / Spark Approver</b><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div></button><button class="rec__i" type="button" data-gl="Solicitud de presupuesto"><em>voz</em><div><b>Solicitud de presupuesto</b><p>Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.</p></div></button><button class="rec__i" type="button" data-gl="Triaje"><em>voz</em><div><b>Triaje</b><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div></button><button class="rec__i" type="button" data-gl="WeDiagnostix"><em>voz</em><div><b>WeDiagnostix</b><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div></button></div></div>
   </div>
 </div>
 
@@ -31888,6 +31958,25 @@ window.__FASES__ = ["d-f01", "d-f02", "d-f03", "d-f04", "d-f05", "d-f06", "d-f07
      siempre —sección, parte y apartado— y se actualiza sola al cambiar de
      sección y al abrir o cerrar el lector. No hace falta abrir nada para
      saberlo. */
+  /* El alto de la barra no es un número: cambia cuando el rótulo de posición
+     se parte en dos líneas, y cambia otra vez en un teléfono. Cualquier valor
+     fijo que se escriba en la hoja acierta en un tamaño y falla en el resto
+     —que es justo lo que pasaba: el censo y el rótulo del centro corrían por
+     debajo de la barra en 1100, 1280 y 1366—. Así que lo mide el navegador y
+     lo publica, y la hoja reserva exactamente eso. */
+  function mideBarra(){
+    var t = D.getElementById("tope");
+    if(!t) return;
+    D.documentElement.style.setProperty("--barra", Math.ceil(t.offsetHeight) + "px");
+  }
+  mideBarra();
+  window.addEventListener("resize", mideBarra);
+  if(window.ResizeObserver){
+    var ro = new ResizeObserver(mideBarra);
+    var tp = D.getElementById("tope");
+    if(tp) ro.observe(tp);
+  }
+
   var elDonde = D.getElementById("donde");
   function pintaDonde(){
     if(!elDonde) return;

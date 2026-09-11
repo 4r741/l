@@ -17,6 +17,59 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## Que nada se monte encima de nada · versión 30
+
+Usted mandó una captura de su portátil. En ella se veía lo que yo no había
+visto nunca: **el rótulo del centro y las primeras cifras del censo corriendo
+por debajo de la barra de arriba**, y todo apelotonado contra el borde
+superior.
+
+### Los tres choques, y de dónde venían
+
+1. **En 1100, 1280 y 1366 —o sea, en cualquier portátil—** el rótulo y el censo
+   quedaban tapados por la barra. **Lo provoqué yo en la versión 26**: el
+   escalón de portátil quitaba el aire superior de la portada sin reservar el
+   alto de una cabecera que está fija. Y la dirección que se añadió en la 29
+   alargó el rótulo hasta partirlo en dos líneas, que era la gota.
+2. **En todos los tamaños, incluido el monitor grande**, «sonrisas» se metía
+   dentro de «Le devolvemos su sonrisa». El lema va a un interlineado de 0,94
+   para que sus dos líneas queden apretadas, y a ese valor la caja mide menos
+   que las letras: lo que sobresale cae sobre el párrafo siguiente.
+3. **A 1024×640** las dos últimas cifras del censo caían sobre la línea del pie.
+
+### El arreglo, y por qué es estable
+
+La portada **sangra a propósito** hacia arriba para que su fondo oscuro pase por
+debajo de la barra transparente. Eso se conserva. Lo que faltaba es que el
+*texto* bajara otro tanto.
+
+Y el alto de la barra **no es un número**: cambia cuando el rótulo de posición
+se parte en dos líneas, y cambia otra vez en un teléfono. Cualquier valor fijo
+acierta en un tamaño y falla en el resto —que es exactamente lo que pasaba—. Así
+que ahora **lo mide el navegador** y lo publica en una variable, y la hoja
+reserva ese alto exacto más un respiro. Si mañana la barra crece, el hueco
+crece con ella.
+
+### Por qué no lo había visto
+
+Porque mis barridos medían **una sola cosa**: que nada se saliera de la pantalla
+a lo ancho. Un texto encima de otro no se sale de la pantalla — se queda dentro,
+encima de otro. Medir lo que es fácil de medir no es lo mismo que comprobar.
+
+Desde esta versión hay **`verifica-choques.py`** en la compilación: recorre
+**siete tamaños × trece secciones** midiendo caja contra caja, y **para la
+entrega** si encuentra un texto encima de otro o por debajo de la barra.
+
+No cuenta lo que se superpone a propósito —el número de sección es una marca de
+agua detrás del titular, las diapositivas se componen en capas, los desplegables
+cerrados guardan dentro cajas que no se ven—. Distinguir eso costó cuatro
+pasadas: la primera versión avisaba 25.739 veces, y un guardián que avisa 25.739
+veces no sirve para nada.
+
+Está probado como se prueban estas cosas: **se volvió a meter el defecto a
+propósito** y lo cazó con dieciséis avisos, señalando exactamente el rótulo del
+centro y el censo; se arregló y pasó limpio.
+
 ## El centro está en Ourense · versiones 28 y 29
 
 El lema no cambia: sigue siendo **«No medias sonrisas»**. La ciudad, sí, y eso
