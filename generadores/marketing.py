@@ -57,15 +57,15 @@ def mil(v):
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
-cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                            "<title>Plan Maestro de Marketing Giraldo</title>")
+cabecera = cabecera.replace("<title>Manual Maestro Alma</title>",
+                            "<title>Plan Maestro de Marketing Alma</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Plan Maestro de Marketing del Centro de '
-                  'Excelencia Implantológica Giraldo: doce estados del paciente, seis arquetipos '
+                  'Excelencia Implantológica Alma: doce estados del paciente, seis arquetipos '
                   'de la ría, siete momentos de verdad, un catálogo de 76 acciones con dueño, '
                   'coste y semáforo legal, diez piezas propias, la Campaña de Mar y las reglas '
                   'de medición y de parada.">', cabecera, count=1)
-assert "Plan Maestro de Marketing Giraldo" in cabecera
+assert "Plan Maestro de Marketing Alma" in cabecera
 
 editorial = (SP / "editorial.css").read_text(encoding="utf-8")
 k = cabecera.rindex("</style>")
@@ -96,7 +96,7 @@ barra = """
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Plan Maestro de <b>Marketing</b></span>
-        <span class="brand__tag">Giraldo · v@VERSION@</span>
+        <span class="brand__tag">Alma · v@VERSION@</span>
       </a>
       <a class="crosslink" href="memoria.html">Plan de Dirección</a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
@@ -110,7 +110,7 @@ barra = """
 
 <main>
 
-<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v@VERSION@</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Plan Maestro de Marketing · Junta Directiva · v@VERSION@</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 """ % "\n".join('      <a href="%s">%s</a>' % (h, r) for h, r in TIRA)
 
 
@@ -221,7 +221,7 @@ def anexo_trimestre():
 
 
 # ---------------------------------------------------------------- montaje
-# El orden es explícito porque no es el del nombre: el GTC —marketing-06— va
+# El orden es explícito porque no es el del nombre: el ATC —marketing-06— va
 # dentro del cuerpo, en su Parte VIII, y los anexos —marketing-05— cierran.
 PIEZAS = ["marketing-01", "marketing-02", "marketing-03", "marketing-04",
           "marketing-06", "marketing-05"]

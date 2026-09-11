@@ -297,7 +297,7 @@ NUCLEO = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 
 APP = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties">
-<Application>Sistema documental Giraldo</Application></Properties>'''
+<Application>Sistema documental Alma</Application></Properties>'''
 
 def _titular(n, tam, color, antes, despues, negrita):
     return ('<w:style w:type="paragraph" w:styleId="Titular%d">'

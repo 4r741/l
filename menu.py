@@ -151,7 +151,7 @@ MENUS = {
                 ("parada", "19", "Reglas de parada: cuándo se corta"),
             ]),
             ("Parte VIII · El programa", "parte-8", [
-                ("gtc", "20", "Giraldo Te Cuida: el programa de acompañamiento"),
+                ("gtc", "20", "Alma Te Cuida: el programa de acompañamiento"),
             ]),
             ("Anexos", None, [
                 ("anexo-legal", "A", "Semáforo legal, acción por acción"),
@@ -246,7 +246,7 @@ MENUS = {
                 ("otros-transicion-perfiles", "11", "Manual de puesta en marcha por perfil"),
                 ("otros-continuidad", "12", "Continuidad legal, financiera y de sistemas"),
                 ("otros-posicionamiento", "13", "«No medias sonrisas» · posicionamiento"),
-                ("otros-gtc", "14", "GTC · vive en el Plan de Marketing"),
+                ("otros-gtc", "14", "ATC · vive en el Plan de Marketing"),
             ]),
             ("Cierre", None, [
                 ("otros-cierre", "", "Cómo encajan los catorce documentos"),

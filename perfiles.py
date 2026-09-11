@@ -154,7 +154,7 @@ PERFILES = [
         vanguardia=[("3.1 · Programa de mantenimiento", "m-funcion-3-1-programa-mantenimiento"),
                     ("3.2 · Detección precoz y derivación", "m-funcion-3-2-deteccion-precoz-derivacion"),
                     ("3.3 · Monitorización remota", "m-funcion-3-3-monitorizacion-remota"),
-                    ("3.4 · El perfil Giraldo anual", "m-funcion-3-4-perfil-giraldo-anual")],
+                    ("3.4 · El perfil Alma anual", "m-funcion-3-4-perfil-giraldo-anual")],
     ),
 ]
 

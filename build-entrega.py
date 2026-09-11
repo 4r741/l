@@ -34,15 +34,23 @@ EXPORT = RAIZ / "export"
 # origen → nombre con el que viaja
 PIEZAS = [
     (RAIZ / "centro.html", "centro.html"),
-    (EXPORT / ("Giraldo-TODO-EN-UNO-v%s.html" % CORTA), "Giraldo-TODO-EN-UNO-v%s.html" % CORTA),
-    (EXPORT / ("Sistema-Documental-Giraldo-v%s.pdf" % VERSION),
-     "Sistema-Documental-Giraldo-v%s.pdf" % VERSION),
-    (EXPORT / ("Sistema-Documental-Giraldo-v%s.docx" % VERSION),
-     "Sistema-Documental-Giraldo-v%s.docx" % VERSION),
+    (EXPORT / ("Alma-TODO-EN-UNO-v%s.html" % CORTA), "Alma-TODO-EN-UNO-v%s.html" % CORTA),
+    (EXPORT / ("Sistema-Documental-Alma-v%s.pdf" % VERSION),
+     "Sistema-Documental-Alma-v%s.pdf" % VERSION),
+    (EXPORT / ("Sistema-Documental-Alma-v%s.docx" % VERSION),
+     "Sistema-Documental-Alma-v%s.docx" % VERSION),
 ]
 
 # Nombres que no pueden aparecer en nada de lo que sale del centro.
 PROHIBIDOS = ["Höllenback", "Hollenback", "Hermes"]
+
+# El nombre anterior de la clínica. Se vigila aparte y CON las mayúsculas
+# puestas, a propósito: los identificadores internos —«mk-k-gtc-giraldo-te-
+# cuida», «data-ap="gtc"»— llevan el nombre viejo en minúscula y ahí se quedan,
+# porque son la dirección de cada apartado y renombrarlos rompería los enlaces
+# sin que nadie gane nada: no se leen. Lo que no puede volver a aparecer es el
+# nombre visible, y eso es lo que se comprueba.
+NOMBRE_VIEJO = "Giraldo"
 
 # Rastros de la máquina que compiló, que en la de cualquier otro lector no
 # llevan a ninguna parte.
@@ -128,6 +136,9 @@ def main():
         for nombre in PROHIBIDOS:
             if nombre.lower() in contenido.lower():
                 problemas.append("%s · nombra «%s»" % (ruta.name, nombre))
+        if NOMBRE_VIEJO in contenido or NOMBRE_VIEJO.upper() in contenido:
+            problemas.append("%s · todavía dice «%s», que es el nombre anterior"
+                             % (ruta.name, NOMBRE_VIEJO))
         if ruta.suffix == ".html" and ("v%s" % CORTA) not in ruta.name and VERSION not in contenido:
             problemas.append("%s · no dice qué versión es" % ruta.name)
 

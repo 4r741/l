@@ -66,11 +66,11 @@ DOCUMENTOS = [
 ENTREGA = [
     ("centro.html", "web", "El sistema completo, en un sitio",
      "Esta misma página: los ocho documentos y sus apartados, con índice, buscador y glosario.", False),
-    ("Giraldo-TODO-EN-UNO-v%s.html" % CORTA, "web", "Los ocho documentos en una página",
+    ("Alma-TODO-EN-UNO-v%s.html" % CORTA, "web", "Los ocho documentos en una página",
      "El archivo único, con el conmutador de documentos y el tablero de cada uno.", False),
-    ("Sistema-Documental-Giraldo-v%s.pdf" % VERSION, "pdf", "El sistema encuadernado",
+    ("Sistema-Documental-Alma-v%s.pdf" % VERSION, "pdf", "El sistema encuadernado",
      "El sistema entero encuadernado, con portada, índice paginado y un marcador por apartado.", True),
-    ("Sistema-Documental-Giraldo-v%s.docx" % VERSION, "word", "El sistema en Word",
+    ("Sistema-Documental-Alma-v%s.docx" % VERSION, "word", "El sistema en Word",
      "Índice automático, con sus tablas y las 23 figuras incrustadas.", True),
 ]
 
@@ -596,7 +596,7 @@ INICIO_BLOQUES = [
      "«Le cuidamos para siempre» tiene instrumento",
      "La promesa del centro tiene dos mitades. La primera es el resultado y la fija el "
      "posicionamiento: ningún tratamiento se deja a medias. La segunda es la relación, y una "
-     "relación sin instrumento es una intención. El instrumento se llama Giraldo Te Cuida: "
+     "relación sin instrumento es una intención. El instrumento se llama Alma Te Cuida: "
      "cuota anual, revisiones que ocurren de verdad y un informe que se entrega en persona. Es "
      "también la única partida del plan que produce sin ocupar un solo hueco de primera visita.",
      [("1", "programa de cuidado anual"), ("0", "huecos de primera visita que ocupa"),
@@ -2060,10 +2060,10 @@ SIGUE = {
     "marketing": [
         ("numeros", "Con qué se mide si una acción funciona, y cuál es la línea base que "
                     "todavía no se tiene."),
-        ("otros", "El contrato del programa GTC y los textos legales que lo sostienen.")],
+        ("otros", "El contrato del programa ATC y los textos legales que lo sostienen.")],
     "otros": [
         ("operaciones", "El documento troncal al que estos catorce sostienen."),
-        ("marketing", "El programa Giraldo Te Cuida, entero, en el Plan de Marketing.")],
+        ("marketing", "El programa Alma Te Cuida, entero, en el Plan de Marketing.")],
     "numeros": [
         ("direccion", "De dónde sale cada supuesto: el documento que fija el objetivo y "
                       "responde de él."),
@@ -2256,7 +2256,7 @@ def bloque_mio(pre):
     representa el centro y qué promete el programa de cuidado.
 
     Aquí no se escribe nada nuevo: se recoge lo que ya dicen el Manual, el
-    Protocolo de Primera Visita, el Plan de Dirección y el documento del GTC,
+    Protocolo de Primera Visita, el Plan de Dirección y el documento del ATC,
     y se ordena por persona en vez de por documento.
     """
     P = PERFILES
@@ -2352,14 +2352,14 @@ def bloque_mio(pre):
 </div>
 <div class="lienzo">
   <div class="lienzo__cab">
-    <h2>Lo que representa Giraldo</h2>
+    <h2>Lo que representa Alma</h2>
     <p>La regla que ordena todo lo demás, tal como está escrita en el Plan de Dirección.</p>
   </div>
   <div class="miotexto">@@M@@</div>
 </div>
 <div class="lienzo">
   <div class="lienzo__cab">
-    <h2>Giraldo Te Cuida</h2>
+    <h2>Alma Te Cuida</h2>
     <p>La otra mitad de la promesa: qué se compromete el centro a hacer después de que el
       paciente pague, y con qué instrumento se compromete.</p>
   </div>
@@ -2585,7 +2585,7 @@ RECORRIDOS_FIJOS = [
              "Qué se lleva, quién le llama y cuándo."),
             ("El mantenimiento", "m14",
              "El alta no es una despedida: es el paso al programa que sostiene el resultado."),
-            ("Giraldo Te Cuida", "otros-gtc",
+            ("Alma Te Cuida", "otros-gtc",
              "El instrumento que convierte «le cuidamos para siempre» en revisiones reales."),
         ],
     },
@@ -2905,7 +2905,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas, n_fases, n_rutas):
 
   <div class="portada" data-frente>
     <div class="portada__c">
-      <p class="letra portada__k">Centro de Excelencia Implantológica Giraldo · Vigo</p>
+      <p class="letra portada__k">Centro de Excelencia Implantológica Alma · Vigo</p>
       <h1>No medias<br><em>sonrisas</em></h1>
       <p class="portada__l">Le devolvemos su sonrisa completa, en el menor tiempo posible,
         y le cuidamos para siempre.</p>
@@ -2990,7 +2990,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas, n_fases, n_rutas):
   <div class="banda banda--pie" data-frente>
     <div class="banda__i">@@ARTE3@@</div>
     <div class="contacto">
-      <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Giraldo<br>
+      <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Alma<br>
         Rúa Bolivia nº 2 · 36203 Vigo · Pontevedra</p></div>
       <div><p class="letra">Esta edición</p><p>Versión @VERSION@ · @FECHA@<br>
         Los ocho documentos comparten número y fecha</p></div>
@@ -3212,7 +3212,7 @@ def sec_mio():
 
 CSS = """
 /* ===========================================================================
-   EL CENTRO GIRALDO · LA WEB
+   EL CENTRO ALMA · LA WEB
 
    Blanco, mucho blanco. Una tipografía ligera, la letra espaciada en los
    rótulos pequeños y el aire suficiente entre bloques para que ninguno tenga
@@ -5163,7 +5163,7 @@ JS = """
   var porHoja = {};
   hojas.forEach(function(h){ porHoja[h.dataset.hoja] = h; });
 
-  var LLAVE = "giraldo.web.v9";
+  var LLAVE = "alma.web.v9";
   var memo = {sec:"inicio", ruta:"", paso:0};
   try { var g = localStorage.getItem(LLAVE); if(g) memo = JSON.parse(g) || memo; } catch(e){}
   function recuerda(){ try { localStorage.setItem(LLAVE, JSON.stringify(memo)); } catch(e){} }
@@ -6423,7 +6423,7 @@ JS = """
      dentro del cuarto documento. Eso es pedirle al lector que conozca la
      estructura antes de poder usarla.
 
-     Aquí se escribe. Un apartado, un concepto —RACI, CBCT, GTC—, «fase 8»,
+     Aquí se escribe. Un apartado, un concepto —RACI, CBCT, ATC—, «fase 8»,
      «recepción», «marketing»: lo que sea. Se busca en todo a la vez y se
      ordena por cuánto se parece, sin acentos y sin importar mayúsculas, y
      encontrando también lo que se escribe a trozos («preseco» encuentra
@@ -6653,7 +6653,7 @@ JS = """
      el tablero sigue funcionando: simplemente no recuerda al volver. */
   var tablero = D.querySelector("[data-tablero]");
   if(tablero){
-    var LLAVE = "giraldo.fases.v1";
+    var LLAVE = "alma.fases.v1";
     var NF = parseInt(tablero.dataset.total, 10) || 0;
     var fichas = [].slice.call(tablero.querySelectorAll(".tab__f"));
     var mins = fichas.map(function(f){
@@ -7533,7 +7533,7 @@ MARCO = """
      ------------------------------------------------------------------ -->
 <header class="tope" id="tope">
   <a class="tope__m" href="#inicio" data-ir-sec="inicio">
-    <b>Giraldo</b><i>No medias sonrisas</i></a>
+    <b>Alma</b><i>No medias sonrisas</i></a>
   <p class="donde" id="donde" aria-live="polite"></p>
   <div class="tope__d">
     <a class="tope__b" href="#recorridos" data-ir-sec="recorridos">Recorridos</a>
@@ -7933,7 +7933,7 @@ def main():
 
     # Recorridos y el mapa son secciones de pleno derecho y no estaban en el
     # índice: en el ordenador se llegaba a ellas por la barra de arriba, y en
-    # un teléfono —donde la barra solo deja sitio para GIRALDO y el índice—
+    # un teléfono —donde la barra solo deja sitio para ALMA y el índice—
     # únicamente desde los dos botones de la portada. Quien estuviera leyendo
     # cualquier otra cosa no tenía manera de volver. Se añaden aquí, detrás de
     # «Inicio», sin tocar el orden de los ocho documentos: no se quita nada,
@@ -7962,11 +7962,11 @@ def main():
     manual = fuente("manual.html")
     i = manual.index("<body>")
     cabecera = manual[:i + len("<body>")]
-    cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                                "<title>Centro de Excelencia Implantológica Giraldo</title>")
+    cabecera = cabecera.replace("<title>Manual Maestro Alma</title>",
+                                "<title>Centro de Excelencia Implantológica Alma</title>")
     cabecera = re.sub(
         r'<meta name="description" content="[^"]*">',
-        '<meta name="description" content="Centro de Excelencia Implantológica Giraldo. Diez '
+        '<meta name="description" content="Centro de Excelencia Implantológica Alma. Diez '
         'recorridos guiados, el mapa de las catorce fases y los ocho documentos del sistema con '
         'sus %d apartados, completos." >' % total, cabecera, count=1)
     extra = (CSS + "\n" + hoja_propia("protocolos.html", "PROTOCOLOS POR PUESTO")
@@ -8045,7 +8045,7 @@ def main():
     # archivo solo, que es exactamente como se entrega. La cosecha reescribe
     # los enlaces del cuerpo de los documentos, pero la literatura que entra
     # por otros caminos —«Lo mío», por ejemplo— se los traía intactos: cinco
-    # referencias del programa GTC y de tres fases no llevaban a ninguna parte.
+    # referencias del programa ATC y de tres fases no llevaban a ninguna parte.
     # Esta pasada final los resuelve contra el mismo mapa que usa todo lo
     # demás, y lo que no tenga destino se queda como texto, sin fingir.
     def _interno(m):

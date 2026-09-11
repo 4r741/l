@@ -37,7 +37,7 @@ FICHAS = {
                      "Qué creemos, qué apostamos y las quince decisiones que se someten a la Junta."),
     "marketing.html": ("Plan Maestro de Marketing", "Documento de dirección",
                        "Las 76 acciones sobre los 12 estados del paciente, y el programa "
-                       "Giraldo Te Cuida."),
+                       "Alma Te Cuida."),
     "manual.html": ("Manual Maestro de Operaciones", "Documento troncal · Todo el equipo",
                     "Las 14 fases del recorrido, los 6 puestos, la matriz RACI, los "
                     "indicadores y los incentivos."),

@@ -89,7 +89,7 @@ def corre(guion, rotulo):
 
 def main():
     todo = "--todo" in sys.argv
-    print("Sistema documental Giraldo · reconstrucción completa\n")
+    print("Sistema documental Alma · reconstrucción completa\n")
     tareas = DOCUMENTOS + (EXTRAS if todo else [])
     reloj = sum(corre(g, r) for g, r in tareas)
     if not todo:

@@ -372,7 +372,7 @@ def comprueba_libro():
     además que las fórmulas salgan con su resultado en caché. La versión de este
     libro se le escapó a la revisión de v6.0 justamente por no estar aquí.
     """
-    ruta = RAIZ / "instrumentos" / "Captura-Linea-Base-Giraldo-2026.xlsx"
+    ruta = RAIZ / "instrumentos" / "Captura-Linea-Base-Alma-2026.xlsx"
     nombre = "instrumentos/" + ruta.name
     if not ruta.exists():
         falla(nombre, "no está en el repositorio: el apartado 7 se queda sin instrumento")

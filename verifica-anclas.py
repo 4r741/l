@@ -49,7 +49,7 @@ REVISADOS = {
     ("manual.html", "m14"):               "la fase 14 es el programa de mantenimiento",
     ("otros.html", "otros-perfiles"):     "el circuito del RAC se describe en ese documento",
     ("otros.html", "otros-continuidad"):  "el inventario heredado está en continuidad",
-    ("marketing.html", "gtc"):            "el apartado 20 del Plan de Marketing es el GTC",
+    ("marketing.html", "gtc"):            "el apartado 20 del Plan de Marketing es el ATC",
     ("otros.html", "otros-30dias"):       "los cinco números se piden en el dosier de los 30 días",
     ("protocolos.html", "portada"):       "la portada de Protocolos por puesto",
 }

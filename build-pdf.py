@@ -62,22 +62,22 @@ PONENTE = ("document.body.classList.add('modo-ponente');"
 # cada PDF anunciaba una versión que ya no era la del archivo. Sale de VERSION,
 # como todo lo demás.
 DOCUMENTOS = [
-    ("memoria.html", "Plan-Direccion-Giraldo-v%s.pdf" % VERSION,
+    ("memoria.html", "Plan-Direccion-Alma-v%s.pdf" % VERSION,
      "Plan de Dirección · v%s" % VERSION, False, ""),
-    ("manual.html", "Manual-Maestro-Giraldo-v%s.pdf" % VERSION,
+    ("manual.html", "Manual-Maestro-Alma-v%s.pdf" % VERSION,
      "Manual Maestro de Operaciones · v%s" % VERSION, False, ""),
-    ("protocolos.html", "Protocolos-Por-Puesto-Giraldo-v%s.pdf" % VERSION,
+    ("protocolos.html", "Protocolos-Por-Puesto-Alma-v%s.pdf" % VERSION,
      "Protocolos por puesto · v%s" % VERSION, False, ""),
-    ("index.html", "Protocolo-Primera-Visita-Giraldo-v%s.pdf" % VERSION,
+    ("index.html", "Protocolo-Primera-Visita-Alma-v%s.pdf" % VERSION,
      "Protocolo de Primera Visita · v%s" % VERSION, False, ""),
-    ("otros.html", "Otros-Documentos-Giraldo-v%s.pdf" % VERSION,
+    ("otros.html", "Otros-Documentos-Alma-v%s.pdf" % VERSION,
      "Otros documentos del sistema · v%s" % VERSION, False, ""),
-    ("marketing.html", "Plan-Marketing-Giraldo-v%s.pdf" % VERSION,
+    ("marketing.html", "Plan-Marketing-Alma-v%s.pdf" % VERSION,
      "Plan Maestro de Marketing · v%s" % VERSION, False, ""),
-    ("instrumentos/captura.html", "Captura-Linea-Base-Giraldo-v%s.pdf" % VERSION,
+    ("instrumentos/captura.html", "Captura-Linea-Base-Alma-v%s.pdf" % VERSION,
      "Los números del centro · v%s" % VERSION, False, ""),
-    ("deck.html", "Presentacion-Junta-Giraldo-v%s.pdf" % VERSION, "", True, ""),
-    ("deck.html", "Guion-del-Ponente-Giraldo-v%s.pdf" % VERSION, "", "guion", PONENTE),
+    ("deck.html", "Presentacion-Junta-Alma-v%s.pdf" % VERSION, "", True, ""),
+    ("deck.html", "Guion-del-Ponente-Alma-v%s.pdf" % VERSION, "", "guion", PONENTE),
 ]
 
 ESTILO_PIE = "font-family:Helvetica,Arial,sans-serif;font-size:7pt;color:#555;width:100%;padding:0 15mm;letter-spacing:.06em"
@@ -90,7 +90,7 @@ def cabecera(rotulo):
 
 
 def pie():
-    return ('<div style="%s"><span>Centro de Excelencia Implantológica Giraldo</span>'
+    return ('<div style="%s"><span>Centro de Excelencia Implantológica Alma</span>'
             '<span style="float:right">Página <span class="pageNumber"></span> '
             'de <span class="totalPages"></span></span></div>' % ESTILO_PIE)
 

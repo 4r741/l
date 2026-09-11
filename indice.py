@@ -25,7 +25,7 @@ DOCUMENTOS = [
      "El Plan de Dirección para proyectar, con guion del ponente y ruta corta",
      "Quien presenta"),
     ("marketing.html", "Plan Maestro de Marketing", "Plan",
-     "Las 76 acciones sobre los 12 estados del paciente, y el programa Giraldo Te Cuida",
+     "Las 76 acciones sobre los 12 estados del paciente, y el programa Alma Te Cuida",
      "Dirección y Gerencia"),
     ("protocolos.html", "Protocolos por puesto", "Vista operativa",
      "El protocolo del centro visto desde cada uno de los seis puestos",

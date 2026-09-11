@@ -36,17 +36,17 @@ def sello(t):
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
-cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                            "<title>Plan de Dirección Giraldo</title>")
+cabecera = cabecera.replace("<title>Manual Maestro Alma</title>",
+                            "<title>Plan de Dirección Alma</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Plan de Dirección del Centro de '
-                  'Excelencia Implantológica Giraldo: posición competitiva, foso, sistema '
+                  'Excelencia Implantológica Alma: posición competitiva, foso, sistema '
                   'operativo, economía unitaria y escenarios, creación de valor de empresa, '
                   'escalado, pre-mortem, asignación de capital, el puente hasta el objetivo de 1,2 M€ '
                   'con su cartera de nueve campañas, y las quince decisiones que '
                   'se someten a la Junta Directiva.">',
                   cabecera, count=1)
-assert "Plan de Dirección Giraldo" in cabecera
+assert "Plan de Dirección Alma" in cabecera
 
 editorial = (SP / "editorial.css").read_text(encoding="utf-8")
 k = cabecera.rindex("</style>")

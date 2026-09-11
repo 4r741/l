@@ -249,7 +249,7 @@ A = [
  "Sabe de antemano cuándo se le devuelve el dinero","DG","€€","trim",3,
  "Devoluciones y días hasta resolver","amarillo","—"),
 # ---------------------------------------------------------------- G6
-("A57","G6","Giraldo Te Cuida: programa anual de mantenimiento, revisión y prioridad de agenda",
+("A57","G6","Alma Te Cuida: programa anual de mantenimiento, revisión y prioridad de agenda",
  "Su tratamiento se vigila en vez de olvidarse","DC","€€","ya",5,
  "Altas incorporadas al programa","amarillo","C1"),
 ("A58","G6","La Carta del Tercer Año: se escribe para confirmar que aquello sigue funcionando, no para vender nada",

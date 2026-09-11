@@ -34,8 +34,8 @@ _v = {}
 exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
 VERSION = _v["VERSION"]
 
-PDF = RAIZ / "export" / ("Sistema-Documental-Giraldo-v%s.pdf" % VERSION)
-WORD = RAIZ / "export" / ("Sistema-Documental-Giraldo-v%s.docx" % VERSION)
+PDF = RAIZ / "export" / ("Sistema-Documental-Alma-v%s.pdf" % VERSION)
+WORD = RAIZ / "export" / ("Sistema-Documental-Alma-v%s.docx" % VERSION)
 
 # Un marcador por documento y nada más obliga a hojear seiscientas páginas.
 MINIMO_MARCADORES = 60

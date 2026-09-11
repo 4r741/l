@@ -22,7 +22,7 @@ W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 _v = {}
 exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
 VERSION = _v["VERSION"]
-DOCX = RAIZ / "export" / ("Sistema-Documental-Giraldo-v%s.docx" % VERSION)
+DOCX = RAIZ / "export" / ("Sistema-Documental-Alma-v%s.docx" % VERSION)
 
 OBLIGATORIAS = ["[Content_Types].xml", "_rels/.rels", "word/document.xml",
                 "word/styles.xml", "word/numbering.xml", "word/settings.xml",

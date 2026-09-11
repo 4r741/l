@@ -110,11 +110,11 @@ SUBAPARTADOS = sum(len(e["hijos"]) for x in INDICE for e in x["entradas"])
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
-cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                            "<title>Sistema documental Giraldo</title>")
+cabecera = cabecera.replace("<title>Manual Maestro Alma</title>",
+                            "<title>Sistema documental Alma</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Puerta de entrada al sistema documental del Centro '
-                  'de Excelencia Implantológica Giraldo: Plan de Dirección, presentación de Junta, Manual '
+                  'de Excelencia Implantológica Alma: Plan de Dirección, presentación de Junta, Manual '
                   'Maestro, Protocolo de Primera Visita, otros documentos del sistema y la hoja '
                   'mensual de los números del centro.">', cabecera, count=1)
 
@@ -453,7 +453,7 @@ FICHAS = [
   "12 fases · 90 páginas"),
  ("marketing.html", "Plan Maestro de Marketing", "Cómo llega el paciente",
   "Las @ACCIONES@ acciones ordenadas por el estado de la relación del paciente con su "
-  "propia boca, y el programa Giraldo Te Cuida, que es lo que hace que se quede.",
+  "propia boca, y el programa Alma Te Cuida, que es lo que hace que se quede.",
   "@ACCIONES@ acciones · @ESTADOS@ estados"),
  ("otros.html", "Otros documentos del sistema", "Los catorce de apoyo",
   "Compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, "
@@ -494,7 +494,7 @@ CUERPO = """
   <div class="wrap">
     <div class="topbar__in">
       <a class="brand" href="#portada">
-        <span class="brand__mark">Sistema documental <b>Giraldo</b></span>
+        <span class="brand__mark">Sistema documental <b>Alma</b></span>
         <span class="brand__tag">v@VERSION@ · Uso interno</span>
       </a>
     </div>
@@ -508,7 +508,7 @@ CUERPO = """
   <div class="wrap">
     <div class="bento">
       <div class="bento__lema">
-        <p class="eyebrow">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+        <p class="eyebrow">Centro de Excelencia Implantológica Alma · Rúa Bolivia nº 2 · Vigo</p>
         <h1>No medias <em>sonrisas</em></h1>
         <p>Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
       </div>
@@ -600,7 +600,7 @@ CUERPO = """
     <div class="ticks" aria-hidden="true" style="margin-bottom:2rem"></div>
     <div class="foot__grid">
       <div>
-        <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Sistema documental · Uso interno y confidencial</p>
+        <p><strong>Centro de Excelencia Implantológica Alma</strong><br>Sistema documental · Uso interno y confidencial</p>
       </div>
       <div><p class="eyebrow">Lema</p><p>No medias sonrisas.<br>Ni medias decisiones.</p></div>
       <div><p class="eyebrow">Versiones</p><p>Versión única del sistema<br><strong>v@VERSION@ · @FECHA@</strong></p></div>

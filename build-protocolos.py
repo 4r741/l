@@ -118,11 +118,11 @@ def sello(t):
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
-cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                            "<title>Protocolos por puesto · Giraldo</title>")
+cabecera = cabecera.replace("<title>Manual Maestro Alma</title>",
+                            "<title>Protocolos por puesto · Alma</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="El protocolo del Centro de Excelencia '
-                  'Implantológica Giraldo visto desde cada puesto: elija Dirección, Doctor, '
+                  'Implantológica Alma visto desde cada puesto: elija Dirección, Doctor, '
                   'Recepción, RAC, Auxiliar o Higienista y vea en qué fases interviene, con qué '
                   'papel, qué procedimientos tiene escritos y con qué se le mide.">',
                   cabecera, count=1)
@@ -231,7 +231,7 @@ CUERPO = """
     <div class="topbar__in">
       <a class="brand" href="#portada">
         <span class="brand__mark">Protocolos por <b>puesto</b></span>
-        <span class="brand__tag">Giraldo · v@VERSION@</span>
+        <span class="brand__tag">Alma · v@VERSION@</span>
       </a>
       <a class="crosslink" href="manual.html">Manual Maestro</a>
       <a class="crosslink" href="index.html">Protocolo de Primera Visita</a>
@@ -243,7 +243,7 @@ CUERPO = """
 
 <main>
 
-<div class="printhead" aria-hidden="true"><b>Protocolos por puesto · v@VERSION@</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Protocolos por puesto · v@VERSION@</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <section class="hero" id="portada">
   <div class="wrap">
@@ -309,7 +309,7 @@ CUERPO = """
   <div class="wrap">
     <div class="ticks" aria-hidden="true" style="margin-bottom:2rem"></div>
     <div class="foot__grid">
-      <div><p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Protocolos por puesto · Uso interno y confidencial</p></div>
+      <div><p><strong>Centro de Excelencia Implantológica Alma</strong><br>Protocolos por puesto · Uso interno y confidencial</p></div>
       <div><p class="eyebrow">De dónde sale</p><p>Manual Maestro · matriz RACI<br>Protocolo de Primera Visita<br>Otros documentos del sistema</p></div>
       <div><p class="eyebrow">Versión</p><p>Versión única del sistema<br><strong>v@VERSION@ · @FECHA@</strong></p></div>
     </div>

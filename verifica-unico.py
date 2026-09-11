@@ -29,7 +29,7 @@ _v = {}
 exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
 CORTA = _v["CORTA"]
 
-ARCHIVO = RAIZ / "export" / ("Giraldo-TODO-EN-UNO-v%s.html" % CORTA)
+ARCHIVO = RAIZ / "export" / ("Alma-TODO-EN-UNO-v%s.html" % CORTA)
 NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 
 # El desplazamiento es suave: un salto de tres mil píxeles tarda casi un segundo

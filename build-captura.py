@@ -177,11 +177,11 @@ table.anual td.vacio{color:var(--muted);text-align:center}
 manual = (RAIZ / "manual.html").read_text(encoding="utf-8")
 i = manual.index("<body>")
 cabecera = manual[:i + len("<body>")]
-cabecera = cabecera.replace("<title>Manual Maestro Giraldo</title>",
-                            "<title>Los números del centro · Giraldo</title>")
+cabecera = cabecera.replace("<title>Manual Maestro Alma</title>",
+                            "<title>Los números del centro · Alma</title>")
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Hoja de captura de la línea base del Centro de '
-                  'Excelencia Implantológica Giraldo: doce meses, diez indicadores con definición '
+                  'Excelencia Implantológica Alma: doce meses, diez indicadores con definición '
                   'operativa, semáforo automático, resumen anual y los cinco números.">',
                   cabecera, count=1)
 k = cabecera.rindex("</style>")
@@ -341,7 +341,7 @@ CUERPO = ("""
 
 <main class="captura-raiz">
 
-<div class="printhead" aria-hidden="true"><b>Los números del centro · 2026 · v@VERSION@</b><span>Centro de Excelencia Implantológica Giraldo · Uso interno · Confidencial</span></div>
+<div class="printhead" aria-hidden="true"><b>Los números del centro · 2026 · v@VERSION@</b><span>Centro de Excelencia Implantológica Alma · Uso interno · Confidencial</span></div>
 
 <section class="hero" id="portada">
   <div class="wrap">
@@ -510,7 +510,7 @@ CUERPO = ("""
     <div class="ticks" aria-hidden="true" style="margin-bottom:2rem"></div>
     <div class="foot__grid">
       <div>
-        <p><strong>Centro de Excelencia Implantológica Giraldo</strong><br>Los números del centro · Ejercicio 2026</p>
+        <p><strong>Centro de Excelencia Implantológica Alma</strong><br>Los números del centro · Ejercicio 2026</p>
         <p style="margin-top:.8rem">Documento de uso interno. Los datos se guardan únicamente en este equipo.</p>
       </div>
       <div><p class="eyebrow">Instrumento de</p><p>apartado 7 · Línea base<br>apartado 13 · Cuadro de mando</p></div>
@@ -765,7 +765,7 @@ JS = ("""<script>
 
   var IND = @@IND@@;
   var MESES = @@MESESJS@@;
-  var LLAVE = "giraldo-captura-2026";
+  var LLAVE = "alma-captura-2026";
 
   var estado = leer();
 

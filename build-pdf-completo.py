@@ -29,7 +29,7 @@ exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "e
 VERSION, FECHA = _v["VERSION"], _v["FECHA"]
 
 PDFS = RAIZ / "export" / "pdf"
-SALIDA = RAIZ / "export" / ("Sistema-Documental-Giraldo-v%s.pdf" % VERSION)
+SALIDA = RAIZ / "export" / ("Sistema-Documental-Alma-v%s.pdf" % VERSION)
 NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 
 # El archivo HTML del que sale cada parte: es la clave que permite convertir un
@@ -38,34 +38,34 @@ NAVEGADOR = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 # al disco de la máquina que lo compiló —file:///…/manual.html—, que en la
 # máquina de cualquier otro lector no llevan a ninguna parte.
 ORIGEN = {
-    "Plan-Direccion-Giraldo-v%s.pdf": "memoria.html",
-    "Presentacion-Junta-Giraldo-v%s.pdf": "deck.html",
-    "Plan-Marketing-Giraldo-v%s.pdf": "marketing.html",
-    "Manual-Maestro-Giraldo-v%s.pdf": "manual.html",
-    "Protocolos-Por-Puesto-Giraldo-v%s.pdf": "protocolos.html",
-    "Protocolo-Primera-Visita-Giraldo-v%s.pdf": "index.html",
-    "Otros-Documentos-Giraldo-v%s.pdf": "otros.html",
-    "Captura-Linea-Base-Giraldo-v%s.pdf": "instrumentos/captura.html",
+    "Plan-Direccion-Alma-v%s.pdf": "memoria.html",
+    "Presentacion-Junta-Alma-v%s.pdf": "deck.html",
+    "Plan-Marketing-Alma-v%s.pdf": "marketing.html",
+    "Manual-Maestro-Alma-v%s.pdf": "manual.html",
+    "Protocolos-Por-Puesto-Alma-v%s.pdf": "protocolos.html",
+    "Protocolo-Primera-Visita-Alma-v%s.pdf": "index.html",
+    "Otros-Documentos-Alma-v%s.pdf": "otros.html",
+    "Captura-Linea-Base-Alma-v%s.pdf": "instrumentos/captura.html",
 }
 
 # El orden es el del sistema, no el del tamaño: primero lo que gobierna, luego
 # lo que se presenta, después lo que se ejecuta y al final el instrumento.
 PARTES = [
-    ("Plan-Direccion-Giraldo-v%s.pdf", "Plan de Dirección",
+    ("Plan-Direccion-Alma-v%s.pdf", "Plan de Dirección",
      "Gobierno", "Qué creemos, qué apostamos y las quince decisiones que se someten a la Junta"),
-    ("Presentacion-Junta-Giraldo-v%s.pdf", "Presentación de Junta",
+    ("Presentacion-Junta-Alma-v%s.pdf", "Presentación de Junta",
      "Derivado", "Cuarenta y tres diapositivas extraídas del Plan de Dirección, para la sesión"),
-    ("Plan-Marketing-Giraldo-v%s.pdf", "Plan Maestro de Marketing",
+    ("Plan-Marketing-Alma-v%s.pdf", "Plan Maestro de Marketing",
      "Plan", "Setenta y seis acciones sobre los doce estados del paciente"),
-    ("Manual-Maestro-Giraldo-v%s.pdf", "Manual Maestro de Operaciones",
+    ("Manual-Maestro-Alma-v%s.pdf", "Manual Maestro de Operaciones",
      "Troncal", "Las catorce fases del recorrido del paciente, los seis puestos y la puesta en marcha"),
-    ("Protocolos-Por-Puesto-Giraldo-v%s.pdf", "Protocolos por puesto",
+    ("Protocolos-Por-Puesto-Alma-v%s.pdf", "Protocolos por puesto",
      "Vista operativa", "El protocolo del centro visto desde cada uno de los seis puestos"),
-    ("Protocolo-Primera-Visita-Giraldo-v%s.pdf", "Protocolo de Primera Visita",
+    ("Protocolo-Primera-Visita-Alma-v%s.pdf", "Protocolo de Primera Visita",
      "Troncal", "Las doce fases de la primera visita, minuto a minuto"),
-    ("Otros-Documentos-Giraldo-v%s.pdf", "Otros documentos del sistema",
+    ("Otros-Documentos-Alma-v%s.pdf", "Otros documentos del sistema",
      "Troncal", "Los catorce documentos de apoyo, del compendio maestro al programa de cuidado"),
-    ("Captura-Linea-Base-Giraldo-v%s.pdf", "Los números del centro",
+    ("Captura-Linea-Base-Alma-v%s.pdf", "Los números del centro",
      "Instrumento", "Los diez indicadores y los cinco números, mes a mes"),
 ]
 
@@ -110,7 +110,7 @@ h2{font-size:26pt;font-weight:400;letter-spacing:-.01em;margin-top:10mm}
 </style></head><body>
 
 <section class="hoja">
-  <p class="marca">Centro de Excelencia Implantológica Giraldo · Rúa Bolivia nº 2 · Vigo</p>
+  <p class="marca">Centro de Excelencia Implantológica Alma · Rúa Bolivia nº 2 · Vigo</p>
   <h1>Sistema<br>documental<em>completo</em></h1>
   <p class="bajada">Los @cuantos@ documentos que gobiernan y operan el centro, en un solo cuaderno: qué creemos, qué apostamos, qué se decide y cómo se ejecuta, fase a fase y puesto a puesto.</p>
   <div class="regla"></div>
@@ -323,11 +323,11 @@ def main():
               % (perdidos, ", ".join(sorted(set(huerfanos))[:6])))
 
     escritor.add_metadata({
-        "/Title": "Sistema documental · Centro de Excelencia Implantológica Giraldo",
-        "/Author": "Centro de Excelencia Implantológica Giraldo",
+        "/Title": "Sistema documental · Centro de Excelencia Implantológica Alma",
+        "/Author": "Centro de Excelencia Implantológica Alma",
         "/Subject": "Los %s documentos del sistema, versión %s" % (CUANTOS.lower(), VERSION),
         "/Keywords": "uso interno, confidencial, v%s" % VERSION,
-        "/Creator": "Sistema documental Giraldo",
+        "/Creator": "Sistema documental Alma",
     })
     with open(SALIDA, "wb") as f:
         escritor.write(f)

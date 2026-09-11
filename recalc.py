@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Recalcula un libro de cálculo con LibreOffice.
 
-    python3 recalc.py instrumentos/Captura-Linea-Base-Giraldo-2026.xlsx
+    python3 recalc.py instrumentos/Captura-Linea-Base-Alma-2026.xlsx
 
 openpyxl escribe las fórmulas sin resultado: quien abra el libro con una
 herramienta que no calcule —una vista previa, un lector de móvil, una

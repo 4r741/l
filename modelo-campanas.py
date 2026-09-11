@@ -52,7 +52,7 @@ AGENDA = [
 
 # Las que producen fuera del embudo de la primera visita.
 FUERA = [
-    dict(cod="C1", nombre="Giraldo Te Cuida", coste=6_000,
+    dict(cod="C1", nombre="Alma Te Cuida", coste=6_000,
          partes=[("Cuotas netas de sustitución", 61_000,
                   "460 adheridos × 190 € de cuota, menos el 30 % que sustituye higienes ya facturables."),
                  ("Tratamiento detectado en la base adherida", 110_000,

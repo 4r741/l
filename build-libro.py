@@ -25,7 +25,7 @@ import re
 EJERCICIO = "2026"
 
 RUTA = str(pathlib.Path(__file__).parent / "instrumentos" /
-           ("Captura-Linea-Base-Giraldo-%s.xlsx" % EJERCICIO))
+           ("Captura-Linea-Base-Alma-%s.xlsx" % EJERCICIO))
 
 # La versión no se teclea en la hoja: se toma del verificador, que es donde
 # vive la versión canónica del sistema. Un libro con versión propia se queda
@@ -97,7 +97,7 @@ def linea(fila, rotulo, texto, fuente=NORMAL):
     c = h.cell(fila, 3, texto); c.font = fuente; c.alignment = Alignment(wrap_text=True, vertical="top")
     h.row_dimensions[fila].height = 30
 
-h["B2"] = "Los números del centro · Centro de Excelencia Implantológica Giraldo"
+h["B2"] = "Los números del centro · Centro de Excelencia Implantológica Alma"
 h["B2"].font = TITULO
 h["B3"] = ("Instrumento del apartado 7 y del apartado 13 del Plan de Dirección v%s · Ejercicio %s"
            % (VERSION, EJERCICIO))
@@ -354,8 +354,8 @@ n5.cell(21, 2, "Los resultados dicen «pendiente» mientras falte alguna entrada
 # del momento de construir, de modo que dos construcciones del mismo contenido
 # daban dos archivos distintos y el repositorio quedaba sucio después de cada
 # una. Se fijan aquí, con la fecha de la versión y no la del reloj.
-wb.properties.creator = "Centro de Excelencia Implantológica Giraldo"
-wb.properties.lastModifiedBy = "Centro de Excelencia Implantológica Giraldo"
+wb.properties.creator = "Centro de Excelencia Implantológica Alma"
+wb.properties.lastModifiedBy = "Centro de Excelencia Implantológica Alma"
 wb.properties.title = "Los números del centro · %s" % EJERCICIO
 wb.properties.subject = "Los diez indicadores del apartado 13 del Plan de Dirección"
 wb.properties.description = (

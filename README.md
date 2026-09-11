@@ -1,4 +1,4 @@
-# Documentación operativa — Giraldo
+# Documentación operativa — Alma
 
 Documentación operativa y de gobierno, en HTML autocontenido y sin dependencias salvo
 las tipografías de Google Fonts. Se abren en el navegador, se publican como estáticos
@@ -14,7 +14,7 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
 | **`manual.html`** | Manual Maestro de Operaciones (v8.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
 | **`index.html`** | Protocolo de Experiencia Clínica · Primera Visita (v8.0) | Desarrollo detallado de las fases presenciales de la PV, con estándares transversales, casos especiales y anexos |
-| **`otros.html`** | Otros documentos del sistema (v8.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado GTC |
+| **`otros.html`** | Otros documentos del sistema (v8.0) | Los catorce documentos que rodean a los otros dos: compendio maestro, verificación de 322 puntos, auditoría de la clínica adquirida, decisiones de Gerencia y V1–V11, programa de 100 días, dosier de 30 días, protocolos por perfil, 18 fichas de innovación, plan de marca y captación, cuaderno de campo del día 1, puesta en marcha por perfil, continuidad legal y financiera, el posicionamiento «No medias sonrisas» y el programa de cuidado ATC |
 
 Todos comparten sistema de diseño y están enlazados entre sí; ninguno es anexo de otro.
 La Tesis añade sobre ese sistema una capa editorial propia —portada de declaración,
@@ -260,7 +260,7 @@ que hubo que hacer fue que las piezas nuevas no salieran impresas.
 ## En Word
 
 ```bash
-python3 build-word.py        # export/Sistema-Documental-Giraldo-v8.0.docx
+python3 build-word.py        # export/Sistema-Documental-Alma-v8.0.docx
 python3 verifica-word.py     # comprueba el paquete y que no falte contenido
 ```
 
@@ -415,20 +415,20 @@ python3 build-export.py
 ```
 
 Genera en `export/` nueve archivos que funcionan **sin conexión**, con las
-tipografías incrustadas como data URI, más `LEEME.txt` y `Giraldo-HTML-v7.zip`
+tipografías incrustadas como data URI, más `LEEME.txt` y `Alma-HTML-v7.zip`
 con el paquete entero listo para repartir:
 
 | Archivo | Contenido |
 | --- | --- |
-| `Giraldo-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
-| `Captura-Linea-Base-Giraldo-v7.html` | La hoja de captura, lista para rellenar en el navegador |
-| `Giraldo-TODO-EN-UNO-v7.html` | **Los siete documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
-| `Tesis-Direccion-Giraldo-v7.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
-| `Presentacion-Junta-Giraldo-v7.html` | Solo la presentación, con guion del ponente y ruta corta |
-| `Plan-Marketing-Giraldo-v7.html` | Solo el plan de marketing, con la misma condición |
-| `Manual-Maestro-Giraldo-v7.html` | Solo el manual, con la misma condición |
-| `Protocolo-Primera-Visita-Giraldo-v7.html` | Solo el protocolo, con la misma condición |
-| `Otros-Documentos-Giraldo-v7.html` | Solo los otros documentos, con la misma condición |
+| `Alma-INICIO-AQUI.html` | **La portada. Es el archivo por el que se empieza**: enlaza con los demás y explica qué es cada uno |
+| `Captura-Linea-Base-Alma-v7.html` | La hoja de captura, lista para rellenar en el navegador |
+| `Alma-TODO-EN-UNO-v7.html` | **Los siete documentos en un solo archivo**, con conmutador permanente arriba. Es el recomendado: no enlaza con ningún otro archivo, así que no hay nada que se rompa al guardarlo, renombrarlo o moverlo |
+| `Tesis-Direccion-Alma-v7.html` | Solo la tesis. Se enlaza con los demás si conservan su nombre y están en la misma carpeta |
+| `Presentacion-Junta-Alma-v7.html` | Solo la presentación, con guion del ponente y ruta corta |
+| `Plan-Marketing-Alma-v7.html` | Solo el plan de marketing, con la misma condición |
+| `Manual-Maestro-Alma-v7.html` | Solo el manual, con la misma condición |
+| `Protocolo-Primera-Visita-Alma-v7.html` | Solo el protocolo, con la misma condición |
+| `Otros-Documentos-Alma-v7.html` | Solo los otros documentos, con la misma condición |
 
 **Buscador de todo el compendio.** `/` —o `Ctrl+K`, o el botón de la
 cabecera— abre una lista sobre el documento: se escriben dos letras y se llega,
@@ -589,7 +589,7 @@ decisiones.
 | 11 | Puesta en marcha por perfil | Qué hace cada puesto durante la transición, con casuística y tabla de decisión rápida |
 | 12 | Continuidad legal y financiera | Qué se transmite y qué no, huecos de cobertura, producto pendiente heredado, comunicación y plan de 4 semanas |
 | 13 | «No medias sonrisas» | Posicionamiento y objetivo del centro: manifiesto, cinco pilares, qué significa por puesto y por fase, y cómo se comunica |
-| 14 | GTC · Giraldo Te Cuida | El programa de cuidado anual: argumentos, speech por situación, objeciones, campaña, medición y marco legal |
+| 14 | ATC · Alma Te Cuida | El programa de cuidado anual: argumentos, speech por situación, objeciones, campaña, medición y marco legal |
 
 ## PDF paginado
 
@@ -607,19 +607,19 @@ Playwright con Chromium.
 
 | PDF | Páginas |
 | --- | --- |
-| `Tesis-Direccion-Giraldo-v8.0.pdf` | 79 |
-| `Manual-Maestro-Giraldo-v8.0.pdf` | 205 |
-| `Otros-Documentos-Giraldo-v8.0.pdf` | 135 |
-| `Protocolo-Primera-Visita-Giraldo-v8.0.pdf` | 90 |
-| `Plan-Marketing-Giraldo-v8.0.pdf` | 49 |
-| `Presentacion-Junta-Giraldo-v8.0.pdf` | 43 |
-| `Guion-del-Ponente-Giraldo-v8.0.pdf` | 43 |
+| `Tesis-Direccion-Alma-v8.0.pdf` | 79 |
+| `Manual-Maestro-Alma-v8.0.pdf` | 205 |
+| `Otros-Documentos-Alma-v8.0.pdf` | 135 |
+| `Protocolo-Primera-Visita-Alma-v8.0.pdf` | 90 |
+| `Plan-Marketing-Alma-v8.0.pdf` | 49 |
+| `Presentacion-Junta-Alma-v8.0.pdf` | 43 |
+| `Guion-del-Ponente-Alma-v8.0.pdf` | 43 |
 
 ## Captura de la línea base (`instrumentos/`)
 
 Existe en dos formatos con el mismo contenido y los mismos cálculos:
 `captura.html`, que se rellena en el navegador y guarda en el propio equipo, y
-`Captura-Linea-Base-Giraldo-2026.xlsx`, para quien prefiera un libro de cálculo.
+`Captura-Linea-Base-Alma-2026.xlsx`, para quien prefiera un libro de cálculo.
 Ambos se han verificado con los mismos valores de prueba y devuelven las mismas
 cifras.
 
@@ -634,7 +634,7 @@ lector que no calcule. La versión que declara la hoja «Instrucciones» tampoco
 teclea —la toma del verificador— y el propio verificador la comprueba dentro del
 `.xlsx`, que es por donde se le escapó una vez.
 
-`Captura-Linea-Base-Giraldo-2026.xlsx` es el instrumento del §7 y del §13: sin él, la
+`Captura-Linea-Base-Alma-2026.xlsx` es el instrumento del §7 y del §13: sin él, la
 confesión de que faltan los cinco números se queda en confesión.
 
 | Hoja | Contenido |

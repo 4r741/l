@@ -38,7 +38,7 @@ SALIDA = FUENTES / "tesis-anexo-b-campanas.html"
 # guion de apertura, canal y ritmo, aporte, coste, arranque, dueño,
 # indicador, umbral de parada, depende de
 C = [
- ("C1", "Giraldo Te Cuida", "Su tratamiento no termina cuando se coloca: empieza otra cosa",
+ ("C1", "Alma Te Cuida", "Su tratamiento no termina cuando se coloca: empieza otra cosa",
   "Todo paciente que termina un tratamiento, sin excepción ni criterio comercial.",
   "No hay que encontrarlo: ya está sentado delante. La campaña vive dentro del cierre de la Fase 12.",
   "El programa de cuidado anual: revisiones, mantenimiento y prioridad de agenda, por una cuota.",

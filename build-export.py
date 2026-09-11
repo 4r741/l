@@ -29,15 +29,15 @@ DESTINO = RAIZ / "export"
 # Los archivos a exportar: nombre de salida, identificador dentro del archivo
 # único y prefijo con el que se evitan las colisiones de identificadores.
 PAGINAS = {
-    "inicio.html": "Giraldo-INICIO-AQUI.html",
-    "memoria.html": "Plan-Direccion-Giraldo-v%s.html" % CORTA,
-    "deck.html": "Presentacion-Junta-Giraldo-v%s.html" % CORTA,
-    "marketing.html": "Plan-Marketing-Giraldo-v%s.html" % CORTA,
-    "manual.html": "Manual-Maestro-Giraldo-v%s.html" % CORTA,
-    "protocolos.html": "Protocolos-Por-Puesto-Giraldo-v%s.html" % CORTA,
-    "index.html": "Protocolo-Primera-Visita-Giraldo-v%s.html" % CORTA,
-    "otros.html": "Otros-Documentos-Giraldo-v%s.html" % CORTA,
-    "instrumentos/captura.html": "Captura-Linea-Base-Giraldo-v%s.html" % CORTA,
+    "inicio.html": "Alma-INICIO-AQUI.html",
+    "memoria.html": "Plan-Direccion-Alma-v%s.html" % CORTA,
+    "deck.html": "Presentacion-Junta-Alma-v%s.html" % CORTA,
+    "marketing.html": "Plan-Marketing-Alma-v%s.html" % CORTA,
+    "manual.html": "Manual-Maestro-Alma-v%s.html" % CORTA,
+    "protocolos.html": "Protocolos-Por-Puesto-Alma-v%s.html" % CORTA,
+    "index.html": "Protocolo-Primera-Visita-Alma-v%s.html" % CORTA,
+    "otros.html": "Otros-Documentos-Alma-v%s.html" % CORTA,
+    "instrumentos/captura.html": "Captura-Linea-Base-Alma-v%s.html" % CORTA,
 }
 
 # El documento que se abre al entrar. Lo usan el conmutador y el estado
@@ -133,7 +133,7 @@ def fuentes_incrustadas(url_css):
 # Archivo único: los tres documentos dentro de un solo HTML
 # ---------------------------------------------------------------------------
 
-UNIFICADO = "Giraldo-TODO-EN-UNO-v%s.html" % CORTA
+UNIFICADO = "Alma-TODO-EN-UNO-v%s.html" % CORTA
 
 # Un único script para los tres documentos: el original de cada página busca sus
 # elementos por id, y al unirlos habría colisiones. Aquí todo se busca dentro
@@ -1574,7 +1574,7 @@ def unificado(estilo_fuentes):
         '<header class="cabecera">\n'
         '  <div class="cabecera__fila">\n'
         '    <div class="cabecera__in">\n'
-        '      <span class="cabecera__marca">Sistema documental <b>Giraldo</b>'
+        '      <span class="cabecera__marca">Sistema documental <b>Alma</b>'
         '<span>v' + VERSION + '</span></span>\n'
         '      <nav class="cabecera__docs" aria-label="Documentos del sistema">\n%s\n'
         '      </nav>\n'
@@ -1594,8 +1594,8 @@ def unificado(estilo_fuentes):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Documentación completa del Centro de Excelencia Implantológica Giraldo: Plan de Dirección, Manual Maestro de Operaciones, Protocolo de Experiencia Clínica de la Primera Visita y Otros documentos del sistema, en un solo archivo.">
-<title>Documentación Giraldo</title>
+<meta name="description" content="Documentación completa del Centro de Excelencia Implantológica Alma: Plan de Dirección, Manual Maestro de Operaciones, Protocolo de Experiencia Clínica de la Primera Visita y Otros documentos del sistema, en un solo archivo.">
+<title>Documentación Alma</title>
 {fuentes}
 {estilos}
 {estilo_doc}

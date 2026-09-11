@@ -28,7 +28,7 @@ _v = {}
 exec(compile((RAIZ / "version.py").read_text(encoding="utf-8"), "version.py", "exec"), _v)
 VERSION, FECHA = _v["VERSION"], _v["FECHA"]
 
-SALIDA = RAIZ / "export" / ("Sistema-Documental-Giraldo-v%s.docx" % VERSION)
+SALIDA = RAIZ / "export" / ("Sistema-Documental-Alma-v%s.docx" % VERSION)
 
 PARTES = [
     ("memoria.html", "Plan de Dirección",
@@ -287,13 +287,13 @@ def anchos(filas):
 
 def main():
     doc = Documento(
-        titulo="Sistema documental · Centro de Excelencia Implantológica Giraldo",
-        autor="Centro de Excelencia Implantológica Giraldo",
+        titulo="Sistema documental · Centro de Excelencia Implantológica Alma",
+        autor="Centro de Excelencia Implantológica Alma",
         asunto="Los siete documentos del sistema, versión %s" % VERSION)
 
     # ------------------------------------------------------------- cubierta
     doc.titular(1, [Trozo("Sistema documental")])
-    doc.parrafo([Trozo("Centro de Excelencia Implantológica Giraldo", negrita=True)])
+    doc.parrafo([Trozo("Centro de Excelencia Implantológica Alma", negrita=True)])
     doc.parrafo([Trozo("Rúa Bolivia nº 2 · Vigo (Pontevedra)")])
     doc.parrafo([Trozo("Versión %s · %s" % (VERSION, FECHA))])
     doc.parrafo([Trozo("Uso interno y confidencial. Contiene información económica, "

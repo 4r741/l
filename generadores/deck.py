@@ -328,7 +328,7 @@ A = DIAPOSITIVAS.append
 A('''<section class="slide slide--portada">
   <p class="eyebrow">Junta Directiva · @FECHA@ · Uso interno y confidencial</p>
   <h1>Memoria de<br><em>Dirección</em></h1>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo. Estado del proyecto, línea base, riesgos, hoja de ruta y las ocho decisiones que se someten a aprobación.</p>
+  <p class="lede">Centro de Excelencia Implantológica Alma. Estado del proyecto, línea base, riesgos, hoja de ruta y las ocho decisiones que se someten a aprobación.</p>
 </section>''')
 
 A('''<section class="slide">
@@ -531,7 +531,7 @@ def parte(numero, rotulo, titulo, lede):
 A('''<section class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · @FECHA@ · Uso interno y confidencial</p>
   <h2>No medias sonrisas.<br><em>Ni medias decisiones.</em></h2>
-  <p class="lede">Centro de Excelencia Implantológica Giraldo · Plan de Dirección v@VERSION@ · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
+  <p class="lede">Centro de Excelencia Implantológica Alma · Plan de Dirección v@VERSION@ · Seis partes, veintitrés apartados y quince decisiones que solo puede tomar este órgano.</p>
 </section>''')
 
 # 2 · la pregunta de la sesión
@@ -787,7 +787,7 @@ A('''<section class="slide">
     <thead><tr><th>Cód.</th><th>Campaña</th><th>Visitas</th><th>Aporta</th><th>Retorno</th></tr></thead>
     <tbody>
       <tr><td class="c">C6</td><td><b>«La revisión que evita la cirugía»</b></td><td class="c">—</td><td class="c">172 k€</td><td class="c">34.4×</td></tr>
-      <tr><td class="c">C1</td><td><b>Giraldo Te Cuida</b></td><td class="c">—</td><td class="c">171 k€</td><td class="c">28.5×</td></tr>
+      <tr><td class="c">C1</td><td><b>Alma Te Cuida</b></td><td class="c">—</td><td class="c">171 k€</td><td class="c">28.5×</td></tr>
       <tr><td class="c">C2</td><td><b>«Su caso no es imposible»</b></td><td class="c">80</td><td class="c">71 k€</td><td class="c">5.1×</td></tr>
       <tr><td class="c">C4</td><td><b>Red de derivación</b></td><td class="c">70</td><td class="c">44 k€</td><td class="c">4.0×</td></tr>
       <tr><td class="c">C8</td><td><b>Prescripción de pacientes</b></td><td class="c">120</td><td class="c">35 k€</td><td class="c">34.8×</td></tr>
@@ -953,7 +953,7 @@ NOTAS = [
  ("46:00", "La composición. Dejar caer la frase: dos tercios del salto no son implantes.",
   "¿Trescientos mil euros de dónde salen exactamente?",
   "De la base de pacientes que el centro ya tiene y hoy no vuelve: cuotas de seguimiento, mantenimiento y el tratamiento que la revisión detecta a tiempo. No hay que captar a nadie para eso."),
- ("47:30", "Las nueve campañas. No leerlas todas: señalar que GTC es una de nueve, y detenerse en los 274 k€ que dependen de decisiones de hoy.",
+ ("47:30", "Las nueve campañas. No leerlas todas: señalar que ATC es una de nueve, y detenerse en los 274 k€ que dependen de decisiones de hoy.",
   "¿No son demasiadas campañas a la vez?",
   "No van a la vez: el calendario de la diapositiva siguiente lo impide. Nunca más de dos arrancando, y cada una con umbral de parada a los sesenta días."),
  ("49:00", "El hallazgo del modelo, y es el que debería salir de la sala: la mitad del objetivo depende de que el seguimiento se ofrezca siempre. Decirlo despacio.",
@@ -1000,8 +1000,8 @@ documento = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Presentación del Plan de Dirección del Centro de Excelencia Implantológica Giraldo ante la Junta Directiva: posición competitiva, foso, sistema operativo, economía unitaria, valor de empresa, escalado, pre-mortem, asignación de capital, el puente hasta el objetivo de 1,2 M€ y las quince decisiones que se someten a aprobación.">
-<title>Plan de Dirección · Junta Giraldo</title>
+<meta name="description" content="Presentación del Plan de Dirección del Centro de Excelencia Implantológica Alma ante la Junta Directiva: posición competitiva, foso, sistema operativo, economía unitaria, valor de empresa, escalado, pre-mortem, asignación de capital, el puente hasta el objetivo de 1,2 M€ y las quince decisiones que se someten a aprobación.">
+<title>Plan de Dirección · Junta Alma</title>
 %s
 <style>
 %s
@@ -1017,7 +1017,7 @@ documento = """<!doctype html>
 
 <div class="barra" aria-hidden="true"><i data-deck="progreso"></i></div>
 <div class="hud">
-  <span class="hud__marca">Centro de Excelencia Implantológica Giraldo · Junta Directiva · v@VERSION@</span>
+  <span class="hud__marca">Centro de Excelencia Implantológica Alma · Junta Directiva · v@VERSION@</span>
   <span class="hud__modo" data-deck="rotulo-ruta" hidden>Ruta corta</span>
   <span class="hud__modo" data-deck="rotulo-ponente" hidden>Ponente</span>
   <span class="hud__min" data-deck="minuto"></span>
