@@ -72,7 +72,7 @@ C = [
   "Inventario de la cartera dormida, que nadie ha hecho todavía"),
 
  ("C4", "Red de derivación", "Le devolvemos a su paciente, y con el caso resuelto",
-  "Clínicas generalistas de Ourense y la ría que no hacen implantología compleja.",
+  "Clínicas generalistas de Ourense y su provincia que no hacen implantología compleja.",
   "No es una campaña de pacientes: es de colegas. Se hace en persona, una a una.",
   "Resolver el caso que ellos no hacen y devolver al paciente para todo lo demás, por escrito.",
   "No queremos su paciente. Queremos el caso que usted no va a hacer, y devolvérselo terminado con el informe.",
@@ -127,7 +127,7 @@ C = [
   "Indicador 8 definido y campo de origen obligatorio"),
 
  ("C9", "Presencia digital y reseñas", "Que quien nos busque nos encuentre, y que al encontrarnos confíe",
-  "Quien busca activamente en Ourense y la ría.",
+  "Quien busca activamente en Ourense y su provincia.",
   "Búsqueda, ficha de negocio y reseñas. Es el escaparate, no el vendedor.",
   "Información honesta, casos reales y respuesta a las preguntas que la gente hace de verdad.",
   "No hay guion: hay contenido. La pregunta que responde cada pieza es una que un paciente hizo en consulta.",

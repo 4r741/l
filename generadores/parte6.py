@@ -35,7 +35,7 @@ RETRATO = {
  "C3": ("Pacientes del centro sin visita en más de dieciocho meses",
         "Están en la base de datos: no hay que captarlos",
         "Confían, así que convierten bien, pero el caso suele ser ordinario"),
- "C4": ("Clínicas generalistas de la ría que no hacen implantología compleja",
+ "C4": ("Clínicas generalistas de la provincia que no hacen implantología compleja",
         "Visita profesional, uno a uno",
         "La conversión más alta de la cartera: llegan enviados y con el caso acotado"),
  "C5": ("Ansiedad dental severa: años sin sentarse en un sillón",
@@ -50,7 +50,7 @@ RETRATO = {
  "C8": ("La base propia, en tratamiento y terminada",
         "Petición formal en el momento adecuado del recorrido",
         "La mayor confianza previa de todas: la conversión más alta del embudo abierto"),
- "C9": ("Quien busca activamente en Ourense y la ría",
+ "C9": ("Quien busca activamente en Ourense y su provincia",
         "Ficha de negocio, reseñas y contenido de casos",
         "Búsqueda fría: la calidad media más baja de la cartera"),
 }

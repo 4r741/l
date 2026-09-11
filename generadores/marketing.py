@@ -62,7 +62,7 @@ cabecera = cabecera.replace("<title>Manual Maestro Alma</title>",
 cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Plan Maestro de Marketing del Centro de '
                   'Excelencia Implantológica Alma: doce estados del paciente, seis arquetipos '
-                  'de la ría, siete momentos de verdad, un catálogo de 76 acciones con dueño, '
+                  'de la provincia, siete momentos de verdad, un catálogo de 76 acciones con dueño, '
                   'coste y semáforo legal, diez piezas propias, la Campaña del Retorno y las reglas '
                   'de medición y de parada.">', cabecera, count=1)
 assert "Plan Maestro de Marketing Alma" in cabecera

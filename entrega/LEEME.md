@@ -17,7 +17,7 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
-## El centro está en Ourense · versión 28
+## El centro está en Ourense · versiones 28 y 29
 
 El lema no cambia: sigue siendo **«No medias sonrisas»**. La ciudad, sí, y eso
 no era un dato de pie de página.
@@ -75,10 +75,18 @@ medias sonrisas» no entrega media boca porque el billete de vuelta tenga fecha.
 
 ### La dirección
 
-Por ahora dice **«Centro de Excelencia Implantológica Alma · Ourense»**. La
-calle y el número anteriores eran de Vigo, y el código postal y la provincia que
-los acompañaban —36203, Pontevedra— también: se han quitado en lugar de
-inventar unos nuevos. **Falta la calle y el número de Ourense.**
+**Centro de Excelencia Implantológica Alma · Calle Progreso 2 · Ourense.**
+
+Va en las ocho líneas de dirección del sistema: la portada de la web, su pie,
+el bloque de contacto, las portadas del Plan de Dirección, del Plan de
+Marketing y del Manual de Operaciones, y las cabeceras del archivo único y del
+PDF encuadernado. No va en las líneas de «lugar y fecha» de cada documento
+—«Ourense · Versión 29.0 · Septiembre 2026»—, donde la ciudad sola es lo
+convencional.
+
+El código postal y la provincia anteriores —36203, Pontevedra— eran de Vigo y
+se han quitado. No se han sustituido por unos nuevos: **si quiere el código
+postal en la dirección, dígamelo y lo pongo.**
 
 Comprobado recorriendo las trece secciones del archivo entregado: **cero
 rastros** de la ciudad anterior, de lo marítimo y del nombre anterior; 919

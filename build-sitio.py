@@ -2905,7 +2905,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas, n_fases, n_rutas):
 
   <div class="portada" data-frente>
     <div class="portada__c">
-      <p class="letra portada__k">Centro de Excelencia Implantológica Alma · Ourense</p>
+      <p class="letra portada__k">Centro de Excelencia Implantológica Alma · Calle Progreso 2 · Ourense</p>
       <h1>No medias<br><em>sonrisas</em></h1>
       <p class="portada__l">Le devolvemos su sonrisa completa, en el menor tiempo posible,
         y le cuidamos para siempre.</p>
@@ -2918,7 +2918,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas, n_fases, n_rutas):
       <p class="letra censo__k">Lo que hay dentro</p>
       @@CENSO@@
     </div>
-    <p class="portada__pie letra">Ourense · Uso interno y confidencial</p>
+    <p class="portada__pie letra">Calle Progreso 2 · Ourense · Uso interno y confidencial</p>
     <span class="portada__baja" aria-hidden="true"><i></i></span>
   </div>
 
@@ -2991,7 +2991,7 @@ def sec_inicio(indice, total, voces, mapa_svg, tarjetas, n_fases, n_rutas):
     <div class="banda__i">@@ARTE3@@</div>
     <div class="contacto">
       <div><p class="letra">El centro</p><p>Centro de Excelencia Implantológica Alma<br>
-        Ourense</p></div>
+        Calle Progreso 2 · Ourense</p></div>
       <div><p class="letra">Esta edición</p><p>Versión @VERSION@ · @FECHA@<br>
         Los ocho documentos comparten número y fecha</p></div>
       <div><p class="letra">Uso</p><p>Interno y confidencial. Contiene información económica,
