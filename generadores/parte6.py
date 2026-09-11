@@ -50,7 +50,7 @@ RETRATO = {
  "C8": ("La base propia, en tratamiento y terminada",
         "Petición formal en el momento adecuado del recorrido",
         "La mayor confianza previa de todas: la conversión más alta del embudo abierto"),
- "C9": ("Quien busca activamente en Vigo y la ría",
+ "C9": ("Quien busca activamente en Ourense y la ría",
         "Ficha de negocio, reseñas y contenido de casos",
         "Búsqueda fría: la calidad media más baja de la cartera"),
 }

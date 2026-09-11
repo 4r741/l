@@ -508,7 +508,7 @@ CUERPO = """
   <div class="wrap">
     <div class="bento">
       <div class="bento__lema">
-        <p class="eyebrow">Centro de Excelencia Implantológica Alma · Rúa Bolivia nº 2 · Vigo</p>
+        <p class="eyebrow">Centro de Excelencia Implantológica Alma · Ourense</p>
         <h1>No medias <em>sonrisas</em></h1>
         <p>Lo que el centro cree, lo que decide y cómo lo ejecuta: @cuantos@ documentos que van del plan de dirección al minuto exacto en que se recibe a un paciente.</p>
       </div>

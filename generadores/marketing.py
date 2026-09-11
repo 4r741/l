@@ -63,7 +63,7 @@ cabecera = re.sub(r'<meta name="description" content="[^"]*">',
                   '<meta name="description" content="Plan Maestro de Marketing del Centro de '
                   'Excelencia Implantológica Alma: doce estados del paciente, seis arquetipos '
                   'de la ría, siete momentos de verdad, un catálogo de 76 acciones con dueño, '
-                  'coste y semáforo legal, diez piezas propias, la Campaña de Mar y las reglas '
+                  'coste y semáforo legal, diez piezas propias, la Campaña del Retorno y las reglas '
                   'de medición y de parada.">', cabecera, count=1)
 assert "Plan Maestro de Marketing Alma" in cabecera
 
@@ -77,12 +77,12 @@ TIRA = [("#portada", "Portada"), ("#control", "apartado 0 Control"),
         ("#parte-1", "I · Doctrina"), ("#doctrina", "apartado 1 Por qué"), ("#regla", "apartado 2 La regla"),
         ("#nunca", "apartado 3 Las ocho que no"), ("#legal", "apartado 4 Marco legal"),
         ("#parte-2", "II · El paciente"), ("#estados", "apartado 5 Doce estados"),
-        ("#arquetipos", "apartado 6 Seis de la ría"), ("#momentos", "apartado 7 Momentos de verdad"),
+        ("#arquetipos", "apartado 6 Los seis de la provincia"), ("#momentos", "apartado 7 Momentos de verdad"),
         ("#asimetria", "apartado 8 La asimetría"),
         ("#parte-3", "III · El catálogo"), ("#catalogo", "apartado 9 Las 76 acciones"),
         ("#parte-4", "IV · Las diez piezas"), ("#piezas", "apartado 10 Las diez piezas"),
         ("#parte-5", "V · El territorio"), ("#digital", "apartado 11 Digital"),
-        ("#ria", "apartado 12 El mapa de la ría"), ("#mar", "apartado 13 Campaña de Mar"),
+        ("#ria", "apartado 12 El mapa de la provincia"), ("#mar", "apartado 13 Campaña del Retorno"),
         ("#parte-6", "VI · La prioridad"), ("#economia", "apartado 14 Qué aporta cada grupo"),
         ("#prioridad", "apartado 15 Qué va primero"), ("#presupuesto", "apartado 16 Presupuesto"),
         ("#parte-7", "VII · El gobierno"), ("#indicadores", "apartado 17 Las ocho medidas"),
@@ -190,7 +190,7 @@ def anexo_cartera():
     fuera = [a for a in CAT["acciones"] if a["campana"] == "—"]
     filas.append('<tr><td class="num">—</td><td><strong>Fuera de la cartera</strong><br>'
                  '<span style="color:var(--muted)">El fondo del que salen las campañas de los '
-                 'ejercicios siguientes, incluida la Campaña de Mar</span></td>'
+                 'ejercicios siguientes, incluida la Campaña del Retorno</span></td>'
                  '<td class="num">sin aporte declarado</td><td>%d acciones</td>'
                  '<td class="num">%d</td></tr>' % (len(fuera), len(fuera)))
     return ('<div class="tablewrap"><table><thead><tr><th>Cód.</th><th>Campaña</th>'

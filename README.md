@@ -9,7 +9,7 @@ en cualquier hosting y se exportan a PDF paginado para repartir en papel.
 | **`inicio.html`** | Portada del sistema | Puerta de entrada: qué es cada documento y cómo se abre. Es el archivo por el que empezar |
 | **`memoria.html`** | Tesis de Dirección (v8.0) | Documento de gobierno para la Junta Directiva, en seis partes: posición competitiva y foso, sistema operativo y cartera de innovación, economía unitaria y creación de valor de empresa, riesgos y pre-mortem, la decisión —palancas, asignación de capital, hoja de ruta y los quince acuerdos que se someten a aprobación— y la cifra: el puente hasta 1,2 M€ con su cartera de nueve campañas |
 | **`deck.html`** | Presentación de Junta | Cuarenta y tres diapositivas en 16:9 derivadas de la tesis, con portada de declaración, separadores de parte, guion del ponente (tecla `N`) y ruta corta de doce (tecla `E`) |
-| **`marketing.html`** | Plan Maestro de Marketing (v8.0) | Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales: 12 estados, 6 arquetipos de la ría, 7 momentos de verdad, un catálogo de 76 acciones con dueño, coste, plazo y semáforo legal, 10 piezas propias y la Campaña de Mar |
+| **`marketing.html`** | Plan Maestro de Marketing (v8.0) | Todo lo que el centro puede hacer para que un paciente lo elija, lo entienda y se quede, organizado por el estado de su relación con su propia boca y no por canales: 12 estados, 6 arquetipos de la ría, 7 momentos de verdad, un catálogo de 76 acciones con dueño, coste, plazo y semáforo legal, 10 piezas propias y la Campaña del Retorno |
 | **`instrumentos/captura.html`** | Captura de la línea base (2026) | La misma hoja en el navegador: se rellena, calcula y guarda en el equipo, sin instalar nada |
 | **`instrumentos/…xlsx`** | Captura de la línea base (2026) | La versión en libro de cálculo, para quien prefiera Excel: doce hojas mensuales, umbrales editables, semáforo automático y resumen anual con tendencia |
 | **`manual.html`** | Manual Maestro de Operaciones (v8.0) | Documento troncal: 14 fases del recorrido, manuales por puesto, funciones de vanguardia, RACI, indicadores, incentivos y puesta en marcha |
@@ -484,7 +484,7 @@ los diez apartados de la Memoria v1.0 —renumerados— y los reordena en seis p
 | §1 Resumen ejecutivo | Qué está hecho, qué falta y qué se pide hoy |
 | **I · La posición** | |
 | §2 Tesis | Los tres segmentos desatendidos y los cinco indicadores que acreditan liderazgo |
-| §3 Mapa competitivo | Las cuatro posiciones de la implantología en Vigo y por qué la cuarta está libre |
+| §3 Mapa competitivo | Las cuatro posiciones de la implantología en Ourense y por qué la cuarta está libre |
 | §4 El foso | Qué se compra con dinero y qué no, con el tiempo de réplica de cada activo |
 | **II · El sistema** | |
 | §5 Sistema operativo | Qué se ha construido y qué garantiza tenerlo por escrito |
@@ -547,8 +547,8 @@ se vaya la que ya está.
 | I · La doctrina | Por qué el plan no se organiza por canales, la regla de admisión del catálogo, las ocho cosas que no se harán nunca y el marco de la publicidad sanitaria |
 | II · El paciente | Los 12 estados y sus tránsitos, los 6 arquetipos de la ría, los 7 momentos de verdad y la asimetría de información que explica la desconfianza del sector |
 | III · El catálogo | Las 76 acciones en 7 grupos, cada una con código estable, dueño, banda de coste, plazo, indicador y semáforo legal |
-| IV · Las diez piezas | Segunda Opinión Honesta, índice de «no necesita tratamiento», Consulta del Miedo, Presupuesto sin Prisa, Archivo de tu Boca, Campaña de Mar, Día de los que no Volvieron, Carta del Tercer Año, Prótesis a la Vista y El Acompañante — cada una con su casilla incómoda: por qué nadie lo hace |
-| V · El territorio | La presencia digital como infraestructura y no como campaña de retorno, el mapa de la ría en cuatro coronas y la Campaña de Mar |
+| IV · Las diez piezas | Segunda Opinión Honesta, índice de «no necesita tratamiento», Consulta del Miedo, Presupuesto sin Prisa, Archivo de tu Boca, Campaña del Retorno, Día de los que no Volvieron, Carta del Tercer Año, Prótesis a la Vista y El Acompañante — cada una con su casilla incómoda: por qué nadie lo hace |
+| V · El territorio | La presencia digital como infraestructura y no como campaña de retorno, el mapa de la ría en cuatro coronas y la Campaña del Retorno |
 | VI · La prioridad | Qué aporta cada grupo, en qué orden se activa y qué presupuesto pide de verdad |
 | VII · El gobierno | Las 8 medidas del plan, el calendario con sus cuatro puertas de paso y las reglas de parada |
 | Anexos | Semáforo legal por acción, correspondencia con las nueve campañas de la cartera y lo que se activa este trimestre |

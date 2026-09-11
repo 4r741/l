@@ -294,7 +294,7 @@ def main():
     # ------------------------------------------------------------- cubierta
     doc.titular(1, [Trozo("Sistema documental")])
     doc.parrafo([Trozo("Centro de Excelencia Implantológica Alma", negrita=True)])
-    doc.parrafo([Trozo("Rúa Bolivia nº 2 · Vigo (Pontevedra)")])
+    doc.parrafo([Trozo("Ourense")])
     doc.parrafo([Trozo("Versión %s · %s" % (VERSION, FECHA))])
     doc.parrafo([Trozo("Uso interno y confidencial. Contiene información económica, "
                        "laboral y estratégica. No se difunde fuera de la organización "

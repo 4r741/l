@@ -70,7 +70,7 @@ MENUS = {
             ]),
             ("Parte I · La posición", "parte-1", [
                 ("tesis", "02", "Por qué este centro y no otro"),
-                ("mapa", "03", "Mapa competitivo de Vigo y el hueco libre"),
+                ("mapa", "03", "Mapa competitivo de Ourense y el hueco libre"),
                 ("foso", "04", "El foso: lo que un competidor no puede comprar"),
             ]),
             ("Parte II · El sistema", "parte-2", [
@@ -125,7 +125,7 @@ MENUS = {
             ]),
             ("Parte II · El paciente", "parte-2", [
                 ("estados", "05", "Los doce estados del paciente"),
-                ("arquetipos", "06", "Los seis pacientes de la ría"),
+                ("arquetipos", "06", "Los seis de la provincia"),
                 ("momentos", "07", "Los siete momentos de verdad"),
                 ("asimetria", "08", "La asimetría: lo que el paciente no sabe"),
             ]),
@@ -133,12 +133,12 @@ MENUS = {
                 ("catalogo", "09", "Las 76 acciones, con dueño y coste"),
             ]),
             ("Parte IV · Las diez piezas", "parte-4", [
-                ("piezas", "10", "Las diez piezas que nadie hace en Vigo"),
+                ("piezas", "10", "Las diez piezas que nadie hace en Ourense"),
             ]),
             ("Parte V · El territorio", "parte-5", [
                 ("digital", "11", "La presencia digital, y para qué sirve"),
-                ("ria", "12", "El mapa de la ría: dónde está el paciente"),
-                ("mar", "13", "La Campaña de Mar, verano a verano"),
+                ("ria", "12", "El mapa de la provincia: dónde está el paciente"),
+                ("mar", "13", "La Campaña del Retorno, verano a verano"),
             ]),
             ("Parte VI · La prioridad", "parte-6", [
                 ("economia", "14", "Qué aporta cada grupo de acciones"),

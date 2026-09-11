@@ -17,6 +17,73 @@ espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
 
+## El centro está en Ourense · versión 28
+
+El lema no cambia: sigue siendo **«No medias sonrisas»**. La ciudad, sí, y eso
+no era un dato de pie de página.
+
+### Por qué no bastaba con cambiar la palabra
+
+Vigo estaba **dentro del argumento** del Plan de Marketing. Tres piezas se
+apoyaban en que es ciudad de mar:
+
+- **Apartado 12, «El mapa de la ría»** — coronas y localidades reales (Cangas,
+  Moaña, Baiona), «veinte minutos por mar».
+- **Apartado 13, «La Campaña de Mar»** — «Vigo vive del mar»: flotas,
+  cofradías, la ventana de tierra de quien embarca, con las acciones A69 a A72.
+- **Apartado 6, arquetipo 3, «El que embarca»** — el tripulante cuyo calendario
+  decide la marea.
+
+Cambiar solo el nombre habría dejado «Ourense y la ría» y una campaña pesquera
+tierra adentro. Eso no se manda.
+
+### Qué se ha reescrito, y marcado como supuesto
+
+Se mantiene la estructura de las tres piezas y cambia la sustancia, con la
+misma convención de **«modelo · a contrastar»** que el documento ya usaba:
+
+- **«El mapa de la provincia».** Cuatro coronas: la ciudad (O Couto, A Ponte,
+  Mariñamansa, O Vinteún, A Carballeira), el área urbana (Barbadás, San Cibrao
+  das Viñas, O Pereiro de Aguiar, Coles, Toén), las comarcas (Verín, Xinzo de
+  Limia, Allariz, Celanova, O Carballiño, Ribadavia) y **el retorno**. El
+  principio se conserva entero: el área de influencia se mide en minutos de
+  puerta a sillón, no en kilómetros; lo que cambia es que aquí los minutos los
+  deciden la autovía y la carretera de montaña, no la ría.
+- **«La Campaña del Retorno».** El mismo razonamiento del original —un
+  colectivo entero excluido por un problema de calendario, no de dinero— con el
+  colectivo que en Ourense lo sufre: quien vive fuera y vuelve dos o tres
+  semanas en agosto y en Navidad. Las acciones **A69 a A72** conservan sus
+  códigos y cambian de destinatario: asociaciones de emigrantes, centros
+  gallegos en el exterior y concellos en lugar de cofradías y armadores.
+- **«Los seis de la provincia»**, con **«El que vuelve»** ocupando el lugar
+  estructural de «El que embarca».
+- **La figura FM4** pasa de «ventana de tierra por tipo de flota» a **«ventana
+  de estancia por tipo de retorno»**, con sus cuatro colectivos y sus meses.
+- **Las acciones A11 y A16** del catálogo, que nombraban el puerto, la conserva
+  y las localidades de la ría.
+
+### Una línea ética nueva, porque la anterior ya no aplicaba
+
+El original tenía una regla que no se cruzaba: el informe de aptitud se emite
+**para el tripulante, no para el armador**. Sin armador esa regla se queda sin
+objeto, pero la tentación de esta campaña es otra y es igual de real: si alguien
+se va el día 30, comprimir en tres semanas lo que necesita tres meses. La regla
+nueva lo dice: **el calendario del paciente no manda sobre el calendario
+clínico**. Si no cabe en la ventana, se planifica a dos estancias y se dice
+claramente qué no se va a terminar este verano. Un centro que se llama «no
+medias sonrisas» no entrega media boca porque el billete de vuelta tenga fecha.
+
+### La dirección
+
+Por ahora dice **«Centro de Excelencia Implantológica Alma · Ourense»**. La
+calle y el número anteriores eran de Vigo, y el código postal y la provincia que
+los acompañaban —36203, Pontevedra— también: se han quitado en lugar de
+inventar unos nuevos. **Falta la calle y el número de Ourense.**
+
+Comprobado recorriendo las trece secciones del archivo entregado: **cero
+rastros** de la ciudad anterior, de lo marítimo y del nombre anterior; 919
+enlaces con 0 externos y 0 rotos.
+
 ## La clínica se llama Alma · versión 27
 
 El centro pasa a llamarse **Alma**. El cambio recorre el sistema entero: **698

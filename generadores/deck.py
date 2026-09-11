@@ -547,7 +547,7 @@ A('''<section class="slide">
 </section>''')
 
 parte("I", "La posición", "Dónde estamos parados y <em>por qué ahí</em>",
-      "La apuesta del proyecto, los segmentos desatendidos, el mapa competitivo de Vigo y el foso: qué tendría que hacer un competidor para quitarnos el sitio y cuánto tardaría.")
+      "La apuesta del proyecto, los segmentos desatendidos, el mapa competitivo de Ourense y el foso: qué tendría que hacer un competidor para quitarnos el sitio y cuánto tardaría.")
 
 A(ORIGINALES[1])   # apartado 2 · la apuesta
 A(ORIGINALES[4])   # apartado 2 · tres segmentos desatendidos
@@ -555,7 +555,7 @@ A(ORIGINALES[4])   # apartado 2 · tres segmentos desatendidos
 # mapa competitivo
 A('''<section class="slide">
   <p class="eyebrow">03 · El mapa competitivo</p>
-  <h2>Cuatro formas de vender implantes en Vigo, y la que dejamos libre</h2>
+  <h2>Cuatro formas de vender implantes en Ourense, y la que dejamos libre</h2>
   <table>
     <thead><tr><th>Posición</th><th>Cómo compite</th><th>Dónde se rompe</th></tr></thead>
     <tbody>
@@ -865,7 +865,7 @@ NOTAS = [
   "¿No dicen todos lo mismo?",
   "Todos dicen la primera mitad. Pida a un competidor el documento donde figure por escrito quién responde a los cinco años. Ahí se acaba el parecido."),
  ("3:15", "Tres segmentos, y el matiz que importa: ninguno compra precio. Es el terreno donde la guerra de tarifas no llega.",
-  "¿Hay demanda suficiente en Vigo para tres segmentos?",
+  "¿Hay demanda suficiente en Ourense para tres segmentos?",
   "Es exactamente lo que no sabemos y lo reconocemos: el estudio de mercado está en la hoja de ruta del primer trimestre. Hoy es una hipótesis declarada, no un dato."),
  ("4:30", "Insistir en el eje: el mercado no se ordena por precio, sino por quién asume el riesgo del resultado. Recorrer A, B y C rápido, y detenerse en D.",
   "¿Por qué está libre la posición D si es tan buena?",

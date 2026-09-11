@@ -266,29 +266,31 @@ def fm3():
     return svg(W, H, "".join(p), "Las acciones del catálogo por plazo y por banda de coste")
 
 
-# ================================================================ FM4 · la ventana de mar
+# ================================================================ FM4 · la ventana del retorno
 def fm4():
-    """El calendario de tierra: cuándo se puede tratar a quien embarca.
+    """El calendario del retorno: cuándo se puede tratar a quien vive fuera.
 
     Naturaleza: modelo. Las ventanas son un supuesto de trabajo que hay que
-    contrastar con las cofradías y con los armadores antes de comprometer nada.
+    contrastar con dos asociaciones de emigrantes y con los concellos antes de
+    comprometer nada. Se sustituye por el calendario real de estancias en
+    cuanto la hoja de captura registre la procedencia de la primera visita.
     """
     MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-    # (rótulo, meses en tierra 0-11, nota)
+    # (rótulo, meses de estancia 0-11, nota)
     FLOTAS = [
-        ("Bajura y artes menores", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-         "En tierra casi todo el año; la restricción es el horario, no el calendario"),
-        ("Cerco y arrastre de litoral", [0, 1, 11],
-         "Paradas biológicas y temporal de invierno"),
-        ("Gran altura · campañas largas", [0, 1, 6, 7],
-         "Ventanas de tierra entre mareas, cortas y con fecha fija"),
-        ("Personal de tierra del puerto", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-         "Sin restricción de calendario; sí de turno"),
+        ("Emigración en Europa", [7, 11],
+         "Agosto y Navidad. Ventanas cortas, con fecha fija y billete comprado"),
+        ("Emigración dentro de España", [3, 7, 11],
+         "Semana Santa, agosto y Navidad; más ventanas, y más cortas todavía"),
+        ("Trabajo de temporada", [0, 1, 2, 3, 9, 10, 11],
+         "Fuera en campaña y en verano; en casa el resto del año, al revés que los anteriores"),
+        ("Retorno definitivo", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+         "Sin restricción de calendario; la barrera es otra, y está en el apartado 6"),
     ]
     W, H = 1080, 380
     x0, y0, cw, ch = 330, 92, (W - 330 - 48) / 12.0, 58
     p = ['<rect width="%d" height="%d" fill="var(--paper)"/>' % (W, H)]
-    p.append(mono(48, 36, "VENTANA DE TIERRA POR TIPO DE FLOTA  ·  SUPUESTO A CONTRASTAR", size=11, color=OCRE))
+    p.append(mono(48, 36, "VENTANA DE ESTANCIA POR TIPO DE RETORNO  ·  SUPUESTO A CONTRASTAR", size=11, color=OCRE))
     for j, m in enumerate(MESES):
         p.append(mono(x0 + j * cw + cw / 2, y0 - 14, m.upper(), size=10, anchor="middle"))
     for i, (rot, meses, nota) in enumerate(FLOTAS):
@@ -304,10 +306,10 @@ def fm4():
         y += ch
     p.append('<line x1="48" y1="%d" x2="%d" y2="%d" stroke="var(--line)"/>' % (H - 52, W - 48, H - 52))
     p.append('<rect x="48" y="%d" width="22" height="10" rx="2" fill="%s"/>' % (H - 40, TEAL))
-    p.append(mono(80, H - 31, "EN TIERRA: SE PUEDE PLANIFICAR TRATAMIENTO", size=10))
+    p.append(mono(80, H - 31, "EN CASA: SE PUEDE PLANIFICAR TRATAMIENTO", size=10))
     p.append('<rect x="520" y="%d" width="22" height="10" rx="2" fill="var(--surface)" stroke="var(--line)"/>' % (H - 40))
-    p.append(mono(552, H - 31, "EMBARCADO O NO DISPONIBLE", size=10))
-    return svg(W, H, "".join(p), "Ventana de tierra por tipo de flota a lo largo del año")
+    p.append(mono(552, H - 31, "FUERA O NO DISPONIBLE", size=10))
+    return svg(W, H, "".join(p), "Ventana de estancia por tipo de retorno a lo largo del año")
 
 
 FIGS = [("FM1", fm1()), ("FM2", fm2()), ("FM3", fm3()), ("FM4", fm4())]

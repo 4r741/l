@@ -110,7 +110,7 @@ h2{font-size:26pt;font-weight:400;letter-spacing:-.01em;margin-top:10mm}
 </style></head><body>
 
 <section class="hoja">
-  <p class="marca">Centro de Excelencia Implantológica Alma · Rúa Bolivia nº 2 · Vigo</p>
+  <p class="marca">Centro de Excelencia Implantológica Alma · Ourense</p>
   <h1>Sistema<br>documental<em>completo</em></h1>
   <p class="bajada">Los @cuantos@ documentos que gobiernan y operan el centro, en un solo cuaderno: qué creemos, qué apostamos, qué se decide y cómo se ejecuta, fase a fase y puesto a puesto.</p>
   <div class="regla"></div>
