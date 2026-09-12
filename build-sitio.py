@@ -6963,28 +6963,83 @@ HOJA = """
    cerrarlo no quedaba rastro de dónde estaba.
    ==================================================================== */
 
-/* --------------------------------------------------------------- 1. Base */
-:root{
-  --tinta:#141414; --papel:#FCFCFA; --nieve:#FFFFFF; --humo:#F2F1ED;
-  --gris:#6E6E68; --linea:#E2E1DA; --fina:#EFEEE9;
-  --verde:#0E5A50; --verde-o:#083C35; --verde-p:#E9F1EF;
-  --barra:3.5rem;
-  --e:cubic-bezier(.22,.61,.36,1);
+/* --------------------------------------------------------------- 1. Base
+
+   Versión 33 · la piel de NŌTA. Fondo casi negro, texto hueso, una sola nota
+   de verde apagado, y la Instrument Serif —la misma serif de display de la web
+   de referencia— para los titulares. Este :root es la única fuente de verdad
+   del color: redefine también los tokens antiguos que usan las funciones y las
+   tablas de los documentos, para que todo el sistema sea oscuro a la vez y
+   nada quede en isla clara.
+
+   El selector es «html:root» y no «:root» a propósito: una de las ocho hojas
+   cosechadas define sus colores con «html:root» —especificidad (0,1,1)— y eso
+   le ganaba a un «:root» pelado (0,1,0), dejando --ink, --tinta y --ink-2 en
+   sus valores claros de origen aunque --negro sí virara. Con «html:root:root»
+   (0,2,1) esta hoja gana a cualquiera de las dos, y como además va la última,
+   no hay empate que valga: el color oscuro es el que manda en todo el sistema. */
+html:root:root{
+  /* la paleta nueva */
+  --fondo:#0A0A09; --fondo-2:#141311; --alza:#1B1A17; --alza-2:#232019;
+  --hueso:#F1EFE8; --tinta:#E7E5DD; --ink:#D6D4CB; --ink-2:#9C9A8F;
+  --tenue:#78766B; --debil:#54524A;
+  --linea:rgba(241,239,232,.13); --linea-2:rgba(241,239,232,.07);
+  --fina:rgba(241,239,232,.05);
+  --verde:#8FC9B6; --verde-o:#69AD97; --verde-p:rgba(143,201,182,.13);
+  --barra:3.5rem; --e:cubic-bezier(.22,.61,.36,1);
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:Archivo,"Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  /* los tokens antiguos, remapeados a oscuro (los usan el buscador, el tablero,
+     el mapa conceptual, el índice y las tablas cosechadas de los documentos) */
+  --negro:var(--hueso); --papel:var(--fondo); --blanco:var(--fondo-2);
+  --nieve:var(--fondo-2); --humo:var(--fondo-2); --gris:var(--ink-2);
+  --muted:var(--tenue); --linea-soft:var(--linea-2);
+  --azul:var(--verde); --azul-o:var(--verde-o); --azul-p:var(--verde-p);
+  --paper:var(--fondo); --surface:var(--fondo-2); --surface-2:var(--alza);
+  --line:var(--linea); --line-soft:var(--linea-2);
+  --accent:var(--verde); --accent-ink:var(--verde-o); --accent-fuerte:var(--verde-o);
+  --accent-soft:var(--verde-p); --acido:var(--verde-p); --acido-ink:var(--verde-o);
+  --signal:var(--hueso); --alerta:var(--hueso);
+  --rol-recepcion:var(--ink-2); --rol-doctor:var(--ink); --rol-higienista:var(--ink-2);
+  --rol-auxiliar:var(--ink-2); --rol-rac:var(--ink); --rol-direccion:var(--hueso);
+  --sem-verde:var(--verde); --sem-amarillo:var(--ink-2); --sem-naranja:var(--tenue);
+  --sem-rojo:var(--hueso); --acido-ink:var(--verde-o);
 }
-html{-webkit-text-size-adjust:100%}
-body{background:var(--papel);color:var(--tinta);
-  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
-  font-size:16px;line-height:1.65;margin:0;
-  font-synthesis-weight:none;text-rendering:optimizeLegibility}
+html{-webkit-text-size-adjust:100%;background:var(--fondo)}
+body{background:var(--fondo);color:var(--tinta);
+  font-family:var(--sans);font-size:16px;line-height:1.65;margin:0;
+  font-synthesis-weight:none;text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased}
 *,*::before,*::after{box-sizing:border-box}
-:where(h1,h2,h3,h4){font-weight:400;letter-spacing:-.022em;line-height:1.14;
-  text-wrap:balance;margin:0}
+
+/* Los titulares, en Instrument Serif: es lo que le da la voz a NŌTA. Tamaño
+   generoso, un pelo de cursiva reservada para el acento del lema. */
+:where(h1,h2,h3,h4){font-family:var(--serif);font-weight:400;
+  letter-spacing:-.015em;line-height:1.05;text-wrap:balance;margin:0;
+  color:var(--hueso)}
 :where(p,li){text-wrap:pretty}
-::selection{background:var(--verde);color:#fff}
+::selection{background:var(--verde);color:var(--fondo)}
 :focus-visible{outline:2px solid var(--verde);outline-offset:3px}
-.letra,.eyebrow,.rotulillo{font-family:"IBM Plex Mono",ui-monospace,monospace;
-  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.letra,.eyebrow,.rotulillo{font-family:var(--mono);
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tenue)}
 [hidden]{display:none!important}
+
+/* El revelado al bajar: cada bloque entra una vez, subiendo un suspiro. Se
+   dibuja con la propia barra de desplazamiento —sin una línea de guion, sin
+   GSAP— y quien pida «menos movimiento» no ve ninguno. Es el gesto de NŌTA
+   traído sin su peso. */
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:view()){
+    .frente,.banda,.hoja > *,.mc__col,.rutacard,.censo__i,.puerta,
+    .tab__f,.resu__i,.hecho,.idea{
+      animation:surge linear both;animation-timeline:view();
+      animation-range:entry 0% entry 30%}
+    @keyframes surge{from{opacity:0;transform:translateY(1.2rem)}
+                     to{opacity:1;transform:none}}
+  }
+}
 
 /* --------------------------------------------- 2. La barra: una fina línea arriba
 
@@ -7048,14 +7103,15 @@ body{background:var(--papel);color:var(--tinta);
   grid-template-columns:minmax(0,1fr) minmax(0,22rem);
   align-content:center;gap:clamp(2rem,5vw,6rem);
   padding:calc(var(--barra) + clamp(2rem,6vh,4rem)) clamp(1.6rem,5vw,5rem) clamp(3rem,8vh,6rem);
-  background:var(--tinta);color:var(--papel);margin:0}
+  background:radial-gradient(120% 90% at 78% 12%, #14130F 0%, var(--fondo) 60%);
+  color:var(--tinta);margin:0}
 .portada__c{align-self:center;min-width:0}
-.portada__k{margin:0 0 1.6rem;color:rgba(255,255,255,.45)}
-.portada h1{font-size:clamp(2.6rem,6vw,5rem);line-height:1;letter-spacing:-.04em;
-  color:#fff}
-.portada h1 em{font-style:normal;color:#5FBFA9;display:block}
-.portada__l{margin:1.6rem 0 0;max-width:26ch;font-size:clamp(1.05rem,1.7vw,1.4rem);
-  line-height:1.35;color:rgba(255,255,255,.62)}
+.portada__k{margin:0 0 1.8rem;color:var(--tenue)}
+.portada h1{font-family:var(--serif);font-size:clamp(3rem,7.5vw,6.2rem);
+  line-height:.92;letter-spacing:-.01em;color:var(--hueso)}
+.portada h1 em{font-style:italic;color:var(--verde);display:block}
+.portada__l{margin:1.8rem 0 0;max-width:24ch;font-size:clamp(1.05rem,1.7vw,1.4rem);
+  line-height:1.4;color:var(--ink-2)}
 .portada__b{display:flex;flex-wrap:wrap;gap:.7rem;margin:2.4rem 0 0}
 .portada__pie{position:static;margin:3rem 0 0;color:rgba(255,255,255,.35);
   grid-column:1/-1}
@@ -7145,6 +7201,36 @@ body{background:var(--papel);color:var(--tinta);
   .hoja,.frente,.banda{padding-left:1.3rem;padding-right:1.3rem}
   .sec:not(#inicio) > :first-child{padding-top:calc(var(--barra) + 1.4rem)}
 }
+
+/* --------------------------------------------- 9. Contraste de la piel oscura
+
+   Al virar --negro de negro a hueso, los poquísimos sitios que lo usaban como
+   FONDO —no como tinta— se quedaron claros. Son dos familias, y aquí se
+   arreglan las dos con la especificidad de la hoja (html:root:root) para que
+   ganen a la regla de origen:
+
+   a) los paneles «de noche» —el proyector y su portada de pase— que llevan
+      texto blanco por diseño: se les devuelve un fondo oscuro de verdad, que
+      es lo que un pase a pantalla completa quiere ser.
+   b) las fichas «fuertes» o «encendidas» —el botón de acción, un chip activo,
+      la R de la RACI, el «usted está aquí»— que ahora son una pastilla clara:
+      se les pone tinta oscura encima, que es como NŌTA marca lo primario. */
+html:root:root .proy,
+html:root:root #proy .dia .slide--stmt,
+html:root:root .frente--noche,
+html:root:root .banda--noche{background:var(--fondo);color:var(--hueso)}
+html:root:root #proy .dia .slide--stmt{background:var(--fondo-2)}
+
+html:root:root .bt--fuerte,
+html:root:root .portada .bt--fuerte,
+html:root:root .lector__volver,
+html:root:root .proy__t.es-on,
+html:root:root .carril__b.es-jefe,
+html:root:root .estado.es-on,
+html:root:root .etq--naranja,
+html:root:root .pal__i.es-aqui,
+html:root:root .presfil__b.es-on,
+html:root:root .wraci__c.wes-ra{color:var(--fondo)}
 """
 
 
@@ -7515,6 +7601,26 @@ def monocroma(css):
     return re.sub(r"\b(rgba?)\(([^)]*)\)", enrgb, css)
 
 
+def fuente_serif():
+    """Instrument Serif —regular e itálica— empotrada en base64.
+
+    Es la tipografía de display de la web de referencia (NŌTA). Se guarda en
+    fuentes/tipos/ dentro del repo y se incrusta en el propio archivo, así que
+    viaja con él y no pide nada a la red, igual que Archivo y la mono.
+    """
+    import base64
+    fmt = ('@font-face{font-family:"Instrument Serif";font-style:%s;'
+           'font-weight:400;font-display:swap;'
+           'src:url(data:font/ttf;base64,%s) format("truetype")}')
+    salida = []
+    for estilo, arch in (("normal", "InstrumentSerif-Regular.ttf"),
+                         ("italic", "InstrumentSerif-Italic.ttf")):
+        ruta = RAIZ / "fuentes" / "tipos" / arch
+        b64 = base64.b64encode(ruta.read_bytes()).decode()
+        salida.append(fmt % (estilo, b64))
+    return "<style>%s</style>" % "".join(salida)
+
+
 def hoja_propia(doc, marca):
     for b in re.findall(r"<style>(.*?)</style>", fuente(doc), re.S):
         if marca in b:
@@ -7709,6 +7815,9 @@ def main():
                   + "\n" + HOJA + "\n" + SIN_GUION
     k = cabecera.rindex("</style>")
     cabecera = cabecera[:k] + extra + "\n" + cabecera[k:]
+    # La serif de display, en su propio <style> con las @font-face empotradas.
+    kb = cabecera.rindex("</head>") if "</head>" in cabecera else len(cabecera)
+    cabecera = cabecera[:kb] + fuente_serif() + "\n" + cabecera[kb:]
 
     # El documento nace marcado «sin-js». Si el guion llega a correr, la marca
     # se quita en la primera línea y manda la hoja de siempre. Si no llega a

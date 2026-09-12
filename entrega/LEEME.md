@@ -4,7 +4,7 @@ Los cuatro archivos que contienen el sistema entero. Cada uno se basta solo.
 
 | Archivo | Qué es |
 | --- | --- |
-| `centro.html` | **La web del centro.** Abre con una portada a pantalla completa y cada sección entra por una banda de imagen a sangre, en día o en noche. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —negro, gris y blanco, y un azul cobalto profundo, contenido, para lo que importa—: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
+| `centro.html` | **La web del centro.** Abre con una portada a pantalla completa sobre fondo casi negro y cada sección entra subiendo un suspiro al bajar la página. Las imágenes están dibujadas dentro del propio archivo —no hay fotografías del centro y no se han usado de banco—: campos de líneas, arcos, tramas y anillos, todos sobre el mismo motivo, el arco dental de catorce posiciones. Los seis puestos llevan retrato. Nueve secciones —Inicio, Dirección, Presentación, Protocolos, Primera Visita, Operaciones, Marketing, Otros y Los números—; al pulsar una se despliegan sus apartados. Cada sección lleva su documento entero más el bloque que pide: el reloj de los 123 minutos y los carriles de quién tiene al paciente, la matriz RACI de los seis puestos, el mapa de las catorce fases, la tabla de 76 acciones que se filtra y el puente de 720.000 € a 1,2 M€. Encima de todo eso hay tres cosas nuevas: **diez recorridos guiados** (soy paciente, soy la Junta, es lunes por la mañana, marketing, y uno por cada uno de los seis puestos) con sus 76 paradas en orden; el **mapa interactivo de las catorce fases**, donde se pulsa una fase y se lee, y se vuelve al mapa; y el **lector**, que abre cualquier apartado encima de la página con «anterior», «siguiente», el paso en el que va —«Soy paciente · 2 / 8»— y un «volver» que devuelve al sitio exacto del que se salió. Las voces técnicas —RACI, RAC, CBCT, IAC, producto pendiente…— se explican en un pop-up al pulsarlas. **Protocolos** trae el manual de cada puesto entero, en desplegables, dentro de su propia ficha: no hay un enlace al Manual, está el texto. Y **Presentación** trae las 43 diapositivas de la Junta legibles una a una, con su minuto, su parte y el guion del ponente debajo. Una sola paleta manda en toda la web —un fondo casi negro, la tinta en hueso y una sola nota de verde apagado para lo que importa—, con la Instrument Serif en los titulares: los documentos traían cada uno la suya y aquí se dibujan todos igual, sin tocar una letra de lo escrito. Los 691 enlaces internos están comprobados uno a uno: ninguno muerto, y el que cambia de sección lo dice antes de pulsarlo. Doble clic y se abre, sin conexión. |
 | `Alma-TODO-EN-UNO-v27.html` | Los ocho documentos en una página web. Doble clic y se abre en cualquier navegador, sin conexión y sin instalar nada. Cada documento abre en una rejilla bento: el nombre en negro, la cifra que manda en verde pleno y una tarjeta por parte con sus apartados. El texto se abre al pulsar. |
 | `Sistema-Documental-Alma-v27.0.pdf` | Los mismos ocho documentos encuadernados en 631 páginas, con portada, índice paginado y **128 marcadores**: uno por documento y uno por apartado. Sus referencias cruzadas son ahora **saltos internos del cuaderno**: pulsar «la matriz RACI» lleva a la página donde está. |
 | `Sistema-Documental-Alma-v27.0.docx` | El sistema entero en Word, con índice automático, 335 tablas y las 23 figuras incrustadas. Y, por primera vez, **navegable**: 748 marcadores y 278 saltos internos, de modo que «véase la Fase 14» sea un enlace y no una instrucción para buscar a mano. |
@@ -16,6 +16,40 @@ escritos, qué funciones de vanguardia le tocan, con qué se le mide y qué se
 espera de él los primeros treinta días. Cada línea lleva al documento donde
 está el detalle: la vista señala, no sustituye. En `centro.html` no hace falta ni
 eso: el protocolo del puesto y las fases a las que lleva están en la misma página.
+
+## La piel de NŌTA · el giro estético
+
+La estructura de la versión 32 se queda entera —la espina numérica arriba, los
+diez recorridos, el mapa de las catorce fases, el lector, los 135 apartados y
+las 76 acciones—; lo que cambia es la **piel**, tomada de una web de referencia
+(NŌTA) que pedía justo esto: negro casi puro, mucho aire, una serif de display
+para la voz y una sola nota de color.
+
+**El fondo se apaga.** Se va el papel cálido y entra un fondo casi negro
+(`#0A0A09`), con la tinta en hueso (`#F1EFE8`) y el verde de lo clínico rebajado
+a una nota apagada, reservada para el acento del lema y lo que de verdad
+importa. Una regla une el color de todo el sistema: los tokens antiguos que usan
+el buscador, el tablero, el mapa conceptual, el índice y las tablas cosechadas
+de los ocho documentos se redefinen a oscuro a la vez, de modo que nada queda en
+isla clara. Las tres matrices que sí conservan celdas claras —el calendario de
+las nueve campañas, la facturación por conversión y ticket, el catálogo por
+plazo y coste— lo hacen a propósito: ahí el claro es un extremo de la escala, no
+un descuido, y se leen como lo que son, mapas de calor.
+
+**La voz, en Instrument Serif.** Los titulares pasan a la misma serif de display
+de la referencia —«No medias / sonrisas» en la portada, con *sonrisas* en
+cursiva y en verde—, incrustada en el propio archivo junto a la Archivo y la
+mono: el `centro.html` sigue abriéndose de doble clic y sin pedir una sola letra
+a la red.
+
+**El movimiento, sin guion.** Cada bloque entra una vez, subiendo un suspiro, y
+lo dibuja la propia barra de desplazamiento —sin GSAP, sin una línea de guion—;
+quien pide «menos movimiento» en su sistema no ve ninguno.
+
+Comprobado a mano tras el giro: ni un texto queda claro sobre claro ni oscuro
+sobre oscuro en toda la web, nada se monta encima de nada en siete tamaños por
+trece secciones, y los enlaces y las anclas siguen llegando a donde dicen. El
+contenido es el mismo v32, palabra por palabra; solo cambió cómo se ve.
 
 ## La barra, no el rail · versión 32
 
