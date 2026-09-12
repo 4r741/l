@@ -4960,7 +4960,7 @@ JS = """
       return;
     }
     if((b = e.target.closest("[data-ir-sec]"))){
-      e.preventDefault(); cierraPanel(); cierraLector(); veSec(b.dataset.irSec, true);
+      e.preventDefault(); cierra(); cierraPanel(); cierraLector(); veSec(b.dataset.irSec, true);
       return;
     }
     var a = e.target.closest("a[data-ir], a[href^='#']");
@@ -5106,6 +5106,7 @@ JS = """
        llamaba a la paleta llama ahora al índice: una caja, un atajo, una
        lista de resultados. */
     if(cual === "paleta"){
+      cierra();
       var r = D.getElementById("rail");
       if(r && r.hidden && railbt) railbt.click();
       setTimeout(function(){ if(filtra){ filtra.focus(); filtra.select(); } }, 80);
@@ -5532,6 +5533,36 @@ JS = """
     if(typeof window.__pintaDonde === "function") window.__pintaDonde();
   }
   window.__marcaRail = marcaRail;
+
+  /* El efecto de letras revueltas del menú —el sello de NŌTA—: al pasar por
+     encima de un nombre, sus letras pasan por unos glifos al azar antes de
+     asentarse. Es puro adorno; si el sistema pide menos movimiento, el texto
+     no se toca y el nombre se lee siempre entero. */
+  (function(){
+    if(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    var GL = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789/·—";
+    function revuelve(el){
+      var real = el.dataset.txt || el.textContent, pasos = 0, max = real.length + 6;
+      clearInterval(el.__scr);
+      el.__scr = setInterval(function(){
+        pasos++;
+        var s = "";
+        for(var i = 0; i < real.length; i++){
+          if(real.charAt(i) === " ") s += " ";
+          else if(i < pasos - 3) s += real.charAt(i);
+          else s += GL.charAt(Math.floor(Math.random() * GL.length));
+        }
+        el.textContent = s;
+        if(pasos >= max){ clearInterval(el.__scr); el.textContent = real; }
+      }, 26);
+    }
+    [].slice.call(D.querySelectorAll(".menu__i")).forEach(function(casa){
+      var el = casa.querySelector(".scramble");
+      if(!el) return;
+      casa.addEventListener("pointerenter", function(){ revuelve(el); });
+      casa.addEventListener("focus", function(){ revuelve(el); }, true);
+    });
+  })();
 
   /* Dónde estoy. Era la queja de fondo: se navegaba bien y no se sabía en qué
      punto del sistema se estaba. Ahora la barra de arriba lo lleva escrito
@@ -7059,28 +7090,15 @@ body{background:var(--fondo);color:var(--tinta);
 .tope__m{text-decoration:none;color:inherit;flex:none}
 .tope__m b{font-size:.95rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
 
-.espina{display:flex;align-items:center;gap:.15rem;flex:1 1 auto;min-width:0;
-  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
-  mask-image:linear-gradient(90deg,transparent,#000 1.5rem,#000 calc(100% - 1.5rem),transparent)}
-.espina::-webkit-scrollbar{display:none}
-.esp__i{display:flex;align-items:center;gap:.5rem;text-decoration:none;
-  color:var(--gris);flex:none;padding:.5rem .35rem;border-radius:2px;
-  transition:color .18s var(--e)}
-.esp__n{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.02em;
-  font-variant-numeric:tabular-nums;opacity:.7;transition:opacity .18s var(--e)}
-.esp__r{font-size:.78rem;letter-spacing:-.01em;white-space:nowrap;
-  max-width:0;overflow:hidden;opacity:0;
-  transition:max-width .32s var(--e),opacity .2s var(--e)}
-.esp__i:hover{color:var(--tinta)}
-.esp__i:hover .esp__n{opacity:1}
-.esp__i.es-aqui{color:var(--verde-o)}
-.esp__i.es-aqui .esp__n{opacity:1;color:var(--verde)}
-.esp__i.es-aqui .esp__r{max-width:14rem;opacity:1;margin-right:.3rem;
-  color:var(--tinta);font-weight:500}
+/* En vez de la fila de números, la barra queda casi vacía: el nombre a la
+   izquierda, dónde se está en el centro —discreto— y a la derecha Buscar y
+   Menú. El índice entero vive ahora en el menú, que se abre sobre la página. */
+.donde{flex:1 1 auto;min-width:0;text-align:center;
+  font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tenue);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;margin:0}
 
-.tope__d{display:flex;align-items:center;gap:clamp(.6rem,1.6vw,1.4rem);flex:none;
-  margin-left:auto}
-.donde{display:none}
+.tope__d{display:flex;align-items:center;gap:clamp(.9rem,2vw,1.8rem);flex:none}
 .tope__b,.railbt{font:inherit;font-family:"IBM Plex Mono",monospace;
   font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--gris);background:none;border:0;padding:.5rem 0;cursor:pointer;
@@ -7088,6 +7106,58 @@ body{background:var(--fondo);color:var(--tinta);
 .tope__b:hover,.railbt:hover{color:var(--verde)}
 .tope__b kbd{font-family:inherit;font-size:.9em;color:var(--linea);
   border:1px solid var(--linea);border-radius:3px;padding:.05rem .3rem}
+.tope__b--menu{color:var(--tinta)}
+.tope__b--menu::before{content:"";width:1.1rem;height:1px;background:currentColor;
+  box-shadow:0 5px 0 currentColor,0 -5px 0 currentColor;display:inline-block}
+
+/* -------------------------------------------- 2b. El menú, sobre la página
+   La piel de NŌTA: un menú que se abre encima, con los nombres de las
+   secciones en grande, numerados, y el efecto de letras revueltas al pasar
+   por encima. Cae desde arriba, ocupa la pantalla y se cierra con Esc, con
+   la equis o pulsando fuera. */
+.velo.menu{position:fixed;inset:0;z-index:120;
+  background:color-mix(in srgb, var(--fondo) 96%, transparent);
+  backdrop-filter:blur(20px) saturate(1.3);
+  overflow:auto;overscroll-behavior:contain;
+  animation:menu-cae .34s var(--e) both}
+@keyframes menu-cae{from{opacity:0}to{opacity:1}}
+.menu__in{max-width:72rem;margin:0 auto;
+  padding:calc(var(--barra) + clamp(1.4rem,4vh,2.6rem)) clamp(1.4rem,5vw,4rem) clamp(3rem,8vh,6rem);
+  min-height:100%;display:flex;flex-direction:column}
+.menu__top{display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:clamp(1.2rem,3vh,2rem);border-bottom:1px solid var(--linea)}
+.menu__k{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--tenue)}
+.menu__x{font:inherit;font-family:"IBM Plex Mono",monospace;font-size:.56rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
+  background:none;border:0;cursor:pointer;display:flex;align-items:center;gap:.5rem}
+.menu__x:hover{color:var(--verde)}
+.menu__x kbd{font-family:inherit;font-size:.9em;color:var(--linea);
+  border:1px solid var(--linea);border-radius:3px;padding:.05rem .3rem}
+.menu__l{display:flex;flex-direction:column;flex:1 1 auto;
+  padding:clamp(1rem,3vh,2rem) 0}
+.menu__i{display:flex;align-items:baseline;gap:clamp(.8rem,2vw,1.6rem);
+  text-decoration:none;color:var(--ink);padding:clamp(.5rem,1.4vh,1rem) 0;
+  border-bottom:1px solid var(--linea-2);transition:color .2s var(--e)}
+.menu__n{font-family:"IBM Plex Mono",monospace;font-size:.7rem;
+  font-variant-numeric:tabular-nums;color:var(--tenue);flex:none;
+  transition:color .2s var(--e)}
+.menu__t{font-family:var(--serif);font-size:clamp(1.8rem,5.5vw,3.4rem);
+  line-height:1.02;letter-spacing:-.02em}
+.menu__i:hover,.menu__i:focus-visible{color:var(--hueso);outline:0}
+.menu__i:hover .menu__n,.menu__i:focus-visible .menu__n{color:var(--verde)}
+.menu__i.es-aqui{color:var(--hueso)}
+.menu__i.es-aqui .menu__n{color:var(--verde)}
+.menu__i.es-aqui .menu__t::after{content:"·";color:var(--verde);margin-left:.4rem}
+.menu__buscar{font:inherit;font-family:"IBM Plex Mono",monospace;font-size:.6rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
+  background:none;border:1px solid var(--linea);border-radius:2px;
+  padding:.9rem 1.2rem;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:.6rem;margin-top:1rem;transition:border-color .2s,color .2s}
+.menu__buscar:hover{color:var(--hueso);border-color:var(--ink-2)}
+.menu__buscar kbd{font-family:inherit;font-size:.9em;color:var(--tenue);
+  border:1px solid var(--linea);border-radius:3px;padding:.05rem .3rem}
+@media (prefers-reduced-motion:reduce){.velo.menu{animation:none}}
 
 /* --------------------------------------------------- 3. Lo que se lee */
 #sitio,.panel{margin-left:0;padding:0;min-width:0}
@@ -7097,7 +7167,20 @@ body{background:var(--fondo);color:var(--tinta);
    debajo de la barra translúcida y solo su TEXTO respeta el hueco. */
 .frente,.banda,.hoja,.lienzo,.sec__lienzos,.mc,.tablero,.rutas,.mifases{
   scroll-margin-top:var(--barra)}
-.sec:not(#inicio) > :first-child{padding-top:calc(var(--barra) + clamp(1rem,3vh,2.5rem))}
+.sec:not(#inicio):not(.es-on) > :first-child{padding-top:calc(var(--barra) + clamp(1rem,3vh,2.5rem))}
+
+/* Portada anclada por sección · el «cambio de pantalla» de NŌTA sin librerías.
+   La cabecera de la sección —su número enorme y su título sobre negro— se
+   queda FIJA ocupando la pantalla, y el contenido sube por encima al bajar,
+   tapándola. Como solo hay una sección viva a la vez (.sec.es-on), no hay dos
+   portadas peleando por el mismo anclaje. */
+.sec.es-on{position:relative}
+.sec.es-on > .frente{position:sticky;top:0;z-index:0;min-height:100svh;
+  display:grid;align-content:center;margin:0;
+  padding:calc(var(--barra) + clamp(1.6rem,6vh,4rem)) 0 clamp(2rem,7vh,4.5rem)}
+.sec.es-on > .frente ~ *{position:relative;z-index:1;background:var(--fondo)}
+@media (prefers-reduced-motion:reduce){
+  .sec.es-on > .frente{position:relative;min-height:0}}
 
 .portada{min-height:100svh;display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,22rem);
@@ -7334,14 +7417,28 @@ MARCO = """
 <header class="tope" id="tope">
   <a class="tope__m" href="#inicio" data-ir-sec="inicio" aria-label="Alma · inicio">
     <b>Alma</b></a>
-  <nav class="espina" id="espina" aria-label="Las secciones del sistema">@@ESPINA@@</nav>
+  <p class="donde" id="donde" aria-live="polite"></p>
   <div class="tope__d">
-    <p class="donde" id="donde" aria-live="polite"></p>
-    <button class="tope__b" type="button" data-abre="paleta">Buscar<kbd>⌘K</kbd></button>
-    <button class="railbt" type="button" id="railbt" aria-expanded="false"
-            aria-controls="rail">Índice</button>
+    <button class="tope__b railbt" type="button" id="railbt" aria-expanded="false"
+            aria-controls="rail">Buscar<kbd>⌘K</kbd></button>
+    <button class="tope__b tope__b--menu" type="button" id="menubt" data-abre="menu"
+            aria-controls="menu" aria-expanded="false">Menú</button>
   </div>
 </header>
+
+<div class="velo menu" id="menu" data-velo="menu" role="dialog" aria-modal="true"
+     aria-label="Las secciones del sistema" hidden>
+  <div class="menu__in">
+    <div class="menu__top">
+      <span class="menu__k">El sistema · @N@ apartados</span>
+      <button class="menu__x" type="button" data-cerrar aria-label="Cerrar el menú">
+        Cerrar<kbd>Esc</kbd></button>
+    </div>
+    <nav class="menu__l" aria-label="Secciones">@@MENU@@</nav>
+    <button class="menu__buscar" type="button" data-abre="paleta">
+      Buscar en todo el sistema<kbd>⌘K</kbd></button>
+  </div>
+</div>
 
 <aside class="rail" id="rail" aria-label="El índice del sistema" hidden>
   <div class="rail__in">
@@ -7768,21 +7865,22 @@ def main():
             '</div>' % (ident, ident, ident, H.escape(rotulo), H.escape(cuenta)))
     arbol[2:2] = extras
 
-    # La espina: las trece secciones, siempre puestas. El índice dejó de ser
-    # una pantalla que se abre encima —bonita y la razón de que uno se
-    # perdiera, porque al cerrarla no quedaba rastro de dónde estaba— y pasa a
-    # ser una lista quieta a la izquierda que se lee de un vistazo.
+    # El menú: las trece secciones, en una lista grande que se abre sobre la
+    # página —la piel de NŌTA—. El índice numérico de arriba (la «espina») se
+    # retira: en su sitio, un botón «Menú» que despliega los nombres enteros,
+    # con el efecto de letras al pasar por encima, y lleva a cada sección.
     orden_esp = [("mio", "Lo mío"), ("inicio", "Inicio"),
                  ("sistema", "El sistema"), ("recorridos", "Recorridos"),
                  ("mapa", "El mapa")]
     orden_esp += [(i, r) for i, r, doc, _l, _n in SECCIONES if doc]
-    espina = "".join(
-        '<a class="esp__i" href="#%s" data-ir-sec="%s" title="%s">'
-        '<i class="esp__n">%02d</i><span class="esp__r">%s</span></a>'
-        % (i, i, H.escape(r), k, H.escape(r))
+    menu = "".join(
+        '<a class="menu__i" href="#%s" data-ir-sec="%s">'
+        '<span class="menu__n">%02d</span>'
+        '<span class="menu__t scramble" data-txt="%s">%s</span></a>'
+        % (i, i, k, H.escape(r), H.escape(r))
         for k, (i, r) in enumerate(orden_esp))
 
-    cuerpo = (MARCO.replace("@@ESPINA@@", espina).replace("@@ARBOL@@", "\n".join(arbol))
+    cuerpo = (MARCO.replace("@@MENU@@", menu).replace("@@ARBOL@@", "\n".join(arbol))
                    .replace("@N@", str(total)).replace("@V@", str(len(voces)))
                    .replace("@@SECCIONES@@",
                             inicio + "\n" + mio_html + "\n" + sistema_html + "\n"

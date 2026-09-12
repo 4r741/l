@@ -46,6 +46,21 @@ a la red.
 lo dibuja la propia barra de desplazamiento —sin GSAP, sin una línea de guion—;
 quien pide «menos movimiento» en su sistema no ve ninguno.
 
+**El menú, no la fila de números.** La navegación de arriba deja de ser una
+fila de cifras (00 a 12) y pasa a ser un botón **«Menú»** que abre, sobre la
+página, la lista de las trece secciones con sus nombres enteros en la serif de
+display, numerados y con el efecto de letras revueltas al pasar por encima —el
+sello de NŌTA—. La barra queda con lo justo: el nombre a la izquierda, dónde se
+está en el centro, y a la derecha Buscar y Menú. El buscador de siempre sigue
+en su sitio, con ⌘K o desde el propio menú.
+
+**La portada de cada sección se ancla.** Como solo hay una sección a la vista
+cada vez, al abrir una su cabecera —el número enorme, el título y la frase sobre
+negro— ocupa la pantalla entera y se queda fija; al bajar, el contenido sube por
+encima y la tapa. Es el «cambio de pantalla» de la web de referencia, hecho con
+el propio desplazamiento —sin GSAP, sin una línea de guion— y que se apaga solo
+para quien pide menos movimiento.
+
 Comprobado a mano tras el giro: ni un texto queda claro sobre claro ni oscuro
 sobre oscuro en toda la web, nada se monta encima de nada en siete tamaños por
 trece secciones, y los enlaces y las anclas siguen llegando a donde dicen. El
