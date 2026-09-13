@@ -745,6 +745,39 @@ def bloque_experiencia():
         % (sid, sid, num, H.escape(tit), H.escape(cifra), H.escape(texto))
         for num, tit, cifra, sid, texto in principios)
 
+    # Su primera visita, contada como experiencia (no como lista clínica): las
+    # cuatro cosas humanas que la hacen distinta, ancladas a las fases reales.
+    pasos_pv = [
+        ("Le escuchamos primero", "Antes de mirar una sola radiografía, "
+         "escuchamos qué le preocupa y qué espera. El plan se construye sobre eso, "
+         "no sobre una plantilla."),
+        ("Ve su caso en 3D", "Con imagen en tres dimensiones se ven el hueso, los "
+         "nervios y las raíces. Usted lo ve con nosotros, sobre su propia boca, "
+         "antes de decidir nada."),
+        ("Le proponemos, no le vendemos", "Sale con un plan por escrito: qué se "
+         "hace, en qué orden, cuánto dura y cuánto cuesta. Lo que no se explica, "
+         "no se firma."),
+        ("Decide usted, con tiempo", "Ninguna decisión se toma con prisa en el "
+         "sillón. Se lleva el plan, lo piensa y vuelve cuando quiera. La calma "
+         "también es parte del tratamiento."),
+    ]
+    pv_html = "".join(
+        '<a class="pvpaso reveal" href="#primera-visita" data-ve="primera-visita">'
+        '<span class="pvpaso__n">%02d</span>'
+        '<span class="pvpaso__c"><b>%s</b><span>%s</span></span></a>'
+        % (i, H.escape(t), H.escape(x)) for i, (t, x) in enumerate(pasos_pv, 1))
+    primera = (
+        '<section class="franja"><div class="env">'
+        '<header class="titmapa reveal">'
+        '<p class="titmapa__k">Qué esperar</p>'
+        '<h2>Su primera visita,<br>sin sorpresas</h2>'
+        '<p class="titmapa__p">La primera cita no es un trámite: es donde se '
+        'decide todo. Está pensada para que salga de ella sabiendo exactamente '
+        'qué tiene, qué se puede hacer y qué cuesta —sin presión y sin letra '
+        'pequeña—. Ciento veintitrés minutos, y ni uno de relleno.</p></header>'
+        '<div class="pvpasos">' + pv_html + '</div>'
+        '</div></section>')
+
     hero = (
         '<section class="hero2 hero2--exp"><div class="env">'
         '<p class="hero2__k reveal">La experiencia · Lo que se siente, no solo lo que se hace</p>'
@@ -851,8 +884,8 @@ def bloque_experiencia():
 
     return (
         '<section class="vista" id="v-experiencia">\n'
-        + hero + implantologia + principios_sec + tecnologia + equipo + cierre
-        + '\n</section>')
+        + hero + primera + implantologia + principios_sec + tecnologia + equipo
+        + cierre + '\n</section>')
 
 
 def bloque_seccion(k, sid, rot, nombre, seccion):
@@ -1094,6 +1127,17 @@ html.js .reveal.visto{opacity:1;transform:none}
   color:var(--pizarra);text-decoration:none;border:1px solid var(--pizarra-linea);border-radius:100px;
   padding:.6rem 1.1rem;transition:background .18s,color .18s}
 .rolchip:hover{background:var(--pizarra);color:#fff}
+
+/* Su primera visita: cuatro pasos */
+.pvpasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+.pvpaso{display:flex;flex-direction:column;gap:.7rem;background:var(--panel);
+  padding:clamp(1.5rem,3vw,2.2rem);text-decoration:none;transition:background .18s}
+.pvpaso:hover{background:var(--pizarra-soft)}
+.pvpaso__n{font-family:var(--serif);font-size:2rem;color:var(--pizarra);line-height:1}
+.pvpaso__c b{font-family:var(--serif);font-weight:400;font-size:1.25rem;color:var(--tinta);
+  display:block;margin-bottom:.4rem;line-height:1.15}
+.pvpaso__c span{font-size:.95rem;line-height:1.6;color:var(--ink-2)}
 
 @media(max-width:640px){
   .ruta__i{grid-template-columns:auto 1fr auto}
