@@ -1139,6 +1139,17 @@ html.js .reveal.visto{opacity:1;transform:none}
   display:block;margin-bottom:.4rem;line-height:1.15}
 .pvpaso__c span{font-size:.95rem;line-height:1.6;color:var(--ink-2)}
 
+/* Pie de página: la marca y la dirección real, para cerrar el conjunto */
+.pie-web{border-top:1px solid var(--linea);background:var(--panel-2);
+  padding:clamp(2.5rem,6vh,4rem) 0}
+.pie-web .env{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
+.pie-web .marca__e{width:2.2rem;height:2rem}
+.pie-web__lema{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.4rem);
+  color:var(--tinta);margin:.4rem 0 0;line-height:1}
+.pie-web__lema em{font-style:italic;color:var(--pizarra)}
+.pie-web__d{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin:.6rem 0 0;line-height:1.7}
+
 @media(max-width:640px){
   .ruta__i{grid-template-columns:auto 1fr auto}
   .ruta__c{display:none}
@@ -1187,6 +1198,13 @@ def main():
         '  <div class="cab__prog" id="prog" aria-hidden="true"></div>\n'
         '</header>\n'
         '<main>\n' + "\n".join(vistas) + '\n</main>\n'
+        '<footer class="pie-web"><div class="env">'
+        '<a class="marca" href="#inicio" data-ve="inicio" aria-label="Clínica Alma">'
+        + LOGO_EMBLEMA + '<span class="marca__t">Clínica Alma</span></a>'
+        '<p class="pie-web__lema">No medias <em>sonrisas</em></p>'
+        '<p class="pie-web__d">Centro de Excelencia Implantológica · '
+        'Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p>'
+        '</div></footer>\n'
         '<script>' + JS + '</script>\n'
         '</body>\n</html>\n')
 
