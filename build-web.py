@@ -78,6 +78,35 @@ SISTEMA = [
 ]
 
 
+# El logo de Clínica Alma, recreado como SVG a partir del original que envió el
+# cliente (el archivo no viajaba como fichero incrustable): el emblema —un
+# diente entre hojas, sobre el cuenco de una sonrisa— en azul pizarra. Viaja
+# dentro del propio archivo, sin pedir nada a la red. Si hace falta fidelidad
+# exacta, se sustituye por el SVG original en un único sitio.
+LOGO_EMBLEMA = (
+    '<svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" '
+    'stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    '<path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 '
+    'C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 '
+    'C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/>'
+    '<path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/>'
+    '<path d="M40 74 C28 74 17 69 12 60"/>'
+    '<path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/>'
+    '<path d="M76 74 C88 74 99 69 104 60"/>'
+    '<path d="M20 78 C40 106 76 106 96 78"/></svg>')
+
+LOGO_FAVICON = (
+    "data:image/svg+xml;utf8,"
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 118' fill='none' "
+    "stroke='%2322405C' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'>"
+    "<path d='M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 "
+    "C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 "
+    "C77 7 69 6 64 14 C61 19 55 19 52 14 Z'/>"
+    "<path d='M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58'/>"
+    "<path d='M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58'/>"
+    "<path d='M20 78 C40 106 76 106 96 78'/></svg>")
+
+
 def fuentes_incrustadas():
     """Instrument Serif —la serif de los titulares— empotrada en el archivo."""
     fmt = ('@font-face{font-family:"Instrument Serif";font-style:%s;font-weight:400;'
@@ -672,6 +701,83 @@ def bloque_inicio(indice, total):
         + mapa_ruta(meta, total) + '\n</section>')
 
 
+def bloque_experiencia():
+    """La capa que faltaba: la literatura de la EXPERIENCIA, en la voz de Alma.
+
+    El resto del sistema dice cómo se hace; esto dice por qué se siente distinto.
+    Todo se apoya en lo que ya es cierto en el sistema —los 123 minutos medidos,
+    las catorce fases, los seis puestos, el manifiesto, Alma Te Cuida— y lo eleva.
+    Nada de datos inventados: la promesa es la que el propio sistema sostiene. """
+    principios = [
+        ("01", "El tiempo", "123 minutos", "primera-visita",
+         "La prisa es la primera causa de una media sonrisa. Por eso su primera "
+         "visita dura lo que tiene que durar: ciento veintitrés minutos medidos, "
+         "fase a fase, no estimados. Sale usted con un diagnóstico en la mano, su "
+         "caso en tres dimensiones y una decisión que puede tomar con calma."),
+        ("02", "La claridad", "Todo por escrito", "direccion",
+         "Lo que no está escrito no existe. Cada estándar de Alma puede "
+         "comprobarse en una lista; cada decisión lleva fecha y responsable. No "
+         "prometemos: dejamos constancia. Es la diferencia entre una intención y "
+         "un compromiso —y lo que no se explica, no se firma—."),
+        ("03", "La precisión", "El plan es lo que se coloca", "primera-visita",
+         "Imagen de alta resolución, planificación digital y presentación en tres "
+         "dimensiones: la tecnología no está para impresionar, sino para que usted "
+         "vea su propio caso antes de decidir, y para que lo que se planifica sea "
+         "exactamente lo que se coloca."),
+        ("04", "La continuidad", "Seis puestos, un criterio", "protocolos",
+         "De la primera llamada al mantenimiento, cada persona que le atiende sabe "
+         "qué le toca y de qué responde. Usted no repite su historia en cada "
+         "visita: el sistema la lleva por usted, y el testigo pasa de mano en mano "
+         "sin que se caiga nada por el camino."),
+        ("05", "El cuidado", "Alma Te Cuida", "otros",
+         "El tratamiento no termina cuando se coloca el implante: termina —y no "
+         "termina nunca— cuando usted deja de pensar en él. Alma Te Cuida es el "
+         "programa que sostiene lo tratado, detecta pronto lo que se tuerce y "
+         "mantiene la relación año tras año."),
+    ]
+    tarjetas = []
+    for num, tit, cifra, sid, texto in principios:
+        tarjetas.append(
+            '<a class="prin reveal" href="#%s" data-ve="%s">'
+            '<span class="prin__n">%s</span>'
+            '<div class="prin__c"><p class="prin__k">%s</p>'
+            '<p class="prin__cifra">%s</p>'
+            '<p class="prin__t">%s</p>'
+            '<span class="prin__ir">Ver en el sistema →</span></div></a>'
+            % (sid, sid, num, H.escape(tit), H.escape(cifra), H.escape(texto)))
+    return (
+        '<section class="vista" id="v-experiencia">\n'
+        # apertura: la filosofía, a sangre y en grande
+        '<section class="hero2 hero2--exp"><div class="env">'
+        '<p class="hero2__k reveal">La experiencia · Lo que se siente, no solo lo que se hace</p>'
+        '<h1 class="hero2__t reveal">Una sonrisa no es<br>un trabajo terminado:<br>'
+        '<em>es una persona.</em></h1>'
+        '<p class="hero2__p reveal">Es alguien que vuelve a reír sin taparse la boca. '
+        'En Alma no entendemos la excelencia como una máquina más cara ni un '
+        'material más nuevo, sino como la mitad del trabajo que nadie ve —y que '
+        'el paciente sí nota—. Esa mitad invisible es la única que ningún '
+        'competidor puede comprar.</p>'
+        '</div></section>'
+        # los cinco principios de la experiencia
+        '<section class="franja"><div class="env">'
+        '<header class="titmapa reveal">'
+        '<p class="titmapa__k">Cinco maneras de notarlo</p>'
+        '<h2>Lo que cambia, para usted</h2>'
+        '<p class="titmapa__p">Cinco promesas que el sistema entero está montado '
+        'para cumplir. Cada una lleva a donde se detalla, por escrito.</p></header>'
+        '<div class="prins">%s</div>'
+        '</div></section>'
+        # el cierre, en pizarra pleno
+        '<section class="banda"><div class="env">'
+        '<p class="banda__k reveal">La promesa</p>'
+        '<p class="banda__t reveal">No medias sonrisas.<br><em>Ni medias '
+        'decisiones.</em></p>'
+        '<p class="banda__p reveal">Le devolvemos su sonrisa completa, en el menor '
+        'tiempo posible, y le cuidamos para siempre.</p>'
+        '</div></section>'
+        '\n</section>' % "".join(tarjetas))
+
+
 def bloque_seccion(k, sid, rot, nombre, seccion):
     titulos = titulos_de(seccion)
     hojas = hojas_de(seccion)
@@ -870,12 +976,38 @@ html.js .reveal.visto{opacity:1;transform:none}
 .hito__m{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;
   text-transform:uppercase;color:#9DBBD8}
 
+/* El logo en la cabecera */
+.marca{display:inline-flex;align-items:center;gap:.6rem;color:var(--pizarra);text-decoration:none}
+.marca__e{width:1.9rem;height:1.75rem;flex:none;color:var(--pizarra)}
+.marca__t{font-family:var(--serif);font-size:1.25rem;letter-spacing:.02em;
+  color:var(--tinta);white-space:nowrap;line-height:1}
+
+/* La experiencia · la capa premium */
+.hero2--exp{border-bottom:0}
+.hero2--exp .hero2__t{font-size:clamp(2.4rem,7vw,5.2rem)}
+.banda__p{font-size:1.15rem;line-height:1.5;color:#B9C7D6;margin:1.6rem 0 0;max-width:44ch}
+.prins{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+.prin{display:grid;grid-template-columns:auto 1fr;gap:clamp(1rem,3vw,2.4rem);
+  background:var(--panel);padding:clamp(1.6rem,3.5vw,2.6rem);text-decoration:none;
+  color:var(--tinta);transition:background .18s}
+.prin:hover{background:var(--pizarra-soft)}
+.prin__n{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.6rem);color:var(--pizarra);line-height:1}
+.prin__k{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 .5rem}
+.prin__cifra{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,3.5vw,2.2rem);
+  color:var(--tinta);margin:0 0 .8rem;line-height:1.05}
+.prin__t{font-size:1.02rem;line-height:1.6;color:var(--ink-2);margin:0;max-width:62ch}
+.prin__ir{display:inline-block;margin-top:1rem;font-family:var(--mono);font-size:.6rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--pizarra)}
+
 @media(max-width:640px){
   .ruta__i{grid-template-columns:auto 1fr auto}
   .ruta__c{display:none}
   .salta-nav{grid-template-columns:1fr}
   .salta--ant,.salta--sig{grid-column:1;text-align:left}
+  .marca__t{display:none}
 }
+@media(max-width:560px){.prin{grid-template-columns:1fr}}
 """
 
 
@@ -883,11 +1015,13 @@ def main():
     secciones, menus, indice, orden, voces, mapa = bs.monta()
     total = len(orden)
 
-    nav = '<a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a>' + "".join(
-        '<a class="cab__l" href="#%s" data-ve="%s">%s</a>' % (sid, sid, H.escape(rot))
-        for sid, rot, _d, _n in SECCIONES)
+    nav = ('<a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a>'
+           '<a class="cab__l" href="#experiencia" data-ve="experiencia">La experiencia</a>'
+           + "".join(
+               '<a class="cab__l" href="#%s" data-ve="%s">%s</a>' % (sid, sid, H.escape(rot))
+               for sid, rot, _d, _n in SECCIONES))
 
-    vistas = [bloque_inicio(indice, total)]
+    vistas = [bloque_inicio(indice, total), bloque_experiencia()]
     for k, (sid, rot, doc, nombre) in enumerate(SECCIONES, 1):
         # monta() devuelve las secciones en el orden de SECCIONES
         vistas.append(bloque_seccion(k, sid, rot, nombre, secciones[k - 1]))
@@ -895,21 +1029,27 @@ def main():
     estilo = ("<style>%s</style>\n<style>%s\n%s\n%s\n%s</style>"
               % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL, BOLD))
 
+    # Se arma por trozos (sin %-format) para no chocar con el «%» del favicon
+    # ni con las llaves del SVG del logo.
+    cabecera = (
+        '<a class="cab__m marca" href="#inicio" data-ve="inicio" '
+        'aria-label="Clínica Alma · inicio">' + LOGO_EMBLEMA
+        + '<span class="marca__t">Clínica Alma</span></a>')
+
     doc = (
         '<!doctype html>\n<html lang="es">\n<head>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-        '<title>Alma · Centro de Excelencia Implantológica</title>\n'
-        '%s\n%s\n</head>\n<body>\n'
-        '<header class="cab">\n'
-        '  <a class="cab__m" href="#inicio" data-ve="inicio">Alma</a>\n'
-        '  <nav class="cab__nav" aria-label="Secciones">%s</nav>\n'
+        '<title>Clínica Alma · Centro de Excelencia Implantológica</title>\n'
+        '<link rel="icon" href="' + LOGO_FAVICON + '">\n'
+        + fuentes_archivo() + '\n' + estilo + '\n</head>\n<body>\n'
+        '<header class="cab">\n  ' + cabecera + '\n'
+        '  <nav class="cab__nav" aria-label="Secciones">' + nav + '</nav>\n'
         '  <div class="cab__prog" id="prog" aria-hidden="true"></div>\n'
         '</header>\n'
-        '<main>\n%s\n</main>\n'
-        '<script>%s</script>\n'
-        '</body>\n</html>\n'
-        % (fuentes_archivo(), estilo, nav, "\n".join(vistas), JS))
+        '<main>\n' + "\n".join(vistas) + '\n</main>\n'
+        '<script>' + JS + '</script>\n'
+        '</body>\n</html>\n')
 
     salida = RAIZ / "web.html"
     salida.write_text(doc, encoding="utf-8")
