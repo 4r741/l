@@ -44,6 +44,39 @@ SECCIONES = [
 # Frases de entrada de cada sección: las mismas que ya escribía el sistema.
 INTRO = bs.INTROS
 
+# El viaje del paciente: las catorce fases, de la llamada al mantenimiento. Es
+# el mapa que se sigue. Las doce primeras suman 123 minutos —la primera visita
+# entera—; las dos últimas son el después. Cada parada lleva a su sección.
+FASES = [
+    ("01", "Preparación", "6 min", "primera-visita"),
+    ("02", "Acogida", "5 min", "primera-visita"),
+    ("03", "Alta y RGPD", "15 min", "primera-visita"),
+    ("04", "Historia clínica", "10 min", "primera-visita"),
+    ("05", "Diagnóstico", "15 min", "primera-visita"),
+    ("06", "Briefing", "5 min", "primera-visita"),
+    ("07", "Expectativas", "15 min", "primera-visita"),
+    ("08", "IAC", "10 min", "primera-visita"),
+    ("09", "Presentación 3D", "15 min", "primera-visita"),
+    ("10", "Propuesta", "20 min", "primera-visita"),
+    ("11", "Cierre admin.", "5 min", "primera-visita"),
+    ("12", "Seguimiento", "2 min", "primera-visita"),
+    ("13", "Circuito de producción", "el después", "operaciones"),
+    ("14", "Mantenimiento", "el después", "operaciones"),
+]
+
+# El sistema, colgado del lema: cuatro preguntas y, bajo cada una, los
+# documentos que la contestan. Es el mapa del conjunto.
+SISTEMA = [
+    ("Qué se promete", "La posición, la economía y la decisión",
+     ["direccion", "presentacion"]),
+    ("Cómo se hace", "El recorrido del paciente y quién responde",
+     ["primera-visita", "protocolos"]),
+    ("Cómo llega el paciente", "Lo que se hace para que entre por la puerta",
+     ["marketing"]),
+    ("Con qué se mide", "Sin números, cualquier objetivo es una opinión",
+     ["numeros", "otros"]),
+]
+
 
 def fuentes_incrustadas():
     """Instrument Serif —la serif de los titulares— empotrada en el archivo."""
@@ -382,6 +415,7 @@ def toc_de(seccion, hojas, titulos):
 JS = """
 (function(){
   var D=document;
+  D.documentElement.classList.add('js');
   var links=[].slice.call(D.querySelectorAll('.cab__l'));
   var vistas=[].slice.call(D.querySelectorAll('.vista'));
   function idDeVista(v){ return v.id.replace(/^v-/,''); }
@@ -432,46 +466,166 @@ JS = """
     }, {rootMargin:'-20% 0px -70% 0px'});
     [].slice.call(D.querySelectorAll('.wart')).forEach(function(a){ if(a.id) obs.observe(a); });
   }
+  // barra de progreso de lectura
+  var prog=D.getElementById('prog');
+  function pintaProg(){
+    var e=D.documentElement, max=e.scrollHeight-e.clientHeight;
+    if(prog) prog.style.width=(max>0?(e.scrollTop/max*100):0)+'%';
+  }
+  window.addEventListener('scroll', pintaProg, {passive:true});
+  window.addEventListener('resize', pintaProg);
+  // revelado al bajar: cada bloque entra una vez
+  var rev=null;
+  if('IntersectionObserver' in window){
+    rev=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visto'); rev.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    [].slice.call(D.querySelectorAll('.reveal')).forEach(function(x){ rev.observe(x); });
+  } else {
+    [].slice.call(D.querySelectorAll('.reveal')).forEach(function(x){ x.classList.add('visto'); });
+  }
   // vista inicial: por el hash, o Inicio
   var h=(location.hash||'').slice(1);
   var v0=h?vistaDe(h):null;
   ve(v0||(vistas.some(function(v){return idDeVista(v)===h;})?h:'inicio'));
   if(h){ var d=D.getElementById(h); if(d) requestAnimationFrame(function(){ d.scrollIntoView(); }); }
+  pintaProg();
 })();
 """
 
 
-def bloque_inicio(indice, total):
-    cifras = [
-        ("8", "Documentos"), ("135", "Apartados"), ("14", "Fases del recorrido"),
-        ("6", "Puestos con protocolo"), ("76", "Acciones de marketing"),
-        ("10", "Recorridos guiados"),
-    ]
-    cajas = "".join('<div class="cifra"><b>%s</b><span>%s</span></div>' % c for c in cifras)
-    doc_c = {i: (nombre, n) for i, _rot, nombre, n in indice}
-    tarjetas = []
+def _meta(indice):
+    """sid → (rótulo, nombre del documento, nº de apartados, orden)."""
+    cuenta = {i: (rot, nombre, n) for i, rot, nombre, n in indice}
+    m = {}
     for k, (sid, rot, doc, nombre) in enumerate(SECCIONES, 1):
-        n = doc_c.get(sid, (nombre, 0))[1]
-        _t, texto = INTRO.get(sid, ("", ""))
-        pie = "%d apartados" % n if n else nombre
-        tarjetas.append(
-            '<a class="tarjeta" href="#%s" data-ve="%s">'
-            '<span class="tarjeta__n">%02d</span>'
-            '<h3>%s</h3><p>%s</p><span class="tarjeta__c">%s</span></a>'
+        rr, nn, n = cuenta.get(sid, (rot, nombre, 0))
+        m[sid] = (rot, nombre, n, k)
+    return m
+
+
+def cuenta_txt(sid, n, nombre):
+    """El pie de cada documento: apartados, o su unidad propia."""
+    if sid == "presentacion":
+        return "43 diapositivas"
+    if n == 1:
+        return "1 apartado"
+    if n:
+        return "%d apartados" % n
+    return nombre
+
+
+def mapa_sistema(meta):
+    """Mapa 1 · El sistema, colgado del lema: cuatro preguntas y sus documentos."""
+    ramas = []
+    for qi, (preg, sub, sids) in enumerate(SISTEMA, 1):
+        nodos = []
+        for sid in sids:
+            rot, nombre, n, k = meta[sid]
+            pie = cuenta_txt(sid, n, nombre)
+            nodos.append(
+                '<a class="ram__d" href="#%s" data-ve="%s">'
+                '<span class="ram__n">%02d</span>'
+                '<b>%s</b><span class="ram__c">%s</span></a>'
+                % (sid, sid, k, H.escape(rot), H.escape(pie)))
+        ramas.append(
+            '<div class="rama reveal">'
+            '<p class="rama__q"><i>%02d</i>%s</p>'
+            '<p class="rama__s">%s</p>'
+            '<div class="rama__docs">%s</div></div>'
+            % (qi, H.escape(preg), H.escape(sub), "".join(nodos)))
+    return (
+        '<section class="franja" id="mapa-sistema">'
+        '<div class="env">'
+        '<header class="titmapa reveal">'
+        '<p class="titmapa__k">Mapa 01 · El sistema</p>'
+        '<h2>Todo cuelga de una frase</h2>'
+        '<p class="titmapa__p">«No medias sonrisas» no es un eslogan: es el '
+        'criterio. De él salen cuatro preguntas, y cada documento contesta una.</p>'
+        '</header>'
+        '<div class="lema reveal"><span>No medias</span> <em>sonrisas</em></div>'
+        '<div class="ramas">%s</div>'
+        '</div></section>' % "".join(ramas))
+
+
+def mapa_viaje(meta):
+    """Mapa 2 · El viaje del paciente: las catorce fases, en franja oscura, como
+    un camino que se sigue paso a paso. Cada parada lleva a su sección."""
+    pasos = []
+    for num, nombre, minu, sid in FASES:
+        rot = meta[sid][0]
+        pasos.append(
+            '<a class="paso reveal" href="#%s" data-ve="%s">'
+            '<span class="paso__n">%s</span>'
+            '<span class="paso__cuerpo"><b>%s</b>'
+            '<span class="paso__min">%s</span></span>'
+            '<span class="paso__sec">%s →</span></a>'
+            % (sid, sid, num, H.escape(nombre), H.escape(minu), H.escape(rot)))
+    return (
+        '<section class="franja franja--oscura" id="mapa-viaje">'
+        '<div class="env">'
+        '<header class="titmapa titmapa--claro reveal">'
+        '<p class="titmapa__k">Mapa 02 · El viaje del paciente</p>'
+        '<h2>De la primera llamada<br>al mantenimiento</h2>'
+        '<p class="titmapa__p">Catorce fases. Las doce primeras —la primera '
+        'visita entera— caben en <b>123 minutos</b>. Siga el camino: cada '
+        'parada dice qué pasa y le lleva a donde se detalla.</p>'
+        '</header>'
+        '<div class="camino">%s</div>'
+        '</div></section>' % "".join(pasos))
+
+
+def mapa_ruta(meta, total):
+    """Mapa 3 · La ruta de lectura: las ocho secciones en orden, para seguirlas
+    una tras otra. Es también el índice grande del inicio."""
+    filas = []
+    for sid, rot, doc, nombre in SECCIONES:
+        _rr, _nn, n, k = meta[sid]
+        pie = cuenta_txt(sid, n, nombre)
+        filas.append(
+            '<a class="ruta__i reveal" href="#%s" data-ve="%s">'
+            '<span class="ruta__n">%02d</span>'
+            '<span class="ruta__t"><b>%s</b><span>%s</span></span>'
+            '<span class="ruta__c">%s</span>'
+            '<span class="ruta__f">→</span></a>'
             % (sid, sid, k, H.escape(rot), H.escape(nombre), H.escape(pie)))
     return (
-        '<section class="vista" id="v-inicio">\n<div class="env">\n'
-        '  <div class="whero">\n'
-        '    <p class="whero__k">Centro de Excelencia Implantológica Alma</p>\n'
-        '    <h1>No medias<br><em>sonrisas</em></h1>\n'
-        '    <p class="whero__p">Le devolvemos su sonrisa completa, en el menor '
-        'tiempo posible, y le cuidamos para siempre.</p>\n'
-        '    <p class="whero__d">Calle Progreso 2 · Ourense · Uso interno y confidencial</p>\n'
-        '  </div>\n'
-        '  <div class="cifras">%s</div>\n'
-        '  <div class="wsecs">%s</div>\n'
-        '  <p class="pie">El sistema documental del centro · %d apartados en 8 documentos</p>\n'
-        '</div>\n</section>' % (cajas, "".join(tarjetas), total))
+        '<section class="franja" id="mapa-ruta">'
+        '<div class="env">'
+        '<header class="titmapa reveal">'
+        '<p class="titmapa__k">Mapa 03 · La ruta de lectura</p>'
+        '<h2>Ocho paradas, en orden</h2>'
+        '<p class="titmapa__p">Si prefiere leerlo entero, este es el orden. '
+        'De la posición del centro a los números que lo miden.</p>'
+        '</header>'
+        '<div class="ruta">%s</div>'
+        '<p class="pie">El sistema documental del centro · %d apartados en 8 documentos · '
+        'Calle Progreso 2 · Ourense</p>'
+        '</div></section>' % ("".join(filas), total))
+
+
+def bloque_inicio(indice, total):
+    meta = _meta(indice)
+    cifras = [
+        ("8", "Documentos"), ("135", "Apartados"), ("14", "Fases"),
+        ("6", "Puestos"), ("76", "Acciones"), ("123′", "La primera visita"),
+    ]
+    cajas = "".join('<div class="cifra"><b>%s</b><span>%s</span></div>' % c for c in cifras)
+    hero = (
+        '<section class="hero2">'
+        '<div class="env">'
+        '<p class="hero2__k">Centro de Excelencia Implantológica Alma · Ourense</p>'
+        '<h1 class="hero2__t">No medias<br><em>sonrisas</em></h1>'
+        '<p class="hero2__p">Le devolvemos su sonrisa completa, en el menor tiempo '
+        'posible, y le cuidamos para siempre. Todo el sistema del centro, en un mapa '
+        'que se sigue.</p>'
+        '<div class="cifras cifras--hero">%s</div>'
+        '<a class="hero2__baja" href="#mapa-sistema">Seguir el mapa <i>↓</i></a>'
+        '</div></section>' % cajas)
+    return (
+        '<section class="vista" id="v-inicio">\n'
+        + hero + mapa_sistema(meta) + mapa_viaje(meta) + mapa_ruta(meta, total)
+        + '\n</section>')
 
 
 def bloque_seccion(k, sid, rot, nombre, seccion):
@@ -485,22 +639,176 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
         t = titulos.get(hid, "")
         kic = '<p class="wart__k">%s</p>' % H.escape(t) if t else ""
         aps.append('<article class="wart" id="%s">%s\n%s</article>' % (hid, kic, cont))
+
+    # La ruta de lectura: la parada anterior y la siguiente, para seguir el mapa
+    # sin volver al inicio. (k va de 1 a 8 sobre SECCIONES.)
+    n_sec = len(SECCIONES)
+    prev_l = next_l = ""
+    if k > 1:
+        p_sid, p_rot, _d, _n = SECCIONES[k - 2]
+        prev_l = ('<a class="salta salta--ant" href="#%s" data-ve="%s">'
+                  '<span class="salta__d">← Anterior</span>'
+                  '<b>%02d · %s</b></a>' % (p_sid, p_sid, k - 1, H.escape(p_rot)))
+    if k < n_sec:
+        x_sid, x_rot, _d, _n = SECCIONES[k]
+        next_l = ('<a class="salta salta--sig" href="#%s" data-ve="%s">'
+                  '<span class="salta__d">Siguiente →</span>'
+                  '<b>%02d · %s</b></a>' % (x_sid, x_sid, k + 1, H.escape(x_rot)))
+    ruta = ('<nav class="salta-nav" aria-label="Ruta de lectura">%s%s</nav>'
+            % (prev_l, next_l))
+
     return (
-        '<section class="vista" id="v-%s">\n<div class="env">\n'
-        '  <header class="sh">\n'
-        '    <p class="sh__n">%02d · %s</p>\n'
+        '<section class="vista" id="v-%s">\n'
+        '  <header class="sh reveal">\n<div class="env">\n'
+        '    <p class="sh__n">Sección %02d <i>de %02d</i> · %s</p>\n'
         '    <h1>%s</h1>\n'
         '    <p class="sh__p">%s</p>\n'
-        '  </header>\n'
+        '  </div></header>\n'
+        '  <div class="env">\n'
         '  %s\n'
         '  <div class="cuerpo">\n'
         '    <nav class="toc" aria-label="Apartados de la sección">'
         '<p class="toc__t">En esta sección</p>%s</nav>\n'
         '    <div class="wlista">%s</div>\n'
         '  </div>\n'
-        '</div>\n</section>'
-        % (sid, k, H.escape(nombre), H.escape(rot), H.escape(texto),
-           docif, toc, "\n".join(aps)))
+        '  %s\n'
+        '  </div>\n</section>'
+        % (sid, k, n_sec, H.escape(nombre), H.escape(rot), H.escape(texto),
+           docif, toc, "\n".join(aps), ruta))
+
+
+BOLD = """
+/* ==================== La piel atrevida ====================
+   Sobre la base blanca y azul pizarra: hero a pantalla, franjas a sangre —una
+   oscura de pizarra pleno—, tipografía a gran escala, un mapa que se sigue y
+   revelado al desplazar. La disrupción, sin perder la calma profesional. */
+
+.cab__prog{position:absolute;left:0;bottom:-1px;height:2px;width:0;
+  background:var(--pizarra);transition:width .12s linear}
+
+/* Revelado: visible por defecto (sin JS no se esconde nada); con JS entra al bajar */
+html.js .reveal{opacity:0;transform:translateY(1.4rem);
+  transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+html.js .reveal.visto{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}}
+
+/* Hero a pantalla */
+.hero2{min-height:calc(100svh - var(--nav));display:flex;align-items:center;
+  border-bottom:1px solid var(--linea)}
+.hero2 .env{width:100%;padding-top:clamp(2rem,6vh,4rem);padding-bottom:clamp(2rem,6vh,4rem)}
+.hero2__k{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 1.6rem}
+.hero2__t{font-family:var(--serif);font-weight:400;
+  font-size:clamp(3.2rem,13vw,9rem);line-height:.88;letter-spacing:-.01em;margin:0;color:var(--tinta)}
+.hero2__t em{font-style:italic;color:var(--pizarra);display:block}
+.hero2__p{font-size:clamp(1.1rem,2.2vw,1.45rem);max-width:42ch;line-height:1.5;
+  color:var(--ink-2);margin:2rem 0 0}
+.hero2__baja{display:inline-flex;align-items:center;gap:.6rem;margin-top:2.4rem;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pizarra);text-decoration:none;border:1px solid var(--pizarra-linea);
+  border-radius:100px;padding:.7rem 1.3rem;transition:background .2s,color .2s}
+.hero2__baja:hover{background:var(--pizarra);color:#fff}
+.hero2__baja i{font-style:normal;animation:baja 1.6s infinite}
+@keyframes baja{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.cifras--hero{margin-top:3rem}
+
+/* Franjas a sangre */
+.franja{padding:clamp(3.4rem,10vh,7rem) 0;border-bottom:1px solid var(--linea)}
+.franja--oscura{background:var(--pizarra-fuerte);color:#EAF0F6;border-bottom:0}
+.titmapa{max-width:46ch;margin-bottom:clamp(2.4rem,6vh,4rem)}
+.titmapa__k{font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--pizarra);margin:0 0 1rem}
+.titmapa--claro .titmapa__k{color:#9DBBD8}
+.titmapa h2{font-family:var(--serif);font-weight:400;
+  font-size:clamp(2.2rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.01em;margin:0;color:var(--tinta)}
+.titmapa--claro h2{color:#fff}
+.titmapa__p{font-size:1.1rem;line-height:1.55;margin:1.4rem 0 0;color:var(--ink-2)}
+.titmapa--claro .titmapa__p{color:#B9C7D6}
+.titmapa__p b{font-weight:700;color:inherit}
+
+/* Mapa 1 · el sistema */
+.lema{font-family:var(--serif);font-size:clamp(2rem,6vw,3.6rem);text-align:center;
+  margin:0 0 3rem;line-height:1}
+.lema span{color:var(--tinta)}.lema em{font-style:italic;color:var(--pizarra)}
+.ramas{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea)}
+.rama{background:var(--panel);padding:1.8rem 1.6rem;display:flex;flex-direction:column;gap:.4rem}
+.rama__q{font-family:var(--serif);font-size:1.45rem;color:var(--tinta);margin:0;
+  display:flex;gap:.7rem;align-items:baseline;line-height:1.1}
+.rama__q i{font-family:var(--mono);font-size:.78rem;font-style:normal;color:var(--pizarra)}
+.rama__s{font-size:.88rem;color:var(--muted);margin:0 0 .9rem}
+.rama__docs{display:flex;flex-direction:column;gap:.5rem;margin-top:auto}
+.ram__d{display:flex;align-items:baseline;gap:.7rem;text-decoration:none;color:var(--tinta);
+  padding:.7rem .9rem;border:1px solid var(--linea);border-radius:8px;
+  transition:border-color .18s,background .18s,transform .18s}
+.ram__d:hover{border-color:var(--pizarra);background:var(--pizarra-soft);transform:translateX(3px)}
+.ram__n{font-family:var(--mono);font-size:.64rem;color:var(--pizarra)}
+.ram__d b{font-weight:600;flex:1}
+.ram__c{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase}
+
+/* Mapa 2 · el camino del paciente */
+.camino{position:relative;display:flex;flex-direction:column}
+.camino::before{content:"";position:absolute;
+  left:calc(clamp(2.4rem,6vw,3.6rem) / 2 + 1.4rem);top:2rem;bottom:2rem;width:2px;
+  background:rgba(157,187,216,.25)}
+.paso{position:relative;display:grid;
+  grid-template-columns:clamp(2.4rem,6vw,3.6rem) 1fr auto;gap:clamp(1rem,3vw,2rem);
+  align-items:center;padding:.95rem 1.4rem;text-decoration:none;border-radius:12px;
+  transition:background .18s}
+.paso:hover{background:rgba(255,255,255,.05)}
+.paso__n{font-family:var(--serif);font-size:clamp(1.4rem,3.4vw,2.2rem);color:#fff;
+  width:clamp(2.4rem,6vw,3.6rem);height:clamp(2.4rem,6vw,3.6rem);flex:none;
+  display:grid;place-items:center;border-radius:50%;position:relative;z-index:1;
+  background:var(--pizarra);box-shadow:0 0 0 6px var(--pizarra-fuerte)}
+.paso__cuerpo{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.paso__cuerpo b{font-family:var(--serif);font-weight:400;font-size:clamp(1.1rem,2.4vw,1.6rem);
+  color:#fff;line-height:1.1}
+.paso__min{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#9DBBD8}
+.paso__sec{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+  color:#7E9AB8;white-space:nowrap}
+.paso:hover .paso__sec{color:#EAF0F6}
+
+/* Mapa 3 · la ruta de lectura */
+.ruta{border:1px solid var(--linea);border-radius:14px;overflow:hidden;background:var(--panel)}
+.ruta__i{display:grid;grid-template-columns:auto 1fr auto auto;gap:1.2rem;align-items:center;
+  padding:1.3rem 1.6rem;text-decoration:none;color:var(--tinta);
+  border-bottom:1px solid var(--linea);transition:background .18s}
+.ruta__i:last-child{border-bottom:0}
+.ruta__i:hover{background:var(--pizarra-soft)}
+.ruta__n{font-family:var(--serif);font-size:1.7rem;color:var(--pizarra);width:2.4rem;text-align:center}
+.ruta__t{display:flex;flex-direction:column}
+.ruta__t b{font-family:var(--serif);font-weight:400;font-size:1.35rem;color:var(--tinta)}
+.ruta__t span{font-size:.84rem;color:var(--muted)}
+.ruta__c{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ruta__f{font-size:1.2rem;color:var(--pizarra);transition:transform .18s}
+.ruta__i:hover .ruta__f{transform:translateX(4px)}
+
+/* Cabecera de sección, a sangre en pizarra suave */
+.sh{background:var(--pizarra-soft);border-bottom:1px solid var(--pizarra-linea);border-top:0;
+  margin-bottom:0;padding:clamp(2.4rem,7vh,4.5rem) 0 clamp(2rem,5vh,3.2rem)}
+.sh .env{padding-top:0;padding-bottom:0}
+.sh__n i{font-style:normal;color:var(--muted)}
+.sh h1{font-size:clamp(2.4rem,6vw,4rem)}
+
+/* Ruta de lectura al pie de sección */
+.salta-nav{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3.5rem;
+  border-top:1px solid var(--linea);padding-top:2rem}
+.salta{display:flex;flex-direction:column;gap:.4rem;text-decoration:none;
+  border:1px solid var(--linea);border-radius:12px;padding:1.2rem 1.4rem;
+  transition:border-color .18s,background .18s}
+.salta--ant{grid-column:1}
+.salta--sig{grid-column:2;text-align:right}
+.salta:hover{border-color:var(--pizarra);background:var(--pizarra-soft)}
+.salta__d{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pizarra)}
+.salta b{font-family:var(--serif);font-weight:400;font-size:1.25rem;color:var(--tinta)}
+
+@media(max-width:640px){
+  .ruta__i{grid-template-columns:auto 1fr auto}
+  .ruta__c{display:none}
+  .salta-nav{grid-template-columns:1fr}
+  .salta--ant,.salta--sig{grid-column:1;text-align:left}
+}
+"""
 
 
 def main():
@@ -516,8 +824,8 @@ def main():
         # monta() devuelve las secciones en el orden de SECCIONES
         vistas.append(bloque_seccion(k, sid, rot, nombre, secciones[k - 1]))
 
-    estilo = ("<style>%s</style>\n<style>%s\n%s\n%s</style>"
-              % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL))
+    estilo = ("<style>%s</style>\n<style>%s\n%s\n%s\n%s</style>"
+              % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL, BOLD))
 
     doc = (
         '<!doctype html>\n<html lang="es">\n<head>\n'
@@ -528,6 +836,7 @@ def main():
         '<header class="cab">\n'
         '  <a class="cab__m" href="#inicio" data-ve="inicio">Alma</a>\n'
         '  <nav class="cab__nav" aria-label="Secciones">%s</nav>\n'
+        '  <div class="cab__prog" id="prog" aria-hidden="true"></div>\n'
         '</header>\n'
         '<main>\n%s\n</main>\n'
         '<script>%s</script>\n'

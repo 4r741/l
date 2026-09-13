@@ -1992,34 +1992,158 @@ thead th,.tb__e:hover{background:var(--panel-2)!important;color:var(--ink-2)!imp
   .toc{position:static;max-height:none;margin-bottom:2rem;
     border:1px solid var(--linea);border-radius:8px;padding:1.2rem;background:var(--panel)}
 }
+
+
+/* ==================== La piel atrevida ====================
+   Sobre la base blanca y azul pizarra: hero a pantalla, franjas a sangre —una
+   oscura de pizarra pleno—, tipografía a gran escala, un mapa que se sigue y
+   revelado al desplazar. La disrupción, sin perder la calma profesional. */
+
+.cab__prog{position:absolute;left:0;bottom:-1px;height:2px;width:0;
+  background:var(--pizarra);transition:width .12s linear}
+
+/* Revelado: visible por defecto (sin JS no se esconde nada); con JS entra al bajar */
+html.js .reveal{opacity:0;transform:translateY(1.4rem);
+  transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+html.js .reveal.visto{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}}
+
+/* Hero a pantalla */
+.hero2{min-height:calc(100svh - var(--nav));display:flex;align-items:center;
+  border-bottom:1px solid var(--linea)}
+.hero2 .env{width:100%;padding-top:clamp(2rem,6vh,4rem);padding-bottom:clamp(2rem,6vh,4rem)}
+.hero2__k{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 1.6rem}
+.hero2__t{font-family:var(--serif);font-weight:400;
+  font-size:clamp(3.2rem,13vw,9rem);line-height:.88;letter-spacing:-.01em;margin:0;color:var(--tinta)}
+.hero2__t em{font-style:italic;color:var(--pizarra);display:block}
+.hero2__p{font-size:clamp(1.1rem,2.2vw,1.45rem);max-width:42ch;line-height:1.5;
+  color:var(--ink-2);margin:2rem 0 0}
+.hero2__baja{display:inline-flex;align-items:center;gap:.6rem;margin-top:2.4rem;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pizarra);text-decoration:none;border:1px solid var(--pizarra-linea);
+  border-radius:100px;padding:.7rem 1.3rem;transition:background .2s,color .2s}
+.hero2__baja:hover{background:var(--pizarra);color:#fff}
+.hero2__baja i{font-style:normal;animation:baja 1.6s infinite}
+@keyframes baja{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.cifras--hero{margin-top:3rem}
+
+/* Franjas a sangre */
+.franja{padding:clamp(3.4rem,10vh,7rem) 0;border-bottom:1px solid var(--linea)}
+.franja--oscura{background:var(--pizarra-fuerte);color:#EAF0F6;border-bottom:0}
+.titmapa{max-width:46ch;margin-bottom:clamp(2.4rem,6vh,4rem)}
+.titmapa__k{font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--pizarra);margin:0 0 1rem}
+.titmapa--claro .titmapa__k{color:#9DBBD8}
+.titmapa h2{font-family:var(--serif);font-weight:400;
+  font-size:clamp(2.2rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.01em;margin:0;color:var(--tinta)}
+.titmapa--claro h2{color:#fff}
+.titmapa__p{font-size:1.1rem;line-height:1.55;margin:1.4rem 0 0;color:var(--ink-2)}
+.titmapa--claro .titmapa__p{color:#B9C7D6}
+.titmapa__p b{font-weight:700;color:inherit}
+
+/* Mapa 1 · el sistema */
+.lema{font-family:var(--serif);font-size:clamp(2rem,6vw,3.6rem);text-align:center;
+  margin:0 0 3rem;line-height:1}
+.lema span{color:var(--tinta)}.lema em{font-style:italic;color:var(--pizarra)}
+.ramas{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea)}
+.rama{background:var(--panel);padding:1.8rem 1.6rem;display:flex;flex-direction:column;gap:.4rem}
+.rama__q{font-family:var(--serif);font-size:1.45rem;color:var(--tinta);margin:0;
+  display:flex;gap:.7rem;align-items:baseline;line-height:1.1}
+.rama__q i{font-family:var(--mono);font-size:.78rem;font-style:normal;color:var(--pizarra)}
+.rama__s{font-size:.88rem;color:var(--muted);margin:0 0 .9rem}
+.rama__docs{display:flex;flex-direction:column;gap:.5rem;margin-top:auto}
+.ram__d{display:flex;align-items:baseline;gap:.7rem;text-decoration:none;color:var(--tinta);
+  padding:.7rem .9rem;border:1px solid var(--linea);border-radius:8px;
+  transition:border-color .18s,background .18s,transform .18s}
+.ram__d:hover{border-color:var(--pizarra);background:var(--pizarra-soft);transform:translateX(3px)}
+.ram__n{font-family:var(--mono);font-size:.64rem;color:var(--pizarra)}
+.ram__d b{font-weight:600;flex:1}
+.ram__c{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase}
+
+/* Mapa 2 · el camino del paciente */
+.camino{position:relative;display:flex;flex-direction:column}
+.camino::before{content:"";position:absolute;
+  left:calc(clamp(2.4rem,6vw,3.6rem) / 2 + 1.4rem);top:2rem;bottom:2rem;width:2px;
+  background:rgba(157,187,216,.25)}
+.paso{position:relative;display:grid;
+  grid-template-columns:clamp(2.4rem,6vw,3.6rem) 1fr auto;gap:clamp(1rem,3vw,2rem);
+  align-items:center;padding:.95rem 1.4rem;text-decoration:none;border-radius:12px;
+  transition:background .18s}
+.paso:hover{background:rgba(255,255,255,.05)}
+.paso__n{font-family:var(--serif);font-size:clamp(1.4rem,3.4vw,2.2rem);color:#fff;
+  width:clamp(2.4rem,6vw,3.6rem);height:clamp(2.4rem,6vw,3.6rem);flex:none;
+  display:grid;place-items:center;border-radius:50%;position:relative;z-index:1;
+  background:var(--pizarra);box-shadow:0 0 0 6px var(--pizarra-fuerte)}
+.paso__cuerpo{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.paso__cuerpo b{font-family:var(--serif);font-weight:400;font-size:clamp(1.1rem,2.4vw,1.6rem);
+  color:#fff;line-height:1.1}
+.paso__min{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#9DBBD8}
+.paso__sec{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+  color:#7E9AB8;white-space:nowrap}
+.paso:hover .paso__sec{color:#EAF0F6}
+
+/* Mapa 3 · la ruta de lectura */
+.ruta{border:1px solid var(--linea);border-radius:14px;overflow:hidden;background:var(--panel)}
+.ruta__i{display:grid;grid-template-columns:auto 1fr auto auto;gap:1.2rem;align-items:center;
+  padding:1.3rem 1.6rem;text-decoration:none;color:var(--tinta);
+  border-bottom:1px solid var(--linea);transition:background .18s}
+.ruta__i:last-child{border-bottom:0}
+.ruta__i:hover{background:var(--pizarra-soft)}
+.ruta__n{font-family:var(--serif);font-size:1.7rem;color:var(--pizarra);width:2.4rem;text-align:center}
+.ruta__t{display:flex;flex-direction:column}
+.ruta__t b{font-family:var(--serif);font-weight:400;font-size:1.35rem;color:var(--tinta)}
+.ruta__t span{font-size:.84rem;color:var(--muted)}
+.ruta__c{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ruta__f{font-size:1.2rem;color:var(--pizarra);transition:transform .18s}
+.ruta__i:hover .ruta__f{transform:translateX(4px)}
+
+/* Cabecera de sección, a sangre en pizarra suave */
+.sh{background:var(--pizarra-soft);border-bottom:1px solid var(--pizarra-linea);border-top:0;
+  margin-bottom:0;padding:clamp(2.4rem,7vh,4.5rem) 0 clamp(2rem,5vh,3.2rem)}
+.sh .env{padding-top:0;padding-bottom:0}
+.sh__n i{font-style:normal;color:var(--muted)}
+.sh h1{font-size:clamp(2.4rem,6vw,4rem)}
+
+/* Ruta de lectura al pie de sección */
+.salta-nav{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3.5rem;
+  border-top:1px solid var(--linea);padding-top:2rem}
+.salta{display:flex;flex-direction:column;gap:.4rem;text-decoration:none;
+  border:1px solid var(--linea);border-radius:12px;padding:1.2rem 1.4rem;
+  transition:border-color .18s,background .18s}
+.salta--ant{grid-column:1}
+.salta--sig{grid-column:2;text-align:right}
+.salta:hover{border-color:var(--pizarra);background:var(--pizarra-soft)}
+.salta__d{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pizarra)}
+.salta b{font-family:var(--serif);font-weight:400;font-size:1.25rem;color:var(--tinta)}
+
+@media(max-width:640px){
+  .ruta__i{grid-template-columns:auto 1fr auto}
+  .ruta__c{display:none}
+  .salta-nav{grid-template-columns:1fr}
+  .salta--ant,.salta--sig{grid-column:1;text-align:left}
+}
 </style>
 </head>
 <body>
 <header class="cab">
   <a class="cab__m" href="#inicio" data-ve="inicio">Alma</a>
   <nav class="cab__nav" aria-label="Secciones"><a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a><a class="cab__l" href="#direccion" data-ve="direccion">Dirección</a><a class="cab__l" href="#presentacion" data-ve="presentacion">Presentación</a><a class="cab__l" href="#protocolos" data-ve="protocolos">Protocolos</a><a class="cab__l" href="#primera-visita" data-ve="primera-visita">Primera Visita</a><a class="cab__l" href="#operaciones" data-ve="operaciones">Operaciones</a><a class="cab__l" href="#marketing" data-ve="marketing">Marketing</a><a class="cab__l" href="#otros" data-ve="otros">Otros</a><a class="cab__l" href="#numeros" data-ve="numeros">Los números</a></nav>
+  <div class="cab__prog" id="prog" aria-hidden="true"></div>
 </header>
 <main>
 <section class="vista" id="v-inicio">
-<div class="env">
-  <div class="whero">
-    <p class="whero__k">Centro de Excelencia Implantológica Alma</p>
-    <h1>No medias<br><em>sonrisas</em></h1>
-    <p class="whero__p">Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.</p>
-    <p class="whero__d">Calle Progreso 2 · Ourense · Uso interno y confidencial</p>
-  </div>
-  <div class="cifras"><div class="cifra"><b>8</b><span>Documentos</span></div><div class="cifra"><b>135</b><span>Apartados</span></div><div class="cifra"><b>14</b><span>Fases del recorrido</span></div><div class="cifra"><b>6</b><span>Puestos con protocolo</span></div><div class="cifra"><b>76</b><span>Acciones de marketing</span></div><div class="cifra"><b>10</b><span>Recorridos guiados</span></div></div>
-  <div class="wsecs"><a class="tarjeta" href="#direccion" data-ve="direccion"><span class="tarjeta__n">01</span><h3>Dirección</h3><p>Plan de Dirección</p><span class="tarjeta__c">34 apartados</span></a><a class="tarjeta" href="#presentacion" data-ve="presentacion"><span class="tarjeta__n">02</span><h3>Presentación</h3><p>Presentación de Junta</p><span class="tarjeta__c">1 apartados</span></a><a class="tarjeta" href="#protocolos" data-ve="protocolos"><span class="tarjeta__n">03</span><h3>Protocolos</h3><p>Protocolos por puesto</p><span class="tarjeta__c">3 apartados</span></a><a class="tarjeta" href="#primera-visita" data-ve="primera-visita"><span class="tarjeta__n">04</span><h3>Primera Visita</h3><p>Protocolo de Primera Visita</p><span class="tarjeta__c">23 apartados</span></a><a class="tarjeta" href="#operaciones" data-ve="operaciones"><span class="tarjeta__n">05</span><h3>Operaciones</h3><p>Manual Maestro de Operaciones</p><span class="tarjeta__c">16 apartados</span></a><a class="tarjeta" href="#marketing" data-ve="marketing"><span class="tarjeta__n">06</span><h3>Marketing</h3><p>Plan Maestro de Marketing</p><span class="tarjeta__c">34 apartados</span></a><a class="tarjeta" href="#otros" data-ve="otros"><span class="tarjeta__n">07</span><h3>Otros</h3><p>Otros documentos del sistema</p><span class="tarjeta__c">18 apartados</span></a><a class="tarjeta" href="#numeros" data-ve="numeros"><span class="tarjeta__n">08</span><h3>Los números</h3><p>Los números del centro</p><span class="tarjeta__c">6 apartados</span></a></div>
-  <p class="pie">El sistema documental del centro · 135 apartados en 8 documentos</p>
-</div>
+<section class="hero2"><div class="env"><p class="hero2__k">Centro de Excelencia Implantológica Alma · Ourense</p><h1 class="hero2__t">No medias<br><em>sonrisas</em></h1><p class="hero2__p">Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre. Todo el sistema del centro, en un mapa que se sigue.</p><div class="cifras cifras--hero"><div class="cifra"><b>8</b><span>Documentos</span></div><div class="cifra"><b>135</b><span>Apartados</span></div><div class="cifra"><b>14</b><span>Fases</span></div><div class="cifra"><b>6</b><span>Puestos</span></div><div class="cifra"><b>76</b><span>Acciones</span></div><div class="cifra"><b>123′</b><span>La primera visita</span></div></div><a class="hero2__baja" href="#mapa-sistema">Seguir el mapa <i>↓</i></a></div></section><section class="franja" id="mapa-sistema"><div class="env"><header class="titmapa reveal"><p class="titmapa__k">Mapa 01 · El sistema</p><h2>Todo cuelga de una frase</h2><p class="titmapa__p">«No medias sonrisas» no es un eslogan: es el criterio. De él salen cuatro preguntas, y cada documento contesta una.</p></header><div class="lema reveal"><span>No medias</span> <em>sonrisas</em></div><div class="ramas"><div class="rama reveal"><p class="rama__q"><i>01</i>Qué se promete</p><p class="rama__s">La posición, la economía y la decisión</p><div class="rama__docs"><a class="ram__d" href="#direccion" data-ve="direccion"><span class="ram__n">01</span><b>Dirección</b><span class="ram__c">34 apartados</span></a><a class="ram__d" href="#presentacion" data-ve="presentacion"><span class="ram__n">02</span><b>Presentación</b><span class="ram__c">43 diapositivas</span></a></div></div><div class="rama reveal"><p class="rama__q"><i>02</i>Cómo se hace</p><p class="rama__s">El recorrido del paciente y quién responde</p><div class="rama__docs"><a class="ram__d" href="#primera-visita" data-ve="primera-visita"><span class="ram__n">04</span><b>Primera Visita</b><span class="ram__c">23 apartados</span></a><a class="ram__d" href="#protocolos" data-ve="protocolos"><span class="ram__n">03</span><b>Protocolos</b><span class="ram__c">3 apartados</span></a></div></div><div class="rama reveal"><p class="rama__q"><i>03</i>Cómo llega el paciente</p><p class="rama__s">Lo que se hace para que entre por la puerta</p><div class="rama__docs"><a class="ram__d" href="#marketing" data-ve="marketing"><span class="ram__n">06</span><b>Marketing</b><span class="ram__c">34 apartados</span></a></div></div><div class="rama reveal"><p class="rama__q"><i>04</i>Con qué se mide</p><p class="rama__s">Sin números, cualquier objetivo es una opinión</p><div class="rama__docs"><a class="ram__d" href="#numeros" data-ve="numeros"><span class="ram__n">08</span><b>Los números</b><span class="ram__c">6 apartados</span></a><a class="ram__d" href="#otros" data-ve="otros"><span class="ram__n">07</span><b>Otros</b><span class="ram__c">18 apartados</span></a></div></div></div></div></section><section class="franja franja--oscura" id="mapa-viaje"><div class="env"><header class="titmapa titmapa--claro reveal"><p class="titmapa__k">Mapa 02 · El viaje del paciente</p><h2>De la primera llamada<br>al mantenimiento</h2><p class="titmapa__p">Catorce fases. Las doce primeras —la primera visita entera— caben en <b>123 minutos</b>. Siga el camino: cada parada dice qué pasa y le lleva a donde se detalla.</p></header><div class="camino"><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">01</span><span class="paso__cuerpo"><b>Preparación</b><span class="paso__min">6 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">02</span><span class="paso__cuerpo"><b>Acogida</b><span class="paso__min">5 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">03</span><span class="paso__cuerpo"><b>Alta y RGPD</b><span class="paso__min">15 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">04</span><span class="paso__cuerpo"><b>Historia clínica</b><span class="paso__min">10 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">05</span><span class="paso__cuerpo"><b>Diagnóstico</b><span class="paso__min">15 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">06</span><span class="paso__cuerpo"><b>Briefing</b><span class="paso__min">5 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">07</span><span class="paso__cuerpo"><b>Expectativas</b><span class="paso__min">15 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">08</span><span class="paso__cuerpo"><b>IAC</b><span class="paso__min">10 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">09</span><span class="paso__cuerpo"><b>Presentación 3D</b><span class="paso__min">15 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">10</span><span class="paso__cuerpo"><b>Propuesta</b><span class="paso__min">20 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">11</span><span class="paso__cuerpo"><b>Cierre admin.</b><span class="paso__min">5 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#primera-visita" data-ve="primera-visita"><span class="paso__n">12</span><span class="paso__cuerpo"><b>Seguimiento</b><span class="paso__min">2 min</span></span><span class="paso__sec">Primera Visita →</span></a><a class="paso reveal" href="#operaciones" data-ve="operaciones"><span class="paso__n">13</span><span class="paso__cuerpo"><b>Circuito de producción</b><span class="paso__min">el después</span></span><span class="paso__sec">Operaciones →</span></a><a class="paso reveal" href="#operaciones" data-ve="operaciones"><span class="paso__n">14</span><span class="paso__cuerpo"><b>Mantenimiento</b><span class="paso__min">el después</span></span><span class="paso__sec">Operaciones →</span></a></div></div></section><section class="franja" id="mapa-ruta"><div class="env"><header class="titmapa reveal"><p class="titmapa__k">Mapa 03 · La ruta de lectura</p><h2>Ocho paradas, en orden</h2><p class="titmapa__p">Si prefiere leerlo entero, este es el orden. De la posición del centro a los números que lo miden.</p></header><div class="ruta"><a class="ruta__i reveal" href="#direccion" data-ve="direccion"><span class="ruta__n">01</span><span class="ruta__t"><b>Dirección</b><span>Plan de Dirección</span></span><span class="ruta__c">34 apartados</span><span class="ruta__f">→</span></a><a class="ruta__i reveal" href="#presentacion" data-ve="presentacion"><span class="ruta__n">02</span><span class="ruta__t"><b>Presentación</b><span>Presentación de Junta</span></span><span class="ruta__c">43 diapositivas</span><span class="ruta__f">→</span></a><a class="ruta__i reveal" href="#protocolos" data-ve="protocolos"><span class="ruta__n">03</span><span class="ruta__t"><b>Protocolos</b><span>Protocolos por puesto</span></span><span class="ruta__c">3 apartados</span><span class="ruta__f">→</span></a><a class="ruta__i reveal" href="#primera-visita" data-ve="primera-visita"><span class="ruta__n">04</span><span class="ruta__t"><b>Primera Visita</b><span>Protocolo de Primera Visita</span></span><span class="ruta__c">23 apartados</span><span class="ruta__f">→</span></a><a class="ruta__i reveal" href="#operaciones" data-ve="operaciones"><span class="ruta__n">05</span><span class="ruta__t"><b>Operaciones</b><span>Manual Maestro de Operaciones</span></span><span class="ruta__c">16 apartados</span><span class="ruta__f">→</span></a><a class="ruta__i reveal" href="#marketing" data-ve="marketing"><span class="ruta__n">06</span><span class="ruta__t"><b>Marketing</b><span>Plan Maestro de Marketing</span></span><span class="ruta__c">34 apartados</span><span class="ruta__f">→</span></a><a class="ruta__i reveal" href="#otros" data-ve="otros"><span class="ruta__n">07</span><span class="ruta__t"><b>Otros</b><span>Otros documentos del sistema</span></span><span class="ruta__c">18 apartados</span><span class="ruta__f">→</span></a><a class="ruta__i reveal" href="#numeros" data-ve="numeros"><span class="ruta__n">08</span><span class="ruta__t"><b>Los números</b><span>Los números del centro</span></span><span class="ruta__c">6 apartados</span><span class="ruta__f">→</span></a></div><p class="pie">El sistema documental del centro · 135 apartados en 8 documentos · Calle Progreso 2 · Ourense</p></div></section>
 </section>
 <section class="vista" id="v-direccion">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">01 · Plan de Dirección</p>
+    <p class="sh__n">Sección 01 <i>de 08</i> · Plan de Dirección</p>
     <h1>Dirección</h1>
     <p class="sh__p">Un centro no se dirige con intenciones: se dirige con decisiones fechadas y con alguien que responde de cada una. Este documento es el que gobierna: fija dónde está parado el centro y por qué ahí, qué construye la ventaja que un competidor no puede comprar, de dónde sale el dinero y qué lo destruye, y termina en quince decisiones que solo puede tomar la Junta. Las cifras que aparecen son de dos clases y están marcadas como tales: las del modelo, que se derivan de supuestos declarados, y las del sector, que se citan como rango y nunca como dato propio.</p>
-  </header>
+  </div></header>
+  <div class="env">
   <div class="docif"><div class="docif__i"><b>1,2 M€</b><span>Objetivo</span><small>Facturación anual en el ejercicio tercero</small></div><div class="docif__i"><b>15</b><span>Decisiones</span><small>Se someten a aprobación en esta sesión</small></div><div class="docif__i"><b>55′</b><span>Lectura</span><small>Resumen ejecutivo: 3 minutos</small></div><div class="docif__i"><b>5</b><span>Riesgos críticos</span><small>Con propietario y mitigación asignados</small></div><div class="docif__i"><b>17</b><span>Sistema documental</span><small>Documentos operativos vigentes</small></div><div class="docif__i"><b>100 d</b><span>Ventana crítica</span><small>Lo que no se fija ahora se vuelve costumbre</small></div></div>
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#a-manifiesto" data-toc="a-manifiesto">El manifiesto: la regla que ordena todo</a>
@@ -5199,15 +5323,17 @@ REVISIÓN PREVISTA:</div>
   </div>
 </section></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--sig" href="#presentacion" data-ve="presentacion"><span class="salta__d">Siguiente →</span><b>02 · Presentación</b></a></nav>
+  </div>
 </section>
 <section class="vista" id="v-presentacion">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">02 · Presentación de Junta</p>
+    <p class="sh__n">Sección 02 <i>de 08</i> · Presentación de Junta</p>
     <h1>Presentación</h1>
     <p class="sh__p">La presentación no añade nada al Plan de Dirección: lo extrae. Sirve para conducir una sesión de Junta de una hora sin leer setenta y nueve páginas en voz alta, y está construida para eso: una idea por diapositiva, la cifra siempre a la vista y una ruta corta de veinte minutos para cuando la agenda se rompe.</p>
-  </header>
+  </div></header>
+  <div class="env">
   
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#b-presentacion" data-toc="b-presentacion">Junta Directiva · Septiembre 2026 · Uso interno y confidenci</a></nav>
@@ -6311,15 +6437,17 @@ REVISIÓN PREVISTA:</div>
   </aside>
 </section></div></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--ant" href="#direccion" data-ve="direccion"><span class="salta__d">← Anterior</span><b>01 · Dirección</b></a><a class="salta salta--sig" href="#protocolos" data-ve="protocolos"><span class="salta__d">Siguiente →</span><b>03 · Protocolos</b></a></nav>
+  </div>
 </section>
 <section class="vista" id="v-protocolos">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">03 · Protocolos por puesto</p>
+    <p class="sh__n">Sección 03 <i>de 08</i> · Protocolos por puesto</p>
     <h1>Protocolos</h1>
     <p class="sh__p">Todo lo que el sistema dice de un puesto vivía repartido en cuatro documentos. Quien llega un lunes a trabajar no debería recorrer cuatro documentos para saber qué se espera de él. Aquí se elige el puesto y aparece lo suyo: en qué fases del recorrido interviene y con qué papel, qué procedimientos tiene escritos, qué funciones de vanguardia le tocan y con qué se le mide. Nada de esto sale de esta página.</p>
-  </header>
+  </div></header>
+  <div class="env">
   
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#c-portada" data-toc="c-portada">Vista operativa · Uso interno Qué se espera de cada puesto T</a>
@@ -6563,15 +6691,17 @@ REVISIÓN PREVISTA:</div>
   </div>
 </section></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--ant" href="#presentacion" data-ve="presentacion"><span class="salta__d">← Anterior</span><b>02 · Presentación</b></a><a class="salta salta--sig" href="#primera-visita" data-ve="primera-visita"><span class="salta__d">Siguiente →</span><b>04 · Primera Visita</b></a></nav>
+  </div>
 </section>
 <section class="vista" id="v-primera-visita">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">04 · Protocolo de Primera Visita</p>
+    <p class="sh__n">Sección 04 <i>de 08</i> · Protocolo de Primera Visita</p>
     <h1>Primera Visita</h1>
     <p class="sh__p">Un paciente entra sin saber qué le pasa y sale con un diagnóstico en la mano, un plan en tres dimensiones y una decisión que puede tomar. Entre una cosa y otra hay doce fases, cinco puestos que se pasan el testigo cinco veces y nueve documentos que quedan firmados. La duración no es una estimación: está medida fase a fase, y la suma es la que es.</p>
-  </header>
+  </div></header>
+  <div class="env">
   <div class="docif"><div class="docif__i"><b>9</b><span>Documentos firmados</span><small>De la primera visita, digitalizados en Clinic Cloud el mismo día</small></div><div class="docif__i"><b>12 de 14</b><span>Fases</span><small>Fases 1 a 12 del recorrido; las 13 y 14 van en el Manual Maestro</small></div><div class="docif__i"><b>115–120′</b><span>Duración real</span><small>Fases 2 a 11, según la complejidad del caso a valorar</small></div><div class="docif__i"><b>4</b><span>Roles implicados</span><small>Recepción · Director · Doctor · Auxiliar</small></div><div class="docif__i"><b>5</b><span>Estándares transversales</span><small>Comunicación, entorno, seguridad, datos y agenda</small></div><div class="docif__i"><b>8</b><span>Anexos</span><small>Guiones, preguntas frecuentes, checklist, gobernanza y escalado</small></div></div>
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#d-fundamentos" data-toc="d-fundamentos">Los cinco principios de la visita</a>
@@ -10164,15 +10294,17 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   </div>
 </section></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--ant" href="#protocolos" data-ve="protocolos"><span class="salta__d">← Anterior</span><b>03 · Protocolos</b></a><a class="salta salta--sig" href="#operaciones" data-ve="operaciones"><span class="salta__d">Siguiente →</span><b>05 · Operaciones</b></a></nav>
+  </div>
 </section>
 <section class="vista" id="v-operaciones">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">05 · Manual Maestro de Operaciones</p>
+    <p class="sh__n">Sección 05 <i>de 08</i> · Manual Maestro de Operaciones</p>
     <h1>Operaciones</h1>
     <p class="sh__p">El documento troncal. Va de la primera llamada al mantenimiento a largo plazo, y cada fase construye sobre la anterior: la información recogida en la llamada personaliza la recepción, la anamnesis alimenta la presentación y el cierre abre el circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso ninguna fase se salta «por falta de tiempo».</p>
-  </header>
+  </div></header>
+  <div class="env">
   <div class="docif"><div class="docif__i"><b>14</b><span>Fases del recorrido</span><small>De la primera llamada al mantenimiento a largo plazo</small></div><div class="docif__i"><b>8</b><span>Partes</span><small>Más estándares transversales y anexos</small></div><div class="docif__i"><b>115–120′</b><span>Primera visita</span><small>Suma real de las fases 2 a 11; varía según el caso</small></div><div class="docif__i"><b>6</b><span>Puestos</span><small>Recepción · Doctor · Higienista · Auxiliar · RAC · Dirección</small></div><div class="docif__i"><b>26</b><span>Procedimientos</span><small>Numerados por puesto (PR-XX)</small></div><div class="docif__i"><b>13</b><span>Anexos</span><small>Plantillas, checklists, reportes, auditoría, escalado y glosario</small></div></div>
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#e-presentacion" data-toc="e-presentacion">Un documento, tres usos</a>
@@ -16908,15 +17040,17 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
 
     </section></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--ant" href="#primera-visita" data-ve="primera-visita"><span class="salta__d">← Anterior</span><b>04 · Primera Visita</b></a><a class="salta salta--sig" href="#marketing" data-ve="marketing"><span class="salta__d">Siguiente →</span><b>06 · Marketing</b></a></nav>
+  </div>
 </section>
 <section class="vista" id="v-marketing">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">06 · Plan Maestro de Marketing</p>
+    <p class="sh__n">Sección 06 <i>de 08</i> · Plan Maestro de Marketing</p>
     <h1>Marketing</h1>
     <p class="sh__p">El paciente no recorre un embudo: recorre estados, y los recorre en los dos sentidos. Un embudo termina en la venta; una persona, no. Este plan ordena setenta y seis acciones sobre doce estados, cada una con dueño, coste, plazo y el número que se mueve si funciona. Y tiene una regla de entrada que es también el filtro: una acción entra si puede declarar en una línea qué gana el paciente. No qué ganamos nosotros.</p>
-  </header>
+  </div></header>
+  <div class="env">
   
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#f-portada" data-toc="f-portada">Portada</a>
@@ -18216,15 +18350,17 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
   </div>
 </section></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--ant" href="#operaciones" data-ve="operaciones"><span class="salta__d">← Anterior</span><b>05 · Operaciones</b></a><a class="salta salta--sig" href="#otros" data-ve="otros"><span class="salta__d">Siguiente →</span><b>07 · Otros</b></a></nav>
+  </div>
 </section>
 <section class="vista" id="v-otros">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">07 · Otros documentos del sistema</p>
+    <p class="sh__n">Sección 07 <i>de 08</i> · Otros documentos del sistema</p>
     <h1>Otros</h1>
     <p class="sh__p">Un sistema de gestión no son tres documentos: son tres documentos y todo lo que los hace ejecutables. Aquí están el compendio que los ordena, los 322 puntos con los que se verifica el centro, la auditoría de la clínica adquirida, el plan de los primeros cien días, los protocolos operativos por perfil, las fichas de innovación y el programa de cuidado. Cada uno dice qué es y cuándo se abre.</p>
-  </header>
+  </div></header>
+  <div class="env">
   <div class="docif"><div class="docif__i"><b>20</b><span>Decisiones de Gerencia</span><small>Más once verificaciones externas</small></div><div class="docif__i"><b>322</b><span>Puntos de verificación</span><small>Recorrido físico, documental, de sistemas y de procesos</small></div><div class="docif__i"><b>14</b><span>Documentos</span><small>Del posicionamiento del centro al programa de cuidado ATC</small></div><div class="docif__i"><b>18</b><span>Fichas de innovación</span><small>Con protocolo, guion, contingencia e indicador</small></div><div class="docif__i"><b>6</b><span>Perfiles operativos</span><small>Parte asistencial y parte comercial de cada puesto</small></div><div class="docif__i"><b>100 días</b><span>Horizonte</span><small>Programa de integración tras la adquisición</small></div></div>
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#g-presentacion" data-toc="g-presentacion">Qué es cada cosa y cuándo se abre</a>
@@ -21947,15 +22083,17 @@ LTV              = Valor inicial
   </div>
 </section></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--ant" href="#marketing" data-ve="marketing"><span class="salta__d">← Anterior</span><b>06 · Marketing</b></a><a class="salta salta--sig" href="#numeros" data-ve="numeros"><span class="salta__d">Siguiente →</span><b>08 · Los números</b></a></nav>
+  </div>
 </section>
 <section class="vista" id="v-numeros">
+  <header class="sh reveal">
 <div class="env">
-  <header class="sh">
-    <p class="sh__n">08 · Los números del centro</p>
+    <p class="sh__n">Sección 08 <i>de 08</i> · Los números del centro</p>
     <h1>Los números</h1>
     <p class="sh__p">Sin números propios, cualquier objetivo comercial es una opinión bien redactada. Esta sección es el instrumento: diez indicadores que se cuentan mes a mes, cinco números que todavía no se tienen y están señalados como lo que son, y el puente que lleva de los 720.000 € heredados al objetivo del tercer ejercicio, bloque a bloque y con cada bloque auditable por separado.</p>
-  </header>
+  </div></header>
+  <div class="env">
   
   <div class="cuerpo">
     <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#h-portada" data-toc="h-portada">Instrumento de medición · Ejercicio 2026 · Uso interno Los n</a>
@@ -22168,12 +22306,14 @@ LTV              = Valor inicial
   </div>
 </section></article></div>
   </div>
-</div>
+  <nav class="salta-nav" aria-label="Ruta de lectura"><a class="salta salta--ant" href="#otros" data-ve="otros"><span class="salta__d">← Anterior</span><b>07 · Otros</b></a></nav>
+  </div>
 </section>
 </main>
 <script>
 (function(){
   var D=document;
+  D.documentElement.classList.add('js');
   var links=[].slice.call(D.querySelectorAll('.cab__l'));
   var vistas=[].slice.call(D.querySelectorAll('.vista'));
   function idDeVista(v){ return v.id.replace(/^v-/,''); }
@@ -22224,11 +22364,30 @@ LTV              = Valor inicial
     }, {rootMargin:'-20% 0px -70% 0px'});
     [].slice.call(D.querySelectorAll('.wart')).forEach(function(a){ if(a.id) obs.observe(a); });
   }
+  // barra de progreso de lectura
+  var prog=D.getElementById('prog');
+  function pintaProg(){
+    var e=D.documentElement, max=e.scrollHeight-e.clientHeight;
+    if(prog) prog.style.width=(max>0?(e.scrollTop/max*100):0)+'%';
+  }
+  window.addEventListener('scroll', pintaProg, {passive:true});
+  window.addEventListener('resize', pintaProg);
+  // revelado al bajar: cada bloque entra una vez
+  var rev=null;
+  if('IntersectionObserver' in window){
+    rev=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visto'); rev.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    [].slice.call(D.querySelectorAll('.reveal')).forEach(function(x){ rev.observe(x); });
+  } else {
+    [].slice.call(D.querySelectorAll('.reveal')).forEach(function(x){ x.classList.add('visto'); });
+  }
   // vista inicial: por el hash, o Inicio
   var h=(location.hash||'').slice(1);
   var v0=h?vistaDe(h):null;
   ve(v0||(vistas.some(function(v){return idDeVista(v)===h;})?h:'inicio'));
   if(h){ var d=D.getElementById(h); if(d) requestAnimationFrame(function(){ d.scrollIntoView(); }); }
+  pintaProg();
 })();
 </script>
 </body>
