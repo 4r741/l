@@ -735,19 +735,17 @@ def bloque_experiencia():
          "programa que sostiene lo tratado, detecta pronto lo que se tuerce y "
          "mantiene la relación año tras año."),
     ]
-    tarjetas = []
-    for num, tit, cifra, sid, texto in principios:
-        tarjetas.append(
-            '<a class="prin reveal" href="#%s" data-ve="%s">'
-            '<span class="prin__n">%s</span>'
-            '<div class="prin__c"><p class="prin__k">%s</p>'
-            '<p class="prin__cifra">%s</p>'
-            '<p class="prin__t">%s</p>'
-            '<span class="prin__ir">Ver en el sistema →</span></div></a>'
-            % (sid, sid, num, H.escape(tit), H.escape(cifra), H.escape(texto)))
-    return (
-        '<section class="vista" id="v-experiencia">\n'
-        # apertura: la filosofía, a sangre y en grande
+    prins = "".join(
+        '<a class="prin reveal" href="#%s" data-ve="%s">'
+        '<span class="prin__n">%s</span>'
+        '<div class="prin__c"><p class="prin__k">%s</p>'
+        '<p class="prin__cifra">%s</p>'
+        '<p class="prin__t">%s</p>'
+        '<span class="prin__ir">Ver en el sistema →</span></div></a>'
+        % (sid, sid, num, H.escape(tit), H.escape(cifra), H.escape(texto))
+        for num, tit, cifra, sid, texto in principios)
+
+    hero = (
         '<section class="hero2 hero2--exp"><div class="env">'
         '<p class="hero2__k reveal">La experiencia · Lo que se siente, no solo lo que se hace</p>'
         '<h1 class="hero2__t reveal">Una sonrisa no es<br>un trabajo terminado:<br>'
@@ -757,25 +755,104 @@ def bloque_experiencia():
         'material más nuevo, sino como la mitad del trabajo que nadie ve —y que '
         'el paciente sí nota—. Esa mitad invisible es la única que ningún '
         'competidor puede comprar.</p>'
-        '</div></section>'
-        # los cinco principios de la experiencia
+        '</div></section>')
+
+    # La implantología, sin misterio: qué le devuelve de verdad un implante.
+    # Hechos generales de la disciplina, en la voz de Alma. Nada de marcas ni
+    # de cifras que el sistema no sostenga.
+    imp = [
+        ("Restaura la pieza", "Vuelve el diente que faltaba —su forma y su "
+         "función— sin tallar los sanos de al lado."),
+        ("Preserva el hueso", "La raíz artificial se integra en el hueso "
+         "—osteointegración— y lo mantiene vivo. Sin raíz, el hueso se reabsorbe."),
+        ("Función natural", "Se muerde y se mastica como con un diente propio, "
+         "no como con una prótesis que se mueve."),
+        ("Duradero, si se cuida", "Con el mantenimiento adecuado, la solución más "
+         "estable que existe hoy para un diente perdido."),
+    ]
+    imp_html = "".join(
+        '<div class="tar reveal"><h3>%s</h3><p>%s</p></div>'
+        % (H.escape(t), H.escape(x)) for t, x in imp)
+    implantologia = (
+        '<section class="franja"><div class="env">'
+        '<header class="titmapa reveal">'
+        '<p class="titmapa__k">La implantología, sin misterio</p>'
+        '<h2>Qué le devuelve un implante</h2>'
+        '<p class="titmapa__p">Un implante no es un diente postizo: es una raíz '
+        'nueva. Por eso, bien puesto, no se nota que está —ni al comer, ni al '
+        'reír, ni al mirarse—.</p></header>'
+        '<div class="rej">' + imp_html + '</div>'
+        '</div></section>')
+
+    # La tecnología, atada a las fases reales (imagen, 3D, guía, protocolo).
+    # Sin superlativos ni nombres de aparatos que no podamos verificar.
+    tec = [
+        ("Imagen en tres dimensiones", "Se ven el hueso, los nervios y las raíces "
+         "antes de tocar nada. Se decide sobre datos, no sobre una placa plana."),
+        ("El caso, en 3D", "Usted ve su propio caso en tres dimensiones antes de "
+         "decidir. Lo que aprueba es lo que se hace."),
+        ("Colocación guiada", "Lo planificado se traslada a la boca con guía: el "
+         "implante va donde se decidió, no donde se pudo."),
+        ("Protocolo medido", "Cada fase con su tiempo y su verificación. La "
+         "precisión no es una máquina: es un método que se cumple."),
+    ]
+    tec_html = "".join(
+        '<div class="tar reveal"><h3>%s</h3><p>%s</p></div>'
+        % (H.escape(t), H.escape(x)) for t, x in tec)
+    tecnologia = (
+        '<section class="franja franja--oscura"><div class="env">'
+        '<header class="titmapa titmapa--claro reveal">'
+        '<p class="titmapa__k">La precisión, al detalle</p>'
+        '<h2>La técnica, al servicio<br>de lo humano</h2>'
+        '<p class="titmapa__p">La tecnología no está para impresionar en la sala '
+        'de espera, sino para que dos cosas coincidan: lo que se planifica y lo '
+        'que se coloca.</p></header>'
+        '<div class="rej rej--oscura">' + tec_html + '</div>'
+        '</div></section>')
+
+    # El equipo: los seis puestos reales, sin inventar nombres ni credenciales.
+    roles = ["Dirección", "Doctor", "Recepción", "RAC · Producción",
+             "Auxiliar", "Higienista"]
+    roles_html = "".join(
+        '<a class="rolchip reveal" href="#protocolos" data-ve="protocolos">%s</a>'
+        % H.escape(r) for r in roles)
+    equipo = (
+        '<section class="franja"><div class="env">'
+        '<header class="titmapa reveal">'
+        '<p class="titmapa__k">El equipo</p>'
+        '<h2>Un equipo, un criterio</h2>'
+        '<p class="titmapa__p">Seis puestos, de la recepción a la dirección, y un '
+        'solo criterio entre todos. No es una suma de profesionales: es un sistema '
+        'en el que cada persona sabe qué le toca, de qué responde y qué se rompe '
+        'aguas abajo si no lo hace. Por eso usted no repite su historia en cada '
+        'visita —el sistema la lleva por usted— y por eso lo tratado se sostiene '
+        'años después de la última cita.</p></header>'
+        '<div class="roles">' + roles_html + '</div>'
+        '</div></section>')
+
+    principios_sec = (
         '<section class="franja"><div class="env">'
         '<header class="titmapa reveal">'
         '<p class="titmapa__k">Cinco maneras de notarlo</p>'
         '<h2>Lo que cambia, para usted</h2>'
         '<p class="titmapa__p">Cinco promesas que el sistema entero está montado '
         'para cumplir. Cada una lleva a donde se detalla, por escrito.</p></header>'
-        '<div class="prins">%s</div>'
-        '</div></section>'
-        # el cierre, en pizarra pleno
+        '<div class="prins">' + prins + '</div>'
+        '</div></section>')
+
+    cierre = (
         '<section class="banda"><div class="env">'
         '<p class="banda__k reveal">La promesa</p>'
         '<p class="banda__t reveal">No medias sonrisas.<br><em>Ni medias '
         'decisiones.</em></p>'
         '<p class="banda__p reveal">Le devolvemos su sonrisa completa, en el menor '
         'tiempo posible, y le cuidamos para siempre.</p>'
-        '</div></section>'
-        '\n</section>' % "".join(tarjetas))
+        '</div></section>')
+
+    return (
+        '<section class="vista" id="v-experiencia">\n'
+        + hero + implantologia + principios_sec + tecnologia + equipo + cierre
+        + '\n</section>')
 
 
 def bloque_seccion(k, sid, rot, nombre, seccion):
@@ -999,6 +1076,24 @@ html.js .reveal.visto{opacity:1;transform:none}
 .prin__t{font-size:1.02rem;line-height:1.6;color:var(--ink-2);margin:0;max-width:62ch}
 .prin__ir{display:inline-block;margin-top:1rem;font-family:var(--mono);font-size:.6rem;
   letter-spacing:.1em;text-transform:uppercase;color:var(--pizarra)}
+
+/* Rejilla de tarjetas (implantología, tecnología) */
+.rej{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+.tar{background:var(--panel);padding:clamp(1.5rem,3vw,2.2rem);display:flex;flex-direction:column;gap:.7rem}
+.tar h3{font-family:var(--serif);font-weight:400;font-size:1.4rem;color:var(--tinta);margin:0;line-height:1.12}
+.tar p{font-size:.95rem;line-height:1.6;color:var(--ink-2);margin:0}
+.rej--oscura{background:rgba(157,187,216,.2);border-color:rgba(157,187,216,.2)}
+.rej--oscura .tar{background:var(--pizarra-fuerte)}
+.rej--oscura .tar h3{color:#fff}
+.rej--oscura .tar p{color:#B9C7D6}
+
+/* Los seis puestos, como fichas */
+.roles{display:flex;flex-wrap:wrap;gap:.7rem}
+.rolchip{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--pizarra);text-decoration:none;border:1px solid var(--pizarra-linea);border-radius:100px;
+  padding:.6rem 1.1rem;transition:background .18s,color .18s}
+.rolchip:hover{background:var(--pizarra);color:#fff}
 
 @media(max-width:640px){
   .ruta__i{grid-template-columns:auto 1fr auto}
