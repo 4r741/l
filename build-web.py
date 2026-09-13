@@ -504,6 +504,50 @@ def _meta(indice):
     return m
 
 
+def fase_ancla(num):
+    """El ancla de una fase dentro de la página: las doce primeras viven en
+    Primera Visita (d-f01…d-f12); las dos últimas, en Operaciones."""
+    return ("d-f%s" % num) if int(num) <= 12 else ("e-m%s" % int(num))
+
+
+def banda_lema():
+    """Una franja a sangre, en pizarra pleno y con la tipografía gigante: la
+    línea que ordena todo el sistema. El golpe de contraste del inicio."""
+    return (
+        '<section class="banda">'
+        '<div class="env">'
+        '<p class="banda__k reveal">El criterio</p>'
+        '<p class="banda__t reveal">Media sonrisa es la que se hace '
+        '<em>a medias</em>: el corte que nadie ve y el paciente sí nota.</p>'
+        '</div></section>')
+
+
+def camino_seccion():
+    """El mapa del viaje, compacto y dentro de Primera Visita: las doce fases de
+    la primera visita como pasos que se pulsan para bajar a cada una, más las
+    dos del después. Es «el camino que seguir» en su propia casa."""
+    pasos = []
+    for num, nombre, minu, sid in FASES:
+        anc = fase_ancla(num)
+        fuera = ' data-ve="operaciones"' if int(num) > 12 else ""
+        pasos.append(
+            '<a class="hito reveal" href="#%s"%s>'
+            '<span class="hito__n">%s</span>'
+            '<span class="hito__t">%s</span>'
+            '<span class="hito__m">%s</span></a>'
+            % (anc, fuera, num, H.escape(nombre), H.escape(minu)))
+    return (
+        '<section class="franja franja--oscura" id="camino-visita">'
+        '<div class="env">'
+        '<header class="titmapa titmapa--claro reveal">'
+        '<p class="titmapa__k">El camino · 123 minutos</p>'
+        '<h2>Siga la primera visita, fase a fase</h2>'
+        '<p class="titmapa__p">Doce fases hasta la propuesta, y dos más para el '
+        'después. Pulse una para bajar a su detalle.</p></header>'
+        '<div class="hitos">%s</div>'
+        '</div></section>' % "".join(pasos))
+
+
 def cuenta_txt(sid, n, nombre):
     """El pie de cada documento: apartados, o su unidad propia."""
     if sid == "presentacion":
@@ -624,8 +668,8 @@ def bloque_inicio(indice, total):
         '</div></section>' % cajas)
     return (
         '<section class="vista" id="v-inicio">\n'
-        + hero + mapa_sistema(meta) + mapa_viaje(meta) + mapa_ruta(meta, total)
-        + '\n</section>')
+        + hero + banda_lema() + mapa_sistema(meta) + mapa_viaje(meta)
+        + mapa_ruta(meta, total) + '\n</section>')
 
 
 def bloque_seccion(k, sid, rot, nombre, seccion):
@@ -657,6 +701,8 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
     ruta = ('<nav class="salta-nav" aria-label="Ruta de lectura">%s%s</nav>'
             % (prev_l, next_l))
 
+    camino = camino_seccion() if sid == "primera-visita" else ""
+
     return (
         '<section class="vista" id="v-%s">\n'
         '  <header class="sh reveal">\n<div class="env">\n'
@@ -664,6 +710,7 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
         '    <h1>%s</h1>\n'
         '    <p class="sh__p">%s</p>\n'
         '  </div></header>\n'
+        '  %s\n'
         '  <div class="env">\n'
         '  %s\n'
         '  <div class="cuerpo">\n'
@@ -674,7 +721,7 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
         '  %s\n'
         '  </div>\n</section>'
         % (sid, k, n_sec, H.escape(nombre), H.escape(rot), H.escape(texto),
-           docif, toc, "\n".join(aps), ruta))
+           camino, docif, toc, "\n".join(aps), ruta))
 
 
 BOLD = """
@@ -801,6 +848,27 @@ html.js .reveal.visto{opacity:1;transform:none}
 .salta:hover{border-color:var(--pizarra);background:var(--pizarra-soft)}
 .salta__d{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pizarra)}
 .salta b{font-family:var(--serif);font-weight:400;font-size:1.25rem;color:var(--tinta)}
+
+/* Banda a sangre con el criterio, en pizarra pleno y tipografía gigante */
+.banda{background:var(--pizarra-fuerte);color:#EAF0F6;
+  padding:clamp(3.5rem,12vh,8rem) 0}
+.banda__k{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:#9DBBD8;margin:0 0 1.6rem}
+.banda__t{font-family:var(--serif);font-weight:400;
+  font-size:clamp(2rem,6.5vw,4.6rem);line-height:1.05;letter-spacing:-.01em;
+  color:#fff;margin:0;max-width:22ch}
+.banda__t em{font-style:italic;color:#B9D0E6}
+
+/* El camino compacto dentro de Primera Visita */
+.hitos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;
+  background:rgba(157,187,216,.18);border:1px solid rgba(157,187,216,.18)}
+.hito{display:flex;flex-direction:column;gap:.25rem;padding:1.1rem 1.1rem;
+  text-decoration:none;background:var(--pizarra-fuerte);transition:background .18s}
+.hito:hover{background:rgba(255,255,255,.06)}
+.hito__n{font-family:var(--serif);font-size:1.6rem;color:#fff;line-height:1}
+.hito__t{font-size:.9rem;color:#EAF0F6;font-weight:600;line-height:1.2}
+.hito__m{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;
+  text-transform:uppercase;color:#9DBBD8}
 
 @media(max-width:640px){
   .ruta__i{grid-template-columns:auto 1fr auto}
