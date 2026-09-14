@@ -2365,9 +2365,34 @@ html:root:root .wart th{background:var(--panel-2);color:var(--tinta);
 html:root:root .wart td{border-top:1px solid var(--linea-2)}
 html:root:root .wart figure{border-radius:16px;overflow:hidden}
 
-/* ---- cabecera de sección: filete fino, ilustración en salvia ---- */
+/* ---- cabecera de sección: filete fino, ilustración en oro ---- */
 html:root:root .sh{border-top:1px solid var(--linea)}
 html:root:root .sh__ico{color:var(--pizarra)}
+
+/* ---- el índice de la sección: un módulo con forma, no una lista suelta ----
+   Antes flotaba como texto en el hueco de la izquierda. Ahora es una ficha
+   sticky, con su propio fondo, filete y scroll interno si es muy larga: acompaña
+   la lectura y siempre está «puesta» en algún sitio. */
+html:root:root .cuerpo{grid-template-columns:16.5rem minmax(0,1fr);
+  gap:clamp(1.6rem,4vw,3.6rem)}
+html:root:root .toc{background:var(--panel);border:1px solid var(--linea);
+  border-radius:16px;padding:1.3rem 1.15rem;box-shadow:var(--sombra-2);
+  top:calc(var(--nav) + 1.6rem);max-height:calc(100vh - var(--nav) - 3.2rem)}
+html:root:root .toc__t{font-family:var(--sans);font-weight:600;color:var(--calido-fuerte);
+  letter-spacing:.16em;margin:0 0 1rem;padding-bottom:.9rem;border-bottom:1px solid var(--linea)}
+html:root:root .toc a{color:var(--ink-2);border-left:2px solid transparent;padding-left:.8rem}
+html:root:root .toc a:hover{color:var(--tinta);border-left-color:var(--calido-linea)}
+html:root:root .toc a.on{color:var(--pizarra-fuerte);border-left-color:var(--pizarra);font-weight:600}
+html:root:root .toc__parte{font-family:var(--sans);font-weight:600;color:var(--calido-fuerte);
+  letter-spacing:.1em}
+/* barra de scroll interna, discreta y en la clave oscura */
+html:root:root .toc::-webkit-scrollbar{width:8px}
+html:root:root .toc::-webkit-scrollbar-thumb{background:var(--pizarra-linea);border-radius:8px}
+html:root:root .toc{scrollbar-width:thin;scrollbar-color:var(--pizarra-linea) transparent}
+@media(max-width:920px){
+  html:root:root .cuerpo{grid-template-columns:1fr}
+  html:root:root .toc{position:static;max-height:none;box-shadow:none}
+}
 
 /* ---- voces del glosario: subrayado en oro, elegante ---- */
 html:root:root .gl{font-family:var(--sans);font-weight:500;color:var(--pizarra-fuerte);
