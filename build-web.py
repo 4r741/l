@@ -146,21 +146,23 @@ SECC_ICONO = {
 
 
 def fuentes_incrustadas():
-    """Roboto —la tipografía de toda la web— empotrada en el archivo.
+    """Las dos tipografías de la web, empotradas en el archivo.
 
-    Una sola familia, limpia y muy legible, en cuatro pesos: Regular para el
-    cuerpo, Medium para las etiquetas, Bold para los títulos internos y Black
-    para los rótulos grandes. Van en base64 dentro del propio HTML, de modo que
-    la web se abre de doble clic y se ve igual sin conexión.
+    Fraunces —una serif cálida, de revista— para los titulares, y Roboto
+    —limpia y muy legible— para el cuerpo y las etiquetas. Fraunces viaja como
+    fuente variable (un solo archivo cubre todos los pesos). Todo va en base64
+    dentro del propio HTML: la web se abre de doble clic y se ve igual sin
+    conexión.
     """
-    # (familia, peso, estilo, archivo)
+    # (familia, rango de peso, estilo, archivo)
     caras = (
-        ("Roboto", 400, "normal", "Roboto-Regular.ttf"),
-        ("Roboto", 500, "normal", "Roboto-Medium.ttf"),
-        ("Roboto", 700, "normal", "Roboto-Bold.ttf"),
-        ("Roboto", 900, "normal", "Roboto-Black.ttf"),
+        ("Roboto", "400", "normal", "Roboto-Regular.ttf"),
+        ("Roboto", "500", "normal", "Roboto-Medium.ttf"),
+        ("Roboto", "700", "normal", "Roboto-Bold.ttf"),
+        ("Roboto", "900", "normal", "Roboto-Black.ttf"),
+        ("Fraunces", "100 900", "normal", "Fraunces-Variable.ttf"),
     )
-    fmt = ('@font-face{font-family:"%s";font-style:%s;font-weight:%d;'
+    fmt = ('@font-face{font-family:"%s";font-style:%s;font-weight:%s;'
            'font-display:swap;src:url(data:font/ttf;base64,%s) format("truetype")}')
     out = []
     for familia, peso, estilo, arch in caras:
@@ -198,19 +200,22 @@ def css_documentos():
 # «html:root» para ganar la especificidad, de modo que manda esta paleta.
 TEMA = """
 :root, html:root{
-  --fondo:#FBFBFA; --panel:#FFFFFF; --panel-2:#F4F6F8;
-  --tinta:#1A2A34; --ink:#1A2A34; --ink-2:#465A66; --muted:#748690;
-  --pizarra:#33587C; --pizarra-o:#2C4A6A; --pizarra-fuerte:#22405C;
-  --pizarra-soft:rgba(51,88,124,.07); --pizarra-linea:rgba(51,88,124,.22);
-  /* segundo acento, cálido: la capa humana y las cifras que hay que mirar */
-  --calido:#B4664A; --calido-fuerte:#95452C;
-  --calido-soft:rgba(180,102,74,.08); --calido-linea:rgba(180,102,74,.26);
-  --linea:rgba(26,42,52,.12); --linea-2:rgba(26,42,52,.07);
-  /* Una sola familia, Roboto, para toda la web: limpia y muy legible. Los
-     pesos hacen el trabajo —Black en los rótulos grandes, Bold en los títulos,
-     Regular en el cuerpo—. Nada de monoespaciada ni de condensada. */
-  --serif:"Roboto","Helvetica Neue",Arial,sans-serif;
-  --display:"Roboto","Helvetica Neue",Arial,sans-serif;
+  /* Paleta cálida y elegante, de clínica premium: crema, verde salvia
+     profundo y un oro suave. Nada de gris frío ni de negro. */
+  --fondo:#F7F2EA; --panel:#FDFBF6; --panel-2:#EFE7D9;
+  --tinta:#2A2420; --ink:#2A2420; --ink-2:#5A5148; --muted:#8C8175;
+  /* acento principal (conserva el nombre --pizarra por compatibilidad):
+     un verde salvia profundo, calmado y de confianza */
+  --pizarra:#3E6B5E; --pizarra-o:#345C50; --pizarra-fuerte:#2C4E44;
+  --pizarra-soft:rgba(62,107,94,.08); --pizarra-linea:rgba(62,107,94,.22);
+  /* segundo acento, oro cálido: los detalles y las cifras que hay que mirar */
+  --calido:#B8894B; --calido-fuerte:#8F6631;
+  --calido-soft:rgba(184,137,75,.10); --calido-linea:rgba(184,137,75,.30);
+  --linea:rgba(42,36,32,.13); --linea-2:rgba(42,36,32,.06);
+  /* Dos tipografías: Fraunces (serif cálida, de revista) en los titulares,
+     Roboto (limpia y legible) en el cuerpo y las etiquetas. */
+  --serif:"Fraunces","Georgia","Times New Roman",serif;
+  --display:"Fraunces","Georgia","Times New Roman",serif;
   --sans:"Roboto","Helvetica Neue",Arial,sans-serif;
   --mono:"Roboto","Helvetica Neue",Arial,sans-serif;
   --nav:64px; --ancho:74rem;
@@ -222,7 +227,7 @@ TEMA = """
   --line:var(--linea); --line-soft:var(--linea-2); --rule:var(--linea);
   --f-body:var(--sans); --f-display:var(--serif); --f-mono:var(--mono);
   --tinta-doc:var(--tinta); --barra:var(--nav);
-  --sombra-2:0 1px 2px rgba(26,42,52,.05),0 12px 28px -20px rgba(26,42,52,.30);
+  --sombra-2:0 1px 2px rgba(42,36,32,.04),0 20px 44px -28px rgba(42,36,32,.28);
 }
 """
 
@@ -772,16 +777,25 @@ def bloque_inicio(indice, total):
     ]
     cajas = "".join('<div class="cifra"><b>%s</b><span>%s</span></div>' % c for c in cifras)
     hero = (
-        '<section class="hero2">'
-        '<div class="env">'
-        '<p class="hero2__k">Centro de Excelencia Implantológica Alma · Ourense</p>'
-        '<h1 class="hero2__t">No medias<br><em>sonrisas</em></h1>'
-        '<p class="hero2__p">Le devolvemos su sonrisa completa, en el menor tiempo '
-        'posible, y le cuidamos para siempre. Todo el sistema del centro, en un mapa '
-        'que se sigue.</p>'
-        '<div class="cifras cifras--hero">%s</div>'
-        '<a class="hero2__baja" href="#mapa-sistema">Seguir el mapa <i>↓</i></a>'
-        '</div></section>' % cajas)
+        '<section class="hero">'
+        '<div class="env hero__grid">'
+        '  <div class="hero__txt">'
+        '<p class="hero__k">Centro de Excelencia Implantológica · Ourense</p>'
+        '<h1 class="hero__t">No medias<br><em>sonrisas</em></h1>'
+        '<p class="hero__p">Le devolvemos su sonrisa completa, en el menor tiempo '
+        'posible, y le cuidamos para siempre. Todo el método del centro, '
+        'ordenado y a la vista.</p>'
+        '<div class="hero__cta">'
+        '<a class="hero__ir" href="#mapa-sistema">Descubrir el método <i>↓</i></a>'
+        '<a class="hero__ghost" href="#primera-visita" data-ve="primera-visita">'
+        'Su primera visita</a>'
+        '</div>'
+        '  </div>'
+        '  <div class="hero__vis" aria-hidden="true"><div class="hero__disc">'
+        + LOGO_EMBLEMA + '</div></div>'
+        '</div>'
+        '<div class="env"><div class="cifras cifras--hero">%s</div></div>'
+        '</section>' % cajas)
     return (
         '<section class="vista" id="v-inicio">\n'
         + hero + banda_lema() + mapa_sistema(meta) + mapa_viaje(meta)
@@ -1329,168 +1343,179 @@ MODERNO = """
 """
 
 
-# --------------------------------------------------------------- la piel brutalista
-# Claro brutalista: se mantiene el fondo claro, pero el trato es industrial —cantos
-# duros, filetes gruesos, sombras macizas sin desenfoque y rótulos grandes en
-# Roboto Black—. Nada de negro de fondo, ni condensada, ni monoespaciada. Va la
-# ÚLTIMA en la cascada para imponer los cantos sobre lo anterior.
-BRUTAL = """
-/* ---- fondo de hormigón claro y retícula de fondo, apenas insinuada ---- */
+# ------------------------------------------------------------- la piel elegante
+# Cálida y de revista: fondo crema, verde salvia y oro suave, Fraunces en los
+# titulares y Roboto en el cuerpo. Esquinas suaves, sombras difusas, mucho aire.
+# Va la ÚLTIMA en la cascada para dar el acabado sobre todo lo anterior.
+ELEGANTE = """
+/* velo cálido de fondo, sin textura dura */
 html:root:root body{
   background:
-    linear-gradient(0deg,rgba(26,42,52,.028) 1px,transparent 1px) 0 0/100% 3.2rem,
+    radial-gradient(115% 75% at 100% -5%, rgba(184,137,75,.07), transparent 60%),
+    radial-gradient(90% 60% at -5% 8%, rgba(62,107,94,.05), transparent 55%),
     var(--fondo);
 }
 
-/* ---- rótulos grandes: Roboto Black, en mayúscula y bien maciza ---- */
-html:root:root .whero h1,html:root:root .sh h1,html:root:root .hero2__t,
-html:root:root .titmapa h2,html:root:root .banda__t{
-  text-transform:uppercase;letter-spacing:-.01em;line-height:.98;font-weight:900;
+/* ---- titulares en Fraunces, con el aire de una revista ---- */
+html:root:root .whero h1,html:root:root .hero__t,html:root:root .sh h1,
+html:root:root .titmapa h2,html:root:root .banda__t,html:root:root .wart h2,
+html:root:root .lema,html:root:root .prin__t{
+  font-family:var(--serif);font-weight:400;letter-spacing:-.015em;
+  line-height:1.04;text-transform:none;
 }
-html:root:root .cab__m,html:root:root .marca__t{
-  font-weight:900;text-transform:uppercase;letter-spacing:.01em;
-}
-/* ---- títulos internos: Roboto Bold, en caja normal para leer cómodo ---- */
-html:root:root .wart h2,html:root:root .wart h3,html:root:root .prin__t{
-  text-transform:none;letter-spacing:0;line-height:1.2;font-weight:700;
+html:root:root .wart h3{font-family:var(--serif);font-weight:500;letter-spacing:-.01em;
+  text-transform:none;line-height:1.25}
+html:root:root .hero__t em,html:root:root .whero h1 em,html:root:root .lema em{
+  font-style:italic;color:var(--calido-fuerte);font-weight:400}
+
+/* ---- etiquetas: Roboto en versalita, tracking amplio, en oro ---- */
+html:root:root .sh__n,html:root:root .hero__k,html:root:root .titmapa__k,
+html:root:root .whero__k,html:root:root .wart__k,html:root:root .banda__k{
+  font-family:var(--sans);font-weight:600;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.66rem;color:var(--calido-fuerte);
 }
 
-/* ---- etiquetas técnicas: mayúscula, en Medium ---- */
-html:root:root .sh__n,html:root:root .whero__k,html:root:root .hero2__k,
-html:root:root .titmapa__k,html:root:root .banda__k,html:root:root .wart__k,
-html:root:root .cab__l{
-  text-transform:uppercase;font-weight:500;letter-spacing:.1em;
+/* ---- cabecera fina y cálida ---- */
+html:root:root .cab{background:rgba(253,251,246,.86);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--linea)}
+html:root:root .cab__m,html:root:root .marca__t{font-family:var(--serif);
+  font-weight:500;text-transform:none;letter-spacing:0}
+html:root:root .cab__l{font-family:var(--sans);font-weight:500;text-transform:none;
+  letter-spacing:.005em;border-radius:100px;border:1px solid transparent}
+html:root:root .cab__l:hover{background:var(--pizarra-soft);color:var(--pizarra-fuerte)}
+html:root:root .cab__l.on{background:var(--pizarra);color:#fff}
+html:root:root .cab__l.on:hover{background:var(--pizarra-fuerte);color:#fff}
+html:root:root #prog{background:var(--calido)}
+
+/* ======================= LA PORTADA ======================= */
+html:root:root .hero{padding:clamp(2rem,5vh,4.5rem) 0 clamp(2.5rem,6vh,4rem)}
+html:root:root .hero__grid{display:grid;grid-template-columns:1.15fr .85fr;
+  gap:clamp(2rem,5vw,4.5rem);align-items:center}
+html:root:root .hero__k{font-family:var(--sans);font-weight:600;
+  text-transform:uppercase;letter-spacing:.18em;font-size:.68rem;
+  color:var(--calido-fuerte);margin:0 0 1.4rem}
+html:root:root .hero__t{font-family:var(--serif);font-weight:380;
+  font-size:clamp(3rem,8.5vw,6.4rem);line-height:.98;letter-spacing:-.02em;
+  color:var(--tinta);margin:0 0 1.5rem}
+html:root:root .hero__t em{font-style:italic;color:var(--calido-fuerte);font-weight:400}
+html:root:root .hero__p{font-family:var(--sans);font-size:clamp(1.05rem,1.5vw,1.22rem);
+  line-height:1.7;color:var(--ink-2);max-width:40ch;margin:0 0 2rem}
+html:root:root .hero__cta{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
+html:root:root .hero__ir{display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--sans);font-weight:600;font-size:.95rem;text-decoration:none;
+  background:var(--pizarra);color:#fff;border-radius:100px;padding:.9rem 1.9rem;
+  box-shadow:0 16px 30px -14px rgba(62,107,94,.55);transition:background .2s,transform .15s,box-shadow .2s}
+html:root:root .hero__ir:hover{background:var(--pizarra-fuerte);transform:translateY(-2px);
+  box-shadow:0 22px 40px -16px rgba(62,107,94,.6)}
+html:root:root .hero__ir i{font-style:normal}
+html:root:root .hero__ghost{display:inline-flex;align-items:center;
+  font-family:var(--sans);font-weight:600;font-size:.95rem;text-decoration:none;
+  color:var(--pizarra-fuerte);border-bottom:1px solid var(--calido-linea);
+  padding:.2rem .1rem;transition:color .15s,border-color .15s}
+html:root:root .hero__ghost:hover{color:var(--calido-fuerte);border-bottom-color:var(--calido)}
+/* el disco cálido de la derecha, con el emblema */
+html:root:root .hero__vis{display:flex;justify-content:center}
+html:root:root .hero__disc{width:min(30rem,80vw);aspect-ratio:1;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:var(--pizarra);
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,.9), transparent 45%),
+    linear-gradient(150deg, var(--panel-2), #E3D6C1 65%, #D8C6A8);
+  box-shadow:inset 0 2px 30px rgba(255,255,255,.5),0 40px 80px -40px rgba(62,107,94,.45);
+  border:1px solid rgba(184,137,75,.25)}
+html:root:root .hero__disc svg{width:44%;height:44%;stroke-width:1.4}
+@media(max-width:820px){
+  html:root:root .hero__grid{grid-template-columns:1fr;text-align:left}
+  html:root:root .hero__vis{order:-1;margin-bottom:1rem;justify-content:flex-start}
+  html:root:root .hero__disc{width:min(15rem,55vw)}
 }
 
-/* ---- todo lo que era pastilla vuelve a ser rectángulo con canto duro ---- */
-html:root:root .cab__l,html:root:root .rolchip,html:root:root .salta,
-html:root:root .tarjeta,html:root:root .hero2__baja,html:root:root .rej,
-html:root:root .prin,html:root:root .pvpaso,html:root:root .cifra,
-html:root:root .wart table,html:root:root .wart figure,html:root:root .voz{
-  border-radius:0;
-}
+/* ---- botón principal (por si queda algún .hero2__baja) ---- */
+html:root:root .hero2__baja{border-radius:100px;background:var(--pizarra);color:#fff;
+  border:0;box-shadow:0 16px 30px -14px rgba(62,107,94,.55);font-family:var(--sans);
+  font-weight:600;text-transform:none;letter-spacing:.005em}
+html:root:root .hero2__baja:hover{background:var(--pizarra-fuerte);transform:translateY(-2px)}
 
-/* ---- el menú: botones-etiqueta con filete ---- */
-html:root:root .cab{border-bottom:2px solid var(--tinta)}
-html:root:root .cab__l{
-  border:1.5px solid transparent;padding:.5rem .8rem;
-}
-html:root:root .cab__l:hover{border-color:var(--tinta)}
-html:root:root .cab__l.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
-html:root:root .cab__l.on:hover{background:var(--pizarra)}
-html:root:root .cab__prog #prog,html:root:root #prog{background:var(--calido);height:3px}
-
-/* ---- botón principal: macizo, con sombra dura que se hunde al pulsar ---- */
-html:root:root .hero2__baja{
-  border:2px solid var(--tinta);background:var(--pizarra);color:#fff;
-  box-shadow:6px 6px 0 var(--tinta);font-weight:700;text-transform:uppercase;
-  letter-spacing:.04em;transition:transform .12s,box-shadow .12s,background .2s;
-}
-html:root:root .hero2__baja:hover{
-  transform:translate(2px,2px);box-shadow:3px 3px 0 var(--tinta);
-  background:var(--pizarra-fuerte);color:#fff;
-}
-
-/* ---- tarjetas y cuadros: filete grueso, esquina marcada ---- */
+/* ---- tarjetas y cuadros: esquinas suaves, filete tenue, sombra al vuelo ---- */
 html:root:root .tarjeta,html:root:root .rej,html:root:root .prin,
-html:root:root .pvpaso,html:root:root .salta,html:root:root .rolchip{
-  border:2px solid var(--tinta);
-}
+html:root:root .pvpaso,html:root:root .cifra,html:root:root .salta,
+html:root:root .rolchip{
+  border-radius:18px;border:1px solid var(--linea);background:var(--panel)}
 html:root:root .tarjeta:hover,html:root:root .prin:hover,
 html:root:root .pvpaso:hover,html:root:root .salta:hover{
-  box-shadow:6px 6px 0 var(--pizarra);transform:translate(-1px,-1px);
-}
-html:root:root .cifra{border:2px solid var(--tinta);padding:1.1rem 1.2rem}
-html:root:root .cifras--hero .cifra{border-top-width:2px;border-top-color:var(--tinta)}
+  box-shadow:var(--sombra-2);transform:translateY(-3px);border-color:var(--pizarra-linea)}
+html:root:root .rolchip{border-radius:100px}
+html:root:root .cifra{padding:1.35rem 1.3rem;border-top:1px solid var(--linea)}
+html:root:root .cifras--hero .cifra{border-top:2px solid var(--calido-linea)}
+html:root:root .cifra b{font-family:var(--serif);font-weight:400;color:var(--calido-fuerte)}
+html:root:root .cifra span{font-family:var(--sans);color:var(--muted)}
 
-/* ---- tablas y figuras: rejilla dura, cabecera invertida ---- */
-html:root:root .wart table{border:2px solid var(--tinta);border-collapse:collapse}
-html:root:root .wart th{background:var(--tinta);color:#fff;border:1px solid var(--tinta)}
-html:root:root .wart td{border:1px solid var(--linea)}
-html:root:root .wart figure{border:2px solid var(--tinta);background:var(--panel)}
+/* ---- números decorativos en Fraunces ---- */
+html:root:root .ruta__n,html:root:root .prin__n,html:root:root .pvpaso__n,
+html:root:root .ram__n,html:root:root .rama__q i,html:root:root .paso__n,
+html:root:root .hito__n{font-family:var(--serif);font-weight:400;color:var(--calido-fuerte)}
 
-/* ---- filete grueso sobre cada cabecera de sección ---- */
-html:root:root .sh{border-top:4px solid var(--tinta);padding-top:clamp(2rem,5vh,3.4rem)}
+/* ---- tablas y figuras, suaves ---- */
+html:root:root .wart table{border:1px solid var(--linea);border-radius:14px;
+  overflow:hidden;border-collapse:separate;border-spacing:0}
+html:root:root .wart th{background:var(--panel-2);color:var(--tinta);
+  font-family:var(--sans);font-weight:600}
+html:root:root .wart td{border-top:1px solid var(--linea-2)}
+html:root:root .wart figure{border-radius:16px;overflow:hidden}
 
-/* ---- las voces del glosario: marcadas como término técnico pulsable ---- */
-html:root:root .gl{
-  font-family:var(--mono);font-weight:700;color:var(--pizarra-fuerte);
-  background:var(--pizarra-soft);border:0;border-bottom:2px solid var(--pizarra);
-  padding:.02em .28em;cursor:pointer;font-size:.94em;line-height:inherit;
-  transition:background .15s,color .15s;
-}
-html:root:root .gl:hover{background:var(--pizarra);color:#fff}
-html:root:root .gl::after{content:"↗";font-size:.72em;margin-left:.18em;vertical-align:.15em}
+/* ---- cabecera de sección: filete fino, ilustración en salvia ---- */
+html:root:root .sh{border-top:1px solid var(--linea)}
+html:root:root .sh__ico{color:var(--pizarra)}
 
-/* ============ POP-UPS ============ */
-/* fondo común de los dos pop-ups */
-.overlay{
-  position:fixed;inset:0;z-index:120;display:flex;align-items:center;
+/* ---- voces del glosario: subrayado en oro, elegante ---- */
+html:root:root .gl{font-family:var(--sans);font-weight:500;color:var(--pizarra-fuerte);
+  background:transparent;border:0;border-bottom:1px solid var(--calido-linea);
+  padding:0 .03em;cursor:pointer;transition:color .15s,border-color .15s}
+html:root:root .gl:hover{color:var(--calido-fuerte);border-bottom-color:var(--calido)}
+html:root:root .gl::after{content:"\\2039";color:var(--calido);margin-left:.15em;font-weight:600}
+
+/* ============ POP-UPS, elegantes ============ */
+.overlay{position:fixed;inset:0;z-index:120;display:flex;align-items:center;
   justify-content:center;padding:clamp(1.2rem,5vw,3rem);
-  background:rgba(26,42,52,.34);backdrop-filter:blur(3px);
-  opacity:0;transition:opacity .38s ease;
-}
+  background:rgba(42,36,32,.34);backdrop-filter:blur(4px);
+  opacity:0;transition:opacity .4s ease}
 .overlay.on{opacity:1}
 .overlay[hidden]{display:none}
+.portal__caja,.voz__caja{background:var(--panel);border:1px solid var(--linea);
+  border-radius:24px;box-shadow:0 40px 90px -34px rgba(42,36,32,.55);position:relative;
+  transform:translateY(16px) scale(.985);
+  transition:transform .45s cubic-bezier(.2,.9,.2,1)}
+.overlay.on .portal__caja,.overlay.on .voz__caja{transform:none}
 
-/* ---- pop-up 1: el manifiesto de entrada ---- */
-.portal__caja{
-  background:var(--panel);border:2px solid var(--tinta);
-  box-shadow:14px 14px 0 var(--tinta);max-width:40rem;width:100%;
-  padding:clamp(1.8rem,5vw,3.2rem);position:relative;
-  transform:translateY(14px) scale(.98);transition:transform .42s cubic-bezier(.2,.9,.2,1);
-}
-.overlay.on .portal__caja{transform:none}
-.portal__k{font-family:var(--mono);font-size:.66rem;letter-spacing:.28em;
-  text-transform:uppercase;color:var(--pizarra);margin:0 0 1.3rem;font-weight:700}
-.portal__marca{display:flex;align-items:center;gap:.7rem;margin:0 0 1.6rem;color:var(--tinta)}
-.portal__marca svg{width:2.4rem;height:2.4rem}
-.portal__marca b{font-family:var(--serif);font-weight:900;text-transform:uppercase;
-  font-size:1.4rem;letter-spacing:.02em}
-.portal__lema{font-family:var(--serif);font-weight:900;text-transform:uppercase;
-  font-size:clamp(2.4rem,7vw,4.2rem);line-height:.9;color:var(--tinta);margin:0 0 1.2rem}
-.portal__lema em{color:var(--calido);font-style:normal}
-.portal__p{font-family:var(--mono);font-size:.88rem;line-height:1.7;color:var(--ink-2);
-  max-width:44ch;margin:0 0 1.9rem}
+.portal__caja{max-width:40rem;width:100%;padding:clamp(2rem,5vw,3.4rem)}
+.portal__k{font-family:var(--sans);font-weight:600;font-size:.66rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin:0 0 1.4rem}
+.portal__marca{display:flex;align-items:center;gap:.7rem;margin:0 0 1.5rem;color:var(--pizarra)}
+.portal__marca svg{width:2.3rem;height:2.3rem}
+.portal__marca b{font-family:var(--serif);font-weight:500;font-size:1.3rem;color:var(--tinta)}
+.portal__lema{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,7vw,4rem);
+  line-height:1;color:var(--tinta);margin:0 0 1.2rem;letter-spacing:-.02em}
+.portal__lema em{font-style:italic;color:var(--calido-fuerte)}
+.portal__p{font-family:var(--sans);font-size:1rem;line-height:1.7;color:var(--ink-2);
+  max-width:46ch;margin:0 0 2rem}
 .portal__pie{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between}
-.portal__entrar{
-  font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;
-  font-size:.82rem;background:var(--pizarra);color:#fff;border:2px solid var(--tinta);
-  box-shadow:5px 5px 0 var(--tinta);padding:.85rem 1.8rem;cursor:pointer;
-  transition:transform .12s,box-shadow .12s,background .2s;
-}
-.portal__entrar:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--tinta);
-  background:var(--pizarra-fuerte)}
-.portal__dir{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--muted)}
+.portal__entrar{font-family:var(--sans);font-weight:600;font-size:.9rem;letter-spacing:.005em;
+  background:var(--pizarra);color:#fff;border:0;border-radius:100px;padding:.9rem 2rem;cursor:pointer;
+  box-shadow:0 16px 30px -14px rgba(62,107,94,.55);transition:background .2s,transform .15s}
+.portal__entrar:hover{background:var(--pizarra-fuerte);transform:translateY(-2px)}
+.portal__dir{font-family:var(--sans);font-size:.72rem;letter-spacing:.02em;color:var(--muted)}
 
-/* ---- pop-up 2: el concepto técnico ---- */
-.voz__caja{
-  background:var(--panel);border:2px solid var(--tinta);
-  box-shadow:10px 10px 0 var(--pizarra);max-width:32rem;width:100%;
-  padding:clamp(1.6rem,4vw,2.4rem);position:relative;
-  transform:translateY(12px) scale(.98);transition:transform .32s cubic-bezier(.2,.9,.2,1);
-}
-.overlay.on .voz__caja{transform:none}
-.voz__k{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--pizarra);margin:0 0 .9rem;font-weight:700}
-.voz__sigla{font-family:var(--serif);font-weight:900;text-transform:uppercase;
-  font-size:clamp(2rem,6vw,3rem);line-height:.95;color:var(--tinta);margin:0 0 .8rem}
-.voz__def{font-family:var(--mono);font-size:.9rem;line-height:1.72;color:var(--ink-2);margin:0}
-.cerrar{
-  position:absolute;top:.7rem;right:.7rem;width:2.1rem;height:2.1rem;line-height:1;
-  border:2px solid var(--tinta);background:var(--panel);color:var(--tinta);cursor:pointer;
-  font-family:var(--mono);font-size:1rem;font-weight:700;
-  display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;
-}
-.cerrar:hover{background:var(--tinta);color:#fff}
-
-@media(max-width:520px){
-  .portal__caja{box-shadow:8px 8px 0 var(--tinta)}
-  .voz__caja{box-shadow:6px 6px 0 var(--pizarra)}
-}
+.voz__caja{max-width:32rem;width:100%;padding:clamp(1.8rem,4vw,2.6rem)}
+.voz__k{font-family:var(--sans);font-weight:600;font-size:.62rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--calido-fuerte);margin:0 0 .9rem}
+.voz__sigla{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,6vw,2.8rem);
+  line-height:1.05;color:var(--tinta);margin:0 0 .8rem;letter-spacing:-.01em}
+.voz__def{font-family:var(--sans);font-size:.98rem;line-height:1.72;color:var(--ink-2);margin:0}
+.cerrar{position:absolute;top:1rem;right:1rem;width:2.2rem;height:2.2rem;line-height:1;
+  border:1px solid var(--linea);background:var(--panel);color:var(--ink-2);cursor:pointer;
+  border-radius:100px;font-family:var(--sans);font-size:1.1rem;display:flex;
+  align-items:center;justify-content:center;transition:background .15s,color .15s,border-color .15s}
+.cerrar:hover{background:var(--pizarra);color:#fff;border-color:var(--pizarra)}
 """
-
 
 def main():
     secciones, menus, indice, orden, voces, mapa = bs.monta()
@@ -1508,7 +1533,7 @@ def main():
         vistas.append(bloque_seccion(k, sid, rot, nombre, secciones[k - 1]))
 
     estilo = ("<style>%s</style>\n<style>%s\n%s\n%s\n%s\n%s\n%s</style>"
-              % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL, BOLD, MODERNO, BRUTAL))
+              % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL, BOLD, MODERNO, ELEGANTE))
 
     # ---- los dos pop-ups ----
     # 1) El manifiesto de entrada: se muestra una vez por sesión, al abrir.
