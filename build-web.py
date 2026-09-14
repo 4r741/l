@@ -146,19 +146,19 @@ SECC_ICONO = {
 
 
 def fuentes_incrustadas():
-    """Las tipografías de la piel brutalista, empotradas en el archivo.
+    """Roboto —la tipografía de toda la web— empotrada en el archivo.
 
-    Dos familias, y nada más: Big Shoulders —una grotesca condensada, de rótulo
-    industrial— para los titulares, y Geist Mono —una monoespaciada técnica—
-    para el cuerpo y las etiquetas. Van en base64 dentro del propio HTML, así
-    que la web se abre de doble clic y se ve igual sin conexión. »
+    Una sola familia, limpia y muy legible, en cuatro pesos: Regular para el
+    cuerpo, Medium para las etiquetas, Bold para los títulos internos y Black
+    para los rótulos grandes. Van en base64 dentro del propio HTML, de modo que
+    la web se abre de doble clic y se ve igual sin conexión.
     """
     # (familia, peso, estilo, archivo)
     caras = (
-        ("Big Shoulders", 800, "normal", "BigShoulders-Bold.ttf"),
-        ("Big Shoulders", 400, "normal", "BigShoulders-Regular.ttf"),
-        ("Geist Mono", 400, "normal", "GeistMono-Regular.ttf"),
-        ("Geist Mono", 700, "normal", "GeistMono-Bold.ttf"),
+        ("Roboto", 400, "normal", "Roboto-Regular.ttf"),
+        ("Roboto", 500, "normal", "Roboto-Medium.ttf"),
+        ("Roboto", 700, "normal", "Roboto-Bold.ttf"),
+        ("Roboto", 900, "normal", "Roboto-Black.ttf"),
     )
     fmt = ('@font-face{font-family:"%s";font-style:%s;font-weight:%d;'
            'font-display:swap;src:url(data:font/ttf;base64,%s) format("truetype")}')
@@ -206,12 +206,13 @@ TEMA = """
   --calido:#B4664A; --calido-fuerte:#95452C;
   --calido-soft:rgba(180,102,74,.08); --calido-linea:rgba(180,102,74,.26);
   --linea:rgba(26,42,52,.12); --linea-2:rgba(26,42,52,.07);
-  /* Piel industrial: Big Shoulders condensada en los rótulos, Geist Mono
-     —monoespaciada— en el cuerpo y las etiquetas. Vanguardia, sin negro. */
-  --serif:"Big Shoulders","Arial Narrow","Helvetica Neue",sans-serif;
-  --display:"Big Shoulders","Arial Narrow","Helvetica Neue",sans-serif;
-  --sans:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  /* Una sola familia, Roboto, para toda la web: limpia y muy legible. Los
+     pesos hacen el trabajo —Black en los rótulos grandes, Bold en los títulos,
+     Regular en el cuerpo—. Nada de monoespaciada ni de condensada. */
+  --serif:"Roboto","Helvetica Neue",Arial,sans-serif;
+  --display:"Roboto","Helvetica Neue",Arial,sans-serif;
+  --sans:"Roboto","Helvetica Neue",Arial,sans-serif;
+  --mono:"Roboto","Helvetica Neue",Arial,sans-serif;
   --nav:64px; --ancho:74rem;
   /* los tokens de los documentos, remapeados a esta paleta */
   --paper:var(--fondo); --surface:var(--panel); --surface-2:var(--panel-2);
@@ -1330,8 +1331,8 @@ MODERNO = """
 
 # --------------------------------------------------------------- la piel brutalista
 # Claro brutalista: se mantiene el fondo claro, pero el trato es industrial —cantos
-# duros, filetes gruesos, sombras macizas sin desenfoque, rótulos condensados en
-# mayúscula y todo lo pequeño en monoespaciada—. Nada de negro de fondo. Va la
+# duros, filetes gruesos, sombras macizas sin desenfoque y rótulos grandes en
+# Roboto Black—. Nada de negro de fondo, ni condensada, ni monoespaciada. Va la
 # ÚLTIMA en la cascada para imponer los cantos sobre lo anterior.
 BRUTAL = """
 /* ---- fondo de hormigón claro y retícula de fondo, apenas insinuada ---- */
@@ -1341,21 +1342,24 @@ html:root:root body{
     var(--fondo);
 }
 
-/* ---- rótulos: Big Shoulders condensada, en mayúscula y bien apretada ---- */
+/* ---- rótulos grandes: Roboto Black, en mayúscula y bien maciza ---- */
 html:root:root .whero h1,html:root:root .sh h1,html:root:root .hero2__t,
-html:root:root .titmapa h2,html:root:root .banda__t,html:root:root .prin__t,
-html:root:root .wart h2{
-  text-transform:uppercase;letter-spacing:-.01em;line-height:.92;font-weight:800;
+html:root:root .titmapa h2,html:root:root .banda__t{
+  text-transform:uppercase;letter-spacing:-.01em;line-height:.98;font-weight:900;
 }
 html:root:root .cab__m,html:root:root .marca__t{
-  font-weight:800;text-transform:uppercase;letter-spacing:.01em;
+  font-weight:900;text-transform:uppercase;letter-spacing:.01em;
+}
+/* ---- títulos internos: Roboto Bold, en caja normal para leer cómodo ---- */
+html:root:root .wart h2,html:root:root .wart h3,html:root:root .prin__t{
+  text-transform:none;letter-spacing:0;line-height:1.2;font-weight:700;
 }
 
-/* ---- etiquetas mono, técnicas: mayúscula y tramado ---- */
+/* ---- etiquetas técnicas: mayúscula, en Medium ---- */
 html:root:root .sh__n,html:root:root .whero__k,html:root:root .hero2__k,
 html:root:root .titmapa__k,html:root:root .banda__k,html:root:root .wart__k,
 html:root:root .cab__l{
-  text-transform:uppercase;font-weight:700;
+  text-transform:uppercase;font-weight:500;letter-spacing:.1em;
 }
 
 /* ---- todo lo que era pastilla vuelve a ser rectángulo con canto duro ---- */
@@ -1441,9 +1445,9 @@ html:root:root .gl::after{content:"↗";font-size:.72em;margin-left:.18em;vertic
   text-transform:uppercase;color:var(--pizarra);margin:0 0 1.3rem;font-weight:700}
 .portal__marca{display:flex;align-items:center;gap:.7rem;margin:0 0 1.6rem;color:var(--tinta)}
 .portal__marca svg{width:2.4rem;height:2.4rem}
-.portal__marca b{font-family:var(--serif);font-weight:800;text-transform:uppercase;
+.portal__marca b{font-family:var(--serif);font-weight:900;text-transform:uppercase;
   font-size:1.4rem;letter-spacing:.02em}
-.portal__lema{font-family:var(--serif);font-weight:800;text-transform:uppercase;
+.portal__lema{font-family:var(--serif);font-weight:900;text-transform:uppercase;
   font-size:clamp(2.4rem,7vw,4.2rem);line-height:.9;color:var(--tinta);margin:0 0 1.2rem}
 .portal__lema em{color:var(--calido);font-style:normal}
 .portal__p{font-family:var(--mono);font-size:.88rem;line-height:1.7;color:var(--ink-2);
@@ -1470,7 +1474,7 @@ html:root:root .gl::after{content:"↗";font-size:.72em;margin-left:.18em;vertic
 .overlay.on .voz__caja{transform:none}
 .voz__k{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;
   color:var(--pizarra);margin:0 0 .9rem;font-weight:700}
-.voz__sigla{font-family:var(--serif);font-weight:800;text-transform:uppercase;
+.voz__sigla{font-family:var(--serif);font-weight:900;text-transform:uppercase;
   font-size:clamp(2rem,6vw,3rem);line-height:.95;color:var(--tinta);margin:0 0 .8rem}
 .voz__def{font-family:var(--mono);font-size:.9rem;line-height:1.72;color:var(--ink-2);margin:0}
 .cerrar{
