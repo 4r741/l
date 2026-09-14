@@ -19,6 +19,7 @@ import re
 import html as H
 import pathlib
 import base64
+import json
 
 RAIZ = pathlib.Path(__file__).parent
 
@@ -145,33 +146,29 @@ SECC_ICONO = {
 
 
 def fuentes_incrustadas():
-    """Instrument Serif —la serif de los titulares— empotrada en el archivo."""
-    fmt = ('@font-face{font-family:"Instrument Serif";font-style:%s;font-weight:400;'
+    """Las tipografías de la piel brutalista, empotradas en el archivo.
+
+    Dos familias, y nada más: Big Shoulders —una grotesca condensada, de rótulo
+    industrial— para los titulares, y Geist Mono —una monoespaciada técnica—
+    para el cuerpo y las etiquetas. Van en base64 dentro del propio HTML, así
+    que la web se abre de doble clic y se ve igual sin conexión. »
+    """
+    # (familia, peso, estilo, archivo)
+    caras = (
+        ("Big Shoulders", 800, "normal", "BigShoulders-Bold.ttf"),
+        ("Big Shoulders", 400, "normal", "BigShoulders-Regular.ttf"),
+        ("Geist Mono", 400, "normal", "GeistMono-Regular.ttf"),
+        ("Geist Mono", 700, "normal", "GeistMono-Bold.ttf"),
+    )
+    fmt = ('@font-face{font-family:"%s";font-style:%s;font-weight:%d;'
            'font-display:swap;src:url(data:font/ttf;base64,%s) format("truetype")}')
     out = []
-    for estilo, arch in (("normal", "InstrumentSerif-Regular.ttf"),
-                         ("italic", "InstrumentSerif-Italic.ttf")):
+    for familia, peso, estilo, arch in caras:
         ruta = RAIZ / "fuentes" / "tipos" / arch
         if ruta.exists():
             b64 = base64.b64encode(ruta.read_bytes()).decode()
-            out.append(fmt % (estilo, b64))
+            out.append(fmt % (familia, estilo, peso, b64))
     return "".join(out)
-
-
-def fuentes_archivo():
-    """Archivo e IBM Plex Mono, ya incrustadas en base64 y sin conexión.
-
-    Se reutiliza la caché que el sistema deja en export/_fuentes.html (la misma
-    que empotra el resto de la entrega). Así la web se abre de doble clic sin
-    pedir una letra a la red. Si la caché no está, se cae al enlace de Google
-    —solo pasa en una máquina que nunca haya construido la entrega—. """
-    cache = RAIZ / "export" / "_fuentes.html"
-    if cache.exists():
-        return cache.read_text(encoding="utf-8")
-    return ('<link rel="preconnect" href="https://fonts.googleapis.com">'
-            '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'
-            'family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">')
 
 
 def css_documentos():
@@ -209,9 +206,12 @@ TEMA = """
   --calido:#B4664A; --calido-fuerte:#95452C;
   --calido-soft:rgba(180,102,74,.08); --calido-linea:rgba(180,102,74,.26);
   --linea:rgba(26,42,52,.12); --linea-2:rgba(26,42,52,.07);
-  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
-  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  /* Piel industrial: Big Shoulders condensada en los rótulos, Geist Mono
+     —monoespaciada— en el cuerpo y las etiquetas. Vanguardia, sin negro. */
+  --serif:"Big Shoulders","Arial Narrow","Helvetica Neue",sans-serif;
+  --display:"Big Shoulders","Arial Narrow","Helvetica Neue",sans-serif;
+  --sans:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
   --nav:64px; --ancho:74rem;
   /* los tokens de los documentos, remapeados a esta paleta */
   --paper:var(--fondo); --surface:var(--panel); --surface-2:var(--panel-2);
@@ -559,6 +559,52 @@ JS = """
   ve(v0||(vistas.some(function(v){return idDeVista(v)===h;})?h:'inicio'));
   if(h){ var d=D.getElementById(h); if(d) requestAnimationFrame(function(){ d.scrollIntoView(); }); }
   pintaProg();
+
+  // ---- Pop-up de entrada: el manifiesto, una vez por sesión ----
+  var portal=D.getElementById('portal');
+  function cierraPortal(){
+    if(!portal) return;
+    portal.classList.remove('on');
+    try{ sessionStorage.setItem('alma-portal','1'); }catch(e){}
+    setTimeout(function(){ if(portal) portal.hidden=true; }, 420);
+  }
+  if(portal){
+    var visto=false;
+    try{ visto=sessionStorage.getItem('alma-portal')==='1'; }catch(e){}
+    if(visto || h){ portal.hidden=true; }
+    else { portal.hidden=false; requestAnimationFrame(function(){ portal.classList.add('on'); }); }
+    portal.addEventListener('click', function(e){
+      if(e.target.closest('[data-cerrar]') || e.target===portal) cierraPortal();
+    });
+  }
+
+  // ---- Pop-up de concepto: las voces técnicas, al pulsarlas ----
+  var VOCES=window.__VOCES__||{};
+  var modal=D.getElementById('voz-modal');
+  var mSigla=modal&&modal.querySelector('[data-voz-sigla]');
+  var mDef=modal&&modal.querySelector('[data-voz-def]');
+  function abreVoz(sigla){
+    if(!modal) return;
+    var d=VOCES[sigla];
+    if(!d) return;
+    mSigla.textContent=sigla;
+    mDef.textContent=d;
+    modal.hidden=false;
+    requestAnimationFrame(function(){ modal.classList.add('on'); });
+  }
+  function cierraVoz(){
+    if(!modal) return;
+    modal.classList.remove('on');
+    setTimeout(function(){ if(modal) modal.hidden=true; }, 320);
+  }
+  D.addEventListener('click', function(e){
+    var g=e.target.closest('.gl[data-gl]');
+    if(g){ e.preventDefault(); abreVoz(g.dataset.gl); return; }
+    if(modal && (e.target.closest('[data-cerrar-voz]') || e.target===modal)) cierraVoz();
+  });
+  D.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){ cierraVoz(); cierraPortal(); }
+  });
 })();
 """
 
@@ -1282,6 +1328,166 @@ MODERNO = """
 """
 
 
+# --------------------------------------------------------------- la piel brutalista
+# Claro brutalista: se mantiene el fondo claro, pero el trato es industrial —cantos
+# duros, filetes gruesos, sombras macizas sin desenfoque, rótulos condensados en
+# mayúscula y todo lo pequeño en monoespaciada—. Nada de negro de fondo. Va la
+# ÚLTIMA en la cascada para imponer los cantos sobre lo anterior.
+BRUTAL = """
+/* ---- fondo de hormigón claro y retícula de fondo, apenas insinuada ---- */
+html:root:root body{
+  background:
+    linear-gradient(0deg,rgba(26,42,52,.028) 1px,transparent 1px) 0 0/100% 3.2rem,
+    var(--fondo);
+}
+
+/* ---- rótulos: Big Shoulders condensada, en mayúscula y bien apretada ---- */
+html:root:root .whero h1,html:root:root .sh h1,html:root:root .hero2__t,
+html:root:root .titmapa h2,html:root:root .banda__t,html:root:root .prin__t,
+html:root:root .wart h2{
+  text-transform:uppercase;letter-spacing:-.01em;line-height:.92;font-weight:800;
+}
+html:root:root .cab__m,html:root:root .marca__t{
+  font-weight:800;text-transform:uppercase;letter-spacing:.01em;
+}
+
+/* ---- etiquetas mono, técnicas: mayúscula y tramado ---- */
+html:root:root .sh__n,html:root:root .whero__k,html:root:root .hero2__k,
+html:root:root .titmapa__k,html:root:root .banda__k,html:root:root .wart__k,
+html:root:root .cab__l{
+  text-transform:uppercase;font-weight:700;
+}
+
+/* ---- todo lo que era pastilla vuelve a ser rectángulo con canto duro ---- */
+html:root:root .cab__l,html:root:root .rolchip,html:root:root .salta,
+html:root:root .tarjeta,html:root:root .hero2__baja,html:root:root .rej,
+html:root:root .prin,html:root:root .pvpaso,html:root:root .cifra,
+html:root:root .wart table,html:root:root .wart figure,html:root:root .voz{
+  border-radius:0;
+}
+
+/* ---- el menú: botones-etiqueta con filete ---- */
+html:root:root .cab{border-bottom:2px solid var(--tinta)}
+html:root:root .cab__l{
+  border:1.5px solid transparent;padding:.5rem .8rem;
+}
+html:root:root .cab__l:hover{border-color:var(--tinta)}
+html:root:root .cab__l.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+html:root:root .cab__l.on:hover{background:var(--pizarra)}
+html:root:root .cab__prog #prog,html:root:root #prog{background:var(--calido);height:3px}
+
+/* ---- botón principal: macizo, con sombra dura que se hunde al pulsar ---- */
+html:root:root .hero2__baja{
+  border:2px solid var(--tinta);background:var(--pizarra);color:#fff;
+  box-shadow:6px 6px 0 var(--tinta);font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;transition:transform .12s,box-shadow .12s,background .2s;
+}
+html:root:root .hero2__baja:hover{
+  transform:translate(2px,2px);box-shadow:3px 3px 0 var(--tinta);
+  background:var(--pizarra-fuerte);color:#fff;
+}
+
+/* ---- tarjetas y cuadros: filete grueso, esquina marcada ---- */
+html:root:root .tarjeta,html:root:root .rej,html:root:root .prin,
+html:root:root .pvpaso,html:root:root .salta,html:root:root .rolchip{
+  border:2px solid var(--tinta);
+}
+html:root:root .tarjeta:hover,html:root:root .prin:hover,
+html:root:root .pvpaso:hover,html:root:root .salta:hover{
+  box-shadow:6px 6px 0 var(--pizarra);transform:translate(-1px,-1px);
+}
+html:root:root .cifra{border:2px solid var(--tinta);padding:1.1rem 1.2rem}
+html:root:root .cifras--hero .cifra{border-top-width:2px;border-top-color:var(--tinta)}
+
+/* ---- tablas y figuras: rejilla dura, cabecera invertida ---- */
+html:root:root .wart table{border:2px solid var(--tinta);border-collapse:collapse}
+html:root:root .wart th{background:var(--tinta);color:#fff;border:1px solid var(--tinta)}
+html:root:root .wart td{border:1px solid var(--linea)}
+html:root:root .wart figure{border:2px solid var(--tinta);background:var(--panel)}
+
+/* ---- filete grueso sobre cada cabecera de sección ---- */
+html:root:root .sh{border-top:4px solid var(--tinta);padding-top:clamp(2rem,5vh,3.4rem)}
+
+/* ---- las voces del glosario: marcadas como término técnico pulsable ---- */
+html:root:root .gl{
+  font-family:var(--mono);font-weight:700;color:var(--pizarra-fuerte);
+  background:var(--pizarra-soft);border:0;border-bottom:2px solid var(--pizarra);
+  padding:.02em .28em;cursor:pointer;font-size:.94em;line-height:inherit;
+  transition:background .15s,color .15s;
+}
+html:root:root .gl:hover{background:var(--pizarra);color:#fff}
+html:root:root .gl::after{content:"↗";font-size:.72em;margin-left:.18em;vertical-align:.15em}
+
+/* ============ POP-UPS ============ */
+/* fondo común de los dos pop-ups */
+.overlay{
+  position:fixed;inset:0;z-index:120;display:flex;align-items:center;
+  justify-content:center;padding:clamp(1.2rem,5vw,3rem);
+  background:rgba(26,42,52,.34);backdrop-filter:blur(3px);
+  opacity:0;transition:opacity .38s ease;
+}
+.overlay.on{opacity:1}
+.overlay[hidden]{display:none}
+
+/* ---- pop-up 1: el manifiesto de entrada ---- */
+.portal__caja{
+  background:var(--panel);border:2px solid var(--tinta);
+  box-shadow:14px 14px 0 var(--tinta);max-width:40rem;width:100%;
+  padding:clamp(1.8rem,5vw,3.2rem);position:relative;
+  transform:translateY(14px) scale(.98);transition:transform .42s cubic-bezier(.2,.9,.2,1);
+}
+.overlay.on .portal__caja{transform:none}
+.portal__k{font-family:var(--mono);font-size:.66rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--pizarra);margin:0 0 1.3rem;font-weight:700}
+.portal__marca{display:flex;align-items:center;gap:.7rem;margin:0 0 1.6rem;color:var(--tinta)}
+.portal__marca svg{width:2.4rem;height:2.4rem}
+.portal__marca b{font-family:var(--serif);font-weight:800;text-transform:uppercase;
+  font-size:1.4rem;letter-spacing:.02em}
+.portal__lema{font-family:var(--serif);font-weight:800;text-transform:uppercase;
+  font-size:clamp(2.4rem,7vw,4.2rem);line-height:.9;color:var(--tinta);margin:0 0 1.2rem}
+.portal__lema em{color:var(--calido);font-style:normal}
+.portal__p{font-family:var(--mono);font-size:.88rem;line-height:1.7;color:var(--ink-2);
+  max-width:44ch;margin:0 0 1.9rem}
+.portal__pie{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between}
+.portal__entrar{
+  font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;background:var(--pizarra);color:#fff;border:2px solid var(--tinta);
+  box-shadow:5px 5px 0 var(--tinta);padding:.85rem 1.8rem;cursor:pointer;
+  transition:transform .12s,box-shadow .12s,background .2s;
+}
+.portal__entrar:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--tinta);
+  background:var(--pizarra-fuerte)}
+.portal__dir{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted)}
+
+/* ---- pop-up 2: el concepto técnico ---- */
+.voz__caja{
+  background:var(--panel);border:2px solid var(--tinta);
+  box-shadow:10px 10px 0 var(--pizarra);max-width:32rem;width:100%;
+  padding:clamp(1.6rem,4vw,2.4rem);position:relative;
+  transform:translateY(12px) scale(.98);transition:transform .32s cubic-bezier(.2,.9,.2,1);
+}
+.overlay.on .voz__caja{transform:none}
+.voz__k{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--pizarra);margin:0 0 .9rem;font-weight:700}
+.voz__sigla{font-family:var(--serif);font-weight:800;text-transform:uppercase;
+  font-size:clamp(2rem,6vw,3rem);line-height:.95;color:var(--tinta);margin:0 0 .8rem}
+.voz__def{font-family:var(--mono);font-size:.9rem;line-height:1.72;color:var(--ink-2);margin:0}
+.cerrar{
+  position:absolute;top:.7rem;right:.7rem;width:2.1rem;height:2.1rem;line-height:1;
+  border:2px solid var(--tinta);background:var(--panel);color:var(--tinta);cursor:pointer;
+  font-family:var(--mono);font-size:1rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;
+}
+.cerrar:hover{background:var(--tinta);color:#fff}
+
+@media(max-width:520px){
+  .portal__caja{box-shadow:8px 8px 0 var(--tinta)}
+  .voz__caja{box-shadow:6px 6px 0 var(--pizarra)}
+}
+"""
+
+
 def main():
     secciones, menus, indice, orden, voces, mapa = bs.monta()
     total = len(orden)
@@ -1297,8 +1503,42 @@ def main():
         # monta() devuelve las secciones en el orden de SECCIONES
         vistas.append(bloque_seccion(k, sid, rot, nombre, secciones[k - 1]))
 
-    estilo = ("<style>%s</style>\n<style>%s\n%s\n%s\n%s\n%s</style>"
-              % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL, BOLD, MODERNO))
+    estilo = ("<style>%s</style>\n<style>%s\n%s\n%s\n%s\n%s\n%s</style>"
+              % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL, BOLD, MODERNO, BRUTAL))
+
+    # ---- los dos pop-ups ----
+    # 1) El manifiesto de entrada: se muestra una vez por sesión, al abrir.
+    portal = (
+        '<div class="overlay portal" id="portal" role="dialog" aria-modal="true" '
+        'aria-labelledby="portal-lema" hidden>\n'
+        '  <div class="portal__caja">\n'
+        '    <p class="portal__k">Centro de Excelencia Implantológica</p>\n'
+        '    <p class="portal__marca">' + LOGO_EMBLEMA + '<b>Clínica Alma</b></p>\n'
+        '    <h2 class="portal__lema" id="portal-lema">No medias <em>sonrisas</em></h2>\n'
+        '    <p class="portal__p">Un solo criterio: la excelencia o nada. '
+        'Implantología guiada, un sistema documental que no deja cabos sueltos '
+        'y un trato que empieza mucho antes de la primera visita.</p>\n'
+        '    <div class="portal__pie">\n'
+        '      <button type="button" class="portal__entrar" data-cerrar>Entrar</button>\n'
+        '      <span class="portal__dir">Calle Progreso 2 · Ourense</span>\n'
+        '    </div>\n'
+        '  </div>\n'
+        '</div>')
+
+    # 2) El concepto técnico: se abre al pulsar una voz del glosario.
+    voz_modal = (
+        '<div class="overlay voz-modal" id="voz-modal" role="dialog" aria-modal="true" '
+        'aria-labelledby="voz-sigla" hidden>\n'
+        '  <div class="voz__caja">\n'
+        '    <button type="button" class="cerrar" data-cerrar-voz aria-label="Cerrar">×</button>\n'
+        '    <p class="voz__k">Concepto del sistema</p>\n'
+        '    <h2 class="voz__sigla" id="voz-sigla" data-voz-sigla></h2>\n'
+        '    <p class="voz__def" data-voz-def></p>\n'
+        '  </div>\n'
+        '</div>')
+
+    # el diccionario de voces, para el pop-up de concepto (solo la definición)
+    voces_js = json.dumps({k: v[0] for k, v in voces.items()}, ensure_ascii=False)
 
     # Se arma por trozos (sin %-format) para no chocar con el «%» del favicon
     # ni con las llaves del SVG del logo.
@@ -1313,7 +1553,8 @@ def main():
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         '<title>Clínica Alma · Centro de Excelencia Implantológica</title>\n'
         '<link rel="icon" href="' + LOGO_FAVICON + '">\n'
-        + fuentes_archivo() + '\n' + estilo + '\n</head>\n<body>\n'
+        + estilo + '\n</head>\n<body>\n'
+        + portal + '\n' + voz_modal + '\n'
         '<header class="cab">\n  ' + cabecera + '\n'
         '  <nav class="cab__nav" aria-label="Secciones">' + nav + '</nav>\n'
         '  <div class="cab__prog" id="prog" aria-hidden="true"></div>\n'
@@ -1326,6 +1567,7 @@ def main():
         '<p class="pie-web__d">Centro de Excelencia Implantológica · '
         'Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p>'
         '</div></footer>\n'
+        '<script>window.__VOCES__=' + voces_js + ';</script>\n'
         '<script>' + JS + '</script>\n'
         '</body>\n</html>\n')
 
