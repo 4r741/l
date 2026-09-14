@@ -1801,6 +1801,9 @@ body:has(.slide--stmt.is-on) .barra i{background:#DCEEEA}
   --tinta:#1A2A34; --ink:#1A2A34; --ink-2:#465A66; --muted:#748690;
   --pizarra:#33587C; --pizarra-o:#2C4A6A; --pizarra-fuerte:#22405C;
   --pizarra-soft:rgba(51,88,124,.07); --pizarra-linea:rgba(51,88,124,.22);
+  /* segundo acento, cálido: la capa humana y las cifras que hay que mirar */
+  --calido:#B4664A; --calido-fuerte:#95452C;
+  --calido-soft:rgba(180,102,74,.08); --calido-linea:rgba(180,102,74,.26);
   --linea:rgba(26,42,52,.12); --linea-2:rgba(26,42,52,.07);
   --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
   --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
@@ -2212,6 +2215,51 @@ html.js .reveal.visto{opacity:1;transform:none}
   .marca__t{display:none}
 }
 @media(max-width:560px){.prin{grid-template-columns:1fr}}
+
+
+/* ============ Dos acentos y más escala tipográfica ============
+   Azul pizarra = el SISTEMA (la estructura, los mapas, las secciones).
+   Terracota cálido = la capa HUMANA (la experiencia, las cifras que hay que
+   mirar, la ruta de lectura). Con esto la web gana color e intuición —cada
+   cosa tiene el suyo— y más contraste de tamaños para que la jerarquía se lea
+   sola. */
+
+/* Las cifras, en cálido: saltan sobre el azul de los titulares */
+.cifra b,.docif__i b{color:var(--calido)}
+.cifra{border-top:2px solid transparent}
+.cifras--hero .cifra{border-top-color:var(--calido-linea)}
+
+/* Escala: saltos más grandes entre lo enorme y lo pequeño */
+.hero2__t{font-size:clamp(3.4rem,13vw,9.5rem)}
+.titmapa h2{font-size:clamp(2.4rem,6.5vw,4.6rem)}
+.titmapa__k{font-size:.72rem;letter-spacing:.2em}
+.titmapa__p{font-size:1.18rem;line-height:1.5;max-width:44ch}
+.sh h1{font-size:clamp(2.6rem,6.5vw,4.4rem)}
+.sh__n{font-size:.74rem;letter-spacing:.18em}
+.sh__p{font-size:1.15rem}
+
+/* Números decorativos, más grandes y presentes */
+.ruta__n{font-size:2.1rem}
+.prin__n{font-size:clamp(2rem,5vw,3.2rem)}
+.pvpaso__n{font-size:2.4rem}
+
+/* Mapa 03 · la ruta, en cálido: los tres mapas se distinguen por color */
+#mapa-ruta .titmapa__k,#mapa-ruta .ruta__n,#mapa-ruta .ruta__f{color:var(--calido)}
+#mapa-ruta .ruta__i:hover{background:var(--calido-soft)}
+
+/* La experiencia: el acento cálido manda en toda la capa humana */
+#v-experiencia .hero2__t em{color:var(--calido)}
+#v-experiencia .titmapa__k{color:var(--calido)}
+#v-experiencia .prin__n,#v-experiencia .prin__ir,#v-experiencia .pvpaso__n{color:var(--calido)}
+#v-experiencia .prin:hover,#v-experiencia .pvpaso:hover{background:var(--calido-soft)}
+#v-experiencia .rolchip{border-color:var(--calido-linea);color:var(--calido-fuerte)}
+#v-experiencia .rolchip:hover{background:var(--calido);color:#fff}
+/* en las franjas oscuras de la experiencia, el cálido se aclara para contrastar */
+#v-experiencia .franja--oscura .titmapa__k{color:#E7B7A3}
+#v-experiencia .banda__t em{color:#E8C0AE}
+
+/* El pie: el lema con la cursiva en cálido */
+.pie-web__lema em{color:var(--calido)}
 </style>
 </head>
 <body>
