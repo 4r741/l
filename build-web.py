@@ -99,7 +99,7 @@ LOGO_EMBLEMA = (
 LOGO_FAVICON = (
     "data:image/svg+xml;utf8,"
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 118' fill='none' "
-    "stroke='%2322405C' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'>"
+    "stroke='%23B99653' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'>"
     "<path d='M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 "
     "C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 "
     "C77 7 69 6 64 14 C61 19 55 19 52 14 Z'/>"
@@ -200,18 +200,21 @@ def css_documentos():
 # «html:root» para ganar la especificidad, de modo que manda esta paleta.
 TEMA = """
 :root, html:root{
-  /* Paleta cálida y elegante, de clínica premium: crema, verde salvia
-     profundo y un oro suave. Nada de gris frío ni de negro. */
-  --fondo:#F7F2EA; --panel:#FDFBF6; --panel-2:#EFE7D9;
-  --tinta:#2A2420; --ink:#2A2420; --ink-2:#5A5148; --muted:#8C8175;
+  /* Oscuro premium: fondo tinta, texto crema y un oro cálido como único
+     acento. Serif de revista en los titulares. Lujo y calma. */
+  --fondo:#14181C; --panel:#191E23; --panel-2:#20262D;
+  --tinta:#F1ECE1; --ink:#F1ECE1; --ink-2:#B9B3A6; --muted:#8B8579;
+  /* banda profunda para las franjas oscuras, más honda que el fondo */
+  --honda:#0E1216;
   /* acento principal (conserva el nombre --pizarra por compatibilidad):
-     un verde salvia profundo, calmado y de confianza */
-  --pizarra:#3E6B5E; --pizarra-o:#345C50; --pizarra-fuerte:#2C4E44;
-  --pizarra-soft:rgba(62,107,94,.08); --pizarra-linea:rgba(62,107,94,.22);
-  /* segundo acento, oro cálido: los detalles y las cifras que hay que mirar */
-  --calido:#B8894B; --calido-fuerte:#8F6631;
-  --calido-soft:rgba(184,137,75,.10); --calido-linea:rgba(184,137,75,.30);
-  --linea:rgba(42,36,32,.13); --linea-2:rgba(42,36,32,.06);
+     un oro cálido. La variante «fuerte» es MÁS CLARA, para que sirva como
+     texto legible sobre el fondo oscuro. */
+  --pizarra:#B99653; --pizarra-o:#A9863F; --pizarra-fuerte:#CFA862;
+  --pizarra-soft:rgba(185,150,83,.10); --pizarra-linea:rgba(185,150,83,.32);
+  /* segundo acento, oro más claro: la cursiva del lema y las cifras */
+  --calido:#DABB7C; --calido-fuerte:#CFA862;
+  --calido-soft:rgba(218,187,124,.12); --calido-linea:rgba(200,162,95,.34);
+  --linea:rgba(241,236,225,.13); --linea-2:rgba(241,236,225,.055);
   /* Dos tipografías: Fraunces (serif cálida, de revista) en los titulares,
      Roboto (limpia y legible) en el cuerpo y las etiquetas. */
   --serif:"Fraunces","Georgia","Times New Roman",serif;
@@ -227,7 +230,7 @@ TEMA = """
   --line:var(--linea); --line-soft:var(--linea-2); --rule:var(--linea);
   --f-body:var(--sans); --f-display:var(--serif); --f-mono:var(--mono);
   --tinta-doc:var(--tinta); --barra:var(--nav);
-  --sombra-2:0 1px 2px rgba(42,36,32,.04),0 20px 44px -28px rgba(42,36,32,.28);
+  --sombra-2:0 2px 6px rgba(0,0,0,.5),0 34px 70px -34px rgba(0,0,0,.85);
 }
 """
 
@@ -1343,18 +1346,19 @@ MODERNO = """
 """
 
 
-# ------------------------------------------------------------- la piel elegante
-# Cálida y de revista: fondo crema, verde salvia y oro suave, Fraunces en los
-# titulares y Roboto en el cuerpo. Esquinas suaves, sombras difusas, mucho aire.
+# ------------------------------------------------------------ la piel premium
+# Oscuro premium: fondo tinta, oro como único acento, Fraunces en los titulares
+# y Roboto en el cuerpo. Sombras profundas, filetes de oro tenue, mucho aire.
 # Va la ÚLTIMA en la cascada para dar el acabado sobre todo lo anterior.
 ELEGANTE = """
-/* velo cálido de fondo, sin textura dura */
+/* velo de oro sobre la tinta, apenas insinuado */
 html:root:root body{
   background:
-    radial-gradient(115% 75% at 100% -5%, rgba(184,137,75,.07), transparent 60%),
-    radial-gradient(90% 60% at -5% 8%, rgba(62,107,94,.05), transparent 55%),
+    radial-gradient(120% 80% at 100% -8%, rgba(185,150,83,.12), transparent 58%),
+    radial-gradient(90% 60% at -8% 4%, rgba(185,150,83,.06), transparent 55%),
     var(--fondo);
 }
+html:root:root ::selection{background:var(--pizarra);color:var(--honda)}
 
 /* ---- titulares en Fraunces, con el aire de una revista ---- */
 html:root:root .whero h1,html:root:root .hero__t,html:root:root .sh h1,
@@ -1375,16 +1379,16 @@ html:root:root .whero__k,html:root:root .wart__k,html:root:root .banda__k{
   letter-spacing:.16em;font-size:.66rem;color:var(--calido-fuerte);
 }
 
-/* ---- cabecera fina y cálida ---- */
-html:root:root .cab{background:rgba(253,251,246,.86);backdrop-filter:blur(10px);
+/* ---- cabecera fina y oscura, translúcida ---- */
+html:root:root .cab{background:rgba(20,24,28,.82);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--linea)}
 html:root:root .cab__m,html:root:root .marca__t{font-family:var(--serif);
   font-weight:500;text-transform:none;letter-spacing:0}
 html:root:root .cab__l{font-family:var(--sans);font-weight:500;text-transform:none;
   letter-spacing:.005em;border-radius:100px;border:1px solid transparent}
 html:root:root .cab__l:hover{background:var(--pizarra-soft);color:var(--pizarra-fuerte)}
-html:root:root .cab__l.on{background:var(--pizarra);color:#fff}
-html:root:root .cab__l.on:hover{background:var(--pizarra-fuerte);color:#fff}
+html:root:root .cab__l.on{background:var(--pizarra);color:var(--honda)}
+html:root:root .cab__l.on:hover{background:var(--pizarra-fuerte);color:var(--honda)}
 html:root:root #prog{background:var(--calido)}
 
 /* ======================= LA PORTADA ======================= */
@@ -1403,25 +1407,25 @@ html:root:root .hero__p{font-family:var(--sans);font-size:clamp(1.05rem,1.5vw,1.
 html:root:root .hero__cta{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
 html:root:root .hero__ir{display:inline-flex;align-items:center;gap:.5rem;
   font-family:var(--sans);font-weight:600;font-size:.95rem;text-decoration:none;
-  background:var(--pizarra);color:#fff;border-radius:100px;padding:.9rem 1.9rem;
-  box-shadow:0 16px 30px -14px rgba(62,107,94,.55);transition:background .2s,transform .15s,box-shadow .2s}
-html:root:root .hero__ir:hover{background:var(--pizarra-fuerte);transform:translateY(-2px);
-  box-shadow:0 22px 40px -16px rgba(62,107,94,.6)}
+  background:var(--pizarra);color:var(--honda);border-radius:100px;padding:.9rem 1.9rem;
+  box-shadow:0 18px 34px -16px rgba(0,0,0,.8);transition:background .2s,transform .15s,box-shadow .2s}
+html:root:root .hero__ir:hover{background:var(--pizarra-fuerte);color:var(--honda);transform:translateY(-2px)}
 html:root:root .hero__ir i{font-style:normal}
 html:root:root .hero__ghost{display:inline-flex;align-items:center;
   font-family:var(--sans);font-weight:600;font-size:.95rem;text-decoration:none;
-  color:var(--pizarra-fuerte);border-bottom:1px solid var(--calido-linea);
+  color:var(--calido);border-bottom:1px solid var(--calido-linea);
   padding:.2rem .1rem;transition:color .15s,border-color .15s}
-html:root:root .hero__ghost:hover{color:var(--calido-fuerte);border-bottom-color:var(--calido)}
-/* el disco cálido de la derecha, con el emblema */
+html:root:root .hero__ghost:hover{color:var(--pizarra-fuerte);border-bottom-color:var(--calido)}
+/* el disco de oro de la derecha, con el emblema, sobre la tinta */
 html:root:root .hero__vis{display:flex;justify-content:center}
 html:root:root .hero__disc{width:min(30rem,80vw);aspect-ratio:1;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;color:var(--pizarra);
+  display:flex;align-items:center;justify-content:center;color:var(--calido);
   background:
-    radial-gradient(circle at 32% 28%, rgba(255,255,255,.9), transparent 45%),
-    linear-gradient(150deg, var(--panel-2), #E3D6C1 65%, #D8C6A8);
-  box-shadow:inset 0 2px 30px rgba(255,255,255,.5),0 40px 80px -40px rgba(62,107,94,.45);
-  border:1px solid rgba(184,137,75,.25)}
+    radial-gradient(circle at 34% 26%, rgba(207,168,98,.28), transparent 46%),
+    radial-gradient(circle at 68% 78%, rgba(185,150,83,.14), transparent 50%),
+    linear-gradient(150deg, #1C2228, var(--honda) 70%);
+  box-shadow:inset 0 1px 40px rgba(207,168,98,.14),0 50px 90px -46px rgba(0,0,0,.9);
+  border:1px solid rgba(207,168,98,.32)}
 html:root:root .hero__disc svg{width:44%;height:44%;stroke-width:1.4}
 @media(max-width:820px){
   html:root:root .hero__grid{grid-template-columns:1fr;text-align:left}
@@ -1430,10 +1434,10 @@ html:root:root .hero__disc svg{width:44%;height:44%;stroke-width:1.4}
 }
 
 /* ---- botón principal (por si queda algún .hero2__baja) ---- */
-html:root:root .hero2__baja{border-radius:100px;background:var(--pizarra);color:#fff;
-  border:0;box-shadow:0 16px 30px -14px rgba(62,107,94,.55);font-family:var(--sans);
+html:root:root .hero2__baja{border-radius:100px;background:var(--pizarra);color:var(--honda);
+  border:0;box-shadow:0 18px 34px -16px rgba(0,0,0,.8);font-family:var(--sans);
   font-weight:600;text-transform:none;letter-spacing:.005em}
-html:root:root .hero2__baja:hover{background:var(--pizarra-fuerte);transform:translateY(-2px)}
+html:root:root .hero2__baja:hover{background:var(--pizarra-fuerte);color:var(--honda);transform:translateY(-2px)}
 
 /* ---- tarjetas y cuadros: esquinas suaves, filete tenue, sombra al vuelo ---- */
 html:root:root .tarjeta,html:root:root .rej,html:root:root .prin,
@@ -1473,15 +1477,43 @@ html:root:root .gl{font-family:var(--sans);font-weight:500;color:var(--pizarra-f
 html:root:root .gl:hover{color:var(--calido-fuerte);border-bottom-color:var(--calido)}
 html:root:root .gl::after{content:"\\2039";color:var(--calido);margin-left:.15em;font-weight:600}
 
-/* ============ POP-UPS, elegantes ============ */
+/* ============ franjas oscuras: recolocadas al oro sobre tinta honda ============
+   Los mapas y bandas venían con fondo azul y texto azul claro. En la piel
+   premium se hunden a la tinta honda y el texto pasa a crema y oro. */
+html:root:root .franja--oscura,html:root:root .banda,
+html:root:root .rej--oscura .tar,html:root:root .hito{
+  background:var(--honda);color:var(--tinta)}
+html:root:root .franja--oscura,html:root:root .banda{
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+html:root:root .banda{background:
+  radial-gradient(90% 120% at 100% 0%, rgba(185,150,83,.14), transparent 55%),var(--honda)}
+html:root:root .rej--oscura{background:var(--linea);border-color:var(--linea)}
+html:root:root .hitos{background:var(--linea);border-color:var(--linea)}
+html:root:root .hito:hover,html:root:root .paso:hover{background:var(--pizarra-soft)}
+/* textos que eran azul claro → oro/crema */
+html:root:root .paso__min,html:root:root .paso__sec,html:root:root .banda__k,
+html:root:root .hito__m,html:root:root .titmapa--claro .titmapa__k{color:var(--calido-fuerte)}
+html:root:root .paso__cuerpo b,html:root:root .hito__t,html:root:root .banda__t,
+html:root:root .titmapa--claro h2,html:root:root .rej--oscura .tar h3{color:var(--tinta)}
+html:root:root .banda__t em,html:root:root .titmapa--claro .titmapa__p,
+html:root:root .paso:hover .paso__sec,html:root:root .banda__p,
+html:root:root .rej--oscura .tar p{color:var(--ink-2)}
+html:root:root .banda__t em{color:var(--calido)}
+/* el círculo de la fase, en oro con anillo hondo */
+html:root:root .paso__n,html:root:root .hito__n{color:var(--calido-fuerte)}
+html:root:root .paso__n{background:var(--pizarra);color:var(--honda);
+  box-shadow:0 0 0 6px rgba(185,150,83,.18)}
+html:root:root .camino::before{background:var(--pizarra-linea)}
+
+/* ============ POP-UPS ============ */
 .overlay{position:fixed;inset:0;z-index:120;display:flex;align-items:center;
   justify-content:center;padding:clamp(1.2rem,5vw,3rem);
-  background:rgba(42,36,32,.34);backdrop-filter:blur(4px);
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
   opacity:0;transition:opacity .4s ease}
 .overlay.on{opacity:1}
 .overlay[hidden]{display:none}
-.portal__caja,.voz__caja{background:var(--panel);border:1px solid var(--linea);
-  border-radius:24px;box-shadow:0 40px 90px -34px rgba(42,36,32,.55);position:relative;
+.portal__caja,.voz__caja{background:var(--panel);border:1px solid var(--pizarra-linea);
+  border-radius:24px;box-shadow:0 50px 100px -34px rgba(0,0,0,.9);position:relative;
   transform:translateY(16px) scale(.985);
   transition:transform .45s cubic-bezier(.2,.9,.2,1)}
 .overlay.on .portal__caja,.overlay.on .voz__caja{transform:none}
@@ -1499,8 +1531,8 @@ html:root:root .gl::after{content:"\\2039";color:var(--calido);margin-left:.15em
   max-width:46ch;margin:0 0 2rem}
 .portal__pie{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between}
 .portal__entrar{font-family:var(--sans);font-weight:600;font-size:.9rem;letter-spacing:.005em;
-  background:var(--pizarra);color:#fff;border:0;border-radius:100px;padding:.9rem 2rem;cursor:pointer;
-  box-shadow:0 16px 30px -14px rgba(62,107,94,.55);transition:background .2s,transform .15s}
+  background:var(--pizarra);color:var(--honda);border:0;border-radius:100px;padding:.9rem 2rem;cursor:pointer;
+  box-shadow:0 18px 34px -16px rgba(0,0,0,.8);transition:background .2s,transform .15s}
 .portal__entrar:hover{background:var(--pizarra-fuerte);transform:translateY(-2px)}
 .portal__dir{font-family:var(--sans);font-size:.72rem;letter-spacing:.02em;color:var(--muted)}
 
@@ -1514,7 +1546,7 @@ html:root:root .gl::after{content:"\\2039";color:var(--calido);margin-left:.15em
   border:1px solid var(--linea);background:var(--panel);color:var(--ink-2);cursor:pointer;
   border-radius:100px;font-family:var(--sans);font-size:1.1rem;display:flex;
   align-items:center;justify-content:center;transition:background .15s,color .15s,border-color .15s}
-.cerrar:hover{background:var(--pizarra);color:#fff;border-color:var(--pizarra)}
+.cerrar:hover{background:var(--pizarra);color:var(--honda);border-color:var(--pizarra)}
 """
 
 def main():
