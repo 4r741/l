@@ -2260,6 +2260,37 @@ html.js .reveal.visto{opacity:1;transform:none}
 
 /* El pie: el lema con la cursiva en cálido */
 .pie-web__lema em{color:var(--calido)}
+
+/* ====== Repaso de lectura: aire, medida y ritmo ======
+   El contenido de los documentos venía apelotonado: líneas larguísimas de lado
+   a lado y bloques pegados. Se controla la MEDIDA de línea (unos 68 caracteres,
+   lo cómodo), se separa cada apartado y se da ritmo vertical. Minimalista. */
+.wart{padding:clamp(2.8rem,7vh,4.6rem) 0}
+.wart p{font-size:1.06rem;line-height:1.78;margin:0 0 1.3rem;max-width:68ch}
+.wart li{line-height:1.72;margin:.55rem 0;max-width:66ch}
+.wart h3{margin:2.6rem 0 1rem}
+.wart .eyebrow{margin:0 0 1rem;display:inline-block}
+.wart table{margin:2.2rem 0}
+.wart figure{margin:2.6rem 0}
+.wart blockquote{max-width:62ch}
+.wart__k{margin-bottom:1.4rem;font-size:.64rem;letter-spacing:.14em}
+
+/* Botones y controles, más modernos: relleno, pastilla, sombra al vuelo */
+.hero2__baja{background:var(--pizarra);color:#fff;border-color:var(--pizarra);
+  padding:.9rem 1.7rem;box-shadow:0 12px 26px -14px rgba(51,88,124,.6)}
+.hero2__baja:hover{background:var(--pizarra-fuerte);color:#fff;transform:translateY(-2px)}
+.cab__l{border-radius:100px}
+.cab__l.on{background:var(--pizarra);color:#fff}
+.cab__l.on:hover{background:var(--pizarra-fuerte);color:#fff}
+.rolchip,.salta{border-radius:100px}
+.salta{border-radius:16px}
+
+/* La ilustración de cada sección, en su cabecera */
+.sh__grid{display:grid;grid-template-columns:1fr auto;
+  gap:clamp(1.5rem,4vw,3rem);align-items:center}
+.sh__txt{min-width:0}
+.sh__ico{width:clamp(3.2rem,7vw,5.6rem);height:auto;color:var(--pizarra);flex:none}
+@media(max-width:680px){.sh__ico{display:none}}
 </style>
 </head>
 <body>
@@ -2276,11 +2307,12 @@ html.js .reveal.visto{opacity:1;transform:none}
 <section class="hero2 hero2--exp"><div class="env"><p class="hero2__k reveal">La experiencia · Lo que se siente, no solo lo que se hace</p><h1 class="hero2__t reveal">Una sonrisa no es<br>un trabajo terminado:<br><em>es una persona.</em></h1><p class="hero2__p reveal">Es alguien que vuelve a reír sin taparse la boca. En Alma no entendemos la excelencia como una máquina más cara ni un material más nuevo, sino como la mitad del trabajo que nadie ve —y que el paciente sí nota—. Esa mitad invisible es la única que ningún competidor puede comprar.</p></div></section><section class="franja"><div class="env"><header class="titmapa reveal"><p class="titmapa__k">Qué esperar</p><h2>Su primera visita,<br>sin sorpresas</h2><p class="titmapa__p">La primera cita no es un trámite: es donde se decide todo. Está pensada para que salga de ella sabiendo exactamente qué tiene, qué se puede hacer y qué cuesta —sin presión y sin letra pequeña—. Ciento veintitrés minutos, y ni uno de relleno.</p></header><div class="pvpasos"><a class="pvpaso reveal" href="#primera-visita" data-ve="primera-visita"><span class="pvpaso__n">01</span><span class="pvpaso__c"><b>Le escuchamos primero</b><span>Antes de mirar una sola radiografía, escuchamos qué le preocupa y qué espera. El plan se construye sobre eso, no sobre una plantilla.</span></span></a><a class="pvpaso reveal" href="#primera-visita" data-ve="primera-visita"><span class="pvpaso__n">02</span><span class="pvpaso__c"><b>Ve su caso en 3D</b><span>Con imagen en tres dimensiones se ven el hueso, los nervios y las raíces. Usted lo ve con nosotros, sobre su propia boca, antes de decidir nada.</span></span></a><a class="pvpaso reveal" href="#primera-visita" data-ve="primera-visita"><span class="pvpaso__n">03</span><span class="pvpaso__c"><b>Le proponemos, no le vendemos</b><span>Sale con un plan por escrito: qué se hace, en qué orden, cuánto dura y cuánto cuesta. Lo que no se explica, no se firma.</span></span></a><a class="pvpaso reveal" href="#primera-visita" data-ve="primera-visita"><span class="pvpaso__n">04</span><span class="pvpaso__c"><b>Decide usted, con tiempo</b><span>Ninguna decisión se toma con prisa en el sillón. Se lleva el plan, lo piensa y vuelve cuando quiera. La calma también es parte del tratamiento.</span></span></a></div></div></section><section class="franja"><div class="env"><header class="titmapa reveal"><p class="titmapa__k">La implantología, sin misterio</p><h2>Qué le devuelve un implante</h2><p class="titmapa__p">Un implante no es un diente postizo: es una raíz nueva. Por eso, bien puesto, no se nota que está —ni al comer, ni al reír, ni al mirarse—.</p></header><div class="rej"><div class="tar reveal"><h3>Restaura la pieza</h3><p>Vuelve el diente que faltaba —su forma y su función— sin tallar los sanos de al lado.</p></div><div class="tar reveal"><h3>Preserva el hueso</h3><p>La raíz artificial se integra en el hueso —osteointegración— y lo mantiene vivo. Sin raíz, el hueso se reabsorbe.</p></div><div class="tar reveal"><h3>Función natural</h3><p>Se muerde y se mastica como con un diente propio, no como con una prótesis que se mueve.</p></div><div class="tar reveal"><h3>Duradero, si se cuida</h3><p>Con el mantenimiento adecuado, la solución más estable que existe hoy para un diente perdido.</p></div></div></div></section><section class="franja"><div class="env"><header class="titmapa reveal"><p class="titmapa__k">Cinco maneras de notarlo</p><h2>Lo que cambia, para usted</h2><p class="titmapa__p">Cinco promesas que el sistema entero está montado para cumplir. Cada una lleva a donde se detalla, por escrito.</p></header><div class="prins"><a class="prin reveal" href="#primera-visita" data-ve="primera-visita"><span class="prin__n">01</span><div class="prin__c"><p class="prin__k">El tiempo</p><p class="prin__cifra">123 minutos</p><p class="prin__t">La prisa es la primera causa de una media sonrisa. Por eso su primera visita dura lo que tiene que durar: ciento veintitrés minutos medidos, fase a fase, no estimados. Sale usted con un diagnóstico en la mano, su caso en tres dimensiones y una decisión que puede tomar con calma.</p><span class="prin__ir">Ver en el sistema →</span></div></a><a class="prin reveal" href="#direccion" data-ve="direccion"><span class="prin__n">02</span><div class="prin__c"><p class="prin__k">La claridad</p><p class="prin__cifra">Todo por escrito</p><p class="prin__t">Lo que no está escrito no existe. Cada estándar de Alma puede comprobarse en una lista; cada decisión lleva fecha y responsable. No prometemos: dejamos constancia. Es la diferencia entre una intención y un compromiso —y lo que no se explica, no se firma—.</p><span class="prin__ir">Ver en el sistema →</span></div></a><a class="prin reveal" href="#primera-visita" data-ve="primera-visita"><span class="prin__n">03</span><div class="prin__c"><p class="prin__k">La precisión</p><p class="prin__cifra">El plan es lo que se coloca</p><p class="prin__t">Imagen de alta resolución, planificación digital y presentación en tres dimensiones: la tecnología no está para impresionar, sino para que usted vea su propio caso antes de decidir, y para que lo que se planifica sea exactamente lo que se coloca.</p><span class="prin__ir">Ver en el sistema →</span></div></a><a class="prin reveal" href="#protocolos" data-ve="protocolos"><span class="prin__n">04</span><div class="prin__c"><p class="prin__k">La continuidad</p><p class="prin__cifra">Seis puestos, un criterio</p><p class="prin__t">De la primera llamada al mantenimiento, cada persona que le atiende sabe qué le toca y de qué responde. Usted no repite su historia en cada visita: el sistema la lleva por usted, y el testigo pasa de mano en mano sin que se caiga nada por el camino.</p><span class="prin__ir">Ver en el sistema →</span></div></a><a class="prin reveal" href="#otros" data-ve="otros"><span class="prin__n">05</span><div class="prin__c"><p class="prin__k">El cuidado</p><p class="prin__cifra">Alma Te Cuida</p><p class="prin__t">El tratamiento no termina cuando se coloca el implante: termina —y no termina nunca— cuando usted deja de pensar en él. Alma Te Cuida es el programa que sostiene lo tratado, detecta pronto lo que se tuerce y mantiene la relación año tras año.</p><span class="prin__ir">Ver en el sistema →</span></div></a></div></div></section><section class="franja franja--oscura"><div class="env"><header class="titmapa titmapa--claro reveal"><p class="titmapa__k">La precisión, al detalle</p><h2>La técnica, al servicio<br>de lo humano</h2><p class="titmapa__p">La tecnología no está para impresionar en la sala de espera, sino para que dos cosas coincidan: lo que se planifica y lo que se coloca.</p></header><div class="rej rej--oscura"><div class="tar reveal"><h3>Imagen en tres dimensiones</h3><p>Se ven el hueso, los nervios y las raíces antes de tocar nada. Se decide sobre datos, no sobre una placa plana.</p></div><div class="tar reveal"><h3>El caso, en 3D</h3><p>Usted ve su propio caso en tres dimensiones antes de decidir. Lo que aprueba es lo que se hace.</p></div><div class="tar reveal"><h3>Colocación guiada</h3><p>Lo planificado se traslada a la boca con guía: el implante va donde se decidió, no donde se pudo.</p></div><div class="tar reveal"><h3>Protocolo medido</h3><p>Cada fase con su tiempo y su verificación. La precisión no es una máquina: es un método que se cumple.</p></div></div></div></section><section class="franja"><div class="env"><header class="titmapa reveal"><p class="titmapa__k">El equipo</p><h2>Un equipo, un criterio</h2><p class="titmapa__p">Seis puestos, de la recepción a la dirección, y un solo criterio entre todos. No es una suma de profesionales: es un sistema en el que cada persona sabe qué le toca, de qué responde y qué se rompe aguas abajo si no lo hace. Por eso usted no repite su historia en cada visita —el sistema la lleva por usted— y por eso lo tratado se sostiene años después de la última cita.</p></header><div class="roles"><a class="rolchip reveal" href="#protocolos" data-ve="protocolos">Dirección</a><a class="rolchip reveal" href="#protocolos" data-ve="protocolos">Doctor</a><a class="rolchip reveal" href="#protocolos" data-ve="protocolos">Recepción</a><a class="rolchip reveal" href="#protocolos" data-ve="protocolos">RAC · Producción</a><a class="rolchip reveal" href="#protocolos" data-ve="protocolos">Auxiliar</a><a class="rolchip reveal" href="#protocolos" data-ve="protocolos">Higienista</a></div></div></section><section class="banda"><div class="env"><p class="banda__k reveal">La promesa</p><p class="banda__t reveal">No medias sonrisas.<br><em>Ni medias decisiones.</em></p><p class="banda__p reveal">Le devolvemos su sonrisa completa, en el menor tiempo posible, y le cuidamos para siempre.</p></div></section>
 </section>
 <section class="vista" id="v-direccion">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 01 <i>de 08</i> · Plan de Dirección</p>
     <h1>Dirección</h1>
     <p class="sh__p">Un centro no se dirige con intenciones: se dirige con decisiones fechadas y con alguien que responde de cada una. Este documento es el que gobierna: fija dónde está parado el centro y por qué ahí, qué construye la ventaja que un competidor no puede comprar, de dónde sale el dinero y qué lo destruye, y termina en quince decisiones que solo puede tomar la Junta. Las cifras que aparecen son de dos clases y están marcadas como tales: las del modelo, que se derivan de supuestos declarados, y las del sector, que se citan como rango y nunca como dato propio.</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M31 17 L26 26 L17 31 L22 22 Z"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/></svg>
   </div></header>
   
   <div class="env">
@@ -5467,11 +5499,12 @@ REVISIÓN PREVISTA:</div>
   </div>
 </section>
 <section class="vista" id="v-presentacion">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 02 <i>de 08</i> · Presentación de Junta</p>
     <h1>Presentación</h1>
     <p class="sh__p">La presentación no añade nada al Plan de Dirección: lo extrae. Sirve para conducir una sesión de Junta de una hora sin leer setenta y nueve páginas en voz alta, y está construida para eso: una idea por diapositiva, la cifra siempre a la vista y una ruta corta de veinte minutos para cuando la agenda se rompe.</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="10" width="34" height="24" rx="2"/><path d="M14 28 L20 22 L25 26 L34 16"/><path d="M18 41 h12 M24 34 v7"/></svg>
   </div></header>
   
   <div class="env">
@@ -6582,11 +6615,12 @@ REVISIÓN PREVISTA:</div>
   </div>
 </section>
 <section class="vista" id="v-protocolos">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 03 <i>de 08</i> · Protocolos por puesto</p>
     <h1>Protocolos</h1>
     <p class="sh__p">Todo lo que el sistema dice de un puesto vivía repartido en cuatro documentos. Quien llega un lunes a trabajar no debería recorrer cuatro documentos para saber qué se espera de él. Aquí se elige el puesto y aparece lo suyo: en qué fases del recorrido interviene y con qué papel, qué procedimientos tiene escritos, qué funciones de vanguardia le tocan y con qué se le mide. Nada de esto sale de esta página.</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="11" y="7" width="26" height="34" rx="2.5"/><path d="M17 17 l3 3 l5 -6"/><path d="M17 29 l3 3 l5 -6"/><path d="M28 18 h5 M28 30 h5"/></svg>
   </div></header>
   
   <div class="env">
@@ -6837,11 +6871,12 @@ REVISIÓN PREVISTA:</div>
   </div>
 </section>
 <section class="vista" id="v-primera-visita">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 04 <i>de 08</i> · Protocolo de Primera Visita</p>
     <h1>Primera Visita</h1>
     <p class="sh__p">Un paciente entra sin saber qué le pasa y sale con un diagnóstico en la mano, un plan en tres dimensiones y una decisión que puede tomar. Entre una cosa y otra hay doce fases, cinco puestos que se pasan el testigo cinco veces y nueve documentos que quedan firmados. La duración no es una estimación: está medida fase a fase, y la suma es la que es.</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 9 C13 6 9 8 9 15 C9 24 11 32 13 38 C14 41 17 41 18 37 C19 32 19 26 20 24 C21 26 21 32 22 37 C23 41 26 41 27 38 C31 30 33 20 32 14 C31 7 26 6 23 9 C21 11 19 11 17 9 Z"/></svg>
   </div></header>
   <section class="franja franja--oscura" id="camino-visita"><div class="env"><header class="titmapa titmapa--claro reveal"><p class="titmapa__k">El camino · 123 minutos</p><h2>Siga la primera visita, fase a fase</h2><p class="titmapa__p">Doce fases hasta la propuesta, y dos más para el después. Pulse una para bajar a su detalle.</p></header><div class="hitos"><a class="hito reveal" href="#d-f01"><span class="hito__n">01</span><span class="hito__t">Preparación</span><span class="hito__m">6 min</span></a><a class="hito reveal" href="#d-f02"><span class="hito__n">02</span><span class="hito__t">Acogida</span><span class="hito__m">5 min</span></a><a class="hito reveal" href="#d-f03"><span class="hito__n">03</span><span class="hito__t">Alta y RGPD</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f04"><span class="hito__n">04</span><span class="hito__t">Historia clínica</span><span class="hito__m">10 min</span></a><a class="hito reveal" href="#d-f05"><span class="hito__n">05</span><span class="hito__t">Diagnóstico</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f06"><span class="hito__n">06</span><span class="hito__t">Briefing</span><span class="hito__m">5 min</span></a><a class="hito reveal" href="#d-f07"><span class="hito__n">07</span><span class="hito__t">Expectativas</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f08"><span class="hito__n">08</span><span class="hito__t">IAC</span><span class="hito__m">10 min</span></a><a class="hito reveal" href="#d-f09"><span class="hito__n">09</span><span class="hito__t">Presentación 3D</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f10"><span class="hito__n">10</span><span class="hito__t">Propuesta</span><span class="hito__m">20 min</span></a><a class="hito reveal" href="#d-f11"><span class="hito__n">11</span><span class="hito__t">Cierre admin.</span><span class="hito__m">5 min</span></a><a class="hito reveal" href="#d-f12"><span class="hito__n">12</span><span class="hito__t">Seguimiento</span><span class="hito__m">2 min</span></a><a class="hito reveal" href="#e-m13" data-ve="operaciones"><span class="hito__n">13</span><span class="hito__t">Circuito de producción</span><span class="hito__m">el después</span></a><a class="hito reveal" href="#e-m14" data-ve="operaciones"><span class="hito__n">14</span><span class="hito__t">Mantenimiento</span><span class="hito__m">el después</span></a></div></div></section>
   <div class="env">
@@ -10441,11 +10476,12 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   </div>
 </section>
 <section class="vista" id="v-operaciones">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 05 <i>de 08</i> · Manual Maestro de Operaciones</p>
     <h1>Operaciones</h1>
     <p class="sh__p">El documento troncal. Va de la primera llamada al mantenimiento a largo plazo, y cada fase construye sobre la anterior: la información recogida en la llamada personaliza la recepción, la anamnesis alimenta la presentación y el cierre abre el circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso ninguna fase se salta «por falta de tiempo».</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="19" cy="19" r="7"/><circle cx="32" cy="32" r="5"/><path d="M19 12 v-3 M19 26 v3 M12 19 h-3 M26 19 h3 M14 14 l-2 -2 M24 24 l2 2"/></svg>
   </div></header>
   
   <div class="env">
@@ -17188,11 +17224,12 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   </div>
 </section>
 <section class="vista" id="v-marketing">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 06 <i>de 08</i> · Plan Maestro de Marketing</p>
     <h1>Marketing</h1>
     <p class="sh__p">El paciente no recorre un embudo: recorre estados, y los recorre en los dos sentidos. Un embudo termina en la venta; una persona, no. Este plan ordena setenta y seis acciones sobre doce estados, cada una con dueño, coste, plazo y el número que se mueve si funciona. Y tiene una regla de entrada que es también el filtro: una acción entra si puede declarar en una línea qué gana el paciente. No qué ganamos nosotros.</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 33 L19 23 L26 29 L39 15"/><path d="M31 15 h8 v8"/><circle cx="19" cy="23" r="1.8" fill="currentColor" stroke="none"/><circle cx="26" cy="29" r="1.8" fill="currentColor" stroke="none"/></svg>
   </div></header>
   
   <div class="env">
@@ -18499,11 +18536,12 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
   </div>
 </section>
 <section class="vista" id="v-otros">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 07 <i>de 08</i> · Otros documentos del sistema</p>
     <h1>Otros</h1>
     <p class="sh__p">Un sistema de gestión no son tres documentos: son tres documentos y todo lo que los hace ejecutables. Aquí están el compendio que los ordena, los 322 puntos con los que se verifica el centro, la auditoría de la clínica adquirida, el plan de los primeros cien días, los protocolos operativos por perfil, las fichas de innovación y el programa de cuidado. Cada uno dice qué es y cuándo se abre.</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="14" width="24" height="28" rx="2"/><path d="M16 9 h20 a2 2 0 0 1 2 2 v24"/><path d="M16 23 h12 M16 30 h12 M16 37 h8"/></svg>
   </div></header>
   
   <div class="env">
@@ -22233,11 +22271,12 @@ LTV              = Valor inicial
   </div>
 </section>
 <section class="vista" id="v-numeros">
-  <header class="sh reveal">
-<div class="env">
+  <header class="sh reveal"><div class="env sh__grid">
+    <div class="sh__txt">
     <p class="sh__n">Sección 08 <i>de 08</i> · Los números del centro</p>
     <h1>Los números</h1>
     <p class="sh__p">Sin números propios, cualquier objetivo comercial es una opinión bien redactada. Esta sección es el instrumento: diez indicadores que se cuentan mes a mes, cinco números que todavía no se tienen y están señalados como lo que son, y el puente que lleva de los 720.000 € heredados al objetivo del tercer ejercicio, bloque a bloque y con cada bloque auditable por separado.</p>
+    </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 39 h30"/><rect x="13" y="27" width="6" height="12"/><rect x="22" y="19" width="6" height="20"/><rect x="31" y="11" width="6" height="28"/></svg>
   </div></header>
   
   <div class="env">

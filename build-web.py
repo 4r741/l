@@ -107,6 +107,43 @@ LOGO_FAVICON = (
     "<path d='M20 78 C40 106 76 106 96 78'/></svg>")
 
 
+# Un icono de línea por sección, dibujado a mano (SVG, no fotos): la red de
+# este entorno no deja bajar imágenes y no se inventan fotos de la clínica, así
+# que cada sección lleva una ilustración propia relacionada con su tema.
+def _ico(inner):
+    return ('<svg class="sh__ico" viewBox="0 0 48 48" fill="none" '
+            'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" '
+            'stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>')
+
+
+SECC_ICONO = {
+    "direccion": _ico('<circle cx="24" cy="24" r="17"/>'
+                      '<path d="M31 17 L26 26 L17 31 L22 22 Z"/>'
+                      '<circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>'),
+    "presentacion": _ico('<rect x="7" y="10" width="34" height="24" rx="2"/>'
+                         '<path d="M14 28 L20 22 L25 26 L34 16"/>'
+                         '<path d="M18 41 h12 M24 34 v7"/>'),
+    "protocolos": _ico('<rect x="11" y="7" width="26" height="34" rx="2.5"/>'
+                       '<path d="M17 17 l3 3 l5 -6"/><path d="M17 29 l3 3 l5 -6"/>'
+                       '<path d="M28 18 h5 M28 30 h5"/>'),
+    "primera-visita": _ico('<path d="M17 9 C13 6 9 8 9 15 C9 24 11 32 13 38 C14 41 17 41 '
+                           '18 37 C19 32 19 26 20 24 C21 26 21 32 22 37 C23 41 26 41 27 38 '
+                           'C31 30 33 20 32 14 C31 7 26 6 23 9 C21 11 19 11 17 9 Z"/>'),
+    "operaciones": _ico('<circle cx="19" cy="19" r="7"/><circle cx="32" cy="32" r="5"/>'
+                        '<path d="M19 12 v-3 M19 26 v3 M12 19 h-3 M26 19 h3 '
+                        'M14 14 l-2 -2 M24 24 l2 2"/>'),
+    "marketing": _ico('<path d="M9 33 L19 23 L26 29 L39 15"/><path d="M31 15 h8 v8"/>'
+                      '<circle cx="19" cy="23" r="1.8" fill="currentColor" stroke="none"/>'
+                      '<circle cx="26" cy="29" r="1.8" fill="currentColor" stroke="none"/>'),
+    "otros": _ico('<rect x="10" y="14" width="24" height="28" rx="2"/>'
+                  '<path d="M16 9 h20 a2 2 0 0 1 2 2 v24"/>'
+                  '<path d="M16 23 h12 M16 30 h12 M16 37 h8"/>'),
+    "numeros": _ico('<path d="M9 39 h30"/><rect x="13" y="27" width="6" height="12"/>'
+                    '<rect x="22" y="19" width="6" height="20"/>'
+                    '<rect x="31" y="11" width="6" height="28"/>'),
+}
+
+
 def fuentes_incrustadas():
     """Instrument Serif —la serif de los titulares— empotrada en el archivo."""
     fmt = ('@font-face{font-family:"Instrument Serif";font-style:%s;font-weight:400;'
@@ -922,12 +959,15 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
 
     camino = camino_seccion() if sid == "primera-visita" else ""
 
+    ico = SECC_ICONO.get(sid, "")
     return (
         '<section class="vista" id="v-%s">\n'
-        '  <header class="sh reveal">\n<div class="env">\n'
+        '  <header class="sh reveal"><div class="env sh__grid">\n'
+        '    <div class="sh__txt">\n'
         '    <p class="sh__n">Sección %02d <i>de %02d</i> · %s</p>\n'
         '    <h1>%s</h1>\n'
         '    <p class="sh__p">%s</p>\n'
+        '    </div>%s\n'
         '  </div></header>\n'
         '  %s\n'
         '  <div class="env">\n'
@@ -940,7 +980,7 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
         '  %s\n'
         '  </div>\n</section>'
         % (sid, k, n_sec, H.escape(nombre), H.escape(rot), H.escape(texto),
-           camino, docif, toc, "\n".join(aps), ruta))
+           ico, camino, docif, toc, "\n".join(aps), ruta))
 
 
 BOLD = """
@@ -1208,6 +1248,37 @@ MODERNO = """
 
 /* El pie: el lema con la cursiva en cálido */
 .pie-web__lema em{color:var(--calido)}
+
+/* ====== Repaso de lectura: aire, medida y ritmo ======
+   El contenido de los documentos venía apelotonado: líneas larguísimas de lado
+   a lado y bloques pegados. Se controla la MEDIDA de línea (unos 68 caracteres,
+   lo cómodo), se separa cada apartado y se da ritmo vertical. Minimalista. */
+.wart{padding:clamp(2.8rem,7vh,4.6rem) 0}
+.wart p{font-size:1.06rem;line-height:1.78;margin:0 0 1.3rem;max-width:68ch}
+.wart li{line-height:1.72;margin:.55rem 0;max-width:66ch}
+.wart h3{margin:2.6rem 0 1rem}
+.wart .eyebrow{margin:0 0 1rem;display:inline-block}
+.wart table{margin:2.2rem 0}
+.wart figure{margin:2.6rem 0}
+.wart blockquote{max-width:62ch}
+.wart__k{margin-bottom:1.4rem;font-size:.64rem;letter-spacing:.14em}
+
+/* Botones y controles, más modernos: relleno, pastilla, sombra al vuelo */
+.hero2__baja{background:var(--pizarra);color:#fff;border-color:var(--pizarra);
+  padding:.9rem 1.7rem;box-shadow:0 12px 26px -14px rgba(51,88,124,.6)}
+.hero2__baja:hover{background:var(--pizarra-fuerte);color:#fff;transform:translateY(-2px)}
+.cab__l{border-radius:100px}
+.cab__l.on{background:var(--pizarra);color:#fff}
+.cab__l.on:hover{background:var(--pizarra-fuerte);color:#fff}
+.rolchip,.salta{border-radius:100px}
+.salta{border-radius:16px}
+
+/* La ilustración de cada sección, en su cabecera */
+.sh__grid{display:grid;grid-template-columns:1fr auto;
+  gap:clamp(1.5rem,4vw,3rem);align-items:center}
+.sh__txt{min-width:0}
+.sh__ico{width:clamp(3.2rem,7vw,5.6rem);height:auto;color:var(--pizarra);flex:none}
+@media(max-width:680px){.sh__ico{display:none}}
 """
 
 
