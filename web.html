@@ -2369,30 +2369,39 @@ html:root:root .wart figure{border-radius:16px;overflow:hidden}
 html:root:root .sh{border-top:1px solid var(--linea)}
 html:root:root .sh__ico{color:var(--pizarra)}
 
-/* ---- el índice de la sección: un módulo con forma, no una lista suelta ----
-   Antes flotaba como texto en el hueco de la izquierda. Ahora es una ficha
-   sticky, con su propio fondo, filete y scroll interno si es muy larga: acompaña
-   la lectura y siempre está «puesta» en algún sitio. */
-html:root:root .cuerpo{grid-template-columns:16.5rem minmax(0,1fr);
-  gap:clamp(1.6rem,4vw,3.6rem)}
-html:root:root .toc{background:var(--panel);border:1px solid var(--linea);
-  border-radius:16px;padding:1.3rem 1.15rem;box-shadow:var(--sombra-2);
-  top:calc(var(--nav) + 1.6rem);max-height:calc(100vh - var(--nav) - 3.2rem)}
+/* ---- el índice de la sección: plegable, cerrado por defecto ----
+   Con 20+ apartados una lista fija estorba. Ahora es un <details> a ancho
+   completo, cerrado de entrada: una barra «En esta sección» que se despliega
+   solo si el lector la pulsa. El texto va a ancho completo debajo. */
+html:root:root .cuerpo{display:block}
+html:root:root .toc{position:static;max-height:none;overflow:visible;
+  background:var(--panel);border:1px solid var(--linea);border-radius:14px;
+  padding:0;margin:0 0 clamp(2rem,5vh,3rem);box-shadow:none}
 html:root:root .toc__t{font-family:var(--sans);font-weight:600;color:var(--calido-fuerte);
-  letter-spacing:.16em;margin:0 0 1rem;padding-bottom:.9rem;border-bottom:1px solid var(--linea)}
-html:root:root .toc a{color:var(--ink-2);border-left:2px solid transparent;padding-left:.8rem}
+  letter-spacing:.14em;text-transform:uppercase;font-size:.66rem;cursor:pointer;
+  list-style:none;display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;padding:1.05rem 1.3rem;margin:0;border:0;
+  transition:color .15s,background .15s;border-radius:14px}
+html:root:root .toc__t::-webkit-details-marker{display:none}
+html:root:root .toc__t::after{content:"";width:.6rem;height:.6rem;flex:none;
+  border-right:2px solid var(--calido-fuerte);border-bottom:2px solid var(--calido-fuerte);
+  transform:rotate(45deg);transition:transform .2s;margin-top:-.2rem}
+html:root:root .toc[open] .toc__t::after{transform:rotate(-135deg);margin-top:.15rem}
+html:root:root .toc__t:hover{color:var(--pizarra-fuerte)}
+html:root:root .toc[open] .toc__t{border-bottom:1px solid var(--linea);
+  border-radius:14px 14px 0 0}
+html:root:root .toc__body{padding:1rem 1.3rem 1.3rem;
+  columns:2;column-gap:2.6rem}
+html:root:root .toc a{display:block;text-decoration:none;color:var(--ink-2);
+  padding:.32rem 0 .32rem .8rem;border-left:2px solid transparent;line-height:1.4;
+  break-inside:avoid;transition:color .15s,border-color .15s}
 html:root:root .toc a:hover{color:var(--tinta);border-left-color:var(--calido-linea)}
 html:root:root .toc a.on{color:var(--pizarra-fuerte);border-left-color:var(--pizarra);font-weight:600}
 html:root:root .toc__parte{font-family:var(--sans);font-weight:600;color:var(--calido-fuerte);
-  letter-spacing:.1em}
-/* barra de scroll interna, discreta y en la clave oscura */
-html:root:root .toc::-webkit-scrollbar{width:8px}
-html:root:root .toc::-webkit-scrollbar-thumb{background:var(--pizarra-linea);border-radius:8px}
-html:root:root .toc{scrollbar-width:thin;scrollbar-color:var(--pizarra-linea) transparent}
-@media(max-width:920px){
-  html:root:root .cuerpo{grid-template-columns:1fr}
-  html:root:root .toc{position:static;max-height:none;box-shadow:none}
-}
+  letter-spacing:.08em;text-transform:uppercase;font-size:.58rem;
+  margin:1.1rem 0 .4rem;padding-left:.8rem;break-inside:avoid}
+html:root:root .toc__parte:first-child{margin-top:0}
+@media(max-width:680px){html:root:root .toc__body{columns:1}}
 
 /* ---- voces del glosario: subrayado en oro, elegante ---- */
 html:root:root .gl{font-family:var(--sans);font-weight:500;color:var(--pizarra-fuerte);
@@ -2518,7 +2527,7 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
   <div class="env">
   <div class="docif"><div class="docif__i"><b>1,2 M€</b><span>Objetivo</span><small>Facturación anual en el ejercicio tercero</small></div><div class="docif__i"><b>15</b><span>Decisiones</span><small>Se someten a aprobación en esta sesión</small></div><div class="docif__i"><b>55′</b><span>Lectura</span><small>Resumen ejecutivo: 3 minutos</small></div><div class="docif__i"><b>5</b><span>Riesgos críticos</span><small>Con propietario y mitigación asignados</small></div><div class="docif__i"><b>17</b><span>Sistema documental</span><small>Documentos operativos vigentes</small></div><div class="docif__i"><b>100 d</b><span>Ventana crítica</span><small>Lo que no se fija ahora se vuelve costumbre</small></div></div>
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#a-manifiesto" data-toc="a-manifiesto">El manifiesto: la regla que ordena todo</a>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#a-manifiesto" data-toc="a-manifiesto">El manifiesto: la regla que ordena todo</a>
 <a href="#a-control" data-toc="a-control">Control del documento y cómo se cita</a>
 <a href="#a-resumen" data-toc="a-resumen">Resumen ejecutivo en dos minutos</a>
 <p class="toc__parte">Parte I · La posición</p>
@@ -2556,7 +2565,7 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
 <a href="#a-calendario" data-toc="a-calendario">Calendario y capacidad del año</a>
 <a href="#a-cierto" data-toc="a-cierto">Las cinco condiciones que tienen que ser ciertas</a>
 <a href="#a-acuerdos" data-toc="a-acuerdos">Cuadernillo: quince hojas de acta</a>
-<a href="#a-campanas" data-toc="a-campanas">Nueve fichas de campaña, para poner en marcha</a></nav>
+<a href="#a-campanas" data-toc="a-campanas">Nueve fichas de campaña, para poner en marcha</a></div></details>
     <div class="wlista"><article class="wart" id="a-manifiesto"><p class="wart__k">El manifiesto: la regla que ordena todo</p>
 <section class="t-manifiesto" id="a-manifiesto">
   <div class="wrap">
@@ -5710,7 +5719,7 @@ REVISIÓN PREVISTA:</div>
   <div class="env">
   
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#b-presentacion" data-toc="b-presentacion">Junta Directiva · Septiembre 2026 · Uso interno y confidenci</a></nav>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#b-presentacion" data-toc="b-presentacion">Junta Directiva · Septiembre 2026 · Uso interno y confidenci</a></div></details>
     <div class="wlista"><article class="wart" id="b-presentacion">
 <div class="deck deck--sitio"><section data-min="0:00" data-esencial="1" class="slide slide--stmt">
   <p class="eyebrow">Junta Directiva · Septiembre 2026 · Uso interno y confidencial</p>
@@ -6826,9 +6835,9 @@ REVISIÓN PREVISTA:</div>
   <div class="env">
   
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#c-portada" data-toc="c-portada">Vista operativa · Uso interno Qué se espera de cada puesto T</a>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#c-portada" data-toc="c-portada">Vista operativa · Uso interno Qué se espera de cada puesto T</a>
 <a href="#c-puestos" data-toc="c-puestos">Los seis puestos Elija el suyo La matriz RACI reparte las ca</a>
-<a href="#c-comun" data-toc="c-comun">Común a los seis Lo que se cumple en todos los puestos Están</a></nav>
+<a href="#c-comun" data-toc="c-comun">Común a los seis Lo que se cumple en todos los puestos Están</a></div></details>
     <div class="wlista"><article class="wart" id="c-portada">
 <section class="hero" id="c-portada">
   <div class="wrap">
@@ -7082,7 +7091,7 @@ REVISIÓN PREVISTA:</div>
   <div class="env">
   <div class="docif"><div class="docif__i"><b>9</b><span>Documentos firmados</span><small>De la primera visita, digitalizados en Clinic Cloud el mismo día</small></div><div class="docif__i"><b>12 de 14</b><span>Fases</span><small>Fases 1 a 12 del recorrido; las 13 y 14 van en el Manual Maestro</small></div><div class="docif__i"><b>115–120′</b><span>Duración real</span><small>Fases 2 a 11, según la complejidad del caso a valorar</small></div><div class="docif__i"><b>4</b><span>Roles implicados</span><small>Recepción · Director · Doctor · Auxiliar</small></div><div class="docif__i"><b>5</b><span>Estándares transversales</span><small>Comunicación, entorno, seguridad, datos y agenda</small></div><div class="docif__i"><b>8</b><span>Anexos</span><small>Guiones, preguntas frecuentes, checklist, gobernanza y escalado</small></div></div>
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#d-fundamentos" data-toc="d-fundamentos">Los cinco principios de la visita</a>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#d-fundamentos" data-toc="d-fundamentos">Los cinco principios de la visita</a>
 <a href="#d-mapa" data-toc="d-mapa">La visita entera, minuto a minuto</a>
 <a href="#d-flujo" data-toc="d-flujo">Quién tiene al paciente en cada momento</a>
 <a href="#d-f01" data-toc="d-f01">Preparación previa y primera llamada</a>
@@ -7103,7 +7112,7 @@ REVISIÓN PREVISTA:</div>
 <a href="#d-trazabilidad" data-toc="d-trazabilidad">Qué queda registrado y quién responde</a>
 <a href="#d-indicadores" data-toc="d-indicadores">Cómo se mide si el protocolo funciona</a>
 <a href="#d-formacion" data-toc="d-formacion">Formación y certificación por rol</a>
-<a href="#d-anexos" data-toc="d-anexos">Anexos: guiones y preguntas frecuentes</a></nav>
+<a href="#d-anexos" data-toc="d-anexos">Anexos: guiones y preguntas frecuentes</a></div></details>
     <div class="wlista"><article class="wart" id="d-fundamentos"><p class="wart__k">Los cinco principios de la visita</p>
 <section class="section" id="d-fundamentos">
   <div class="wrap">
@@ -10687,7 +10696,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
   <div class="env">
   <div class="docif"><div class="docif__i"><b>14</b><span>Fases del recorrido</span><small>De la primera llamada al mantenimiento a largo plazo</small></div><div class="docif__i"><b>8</b><span>Partes</span><small>Más estándares transversales y anexos</small></div><div class="docif__i"><b>115–120′</b><span>Primera visita</span><small>Suma real de las fases 2 a 11; varía según el caso</small></div><div class="docif__i"><b>6</b><span>Puestos</span><small>Recepción · Doctor · Higienista · Auxiliar · RAC · Dirección</small></div><div class="docif__i"><b>26</b><span>Procedimientos</span><small>Numerados por puesto (PR-XX)</small></div><div class="docif__i"><b>13</b><span>Anexos</span><small>Plantillas, checklists, reportes, auditoría, escalado y glosario</small></div></div>
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#e-presentacion" data-toc="e-presentacion">Un documento, tres usos</a>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#e-presentacion" data-toc="e-presentacion">Un documento, tres usos</a>
 <a href="#e-indice" data-toc="e-indice">Índice: dónde está cada cosa</a>
 <a href="#e-vanguardia" data-toc="e-vanguardia">Marco de vanguardia y los cinco pilares</a>
 <a href="#e-p1" data-toc="e-p1">Fundamentos y principios rectores</a>
@@ -10703,7 +10712,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 <a href="#e-p8" data-toc="e-p8">Puesta en marcha del centro</a>
 <a href="#e-anexos" data-toc="e-anexos">Anexos: plantillas y checklists</a>
 <a href="#e-otros" data-toc="e-otros">Otros documentos del sistema</a>
-<a href="#e-notas" data-toc="e-notas">Puntos que siguen abiertos</a></nav>
+<a href="#e-notas" data-toc="e-notas">Puntos que siguen abiertos</a></div></details>
     <div class="wlista"><article class="wart" id="e-presentacion"><p class="wart__k">Un documento, tres usos</p>
 <section class="section" id="e-presentacion">
   <div class="wrap">
@@ -17435,7 +17444,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
   <div class="env">
   
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#f-portada" data-toc="f-portada">Portada</a>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#f-portada" data-toc="f-portada">Portada</a>
 <a href="#f-control" data-toc="f-control">Ficha de control del documento</a>
 <p class="toc__parte">Parte I · La doctrina</p>
 <a href="#f-parte-1" data-toc="f-parte-1">Parte I · La doctrina</a>
@@ -17475,7 +17484,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
 <a href="#f-gtc" data-toc="f-gtc">Alma Te Cuida: el programa de acompañamiento</a>
 <a href="#f-anexo-legal" data-toc="f-anexo-legal">Semáforo legal, acción por acción</a>
 <a href="#f-anexo-cartera" data-toc="f-anexo-cartera">Correspondencia con la cartera de campañas</a>
-<a href="#f-anexo-trimestre" data-toc="f-anexo-trimestre">Lo que se activa este trimestre</a></nav>
+<a href="#f-anexo-trimestre" data-toc="f-anexo-trimestre">Lo que se activa este trimestre</a></div></details>
     <div class="wlista"><article class="wart" id="f-portada"><p class="wart__k">Portada</p>
 <section class="t-cover" id="f-portada">
   <div class="wrap">
@@ -18747,7 +18756,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
   <div class="env">
   <div class="docif"><div class="docif__i"><b>20</b><span>Decisiones de Gerencia</span><small>Más once verificaciones externas</small></div><div class="docif__i"><b>322</b><span>Puntos de verificación</span><small>Recorrido físico, documental, de sistemas y de procesos</small></div><div class="docif__i"><b>14</b><span>Documentos</span><small>Del posicionamiento del centro al programa de cuidado ATC</small></div><div class="docif__i"><b>18</b><span>Fichas de innovación</span><small>Con protocolo, guion, contingencia e indicador</small></div><div class="docif__i"><b>6</b><span>Perfiles operativos</span><small>Parte asistencial y parte comercial de cada puesto</small></div><div class="docif__i"><b>100 días</b><span>Horizonte</span><small>Programa de integración tras la adquisición</small></div></div>
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#g-presentacion" data-toc="g-presentacion">Qué es cada cosa y cuándo se abre</a>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#g-presentacion" data-toc="g-presentacion">Qué es cada cosa y cuándo se abre</a>
 <a href="#g-otros-mapa" data-toc="g-otros-mapa">El sistema en cuatro niveles</a>
 <a href="#g-otros-compendio" data-toc="g-otros-compendio">Compendio Maestro del sistema de gestión</a>
 <a href="#g-otros-verificacion" data-toc="g-otros-verificacion">Verificación del centro · 322 puntos</a>
@@ -18763,7 +18772,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
 <a href="#g-otros-continuidad" data-toc="g-otros-continuidad">Continuidad legal, financiera y de sistemas</a>
 <a href="#g-otros-posicionamiento" data-toc="g-otros-posicionamiento">«No medias sonrisas» · posicionamiento</a>
 <a href="#g-otros-gtc" data-toc="g-otros-gtc">ATC · vive en el Plan de Marketing</a>
-<a href="#g-otros-cierre" data-toc="g-otros-cierre">Cómo encajan los catorce documentos</a></nav>
+<a href="#g-otros-cierre" data-toc="g-otros-cierre">Cómo encajan los catorce documentos</a></div></details>
     <div class="wlista"><article class="wart" id="g-presentacion"><p class="wart__k">Qué es cada cosa y cuándo se abre</p>
 <section class="section" id="g-presentacion">
   <div class="wrap">
@@ -22482,12 +22491,12 @@ LTV              = Valor inicial
   <div class="env">
   
   <div class="cuerpo">
-    <nav class="toc" aria-label="Apartados de la sección"><p class="toc__t">En esta sección</p><a href="#h-portada" data-toc="h-portada">Instrumento de medición · Ejercicio 2026 · Uso interno Los n</a>
+    <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#h-portada" data-toc="h-portada">Instrumento de medición · Ejercicio 2026 · Uso interno Los n</a>
 <a href="#h-instrucciones" data-toc="h-instrucciones">Cómo se usa Tres reglas y ninguna más Regla 1Solo se teclea </a>
 <a href="#h-definiciones" data-toc="h-definiciones">Qué se cuenta arriba, qué se cuenta abajo</a>
 <a href="#h-captura" data-toc="h-captura">Una hoja por mes</a>
 <a href="#h-anual" data-toc="h-anual">Los doce meses en una rejilla</a>
-<a href="#h-cinco" data-toc="h-cinco">Sin ellos, cualquier objetivo comercial es una opinión</a></nav>
+<a href="#h-cinco" data-toc="h-cinco">Sin ellos, cualquier objetivo comercial es una opinión</a></div></details>
     <div class="wlista"><article class="wart" id="h-portada">
 <section class="hero" id="h-portada">
   <div class="wrap">

@@ -1037,8 +1037,9 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
         '  <div class="env">\n'
         '  %s\n'
         '  <div class="cuerpo">\n'
-        '    <nav class="toc" aria-label="Apartados de la sección">'
-        '<p class="toc__t">En esta sección</p>%s</nav>\n'
+        '    <details class="toc" aria-label="Apartados de la sección">'
+        '<summary class="toc__t">En esta sección</summary>'
+        '<div class="toc__body">%s</div></details>\n'
         '    <div class="wlista">%s</div>\n'
         '  </div>\n'
         '  %s\n'
@@ -1470,30 +1471,39 @@ html:root:root .wart figure{border-radius:16px;overflow:hidden}
 html:root:root .sh{border-top:1px solid var(--linea)}
 html:root:root .sh__ico{color:var(--pizarra)}
 
-/* ---- el índice de la sección: un módulo con forma, no una lista suelta ----
-   Antes flotaba como texto en el hueco de la izquierda. Ahora es una ficha
-   sticky, con su propio fondo, filete y scroll interno si es muy larga: acompaña
-   la lectura y siempre está «puesta» en algún sitio. */
-html:root:root .cuerpo{grid-template-columns:16.5rem minmax(0,1fr);
-  gap:clamp(1.6rem,4vw,3.6rem)}
-html:root:root .toc{background:var(--panel);border:1px solid var(--linea);
-  border-radius:16px;padding:1.3rem 1.15rem;box-shadow:var(--sombra-2);
-  top:calc(var(--nav) + 1.6rem);max-height:calc(100vh - var(--nav) - 3.2rem)}
+/* ---- el índice de la sección: plegable, cerrado por defecto ----
+   Con 20+ apartados una lista fija estorba. Ahora es un <details> a ancho
+   completo, cerrado de entrada: una barra «En esta sección» que se despliega
+   solo si el lector la pulsa. El texto va a ancho completo debajo. */
+html:root:root .cuerpo{display:block}
+html:root:root .toc{position:static;max-height:none;overflow:visible;
+  background:var(--panel);border:1px solid var(--linea);border-radius:14px;
+  padding:0;margin:0 0 clamp(2rem,5vh,3rem);box-shadow:none}
 html:root:root .toc__t{font-family:var(--sans);font-weight:600;color:var(--calido-fuerte);
-  letter-spacing:.16em;margin:0 0 1rem;padding-bottom:.9rem;border-bottom:1px solid var(--linea)}
-html:root:root .toc a{color:var(--ink-2);border-left:2px solid transparent;padding-left:.8rem}
+  letter-spacing:.14em;text-transform:uppercase;font-size:.66rem;cursor:pointer;
+  list-style:none;display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;padding:1.05rem 1.3rem;margin:0;border:0;
+  transition:color .15s,background .15s;border-radius:14px}
+html:root:root .toc__t::-webkit-details-marker{display:none}
+html:root:root .toc__t::after{content:"";width:.6rem;height:.6rem;flex:none;
+  border-right:2px solid var(--calido-fuerte);border-bottom:2px solid var(--calido-fuerte);
+  transform:rotate(45deg);transition:transform .2s;margin-top:-.2rem}
+html:root:root .toc[open] .toc__t::after{transform:rotate(-135deg);margin-top:.15rem}
+html:root:root .toc__t:hover{color:var(--pizarra-fuerte)}
+html:root:root .toc[open] .toc__t{border-bottom:1px solid var(--linea);
+  border-radius:14px 14px 0 0}
+html:root:root .toc__body{padding:1rem 1.3rem 1.3rem;
+  columns:2;column-gap:2.6rem}
+html:root:root .toc a{display:block;text-decoration:none;color:var(--ink-2);
+  padding:.32rem 0 .32rem .8rem;border-left:2px solid transparent;line-height:1.4;
+  break-inside:avoid;transition:color .15s,border-color .15s}
 html:root:root .toc a:hover{color:var(--tinta);border-left-color:var(--calido-linea)}
 html:root:root .toc a.on{color:var(--pizarra-fuerte);border-left-color:var(--pizarra);font-weight:600}
 html:root:root .toc__parte{font-family:var(--sans);font-weight:600;color:var(--calido-fuerte);
-  letter-spacing:.1em}
-/* barra de scroll interna, discreta y en la clave oscura */
-html:root:root .toc::-webkit-scrollbar{width:8px}
-html:root:root .toc::-webkit-scrollbar-thumb{background:var(--pizarra-linea);border-radius:8px}
-html:root:root .toc{scrollbar-width:thin;scrollbar-color:var(--pizarra-linea) transparent}
-@media(max-width:920px){
-  html:root:root .cuerpo{grid-template-columns:1fr}
-  html:root:root .toc{position:static;max-height:none;box-shadow:none}
-}
+  letter-spacing:.08em;text-transform:uppercase;font-size:.58rem;
+  margin:1.1rem 0 .4rem;padding-left:.8rem;break-inside:avoid}
+html:root:root .toc__parte:first-child{margin-top:0}
+@media(max-width:680px){html:root:root .toc__body{columns:1}}
 
 /* ---- voces del glosario: subrayado en oro, elegante ---- */
 html:root:root .gl{font-family:var(--sans);font-weight:500;color:var(--pizarra-fuerte);
