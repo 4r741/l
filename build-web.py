@@ -1582,6 +1582,40 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
   border-radius:100px;font-family:var(--sans);font-size:1.1rem;display:flex;
   align-items:center;justify-content:center;transition:background .15s,color .15s,border-color .15s}
 .cerrar:hover{background:var(--pizarra);color:var(--honda);border-color:var(--pizarra)}
+
+/* ---- marca: Klinikare (el sistema) sobre Clínica Alma (la clínica) ---- */
+html:root:root .marca__tt{display:inline-flex;flex-direction:column;line-height:1.02}
+html:root:root .marca__t{display:block;font-family:var(--serif);font-weight:500;
+  color:var(--tinta);letter-spacing:.01em}
+html:root:root .marca__sub{font-family:var(--sans);font-weight:600;font-size:.56rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
+html:root:root .pie-web .marca__t{font-size:1.45rem}
+html:root:root .pie-web .marca__sub{font-size:.6rem}
+html:root:root .portal__marca-tt{display:inline-flex;flex-direction:column;line-height:1.02}
+html:root:root .portal__marca-tt b{font-family:var(--serif);font-weight:500;font-size:1.35rem;color:var(--tinta)}
+html:root:root .portal__marca-tt i{font-family:var(--sans);font-style:normal;font-weight:600;
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
+@media(max-width:560px){html:root:root .marca__sub{display:none}}
+
+/* ---- listas numeradas del texto: números en oro, sangría francesa ----
+   Los «1. 2. 3.» de los documentos se rehacen con número en serif dorada,
+   alineados y con aire, en vez del punto gris por defecto del navegador. */
+html:root:root .wart ol:not([class]),html:root:root .wart ol.steps,
+html:root:root .wart ol.pasos{
+  list-style:none;counter-reset:li;padding-left:0;margin:1.4rem 0}
+html:root:root .wart ol:not([class]) > li,html:root:root .wart ol.steps > li,
+html:root:root .wart ol.pasos > li{
+  counter-increment:li;position:relative;padding-left:2.7rem;margin:.7rem 0;
+  line-height:1.72;max-width:66ch}
+html:root:root .wart ol:not([class]) > li::before,html:root:root .wart ol.steps > li::before,
+html:root:root .wart ol.pasos > li::before{
+  content:counter(li,decimal-leading-zero);position:absolute;left:0;top:.06em;
+  font-family:var(--serif);font-weight:500;font-size:.95em;color:var(--calido-fuerte);
+  width:2rem;text-align:right;font-variant-numeric:tabular-nums;
+  border-right:2px solid var(--calido-linea);padding-right:.55rem}
+html:root:root .wart ol:not([class]) > li::marker,
+html:root:root .wart ol.steps > li::marker,
+html:root:root .wart ol.pasos > li::marker{content:none}
 """
 
 def main():
@@ -1609,7 +1643,9 @@ def main():
         'aria-labelledby="portal-lema" hidden>\n'
         '  <div class="portal__caja">\n'
         '    <p class="portal__k">Centro de Excelencia Implantológica</p>\n'
-        '    <p class="portal__marca">' + LOGO_EMBLEMA + '<b>Clínica Alma</b></p>\n'
+        '    <p class="portal__marca">' + LOGO_EMBLEMA
+        + '<span class="portal__marca-tt"><b>Klinikare</b>'
+        '<i>Clínica Alma</i></span></p>\n'
         '    <h2 class="portal__lema" id="portal-lema">No medias <em>sonrisas</em></h2>\n'
         '    <p class="portal__p">Un solo criterio: la excelencia o nada. '
         'Implantología guiada, un sistema documental que no deja cabos sueltos '
@@ -1640,14 +1676,15 @@ def main():
     # ni con las llaves del SVG del logo.
     cabecera = (
         '<a class="cab__m marca" href="#inicio" data-ve="inicio" '
-        'aria-label="Clínica Alma · inicio">' + LOGO_EMBLEMA
-        + '<span class="marca__t">Clínica Alma</span></a>')
+        'aria-label="Klinikare · Clínica Alma · inicio">' + LOGO_EMBLEMA
+        + '<span class="marca__tt"><span class="marca__t">Klinikare</span>'
+        '<span class="marca__sub">Clínica Alma</span></span></a>')
 
     doc = (
         '<!doctype html>\n<html lang="es">\n<head>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-        '<title>Clínica Alma · Centro de Excelencia Implantológica</title>\n'
+        '<title>Klinikare · Clínica Alma · Sistema documental</title>\n'
         '<link rel="icon" href="' + LOGO_FAVICON + '">\n'
         + estilo + '\n</head>\n<body>\n'
         + portal + '\n' + voz_modal + '\n'
@@ -1657,10 +1694,11 @@ def main():
         '</header>\n'
         '<main>\n' + "\n".join(vistas) + '\n</main>\n'
         '<footer class="pie-web"><div class="env">'
-        '<a class="marca" href="#inicio" data-ve="inicio" aria-label="Clínica Alma">'
-        + LOGO_EMBLEMA + '<span class="marca__t">Clínica Alma</span></a>'
+        '<a class="marca" href="#inicio" data-ve="inicio" aria-label="Klinikare · Clínica Alma">'
+        + LOGO_EMBLEMA + '<span class="marca__tt"><span class="marca__t">Klinikare</span>'
+        '<span class="marca__sub">Clínica Alma</span></span></a>'
         '<p class="pie-web__lema">No medias <em>sonrisas</em></p>'
-        '<p class="pie-web__d">Centro de Excelencia Implantológica · '
+        '<p class="pie-web__d">Sistema documental · Centro de Excelencia Implantológica · '
         'Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p>'
         '</div></footer>\n'
         '<script>window.__VOCES__=' + voces_js + ';</script>\n'

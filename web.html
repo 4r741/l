@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clínica Alma · Centro de Excelencia Implantológica</title>
+<title>Klinikare · Clínica Alma · Sistema documental</title>
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 118' fill='none' stroke='%23B99653' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><path d='M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z'/><path d='M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58'/><path d='M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58'/><path d='M20 78 C40 106 76 106 96 78'/></svg>">
 <style>
 /* ============================================================
@@ -2480,13 +2480,47 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
   border-radius:100px;font-family:var(--sans);font-size:1.1rem;display:flex;
   align-items:center;justify-content:center;transition:background .15s,color .15s,border-color .15s}
 .cerrar:hover{background:var(--pizarra);color:var(--honda);border-color:var(--pizarra)}
+
+/* ---- marca: Klinikare (el sistema) sobre Clínica Alma (la clínica) ---- */
+html:root:root .marca__tt{display:inline-flex;flex-direction:column;line-height:1.02}
+html:root:root .marca__t{display:block;font-family:var(--serif);font-weight:500;
+  color:var(--tinta);letter-spacing:.01em}
+html:root:root .marca__sub{font-family:var(--sans);font-weight:600;font-size:.56rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
+html:root:root .pie-web .marca__t{font-size:1.45rem}
+html:root:root .pie-web .marca__sub{font-size:.6rem}
+html:root:root .portal__marca-tt{display:inline-flex;flex-direction:column;line-height:1.02}
+html:root:root .portal__marca-tt b{font-family:var(--serif);font-weight:500;font-size:1.35rem;color:var(--tinta)}
+html:root:root .portal__marca-tt i{font-family:var(--sans);font-style:normal;font-weight:600;
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
+@media(max-width:560px){html:root:root .marca__sub{display:none}}
+
+/* ---- listas numeradas del texto: números en oro, sangría francesa ----
+   Los «1. 2. 3.» de los documentos se rehacen con número en serif dorada,
+   alineados y con aire, en vez del punto gris por defecto del navegador. */
+html:root:root .wart ol:not([class]),html:root:root .wart ol.steps,
+html:root:root .wart ol.pasos{
+  list-style:none;counter-reset:li;padding-left:0;margin:1.4rem 0}
+html:root:root .wart ol:not([class]) > li,html:root:root .wart ol.steps > li,
+html:root:root .wart ol.pasos > li{
+  counter-increment:li;position:relative;padding-left:2.7rem;margin:.7rem 0;
+  line-height:1.72;max-width:66ch}
+html:root:root .wart ol:not([class]) > li::before,html:root:root .wart ol.steps > li::before,
+html:root:root .wart ol.pasos > li::before{
+  content:counter(li,decimal-leading-zero);position:absolute;left:0;top:.06em;
+  font-family:var(--serif);font-weight:500;font-size:.95em;color:var(--calido-fuerte);
+  width:2rem;text-align:right;font-variant-numeric:tabular-nums;
+  border-right:2px solid var(--calido-linea);padding-right:.55rem}
+html:root:root .wart ol:not([class]) > li::marker,
+html:root:root .wart ol.steps > li::marker,
+html:root:root .wart ol.pasos > li::marker{content:none}
 </style>
 </head>
 <body>
 <div class="overlay portal" id="portal" role="dialog" aria-modal="true" aria-labelledby="portal-lema" hidden>
   <div class="portal__caja">
     <p class="portal__k">Centro de Excelencia Implantológica</p>
-    <p class="portal__marca"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><b>Clínica Alma</b></p>
+    <p class="portal__marca"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><span class="portal__marca-tt"><b>Klinikare</b><i>Clínica Alma</i></span></p>
     <h2 class="portal__lema" id="portal-lema">No medias <em>sonrisas</em></h2>
     <p class="portal__p">Un solo criterio: la excelencia o nada. Implantología guiada, un sistema documental que no deja cabos sueltos y un trato que empieza mucho antes de la primera visita.</p>
     <div class="portal__pie">
@@ -2504,7 +2538,7 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
   </div>
 </div>
 <header class="cab">
-  <a class="cab__m marca" href="#inicio" data-ve="inicio" aria-label="Clínica Alma · inicio"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><span class="marca__t">Clínica Alma</span></a>
+  <a class="cab__m marca" href="#inicio" data-ve="inicio" aria-label="Klinikare · Clínica Alma · inicio"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><span class="marca__tt"><span class="marca__t">Klinikare</span><span class="marca__sub">Clínica Alma</span></span></a>
   <nav class="cab__nav" aria-label="Secciones"><a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a><a class="cab__l" href="#experiencia" data-ve="experiencia">La experiencia</a><a class="cab__l" href="#direccion" data-ve="direccion">Dirección</a><a class="cab__l" href="#presentacion" data-ve="presentacion">Presentación</a><a class="cab__l" href="#protocolos" data-ve="protocolos">Protocolos</a><a class="cab__l" href="#primera-visita" data-ve="primera-visita">Primera Visita</a><a class="cab__l" href="#operaciones" data-ve="operaciones">Operaciones</a><a class="cab__l" href="#marketing" data-ve="marketing">Marketing</a><a class="cab__l" href="#otros" data-ve="otros">Otros</a><a class="cab__l" href="#numeros" data-ve="numeros">Los números</a></nav>
   <div class="cab__prog" id="prog" aria-hidden="true"></div>
 </header>
@@ -22705,7 +22739,7 @@ LTV              = Valor inicial
   </div>
 </section>
 </main>
-<footer class="pie-web"><div class="env"><a class="marca" href="#inicio" data-ve="inicio" aria-label="Clínica Alma"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><span class="marca__t">Clínica Alma</span></a><p class="pie-web__lema">No medias <em>sonrisas</em></p><p class="pie-web__d">Centro de Excelencia Implantológica · Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p></div></footer>
+<footer class="pie-web"><div class="env"><a class="marca" href="#inicio" data-ve="inicio" aria-label="Klinikare · Clínica Alma"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><span class="marca__tt"><span class="marca__t">Klinikare</span><span class="marca__sub">Clínica Alma</span></span></a><p class="pie-web__lema">No medias <em>sonrisas</em></p><p class="pie-web__d">Sistema documental · Centro de Excelencia Implantológica · Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p></div></footer>
 <script>window.__VOCES__={"RAC": "RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)", "Clinic Cloud": "Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.", "Smartee Doctor / Spark Approver": "Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.", "WeDiagnostix": "Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.", "IAC": "Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.", "Solicitud de presupuesto": "Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.", "Producto pendiente": "Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.", "Doble verificación": "Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.", "Gate de calidad": "Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.", "CBCT": "Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.", "OPG": "Ortopantomografía: radiografía panorámica digital de ambos maxilares.", "IOS": "Escaneado intraoral: modelo digital de las arcadas y de la oclusión.", "Guía quirúrgica": "Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.", "Carga inmediata": "Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.", "Perfil de riesgo": "Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.", "Perfil Alma anual": "Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.", "RACI": "Reparto de papeles por fase: responsable, accountable, consultado e informado.", "Triaje": "Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo."};</script>
 <script>
 (function(){
