@@ -1454,10 +1454,11 @@ html:root:root .cifras--hero .cifra{border-top:2px solid var(--calido-linea)}
 html:root:root .cifra b{font-family:var(--serif);font-weight:400;color:var(--calido-fuerte)}
 html:root:root .cifra span{font-family:var(--sans);color:var(--muted)}
 
-/* ---- números decorativos en Fraunces ---- */
+/* ---- números decorativos: Fraunces fina, cifras tabulares, limpios ---- */
 html:root:root .ruta__n,html:root:root .prin__n,html:root:root .pvpaso__n,
 html:root:root .ram__n,html:root:root .rama__q i,html:root:root .paso__n,
-html:root:root .hito__n{font-family:var(--serif);font-weight:400;color:var(--calido-fuerte)}
+html:root:root .hito__n{font-family:var(--serif);font-weight:300;color:var(--calido-fuerte);
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 
 /* ---- tablas y figuras, suaves ---- */
 html:root:root .wart table{border:1px solid var(--linea);border-radius:14px;
