@@ -2503,14 +2503,13 @@ html:root:root .wart ol.pasos{
   list-style:none;counter-reset:li;padding-left:0;margin:1.4rem 0}
 html:root:root .wart ol:not([class]) > li,html:root:root .wart ol.steps > li,
 html:root:root .wart ol.pasos > li{
-  counter-increment:li;position:relative;padding-left:2.7rem;margin:.7rem 0;
+  counter-increment:li;position:relative;padding-left:2.2rem;margin:.7rem 0;
   line-height:1.72;max-width:66ch}
 html:root:root .wart ol:not([class]) > li::before,html:root:root .wart ol.steps > li::before,
 html:root:root .wart ol.pasos > li::before{
-  content:counter(li,decimal-leading-zero);position:absolute;left:0;top:.06em;
-  font-family:var(--serif);font-weight:500;font-size:.95em;color:var(--calido-fuerte);
-  width:2rem;text-align:right;font-variant-numeric:tabular-nums;
-  border-right:2px solid var(--calido-linea);padding-right:.55rem}
+  content:counter(li) ".";position:absolute;left:0;top:0;
+  font-family:var(--serif);font-weight:500;font-size:1em;color:var(--calido-fuerte);
+  font-variant-numeric:tabular-nums}
 html:root:root .wart ol:not([class]) > li::marker,
 html:root:root .wart ol.steps > li::marker,
 html:root:root .wart ol.pasos > li::marker{content:none}
