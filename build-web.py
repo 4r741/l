@@ -513,6 +513,7 @@ JS = """
     links.forEach(function(l){ l.classList.toggle('on', l.dataset.ve===id); });
     if(arriba!==false) window.scrollTo(0,0);
     try{ history.replaceState(null,'','#'+id); }catch(e){}
+    if(typeof actualizaFN==='function') actualizaFN();
   }
   // ¿en qué vista vive un ancla?
   function vistaDe(id){
@@ -632,6 +633,51 @@ JS = """
     // al pulsar un enlace del índice, el manejador de navegación actúa y aquí se cierra
     if(e.target.closest('.indice a')){ cierraIdx(); }
   });
+
+  // ---- Flecha lateral: sube y baja de fase (anterior / siguiente) ----
+  var FN=D.getElementById('fase-nav');
+  var FASES=window.__FASES__||[];
+  var fnPos=FN&&FN.querySelector('[data-fase-pos]');
+  function vistaActiva(){ return D.querySelector('.vista.on'); }
+  function fasesEnVista(){
+    var vis=vistaActiva(); if(!vis) return [];
+    return FASES.map(function(id,i){ return {id:id,i:i,el:D.getElementById(id)}; })
+                .filter(function(x){ return x.el && vis.contains(x.el); });
+  }
+  function faseActual(){
+    var en=fasesEnVista(); if(!en.length) return -1;
+    var lim=Math.max(200,(window.innerHeight||800)*0.35);
+    var act=en[0].i;
+    en.forEach(function(x){ if(x.el.getBoundingClientRect().top<=lim) act=x.i; });
+    return act;
+  }
+  function irAncla(id){
+    var v=vistaDe(id), actual=(vistaActiva()||{}).id;
+    if(v && 'v-'+v!==actual){ ve(v,false); }
+    requestAnimationFrame(function(){
+      var d=D.getElementById(id);
+      if(d) d.scrollIntoView({behavior:'smooth', block:'start'});
+      try{ history.replaceState(null,'','#'+id); }catch(_){}
+    });
+  }
+  function vaFase(dir){
+    var i=faseActual(); if(i<0) i=(dir>0?-1:0);
+    var j=Math.min(FASES.length-1, Math.max(0, i+dir));
+    if(j!==i || i<0) irAncla(FASES[j]);
+  }
+  function actualizaFN(){
+    if(!FN) return;
+    var en=fasesEnVista();
+    FN.hidden = en.length===0;
+    if(en.length){ var i=faseActual(); if(fnPos) fnPos.textContent=(i>=0?(i+1):1)+'/'+FASES.length; }
+  }
+  if(FN){
+    FN.querySelector('[data-fase-prev]').addEventListener('click',function(){ vaFase(-1); });
+    FN.querySelector('[data-fase-next]').addEventListener('click',function(){ vaFase(1); });
+    window.addEventListener('scroll', actualizaFN, {passive:true});
+    window.addEventListener('resize', actualizaFN);
+    actualizaFN();
+  }
 
   D.addEventListener('keydown', function(e){
     if(e.key==='Escape'){ cierraVoz(); cierraPortal(); cierraIdx(); }
@@ -1679,6 +1725,22 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
   color:var(--calido-fuerte);text-align:right;font-variant-numeric:tabular-nums}
 .idx-x{font-family:var(--sans);font-size:.72rem;color:var(--muted);text-align:right;white-space:nowrap}
 @media(max-width:640px){.indice__cols{grid-template-columns:1fr}}
+
+/* ---- flecha lateral: subir y bajar de fase ---- */
+.fase-nav{position:fixed;right:clamp(.5rem,2vw,1.4rem);top:50%;transform:translateY(-50%);
+  z-index:60;display:flex;flex-direction:column;align-items:center;gap:.35rem;
+  background:rgba(25,30,35,.9);backdrop-filter:blur(8px);
+  border:1px solid var(--pizarra-linea);border-radius:100px;padding:.45rem .35rem;
+  box-shadow:0 22px 44px -22px rgba(0,0,0,.85)}
+.fase-nav[hidden]{display:none}
+.fase-nav__b{width:2.4rem;height:2.4rem;border-radius:50%;border:0;cursor:pointer;padding:0;
+  background:transparent;color:var(--calido-fuerte);display:flex;align-items:center;
+  justify-content:center;transition:background .15s,color .15s}
+.fase-nav__b svg{width:1.35rem;height:1.35rem}
+.fase-nav__b:hover{background:var(--pizarra);color:var(--honda)}
+.fase-nav__n{font-family:var(--sans);font-size:.62rem;font-weight:600;color:var(--muted);
+  font-variant-numeric:tabular-nums;letter-spacing:.02em}
+@media(max-width:560px){.fase-nav{right:.5rem}.fase-nav__b{width:2.1rem;height:2.1rem}}
 """
 
 def main():
@@ -1739,6 +1801,21 @@ def main():
 
     # el diccionario de voces, para el pop-up de concepto (solo la definición)
     voces_js = json.dumps({k: v[0] for k, v in voces.items()}, ensure_ascii=False)
+    # las anclas de las 14 fases, en orden, para la flecha de subir/bajar fase
+    fases_js = json.dumps([fase_ancla(num) for num, _n, _m, _s in FASES])
+
+    # Flecha lateral: sube y baja de fase (fase anterior / siguiente) mientras
+    # se lee. Solo aparece en las vistas que contienen fases.
+    fase_nav = (
+        '<div class="fase-nav" id="fase-nav" hidden aria-label="Navegar por las fases">\n'
+        '  <button type="button" class="fase-nav__b" data-fase-prev aria-label="Fase anterior">\n'
+        '    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" '
+        'stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>\n'
+        '  <span class="fase-nav__n" data-fase-pos aria-hidden="true"></span>\n'
+        '  <button type="button" class="fase-nav__b" data-fase-next aria-label="Fase siguiente">\n'
+        '    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" '
+        'stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>\n'
+        '</div>')
 
     # 3) El ÍNDICE global: un botón en la cabecera lo abre desde cualquier
     # página. Reúne las 14 fases (etiquetadas «Fase N de 14», las 12 de la
@@ -1795,7 +1872,7 @@ def main():
         '<title>Clínica Alma · Klinikare · Sistema documental</title>\n'
         '<link rel="icon" href="' + LOGO_FAVICON + '">\n'
         + estilo + '\n</head>\n<body>\n'
-        + portal + '\n' + voz_modal + '\n' + indice_overlay + '\n'
+        + portal + '\n' + voz_modal + '\n' + indice_overlay + '\n' + fase_nav + '\n'
         '<header class="cab">\n  ' + cabecera + '\n'
         '  <nav class="cab__nav" aria-label="Secciones">' + nav + '</nav>\n'
         '  <div class="cab__prog" id="prog" aria-hidden="true"></div>\n'
@@ -1809,7 +1886,7 @@ def main():
         '<p class="pie-web__d">Sistema documental · Centro de Excelencia Implantológica · '
         'Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p>'
         '</div></footer>\n'
-        '<script>window.__VOCES__=' + voces_js + ';</script>\n'
+        '<script>window.__VOCES__=' + voces_js + ';window.__FASES__=' + fases_js + ';</script>\n'
         '<script>' + JS + '</script>\n'
         '</body>\n</html>\n')
 
