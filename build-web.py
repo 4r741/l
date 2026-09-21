@@ -1829,6 +1829,14 @@ def main():
                       "(autoriza al Director de Centros a presupuestar)")
     doc = doc.replace("Bloquea al Director, que no debe elaborar presupu",
                       "Bloquea al Director de Centros, que no debe elaborar presupu")
+    # Fase 10 (Propuesta económica y cierre): la propuesta la PRESENTA el
+    # Director de Centros; del CIERRE —que el presupuesto se acepte— se encarga
+    # el RAC. Se corrige solo el «Responsable» de la Fase 10 (id d-f10).
+    _m = re.search(r'id="d-f10".*?(<dd>Director / Asesor</dd>)', doc, re.S)
+    if _m:
+        doc = (doc[:_m.start(1)]
+               + '<dd>Director de Centros (presenta) · RAC (cierre)</dd>'
+               + doc[_m.end(1):])
     salida.write_text(doc, encoding="utf-8")
     print("web.html · %d secciones · %d apartados · %d KB"
           % (len(SECCIONES), total, len(doc.encode("utf-8")) // 1024))
