@@ -221,7 +221,7 @@ TEMA = """
   --display:"Fraunces","Georgia","Times New Roman",serif;
   --sans:"Roboto","Helvetica Neue",Arial,sans-serif;
   --mono:"Roboto","Helvetica Neue",Arial,sans-serif;
-  --nav:64px; --ancho:74rem;
+  --nav:76px; --ancho:74rem;
   /* los tokens de los documentos, remapeados a esta paleta */
   --paper:var(--fondo); --surface:var(--panel); --surface-2:var(--panel-2);
   --accent:var(--pizarra); --accent-ink:var(--pizarra-fuerte);
@@ -1588,15 +1588,23 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
 html:root:root .marca__tt{display:inline-flex;flex-direction:column;line-height:1.02}
 html:root:root .marca__t{display:block;font-family:var(--serif);font-weight:500;
   color:var(--tinta);letter-spacing:.01em}
-html:root:root .marca__sub{font-family:var(--sans);font-weight:600;font-size:.56rem;
-  letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
-html:root:root .pie-web .marca__t{font-size:1.45rem}
-html:root:root .pie-web .marca__sub{font-size:.6rem}
+html:root:root .marca__sub{font-family:var(--sans);font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.22rem}
+/* cabecera: la marca, más grande */
+html:root:root .cab .marca__t{font-size:1.75rem}
+html:root:root .cab .marca__sub{font-size:.66rem}
+html:root:root .cab .marca__e{width:2.3rem;height:2.1rem}
+/* pie: la marca, aún más grande */
+html:root:root .pie-web .marca__t{font-size:2.2rem}
+html:root:root .pie-web .marca__sub{font-size:.78rem}
+html:root:root .pie-web .marca__e{width:2.8rem;height:2.55rem}
 html:root:root .portal__marca-tt{display:inline-flex;flex-direction:column;line-height:1.02}
-html:root:root .portal__marca-tt b{font-family:var(--serif);font-weight:500;font-size:1.35rem;color:var(--tinta)}
+html:root:root .portal__marca-tt b{font-family:var(--serif);font-weight:500;font-size:1.7rem;color:var(--tinta)}
 html:root:root .portal__marca-tt i{font-family:var(--sans);font-style:normal;font-weight:600;
-  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
-@media(max-width:560px){html:root:root .marca__sub{display:none}}
+  font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.22rem}
+html:root:root .portal__marca svg{width:2.8rem;height:2.8rem}
+@media(max-width:560px){html:root:root .cab .marca__t{font-size:1.4rem}
+  html:root:root .marca__sub{display:none}}
 
 /* ---- listas numeradas del texto: números en oro, sangría francesa ----
    Los «1. 2. 3.» de los documentos se rehacen con número en serif dorada,
@@ -1706,6 +1714,11 @@ def main():
         '</body>\n</html>\n')
 
     salida = RAIZ / "web.html"
+    # El software del centro es Klinikare: donde los documentos decían el nombre
+    # anterior de la herramienta —«Clinic Cloud»— ahora dice «Klinikare». Se
+    # sustituye en todo el documento (texto, voz del glosario y su definición),
+    # de modo que el pop-up de concepto sigue resolviendo.
+    doc = re.sub(r"Clinic\s+Cloud", "Klinikare", doc)
     salida.write_text(doc, encoding="utf-8")
     print("web.html · %d secciones · %d apartados · %d KB"
           % (len(SECCIONES), total, len(doc.encode("utf-8")) // 1024))

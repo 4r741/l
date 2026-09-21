@@ -1765,7 +1765,7 @@ body:has(.slide--stmt.is-on) .barra i{background:#DCEEEA}
   --display:"Fraunces","Georgia","Times New Roman",serif;
   --sans:"Roboto","Helvetica Neue",Arial,sans-serif;
   --mono:"Roboto","Helvetica Neue",Arial,sans-serif;
-  --nav:64px; --ancho:74rem;
+  --nav:76px; --ancho:74rem;
   /* los tokens de los documentos, remapeados a esta paleta */
   --paper:var(--fondo); --surface:var(--panel); --surface-2:var(--panel-2);
   --accent:var(--pizarra); --accent-ink:var(--pizarra-fuerte);
@@ -2486,15 +2486,23 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
 html:root:root .marca__tt{display:inline-flex;flex-direction:column;line-height:1.02}
 html:root:root .marca__t{display:block;font-family:var(--serif);font-weight:500;
   color:var(--tinta);letter-spacing:.01em}
-html:root:root .marca__sub{font-family:var(--sans);font-weight:600;font-size:.56rem;
-  letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
-html:root:root .pie-web .marca__t{font-size:1.45rem}
-html:root:root .pie-web .marca__sub{font-size:.6rem}
+html:root:root .marca__sub{font-family:var(--sans);font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.22rem}
+/* cabecera: la marca, más grande */
+html:root:root .cab .marca__t{font-size:1.75rem}
+html:root:root .cab .marca__sub{font-size:.66rem}
+html:root:root .cab .marca__e{width:2.3rem;height:2.1rem}
+/* pie: la marca, aún más grande */
+html:root:root .pie-web .marca__t{font-size:2.2rem}
+html:root:root .pie-web .marca__sub{font-size:.78rem}
+html:root:root .pie-web .marca__e{width:2.8rem;height:2.55rem}
 html:root:root .portal__marca-tt{display:inline-flex;flex-direction:column;line-height:1.02}
-html:root:root .portal__marca-tt b{font-family:var(--serif);font-weight:500;font-size:1.35rem;color:var(--tinta)}
+html:root:root .portal__marca-tt b{font-family:var(--serif);font-weight:500;font-size:1.7rem;color:var(--tinta)}
 html:root:root .portal__marca-tt i{font-family:var(--sans);font-style:normal;font-weight:600;
-  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.2rem}
-@media(max-width:560px){html:root:root .marca__sub{display:none}}
+  font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--calido-fuerte);margin-top:.22rem}
+html:root:root .portal__marca svg{width:2.8rem;height:2.8rem}
+@media(max-width:560px){html:root:root .cab .marca__t{font-size:1.4rem}
+  html:root:root .marca__sub{display:none}}
 
 /* ---- listas numeradas del texto: números en oro, sangría francesa ----
    Los «1. 2. 3.» de los documentos se rehacen con número en serif dorada,
@@ -7123,7 +7131,7 @@ REVISIÓN PREVISTA:</div>
   </div></header>
   <section class="franja franja--oscura" id="camino-visita"><div class="env"><header class="titmapa titmapa--claro reveal"><p class="titmapa__k">El camino · 123 minutos</p><h2>Siga la primera visita, fase a fase</h2><p class="titmapa__p">Doce fases hasta la propuesta, y dos más para el después. Pulse una para bajar a su detalle.</p></header><div class="hitos"><a class="hito reveal" href="#d-f01"><span class="hito__n">01</span><span class="hito__t">Preparación</span><span class="hito__m">6 min</span></a><a class="hito reveal" href="#d-f02"><span class="hito__n">02</span><span class="hito__t">Acogida</span><span class="hito__m">5 min</span></a><a class="hito reveal" href="#d-f03"><span class="hito__n">03</span><span class="hito__t">Alta y RGPD</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f04"><span class="hito__n">04</span><span class="hito__t">Historia clínica</span><span class="hito__m">10 min</span></a><a class="hito reveal" href="#d-f05"><span class="hito__n">05</span><span class="hito__t">Diagnóstico</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f06"><span class="hito__n">06</span><span class="hito__t">Briefing</span><span class="hito__m">5 min</span></a><a class="hito reveal" href="#d-f07"><span class="hito__n">07</span><span class="hito__t">Expectativas</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f08"><span class="hito__n">08</span><span class="hito__t">IAC</span><span class="hito__m">10 min</span></a><a class="hito reveal" href="#d-f09"><span class="hito__n">09</span><span class="hito__t">Presentación 3D</span><span class="hito__m">15 min</span></a><a class="hito reveal" href="#d-f10"><span class="hito__n">10</span><span class="hito__t">Propuesta</span><span class="hito__m">20 min</span></a><a class="hito reveal" href="#d-f11"><span class="hito__n">11</span><span class="hito__t">Cierre admin.</span><span class="hito__m">5 min</span></a><a class="hito reveal" href="#d-f12"><span class="hito__n">12</span><span class="hito__t">Seguimiento</span><span class="hito__m">2 min</span></a><a class="hito reveal" href="#e-m13" data-ve="operaciones"><span class="hito__n">13</span><span class="hito__t">Circuito de producción</span><span class="hito__m">el después</span></a><a class="hito reveal" href="#e-m14" data-ve="operaciones"><span class="hito__n">14</span><span class="hito__t">Mantenimiento</span><span class="hito__m">el después</span></a></div></div></section>
   <div class="env">
-  <div class="docif"><div class="docif__i"><b>9</b><span>Documentos firmados</span><small>De la primera visita, digitalizados en Clinic Cloud el mismo día</small></div><div class="docif__i"><b>12 de 14</b><span>Fases</span><small>Fases 1 a 12 del recorrido; las 13 y 14 van en el Manual Maestro</small></div><div class="docif__i"><b>115–120′</b><span>Duración real</span><small>Fases 2 a 11, según la complejidad del caso a valorar</small></div><div class="docif__i"><b>4</b><span>Roles implicados</span><small>Recepción · Director · Doctor · Auxiliar</small></div><div class="docif__i"><b>5</b><span>Estándares transversales</span><small>Comunicación, entorno, seguridad, datos y agenda</small></div><div class="docif__i"><b>8</b><span>Anexos</span><small>Guiones, preguntas frecuentes, checklist, gobernanza y escalado</small></div></div>
+  <div class="docif"><div class="docif__i"><b>9</b><span>Documentos firmados</span><small>De la primera visita, digitalizados en Klinikare el mismo día</small></div><div class="docif__i"><b>12 de 14</b><span>Fases</span><small>Fases 1 a 12 del recorrido; las 13 y 14 van en el Manual Maestro</small></div><div class="docif__i"><b>115–120′</b><span>Duración real</span><small>Fases 2 a 11, según la complejidad del caso a valorar</small></div><div class="docif__i"><b>4</b><span>Roles implicados</span><small>Recepción · Director · Doctor · Auxiliar</small></div><div class="docif__i"><b>5</b><span>Estándares transversales</span><small>Comunicación, entorno, seguridad, datos y agenda</small></div><div class="docif__i"><b>8</b><span>Anexos</span><small>Guiones, preguntas frecuentes, checklist, gobernanza y escalado</small></div></div>
   <div class="cuerpo">
     <details class="toc" aria-label="Apartados de la sección"><summary class="toc__t">En esta sección</summary><div class="toc__body"><a href="#d-fundamentos" data-toc="d-fundamentos">Los cinco principios de la visita</a>
 <a href="#d-mapa" data-toc="d-mapa">La visita entera, minuto a minuto</a>
@@ -7170,7 +7178,7 @@ REVISIÓN PREVISTA:</div>
       </article>
       <article class="card">
         <span class="eyebrow">Principio 02</span>
-        <h3 id="d-p-no-esta-clinic-cloud-no-ha">Lo que no está en Clinic Cloud, no ha ocurrido</h3>
+        <h3 id="d-p-no-esta-clinic-cloud-no-ha">Lo que no está en Klinikare, no ha ocurrido</h3>
         <p>Cada fase termina con un registro. La trazabilidad clínica y legal se construye durante la visita, no al final del día ni la semana siguiente.</p>
       </article>
       <article class="card">
@@ -7191,7 +7199,7 @@ REVISIÓN PREVISTA:</div>
       <article class="card">
         <span class="eyebrow">Cómo leer este documento</span>
         <h3 id="d-p-siete-capas-fase">Siete capas por fase</h3>
-        <p><strong>Acciones</strong> en orden · <strong>cronología</strong> minuto a minuto · <strong>qué percibe el paciente</strong> · <strong>qué decir y qué evitar</strong> · <strong>casos especiales</strong> · <strong>registro obligatorio</strong> en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> · <strong>criterio de salida</strong>, la condición sin la cual no se avanza.</p>
+        <p><strong>Acciones</strong> en orden · <strong>cronología</strong> minuto a minuto · <strong>qué percibe el paciente</strong> · <strong>qué decir y qué evitar</strong> · <strong>casos especiales</strong> · <strong>registro obligatorio</strong> en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> · <strong>criterio de salida</strong>, la condición sin la cual no se avanza.</p>
       </article>
     </div>
 
@@ -7233,7 +7241,7 @@ REVISIÓN PREVISTA:</div>
         </thead>
         <tbody>
           <tr><td class="num">01</td><td>Preparación previa</td><td>Recepción</td><td>—</td><td class="num">Pre-visita</td><td>Agenda de PV cumplimentada + verificación de duplicados</td></tr>
-          <tr><td class="num">02</td><td>Acogida, Sala VIP y tour</td><td>Recepción</td><td>Director</td><td class="num">5′</td><td>Hora de llegada real en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button></td></tr>
+          <tr><td class="num">02</td><td>Acogida, Sala VIP y tour</td><td>Recepción</td><td>Director</td><td class="num">5′</td><td>Hora de llegada real en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button></td></tr>
           <tr><td class="num">03</td><td>Datos personales, RGPD y alta</td><td>Director</td><td>Recepción</td><td class="num">15′</td><td>Ficha completa + RGPD firmado + email verificado</td></tr>
           <tr><td class="num">04</td><td>Historia clínica y consentimiento radiológico</td><td>Doctor</td><td>—</td><td class="num">10′</td><td>Anamnesis en historia + consentimiento firmado</td></tr>
           <tr><td class="num">05</td><td>Pruebas diagnósticas y fotografía</td><td>Auxiliar</td><td>Doctor</td><td class="num">15′</td><td>Imágenes cargadas, etiquetadas y verificadas</td></tr>
@@ -7389,7 +7397,7 @@ REVISIÓN PREVISTA:</div>
       <article class="card">
         <span class="eyebrow">Regla de continuidad</span>
         <h3 id="d-p-no-repite-ninguna-pregunta">No se repite ninguna pregunta</h3>
-        <p>Cada rol lee en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> lo que registró el anterior. Preguntar dos veces lo mismo comunica desorganización con más fuerza que cualquier folleto.</p>
+        <p>Cada rol lee en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> lo que registró el anterior. Preguntar dos veces lo mismo comunica desorganización con más fuerza que cualquier folleto.</p>
       </article>
       <article class="card">
         <span class="eyebrow">Regla de evidencia</span>
@@ -7406,7 +7414,7 @@ REVISIÓN PREVISTA:</div>
     <div class="section__head">
       <p class="eyebrow"><b class="num">04</b> Las doce fases</p>
       <h2 id="d-p-doce-fases-primera-visita">Las doce fases de la primera visita, una por una</h2>
-      <p>Cada fase incluye su propósito, la secuencia de acciones, la cronología interna, lo que percibe el paciente, los guiones sugeridos con su contrapartida de lo que conviene evitar, los casos especiales que obligan a adaptarla, el registro obligatorio en Clinic Cloud, los errores detectados en auditoría y el criterio de salida. Los guiones son una base sobre la que construir con naturalidad, nunca un texto para recitar.</p>
+      <p>Cada fase incluye su propósito, la secuencia de acciones, la cronología interna, lo que percibe el paciente, los guiones sugeridos con su contrapartida de lo que conviene evitar, los casos especiales que obligan a adaptarla, el registro obligatorio en Klinikare, los errores detectados en auditoría y el criterio de salida. Los guiones son una base sobre la que construir con naturalidad, nunca un texto para recitar.</p>
     </div>
   </div>
 </section>
@@ -7422,7 +7430,7 @@ REVISIÓN PREVISTA:</div>
         <div class="phase__fact"><dt>Momento</dt><dd>Pre-visita · llamada o mensaje entrante</dd></div>
         <div class="phase__fact"><dt>Responsable</dt><dd>Recepción / Atención al Paciente</dd></div>
         <div class="phase__fact"><dt>Ubicación</dt><dd>Recepción</dd></div>
-        <div class="phase__fact"><dt>Herramienta</dt><dd><button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> · Agenda de PV</dd></div>
+        <div class="phase__fact"><dt>Herramienta</dt><dd><button type="button" class="gl" data-gl="Klinikare">Klinikare</button> · Agenda de PV</dd></div>
               <div class="phase__fact"><dt>KPI de la fase</dt><dd>Origen del paciente registrado en el 98 % de las llamadas · tiempo medio de llamada a cita agendada</dd></div>
       </dl>
     </aside>
@@ -7447,7 +7455,7 @@ REVISIÓN PREVISTA:</div>
           </li>
           <li>
             <h4>Registro en la Agenda de PV y control de duplicados</h4>
-            <p>Toda la información inicial y el motivo de consulta se vuelcan en la Agenda de Primera Visita en el momento, no después. Antes de crear nada, se comprueba en Clinic Cloud que el paciente no exista ya en el sistema (búsqueda por teléfono, email y apellidos) para evitar fichas duplicadas que fragmentan el historial.</p>
+            <p>Toda la información inicial y el motivo de consulta se vuelcan en la Agenda de Primera Visita en el momento, no después. Antes de crear nada, se comprueba en Klinikare que el paciente no exista ya en el sistema (búsqueda por teléfono, email y apellidos) para evitar fichas duplicadas que fragmentan el historial.</p>
           </li>
           <li>
             <h4>Comunicación del diferencial (speech de valor)</h4>
@@ -7551,7 +7559,7 @@ REVISIÓN PREVISTA:</div>
       </div>
 
       <div class="block">
-        <p class="block__title">Registro en Clinic Cloud · campos de esta fase</p>
+        <p class="block__title">Registro en Klinikare · campos de esta fase</p>
         <ul class="checks">
           <li><span><b>Nombre y apellidos</b> completos y correctamente escritos</span></li>
           <li><span><b>Teléfono móvil</b> verificado repitiéndolo en voz alta</span></li>
@@ -7702,7 +7710,7 @@ REVISIÓN PREVISTA:</div>
         <ol class="steps">
           <li>
             <h4>Acogida impecable y reconocimiento</h4>
-            <p>Recepción consulta <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> con antelación y saluda al paciente por su nombre. Sin esperas, sin formularios en el mostrador, sin «¿venía usted a qué?». El reconocimiento inmediato es la señal más barata y más eficaz de profesionalidad.</p>
+            <p>Recepción consulta <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> con antelación y saluda al paciente por su nombre. Sin esperas, sin formularios en el mostrador, sin «¿venía usted a qué?». El reconocimiento inmediato es la señal más barata y más eficaz de profesionalidad.</p>
           </li>
           <li>
             <h4>Acompañamiento personal a la Sala VIP</h4>
@@ -7735,7 +7743,7 @@ REVISIÓN PREVISTA:</div>
       <div class="block">
         <p class="block__title">Cronología de la acogida</p>
         <dl class="mini">
-          <div><dt>−15 min</dt><dd>Recepción revisa en Clinic Cloud quién viene, por qué y quién le atenderá.</dd></div>
+          <div><dt>−15 min</dt><dd>Recepción revisa en Klinikare quién viene, por qué y quién le atenderá.</dd></div>
           <div><dt>0:00</dt><dd>Llegada. Saludo por su nombre, de pie, sin mostrador de por medio.</dd></div>
           <div><dt>0:30 – 1:30</dt><dd>Acompañamiento a la Sala VIP y ofrecimiento de bebida.</dd></div>
           <div><dt>1:30 – 2:00</dt><dd>Aviso al Director de que el paciente ha llegado.</dd></div>
@@ -7869,7 +7877,7 @@ REVISIÓN PREVISTA:</div>
       </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
-        <p>El paciente ha visto esterilización e imagen 3D, ha sido tratado por su nombre y pasa al despacho del Director acompañado. Se registra la hora real de llegada en Clinic Cloud para poder medir la puntualidad del circuito.</p>
+        <p>El paciente ha visto esterilización e imagen 3D, ha sido tratado por su nombre y pasa al despacho del Director acompañado. Se registra la hora real de llegada en Klinikare para poder medir la puntualidad del circuito.</p>
       </div>
     </div>
   </div></div>
@@ -7891,7 +7899,7 @@ REVISIÓN PREVISTA:</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2 id="d-p-datos-personales-proteccion-datos-alta-clinic">Datos personales, protección de datos y alta en Clinic Cloud</h2>
+      <h2 id="d-p-datos-personales-proteccion-datos-alta-clinic">Datos personales, protección de datos y alta en Klinikare</h2>
       <p class="phase__intro">La parte administrativa se hace en un despacho y no en un mostrador por una razón deliberada: convierte un trámite en una conversación. Mientras se completan los datos, el Director conoce al paciente como persona —a qué se dedica, con quién vive, qué le preocupa— y esa información será decisiva en las fases 7 y 10.</p>
 
       <div class="block">
@@ -7903,7 +7911,7 @@ REVISIÓN PREVISTA:</div>
               <li>Gestionar la documentación en un entorno íntimo y poco clínico</li>
               <li>Romper el hielo con conversación genuina, sin interrogatorio</li>
               <li>Escuchar más que hablar: trabajo, familia, intereses, expectativas vitales</li>
-              <li>Anotar en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> lo relevante que el paciente cuente de sí mismo</li>
+              <li>Anotar en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> lo relevante que el paciente cuente de sí mismo</li>
             </ul>
           </li>
           <li>
@@ -7922,7 +7930,7 @@ REVISIÓN PREVISTA:</div>
             </ul>
           </li>
           <li>
-            <h4>Alta completa en Clinic Cloud</h4>
+            <h4>Alta completa en Klinikare</h4>
             <p>Responsabilidad indelegable del Director. Se completan todos los campos: nombre y apellidos, DNI/NIE, fecha de nacimiento, dirección completa, móvil, email, teléfono alternativo y fuente de contacto («cómo nos conoció»), coherente con lo registrado en la Fase 1.</p>
           </li>
           <li>
@@ -7949,7 +7957,7 @@ REVISIÓN PREVISTA:</div>
         <p class="block__title">Cronología del despacho</p>
         <dl class="mini">
           <div><dt>0:00 – 3:00</dt><dd>Conversación de apertura: quién es, a qué se dedica, qué le trae hoy.</dd></div>
-          <div><dt>3:00 – 8:00</dt><dd>Hoja de datos personales y alta completa en Clinic Cloud.</dd></div>
+          <div><dt>3:00 – 8:00</dt><dd>Hoja de datos personales y alta completa en Klinikare.</dd></div>
           <div><dt>8:00 – 11:00</dt><dd>Explicación y firma del RGPD, con consentimientos diferenciados.</dd></div>
           <div><dt>11:00 – 13:00</dt><dd>Verificación de email y teléfono; explicación del circuito de la visita.</dd></div>
           <div><dt>13:00 – 15:00</dt><dd>Transición: presentación del Doctor y entrega de la hoja a Recepción.</dd></div>
@@ -7965,7 +7973,7 @@ REVISIÓN PREVISTA:</div>
           <li>«¿Ha estado antes en otra clínica por este tema?» — anticipa comparaciones y experiencias previas</li>
           <li>«¿Hay algo que le preocupe especialmente de la visita de hoy?» — detecta miedos antes de que aparezcan</li>
         </ul>
-        <p class="footnote">Todo lo relevante que se aprenda aquí se anota en Clinic Cloud. En la Fase 10, recordar que su hija se casa en septiembre vale más que cualquier técnica de cierre.</p>
+        <p class="footnote">Todo lo relevante que se aprenda aquí se anota en Klinikare. En la Fase 10, recordar que su hija se casa en septiembre vale más que cualquier técnica de cierre.</p>
       </div>
 
       <div class="block">
@@ -7990,7 +7998,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
       </div>
 
       <div class="block">
-        <p class="block__title">Campos obligatorios del alta en Clinic Cloud</p>
+        <p class="block__title">Campos obligatorios del alta en Klinikare</p>
         <div class="tablewrap">
           <table>
             <thead><tr><th>Bloque</th><th>Campos</th><th>Verificación</th></tr></thead>
@@ -8055,7 +8063,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
       </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
-        <p>Ficha de Clinic Cloud completa, RGPD firmado y fechado, email verificado y hoja de datos entregada a Recepción. Solo entonces el paciente pasa al Doctor.</p>
+        <p>Ficha de Klinikare completa, RGPD firmado y fechado, email verificado y hoja de datos entregada a Recepción. Solo entonces el paciente pasa al Doctor.</p>
       </div>
     </div>
   </div></div>
@@ -8135,7 +8143,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
         <div class="callout">
           <p class="eyebrow">Crítico · Doctor</p>
           <ul class="list">
-            <li>Registrar en la historia de <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> la anamnesis completa, no un resumen de dos líneas.</li>
+            <li>Registrar en la historia de <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> la anamnesis completa, no un resumen de dos líneas.</li>
             <li>Confirmar en el sistema que el consentimiento radiológico está firmado <strong>antes</strong> de que el paciente entre en la sala de imagen.</li>
             <li>Ante sospecha o confirmación de embarazo, valorar diferir las pruebas y dejarlo documentado.</li>
           </ul>
@@ -8164,7 +8172,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
               <tr><td>Diabetes</td><td>Cicatrización comprometida y mayor riesgo periodontal</td><td>Preguntar por control glucémico reciente; condicionar el calendario quirúrgico</td></tr>
               <tr><td>Cardiopatía o prótesis valvular</td><td>Posible indicación de profilaxis antibiótica</td><td>Verificar informe del cardiólogo antes de procedimientos con sangrado</td></tr>
               <tr><td>Inmunosupresión o quimioterapia</td><td>Riesgo infeccioso y de retraso de cicatrización</td><td>Coordinación con el especialista responsable; posponer si procede</td></tr>
-              <tr><td>Alergias, en especial a látex o anestésicos</td><td>Riesgo de reacción durante el tratamiento</td><td>Marcar la alerta en Clinic Cloud de forma visible y preparar material alternativo</td></tr>
+              <tr><td>Alergias, en especial a látex o anestésicos</td><td>Riesgo de reacción durante el tratamiento</td><td>Marcar la alerta en Klinikare de forma visible y preparar material alternativo</td></tr>
               <tr><td>Embarazo o lactancia</td><td>Prudencia radiológica y farmacológica</td><td>Diferir pruebas no urgentes; documentar la decisión</td></tr>
               <tr><td>Tabaquismo activo</td><td>Menor supervivencia implantaria y peor pronóstico periodontal</td><td>Informar del impacto en el pronóstico y reflejarlo en el <button type="button" class="gl" data-gl="IAC">IAC</button></td></tr>
               <tr><td>Bruxismo</td><td>Sobrecarga de restauraciones e implantes</td><td>Incluir férula de descarga en el plan y advertir sobre garantías</td></tr>
@@ -8250,7 +8258,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
         <p class="block__title">Errores frecuentes en esta fase</p>
         <ul class="list">
           <li>Registrar «sin antecedentes de interés» sin haber preguntado por medicación concreta</li>
-          <li>No marcar las alergias como alerta visible en Clinic Cloud</li>
+          <li>No marcar las alergias como alerta visible en Klinikare</li>
           <li>Firmar el consentimiento después de haber hecho las pruebas</li>
           <li>Preguntar por miedos y no trasladárselos al resto del equipo</li>
           <li>Repetir al paciente preguntas que ya respondió por teléfono o en el despacho</li>
@@ -8275,7 +8283,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
         <div class="phase__fact"><dt>Tiempo</dt><dd>15 minutos</dd></div>
         <div class="phase__fact"><dt>Responsable</dt><dd>Auxiliar</dd></div>
         <div class="phase__fact"><dt>Ubicación</dt><dd>Sala de imagen 3D · Gabinete</dd></div>
-        <div class="phase__fact"><dt>Salida</dt><dd>Imágenes en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button>, etiquetadas</dd></div>
+        <div class="phase__fact"><dt>Salida</dt><dd>Imágenes en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button>, etiquetadas</dd></div>
               <div class="phase__fact"><dt>KPI de la fase</dt><dd>Batería completa en 15 minutos o menos · repetición de pruebas por calidad por debajo del 5 %</dd></div>
       </dl>
     </aside>
@@ -8331,7 +8339,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
         <div class="callout">
           <p class="eyebrow">Crítico · Auxiliar</p>
           <ul class="list">
-            <li>Todas las imágenes se cargan en Clinic Cloud <strong>en el momento</strong>, no al final de la jornada.</li>
+            <li>Todas las imágenes se cargan en Klinikare <strong>en el momento</strong>, no al final de la jornada.</li>
             <li>Etiquetado correcto: tipo de prueba, fecha y observaciones.</li>
             <li>Verificación de calidad antes de dar la prueba por buena: encuadre, enfoque, ausencia de artefactos y de movimiento.</li>
             <li>Comprobar que el Doctor puede abrir el material desde el equipo de presentación.</li>
@@ -8346,7 +8354,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
           <div><dt>4:00 – 5:30</dt><dd><button type="button" class="gl" data-gl="OPG">OPG</button>.</dd></div>
           <div><dt>5:30 – 9:30</dt><dd>Escaneado intraoral de ambas arcadas y registro de oclusión.</dd></div>
           <div><dt>9:30 – 13:00</dt><dd>Serie fotográfica extraoral e intraoral.</dd></div>
-          <div><dt>13:00 – 15:00</dt><dd>Carga, etiquetado y verificación en Clinic Cloud.</dd></div>
+          <div><dt>13:00 – 15:00</dt><dd>Carga, etiquetado y verificación en Klinikare.</dd></div>
         </dl>
       </div>
 
@@ -8379,7 +8387,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
       </div>
 
       <div class="block">
-        <p class="block__title">Etiquetado y nomenclatura en Clinic Cloud</p>
+        <p class="block__title">Etiquetado y nomenclatura en Klinikare</p>
         <div class="sheet"><b>Formato:</b> AAAAMMDD_Apellido-Nombre_TIPO_detalle
 
 20260318_Perez-Ana_CBCT_maxilar-completo
@@ -8553,7 +8561,7 @@ escribiendo a la dirección de la clínica. Puede reclamar ante la autoridad de 
 
       <div class="block">
         <p class="block__title">Ficha de acuerdo del briefing</p>
-        <p>Se cumplimenta en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> durante el propio briefing. Es la garantía de que ambos profesionales salen con la misma versión.</p>
+        <p>Se cumplimenta en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> durante el propio briefing. Es la garantía de que ambos profesionales salen con la misma versión.</p>
         <div class="sheet"><b>Diagnóstico principal:</b> ......................................................
 <b>Diagnósticos secundarios:</b> ................................................
 <b>Plan óptimo</b>
@@ -8907,13 +8915,13 @@ PROYECCIÓN A 5 AÑOS SIN INTERVENCIÓN: ........................</div>
           </li>
           <li>
             <h4>Entrega inmediata a Recepción</h4>
-            <p>El IAC firmado se entrega en el momento para su escaneo y subida a <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button>. No espera al final de la visita.</p>
+            <p>El IAC firmado se entrega en el momento para su escaneo y subida a <button type="button" class="gl" data-gl="Klinikare">Klinikare</button>. No espera al final de la visita.</p>
           </li>
         </ol>
 
         <div class="callout">
           <p class="eyebrow">Crítico · Doctor</p>
-          <p>La firma del Doctor no es un trámite administrativo: convierte el documento en un acto clínico con responsabilidad profesional. Nada se firma sin haberlo leído íntegramente, y el contenido del IAC debe ser <strong>idéntico</strong> a lo que después se registre en la historia de Clinic Cloud.</p>
+          <p>La firma del Doctor no es un trámite administrativo: convierte el documento en un acto clínico con responsabilidad profesional. Nada se firma sin haberlo leído íntegramente, y el contenido del IAC debe ser <strong>idéntico</strong> a lo que después se registre en la historia de Klinikare.</p>
         </div>
       </div>
 
@@ -8968,7 +8976,7 @@ Firma del Doctor: ..............  N.º de colegiado: ..............  Fecha: ....
           <li><strong>Trazable:</strong> cada afirmación debe poder señalarse en una imagen o en la exploración</li>
           <li><strong>Comprensible:</strong> término técnico seguido de su equivalente en lenguaje llano</li>
           <li><strong>Completo:</strong> también se recoge lo que está sano, porque delimita el alcance del tratamiento</li>
-          <li><strong>Coherente:</strong> el IAC, la historia de Clinic Cloud y el presupuesto deben decir lo mismo</li>
+          <li><strong>Coherente:</strong> el IAC, la historia de Klinikare y el presupuesto deben decir lo mismo</li>
         </ul>
       </div>
 
@@ -8976,7 +8984,7 @@ Firma del Doctor: ..............  N.º de colegiado: ..............  Fecha: ....
         <p class="block__title">Validez, custodia y entrega</p>
         <ul class="checks">
           <li><span><b>Original firmado</b> para el paciente</span></li>
-          <li><span><b>Copia digitalizada</b> en la ficha de Clinic Cloud el mismo día</span></li>
+          <li><span><b>Copia digitalizada</b> en la ficha de Klinikare el mismo día</span></li>
           <li><span><b>Trazabilidad de versiones:</b> si el plan cambia, se emite un IAC nuevo fechado, sin destruir el anterior</span></li>
           <li><span><b>Correcciones</b> antes de la firma; nunca tachaduras sobre un documento firmado</span></li>
           <li><span><b>Conservación</b> conforme a la normativa de historia clínica aplicable</span></li>
@@ -9254,7 +9262,7 @@ explicado bien?»</div>
         <div class="phase__fact"><dt>Tiempo</dt><dd>20 minutos</dd></div>
         <div class="phase__fact"><dt>Responsable</dt><dd>Director / Asesor</dd></div>
         <div class="phase__fact"><dt>Ubicación</dt><dd>Despacho</dd></div>
-        <div class="phase__fact"><dt>Salida</dt><dd>Estado de la PV registrado en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button></dd></div>
+        <div class="phase__fact"><dt>Salida</dt><dd>Estado de la PV registrado en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button></dd></div>
               <div class="phase__fact"><dt>KPI de la fase</dt><dd>Tasa de conversión de la PV · ticket medio aceptado frente al presentado</dd></div>
       </dl>
     </aside>
@@ -9352,7 +9360,7 @@ explicado bien?»</div>
       </div>
 
       <div class="block">
-        <p class="block__title">Registro de conversión · Clinic Cloud</p>
+        <p class="block__title">Registro de conversión · Klinikare</p>
         <div class="tablewrap">
           <table>
             <thead><tr><th>Campo</th><th>Obligatorio</th><th>Detalle</th></tr></thead>
@@ -9377,7 +9385,7 @@ explicado bien?»</div>
           <div><dt>3:00 – 8:00</dt><dd>Presupuesto línea a línea, con justificación de cada partida.</dd></div>
           <div><dt>8:00 – 13:00</dt><dd>Opciones de pago y simulación de cuotas en vivo.</dd></div>
           <div><dt>13:00 – 18:00</dt><dd>Preguntas, objeciones y ajuste de la propuesta.</dd></div>
-          <div><dt>18:00 – 20:00</dt><dd>Decisión, firma o acuerdo de seguimiento, y registro en Clinic Cloud.</dd></div>
+          <div><dt>18:00 – 20:00</dt><dd>Decisión, firma o acuerdo de seguimiento, y registro en Klinikare.</dd></div>
         </dl>
       </div>
 
@@ -9416,7 +9424,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
               <tr><td class="num">1</td><td>Simulación de cuota delante del paciente, con importe total y número de plazos</td><td>Impresión o pantalla de la simulación</td></tr>
               <tr><td class="num">2</td><td>Información precontractual: importe financiado, plazos, intereses y coste total</td><td>Documento de la entidad</td></tr>
               <tr><td class="num">3</td><td>Solicitud con los datos del titular</td><td>DNI, justificante de ingresos según entidad</td></tr>
-              <tr><td class="num">4</td><td>Respuesta de la entidad</td><td>Aprobación o denegación registrada en Clinic Cloud</td></tr>
+              <tr><td class="num">4</td><td>Respuesta de la entidad</td><td>Aprobación o denegación registrada en Klinikare</td></tr>
               <tr><td class="num">5</td><td>Firma del contrato y calendario de pagos</td><td>Copia al paciente y copia digitalizada</td></tr>
               <tr><td class="num">6</td><td>Vinculación del calendario de pagos al calendario clínico</td><td>Agenda de tratamiento</td></tr>
             </tbody>
@@ -9560,7 +9568,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
           <div>
             <h4>Reglas de aplicación</h4>
             <ul class="list">
-              <li>Todo descuento se registra en Clinic Cloud con su motivo</li>
+              <li>Todo descuento se registra en Klinikare con su motivo</li>
               <li>Todo descuento consta en el presupuesto firmado</li>
               <li>Todo descuento tiene una autorización identificable</li>
               <li>Ningún descuento se comunica antes de haber presentado el valor</li>
@@ -9620,7 +9628,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
       </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
-        <p>El estado de la PV está cerrado en Clinic Cloud con importes y motivo. Un «no convertido» sin motivo registrado es un caso perdido: sin él, la Fase 12 no puede diseñar seguimiento alguno. Y <strong>ninguna visita se cierra sin que se haya ofrecido ATC al menos una vez</strong>, con su estado registrado.</p>
+        <p>El estado de la PV está cerrado en Klinikare con importes y motivo. Un «no convertido» sin motivo registrado es un caso perdido: sin él, la Fase 12 no puede diseñar seguimiento alguno. Y <strong>ninguna visita se cierra sin que se haya ofrecido ATC al menos una vez</strong>, con su estado registrado.</p>
       </div>
     </div>
   </div></div>
@@ -9651,7 +9659,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
         <h4>Si el paciente acepta</h4>
         <ul class="list">
           <li>Firma de aceptación del presupuesto ante el Director y entrega a Recepción</li>
-          <li>Aceptación del presupuesto en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> por parte del Director</li>
+          <li>Aceptación del presupuesto en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> por parte del Director</li>
           <li>Programación de la siguiente cita, con confirmación de fecha y hora</li>
           <li>Instrucciones previas si proceden: ayuno, medicación, acompañante</li>
           <li>Entrega de la documentación del plan de tratamiento</li>
@@ -9666,7 +9674,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
 
       <div class="block">
         <p class="block__title">Digitalización · paso crítico final</p>
-        <p>Recepción escanea y sube a la ficha de Clinic Cloud toda la documentación firmada, garantizando la trazabilidad clínica y legal:</p>
+        <p>Recepción escanea y sube a la ficha de Klinikare toda la documentación firmada, garantizando la trazabilidad clínica y legal:</p>
         <ul class="checks">
           <li><span><b>Hoja de datos personales</b> — firmada por el paciente</span></li>
           <li><span><b>Consentimiento RGPD</b> — firmado y fechado</span></li>
@@ -9803,7 +9811,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
       <dl class="phase__facts">
         <div class="phase__fact"><dt>Tiempo</dt><dd>2 minutos + post-visita</dd></div>
         <div class="phase__fact"><dt>Responsable</dt><dd>Director · Recepción · Marketing</dd></div>
-        <div class="phase__fact"><dt>Ubicación</dt><dd>Salida de clínica · <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button></dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Salida de clínica · <button type="button" class="gl" data-gl="Klinikare">Klinikare</button></dd></div>
         <div class="phase__fact"><dt>Horizonte</dt><dd>180 días</dd></div>
               <div class="phase__fact"><dt>KPI de la fase</dt><dd>100 % de no convertidos con tarea de re-contacto activa · tasa de recuperación a 90 días</dd></div>
       </dl>
@@ -9843,7 +9851,7 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
           <li>Preguntar si quedó alguna duda</li>
           <li>Ofrecer disponibilidad para volver cuando lo necesite</li>
           <li>Detectar la objeción real, que rara vez es la primera que se dijo</li>
-          <li>Registrar en Clinic Cloud lo que se descubra</li>
+          <li>Registrar en Klinikare lo que se descubra</li>
         </ul>
         <div class="script">
           <span class="eyebrow">Guion sugerido</span>
@@ -9884,11 +9892,11 @@ Firma de aceptación del paciente ..............  Fecha ..........</div>
             </tbody>
           </table>
         </div>
-        <p style="margin-top:1rem">La cadencia se detiene de inmediato si el paciente pide no ser contactado. Esa petición se registra en Clinic Cloud y se respeta en todos los canales, sin excepción.</p>
+        <p style="margin-top:1rem">La cadencia se detiene de inmediato si el paciente pide no ser contactado. Esa petición se registra en Klinikare y se respeta en todos los canales, sin excepción.</p>
       </div>
 
       <div class="block">
-        <p class="block__title">Programación en Clinic Cloud · responsabilidad del Director</p>
+        <p class="block__title">Programación en Klinikare · responsabilidad del Director</p>
         <h4>Cada tarea de re-contacto incluye</h4>
         <ul class="list">
           <li>Responsable asignado</li>
@@ -10072,7 +10080,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
       <div class="gate">
         <p class="eyebrow">Criterio de salida</p>
-        <p>Todo paciente sale del circuito con una tarea futura asignada en Clinic Cloud: cita de tratamiento si aceptó, o re-contacto con fecha y responsable si no. Ninguna PV queda sin siguiente paso.</p>
+        <p>Todo paciente sale del circuito con una tarea futura asignada en Klinikare: cita de tratamiento si aceptó, o re-contacto con fecha y responsable si no. Ninguna PV queda sin siguiente paso.</p>
       </div>
     </div>
   </div></div>
@@ -10137,7 +10145,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <div>
         <p class="block__title">Cierre de la clínica</p>
         <ul class="checks">
-          <li><span><b>Todas las PV del día</b> cerradas en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> con su estado</span></li>
+          <li><span><b>Todas las PV del día</b> cerradas en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> con su estado</span></li>
           <li><span><b>Documentación firmada</b> escaneada y subida</span></li>
           <li><span><b>Tareas de seguimiento</b> creadas con fecha y responsable</span></li>
           <li><span><b>Papel con datos personales</b> archivado o destruido</span></li>
@@ -10155,7 +10163,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <tr><td>Esterilización</td><td>Circuito sucio-limpio diferenciado, control de ciclos con registro y trazabilidad por paciente</td><td>Auxiliar</td></tr>
           <tr><td>Protección radiológica</td><td>Justificación de cada prueba, dosis mínima razonablemente alcanzable y consentimiento previo firmado</td><td>Doctor</td></tr>
           <tr><td>Identificación del paciente</td><td>Verificación con dos datos antes de cualquier prueba o registro</td><td>Quien ejecuta</td></tr>
-          <tr><td>Alergias y alertas</td><td>Marcadas de forma visible en Clinic Cloud y revisadas al inicio de cada cita</td><td>Doctor</td></tr>
+          <tr><td>Alergias y alertas</td><td>Marcadas de forma visible en Klinikare y revisadas al inicio de cada cita</td><td>Doctor</td></tr>
           <tr><td>Emergencias médicas</td><td>Botiquín revisado, oxígeno accesible, equipo formado y protocolo de aviso a emergencias visible</td><td>Dirección</td></tr>
           <tr><td>Residuos</td><td>Segregación conforme a normativa y retirada por gestor autorizado</td><td>Auxiliar</td></tr>
           <tr><td>Mantenimiento de equipos</td><td>Calendario de revisiones y registro de incidencias por equipo</td><td>Dirección</td></tr>
@@ -10322,7 +10330,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <thead><tr><th>Registro</th><th>Fase</th><th>Responsable</th><th>Plazo</th><th>Consecuencia si falta</th></tr></thead>
         <tbody>
           <tr><td>Agenda de PV con motivo y origen</td><td class="num">01</td><td>Recepción</td><td>En la llamada</td><td>Marketing sin datos de retorno</td></tr>
-          <tr><td>Ficha completa en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button></td><td class="num">03</td><td>Director</td><td>Durante la visita</td><td>Bloqueo de facturación y financiación</td></tr>
+          <tr><td>Ficha completa en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button></td><td class="num">03</td><td>Director</td><td>Durante la visita</td><td>Bloqueo de facturación y financiación</td></tr>
           <tr><td>Consentimiento RGPD firmado</td><td class="num">03</td><td>Director</td><td>Durante la visita</td><td>Incumplimiento normativo</td></tr>
           <tr><td>Anamnesis médica en historia</td><td class="num">04</td><td>Doctor</td><td>Durante la visita</td><td>Riesgo clínico y responsabilidad profesional</td></tr>
           <tr><td>Consentimiento radiológico firmado</td><td class="num">04</td><td>Doctor</td><td>Antes de las pruebas</td><td>Pruebas realizadas sin cobertura legal</td></tr>
@@ -10353,18 +10361,18 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Indicador</th><th>Definición</th><th>Objetivo de partida</th><th>Fuente</th></tr></thead>
         <tbody>
-          <tr><td>Tasa de conversión de PV</td><td>PV convertidas / PV realizadas</td><td class="num">≥ 60 %</td><td><button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> · estado de PV</td></tr>
-          <tr><td>Importe medio aceptado</td><td>Suma aceptada / PV convertidas</td><td class="num">Tendencia al alza</td><td>Clinic Cloud · presupuestos</td></tr>
-          <tr><td>Ratio de aceptación</td><td>Importe aceptado / importe presentado</td><td class="num">≥ 75 %</td><td>Clinic Cloud · presupuestos</td></tr>
+          <tr><td>Tasa de conversión de PV</td><td>PV convertidas / PV realizadas</td><td class="num">≥ 60 %</td><td><button type="button" class="gl" data-gl="Klinikare">Klinikare</button> · estado de PV</td></tr>
+          <tr><td>Importe medio aceptado</td><td>Suma aceptada / PV convertidas</td><td class="num">Tendencia al alza</td><td>Klinikare · presupuestos</td></tr>
+          <tr><td>Ratio de aceptación</td><td>Importe aceptado / importe presentado</td><td class="num">≥ 75 %</td><td>Klinikare · presupuestos</td></tr>
           <tr><td>Documentación completa en 24 h</td><td>PV con los 9 documentos subidos el mismo día</td><td class="num">100 %</td><td>Auditoría de fichas</td></tr>
-          <tr><td>Cumplimiento de la llamada 24–48 h</td><td>PV con llamada de cortesía registrada</td><td class="num">≥ 95 %</td><td>Clinic Cloud · tareas</td></tr>
-          <tr><td>Conversión diferida</td><td>No convertidos que aceptan en 180 días</td><td class="num">≥ 20 %</td><td>Clinic Cloud · nurturing</td></tr>
+          <tr><td>Cumplimiento de la llamada 24–48 h</td><td>PV con llamada de cortesía registrada</td><td class="num">≥ 95 %</td><td>Klinikare · tareas</td></tr>
+          <tr><td>Conversión diferida</td><td>No convertidos que aceptan en 180 días</td><td class="num">≥ 20 %</td><td>Klinikare · nurturing</td></tr>
         </tbody>
       </table>
     </div>
 
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="d-p-rubrica-auditoria-primera-visita">Rúbrica de auditoría de una Primera Visita</h3>
-    <p style="color:var(--ink-2);max-width:66ch">Dirección audita cada mes una muestra de PV contra esta rúbrica, revisando la ficha en Clinic Cloud y, cuando procede, acompañando la visita. Cien puntos posibles; por debajo de 80 se activa plan de refuerzo con el equipo del centro.</p>
+    <p style="color:var(--ink-2);max-width:66ch">Dirección audita cada mes una muestra de PV contra esta rúbrica, revisando la ficha en Klinikare y, cuando procede, acompañando la visita. Cien puntos posibles; por debajo de 80 se activa plan de refuerzo con el equipo del centro.</p>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Criterio</th><th>Qué se comprueba</th><th>Peso</th><th></th></tr></thead>
@@ -10424,7 +10432,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <thead><tr><th>Periodo</th><th>Contenido</th><th>Evidencia de aprendizaje</th></tr></thead>
         <tbody>
           <tr><td class="num">Días 1–3</td><td>Lectura del protocolo completo, recorrido físico de la clínica y presentación del equipo</td><td>Cuestionario de comprensión</td></tr>
-          <tr><td class="num">Días 4–7</td><td>Formación en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button>: alta, historia, imágenes, presupuestos y tareas</td><td>Alta de un caso de prueba sin errores</td></tr>
+          <tr><td class="num">Días 4–7</td><td>Formación en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button>: alta, historia, imágenes, presupuestos y tareas</td><td>Alta de un caso de prueba sin errores</td></tr>
           <tr><td class="num">Días 8–12</td><td>Observación de cuatro PV completas, sin intervenir</td><td>Ficha de observación por fase</td></tr>
           <tr><td class="num">Días 13–18</td><td>Role-play de su rol con un compañero veterano, incluidas objeciones</td><td>Dos simulaciones grabadas y comentadas</td></tr>
           <tr><td class="num">Días 19–25</td><td>Ejecución acompañada: hace su parte con supervisión presente</td><td>Rúbrica de auditoría sobre sus visitas</td></tr>
@@ -10438,7 +10446,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <div><h5>Recepción <span class="tag tag--rec">Fases 1, 2, 11</span></h5><p>Domina la llamada de PV, el speech de valor, la agenda, la acogida y la digitalización completa el mismo día.</p></div>
       <div><h5>Director <span class="tag tag--dir">Fases 2, 3, 6, 8, 9, 10, 12</span></h5><p>Domina el alta, el RGPD, la redacción del <button type="button" class="gl" data-gl="IAC">IAC</button>, la presentación económica, el manejo de objeciones y la cadencia de seguimiento.</p></div>
       <div><h5>Doctor <span class="tag tag--doc">Fases 4, 6, 7, 8, 9</span></h5><p>Domina la anamnesis, el consentimiento radiológico, la exploración sistemática, la lectura del <button type="button" class="gl" data-gl="CBCT">CBCT</button> y la presentación del diagnóstico.</p></div>
-      <div><h5>Auxiliar <span class="tag tag--aux">Fase 5</span></h5><p>Domina el protocolo de imagen completo, los criterios de calidad, el confort del paciente y el etiquetado en Clinic Cloud.</p></div>
+      <div><h5>Auxiliar <span class="tag tag--aux">Fase 5</span></h5><p>Domina el protocolo de imagen completo, los criterios de calidad, el confort del paciente y el etiquetado en Klinikare.</p></div>
       <div><h5>Recertificación</h5><p>Anual para todos los roles, y siempre que cambie el protocolo, el sistema o el equipamiento.</p></div>
       <div><h5>Suplencias</h5><p>Solo cubre una fase quien esté certificado en ella. Si no hay nadie certificado, se reprograma la visita.</p></div>
     </div>
@@ -10615,7 +10623,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <li><span><b>F1</b> · Recordatorio enviado al paciente</span></li>
           <li><span><b>F2</b> · Saludo por su nombre y hora de llegada registrada</span></li>
           <li><span><b>F2</b> · Tour de esterilización e imagen 3D realizado</span></li>
-          <li><span><b>F3</b> · Ficha completa en Clinic Cloud, sin campos vacíos</span></li>
+          <li><span><b>F3</b> · Ficha completa en Klinikare, sin campos vacíos</span></li>
           <li><span><b>F3</b> · RGPD explicado, firmado y fechado</span></li>
           <li><span><b>F3</b> · Email verificado en voz alta</span></li>
           <li><span><b>F4</b> · Anamnesis médica y dental registradas</span></li>
@@ -10653,7 +10661,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <article class="card"><span class="eyebrow">IAC</span><h3 id="d-p-informe-analisis-clinico">Informe de Análisis Clínico</h3><p>Documento firmado por el Doctor con hallazgos, diagnóstico y plan de tratamiento.</p></article>
       <article class="card"><span class="eyebrow">CBCT</span><h3 id="d-p-tomografia-haz-conico">Tomografía de haz cónico</h3><p>Estudio tridimensional del complejo maxilofacial con dosis reducida.</p></article>
       <article class="card"><span class="eyebrow">OPG</span><h3 id="d-p-ortopantomografia">Ortopantomografía</h3><p>Radiografía panorámica digital de ambos maxilares.</p></article>
-      <article class="card"><span class="eyebrow">Clinic Cloud</span><h3 id="d-p-sistema-gestion">Sistema de gestión</h3><p>Historia clínica, agenda, presupuestos, tareas y trazabilidad documental del centro.</p></article>
+      <article class="card"><span class="eyebrow">Klinikare</span><h3 id="d-p-sistema-gestion">Sistema de gestión</h3><p>Historia clínica, agenda, presupuestos, tareas y trazabilidad documental del centro.</p></article>
       <article class="card"><span class="eyebrow">Carpeta Alma</span><h3 id="d-p-dossier-paciente">Dossier del paciente</h3><p>Libro de la clínica, presupuesto, OPG y fotografías que todo paciente se lleva.</p></article>
     </div>
 
@@ -10701,7 +10709,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <thead><tr><th>Incidencia</th><th>Detectada por</th><th>Escala a</th><th>Acción correctiva</th></tr></thead>
         <tbody>
           <tr><td>Documentación no subida el mismo día</td><td>Auditoría o Director</td><td>Dirección de Centros</td><td>Revisión de causa raíz</td></tr>
-          <tr><td>Alta en Clinic Cloud no completada antes de la Fase 9</td><td>Auditoría o Director</td><td>Director de Clínica</td><td>Revisar la entrega de la anamnesis a Recepción</td></tr>
+          <tr><td>Alta en Klinikare no completada antes de la Fase 9</td><td>Auditoría o Director</td><td>Director de Clínica</td><td>Revisar la entrega de la anamnesis a Recepción</td></tr>
           <tr><td>IAC con discrepancias clínicas</td><td>Auditoría</td><td>Dirección de Centros y Doctor</td><td>Corrección formal del informe</td></tr>
           <tr><td>Presupuesto elaborado sin solicitud firmada</td><td>Auditoría</td><td>Dirección de Centros</td><td>Recordatorio del circuito al Director</td></tr>
           <tr><td>RAC no avisada tras la aceptación</td><td>Auditoría o RAC</td><td>Director de Clínica</td><td>Aviso inmediato y revisión del traspaso</td></tr>
@@ -10794,7 +10802,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
 
     <div class="edit">
       <p class="eyebrow">Qué contiene</p>
-      <p>Cronología minuto a minuto y qué percibe el paciente en cada fase, guiones contrastados de qué decir y qué evitar, casos especiales y contingencias, checklists operativos marcables, campos exactos de registro en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button>, contingencias y plan de incorporación de treinta días para cada puesto, los <a href="#e-estandares" title="Va a: Estándares transversales del centro">estándares transversales</a> —comunicación, seguridad clínica, emergencias, protección de datos y continuidad del centro—, seis diagramas de los circuitos, los anexos y un apartado de <a href="#e-notas" title="Va a: Puntos que siguen abiertos">puntos abiertos</a> con lo que Dirección tiene todavía que resolver.</p>
+      <p>Cronología minuto a minuto y qué percibe el paciente en cada fase, guiones contrastados de qué decir y qué evitar, casos especiales y contingencias, checklists operativos marcables, campos exactos de registro en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button>, contingencias y plan de incorporación de treinta días para cada puesto, los <a href="#e-estandares" title="Va a: Estándares transversales del centro">estándares transversales</a> —comunicación, seguridad clínica, emergencias, protección de datos y continuidad del centro—, seis diagramas de los circuitos, los anexos y un apartado de <a href="#e-notas" title="Va a: Puntos que siguen abiertos">puntos abiertos</a> con lo que Dirección tiene todavía que resolver.</p>
     </div>
   </div>
 </section>
@@ -10900,7 +10908,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <tbody>
           <tr><td>Versión</td><td>v32.0 · Agosto 2026</td></tr>
           <tr><td>Denominación comercial</td><td>Centro de Excelencia Implantológica Alma (uso abreviado: Alma)</td></tr>
-          <tr><td>Software de gestión clínica</td><td>Clinic Cloud (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
+          <tr><td>Software de gestión clínica</td><td>Klinikare (agenda, fichas, historia clínica, presupuestos, documentación, portal del paciente)</td></tr>
           <tr><td>Software complementario</td><td>Smartee (Smartee Doctor) y/o Spark Approver — planificación e informes de ortodoncia. WeDiagnostix — prediagnóstico IA opcional sobre OPG.</td></tr>
           <tr><td>Sustituye a</td><td>Protocolo v32.0, manuales de puesto sueltos y manual de puesta en marcha por separado</td></tr>
           <tr><td>Propietario del documento</td><td>Dirección de Centros / Dirección Comercial</td></tr>
@@ -10920,11 +10928,11 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <tr><td class="num">1</td><td>Excelencia técnica visible</td><td>La tecnología se muestra, no se menciona.</td><td>Todo paciente ha visto la sala de imagen antes de la Fase 5</td></tr>
           <tr><td class="num">2</td><td>Transparencia informada</td><td>Todo consentimiento se obtiene con comprensión real, no como mero trámite firmado.</td><td>En la historia consta que la comprensión fue verificada</td></tr>
           <tr><td class="num">3</td><td>Personalización</td><td>Cada fase construye sobre la información recogida en la anterior; nada se repite ni se improvisa.</td><td>Ninguna pregunta se hace dos veces al paciente</td></tr>
-          <tr><td class="num">4</td><td>Trazabilidad documental total</td><td>Si no está en Clinic Cloud y escaneado, no ha ocurrido.</td><td>Cero documentos pendientes de subir al cierre</td></tr>
+          <tr><td class="num">4</td><td>Trazabilidad documental total</td><td>Si no está en Klinikare y escaneado, no ha ocurrido.</td><td>Cero documentos pendientes de subir al cierre</td></tr>
           <tr><td class="num">5</td><td>Ética comercial</td><td>Se guía hacia la decisión, no se presiona; toda objeción se resuelve con información, no con urgencia artificial.</td><td>Ninguna oferta con caducidad inventada; motivo real de no conversión registrado</td></tr>
           <tr><td class="num">6</td><td>Continuidad de confort</td><td>El paciente regresa a la Sala VIP entre pruebas y análisis; nunca espera sin explicación.</td><td>Ningún paciente espera en sala general durante la PV</td></tr>
           <tr><td class="num">7</td><td>Lo vendido se entrega rápido</td><td>El circuito de producción (Fase 13, RAC) evita que un presupuesto aceptado tarde en ejecutarse.</td><td>Producto pendiente con tendencia descendente</td></tr>
-          <tr><td class="num">8</td><td>Ninguna tarea de back-office bloquea al paciente</td><td>El alta en Clinic Cloud (Fase 3) se completa en paralelo mientras el paciente avanza.</td><td>El alta está terminada antes de la Fase 9</td></tr>
+          <tr><td class="num">8</td><td>Ninguna tarea de back-office bloquea al paciente</td><td>El alta en Klinikare (Fase 3) se completa en paralelo mientras el paciente avanza.</td><td>El alta está terminada antes de la Fase 9</td></tr>
           <tr><td class="num">9</td><td>Corrección inmediata</td><td>Cualquier dato incorrecto se corrige en el momento con el paciente presente, nunca después de memoria.</td><td>Sin correcciones «pendientes» en la ficha al cierre</td></tr>
         </tbody>
       </table>
@@ -10935,7 +10943,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Rol</th><th>Abrev.</th><th>Función</th></tr></thead>
         <tbody>
-          <tr><td>Recepción</td><td class="num">REC</td><td>Primer y último contacto; alta en Clinic Cloud; custodia documental y agenda</td></tr>
+          <tr><td>Recepción</td><td class="num">REC</td><td>Primer y último contacto; alta en Klinikare; custodia documental y agenda</td></tr>
           <tr><td>Director de Clínica</td><td class="num">DC</td><td>Anamnesis inicial, RGPD, briefing, presentación, cierre económico</td></tr>
           <tr><td>Odontólogo / Doctor</td><td class="num">DR</td><td>Autoridad clínica única; diagnóstico, consentimiento, IAC</td></tr>
           <tr><td>Higienista</td><td class="num">HIG</td><td>Mantenimiento, prevención, seguimiento periimplantario</td></tr>
@@ -10949,7 +10957,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
     <h3 style="font-size:var(--step-1);margin:2.6rem 0 .4rem" id="e-m-4-sistemas-herramientas">4 · Sistemas y herramientas</h3>
     <p style="color:var(--ink-2);max-width:66ch">El centro opera sobre un núcleo de herramientas que hay que conocer:</p>
     <div class="special special--3">
-      <div><h5>Clinic Cloud</h5><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div>
+      <div><h5>Klinikare</h5><p>Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.</p></div>
       <div><h5>Smartee Doctor / Spark Approver</h5><p>Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.</p></div>
       <div><h5>WeDiagnostix</h5><p>Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.</p></div>
     </div>
@@ -11067,7 +11075,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <tr><td class="num">1</td><td>¿Spark Approver sigue en uso junto a, o en sustitución de, Smartee?</td><td><span class="sem sem--amarillo">Pendiente</span></td><td>Usar la herramienta con la que se planificó cada caso y anotarlo en el IAC</td></tr>
           <tr><td class="num">2</td><td>Recordatorio pre-cita: ¿WhatsApp 48 h o SMS 24 h?</td><td><span class="sem sem--verde">Resuelto</span></td><td>Dos recordatorios por WhatsApp: a 48 h y a 24 h de la cita</td></tr>
           <tr><td class="num">3</td><td>Contenido definitivo del Kit de Bienvenida</td><td><span class="sem sem--amarillo">Pendiente de definir</span></td><td>Entregar como mínimo guía del tratamiento, kit de higiene y tarjeta de contacto</td></tr>
-          <tr><td class="num">4</td><td>Reparto REC/DC en Fase 3</td><td><span class="sem sem--verde">Resuelto</span></td><td>DC = anamnesis y RGPD · REC = alta en Clinic Cloud</td></tr>
+          <tr><td class="num">4</td><td>Reparto REC/DC en Fase 3</td><td><span class="sem sem--verde">Resuelto</span></td><td>DC = anamnesis y RGPD · REC = alta en Klinikare</td></tr>
           <tr><td class="num">5</td><td>Definición y alcance de RAC</td><td><span class="sem sem--verde">Resuelto</span></td><td>Ver Fase 13 y manual de RAC</td></tr>
         </tbody>
       </table>
@@ -11130,7 +11138,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <thead><tr><th>Ámbito</th><th>Estándar del centro</th><th>Responsable</th></tr></thead>
         <tbody>
           <tr><td>Identificación del paciente</td><td>Verificación con dos datos antes de cualquier prueba, registro o intervención</td><td>Quien ejecuta</td></tr>
-          <tr><td>Alergias y alertas</td><td>Marcadas de forma visible en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> y revisadas al inicio de cada cita</td><td>Doctor</td></tr>
+          <tr><td>Alergias y alertas</td><td>Marcadas de forma visible en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> y revisadas al inicio de cada cita</td><td>Doctor</td></tr>
           <tr><td>Esterilización</td><td>Circuito unidireccional, control de ciclos con registro y trazabilidad por paciente</td><td>Auxiliar</td></tr>
           <tr><td>Protección radiológica</td><td>Justificación de cada prueba, dosis mínima razonablemente alcanzable y consentimiento previo</td><td>Doctor</td></tr>
           <tr><td>Checklist quirúrgico</td><td>Completo y firmado; sin él, la cirugía no se marca como iniciada</td><td>Doctor · Auxiliar</td></tr>
@@ -11179,7 +11187,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Incidencia</th><th>Respuesta inmediata</th><th>Quién decide</th></tr></thead>
         <tbody>
-          <tr><td>Caída de Clinic Cloud</td><td>Juego documental impreso, hoja de contingencia y volcado íntegro antes del cierre</td><td>Dirección</td></tr>
+          <tr><td>Caída de Klinikare</td><td>Juego documental impreso, hoja de contingencia y volcado íntegro antes del cierre</td><td>Dirección</td></tr>
           <tr><td>Corte de suministro eléctrico</td><td>Suspensión de procedimientos en curso con seguridad, aviso a pacientes del día y reprogramación</td><td>Dirección</td></tr>
           <tr><td>Avería del autoclave</td><td>Retirada de servicio; se reorganiza la agenda quirúrgica y se avisa a los pacientes afectados</td><td>Dirección · Auxiliar</td></tr>
           <tr><td>Avería de <button type="button" class="gl" data-gl="CBCT">CBCT</button> u <button type="button" class="gl" data-gl="OPG">OPG</button></td><td>Se completa el resto de la batería y se cita para la prueba pendiente sin coste</td><td>Auxiliar · Dirección</td></tr>
@@ -11286,7 +11294,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <li><strong>Recolección de datos esenciales.</strong> Nombre completo, teléfono y email; urgencia percibida y motivo detallado de la consulta.</li>
           <li><strong>Filtrado por especialidad.</strong> ¿Ausencia de piezas (implantología, el eje de Alma) o malposición (ortodoncia)? Determina el especialista, no solo el hueco.</li>
           <li><strong>«Cómo nos conoció».</strong> Origen del paciente (redes, recomendación, Google, publicidad). Dato de marketing imprescindible.</li>
-          <li><strong>Registro en la Agenda de PV.</strong> Toda la información inicial y el motivo se registran en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button>, verificando que el paciente no exista ya (duplicados).</li>
+          <li><strong>Registro en la Agenda de PV.</strong> Toda la información inicial y el motivo se registran en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button>, verificando que el paciente no exista ya (duplicados).</li>
           <li><strong><button type="button" class="gl" data-gl="Triaje">Triaje</button> telefónico.</strong> Urgencia (dolor agudo, trauma) → hueco más próximo; preferente (estético/funcional con ansiedad); estándar (el resto). La urgencia condiciona el hueco, nunca el orden interno del protocolo.</li>
           <li><strong>Speech de valor.</strong> Se comunica el diferenciador de la primera visita gratuita con todas las pruebas avanzadas.</li>
           <li><strong>Cierre y confirmación.</strong> Cita agendada y confirmada por el canal establecido.</li>
@@ -11314,7 +11322,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
             <p>Motivo, especialidad, triaje, origen y disponibilidad. Solo con los cinco ejes claros se elige hueco, profesional y duración.</p>
           </li>
           <li>
-            <h4>Verificar duplicado en Clinic Cloud</h4>
+            <h4>Verificar duplicado en Klinikare</h4>
             <p>Búsqueda por teléfono, email y apellidos antes de crear ficha. Un duplicado parte el historial y descuadra los indicadores de marketing.</p>
           </li>
           <li>
@@ -11435,7 +11443,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <table>
             <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
             <tbody>
-              <tr><td>Clinic Cloud no responde</td><td>Se anota en la hoja de contingencia impresa y se vuelca en cuanto el sistema vuelve, antes de cerrar la jornada</td></tr>
+              <tr><td>Klinikare no responde</td><td>Se anota en la hoja de contingencia impresa y se vuelca en cuanto el sistema vuelve, antes de cerrar la jornada</td></tr>
               <tr><td>Entran dos llamadas a la vez</td><td>Se atiende, se pide permiso para devolver la llamada en diez minutos y se cumple</td></tr>
               <tr><td>El paciente no sabe cómo nos conoció</td><td>Se ofrecen opciones concretas: «¿nos vio en Google, en redes, le habló alguien de nosotros?»</td></tr>
               <tr><td>Pide cita con un profesional que no está</td><td>Se ofrece la primera fecha real, nunca una tentativa que luego haya que cambiar</td></tr>
@@ -11453,7 +11461,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <p class="block__title">Checklist de salida</p>
         <ul class="checks">
           <li><span><b>Agenda de PV</b> completa</span></li>
-          <li><span><b>Ficha Clinic Cloud</b> preliminar sin duplicar</span></li>
+          <li><span><b>Ficha Klinikare</b> preliminar sin duplicar</span></li>
           <li><span><b>Nivel de triaje</b> asignado</span></li>
           <li><span><b>Especialista</b> asignado según motivo</span></li>
         </ul>
@@ -11481,7 +11489,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <div class="block">
         <p class="block__title">Acciones clave</p>
         <ul class="list">
-          <li><strong>Acogida y reconocimiento.</strong> Recepción, tras consultar Clinic Cloud, saluda por el nombre. Transición inmediata, sin demoras.</li>
+          <li><strong>Acogida y reconocimiento.</strong> Recepción, tras consultar Klinikare, saluda por el nombre. Transición inmediata, sin demoras.</li>
           <li><strong>Acompañamiento a Sala VIP.</strong> Nunca a la sala general. Ofrecimiento de bebida. El paciente se siente valorado desde el primer momento.</li>
           <li><strong>Tour por la tecnología (Director).</strong> Esterilización (confianza sanitaria) y sala de imagen 3D (diferenciación tecnológica), conectando siempre con el motivo de consulta ya conocido.</li>
         </ul>
@@ -11653,7 +11661,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </dl>
     </aside>
     <div class="phase__body">
-      <h2 id="e-m-anamnesis-inicial-rgpd-alta-clinic-cloud">Anamnesis inicial, RGPD y alta en Clinic Cloud</h2>
+      <h2 id="e-m-anamnesis-inicial-rgpd-alta-clinic-cloud">Anamnesis inicial, RGPD y alta en Klinikare</h2>
       <p class="phase__intro">Dos capas en paralelo. La humana: el Director crea el vínculo, conoce a la persona y recoge sus expectativas iniciales. La administrativa y legal: se cumple el RGPD, se dan de alta los datos y se garantiza la trazabilidad. El error de fondo es convertir la fase en un puro trámite de papeles: el paciente que solo rellena formularios no conecta.</p>
 
       <div class="block">
@@ -11663,7 +11671,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <li><strong>Documentación administrativa.</strong> Hoja de datos personales y política RGPD, explicando los derechos ARCO (acceso, rectificación, cancelación, oposición) antes de firmar.</li>
           <li><strong>Anamnesis inicial de expectativas.</strong> «¿Qué espera conseguir con su tratamiento?» y las preguntas de la hoja.</li>
           <li><strong>Verificación de email.</strong> Letra por letra. Se informa de que recibirá una encuesta de satisfacción tras la visita.</li>
-          <li><strong>Entrega a Recepción y alta.</strong> El Director entrega la hoja y la anamnesis; Recepción completa el alta en Clinic Cloud en paralelo a la Fase 4, sin hacer esperar al paciente.</li>
+          <li><strong>Entrega a Recepción y alta.</strong> El Director entrega la hoja y la anamnesis; Recepción completa el alta en Klinikare en paralelo a la Fase 4, sin hacer esperar al paciente.</li>
         </ul>
       </div>
 
@@ -11679,7 +11687,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       </div>
 
       <div class="block">
-        <p class="block__title">Checklist de alta en Clinic Cloud <span class="tag">ampliación</span></p>
+        <p class="block__title">Checklist de alta en Klinikare <span class="tag">ampliación</span></p>
         <ul class="checks">
           <li><span><b>Identificación</b>: nombre, apellidos, documento, fecha de nacimiento</span></li>
           <li><span><b>Contacto</b>: móvil, email y teléfono alternativo, verificados</span></li>
@@ -11694,7 +11702,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <div class="block">
         <p class="block__title">Indicadores</p>
         <dl class="kpis">
-          <div><dt>Fichas Clinic Cloud completas a las 24 h</dt><dd>100 %</dd></div>
+          <div><dt>Fichas Klinikare completas a las 24 h</dt><dd>100 %</dd></div>
           <div><dt>Altas completadas antes de que termine la Fase 4</dt><dd>Se mide</dd></div>
         </dl>
       </div>
@@ -11717,7 +11725,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <div><dt>10:00 – 12:00</dt><dd>Verificación de email y aviso de la encuesta de satisfacción.</dd></div>
           <div><dt>12:00 – 15:00</dt><dd>Entrega a Recepción y presentación del Doctor.</dd></div>
         </dl>
-        <p class="footnote">El alta en Clinic Cloud corre en paralelo a la Fase 4: el paciente nunca espera a que Recepción termine de teclear.</p>
+        <p class="footnote">El alta en Klinikare corre en paralelo a la Fase 4: el paciente nunca espera a que Recepción termine de teclear.</p>
       </div>
 
       <div class="block">
@@ -11729,7 +11737,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
           <li>«¿Ha estado antes en otra clínica por este tema?» — anticipa comparaciones</li>
           <li>«¿Hay algo que le preocupe de la visita de hoy?» — detecta miedos antes de que aparezcan</li>
         </ul>
-        <p class="footnote">Todo lo relevante se anota en Clinic Cloud. En la Fase 10, recordar que su hija se casa en septiembre vale más que cualquier técnica de cierre.</p>
+        <p class="footnote">Todo lo relevante se anota en Klinikare. En la Fase 10, recordar que su hija se casa en septiembre vale más que cualquier técnica de cierre.</p>
       </div>
 
       <div class="block">
@@ -11755,7 +11763,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       </div>
 
       <div class="block">
-        <p class="block__title">Campos obligatorios del alta en Clinic Cloud <span class="tag">ampliación</span></p>
+        <p class="block__title">Campos obligatorios del alta en Klinikare <span class="tag">ampliación</span></p>
         <div class="tablewrap">
           <table>
             <thead><tr><th>Bloque</th><th>Campos</th><th>Verificación</th></tr></thead>
@@ -11849,7 +11857,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
           <li><strong>Anamnesis médica general.</strong> Enfermedades, alergias, medicación, cirugías, problemas cardiovasculares/diabetes/hipertensión, coagulación, embarazo/lactancia. Sin omitir ninguna.</li>
           <li><strong>Anamnesis dental.</strong> Tratamientos previos, experiencias, higiene, bruxismo, sensibilidad, miedos.</li>
           <li><strong>Consentimiento radiológico explicado.</strong> Baja dosis (comparable a un vuelo transatlántico), necesidad diagnóstica, comprensión verificada y firma.</li>
-          <li><strong>Registro del Doctor.</strong> Datos médicos, confirmación de la firma y observaciones, en Clinic Cloud el mismo día.</li>
+          <li><strong>Registro del Doctor.</strong> Datos médicos, confirmación de la firma y observaciones, en Klinikare el mismo día.</li>
         </ul>
       </div>
 
@@ -11888,7 +11896,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
               <tr><td>Diabetes</td><td>Cicatrización comprometida</td><td>Preguntar por control glucémico reciente; condiciona el calendario quirúrgico</td></tr>
               <tr><td>Cardiopatía o prótesis valvular</td><td>Posible profilaxis antibiótica</td><td>Verificar informe del cardiólogo antes de procedimientos con sangrado</td></tr>
               <tr><td>Inmunosupresión / oncológico</td><td>Riesgo infeccioso</td><td>Coordinación con el especialista responsable</td></tr>
-              <tr><td>Alergia a látex o anestésicos</td><td>Riesgo de reacción</td><td>Alerta visible en Clinic Cloud y material alternativo preparado</td></tr>
+              <tr><td>Alergia a látex o anestésicos</td><td>Riesgo de reacción</td><td>Alerta visible en Klinikare y material alternativo preparado</td></tr>
               <tr><td>Embarazo o lactancia</td><td>Prudencia radiológica y farmacológica</td><td>Diferir lo no urgente y documentar la decisión</td></tr>
               <tr><td>Tabaquismo y bruxismo</td><td>Peor pronóstico implantario y protésico</td><td>Reflejar en el IAC y en las condiciones de garantía</td></tr>
             </tbody>
@@ -11985,7 +11993,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       </div>
 
       <div class="block">
-        <p class="block__title">Registro en Clinic Cloud · campos de esta fase <span class="tag">ampliación</span></p>
+        <p class="block__title">Registro en Klinikare · campos de esta fase <span class="tag">ampliación</span></p>
         <ul class="checks">
           <li><span><b>Enfermedades</b> actuales y pasadas relevantes</span></li>
           <li><span><b>Alergias</b>, marcadas como alerta visible en la ficha</span></li>
@@ -12004,7 +12012,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
       <div class="block">
         <p class="block__title">Checklist de salida</p>
         <ul class="checks">
-          <li><span><b>Anamnesis completa</b> en Clinic Cloud</span></li>
+          <li><span><b>Anamnesis completa</b> en Klinikare</span></li>
           <li><span><b>Consentimiento radiológico</b> firmado y explicado</span></li>
           <li><span><b>Alergias y medicación</b> destacadas para el equipo de imagen</span></li>
         </ul>
@@ -12037,7 +12045,7 @@ portabilidad y oposición. Puede reclamar ante la autoridad de control.</div>
           <li><strong>Escaneado intraoral 3D.</strong> Modelo digital de alta precisión de las arcadas.</li>
           <li><strong>Serie fotográfica.</strong> Extraoral (frontal reposo/sonriendo, perfiles, tres cuartos) e intraoral (frontal, laterales, oclusales, detalles).</li>
           <li><strong>Prediagnóstico IA (opcional).</strong> <button type="button" class="gl" data-gl="WeDiagnostix">WeDiagnostix</button> sobre la OPG, como apoyo; nunca sustituye el diagnóstico profesional.</li>
-          <li><strong>Carga en tiempo real.</strong> Todas las imágenes se cargan de inmediato en Clinic Cloud, etiquetadas, enderezadas y con calidad verificada, asociadas al historial.</li>
+          <li><strong>Carga en tiempo real.</strong> Todas las imágenes se cargan de inmediato en Klinikare, etiquetadas, enderezadas y con calidad verificada, asociadas al historial.</li>
         </ul>
       </div>
 
@@ -12593,7 +12601,7 @@ Firma del Doctor: ..........................  Fecha: ..........</div>
         <p class="block__title">Validez, custodia y versionado <span class="tag">ampliación</span></p>
         <ul class="checks">
           <li><span><b>Original firmado</b> para el paciente</span></li>
-          <li><span><b>Copia digitalizada</b> en Clinic Cloud el mismo día</span></li>
+          <li><span><b>Copia digitalizada</b> en Klinikare el mismo día</span></li>
           <li><span><b>Versionado</b>: si el plan cambia, se emite un IAC nuevo fechado, sin destruir el anterior</span></li>
           <li><span><b>Correcciones</b> antes de la firma; nunca tachaduras sobre documento firmado</span></li>
           <li><span><b>Conservación</b> conforme a la normativa de historia clínica aplicable</span></li>
@@ -12844,7 +12852,7 @@ vemos [hallazgo]. Se lo enseño también en la foto de su boca.»
           <li><strong>Presentar la financiación.</strong> Opciones adaptadas, cálculo de la mensualidad, bonificación por pronto pago, plan por fases.</li>
           <li><strong>Cierre.</strong> Por alternativa o por asunción, según el paciente.</li>
           <li><strong>Manejo de objeciones.</strong> Con información, nunca con presión.</li>
-          <li><strong>Registro de conversión.</strong> Estado en Clinic Cloud, con la razón real de no conversión si aplica.</li>
+          <li><strong>Registro de conversión.</strong> Estado en Klinikare, con la razón real de no conversión si aplica.</li>
         </ul>
       </div>
 
@@ -12996,7 +13004,7 @@ Firma de aceptación del paciente ..........................  Fecha ..........</
               <tr><td class="num">1</td><td>Simulación delante del paciente, con importe total y número de plazos</td><td>Impresión o pantalla de la simulación</td></tr>
               <tr><td class="num">2</td><td>Información precontractual: importe financiado, plazos, intereses y coste total</td><td>Documento de la entidad</td></tr>
               <tr><td class="num">3</td><td>Solicitud con los datos del titular</td><td>Documento de identidad y justificantes según entidad</td></tr>
-              <tr><td class="num">4</td><td>Respuesta de la entidad</td><td>Aprobación o denegación registrada en Clinic Cloud</td></tr>
+              <tr><td class="num">4</td><td>Respuesta de la entidad</td><td>Aprobación o denegación registrada en Klinikare</td></tr>
               <tr><td class="num">5</td><td>Firma del contrato y calendario de pagos</td><td>Copia al paciente y copia digitalizada</td></tr>
               <tr><td class="num">6</td><td>Vinculación del calendario de pagos al calendario clínico</td><td>Aviso a RAC con la fecha realista</td></tr>
             </tbody>
@@ -13042,7 +13050,7 @@ Firma de aceptación del paciente ..........................  Fecha ..........</
       </div>
 
       <div class="block">
-        <p class="block__title">Registro de conversión en Clinic Cloud <span class="tag">ampliación</span></p>
+        <p class="block__title">Registro de conversión en Klinikare <span class="tag">ampliación</span></p>
         <div class="tablewrap">
           <table>
             <thead><tr><th>Campo</th><th>Obligatorio</th><th>Detalle</th></tr></thead>
@@ -13358,7 +13366,7 @@ Firma de aceptación del paciente ..........................  Fecha ..........</
       <dl class="phase__facts">
         <div class="phase__fact"><dt>Tiempo</dt><dd>Post-visita</dd></div>
         <div class="phase__fact"><dt>Responsable</dt><dd>Director / Recepción</dd></div>
-        <div class="phase__fact"><dt>Ubicación</dt><dd>Teléfono / Clinic Cloud</dd></div>
+        <div class="phase__fact"><dt>Ubicación</dt><dd>Teléfono / Klinikare</dd></div>
       </dl>
     </aside>
     <div class="phase__body">
@@ -13506,7 +13514,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <ul class="checks">
           <li><span><b>Re-contacto</b> programado según objeción</span></li>
           <li><span><b>Convertido</b> con bienvenida y recordatorio</span></li>
-          <li><span><b>Respuestas registradas</b> en Clinic Cloud</span></li>
+          <li><span><b>Respuestas registradas</b> en Klinikare</span></li>
         </ul>
       </div>
     </div>
@@ -14039,7 +14047,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
             <tbody>
               <tr><td>Quién ejecuta</td><td>Higienista, con supervisión del Doctor</td></tr>
               <tr><td>Franja de agenda</td><td>Preferentemente de baja demanda externa (13:30–16:00)</td></tr>
-              <tr><td>Convocatoria</td><td>Automática desde Clinic Cloud, con llamada si no responde</td></tr>
+              <tr><td>Convocatoria</td><td>Automática desde Klinikare, con llamada si no responde</td></tr>
               <tr><td>Antelación</td><td>2 a 3 semanas antes de la fecha objetivo</td></tr>
               <tr><td>Si no acude</td><td>Reintento a 15 días, después a 3 meses y después a la campaña de reactivación</td></tr>
             </tbody>
@@ -14185,7 +14193,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <div>
         <p class="block__title">Apertura · 30 minutos antes</p>
         <ul class="checks">
-          <li><span><b>Sistemas encendidos</b> y <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> operativo</span></li>
+          <li><span><b>Sistemas encendidos</b> y <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> operativo</span></li>
           <li><span><b>Agenda del día</b> revisada, con los casos rojos identificados</span></li>
           <li><span><b>Sala VIP</b> presentable y material de acogida repuesto</span></li>
           <li><span><b>Documentación pendiente</b> del día anterior: debe ser cero</span></li>
@@ -14317,7 +14325,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
       <table>
         <thead><tr><th>Si ocurre…</th><th>Se hace</th></tr></thead>
         <tbody>
-              <tr><td>Cae Clinic Cloud</td><td>Hoja de contingencia impresa, juego documental en papel y volcado íntegro antes del cierre de la jornada</td></tr>
+              <tr><td>Cae Klinikare</td><td>Hoja de contingencia impresa, juego documental en papel y volcado íntegro antes del cierre de la jornada</td></tr>
               <tr><td>Se acumulan pacientes en recepción</td><td>Se prioriza a quien tiene cita, se informa del tiempo real y se avisa al Director</td></tr>
               <tr><td>Falta personal en el mostrador</td><td>Dirección designa sustituto certificado; ninguna PV se atiende sin acogida</td></tr>
               <tr><td>Un paciente aparece sin cita en el sistema</td><td>Se le atiende igual y se investiga después: nunca se le hace responsable del fallo</td></tr>
@@ -14343,7 +14351,7 @@ tiene coste y su diagnóstico previo sigue en su ficha.</div>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
         <tbody>
               <tr><td class="num">Días 1-3</td><td>Recorrido del centro, glosario de roles, marco de vanguardia y lectura del manual del puesto</td></tr>
-              <tr><td class="num">Días 4-7</td><td>Clinic Cloud: alta, agenda, documentación y tareas. Alta de un caso de prueba sin errores</td></tr>
+              <tr><td class="num">Días 4-7</td><td>Klinikare: alta, agenda, documentación y tareas. Alta de un caso de prueba sin errores</td></tr>
               <tr><td class="num">Días 8-12</td><td>Observación de cuatro llamadas de PV y cuatro acogidas, con ficha de observación</td></tr>
               <tr><td class="num">Días 13-18</td><td>Role-play de la llamada de primer contacto, del triaje y de una ausencia</td></tr>
               <tr><td class="num">Días 19-25</td><td>Atención acompañada, con revisión diaria de sus registros</td></tr>
@@ -14524,7 +14532,7 @@ MAÑANA — casos delicados / cirugías:</div>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
         <tbody>
               <tr><td class="num">Días 1-3</td><td>Marco de vanguardia, protocolo de las 14 fases y su papel en las Fases 4, 6, 7, 8 y 9</td></tr>
-              <tr><td class="num">Días 4-7</td><td>Clinic Cloud clínico: historia, odontograma, imágenes, IAC y trazabilidad de implantes</td></tr>
+              <tr><td class="num">Días 4-7</td><td>Klinikare clínico: historia, odontograma, imágenes, IAC y trazabilidad de implantes</td></tr>
               <tr><td class="num">Días 8-12</td><td>Observación de cuatro PV completas y de dos briefings</td></tr>
               <tr><td class="num">Días 13-18</td><td>Role-play de anamnesis, consentimiento verificado y presentación con evidencia</td></tr>
               <tr><td class="num">Días 19-25</td><td>Ejecución acompañada, con revisión de sus IAC y de sus perfiles de riesgo</td></tr>
@@ -14679,7 +14687,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
         <tbody>
               <tr><td class="num">Días 1-3</td><td>Marco de vanguardia, Fase 14 y delimitación competencial del puesto</td></tr>
-              <tr><td class="num">Días 4-7</td><td>Clinic Cloud: registro de índices, programa de mantenimiento y agenda</td></tr>
+              <tr><td class="num">Días 4-7</td><td>Klinikare: registro de índices, programa de mantenimiento y agenda</td></tr>
               <tr><td class="num">Días 8-12</td><td>Observación de mantenimientos y de derivaciones reales</td></tr>
               <tr><td class="num">Días 13-18</td><td>Role-play de educación del paciente y de comunicación de un signo de alarma</td></tr>
               <tr><td class="num">Días 19-25</td><td>Ejecución acompañada, con revisión de registros</td></tr>
@@ -14741,7 +14749,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
     <div class="pr">
       <div class="pr__head"><span class="pr__code">PR-A01</span><span class="pr__title">Batería diagnóstica y carga de imágenes</span><span class="pr__meta">Fase 5</span></div>
       <div class="pr__body">
-        <p><button type="button" class="gl" data-gl="CBCT">CBCT</button>, <button type="button" class="gl" data-gl="OPG">OPG</button>, escaneado intraoral y serie fotográfica, con verificación de calidad, enderezado y etiquetado. Carga en tiempo real en Clinic Cloud, asociada al historial.</p>
+        <p><button type="button" class="gl" data-gl="CBCT">CBCT</button>, <button type="button" class="gl" data-gl="OPG">OPG</button>, escaneado intraoral y serie fotográfica, con verificación de calidad, enderezado y etiquetado. Carga en tiempo real en Klinikare, asociada al historial.</p>
         <div class="rulebox"><p class="eyebrow">Regla nuclear</p><p>Verificas y enderezas cada imagen antes de subirla. No se avanza sin confirmar la carga.</p></div>
         <dl class="kpis"><div><dt>Tiempo medio de la batería</dt><dd>≤ 15 min</dd></div><div><dt>Repetición por calidad</dt><dd>&lt; 5 %</dd></div></dl>
       </div>
@@ -14801,7 +14809,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
         <tbody>
               <tr><td class="num">Días 1-3</td><td>Marco de vanguardia, bioseguridad y circuito unidireccional de esterilización</td></tr>
-              <tr><td class="num">Días 4-7</td><td>Equipos: arranque, calibración y comprobación diaria. Clinic Cloud: carga y etiquetado</td></tr>
+              <tr><td class="num">Días 4-7</td><td>Equipos: arranque, calibración y comprobación diaria. Klinikare: carga y etiquetado</td></tr>
               <tr><td class="num">Días 8-12</td><td>Observación de baterías diagnósticas completas y de asistencia quirúrgica</td></tr>
               <tr><td class="num">Días 13-18</td><td>Ejecución acompañada de la batería, con control de calidad revisado imagen a imagen</td></tr>
               <tr><td class="num">Días 19-25</td><td>Gestión de stock: revisión semanal contra agenda de 21 días y verificación para RAC</td></tr>
@@ -14924,7 +14932,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
         <tbody>
               <tr><td class="num">Días 1-3</td><td>Marco de vanguardia, Fase 13 y significado del producto pendiente</td></tr>
-              <tr><td class="num">Días 4-7</td><td>Clinic Cloud: presupuestos, estados, tareas y panel de producción</td></tr>
+              <tr><td class="num">Días 4-7</td><td>Klinikare: presupuestos, estados, tareas y panel de producción</td></tr>
               <tr><td class="num">Días 8-12</td><td>Observación del circuito completo de dos casos, de la aceptación a la cirugía</td></tr>
               <tr><td class="num">Días 13-18</td><td>Role-play de la doble verificación y de la confirmación al paciente</td></tr>
               <tr><td class="num">Días 19-25</td><td>Gestión acompañada del panel, priorizando el pendiente antiguo</td></tr>
@@ -15055,7 +15063,7 @@ MATERIAL Y CASOS DE MAÑANA:</div>
         <thead><tr><th>Periodo</th><th>Qué debe dominar al terminarlo</th></tr></thead>
         <tbody>
               <tr><td class="num">Días 1-3</td><td>Manual completo, indicadores del centro y estado real del producto pendiente heredado</td></tr>
-              <tr><td class="num">Días 4-7</td><td>Clinic Cloud de gestión: presupuestos, conversión, reportes y auditoría</td></tr>
+              <tr><td class="num">Días 4-7</td><td>Klinikare de gestión: presupuestos, conversión, reportes y auditoría</td></tr>
               <tr><td class="num">Días 8-12</td><td>Observación del circuito completo y de los seis puestos en funcionamiento</td></tr>
               <tr><td class="num">Días 13-18</td><td>Conducción acompañada de briefings, presentaciones y cierres</td></tr>
               <tr><td class="num">Días 19-25</td><td>Dirección de la operativa diaria con revisión de Gerencia</td></tr>
@@ -16867,7 +16875,7 @@ y el resultado por indicador se topa al 130 %.</div>
     <ul class="list">
       <li><strong>Cartelería de continuidad en recepción.</strong> Breve y visible. El paciente no debe descubrir el cambio de marca por sorpresa.</li>
       <li><strong>Archivo localizado y accesible.</strong> Que Recepción sepa exactamente dónde está y llegue a él en menos de un minuto.</li>
-      <li><strong>Sistema operativo comprobado.</strong> Enciende y entra en <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button> hoy, no mañana a las nueve menos cinco.</li>
+      <li><strong>Sistema operativo comprobado.</strong> Enciende y entra en <button type="button" class="gl" data-gl="Klinikare">Klinikare</button> hoy, no mañana a las nueve menos cinco.</li>
     </ul>
 
     <h3 style="font-size:var(--step-1);margin:2.4rem 0 .4rem" id="e-m-5-donde-encaja-esto-programa-100">A.5 · Dónde encaja esto en el programa de 100 días <span class="tag">Programa de integración</span></h3>
@@ -17088,7 +17096,7 @@ Semáforo del día:  ☐ Verde   ☐ Ámbar   ☐ Rojo</div>
           <li><span><b>F2</b> · Paciente en Sala VIP y tour completado</span></li>
           <li><span><b>F3</b> · RGPD explicado y firmado</span></li>
           <li><span><b>F3</b> · Email verificado letra por letra</span></li>
-          <li><span><b>F3</b> · Alta en Clinic Cloud completa</span></li>
+          <li><span><b>F3</b> · Alta en Klinikare completa</span></li>
           <li><span><b>F4</b> · Anamnesis médica y dental completas</span></li>
           <li><span><b>F4</b> · Consentimiento radiológico con comprensión verificada</span></li>
           <li><span><b>F5</b> · Cuatro pruebas cargadas, etiquetadas y verificadas</span></li>
@@ -17261,7 +17269,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
       <div><h5>Perfil Alma anual</h5><p>Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.</p></div>
       <div><h5>RACI</h5><p>Reparto de papeles por fase: responsable, accountable, consultado e informado.</p></div>
       <div><h5>Triaje</h5><p>Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo.</p></div>
-      <div><h5>Clinic Cloud</h5><p>Sistema central del centro. Si algo no está aquí, no ha ocurrido.</p></div>
+      <div><h5>Klinikare</h5><p>Sistema central del centro. Si algo no está aquí, no ha ocurrido.</p></div>
     </div>
 
 
@@ -21635,7 +21643,7 @@ LTV              = Valor inicial
         </tbody>
       </table>
     </div>
-    <p class="footnote">La página lleva además los teléfonos críticos rellenados a mano antes de la apertura: asesoría legal, asesoría laboral, corredor de seguros, soporte de <button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button>, laboratorio protésico y Dirección de Centros.</p>
+    <p class="footnote">La página lleva además los teléfonos críticos rellenados a mano antes de la apertura: asesoría legal, asesoría laboral, corredor de seguros, soporte de <button type="button" class="gl" data-gl="Klinikare">Klinikare</button>, laboratorio protésico y Dirección de Centros.</p>
 
     <h3 style="font-size:var(--step-1);margin:2.8rem 0 .4rem" id="g-o-noche-antes-trece-verificaciones">La noche antes · trece verificaciones</h3>
     <ul class="checks">
@@ -22122,8 +22130,8 @@ LTV              = Valor inicial
           <table>
             <thead><tr><th>Tipo de paciente</th><th>Dónde se consulta</th><th>Dónde se registra</th></tr></thead>
             <tbody>
-              <tr><td>Alta antes del cambio</td><td>Sistema anterior y archivo en papel</td><td><button type="button" class="gl" data-gl="Clinic Cloud">Clinic Cloud</button></td></tr>
-              <tr><td>Alta a partir de hoy</td><td>Clinic Cloud</td><td>Clinic Cloud</td></tr>
+              <tr><td>Alta antes del cambio</td><td>Sistema anterior y archivo en papel</td><td><button type="button" class="gl" data-gl="Klinikare">Klinikare</button></td></tr>
+              <tr><td>Alta a partir de hoy</td><td>Klinikare</td><td>Klinikare</td></tr>
             </tbody>
           </table>
         </div>
@@ -22740,7 +22748,7 @@ LTV              = Valor inicial
 </section>
 </main>
 <footer class="pie-web"><div class="env"><a class="marca" href="#inicio" data-ve="inicio" aria-label="Klinikare · Clínica Alma"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><span class="marca__tt"><span class="marca__t">Klinikare</span><span class="marca__sub">Clínica Alma</span></span></a><p class="pie-web__lema">No medias <em>sonrisas</em></p><p class="pie-web__d">Sistema documental · Centro de Excelencia Implantológica · Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p></div></footer>
-<script>window.__VOCES__={"RAC": "RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)", "Clinic Cloud": "Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.", "Smartee Doctor / Spark Approver": "Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.", "WeDiagnostix": "Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.", "IAC": "Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.", "Solicitud de presupuesto": "Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.", "Producto pendiente": "Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.", "Doble verificación": "Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.", "Gate de calidad": "Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.", "CBCT": "Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.", "OPG": "Ortopantomografía: radiografía panorámica digital de ambos maxilares.", "IOS": "Escaneado intraoral: modelo digital de las arcadas y de la oclusión.", "Guía quirúrgica": "Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.", "Carga inmediata": "Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.", "Perfil de riesgo": "Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.", "Perfil Alma anual": "Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.", "RACI": "Reparto de papeles por fase: responsable, accountable, consultado e informado.", "Triaje": "Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo."};</script>
+<script>window.__VOCES__={"RAC": "RAC — Ejecución real de tratamientos: pago, material, producto pendiente (Fase 13)", "Klinikare": "Sistema central: agenda, ficha del paciente, historia clínica, presupuestos, documentación escaneada y portal del paciente. La regla es absoluta: si algo no está aquí, no ha ocurrido.", "Smartee Doctor / Spark Approver": "Planificación e informes de ortodoncia, que se adjuntan al IAC cuando el caso lo requiere.", "WeDiagnostix": "Prediagnóstico asistido por IA sobre la OPG. Es apoyo opcional al criterio clínico, nunca sustituto del diagnóstico profesional.", "IAC": "Informe de Análisis Clínico: documento firmado por el Doctor con hallazgos, diagnóstico y plan.", "Solicitud de presupuesto": "Documento firmado por el Doctor que autoriza a presupuestar. Sin él no hay presupuesto.", "Producto pendiente": "Valor de todo lo aceptado y pagado que aún no se ha ejecutado. Indicador rector de RAC.", "Doble verificación": "Comprobación de pago y de material antes de agendar una cirugía. Otorga poder de bloqueo a RAC.", "Gate de calidad": "Umbral del bloque A del plan de incentivos: si no se cumple, no hay bonus ese trimestre.", "CBCT": "Tomografía computarizada de haz cónico: estudio tridimensional con dosis reducida.", "OPG": "Ortopantomografía: radiografía panorámica digital de ambos maxilares.", "IOS": "Escaneado intraoral: modelo digital de las arcadas y de la oclusión.", "Guía quirúrgica": "Férula diseñada sobre la planificación digital que traslada la posición prevista a la cirugía.", "Carga inmediata": "Colocación de la prótesis provisional en el mismo acto quirúrgico, cuando el caso lo permite.", "Perfil de riesgo": "Clasificación periodontal, de caries, biomecánica y periimplantaria que fija la periodicidad del mantenimiento.", "Perfil Alma anual": "Informe predictivo que se entrega presencialmente a cada miembro del programa de mantenimiento.", "RACI": "Reparto de papeles por fase: responsable, accountable, consultado e informado.", "Triaje": "Clasificación telefónica por urgencia. Condiciona el hueco, nunca el orden interno del protocolo."};</script>
 <script>
 (function(){
   var D=document;
