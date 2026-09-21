@@ -732,6 +732,45 @@ def camino_seccion():
         '</div></section>' % "".join(pasos))
 
 
+def bloque_preguntas(seccion):
+    """Bloque destacado «Con qué llegan los pacientes»: las frases con las que
+    empieza el paciente y lo que suele haber detrás. Se toman TAL CUAL de la
+    tabla de objeciones del propio sistema (Fase 10); no se inventa nada. Si la
+    tabla no está, no se muestra el bloque."""
+    i = seccion.find("significan realmente")
+    if i < 0:
+        return ""
+    j = seccion.find("<table", i)
+    k = seccion.find("</table>", j)
+    if j < 0 or k < 0:
+        return ""
+    pares = []
+    for tr in re.findall(r"<tr>(.*?)</tr>", seccion[j:k], re.S):
+        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
+        if len(tds) >= 2:
+            d, s = limpia(tds[0]), limpia(tds[1])
+            if d and s:
+                pares.append((d, s))
+    if not pares:
+        return ""
+    tarj = "".join(
+        '<div class="pq reveal"><p class="pq__q">%s</p>'
+        '<p class="pq__s">%s</p></div>' % (H.escape(d), H.escape(s))
+        for d, s in pares)
+    return (
+        '<section class="franja" id="con-que-llegan">'
+        '<div class="env">'
+        '<header class="titmapa reveal">'
+        '<p class="titmapa__k">Con qué llegan los pacientes</p>'
+        '<h2>Las preguntas y preocupaciones del principio</h2>'
+        '<p class="titmapa__p">Casi nadie empieza por el diagnóstico. Estas son '
+        'las frases con las que llega el paciente y lo que suele haber detrás. En '
+        'el sistema, cada una tiene su respuesta —con información, nunca con '
+        'presión—.</p></header>'
+        '<div class="pqs">' + tarj + '</div>'
+        '</div></section>')
+
+
 def cuenta_txt(sid, n, nombre):
     """El pie de cada documento: apartados, o su unidad propia."""
     if sid == "presentacion":
@@ -1082,6 +1121,7 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
             % (prev_l, next_l))
 
     camino = camino_seccion() if sid == "primera-visita" else ""
+    preguntas = bloque_preguntas(seccion) if sid == "primera-visita" else ""
 
     ico = SECC_ICONO.get(sid, "")
     return (
@@ -1094,6 +1134,7 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
         '    </div>%s\n'
         '  </div></header>\n'
         '  %s\n'
+        '  %s\n'
         '  <div class="env">\n'
         '  %s\n'
         '  <div class="cuerpo">\n'
@@ -1105,7 +1146,7 @@ def bloque_seccion(k, sid, rot, nombre, seccion):
         '  %s\n'
         '  </div>\n</section>'
         % (sid, k, n_sec, H.escape(nombre), H.escape(rot), H.escape(texto),
-           ico, camino, docif, toc, "\n".join(aps), ruta))
+           ico, preguntas, camino, docif, toc, "\n".join(aps), ruta))
 
 
 BOLD = """
@@ -1733,6 +1774,16 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
 .fase-nav__n{font-family:var(--sans);font-size:.62rem;font-weight:600;color:var(--muted);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
 @media(max-width:560px){.fase-nav{right:.5rem}.fase-nav__b{width:2.1rem;height:2.1rem}}
+
+/* ---- bloque «Con qué llegan los pacientes» (Primera Visita) ---- */
+.pqs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea);border-radius:16px;overflow:hidden}
+.pq{background:var(--panel);padding:1.5rem 1.4rem;display:flex;flex-direction:column;gap:.6rem;
+  transition:background .18s}
+.pq:hover{background:var(--pizarra-soft)}
+.pq__q{font-family:var(--serif);font-weight:400;font-style:italic;font-size:1.32rem;
+  color:var(--calido);margin:0;line-height:1.22}
+.pq__s{font-family:var(--sans);font-size:.92rem;line-height:1.6;color:var(--ink-2);margin:0}
 """
 
 def main():

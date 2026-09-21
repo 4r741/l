@@ -2502,6 +2502,16 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
 .fase-nav__n{font-family:var(--sans);font-size:.62rem;font-weight:600;color:var(--muted);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
 @media(max-width:560px){.fase-nav{right:.5rem}.fase-nav__b{width:2.1rem;height:2.1rem}}
+
+/* ---- bloque «Con qué llegan los pacientes» (Primera Visita) ---- */
+.pqs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
+  background:var(--linea);border:1px solid var(--linea);border-radius:16px;overflow:hidden}
+.pq{background:var(--panel);padding:1.5rem 1.4rem;display:flex;flex-direction:column;gap:.6rem;
+  transition:background .18s}
+.pq:hover{background:var(--pizarra-soft)}
+.pq__q{font-family:var(--serif);font-weight:400;font-style:italic;font-size:1.32rem;
+  color:var(--calido);margin:0;line-height:1.22}
+.pq__s{font-family:var(--sans);font-size:.92rem;line-height:1.6;color:var(--ink-2);margin:0}
 </style>
 </head>
 <body>
@@ -2568,6 +2578,7 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
     <p class="sh__p">Un paciente entra sin saber qué le pasa y sale con un diagnóstico en la mano, un plan en tres dimensiones y una decisión que puede tomar. Entre una cosa y otra hay doce fases, cinco puestos que se pasan el testigo cinco veces y nueve documentos que quedan firmados. La duración no es una estimación: está medida fase a fase, y la suma es la que es.</p>
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 9 C13 6 9 8 9 15 C9 24 11 32 13 38 C14 41 17 41 18 37 C19 32 19 26 20 24 C21 26 21 32 22 37 C23 41 26 41 27 38 C31 30 33 20 32 14 C31 7 26 6 23 9 C21 11 19 11 17 9 Z"/></svg>
   </div></header>
+  <section class="franja" id="con-que-llegan"><div class="env"><header class="titmapa reveal"><p class="titmapa__k">Con qué llegan los pacientes</p><h2>Las preguntas y preocupaciones del principio</h2><p class="titmapa__p">Casi nadie empieza por el diagnóstico. Estas son las frases con las que llega el paciente y lo que suele haber detrás. En el sistema, cada una tiene su respuesta —con información, nunca con presión—.</p></header><div class="pqs"><div class="pq reveal"><p class="pq__q">«Es muy caro»</p><p class="pq__s">No ve la relación entre lo que cuesta y lo que recibe</p></div><div class="pq reveal"><p class="pq__q">«Necesito pensarlo»</p><p class="pq__s">Queda una duda concreta sin resolver</p></div><div class="pq reveal"><p class="pq__q">«Tengo que consultarlo»</p><p class="pq__s">La decisión es compartida</p></div><div class="pq reveal"><p class="pq__q">«Voy a comparar»</p><p class="pq__s">No sabe en qué se diferencian los presupuestos</p></div><div class="pq reveal"><p class="pq__q">«Me lo pensaré para más adelante»</p><p class="pq__s">No percibe urgencia o teme el tratamiento</p></div><div class="pq reveal"><p class="pq__q">«¿No hay algo más sencillo?»</p><p class="pq__s">Busca una entrada más asumible</p></div><div class="pq reveal"><p class="pq__q">«Me da miedo»</p><p class="pq__s">Experiencia previa o anticipación del dolor</p></div><div class="pq reveal"><p class="pq__q">Silencio</p><p class="pq__s">Está calculando o abrumado</p></div></div></div></section>
   <section class="franja franja--oscura" id="camino-visita"><div class="env"><header class="titmapa titmapa--claro reveal"><p class="titmapa__k">El camino · 123 minutos</p><h2>Siga la primera visita, fase a fase</h2><p class="titmapa__p">Doce fases hasta la propuesta, y dos más para el después. Pulse una para bajar a su detalle.</p></header><div class="hitos"><a class="hito reveal" href="#d-f01"><span class="hito__n">01</span><span class="hito__t">Preparación</span><span class="hito__m">Fase 1 de 14 · 6 min</span></a><a class="hito reveal" href="#d-f02"><span class="hito__n">02</span><span class="hito__t">Acogida</span><span class="hito__m">Fase 2 de 14 · 5 min</span></a><a class="hito reveal" href="#d-f03"><span class="hito__n">03</span><span class="hito__t">Alta y RGPD</span><span class="hito__m">Fase 3 de 14 · 15 min</span></a><a class="hito reveal" href="#d-f04"><span class="hito__n">04</span><span class="hito__t">Historia clínica</span><span class="hito__m">Fase 4 de 14 · 10 min</span></a><a class="hito reveal" href="#d-f05"><span class="hito__n">05</span><span class="hito__t">Diagnóstico</span><span class="hito__m">Fase 5 de 14 · 15 min</span></a><a class="hito reveal" href="#d-f06"><span class="hito__n">06</span><span class="hito__t">Briefing</span><span class="hito__m">Fase 6 de 14 · 5 min</span></a><a class="hito reveal" href="#d-f07"><span class="hito__n">07</span><span class="hito__t">Expectativas</span><span class="hito__m">Fase 7 de 14 · 15 min</span></a><a class="hito reveal" href="#d-f08"><span class="hito__n">08</span><span class="hito__t">IAC</span><span class="hito__m">Fase 8 de 14 · 10 min</span></a><a class="hito reveal" href="#d-f09"><span class="hito__n">09</span><span class="hito__t">Presentación 3D</span><span class="hito__m">Fase 9 de 14 · 15 min</span></a><a class="hito reveal" href="#d-f10"><span class="hito__n">10</span><span class="hito__t">Propuesta</span><span class="hito__m">Fase 10 de 14 · 20 min</span></a><a class="hito reveal" href="#d-f11"><span class="hito__n">11</span><span class="hito__t">Cierre admin.</span><span class="hito__m">Fase 11 de 14 · 5 min</span></a><a class="hito reveal" href="#d-f12"><span class="hito__n">12</span><span class="hito__t">Seguimiento</span><span class="hito__m">Fase 12 de 14 · 2 min</span></a><a class="hito reveal" href="#e-m13" data-ve="operaciones"><span class="hito__n">13</span><span class="hito__t">Circuito de producción</span><span class="hito__m">Fase 13 de 14 · el después</span></a><a class="hito reveal" href="#e-m14" data-ve="operaciones"><span class="hito__n">14</span><span class="hito__t">Mantenimiento</span><span class="hito__m">Fase 14 de 14 · el después</span></a></div></div></section>
   <div class="env">
   <div class="docif"><div class="docif__i"><b>9</b><span>Documentos firmados</span><small>De la primera visita, digitalizados en Klinikare el mismo día</small></div><div class="docif__i"><b>12 de 14</b><span>Fases</span><small>Fases 1 a 12 del recorrido; las 13 y 14 van en el Manual Maestro</small></div><div class="docif__i"><b>115–120′</b><span>Duración real</span><small>Fases 2 a 11, según la complejidad del caso a valorar</small></div><div class="docif__i"><b>4</b><span>Roles implicados</span><small>Recepción · Director · Doctor · Auxiliar</small></div><div class="docif__i"><b>5</b><span>Estándares transversales</span><small>Comunicación, entorno, seguridad, datos y agenda</small></div><div class="docif__i"><b>8</b><span>Anexos</span><small>Guiones, preguntas frecuentes, checklist, gobernanza y escalado</small></div></div>
@@ -6174,6 +6185,7 @@ La revisión no tiene coste y su diagnóstico previo sigue en su ficha.</div>
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M31 17 L26 26 L17 31 L22 22 Z"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/></svg>
   </div></header>
   
+  
   <div class="env">
   <div class="docif"><div class="docif__i"><b>1,2 M€</b><span>Objetivo</span><small>Facturación anual en el ejercicio tercero</small></div><div class="docif__i"><b>15</b><span>Decisiones</span><small>Se someten a aprobación en esta sesión</small></div><div class="docif__i"><b>55′</b><span>Lectura</span><small>Resumen ejecutivo: 3 minutos</small></div><div class="docif__i"><b>5</b><span>Riesgos críticos</span><small>Con propietario y mitigación asignados</small></div><div class="docif__i"><b>17</b><span>Sistema documental</span><small>Documentos operativos vigentes</small></div><div class="docif__i"><b>100 d</b><span>Ventana crítica</span><small>Lo que no se fija ahora se vuelve costumbre</small></div></div>
   <div class="cuerpo">
@@ -9366,6 +9378,7 @@ REVISIÓN PREVISTA:</div>
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="10" width="34" height="24" rx="2"/><path d="M14 28 L20 22 L25 26 L34 16"/><path d="M18 41 h12 M24 34 v7"/></svg>
   </div></header>
   
+  
   <div class="env">
   
   <div class="cuerpo">
@@ -10482,6 +10495,7 @@ REVISIÓN PREVISTA:</div>
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="11" y="7" width="26" height="34" rx="2.5"/><path d="M17 17 l3 3 l5 -6"/><path d="M17 29 l3 3 l5 -6"/><path d="M28 18 h5 M28 30 h5"/></svg>
   </div></header>
   
+  
   <div class="env">
   
   <div class="cuerpo">
@@ -10737,6 +10751,7 @@ REVISIÓN PREVISTA:</div>
     <p class="sh__p">El documento troncal. Va de la primera llamada al mantenimiento a largo plazo, y cada fase construye sobre la anterior: la información recogida en la llamada personaliza la recepción, la anamnesis alimenta la presentación y el cierre abre el circuito de producción. La cadena es tan fuerte como su eslabón más débil, y por eso ninguna fase se salta «por falta de tiempo».</p>
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="19" cy="19" r="7"/><circle cx="32" cy="32" r="5"/><path d="M19 12 v-3 M19 26 v3 M12 19 h-3 M26 19 h3 M14 14 l-2 -2 M24 24 l2 2"/></svg>
   </div></header>
+  
   
   <div class="env">
   <div class="docif"><div class="docif__i"><b>14</b><span>Fases del recorrido</span><small>De la primera llamada al mantenimiento a largo plazo</small></div><div class="docif__i"><b>8</b><span>Partes</span><small>Más estándares transversales y anexos</small></div><div class="docif__i"><b>115–120′</b><span>Primera visita</span><small>Suma real de las fases 2 a 11; varía según el caso</small></div><div class="docif__i"><b>6</b><span>Puestos</span><small>Recepción · Doctor · Higienista · Auxiliar · RAC · Dirección</small></div><div class="docif__i"><b>26</b><span>Procedimientos</span><small>Numerados por puesto (PR-XX)</small></div><div class="docif__i"><b>13</b><span>Anexos</span><small>Plantillas, checklists, reportes, auditoría, escalado y glosario</small></div></div>
@@ -17486,6 +17501,7 @@ origen de pacientes y coste por paciente convertido · decisiones, que se versio
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 33 L19 23 L26 29 L39 15"/><path d="M31 15 h8 v8"/><circle cx="19" cy="23" r="1.8" fill="currentColor" stroke="none"/><circle cx="26" cy="29" r="1.8" fill="currentColor" stroke="none"/></svg>
   </div></header>
   
+  
   <div class="env">
   
   <div class="cuerpo">
@@ -18797,6 +18813,7 @@ Solo con la limpieza y las revisiones, la tarjeta ya se paga sola.</div>
     <p class="sh__p">Un sistema de gestión no son tres documentos: son tres documentos y todo lo que los hace ejecutables. Aquí están el compendio que los ordena, los 322 puntos con los que se verifica el centro, la auditoría de la clínica adquirida, el plan de los primeros cien días, los protocolos operativos por perfil, las fichas de innovación y el programa de cuidado. Cada uno dice qué es y cuándo se abre.</p>
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="14" width="24" height="28" rx="2"/><path d="M16 9 h20 a2 2 0 0 1 2 2 v24"/><path d="M16 23 h12 M16 30 h12 M16 37 h8"/></svg>
   </div></header>
+  
   
   <div class="env">
   <div class="docif"><div class="docif__i"><b>20</b><span>Decisiones de Gerencia</span><small>Más once verificaciones externas</small></div><div class="docif__i"><b>322</b><span>Puntos de verificación</span><small>Recorrido físico, documental, de sistemas y de procesos</small></div><div class="docif__i"><b>14</b><span>Documentos</span><small>Del posicionamiento del centro al programa de cuidado ATC</small></div><div class="docif__i"><b>18</b><span>Fichas de innovación</span><small>Con protocolo, guion, contingencia e indicador</small></div><div class="docif__i"><b>6</b><span>Perfiles operativos</span><small>Parte asistencial y parte comercial de cada puesto</small></div><div class="docif__i"><b>100 días</b><span>Horizonte</span><small>Programa de integración tras la adquisición</small></div></div>
@@ -22532,6 +22549,7 @@ LTV              = Valor inicial
     <p class="sh__p">Sin números propios, cualquier objetivo comercial es una opinión bien redactada. Esta sección es el instrumento: diez indicadores que se cuentan mes a mes, cinco números que todavía no se tienen y están señalados como lo que son, y el puente que lleva de los 720.000 € heredados al objetivo del tercer ejercicio, bloque a bloque y con cada bloque auditable por separado.</p>
     </div><svg class="sh__ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 39 h30"/><rect x="13" y="27" width="6" height="12"/><rect x="22" y="19" width="6" height="20"/><rect x="31" y="11" width="6" height="28"/></svg>
   </div></header>
+  
   
   <div class="env">
   
