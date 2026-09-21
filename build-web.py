@@ -1664,15 +1664,20 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
 .indice__k{font-family:var(--sans);font-weight:600;font-size:.62rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--calido-fuerte);margin:0 0 1rem;
   padding-bottom:.8rem;border-bottom:1px solid var(--linea)}
-.idx-fases,.idx-secs{display:grid;gap:.25rem}
-.idx-fase,.idx-sec{display:flex;align-items:baseline;gap:.9rem;text-decoration:none;
-  padding:.5rem .6rem;border-radius:10px;transition:background .15s}
+.idx-fases,.idx-secs{display:grid;gap:0}
+/* tabulado: columnas alineadas fila a fila (nº · nombre · fase · detalle) */
+.idx-fase,.idx-sec{display:grid;align-items:baseline;gap:.8rem;text-decoration:none;
+  padding:.6rem .5rem;border-bottom:1px solid var(--linea-2);transition:background .15s}
+.idx-fase{grid-template-columns:1.8rem 1fr 5.6rem 3.4rem}
+.idx-sec{grid-template-columns:1.8rem 1fr auto}
 .idx-fase:hover,.idx-sec:hover{background:var(--pizarra-soft)}
-.idx-fase__n,.idx-sec__n{font-family:var(--serif);font-weight:300;color:var(--calido-fuerte);
-  font-variant-numeric:tabular-nums;width:2rem;flex:none;text-align:right;font-size:1.1rem;line-height:1.3}
-.idx-fase__t,.idx-sec__t{display:flex;flex-direction:column;gap:.1rem;min-width:0}
-.idx-fase__t b,.idx-sec__t b{font-family:var(--sans);font-weight:600;color:var(--tinta);font-size:.98rem}
-.idx-fase__m,.idx-sec__c{font-family:var(--sans);font-size:.72rem;color:var(--muted)}
+.idx-n{font-family:var(--serif);font-weight:300;color:var(--calido-fuerte);
+  font-variant-numeric:tabular-nums;text-align:right;font-size:1.15rem;line-height:1.2}
+.idx-b{font-family:var(--sans);font-weight:600;color:var(--tinta);font-size:.98rem;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.idx-m{font-family:var(--sans);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--calido-fuerte);text-align:right;font-variant-numeric:tabular-nums}
+.idx-x{font-family:var(--sans);font-size:.72rem;color:var(--muted);text-align:right;white-space:nowrap}
 @media(max-width:640px){.indice__cols{grid-template-columns:1fr}}
 """
 
@@ -1707,8 +1712,8 @@ def main():
         '  <div class="portal__caja">\n'
         '    <p class="portal__k">Centro de Excelencia Implantológica</p>\n'
         '    <p class="portal__marca">' + LOGO_EMBLEMA
-        + '<span class="portal__marca-tt"><b>Klinikare</b>'
-        '<i>Clínica Alma</i></span></p>\n'
+        + '<span class="portal__marca-tt"><b>Clínica Alma</b>'
+        '<i>Klinikare</i></span></p>\n'
         '    <h2 class="portal__lema" id="portal-lema">No medias <em>sonrisas</em></h2>\n'
         '    <p class="portal__p">Un solo criterio: la excelencia o nada. '
         'Implantología guiada, un sistema documental que no deja cabos sueltos '
@@ -1742,16 +1747,17 @@ def main():
     meta_idx = _meta(indice)
     fases_html = "".join(
         '<a class="idx-fase" href="#%s" data-idx-ir>'
-        '<span class="idx-fase__n">%s</span>'
-        '<span class="idx-fase__t"><b>%s</b>'
-        '<span class="idx-fase__m">Fase %d de 14 · %s</span></span></a>'
+        '<span class="idx-n">%s</span>'
+        '<span class="idx-b">%s</span>'
+        '<span class="idx-m">Fase %d de 14</span>'
+        '<span class="idx-x">%s</span></a>'
         % (fase_ancla(num), num, H.escape(nombre), int(num), H.escape(minu))
         for num, nombre, minu, sid in FASES)
     secs_html = "".join(
         '<a class="idx-sec" href="#%s" data-ve="%s" data-idx-ir>'
-        '<span class="idx-sec__n">%02d</span>'
-        '<span class="idx-sec__t"><b>%s</b>'
-        '<span class="idx-sec__c">%s</span></span></a>'
+        '<span class="idx-n">%02d</span>'
+        '<span class="idx-b">%s</span>'
+        '<span class="idx-x">%s</span></a>'
         % (sid, sid, meta_idx[sid][3], H.escape(rot),
            H.escape(cuenta_txt(sid, meta_idx[sid][2], nombre)))
         for sid, rot, _d, nombre in SECCIONES)
@@ -1778,15 +1784,15 @@ def main():
     # ni con las llaves del SVG del logo.
     cabecera = (
         '<a class="cab__m marca" href="#inicio" data-ve="inicio" '
-        'aria-label="Klinikare · Clínica Alma · inicio">' + LOGO_EMBLEMA
-        + '<span class="marca__tt"><span class="marca__t">Klinikare</span>'
-        '<span class="marca__sub">Clínica Alma</span></span></a>')
+        'aria-label="Clínica Alma · Klinikare · inicio">' + LOGO_EMBLEMA
+        + '<span class="marca__tt"><span class="marca__t">Clínica Alma</span>'
+        '<span class="marca__sub">Klinikare</span></span></a>')
 
     doc = (
         '<!doctype html>\n<html lang="es">\n<head>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-        '<title>Klinikare · Clínica Alma · Sistema documental</title>\n'
+        '<title>Clínica Alma · Klinikare · Sistema documental</title>\n'
         '<link rel="icon" href="' + LOGO_FAVICON + '">\n'
         + estilo + '\n</head>\n<body>\n'
         + portal + '\n' + voz_modal + '\n' + indice_overlay + '\n'
@@ -1796,9 +1802,9 @@ def main():
         '</header>\n'
         '<main>\n' + "\n".join(vistas) + '\n</main>\n'
         '<footer class="pie-web"><div class="env">'
-        '<a class="marca" href="#inicio" data-ve="inicio" aria-label="Klinikare · Clínica Alma">'
-        + LOGO_EMBLEMA + '<span class="marca__tt"><span class="marca__t">Klinikare</span>'
-        '<span class="marca__sub">Clínica Alma</span></span></a>'
+        '<a class="marca" href="#inicio" data-ve="inicio" aria-label="Clínica Alma · Klinikare">'
+        + LOGO_EMBLEMA + '<span class="marca__tt"><span class="marca__t">Clínica Alma</span>'
+        '<span class="marca__sub">Klinikare</span></span></a>'
         '<p class="pie-web__lema">No medias <em>sonrisas</em></p>'
         '<p class="pie-web__d">Sistema documental · Centro de Excelencia Implantológica · '
         'Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p>'
