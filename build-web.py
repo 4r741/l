@@ -634,46 +634,38 @@ JS = """
     if(e.target.closest('.indice a')){ cierraIdx(); }
   });
 
-  // ---- Flecha lateral: sube y baja de fase (anterior / siguiente) ----
+  // ---- Flecha lateral: sube y baja por los apartados de la sección ----
+  // Vale para TODAS las secciones: navega los artículos (.wart con id) de la
+  // vista activa —sean fases o apartados normales— y marca en cuál estás.
   var FN=D.getElementById('fase-nav');
-  var FASES=window.__FASES__||[];
   var fnPos=FN&&FN.querySelector('[data-fase-pos]');
   function vistaActiva(){ return D.querySelector('.vista.on'); }
-  function fasesEnVista(){
-    var vis=vistaActiva(); if(!vis) return [];
-    return FASES.map(function(id,i){ return {id:id,i:i,el:D.getElementById(id)}; })
-                .filter(function(x){ return x.el && vis.contains(x.el); });
-  }
-  function faseActual(){
-    var en=fasesEnVista(); if(!en.length) return -1;
-    var lim=Math.max(200,(window.innerHeight||800)*0.35);
-    var act=en[0].i;
-    en.forEach(function(x){ if(x.el.getBoundingClientRect().top<=lim) act=x.i; });
+  function artList(){ var v=vistaActiva(); return v?[].slice.call(v.querySelectorAll('.wart[id]')):[]; }
+  function artActual(els){
+    if(!els.length) return -1;
+    var lim=Math.max(200,(window.innerHeight||800)*0.35), act=0;
+    els.forEach(function(el,i){ if(el.getBoundingClientRect().top<=lim) act=i; });
     return act;
   }
-  function irAncla(id){
-    var v=vistaDe(id), actual=(vistaActiva()||{}).id;
-    if(v && 'v-'+v!==actual){ ve(v,false); }
-    requestAnimationFrame(function(){
-      var d=D.getElementById(id);
-      if(d) d.scrollIntoView({behavior:'smooth', block:'start'});
-      try{ history.replaceState(null,'','#'+id); }catch(_){}
-    });
+  function irEl(el){
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+    if(el.id){ try{ history.replaceState(null,'','#'+el.id); }catch(_){ } }
   }
-  function vaFase(dir){
-    var i=faseActual(); if(i<0) i=(dir>0?-1:0);
-    var j=Math.min(FASES.length-1, Math.max(0, i+dir));
-    if(j!==i || i<0) irAncla(FASES[j]);
+  function vaArt(dir){
+    var els=artList(); if(!els.length) return;
+    var i=artActual(els); if(i<0) i=(dir>0?-1:0);
+    irEl(els[Math.min(els.length-1, Math.max(0, i+dir))]);
   }
   function actualizaFN(){
     if(!FN) return;
-    var en=fasesEnVista();
-    FN.hidden = en.length===0;
-    if(en.length){ var i=faseActual(); if(fnPos) fnPos.textContent=(i>=0?(i+1):1)+'/'+FASES.length; }
+    var els=artList();
+    FN.hidden = els.length<2;
+    if(els.length){ var i=artActual(els); if(fnPos) fnPos.textContent=(i>=0?(i+1):1)+'/'+els.length; }
   }
   if(FN){
-    FN.querySelector('[data-fase-prev]').addEventListener('click',function(){ vaFase(-1); });
-    FN.querySelector('[data-fase-next]').addEventListener('click',function(){ vaFase(1); });
+    FN.querySelector('[data-fase-prev]').addEventListener('click',function(){ vaArt(-1); });
+    FN.querySelector('[data-fase-next]').addEventListener('click',function(){ vaArt(1); });
     window.addEventListener('scroll', actualizaFN, {passive:true});
     window.addEventListener('resize', actualizaFN);
     actualizaFN();
@@ -1801,11 +1793,9 @@ def main():
 
     # el diccionario de voces, para el pop-up de concepto (solo la definición)
     voces_js = json.dumps({k: v[0] for k, v in voces.items()}, ensure_ascii=False)
-    # las anclas de las 14 fases, en orden, para la flecha de subir/bajar fase
-    fases_js = json.dumps([fase_ancla(num) for num, _n, _m, _s in FASES])
 
-    # Flecha lateral: sube y baja de fase (fase anterior / siguiente) mientras
-    # se lee. Solo aparece en las vistas que contienen fases.
+    # Flecha lateral: sube y baja por los apartados de la sección (fases o
+    # artículos). Solo aparece en las vistas que tienen apartados.
     fase_nav = (
         '<div class="fase-nav" id="fase-nav" hidden aria-label="Navegar por las fases">\n'
         '  <button type="button" class="fase-nav__b" data-fase-prev aria-label="Fase anterior">\n'
@@ -1886,7 +1876,7 @@ def main():
         '<p class="pie-web__d">Sistema documental · Centro de Excelencia Implantológica · '
         'Calle Progreso 2 · Ourense<br>Uso interno y confidencial</p>'
         '</div></footer>\n'
-        '<script>window.__VOCES__=' + voces_js + ';window.__FASES__=' + fases_js + ';</script>\n'
+        '<script>window.__VOCES__=' + voces_js + ';</script>\n'
         '<script>' + JS + '</script>\n'
         '</body>\n</html>\n')
 
