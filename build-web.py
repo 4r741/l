@@ -1825,6 +1825,7 @@ def main():
         '<div class="overlay portal" id="portal" role="dialog" aria-modal="true" '
         'aria-labelledby="portal-lema" hidden>\n'
         '  <div class="portal__caja">\n'
+        '    <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">×</button>\n'
         '    <p class="portal__k">Centro de Excelencia Implantológica</p>\n'
         '    <p class="portal__marca">' + LOGO_EMBLEMA
         + '<span class="portal__marca-tt"><b>Clínica Alma</b>'
