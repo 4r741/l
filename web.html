@@ -2407,11 +2407,13 @@ html:root:root .camino::before{background:var(--pizarra-linea)}
 .voz__sigla{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,6vw,2.8rem);
   line-height:1.05;color:var(--tinta);margin:0 0 .8rem;letter-spacing:-.01em}
 .voz__def{font-family:var(--sans);font-size:.98rem;line-height:1.72;color:var(--ink-2);margin:0}
-.cerrar{position:absolute;top:1rem;right:1rem;width:2.2rem;height:2.2rem;line-height:1;
+.cerrar{position:absolute;top:1rem;left:1rem;right:auto;width:2.2rem;height:2.2rem;line-height:1;
   border:1px solid var(--linea);background:var(--panel);color:var(--ink-2);cursor:pointer;
   border-radius:100px;font-family:var(--sans);font-size:1.1rem;display:flex;
   align-items:center;justify-content:center;transition:background .15s,color .15s,border-color .15s}
 .cerrar:hover{background:var(--pizarra);color:var(--honda);border-color:var(--pizarra)}
+/* la X va arriba a la izquierda: se deja hueco para que no pise el texto */
+.portal__caja,.voz__caja,.indice__caja{padding-top:3.7rem}
 
 /* ---- marca: Klinikare (el sistema) sobre Clínica Alma (la clínica) ---- */
 html:root:root .marca__tt{display:inline-flex;flex-direction:column;line-height:1.02}
@@ -2462,7 +2464,7 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
 /* ---- el ÍNDICE global (overlay) ---- */
 .indice__caja{background:var(--panel);border:1px solid var(--pizarra-linea);border-radius:22px;
   box-shadow:0 50px 100px -34px rgba(0,0,0,.9);max-width:60rem;width:100%;
-  padding:clamp(1.8rem,4vw,3rem);position:relative;max-height:86vh;overflow:auto;
+  padding:clamp(1.8rem,4vw,3rem);padding-top:3.7rem;position:relative;max-height:86vh;overflow:auto;
   transform:translateY(16px) scale(.985);transition:transform .4s cubic-bezier(.2,.9,.2,1)}
 .overlay.on .indice__caja{transform:none}
 .indice__tt{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,4vw,2.4rem);
