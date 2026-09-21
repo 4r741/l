@@ -660,7 +660,7 @@ JS = """
   function actualizaFN(){
     if(!FN) return;
     var els=artList();
-    FN.hidden = els.length<2;
+    FN.hidden = els.length<1;
     if(els.length){ var i=artActual(els); if(fnPos) fnPos.textContent=(i>=0?(i+1):1)+'/'+els.length; }
   }
   if(FN){
