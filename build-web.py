@@ -31,16 +31,25 @@ _spec = importlib.util.spec_from_file_location("bs", str(RAIZ / "build-sitio.py"
 bs = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(bs)
 
+# El orden de MENÚ. Primera Visita va primera —es el corazón del sistema— y el
+# resto sigue el orden documental. Su posición aquí manda la numeración
+# («Sección 01 de 08»), la ruta de lectura y el orden de las vistas.
 SECCIONES = [
+    ("primera-visita", "Primera Visita", "index.html", "Protocolo de Primera Visita"),
     ("direccion", "Dirección", "memoria.html", "Plan de Dirección"),
     ("presentacion", "Presentación", "deck.html", "Presentación de Junta"),
     ("protocolos", "Protocolos", "protocolos.html", "Protocolos por puesto"),
-    ("primera-visita", "Primera Visita", "index.html", "Protocolo de Primera Visita"),
     ("operaciones", "Operaciones", "manual.html", "Manual Maestro de Operaciones"),
     ("marketing", "Marketing", "marketing.html", "Plan Maestro de Marketing"),
     ("otros", "Otros", "otros.html", "Otros documentos del sistema"),
     ("numeros", "Los números", "instrumentos/captura.html", "Los números del centro"),
 ]
+
+# El orden en que monta() DEVUELVE el contenido cosechado (el de siempre: por
+# documento). Se usa para casar cada sección con su contenido por su sid, con
+# independencia del orden de MENÚ de arriba.
+ORDEN_MONTA = ["direccion", "presentacion", "protocolos", "primera-visita",
+               "operaciones", "marketing", "otros", "numeros"]
 
 # Frases de entrada de cada sección: las mismas que ya escribía el sistema.
 INTRO = bs.INTROS
@@ -611,8 +620,21 @@ JS = """
     if(g){ e.preventDefault(); abreVoz(g.dataset.gl); return; }
     if(modal && (e.target.closest('[data-cerrar-voz]') || e.target===modal)) cierraVoz();
   });
+
+  // ---- Índice global: botón de la cabecera, disponible en toda la página ----
+  var idx=D.getElementById('indice');
+  function abreIdx(){ if(!idx) return; idx.hidden=false; requestAnimationFrame(function(){ idx.classList.add('on'); }); }
+  function cierraIdx(){ if(!idx) return; idx.classList.remove('on'); setTimeout(function(){ if(idx) idx.hidden=true; }, 320); }
+  D.addEventListener('click', function(e){
+    if(e.target.closest('[data-indice]')){ e.preventDefault(); abreIdx(); return; }
+    if(!idx) return;
+    if(e.target.closest('[data-cerrar-indice]') || e.target===idx){ cierraIdx(); return; }
+    // al pulsar un enlace del índice, el manejador de navegación actúa y aquí se cierra
+    if(e.target.closest('.indice a')){ cierraIdx(); }
+  });
+
   D.addEventListener('keydown', function(e){
-    if(e.key==='Escape'){ cierraVoz(); cierraPortal(); }
+    if(e.key==='Escape'){ cierraVoz(); cierraPortal(); cierraIdx(); }
   });
 })();
 """
@@ -658,8 +680,8 @@ def camino_seccion():
             '<a class="hito reveal" href="#%s"%s>'
             '<span class="hito__n">%s</span>'
             '<span class="hito__t">%s</span>'
-            '<span class="hito__m">%s</span></a>'
-            % (anc, fuera, num, H.escape(nombre), H.escape(minu)))
+            '<span class="hito__m">Fase %d de 14 · %s</span></a>'
+            % (anc, fuera, num, H.escape(nombre), int(num), H.escape(minu)))
     return (
         '<section class="franja franja--oscura" id="camino-visita">'
         '<div class="env">'
@@ -706,7 +728,7 @@ def mapa_sistema(meta):
         '<section class="franja" id="mapa-sistema">'
         '<div class="env">'
         '<header class="titmapa reveal">'
-        '<p class="titmapa__k">Mapa 01 · El sistema</p>'
+        '<p class="titmapa__k">Mapa 02 · El sistema</p>'
         '<h2>Todo cuelga de una frase</h2>'
         '<p class="titmapa__p">«No medias sonrisas» no es un eslogan: es el '
         'criterio. De él salen cuatro preguntas, y cada documento contesta una.</p>'
@@ -726,14 +748,14 @@ def mapa_viaje(meta):
             '<a class="paso reveal" href="#%s" data-ve="%s">'
             '<span class="paso__n">%s</span>'
             '<span class="paso__cuerpo"><b>%s</b>'
-            '<span class="paso__min">%s</span></span>'
+            '<span class="paso__min">Fase %d de 14 · %s</span></span>'
             '<span class="paso__sec">%s →</span></a>'
-            % (sid, sid, num, H.escape(nombre), H.escape(minu), H.escape(rot)))
+            % (sid, sid, num, H.escape(nombre), int(num), H.escape(minu), H.escape(rot)))
     return (
         '<section class="franja franja--oscura" id="mapa-viaje">'
         '<div class="env">'
         '<header class="titmapa titmapa--claro reveal">'
-        '<p class="titmapa__k">Mapa 02 · El viaje del paciente</p>'
+        '<p class="titmapa__k">Mapa 01 · El viaje del paciente</p>'
         '<h2>De la primera llamada<br>al mantenimiento</h2>'
         '<p class="titmapa__p">Catorce fases. Las doce primeras —la primera '
         'visita entera— caben en <b>123 minutos</b>. Siga el camino: cada '
@@ -789,7 +811,7 @@ def bloque_inicio(indice, total):
         'posible, y le cuidamos para siempre. Todo el método del centro, '
         'ordenado y a la vista.</p>'
         '<div class="hero__cta">'
-        '<a class="hero__ir" href="#mapa-sistema">Descubrir el método <i>↓</i></a>'
+        '<a class="hero__ir" href="#mapa-viaje">Descubrir el método <i>↓</i></a>'
         '<a class="hero__ghost" href="#primera-visita" data-ve="primera-visita">'
         'Su primera visita</a>'
         '</div>'
@@ -801,7 +823,7 @@ def bloque_inicio(indice, total):
         '</section>' % cajas)
     return (
         '<section class="vista" id="v-inicio">\n'
-        + hero + banda_lema() + mapa_sistema(meta) + mapa_viaje(meta)
+        + hero + mapa_viaje(meta) + banda_lema() + mapa_sistema(meta)
         + mapa_ruta(meta, total) + '\n</section>')
 
 
@@ -1624,22 +1646,55 @@ html:root:root .wart ol.pasos > li::before{
 html:root:root .wart ol:not([class]) > li::marker,
 html:root:root .wart ol.steps > li::marker,
 html:root:root .wart ol.pasos > li::marker{content:none}
+
+/* ---- botón Índice en la cabecera, distinto de los enlaces ---- */
+html:root:root .cab__indice{border:1px solid var(--pizarra-linea);color:var(--calido-fuerte);
+  font-weight:600;cursor:pointer;background:transparent}
+html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);border-color:var(--pizarra)}
+
+/* ---- el ÍNDICE global (overlay) ---- */
+.indice__caja{background:var(--panel);border:1px solid var(--pizarra-linea);border-radius:22px;
+  box-shadow:0 50px 100px -34px rgba(0,0,0,.9);max-width:60rem;width:100%;
+  padding:clamp(1.8rem,4vw,3rem);position:relative;max-height:86vh;overflow:auto;
+  transform:translateY(16px) scale(.985);transition:transform .4s cubic-bezier(.2,.9,.2,1)}
+.overlay.on .indice__caja{transform:none}
+.indice__tt{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,4vw,2.4rem);
+  color:var(--tinta);margin:0 0 1.6rem;letter-spacing:-.01em}
+.indice__cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,3rem);align-items:start}
+.indice__k{font-family:var(--sans);font-weight:600;font-size:.62rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--calido-fuerte);margin:0 0 1rem;
+  padding-bottom:.8rem;border-bottom:1px solid var(--linea)}
+.idx-fases,.idx-secs{display:grid;gap:.25rem}
+.idx-fase,.idx-sec{display:flex;align-items:baseline;gap:.9rem;text-decoration:none;
+  padding:.5rem .6rem;border-radius:10px;transition:background .15s}
+.idx-fase:hover,.idx-sec:hover{background:var(--pizarra-soft)}
+.idx-fase__n,.idx-sec__n{font-family:var(--serif);font-weight:300;color:var(--calido-fuerte);
+  font-variant-numeric:tabular-nums;width:2rem;flex:none;text-align:right;font-size:1.1rem;line-height:1.3}
+.idx-fase__t,.idx-sec__t{display:flex;flex-direction:column;gap:.1rem;min-width:0}
+.idx-fase__t b,.idx-sec__t b{font-family:var(--sans);font-weight:600;color:var(--tinta);font-size:.98rem}
+.idx-fase__m,.idx-sec__c{font-family:var(--sans);font-size:.72rem;color:var(--muted)}
+@media(max-width:640px){.indice__cols{grid-template-columns:1fr}}
 """
 
 def main():
     secciones, menus, indice, orden, voces, mapa = bs.monta()
     total = len(orden)
 
-    nav = ('<a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a>'
+    nav = ('<button type="button" class="cab__l cab__indice" data-indice '
+           'aria-haspopup="dialog">Índice</button>'
+           '<a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a>'
            '<a class="cab__l" href="#experiencia" data-ve="experiencia">La experiencia</a>'
            + "".join(
                '<a class="cab__l" href="#%s" data-ve="%s">%s</a>' % (sid, sid, H.escape(rot))
                for sid, rot, _d, _n in SECCIONES))
 
+    # casar cada sección con su contenido por su sid (monta() lo devuelve en
+    # ORDEN_MONTA, no en el orden de MENÚ)
+    contenido = dict(zip(ORDEN_MONTA, secciones))
+
     vistas = [bloque_inicio(indice, total), bloque_experiencia()]
     for k, (sid, rot, doc, nombre) in enumerate(SECCIONES, 1):
-        # monta() devuelve las secciones en el orden de SECCIONES
-        vistas.append(bloque_seccion(k, sid, rot, nombre, secciones[k - 1]))
+        vistas.append(bloque_seccion(k, sid, rot, nombre, contenido[sid]))
 
     estilo = ("<style>%s</style>\n<style>%s\n%s\n%s\n%s\n%s\n%s</style>"
               % (css_documentos(), fuentes_incrustadas(), TEMA, SHELL, BOLD, MODERNO, ELEGANTE))
@@ -1680,6 +1735,45 @@ def main():
     # el diccionario de voces, para el pop-up de concepto (solo la definición)
     voces_js = json.dumps({k: v[0] for k, v in voces.items()}, ensure_ascii=False)
 
+    # 3) El ÍNDICE global: un botón en la cabecera lo abre desde cualquier
+    # página. Reúne las 14 fases (etiquetadas «Fase N de 14», las 12 de la
+    # primera visita y las 2 del después) y las ocho secciones, para saltar a
+    # cualquier punto del sistema.
+    meta_idx = _meta(indice)
+    fases_html = "".join(
+        '<a class="idx-fase" href="#%s" data-idx-ir>'
+        '<span class="idx-fase__n">%s</span>'
+        '<span class="idx-fase__t"><b>%s</b>'
+        '<span class="idx-fase__m">Fase %d de 14 · %s</span></span></a>'
+        % (fase_ancla(num), num, H.escape(nombre), int(num), H.escape(minu))
+        for num, nombre, minu, sid in FASES)
+    secs_html = "".join(
+        '<a class="idx-sec" href="#%s" data-ve="%s" data-idx-ir>'
+        '<span class="idx-sec__n">%02d</span>'
+        '<span class="idx-sec__t"><b>%s</b>'
+        '<span class="idx-sec__c">%s</span></span></a>'
+        % (sid, sid, meta_idx[sid][3], H.escape(rot),
+           H.escape(cuenta_txt(sid, meta_idx[sid][2], nombre)))
+        for sid, rot, _d, nombre in SECCIONES)
+    indice_overlay = (
+        '<div class="overlay indice" id="indice" role="dialog" aria-modal="true" '
+        'aria-label="Índice del sistema" hidden>\n'
+        '  <div class="indice__caja">\n'
+        '    <button type="button" class="cerrar" data-cerrar-indice aria-label="Cerrar">×</button>\n'
+        '    <p class="indice__tt">Índice del sistema</p>\n'
+        '    <div class="indice__cols">\n'
+        '      <div class="indice__col">\n'
+        '        <p class="indice__k">Las 14 fases · la primera visita y el después</p>\n'
+        '        <div class="idx-fases">' + fases_html + '</div>\n'
+        '      </div>\n'
+        '      <div class="indice__col">\n'
+        '        <p class="indice__k">Las ocho secciones</p>\n'
+        '        <div class="idx-secs">' + secs_html + '</div>\n'
+        '      </div>\n'
+        '    </div>\n'
+        '  </div>\n'
+        '</div>')
+
     # Se arma por trozos (sin %-format) para no chocar con el «%» del favicon
     # ni con las llaves del SVG del logo.
     cabecera = (
@@ -1695,7 +1789,7 @@ def main():
         '<title>Klinikare · Clínica Alma · Sistema documental</title>\n'
         '<link rel="icon" href="' + LOGO_FAVICON + '">\n'
         + estilo + '\n</head>\n<body>\n'
-        + portal + '\n' + voz_modal + '\n'
+        + portal + '\n' + voz_modal + '\n' + indice_overlay + '\n'
         '<header class="cab">\n  ' + cabecera + '\n'
         '  <nav class="cab__nav" aria-label="Secciones">' + nav + '</nav>\n'
         '  <div class="cab__prog" id="prog" aria-hidden="true"></div>\n'
