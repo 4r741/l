@@ -1819,6 +1819,16 @@ def main():
     # sustituye en todo el documento (texto, voz del glosario y su definición),
     # de modo que el pop-up de concepto sigue resolviendo.
     doc = re.sub(r"Clinic\s+Cloud", "Klinikare", doc)
+    # Corrección de responsabilidades: quien presenta el presupuesto es el
+    # Director de Centros (el rol del sistema es «Dirección de Centros»). La
+    # Fase 10 figuraba como «Director» a secas.
+    doc = doc.replace(
+        "<td>Propuesta económica y cierre</td><td>Director</td>",
+        "<td>Propuesta económica y cierre</td><td>Director de Centros</td>")
+    doc = doc.replace("(autoriza al Director a presupuestar)",
+                      "(autoriza al Director de Centros a presupuestar)")
+    doc = doc.replace("Bloquea al Director, que no debe elaborar presupu",
+                      "Bloquea al Director de Centros, que no debe elaborar presupu")
     salida.write_text(doc, encoding="utf-8")
     print("web.html · %d secciones · %d apartados · %d KB"
           % (len(SECCIONES), total, len(doc.encode("utf-8")) // 1024))
