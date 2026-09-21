@@ -640,7 +640,14 @@ JS = """
   var FN=D.getElementById('fase-nav');
   var fnPos=FN&&FN.querySelector('[data-fase-pos]');
   function vistaActiva(){ return D.querySelector('.vista.on'); }
-  function artList(){ var v=vistaActiva(); return v?[].slice.call(v.querySelectorAll('.wart[id]')):[]; }
+  function artList(){
+    var v=vistaActiva(); if(!v) return [];
+    var w=[].slice.call(v.querySelectorAll('.wart'));
+    // en la Presentación (un solo apartado que es un deck) se navega por sus
+    // secciones —las diapositivas divisorias—, que son más que los apartados.
+    var d=[].slice.call(v.querySelectorAll('.slide--div'));
+    return d.length>w.length?d:w;
+  }
   function artActual(els){
     if(!els.length) return -1;
     var lim=Math.max(200,(window.innerHeight||800)*0.35), act=0;
@@ -1774,6 +1781,7 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
 .fase-nav__n{font-family:var(--sans);font-size:.62rem;font-weight:600;color:var(--muted);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
 @media(max-width:560px){.fase-nav{right:.5rem}.fase-nav__b{width:2.1rem;height:2.1rem}}
+html:root:root .slide--div{scroll-margin-top:calc(var(--nav) + 1rem)}
 
 /* ---- bloque «Con qué llegan los pacientes» (Primera Visita) ---- */
 .pqs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
@@ -1790,13 +1798,15 @@ def main():
     secciones, menus, indice, orden, voces, mapa = bs.monta()
     total = len(orden)
 
+    # Orden del menú: Índice · Inicio · Primera Visita · La experiencia · resto.
+    _enlace = lambda s, r: '<a class="cab__l" href="#%s" data-ve="%s">%s</a>' % (s, s, H.escape(r))
+    _prim = SECCIONES[0]           # Primera Visita va primera
     nav = ('<button type="button" class="cab__l cab__indice" data-indice '
            'aria-haspopup="dialog">Índice</button>'
            '<a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a>'
-           '<a class="cab__l" href="#experiencia" data-ve="experiencia">La experiencia</a>'
-           + "".join(
-               '<a class="cab__l" href="#%s" data-ve="%s">%s</a>' % (sid, sid, H.escape(rot))
-               for sid, rot, _d, _n in SECCIONES))
+           + _enlace(_prim[0], _prim[1])
+           + '<a class="cab__l" href="#experiencia" data-ve="experiencia">La experiencia</a>'
+           + "".join(_enlace(sid, rot) for sid, rot, _d, _n in SECCIONES[1:]))
 
     # casar cada sección con su contenido por su sid (monta() lo devuelve en
     # ORDEN_MONTA, no en el orden de MENÚ)

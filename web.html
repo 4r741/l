@@ -2502,6 +2502,7 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
 .fase-nav__n{font-family:var(--sans);font-size:.62rem;font-weight:600;color:var(--muted);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
 @media(max-width:560px){.fase-nav{right:.5rem}.fase-nav__b{width:2.1rem;height:2.1rem}}
+html:root:root .slide--div{scroll-margin-top:calc(var(--nav) + 1rem)}
 
 /* ---- bloque «Con qué llegan los pacientes» (Primera Visita) ---- */
 .pqs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
@@ -2560,7 +2561,7 @@ html:root:root .cab__indice:hover{background:var(--pizarra);color:var(--honda);b
 </div>
 <header class="cab">
   <a class="cab__m marca" href="#inicio" data-ve="inicio" aria-label="Clínica Alma · Klinikare · inicio"><svg class="marca__e" viewBox="0 0 128 118" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M52 14 C47 6 39 7 38 17 C37 30 40 44 43 62 C44 72 50 78 53 68 C56 60 57 50 58 42 C59 50 60 60 63 68 C66 78 72 72 73 62 C76 44 79 30 78 17 C77 7 69 6 64 14 C61 19 55 19 52 14 Z"/><path d="M44 54 C30 50 15 55 9 70 C24 76 40 71 46 58"/><path d="M40 74 C28 74 17 69 12 60"/><path d="M72 54 C86 50 101 55 107 70 C92 76 76 71 70 58"/><path d="M76 74 C88 74 99 69 104 60"/><path d="M20 78 C40 106 76 106 96 78"/></svg><span class="marca__tt"><span class="marca__t">Clínica Alma</span><span class="marca__sub">Klinikare</span></span></a>
-  <nav class="cab__nav" aria-label="Secciones"><button type="button" class="cab__l cab__indice" data-indice aria-haspopup="dialog">Índice</button><a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a><a class="cab__l" href="#experiencia" data-ve="experiencia">La experiencia</a><a class="cab__l" href="#primera-visita" data-ve="primera-visita">Primera Visita</a><a class="cab__l" href="#direccion" data-ve="direccion">Dirección</a><a class="cab__l" href="#presentacion" data-ve="presentacion">Presentación</a><a class="cab__l" href="#protocolos" data-ve="protocolos">Protocolos</a><a class="cab__l" href="#operaciones" data-ve="operaciones">Operaciones</a><a class="cab__l" href="#marketing" data-ve="marketing">Marketing</a><a class="cab__l" href="#otros" data-ve="otros">Otros</a><a class="cab__l" href="#numeros" data-ve="numeros">Los números</a></nav>
+  <nav class="cab__nav" aria-label="Secciones"><button type="button" class="cab__l cab__indice" data-indice aria-haspopup="dialog">Índice</button><a class="cab__l" href="#inicio" data-ve="inicio">Inicio</a><a class="cab__l" href="#primera-visita" data-ve="primera-visita">Primera Visita</a><a class="cab__l" href="#experiencia" data-ve="experiencia">La experiencia</a><a class="cab__l" href="#direccion" data-ve="direccion">Dirección</a><a class="cab__l" href="#presentacion" data-ve="presentacion">Presentación</a><a class="cab__l" href="#protocolos" data-ve="protocolos">Protocolos</a><a class="cab__l" href="#operaciones" data-ve="operaciones">Operaciones</a><a class="cab__l" href="#marketing" data-ve="marketing">Marketing</a><a class="cab__l" href="#otros" data-ve="otros">Otros</a><a class="cab__l" href="#numeros" data-ve="numeros">Los números</a></nav>
   <div class="cab__prog" id="prog" aria-hidden="true"></div>
 </header>
 <main>
@@ -22911,7 +22912,14 @@ LTV              = Valor inicial
   var FN=D.getElementById('fase-nav');
   var fnPos=FN&&FN.querySelector('[data-fase-pos]');
   function vistaActiva(){ return D.querySelector('.vista.on'); }
-  function artList(){ var v=vistaActiva(); return v?[].slice.call(v.querySelectorAll('.wart[id]')):[]; }
+  function artList(){
+    var v=vistaActiva(); if(!v) return [];
+    var w=[].slice.call(v.querySelectorAll('.wart'));
+    // en la Presentación (un solo apartado que es un deck) se navega por sus
+    // secciones —las diapositivas divisorias—, que son más que los apartados.
+    var d=[].slice.call(v.querySelectorAll('.slide--div'));
+    return d.length>w.length?d:w;
+  }
   function artActual(els){
     if(!els.length) return -1;
     var lim=Math.max(200,(window.innerHeight||800)*0.35), act=0;
